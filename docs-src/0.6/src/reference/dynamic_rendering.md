@@ -7,7 +7,7 @@ Sometimes you want to render different things depending on the state/props. With
 To render different elements based on a condition, you could use an `if-else` statement:
 
 ```rust, no_run
-{{#include ../docs-examples/src/untested_06/conditional_rendering.rs:if_else}}
+{{#include ../docs-router/src/doc_examples/untested_06/conditional_rendering.rs:if_else}}
 ```
 ```inject-dioxus
 DemoFrame {
@@ -24,7 +24,7 @@ You may have noticed some repeated code in the `if-else` example above. Repeatin
 We can improve this example by splitting up the dynamic parts and inserting them where they are needed.
 
 ```rust, no_run
-{{#include ../docs-examples/src/untested_06/conditional_rendering.rs:if_else_improved}}
+{{#include ../docs-router/src/doc_examples/untested_06/conditional_rendering.rs:if_else_improved}}
 ```
 ```inject-dioxus
 DemoFrame {
@@ -37,7 +37,7 @@ DemoFrame {
 Since `Element` is a `Result<VNode, RenderError>`, components accepting `Element` as a prop can inspect its contents, and render different things based on that. Example:
 
 ```rust, no_run
-{{#include ../docs-examples/src/untested_06/component_children_inspect.rs:Clickable}}
+{{#include ../docs-router/src/doc_examples/untested_06/component_children_inspect.rs:Clickable}}
 ```
 
 You can't mutate the `Element`, but if you need a modified version of it, you can construct a new one based on its attributes/children/etc.
@@ -47,7 +47,7 @@ You can't mutate the `Element`, but if you need a modified version of it, you ca
 To render nothing, you can return `None` from a component. This is useful if you want to conditionally hide something:
 
 ```rust, no_run
-{{#include ../docs-examples/src/untested_06/conditional_rendering.rs:conditional_none}}
+{{#include ../docs-router/src/doc_examples/untested_06/conditional_rendering.rs:conditional_none}}
 ```
 
 ```inject-dioxus
@@ -74,7 +74,7 @@ For this, Dioxus accepts iterators that produce `Element`s. So we need to:
 Example: suppose you have a list of comments you want to render. Then, you can render them like this:
 
 ```rust, no_run
-{{#include ../docs-examples/src/untested_06/rendering_lists.rs:render_list}}
+{{#include ../docs-router/src/doc_examples/untested_06/rendering_lists.rs:render_list}}
 ```
 ```inject-dioxus
 DemoFrame {
@@ -87,7 +87,7 @@ DemoFrame {
 Because of how common it is to render a list of items, Dioxus provides a shorthand for this. Instead of using `.iter`, `.map`, and `rsx`, you can use a `for` loop with a body of rsx code:
 
 ```rust, no_run
-{{#include ../docs-examples/src/untested_06/rendering_lists.rs:render_list_for_loop}}
+{{#include ../docs-router/src/doc_examples/untested_06/rendering_lists.rs:render_list_for_loop}}
 ```
 ```inject-dioxus
 DemoFrame {

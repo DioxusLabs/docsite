@@ -25,7 +25,7 @@ pub fn make_docs_from_ws(version: &str) {
     out.push_str("use dioxus_docs_examples::*;\n");
     out.push_str("use dioxus::prelude::*;\n");
     let version_flattened = version.replace(".", "");
-    let filename = format!("lib.rs");
+    let filename = format!("docsgen.rs");
     std::fs::write(out_dir.join(filename), out).unwrap();
 }
 

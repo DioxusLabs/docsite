@@ -18,7 +18,7 @@ Dioxus provides many built-in hooks, but if those hooks don't fit your specific 
 For example, you might have seen the counter example, in which state (a number) is tracked using the `use_state` hook:
 
 ```rust, no_run
-{{#include ../docs-examples/src/untested_04/hooks_counter.rs:component}}
+{{#include ../docs-router/src/doc_examples/untested_04/hooks_counter.rs:component}}
 ```
 ```inject-dioxus
 DemoFrame {
@@ -33,7 +33,7 @@ Every time the component's state changes, it re-renders, and the component funct
 You can use multiple hooks in the same component if you want:
 
 ```rust, no_run
-{{#include ../docs-examples/src/untested_04/hooks_counter_two_state.rs:component}}
+{{#include ../docs-router/src/doc_examples/untested_04/hooks_counter_two_state.rs:component}}
 ```
 
 ```inject-dioxus
@@ -47,7 +47,7 @@ DemoFrame {
 The value `UseState` dereferences to is only set when the use_state hook is called every render. This means that if you move the state into a future, or you write to the state and then immediately read the state, it may return an out-of-date value.
 
 ```rust
-{{#include ../docs-examples/src/untested_04/hooks_out_of_date.rs:component}}
+{{#include ../docs-router/src/doc_examples/untested_04/hooks_out_of_date.rs:component}}
 ```
 ```inject-dioxus
 DemoFrame {
@@ -59,7 +59,7 @@ DemoFrame {
 Instead of using deref to get the inner value from UseState, you can use the [`current`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.UseState.html#method.current) function. This function will always return the current value of the state.
 
 ```rust
-{{#include ../docs-examples/src/untested_04/hooks_out_of_date.rs:fixed}}
+{{#include ../docs-router/src/doc_examples/untested_04/hooks_out_of_date.rs:fixed}}
 ```
 ```inject-dioxus
 DemoFrame {
@@ -75,7 +75,7 @@ The above example might seem a bit magic since Rust functions are typically not 
 But how can Dioxus differentiate between multiple hooks in the same component? As you saw in the second example, both `use_state` functions were called with the same parameters, so how come they can return different things when the counters are different?
 
 ```rust, no_run
-{{#include ../docs-examples/src/untested_04/hooks_counter_two_state.rs:use_state_calls}}
+{{#include ../docs-router/src/doc_examples/untested_04/hooks_counter_two_state.rs:use_state_calls}}
 ```
 
 This is only possible because the two hooks are always called in the same order, so Dioxus knows which is which. Because the order you call hooks matters, you must follow certain rules when using hooks:
@@ -92,19 +92,19 @@ These rules mean that there are certain things you can't do with hooks:
 ### No hooks in conditionals
 
 ```rust, no_run
-{{#include ../docs-examples/src/untested_04/hooks_bad.rs:conditional}}
+{{#include ../docs-router/src/doc_examples/untested_04/hooks_bad.rs:conditional}}
 ```
 
 ### No hooks in closures
 
 ```rust, no_run
-{{#include ../docs-examples/src/untested_04/hooks_bad.rs:closure}}
+{{#include ../docs-router/src/doc_examples/untested_04/hooks_bad.rs:closure}}
 ```
 
 ### No hooks in loops
 
 ```rust, no_run
-{{#include ../docs-examples/src/untested_04/hooks_bad.rs:loop}}
+{{#include ../docs-router/src/doc_examples/untested_04/hooks_bad.rs:loop}}
 ```
 
 ## use_ref hook
@@ -121,7 +121,7 @@ Thankfully, there is another hook for that, `use_ref`! It is similar to `use_sta
 Here's a simple example that keeps a list of events in a `use_ref`. We can acquire write access to the state with `.with_mut()`, and then just `.push` a new value to the state:
 
 ```rust, no_run
-{{#include ../docs-examples/src/untested_04/hooks_use_ref.rs:component}}
+{{#include ../docs-router/src/doc_examples/untested_04/hooks_use_ref.rs:component}}
 ```
 ```inject-dioxus
 DemoFrame {

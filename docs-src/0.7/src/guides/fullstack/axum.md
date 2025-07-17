@@ -25,7 +25,7 @@ server = ["dioxus/server", "dep:axum", "dep:tokio"]
 Next we to split up our main function into two parts: one that will start dioxus on the client with the launch function, and one that will serve our Axum router. We can use `#[cfg]` attribute to control what code compiles when the web feature or server feature is enabled:
 
 ```rust
-{{#include ../docs-examples/src/axum_integration.rs:main}}
+{{#include ../docs-router/src/doc_examples/axum_integration.rs:main}}
 ```
 
 ## Starting the axum server
@@ -39,7 +39,7 @@ When we serve our app the CLI will try to proxy the backend under a random port.
 Finally, when building our Axum server, we need to call `serve_dioxus_application` on the router to add all the routes Dioxus needs to serve your app.
 
 ```rust
-{{#include ../docs-examples/src/axum_integration.rs:server}}
+{{#include ../docs-router/src/doc_examples/axum_integration.rs:server}}
 ```
 
 ## Running your application

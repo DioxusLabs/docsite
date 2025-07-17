@@ -3,7 +3,7 @@
 Dioxus is a framework for building cross-platform apps with the Rust programming language. With one codebase, you can build apps that run on web, desktop, and mobile platforms.
 
 ```rust
-{{#include ../docs-examples/src/readme.rs}}
+{{#include ../docs-router/src/doc_examples/readme.rs}}
 ```
 
 ```inject-dioxus

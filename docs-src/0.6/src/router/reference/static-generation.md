@@ -11,7 +11,7 @@ By default, the sitemap is a tree of (static or dynamic) RouteTypes, but it can 
 To statically render pages, we need to flatten the route tree and generate a file for each route that contains only static segments:
 
 ```rust
-{{#include ../docs-examples/src/untested_06/static_generation.rs}}
+{{#include ../docs-router/src/doc_examples/untested_06/static_generation.rs}}
 ```
 
 ## Example

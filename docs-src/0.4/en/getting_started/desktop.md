@@ -75,7 +75,7 @@ cargo add dioxus-desktop
 Edit your `main.rs`:
 
 ```rust
-{{#include ../docs-examples/src/untested_04/hello_world_desktop.rs:all}}
+{{#include ../docs-router/src/doc_examples/untested_04/hello_world_desktop.rs:all}}
 ```
 
 ## Hot Reload

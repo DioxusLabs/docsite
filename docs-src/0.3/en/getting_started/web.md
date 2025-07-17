@@ -50,7 +50,7 @@ cargo add dioxus-web
 
 Edit your `main.rs`:
 ```rust
-{{#include ../docs-examples/src/untested_03/hello_world_web.rs}}
+{{#include ../docs-router/src/doc_examples/untested_03/hello_world_web.rs}}
 ```
 
 

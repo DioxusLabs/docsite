@@ -19,7 +19,7 @@ with the route parameters. The closure should return a route to redirect to.
 Let's add a redirect to our router enum:
 
 ```rust
-{{#include ../docs-examples/src/untested_06/full_example.rs:router}}
+{{#include ../docs-router/src/doc_examples/untested_06/full_example.rs:router}}
 ```
 
 That's it! Now your users will be redirected to the blog.

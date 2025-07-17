@@ -18,7 +18,7 @@ Dioxus provides many built-in hooks, but if those hooks don't fit your specific 
 For example, you might have seen the counter example, in which state (a number) is tracked using the `use_signal` hook:
 
 ```rust, no_run
-{{#include ../docs-examples/src/untested_06/hooks_counter.rs:component}}
+{{#include ../docs-router/src/doc_examples/untested_06/hooks_counter.rs:component}}
 ```
 ```inject-dioxus
 DemoFrame {
@@ -33,7 +33,7 @@ Every time the component's state changes, it re-renders, and the component funct
 You can use multiple hooks in the same component if you want:
 
 ```rust, no_run
-{{#include ../docs-examples/src/untested_06/hooks_counter_two_state.rs:component}}
+{{#include ../docs-router/src/doc_examples/untested_06/hooks_counter_two_state.rs:component}}
 ```
 
 ```inject-dioxus
@@ -45,7 +45,7 @@ DemoFrame {
 You can also use `use_signal` to store more complex state, like a Vec. You can read and write to the state with the `read` and `write` methods:
 
 ```rust, no_run
-{{#include ../docs-examples/src/untested_06/hooks_use_signal.rs:component}}
+{{#include ../docs-router/src/doc_examples/untested_06/hooks_use_signal.rs:component}}
 ```
 
 ```inject-dioxus
@@ -61,7 +61,7 @@ The above example might seem a bit magic since Rust functions are typically not 
 But how can Dioxus differentiate between multiple hooks in the same component? As you saw in the second example, both `use_signal` functions were called with the same parameters, so how come they can return different things when the counters are different?
 
 ```rust, no_run
-{{#include ../docs-examples/src/untested_06/hooks_counter_two_state.rs:use_signal_calls}}
+{{#include ../docs-router/src/doc_examples/untested_06/hooks_counter_two_state.rs:use_signal_calls}}
 ```
 
 This is only possible because the two hooks are always called in the same order, so Dioxus knows which is which. Because the order you call hooks matters, you must follow certain rules when using hooks:
@@ -78,19 +78,19 @@ These rules mean that there are certain things you can't do with hooks:
 ### No hooks in conditionals
 
 ```rust, no_run
-{{#include ../docs-examples/src/untested_06/hooks_bad.rs:conditional}}
+{{#include ../docs-router/src/doc_examples/untested_06/hooks_bad.rs:conditional}}
 ```
 
 ### No hooks in closures
 
 ```rust, no_run
-{{#include ../docs-examples/src/untested_06/hooks_bad.rs:closure}}
+{{#include ../docs-router/src/doc_examples/untested_06/hooks_bad.rs:closure}}
 ```
 
 ### No hooks in loops
 
 ```rust, no_run
-{{#include ../docs-examples/src/untested_06/hooks_bad.rs:loop}}
+{{#include ../docs-router/src/doc_examples/untested_06/hooks_bad.rs:loop}}
 ```
 
 ## Additional resources

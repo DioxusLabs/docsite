@@ -32,7 +32,7 @@ Now, we can define how to display a post. Dioxus is a *declarative* framework. T
 To declare what you want your UI to look like, you will need to use the `rsx` macro. Let's create a ``main`` function and an ``App`` component to show information about our story:
 
 ```rust
-{{#include ../docs-examples/src/hackernews_post.rs:story_v1}}
+{{#include ../docs-router/src/doc_examples/hackernews_post.rs:story_v1}}
 ```
 
 Now if you run your application you should see something like this:
@@ -61,7 +61,7 @@ DemoFrame {
 Let's expand our `App` component to include the story title, author, score, time posted, and number of comments. We can insert dynamic text in the render macro by inserting variables inside `{}`s (this works similarly to the formatting in the [println!](https://doc.rust-lang.org/std/macro.println.html) macro):
 
 ```rust
-{{#include ../docs-examples/src/hackernews_post.rs:story_v2}}
+{{#include ../docs-router/src/doc_examples/hackernews_post.rs:story_v2}}
 ```
 
 ```inject-dioxus
@@ -75,7 +75,7 @@ DemoFrame {
 Next, let's wrap our post description in a [`div`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/div). You can create HTML elements in Dioxus by putting a `{` after the element name and a `}` after the last child of the element:
 
 ```rust
-{{#include ../docs-examples/src/hackernews_post.rs:story_v3}}
+{{#include ../docs-router/src/doc_examples/hackernews_post.rs:story_v3}}
 ```
 
 ```inject-dioxus
@@ -93,7 +93,7 @@ Next, let's add some padding around our post listing with an attribute.
 Attributes (and [listeners](../reference/event_handlers.md)) modify the behavior or appearance of the element they are attached to. They are specified inside the `{}` brackets before any children, using the `name: value` syntax. You can format the text in the attribute as you would with a text node:
 
 ```rust
-{{#include ../docs-examples/src/hackernews_post.rs:story_v4}}
+{{#include ../docs-router/src/doc_examples/hackernews_post.rs:story_v4}}
 ```
 
 ```inject-dioxus
@@ -117,13 +117,13 @@ A component is a Rust function, named in UpperCamelCase, that takes a props para
 Let's pull our story description into a new component:
 
 ```rust
-{{#include ../docs-examples/src/hackernews_post.rs:story_v5}}
+{{#include ../docs-router/src/doc_examples/hackernews_post.rs:story_v5}}
 ```
 
 We can render our component like we would an element by putting `{}`s after the component name. Let's modify our `App` component to render our new StoryListing component:
 
 ```rust
-{{#include ../docs-examples/src/hackernews_post.rs:app_v5}}
+{{#include ../docs-router/src/doc_examples/hackernews_post.rs:app_v5}}
 ```
 
 ```inject-dioxus
@@ -146,7 +146,7 @@ Currently, our `StoryListing` component always renders the same story. We can mo
 We will also define what a post is and include information for how to transform our post to and from a different format using [serde](https://serde.rs). This will be used with the hackernews API in a later chapter:
 
 ```rust
-{{#include ../docs-examples/src/hackernews_post.rs:story_v6}}
+{{#include ../docs-router/src/doc_examples/hackernews_post.rs:story_v6}}
 ```
 
 Make sure to also add [serde](https://serde.rs) as a dependency:
@@ -165,7 +165,7 @@ cargo add chrono --features serde
 Now, let's modify the `App` component to pass the story to our `StoryListing` component like we would set an attribute on an element:
 
 ```rust
-{{#include ../docs-examples/src/hackernews_post.rs:app_v6}}
+{{#include ../docs-router/src/doc_examples/hackernews_post.rs:app_v6}}
 ```
 
 ```inject-dioxus
@@ -183,7 +183,7 @@ Finally, by combining elements and attributes, we can make our post listing much
 Full code up to this point:
 
 ```rust
-{{#include ../docs-examples/src/hackernews_post.rs:story_final}}
+{{#include ../docs-router/src/doc_examples/hackernews_post.rs:story_final}}
 ```
 
 ```inject-dioxus

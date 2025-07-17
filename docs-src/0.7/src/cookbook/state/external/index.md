@@ -10,7 +10,7 @@ This guide will help you integrate your Dioxus application with some external st
 You can store your state inside the coroutine async block and communicate with the coroutine with messages from any child components.
 
 ```rust
-{{#include ../docs-examples/src/use_coroutine.rs:use_coroutine}}
+{{#include ../docs-router/src/doc_examples/use_coroutine.rs:use_coroutine}}
 ```
 
 ## Making Reactive State External
@@ -18,5 +18,5 @@ You can store your state inside the coroutine async block and communicate with t
 If you have some reactive state (state that is rendered), that you want to modify from another thread, you can use a signal that is sync. Signals take an optional second generic value with information about syncness. Sync signals have a slightly higher overhead than thread local signals, but they can be used in a multithreaded environment.
 
 ```rust
-{{#include ../docs-examples/src/sync_signal.rs}}
+{{#include ../docs-router/src/doc_examples/sync_signal.rs}}
 ```

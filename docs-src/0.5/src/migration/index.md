@@ -29,7 +29,7 @@ fn app(cx: Scope) -> Element {
 ```
 Dioxus 0.5:
 ```rust
-{{#include ../docs-examples/src/untested_05/migration.rs:scope}}
+{{#include ../docs-router/src/doc_examples/untested_05/migration.rs:scope}}
 ```
 
 ### Props
@@ -73,7 +73,7 @@ fn ManualPropsComponent(cx: Scope<ManualProps>) -> Element {
 
 Dioxus 0.5:
 ```rust
-{{#include ../docs-examples/src/untested_05/migration.rs:props}}
+{{#include ../docs-router/src/doc_examples/untested_05/migration.rs:props}}
 ```
 
 You can read more about the new props API in the [Props Migration](props.md) guide.
@@ -88,7 +88,7 @@ use_future((dependency1, dependency2,), move |(dependency1, dependency2,)| async
 ```
 Dioxus 0.5:
 ```rust
-{{#include ../docs-examples/src/untested_05/migration.rs:futures}}
+{{#include ../docs-router/src/doc_examples/untested_05/migration.rs:futures}}
 ```
 
 Read more about the `use_resource` hook in the [Hook Migration](hooks.md) guide.
@@ -124,7 +124,7 @@ cx.render(rsx!{
 Dioxus 0.5:
 
 ```rust
-{{#include ../docs-examples/src/untested_05/migration.rs:state}}
+{{#include ../docs-router/src/doc_examples/untested_05/migration.rs:state}}
 ```
 
 Read more about the `use_signal` hook in the [State Migration](state.md) guide.
@@ -188,7 +188,7 @@ fn ChildWithRef(cx: Scope) -> Element {
 
 Dioxus 0.5:
 ```rust
-{{#include ../docs-examples/src/untested_05/migration.rs:fermi}}
+{{#include ../docs-router/src/doc_examples/untested_05/migration.rs:fermi}}
 ```
 
 You can read more about global signals in the [Fermi migration guide](fermi.md).

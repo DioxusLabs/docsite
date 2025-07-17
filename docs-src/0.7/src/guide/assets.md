@@ -23,13 +23,13 @@ The bare-bones template already includes a base `main.css` in the `assets` folde
 To include the CSS in our app, we can use the `asset!()` macro. This macro ensures the asset will be included in the final app bundle.
 
 ```rust
-{{#include ../docs-examples/src/guide_assets.rs:css_asset}}
+{{#include ../docs-router/src/doc_examples/guide_assets.rs:css_asset}}
 ```
 
 We also need to load the asset into our app using the `document::Stylesheet` component. This component is equivalent to the `<link>` HTML element but also ensures the CSS will be pre-loaded during server-side-rendering.
 
 ```rust
-{{#include ../docs-examples/src/guide_assets.rs:css_stylesheet}}
+{{#include ../docs-router/src/doc_examples/guide_assets.rs:css_stylesheet}}
 ```
 
 Unlike Rust's `include_str!()` macro, the `asset!()` macro does not actually include the *contents* of the asset in our final executable. Instead, it generates a unique path so that the asset can be loaded at runtime. This is ideal for web apps where assets are loaded in parallel through different HTTP requests.
@@ -52,13 +52,13 @@ In Dioxus, you can include images in two ways:
 When including assets with a URL, simply fill the `src` attribute of `img {}`. Note that when the app is offline, URL-based images won't download.
 
 ```rust
-{{#include ../docs-examples/src/guide_assets.rs:url_image}}
+{{#include ../docs-router/src/doc_examples/guide_assets.rs:url_image}}
 ```
 
 For static images, you can use the same `asset!()` macro that we used to include the app's CSS.
 
 ```rust
-{{#include ../docs-examples/src/guide_assets.rs:asset_image}}
+{{#include ../docs-router/src/doc_examples/guide_assets.rs:asset_image}}
 ```
 
 ## Optimizations
@@ -66,13 +66,13 @@ For static images, you can use the same `asset!()` macro that we used to include
 By default, the `asset!()` macro will lightly optimize CSS, JavaScript, JSON, and images. The name of the asset will also be modified to include a content hash.
 
 ```rust
-{{#include ../docs-examples/src/guide_assets.rs:asset_optimization}}
+{{#include ../docs-router/src/doc_examples/guide_assets.rs:asset_optimization}}
 ```
 
 You can optimize assets even further, with an optional `Options` struct. For example, `dx` can automatically convert `.png` images to a more optimized `.avif` format:
 
 ```rust
-{{#include ../docs-examples/src/guide_assets.rs:image_asset_expansion}}
+{{#include ../docs-router/src/doc_examples/guide_assets.rs:image_asset_expansion}}
 ```
 For many apps, asset optimization is the most effective way of improving load times. As developers, we frequently overlook the size of images and accidentally make our sites load slower.
 

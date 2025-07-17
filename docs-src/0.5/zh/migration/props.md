@@ -20,13 +20,13 @@ fn Comp(cx: Scope, name: String) -> Element {
 \```
 Dioxus 0.5:
 \```rust
-{{#include ../docs-examples/src/migration_props.rs:owned_props}}
+{{#include ../docs-router/src/doc_examples/migration_props.rs:owned_props}}
 \```
 
 Because props are cloned every render, making props Copy is recommended. You can easily make a field Copy by accepting `ReadOnlySignal<T>` instead of `T` in the props struct:
 
 \```rust
-{{#include ../docs-examples/src/migration_props.rs:copy_props}}
+{{#include ../docs-router/src/doc_examples/migration_props.rs:copy_props}}
 \```
 
 ## Borrowed Props
@@ -54,7 +54,7 @@ fn BorrowedComp<'a>(cx: Scope<'a>, name: &'a str) -> Element<'a> {
 
 Dioxus 0.5:
 \```rust
-{{#include ../docs-examples/src/migration_props.rs:borrowed_props}}
+{{#include ../docs-router/src/doc_examples/migration_props.rs:borrowed_props}}
 \```
 
 ## Manual Props
@@ -78,5 +78,5 @@ fn ManualPropsComponent(cx: Scope<ManualProps>) -> Element {
 
 Dioxus 0.5:
 \```rust
-{{#include ../docs-examples/src/migration_props.rs:manual_props}}
+{{#include ../docs-router/src/doc_examples/migration_props.rs:manual_props}}
 \```

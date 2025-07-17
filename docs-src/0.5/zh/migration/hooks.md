@@ -28,7 +28,7 @@ fn MyComponent(cx: Scope) -> Element {
 Dioxus 0.5:
 
 \```rust
-{{#include ../docs-examples/src/migration_hooks.rs:use_resource}}
+{{#include ../docs-router/src/doc_examples/migration_hooks.rs:use_resource}}
 \```
 
 ### Dependencies
@@ -55,5 +55,5 @@ fn HasDependencies(cx: Scope) -> Element {
 Dioxus 0.5:
 
 \```rust
-{{#include ../docs-examples/src/migration_hooks.rs:dependencies}}
+{{#include ../docs-router/src/doc_examples/migration_hooks.rs:dependencies}}
 \```

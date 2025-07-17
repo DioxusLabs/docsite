@@ -25,7 +25,7 @@ cargo install dioxus-cli
 5. Create a link to the `tailwind.css` file using manganis somewhere in your rust code:
 
 ```rust
-{{#include ../docs-examples/src/tailwind.rs}}
+{{#include ../docs-router/src/doc_examples/tailwind.rs}}
 ```
 
 ### Bonus Steps

@@ -15,7 +15,7 @@ forward buttons:
 > [`programmatic navigation`](./navigation/programmatic.md).
 
 \```rust
-{{#include ../docs-examples/src/history_buttons.rs:history_buttons}}
+{{#include ../docs-router/src/doc_examples/history_buttons.rs:history_buttons}}
 \```
 
 As you might know, browsers usually disable the back and forward buttons if

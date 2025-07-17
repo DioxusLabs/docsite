@@ -23,7 +23,7 @@ Routes are matched:
 Fixed routes match a specific path. For example, the route `#[route("/about")]` will match the path `/about`.
 
 ```rust
-{{#include ../docs-examples/src/static_segments.rs:route}}
+{{#include ../docs-router/src/doc_examples/static_segments.rs:route}}
 ```
 
 ## Dynamic Segments
@@ -35,7 +35,7 @@ successfully then the route matches, otherwise the matching continues.
 The segment can be of any type that implements `FromStr`.
 
 ```rust
-{{#include ../docs-examples/src/dynamic_segments.rs:route}}
+{{#include ../docs-router/src/doc_examples/dynamic_segments.rs:route}}
 ```
 
 ## Catch All Segments
@@ -47,7 +47,7 @@ The segment can be of any type that implements `FromSegments`. (Vec<String> impl
 Catch All segments must be the _last route segment_ in the path (query segments are not counted) and cannot be included in nests.
 
 ```rust
-{{#include ../docs-examples/src/catch_all_segments.rs:route}}
+{{#include ../docs-router/src/doc_examples/catch_all_segments.rs:route}}
 ```
 
 ## Query Segments
@@ -61,5 +61,5 @@ The segment can be of any type that implements `FromQueryArgument`.
 Query segments must be the _after all route segments_ and cannot be included in nests.
 
 ```rust
-{{#include ../docs-examples/src/query_segments.rs:route}}
+{{#include ../docs-router/src/doc_examples/query_segments.rs:route}}
 ```

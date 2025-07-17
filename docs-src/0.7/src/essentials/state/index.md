@@ -9,19 +9,19 @@ You can create mutable state in Dioxus with Signals. Signals are tracked values 
 You can create a signal with the `use_signal` hook:
 
 ```rust
-{{#include ../docs-examples/src/reactivity.rs:signal}}
+{{#include ../docs-router/src/doc_examples/reactivity.rs:signal}}
 ```
 
 Once you have your signal, you can clone it by calling the signal like a function or get a reference to the inner value with the `.read()` method:
 
 ```rust
-{{#include ../docs-examples/src/reactivity.rs:signal_read}}
+{{#include ../docs-router/src/doc_examples/reactivity.rs:signal_read}}
 ```
 
 Finally, you can set the value of the signal with the `.set()` method or get a mutable reference to the inner value with the `.write()` method:
 
 ```rust
-{{#include ../docs-examples/src/reactivity.rs:signal_write}}
+{{#include ../docs-router/src/doc_examples/reactivity.rs:signal_write}}
 ```
 
 ### Reactive Scopes
@@ -32,7 +32,7 @@ The simplest reactive primitive in Dioxus is the `use_effect` hook. It creates a
 Any value you read inside the closure will become a dependency of the effect. If the value changes, the effect will rerun.
 
 ```rust
-{{#include ../docs-examples/src/reactivity.rs:effect}}
+{{#include ../docs-router/src/doc_examples/reactivity.rs:effect}}
 ```
 
 ```inject-dioxus
@@ -48,7 +48,7 @@ DemoFrame {
 The value you return from the closure will only change when the output of the closure changes (`PartialEq` between the old and new value returns false).
 
 ```rust
-{{#include ../docs-examples/src/reactivity.rs:memo}}
+{{#include ../docs-router/src/doc_examples/reactivity.rs:memo}}
 ```
 
 ```inject-dioxus
@@ -64,7 +64,7 @@ DemoFrame {
 The value you return from the closure will only change when the state of the future changes. Unlike `use_memo`, the resource's output is not memoized with `PartialEq`.
 
 ```rust
-{{#include ../docs-examples/src/reactivity.rs:resource}}
+{{#include ../docs-router/src/doc_examples/reactivity.rs:resource}}
 ```
 
 ```inject-dioxus
@@ -78,7 +78,7 @@ DemoFrame {
 Components are functions that return some UI. They memorize the output of the function just like memos. Components keep track of any dependencies you read inside the component and rerun when those dependencies change.
 
 ```rust
-{{#include ../docs-examples/src/reactivity.rs:component}}
+{{#include ../docs-router/src/doc_examples/reactivity.rs:component}}
 ```
 
 ```inject-dioxus
@@ -92,7 +92,7 @@ DemoFrame {
 Most of the state in your app will be tracked values. All built in hooks return tracked values, and we encourage custom hooks to do the same. However, there are times when you need to work with untracked state. For example, you may receive a raw untracked value in props. When you read an untracked value inside a reactive context, it will not subscribe to the value:
 
 ```rust
-{{#include ../docs-examples/src/reactivity.rs:non_reactive}}
+{{#include ../docs-router/src/doc_examples/reactivity.rs:non_reactive}}
 ```
 
 ```inject-dioxus
@@ -104,7 +104,7 @@ DemoFrame {
 You can start tracking raw state with the `use_reactive` hook. This hook takes a tuple of dependencies and returns a reactive closure. When the closure is called in a reactive context, it will track subscribe to the dependencies and rerun the closure when the dependencies change.
 
 ```rust
-{{#include ../docs-examples/src/reactivity.rs:use_reactive}}
+{{#include ../docs-router/src/doc_examples/reactivity.rs:use_reactive}}
 ```
 
 ```inject-dioxus
@@ -118,7 +118,7 @@ DemoFrame {
 In some situations, you may need to read a reactive value without subscribing to it. You can use the `peek` method to get a reference to the inner value without registering the value as a dependency of the current reactive context:
 
 ```rust
-{{#include ../docs-examples/src/reactivity.rs:peek}}
+{{#include ../docs-router/src/doc_examples/reactivity.rs:peek}}
 ```
 
 ```inject-dioxus
@@ -132,7 +132,7 @@ DemoFrame {
 To avoid losing reactivity with props, we recommend you wrap any props you want to track in a `ReadOnlySignal`. Dioxus will automatically convert `T` into `ReadOnlySignal<T>` when you pass props to the component. This will ensure your props are tracked and rerun any state you derive in the component:
 
 ```rust
-{{#include ../docs-examples/src/reactivity.rs:making_props_reactive}}
+{{#include ../docs-router/src/doc_examples/reactivity.rs:making_props_reactive}}
 ```
 
 ```inject-dioxus
@@ -150,7 +150,7 @@ As you create signals and derived state in your app, you will need to move aroun
 You can pass your values through component [props](../../reference/component_props.md). This should be your default when passing around state. It is the most explicit and local to your component. Use this until it gets annoying to pass around the value:
 
 ```rust
-{{#include ../docs-examples/src/moving_state_around.rs:PassingProps}}
+{{#include ../docs-router/src/doc_examples/moving_state_around.rs:PassingProps}}
 ```
 
 ```inject-dioxus
@@ -167,7 +167,7 @@ If you need a slightly more powerful way to pass around state, you can use the c
 The context API lets you pass state from a parent component to all children. This is useful if you want to share state between many components. You can insert a unique type into the context with the [`use_context_provider`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context_provider.html) hook in the parent component. Then you can access the context in any child component with the [`use_context`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context.html) hook.
 
 ```rust
-{{#include ../docs-examples/src/moving_state_around.rs:PassingContext}}
+{{#include ../docs-router/src/doc_examples/moving_state_around.rs:PassingContext}}
 ```
 
 ```inject-dioxus
@@ -183,7 +183,7 @@ This is slightly less explicit than passing it as a prop, but it is still local 
 Finally, if you have truly global state, you can put your state in a `Global<T>` static. This is useful if you want to share state with your whole app:
 
 ```rust
-{{#include ../docs-examples/src/moving_state_around.rs:UsingGlobals}}
+{{#include ../docs-router/src/doc_examples/moving_state_around.rs:UsingGlobals}}
 ```
 
 ```inject-dioxus

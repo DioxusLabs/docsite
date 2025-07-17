@@ -7,7 +7,7 @@ When building application or libraries with Dioxus, you may want to include some
 You can use a combination of [pretty-assertions](https://docs.rs/pretty_assertions/latest/pretty_assertions/) and [dioxus-ssr]() to check that two snippets of rsx are equal:
 
 \```rust
-{{#include ../docs-examples/src/component_test.rs}}
+{{#include ../docs-router/src/doc_examples/component_test.rs}}
 \```
 
 ## Hook Testing
@@ -18,7 +18,7 @@ When creating libraries around Dioxus, it can be helpful to make tests for your 
 Dioxus does not currently have a full hook testing library, but you can build a bespoke testing framework by manually driving the virtual dom.
 
 \```rust
-{{#include ../docs-examples/src/hook_test.rs}}
+{{#include ../docs-router/src/doc_examples/hook_test.rs}}
 \```
 
 ## End to End Testing

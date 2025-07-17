@@ -22,7 +22,7 @@ To solve these problems, the router provides us with a [`Link`] component we can
 use like this:
 
 ```rust
-{{#include ../docs-examples/src/untested_06/links.rs:nav}}
+{{#include ../docs-router/src/doc_examples/untested_06/links.rs:nav}}
 ```
 
 The `target` in the example above is similar to the `href` of a regular anchor

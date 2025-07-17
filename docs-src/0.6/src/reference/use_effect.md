@@ -11,5 +11,5 @@ You can make the callback re-run when some value changes. For example, you might
 ## Example
 
 ```rust, no_run
-{{#include ../docs-examples/src/untested_06/use_effect.rs}}
+{{#include ../docs-router/src/doc_examples/untested_06/use_effect.rs}}
 ```

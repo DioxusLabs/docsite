@@ -11,7 +11,7 @@
 我们从一个Hello World程序开始。该程序在webview中呈现一个带有文本“Hello World”的桌面应用程序。
 
 ```rust, no_run
-{{#include ../docs-examples/src/readme.rs}}
+{{#include ../docs-router/src/doc_examples/readme.rs}}
 ```
 
 [![](https://mermaid.ink/img/pako:eNqNkT1vwyAQhv8KvSlR48HphtQtqjK0S6tuSBGBS0CxwcJHk8rxfy_YVqxKVdR3ug_u4YXrQHmNwOFQ-bMyMhB7fReOJbVxfwyyMSy0l7GSpW1ARda727ksUy5MuSyKgvBC5ULA1h5N8WK_kCkfHWHgrBuiXsBynrvdsY9E3u1iM_eyvFOVVadMnELOap-o1911JLPHZ1b-YqLTc3LjTt7WifTZMJPsPdx1ov3Z_ellfcdL8R8vmTy5eUqsTUpZ-vzZzjAEK6gx1NLqtJwuNwSQwRoF8BRqGU4ChOvTORnJf3w7BZxCxBXERkvCjZXpQTXwg6zaVEVtyYe3cdvD0vsf4bucgw)](https://mermaid.live/edit#pako:eNqNkT1vwyAQhv8KvSlR48HphtQtqjK0S6tuSBGBS0CxwcJHk8rxfy_YVqxKVdR3ug_u4YXrQHmNwOFQ-bMyMhB7fReOJbVxfwyyMSy0l7GSpW1ARda727ksUy5MuSyKgvBC5ULA1h5N8WK_kCkfHWHgrBuiXsBynrvdsY9E3u1iM_eyvFOVVadMnELOap-o1911JLPHZ1b-YqLTc3LjTt7WifTZMJPsPdx1ov3Z_ellfcdL8R8vmTy5eUqsTUpZ-vzZzjAEK6gx1NLqtJwuNwSQwRoF8BRqGU4ChOvTORnJf3w7BZxCxBXERkvCjZXpQTXwg6zaVEVtyYe3cdvD0vsf4bucgw)
@@ -21,7 +21,7 @@
 在Rust编译器运行程序之前，它将展开所有[宏](https://doc.rust-lang.org/reference/procedural-macros.html)。这是hello world示例展开后的样子：
 
 ```rust, no_run
-{{#include ../docs-examples/src/readme_expanded.rs}}
+{{#include ../docs-router/src/doc_examples/readme_expanded.rs}}
 ```
 
 rsx宏将rsx的静态部分（模板）和动态部分（[dynamic_nodes](https://docs.rs/dioxus-core/0.5.0/dioxus_core/prelude/struct.VNode.html#structfield.dynamic_nodes)和[dynamic_attributes](https://docs.rs/dioxus-core/0.5.0/dioxus_core/prelude/struct.VNode.html#structfield.dynamic_attrs)）分开。

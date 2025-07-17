@@ -14,5 +14,5 @@ To continue your journey, you can attempt a challenge listed below, or look at t
 ## The full code for the hacker news project
 
 ```rust
-{{#include ../docs-examples/src/untested_04/hackernews_complete.rs}}
+{{#include ../docs-router/src/doc_examples/untested_04/hackernews_complete.rs}}
 ```

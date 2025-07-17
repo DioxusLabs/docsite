@@ -14,7 +14,7 @@ LayoutsExplanation {}
 Here is a more complete example of a layout wrapping the body of a page.
 
 \```rust
-{{#include ../docs-examples/src/outlet.rs:outlet}}
+{{#include ../docs-router/src/doc_examples/outlet.rs:outlet}}
 \```
 
 The example above will output the following HTML (line breaks added for
@@ -33,11 +33,11 @@ You can combine layouts with [nested routes](./routes/nested.md) to create dynam
 Just like routes, layouts components must accept a prop for each dynamic segment in the route. For example, if you have a route with a dynamic segment like `/:name`, your layout component must accept a `name` prop:
 
 \```rust
-{{#include ../docs-examples/src/outlet.rs:outlet_with_params}}
+{{#include ../docs-router/src/doc_examples/outlet.rs:outlet_with_params}}
 \```
 
 Or to get the full route, you can use the [`use_route`](https://docs.rs/dioxus-router/latest/dioxus_router/hooks/fn.use_route.html) hook.
 
 \```rust
-{{#include ../docs-examples/src/outlet.rs:outlet_route}}
+{{#include ../docs-router/src/doc_examples/outlet.rs:outlet_route}}
 \```

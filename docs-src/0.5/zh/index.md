@@ -3,7 +3,7 @@
 Dioxus 是一个便携、高性能且符合人体工程学的框架，用于在 Rust 中构建跨平台用户界面。本指南将帮助您开始编写 Dioxus 应用程序，用于 Web、桌面、移动设备等多种平台。
 
 \```rust
-{{#include ../docs-examples/src/readme.rs}}
+{{#include ../docs-router/src/doc_examples/readme.rs}}
 \```
 
 \```inject-dioxus

@@ -7,7 +7,7 @@
 Para renderizar diferentes elementos com base em uma condição, você pode usar uma instrução `if-else`:
 
 ```rust
-{{#include ../docs-examples/src/untested_03/conditional_rendering.rs:if_else}}
+{{#include ../docs-router/src/doc_examples/untested_03/conditional_rendering.rs:if_else}}
 ```
 
 > Você também pode usar instruções `match`, ou qualquer função Rust para renderizar condicionalmente coisas diferentes.
@@ -17,7 +17,7 @@ Para renderizar diferentes elementos com base em uma condição, você pode usar
 Como `Element` é uma `Option<VNode>`, os componentes que aceitam `Element` como _prop_ podem realmente inspecionar seu conteúdo e renderizar coisas diferentes com base nisso. Exemplo:
 
 ```rust
-{{#include ../docs-examples/src/untested_03/component_children_inspect.rs:Clickable}}
+{{#include ../docs-router/src/doc_examples/untested_03/component_children_inspect.rs:Clickable}}
 ```
 
 Você não pode modificar o `Element`, mas se precisar de uma versão modificada dele, você pode construir um novo baseado em seus atributos/filhos/etc.
@@ -27,7 +27,7 @@ Você não pode modificar o `Element`, mas se precisar de uma versão modificada
 Para renderizar nada, você pode retornar `None` de um componente. Isso é útil se você deseja ocultar algo condicionalmente:
 
 ```rust
-{{#include ../docs-examples/src/untested_03/conditional_rendering.rs:conditional_none}}
+{{#include ../docs-router/src/doc_examples/untested_03/conditional_rendering.rs:conditional_none}}
 ```
 
 Isso funciona porque o tipo `Element` é apenas um alias para `Option<VNode>`
@@ -48,7 +48,7 @@ Para isso, o Dioxus aceita iteradores que produzem `Element`s. Então precisamos
 Exemplo: suponha que você tenha uma lista de comentários que deseja renderizar. Então, você pode renderizá-los assim:
 
 ```rust
-{{#include ../docs-examples/src/untested_03/rendering_lists.rs:render_list}}
+{{#include ../docs-router/src/doc_examples/untested_03/rendering_lists.rs:render_list}}
 ```
 
 ### O Atributo `key`

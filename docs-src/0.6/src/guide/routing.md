@@ -65,13 +65,13 @@ dioxus = { version = "0.6.0", features = ["fullstack", "router"] } # <----- add 
 Next, the Dioxus router is defined as an enum with the `Routable` derive attribute:
 
 ```rust
-{{#include ../docs-examples/src/untested_06/guide_router.rs:new_router}}
+{{#include ../docs-router/src/doc_examples/untested_06/guide_router.rs:new_router}}
 ```
 
 With the Dioxus router, every route is an enum variant with a `#[route]` attribute that specifics the route's URL. Whenever the router renders our route, the component of the same name will be rendered.
 
 ```rust
-{{#include ../docs-examples/src/untested_06/guide_router.rs:new_router_with_component}}
+{{#include ../docs-router/src/doc_examples/untested_06/guide_router.rs:new_router_with_component}}
 ```
 
 
@@ -80,13 +80,13 @@ With the Dioxus router, every route is an enum variant with a `#[route]` attribu
 Now that we have our app's `Route` defined, we need to render it. Let's change our `app` component to render the `Route {}` component instead of the `DogView`.
 
 ```rust
-{{#include ../docs-examples/src/untested_06/guide_router.rs:rendering_the_route}}
+{{#include ../docs-router/src/doc_examples/untested_06/guide_router.rs:rendering_the_route}}
 ```
 
 When the `Router {}` component renders, it will parse the document's current URL into a `Route` variant. If the url doesn't parse properly, the router will render nothing unless you add a "catch-all" route:
 
 ```rust
-{{#include ../docs-examples/src/untested_06/guide_router.rs:catch_all}}
+{{#include ../docs-router/src/doc_examples/untested_06/guide_router.rs:catch_all}}
 ```
 
 Note here that the `PageNotFound` route takes the "segments" parameter. Dioxus routes are not only type-safe as variants, but also type-safe with URL parameters. For more information on how this works, [check the router guide](../router/index.md).
@@ -104,13 +104,13 @@ In our `src/components/nav.rs` file, we'll add back our Title code, but rename i
 
 ```rust
 use crate::Route;
-{{#include ../docs-examples/src/untested_06/guide_router.rs:nav_bar}}
+{{#include ../docs-router/src/doc_examples/untested_06/guide_router.rs:nav_bar}}
 ```
 
 The `Link {}` component wraps the anchor `<a>` element with a type-safe interface. This means any struct that implements `Routable` - anything that can `.to_string()` - is a valid navigation target.
 
 ```rust
-{{#include ../docs-examples/src/untested_06/guide_router.rs:link}}
+{{#include ../docs-router/src/doc_examples/untested_06/guide_router.rs:link}}
 ```
 
 The Link component takes many different arguments, making it possible to extend and customize for your use-case.
@@ -120,7 +120,7 @@ In `NavBar`, we also added an `Outlet::<Route> {}` component. When the Router co
 To actually add the NavBar component to our app, we need to update our `Route` enum with the `#[layout]` attribute. This forces the router to render the `NavBar` component *first* so it can expose its `Outlet {}`.
 
 ```rust
-{{#include ../docs-examples/src/untested_06/guide_router.rs:nav_bar_router}}
+{{#include ../docs-router/src/doc_examples/untested_06/guide_router.rs:nav_bar_router}}
 ```
 
 The `layout` attribute instructs the Router to wrap the following enum variants in the given component.
@@ -147,20 +147,20 @@ Now that we understand the fundamentals of routing, let's finally add our *Favor
 We'll start by creating an empty component `src/components/favorites.rs`:
 
 ```rust
-{{#include ../docs-examples/src/untested_06/guide_router.rs:favorites}}
+{{#include ../docs-router/src/doc_examples/untested_06/guide_router.rs:favorites}}
 ```
 
 And then let's make sure to add a new variant in our `Route` enum:
 
 ```rust
-{{#include ../docs-examples/src/untested_06/guide_router.rs:favorites_router}}
+{{#include ../docs-router/src/doc_examples/untested_06/guide_router.rs:favorites_router}}
 ```
 
 To make sure the user can reach this page, let's also add a button in the nav that points to it.
 
 ```rust
 use crate::Route;
-{{#include ../docs-examples/src/untested_06/guide_router.rs:nav_bar_favorites_link}}
+{{#include ../docs-router/src/doc_examples/untested_06/guide_router.rs:nav_bar_favorites_link}}
 ```
 
 ## Our Favorites Page
@@ -168,13 +168,13 @@ use crate::Route;
 Finally, we can build our favorites page. Let's add a new `list_dogs` server function that fetches the 10 most recently saved dog photos:
 
 ```rust
-{{#include ../docs-examples/src/untested_06/guide_router.rs:list_dogs}}
+{{#include ../docs-router/src/doc_examples/untested_06/guide_router.rs:list_dogs}}
 ```
 
 Now, we can fill in our component. We're going to use the same `use_resource` hook from earlier. Resolving the request from the server might take some time, so we'll use the `.suspend()?` method on `Resource` to wait for the request to finish before mapping the contents to a list.
 
 ```rust
-{{#include ../docs-examples/src/untested_06/guide_router.rs:favorites_list_dogs}}
+{{#include ../docs-router/src/doc_examples/untested_06/guide_router.rs:favorites_list_dogs}}
 ```
 
 As a stretch goal, try adding a button that lets the user also delete items from the database.

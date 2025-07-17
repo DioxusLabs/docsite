@@ -5,7 +5,7 @@ Just like you wouldn't want to write a complex program in a single, long, `main`
 A component is a Rust function, named in UpperCammelCase, that either takes no parameters or a properties struct and returns an `Element` describing the UI it wants to render.
 
 \```rust, no_run
-{{#include ../docs-examples/src/hello_world_desktop.rs:component}}
+{{#include ../docs-router/src/doc_examples/hello_world_desktop.rs:component}}
 \```
 
 > You'll probably want to add `#![allow(non_snake_case)]` to the top of your crate to avoid warnings about UpperCammelCase component names
@@ -13,7 +13,7 @@ A component is a Rust function, named in UpperCammelCase, that either takes no p
 A Component is responsible for some rendering task – typically, rendering an isolated part of the user interface. For example, you could have an `About` component that renders a short description of Dioxus Labs:
 
 \```rust, no_run
-{{#include ../docs-examples/src/components.rs:About}}
+{{#include ../docs-router/src/doc_examples/components.rs:About}}
 \```
 \```inject-dioxus
 DemoFrame {
@@ -24,7 +24,7 @@ DemoFrame {
 Then, you can render your component in another component, similarly to how elements are rendered:
 
 \```rust, no_run
-{{#include ../docs-examples/src/components.rs:App}}
+{{#include ../docs-router/src/doc_examples/components.rs:App}}
 \```
 \```inject-dioxus
 DemoFrame {

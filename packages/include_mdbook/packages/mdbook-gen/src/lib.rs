@@ -18,6 +18,18 @@ use crate::transform_book::write_book_with_routes;
 mod rsx;
 mod transform_book;
 
+pub fn make_docs_from_ws(version: &str) {
+    let mdbook_dir = PathBuf::from("../../docs-src").join(version);
+    let out_dir = std::env::current_dir().unwrap().join("src");
+    let mut out = generate_router_build_script(mdbook_dir);
+    out.push_str("use dioxus_docs_examples::*;\n");
+    out.push_str("use dioxus::prelude::*;\n");
+    let version_flattened = version.replace(".", "");
+    let filename = format!("lib.rs");
+    std::fs::write(out_dir.join(filename), out).unwrap();
+}
+
+
 /// Generate the contents of the mdbook from a router
 pub fn generate_router_build_script(mdbook_dir: PathBuf) -> String {
     let file_src = generate_router_as_file(mdbook_dir.clone(), MdBook::new(mdbook_dir).unwrap());

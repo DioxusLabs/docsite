@@ -16,3 +16,5 @@ serde = { workspace = true, features = ["derive"] }
 [build-dependencies]
 mdbook-gen = { workspace = true, features = ["manganis"]}
 mdbook-shared = { workspace = true }
+
+

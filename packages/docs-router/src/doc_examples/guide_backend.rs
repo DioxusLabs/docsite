@@ -84,7 +84,7 @@ mod separate_server_launch {
 
         // Build a custom axum router
         let router = axum::Router::new()
-            .serve_dioxus_application(ServeConfigBuilder::new(), App)
+            .serve_dioxus_application(ServeConfig::new().unwrap(), App)
             .into_make_service();
 
         // And launch it!

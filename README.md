@@ -15,7 +15,7 @@ working `Rust` setup:
 <!-- todo: switch to the installer -->
 <!-- # curl -fsSL https://raw.githubusercontent.com/DioxusLabs/dioxus/refs/heads/main/.github/install.sh | bash -->
 ```sh
-cargo binstall dioxus-cli@0.7.0-alpha.2 --force
+cargo binstall dioxus-cli@0.7.0-alpha.3 --force
 ```
 
 With [`dx`][dx] installed, you can use it to build and serve the documentation

@@ -62,6 +62,7 @@ fullstack = ["dioxus/fullstack"]
 web = ["dioxus/web"]
 server = [
     "dioxus/server",
+    "dioxus/fullstack",
     "dioxus/ssr",
     "dep:dioxus-ssr",
     "dep:tokio",

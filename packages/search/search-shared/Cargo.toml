@@ -18,5 +18,7 @@ tracing = "0.1.41"
 
 dioxus-router = { workspace = true }
 
+dioxus-router = { workspace = true }
+
 [target.'cfg(target_family = "wasm")'.dependencies]
 getrandom = { workspace = true, features = ["js"] }

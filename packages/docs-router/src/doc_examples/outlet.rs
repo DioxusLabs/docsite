@@ -1,6 +1,5 @@
 #![allow(non_snake_case)]
 use dioxus::prelude::*;
-use dioxus_router::prelude::*;
 
 // ANCHOR: outlet
 #[derive(Routable, Clone)]
@@ -43,7 +42,6 @@ fn main() {
 
 mod with_props {
     use dioxus::prelude::*;
-    use dioxus_router::prelude::*;
 
     // ANCHOR: outlet_with_params
     #[derive(Routable, Clone)]
@@ -90,7 +88,6 @@ mod with_props {
 
 mod use_route {
     use dioxus::prelude::*;
-    use dioxus_router::prelude::*;
 
     // ANCHOR: outlet_route
     #[derive(Routable, Clone)]

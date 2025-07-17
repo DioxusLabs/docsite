@@ -24,6 +24,7 @@ pub(crate) fn Components() -> Element {
     #[cfg(all(feature = "web", not(feature = "server")))]
     {
         use crate::Route;
+        use dioxus::core::use_drop;
         use std::rc::Rc;
         use wasm_bindgen::{prelude::Closure, JsCast};
 

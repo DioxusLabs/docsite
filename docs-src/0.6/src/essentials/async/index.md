@@ -57,7 +57,7 @@ DemoFrame {
 }
 ```
 
-> Note: The future you pass to `use_resource` must be cancel safe. Cancel safe futures are futures that can be stopped at any await point without causing causing issues. For example, this task is not cancel safe:
+> Note: The future you pass to `use_resource` must be cancel safe. Cancel safe futures are futures that can be stopped at any point without causing issues. For example, this task is not cancel safe:
 > 
 > ```rust
 > {{#include src/doc_examples/untested_06/asynchronous.rs:not_cancel_safe}}

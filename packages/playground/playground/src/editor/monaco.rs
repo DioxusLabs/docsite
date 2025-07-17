@@ -1,12 +1,12 @@
 use crate::hotreload::HotReload;
 use dioxus::prelude::*;
-use dioxus_sdk::utils::timing::UseDebounce;
+// use dioxus_sdk::utils::timing::UseDebounce;
 use model::{CargoDiagnostic, CargoLevel};
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 
-#[cfg(target_arch = "wasm32")]
-use dioxus_sdk::theme::SystemTheme;
+// #[cfg(target_arch = "wasm32")]
+// use dioxus_sdk::theme::SystemTheme;
 
 /// Get the path prefix for the `/vs` folder inside the Monaco folder.
 pub fn monaco_vs_prefix(folder: Asset) -> String {
@@ -52,35 +52,35 @@ pub fn set_monaco_markers(diagnostics: Signal<Vec<CargoDiagnostic>>) {
     set_markers(&markers);
 }
 
-/// Initialize Monaco once the loader script loads.
-#[cfg(target_arch = "wasm32")]
-pub fn on_monaco_load(
-    folder: Asset,
-    system_theme: SystemTheme,
-    contents: &str,
-    mut hot_reload: HotReload,
-    mut monaco_ready: Signal<bool>,
-    mut on_model_changed: UseDebounce<String>,
-) {
-    let on_ready_callback = Closure::new(move || monaco_ready.set(true));
-    let monaco_prefix = monaco_vs_prefix(folder);
-    init(
-        &monaco_prefix,
-        super::EDITOR_ELEMENT_ID,
-        system_theme,
-        contents,
-        &on_ready_callback,
-    );
+// /// Initialize Monaco once the loader script loads.
+// #[cfg(target_arch = "wasm32")]
+// pub fn on_monaco_load(
+//     folder: Asset,
+//     system_theme: SystemTheme,
+//     contents: &str,
+//     mut hot_reload: HotReload,
+//     mut monaco_ready: Signal<bool>,
+//     mut on_model_changed: UseDebounce<String>,
+// ) {
+//     let on_ready_callback = Closure::new(move || monaco_ready.set(true));
+//     let monaco_prefix = monaco_vs_prefix(folder);
+//     init(
+//         &monaco_prefix,
+//         super::EDITOR_ELEMENT_ID,
+//         system_theme,
+//         contents,
+//         &on_ready_callback,
+//     );
 
-    hot_reload.set_starting_code(contents);
+//     hot_reload.set_starting_code(contents);
 
-    let model_change_callback =
-        Closure::new(move |new_code: String| on_model_changed.action(new_code));
-    register_model_change_event(&model_change_callback);
+//     let model_change_callback =
+//         Closure::new(move |new_code: String| on_model_changed.action(new_code));
+//     register_model_change_event(&model_change_callback);
 
-    on_ready_callback.forget();
-    model_change_callback.forget();
-}
+//     on_ready_callback.forget();
+//     model_change_callback.forget();
+// }
 
 #[derive(Serialize, Deserialize, Clone)]
 pub struct Marker {

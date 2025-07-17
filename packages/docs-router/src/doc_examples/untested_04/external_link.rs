@@ -1,7 +1,6 @@
 #![allow(non_snake_case, unused)]
 
 use dioxus::prelude::*;
-use dioxus_router::prelude::*;
 
 #[derive(Routable, Clone)]
 enum Route {

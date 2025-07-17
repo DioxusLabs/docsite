@@ -45,7 +45,6 @@ mod axum_entry_point {
     // ANCHOR_END: streaming_axum
 }
 
-
 mod head_elements {
     use dioxus::prelude::*;
     fn app() -> Element {
@@ -83,9 +82,7 @@ mod head_elements {
             document::Title { {title} }
             SuspenseBoundary {
                 fallback: |_| {
-                    rsx! {
-                        "Loading..."
-                    }
+                    rsx! { "Loading..." }
                 },
                 AsyncHead {}
             }
@@ -102,12 +99,8 @@ mod head_elements {
         rsx! {
             // This will be rendered on the client because it is in a
             // suspense boundary below the `Router` component.
-            document::Meta {
-                name: "description",
-                content: "{current_description}",
-            }
+            document::Meta { name: "description", content: "{current_description}" }
         }
     }
     // ANCHOR_END: head_elements
 }
-

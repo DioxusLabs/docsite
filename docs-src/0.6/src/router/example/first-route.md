@@ -17,7 +17,7 @@ Routable is a trait for anything that can:
 Let's create a new router. First, we need an actual page to route to! Let's add a homepage component:
 
 ```rust
-{{#include src/doc_examples/untested_06/first_route.rs:home}}
+{{#include ../docs-router/src/doc_examples/untested_06/first_route.rs:home}}
 ```
 
 ## Creating Routes
@@ -30,13 +30,13 @@ To start using Dioxus Router, we need to use the [`Routable`] macro.
 The [`Routable`] macro takes an enum with all of the possible routes in our application. Each variant of the enum represents a route and must be annotated with the `#[route(path)]` attribute.
 
 ```rust
-{{#include src/doc_examples/untested_06/first_route.rs:router}}
+{{#include ../docs-router/src/doc_examples/untested_06/first_route.rs:router}}
 ```
 
 The [`Router`] component will provide a router context for all the inner components and hooks to use. You usually will want to place this at the top of your components tree.
 
 ```rust
-{{#include src/doc_examples/untested_06/first_route.rs:app}}
+{{#include ../docs-router/src/doc_examples/untested_06/first_route.rs:app}}
 ```
 
 If you head to your application's browser tab, you should now see the text
@@ -53,13 +53,13 @@ In our example, when a route doesn't exist Dioxus Router doesn't render anything
 First, we create a new `PageNotFound` component.
 
 ```rust
-{{#include src/doc_examples/untested_06/catch_all.rs:fallback}}
+{{#include ../docs-router/src/doc_examples/untested_06/catch_all.rs:fallback}}
 ```
 
 Next, register the route in the Route enum to match if all other routes fail.
 
 ```rust
-{{#include src/doc_examples/untested_06/catch_all.rs:router}}
+{{#include ../docs-router/src/doc_examples/untested_06/catch_all.rs:router}}
 ```
 
 Now when you go to a route that doesn't exist, you should see the page not found

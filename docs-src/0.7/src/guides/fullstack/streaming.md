@@ -47,13 +47,13 @@ When streaming is enabled, all of the contents of the page are still rendered in
 You can enable streaming in the ServeConfig builder with the `enable_out_of_order_streaming` method. If you are launching your application through the `dioxus::LaunchBuilder`, you can use the `with_cfg` method to pass in a configuration that enables streaming:
 
 ```rust
-{{#include src/doc_examples/streaming.rs:streaming_launch}}
+{{#include ../docs-router/src/doc_examples/streaming.rs:streaming_launch}}
 ```
 
 or if you are using a custom axum server, you can pass the config into `serve_dioxus_application` directly:
 
 ```rust
-{{#include src/doc_examples/streaming.rs:streaming_axum}}
+{{#include ../docs-router/src/doc_examples/streaming.rs:streaming_axum}}
 ```
 
 ## Head elements with streaming
@@ -63,5 +63,5 @@ Head elements can only be rendered in the initial HTML chunk that contains the `
 The initial chunk of HTML is send after [commit_initial_chunk](https://docs.rs/dioxus-fullstack/0.7.0-alpha.1/dioxus_fullstack/prelude/fn.commit_initial_chunk.html) is called for the first time. If you are using the router, this will happen automatically when all suspense boundaries above the router are resolved. If you are not using the router, you can call `commit_initial_chunk` manually after all of your blocking head elements have been rendered.
 
 ```rust
-{{#include src/doc_examples/streaming.rs:head_elements}}
+{{#include ../docs-router/src/doc_examples/streaming.rs:head_elements}}
 ```

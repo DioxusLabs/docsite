@@ -1,9 +1,7 @@
 [package]
-name = "dioxus_docs_router"
-version = "0.0.0"
-authors = ["Jonathan Kelley <jkelleyrtp@gmail.com>"]
-edition = "2018"
-resolver = "2"
+name = "dioxus-docs-examples"
+version = "0.1.0"
+edition = "2024"
 
 [dependencies]
 dioxus = { workspace = true, features = ["router"] }
@@ -88,6 +86,3 @@ doc_test = [
 ]
 production = []
 
-[build-dependencies]
-mdbook-gen = { workspace = true, features = ["manganis"]}
-mdbook-shared = { workspace = true }

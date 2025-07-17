@@ -129,7 +129,7 @@ fn Index(cx: Scope) -> Element {
 `use_navigator` lets you change the route programmatically:
 
 ```rust
-{{#include src/doc_examples/untested_04/navigator.rs:nav}}
+{{#include ../docs-router/src/doc_examples/untested_04/navigator.rs:nav}}
 ```
 
 You can read more about programmatic navigation in the [Router Book](../router/reference/navigation/programmatic.md).

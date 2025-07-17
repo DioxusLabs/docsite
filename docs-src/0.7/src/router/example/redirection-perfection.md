@@ -19,16 +19,16 @@ with the route parameters. The closure should return a route to redirect to.
 Let's add a redirect to our router enum:
 
 ```rust
-{{#include src/doc_examples/full_example.rs:router}}
+{{#include ../docs-router/src/doc_examples/full_example.rs:router}}
 ```
 
 That's it! Now your users will be redirected to the blog.
 
 ### Conclusion
 
-Well done! You've completed the Dioxus Router guide. You've built a small 
+Well done! You've completed the Dioxus Router guide. You've built a small
 application and learned about the many things you can do with Dioxus Router.
-To continue your journey, you attempt a challenge listed below, look at the [router examples](https://github.com/DioxusLabs/dioxus/tree/main/packages/router/examples), or 
+To continue your journey, you attempt a challenge listed below, look at the [router examples](https://github.com/DioxusLabs/dioxus/tree/main/packages/router/examples), or
 the [API reference](https://docs.rs/dioxus-router/).
 
 ### Challenges

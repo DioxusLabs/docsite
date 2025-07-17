@@ -75,28 +75,28 @@ pub fn generate_llms_txt() {
             match route {
                 Route::Docs03 { child } => {
                     let id = child.page_id();
-                    let content = dioxus_docs_router::docs::router_03::BookRoute::page_markdown(id);
-                    write_content_to_llm_txt(route, &content)?;
+                    let content = crate::docs::router_03::BookRoute::page_markdown(id);
+                    write_content_to_llm_txt(route, content)?;
                 }
                 Route::Docs04 { child } => {
                     let id = child.page_id();
-                    let content = dioxus_docs_router::docs::router_04::BookRoute::page_markdown(id);
-                    write_content_to_llm_txt(route, &content)?;
+                    let content = crate::docs::router_04::BookRoute::page_markdown(id);
+                    write_content_to_llm_txt(route, content)?;
                 }
                 Route::Docs05 { child } => {
                     let id = child.page_id();
-                    let content = dioxus_docs_router::docs::router_05::BookRoute::page_markdown(id);
-                    write_content_to_llm_txt(route, &content)?;
+                    let content = crate::docs::router_05::BookRoute::page_markdown(id);
+                    write_content_to_llm_txt(route, content)?;
                 }
                 Route::Docs06 { child } => {
                     let id = child.page_id();
-                    let content = dioxus_docs_router::docs::router_06::BookRoute::page_markdown(id);
-                    write_content_to_llm_txt(route, &content)?;
+                    let content = crate::docs::router_06::BookRoute::page_markdown(id);
+                    write_content_to_llm_txt(route, content)?;
                 }
                 Route::Docs07 { child } => {
                     let id = child.page_id();
-                    let content = dioxus_docs_router::docs::router_07::BookRoute::page_markdown(id);
-                    write_content_to_llm_txt(route, &content)?;
+                    let content = crate::docs::router_07::BookRoute::page_markdown(id);
+                    write_content_to_llm_txt(route, content)?;
                 }
                 _ => {}
             }

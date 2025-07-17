@@ -111,17 +111,17 @@ Once you have set up binary specific dependencies, you need to adjust any of you
 
 For example, if `tokio` is only enabled in the server feature, you will need to import it like this:
 ```rust
-{{#include src/doc_examples/untested_06/server_tokio_import.rs:tokio_import}}
+{{#include ../docs-router/src/doc_examples/untested_06/server_tokio_import.rs:tokio_import}}
 ```
 
 You also need to only compile any usage of the dependency when the feature is enabled:
 ```rust
-{{#include src/doc_examples/untested_06/server_tokio_import.rs:tokio_usage}}
+{{#include ../docs-router/src/doc_examples/untested_06/server_tokio_import.rs:tokio_usage}}
 ```
 
 It may be more convenient to group server or client specific code into a module that is only compiled when the feature is enabled:
 ```rust
-{{#include src/doc_examples/untested_06/server_tokio_import.rs:tokio_module}}
+{{#include ../docs-router/src/doc_examples/untested_06/server_tokio_import.rs:tokio_module}}
 ```
 
 > The [rust reference](https://doc.rust-lang.org/reference/conditional-compilation.html) has more information about conditional compilation in rust.

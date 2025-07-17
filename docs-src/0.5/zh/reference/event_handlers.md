@@ -9,7 +9,7 @@ Event handlers are similar to regular attributes, but their name usually starts 
 For example, to handle clicks on an element, we can specify an `onclick` handler:
 
 \```rust, no_run
-{{#include src/doc_examples/event_click.rs:rsx}}
+{{#include ../docs-router/src/doc_examples/event_click.rs:rsx}}
 \```
 \```inject-dioxus
 DemoFrame {
@@ -39,7 +39,7 @@ Some events will trigger first on the element the event originated at upward. Fo
 If you want to prevent this behavior, you can call `stop_propagation()` on the event:
 
 \```rust, no_run
-{{#include src/doc_examples/event_nested.rs:rsx}}
+{{#include ../docs-router/src/doc_examples/event_nested.rs:rsx}}
 \```
 
 ## Prevent Default
@@ -49,7 +49,7 @@ Some events have a default behavior. For keyboard events, this might be entering
 In some instances, might want to avoid this default behavior. For this, you can add the `prevent_default` attribute with the name of the handler whose default behavior you want to stop. This attribute can be used for multiple handlers using their name separated by spaces:
 
 \```rust, no_run
-{{#include src/doc_examples/event_prevent_default.rs:prevent_default}}
+{{#include ../docs-router/src/doc_examples/event_prevent_default.rs:prevent_default}}
 \```
 
 \```inject-dioxus
@@ -67,13 +67,13 @@ Any event handlers will still be called.
 Sometimes, you might want to make a component that accepts an event handler. A simple example would be a `FancyButton` component, which accepts an `on_click` handler:
 
 \```rust, no_run
-{{#include src/doc_examples/event_handler_prop.rs:component_with_handler}}
+{{#include ../docs-router/src/doc_examples/event_handler_prop.rs:component_with_handler}}
 \```
 
 Then, you can use it like any other handler:
 
 \```rust, no_run
-{{#include src/doc_examples/event_handler_prop.rs:usage}}
+{{#include ../docs-router/src/doc_examples/event_handler_prop.rs:usage}}
 \```
 
 > Note: just like any other attribute, you can name the handlers anything you want! Though they must start with `on`, for the prop to be automatically turned into an `EventHandler` at the call site.
@@ -83,5 +83,5 @@ Then, you can use it like any other handler:
 Event Handlers are generic over any type, so you can pass in any data you want to them, e.g:
 
 \```rust, no_run
-{{#include src/doc_examples/event_handler_prop.rs:custom_data}}
+{{#include ../docs-router/src/doc_examples/event_handler_prop.rs:custom_data}}
 \```

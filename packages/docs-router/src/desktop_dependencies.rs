@@ -35,10 +35,10 @@ pub fn DesktopDependencies() -> Element {
 
     #[cfg(feature = "web")]
     {
-        if generation() == 0 {
-            needs_update();
+        if dioxus::core::generation() == 0 {
+            dioxus::core::needs_update();
         }
-        if generation() == 1 {
+        if dioxus::core::generation() == 1 {
             use web_sys::window;
             let platform = window().unwrap().navigator().platform();
             if let Ok(platform) = platform {

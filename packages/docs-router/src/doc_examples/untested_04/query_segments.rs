@@ -2,7 +2,6 @@
 use std::fmt::Display;
 
 use dioxus::prelude::*;
-use dioxus_router::prelude::*;
 
 // ANCHOR: route
 #[derive(Routable, Clone)]

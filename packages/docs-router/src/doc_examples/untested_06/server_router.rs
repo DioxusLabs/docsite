@@ -3,7 +3,6 @@
 use axum::Router;
 use dioxus::prelude::*;
 
-use dioxus_router::prelude::*;
 use serde::{Deserialize, Serialize};
 
 fn main() {

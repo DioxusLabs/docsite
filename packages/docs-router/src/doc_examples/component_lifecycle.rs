@@ -40,9 +40,7 @@ mod use_hook {
     pub fn UseHookDemo() -> Element {
         rsx! {
             ComponentWithLogs {
-                FakePage {
-                    UseHook {}
-                }
+                FakePage { UseHook {} }
             }
         }
     }
@@ -138,7 +136,7 @@ mod drop {
 
     fn Child() -> Element {
         // You can use the use_drop hook to clean up any resources
-        use_drop(|| {
+        dioxus::core::use_drop(|| {
             log!("Child dropped");
         });
 

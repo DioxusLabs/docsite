@@ -1,6 +1,5 @@
 #![allow(non_snake_case)]
 use dioxus::prelude::*;
-use dioxus_router::prelude::*;
 
 // ANCHOR: router
 #[derive(Routable, Clone)]

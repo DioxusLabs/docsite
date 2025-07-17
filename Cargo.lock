@@ -1216,6 +1216,48 @@ dependencies = [
 ]
 
 [[package]]
+name = "dioxus-docs-examples"
+version = "0.1.0"
+dependencies = [
+ "askama_escape 0.10.3",
+ "async-recursion",
+ "automod",
+ "axum",
+ "chrono",
+ "dioxus",
+ "dioxus-cli-config",
+ "dioxus-desktop",
+ "dioxus-liveview",
+ "dioxus-ssr",
+ "dioxus-web",
+ "form_urlencoded",
+ "futures",
+ "futures-util",
+ "gloo-storage",
+ "gloo-timers",
+ "http",
+ "js-sys",
+ "log",
+ "mdbook-shared",
+ "once_cell",
+ "pretty_assertions",
+ "rand 0.8.5",
+ "reqwest",
+ "rusqlite",
+ "serde",
+ "serde_json",
+ "slab",
+ "stork-lib",
+ "syntect-html",
+ "tokio",
+ "tower-http 0.5.2",
+ "tracing",
+ "use-mdbook",
+ "wasm-bindgen",
+ "web-sys",
+]
+
+[[package]]
 name = "dioxus-docs-router"
 version = "0.0.0"
 dependencies = [
@@ -1227,6 +1269,7 @@ dependencies = [
  "dioxus",
  "dioxus-cli-config",
  "dioxus-desktop",
+ "dioxus-docs-examples",
  "dioxus-liveview",
  "dioxus-ssr",
  "dioxus-web",
@@ -1770,6 +1813,7 @@ dependencies = [
  "axum",
  "chrono",
  "dioxus",
+ "dioxus-docs-examples",
  "dioxus-docs-router",
  "dioxus-search",
  "dioxus-web",
@@ -1895,10 +1939,6 @@ name = "doc-comment"
 version = "0.3.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fea41bba32d969b513997752735605054bc0dfa92b4c56bf1189f2e174be7a10"
-
-[[package]]
-name = "docs-examples"
-version = "0.1.0"
 
 [[package]]
 name = "downcast-rs"

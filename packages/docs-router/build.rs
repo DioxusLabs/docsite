@@ -4,7 +4,7 @@ use std::{env::current_dir, path::PathBuf};
 fn main() {
     // re-run only if the "example-book" directory changes
     println!("cargo:rerun-if-changed=../../docs-src/");
-    println!("cargo:rerun-if-changed=src/doc_examples/");
+    println!("cargo:rerun-if-changed=../docs-examples/src");
 
     make_docs("blog");
     make_docs("0.3");

@@ -12,6 +12,7 @@ dioxus-ssr = { workspace = true, optional = true }
 dioxus-desktop = { workspace = true, optional = true }
 dioxus-cli-config = { workspace = true, optional = true }
 dioxus-liveview = { workspace = true, features = ["axum"], optional = true }
+dioxus-docs-examples = { workspace = true }
 
 # dioxus-material-icons = { version = "3.0.0" }
 syntect-html = { workspace = true }

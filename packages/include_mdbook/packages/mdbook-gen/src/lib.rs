@@ -21,13 +21,7 @@ mod transform_book;
 /// Generate the contents of the mdbook from a router
 pub fn generate_router_build_script(mdbook_dir: PathBuf) -> String {
     let file_src = generate_router_as_file(mdbook_dir.clone(), MdBook::new(mdbook_dir).unwrap());
-
-    let stringified = prettyplease::unparse(&file_src);
-    let prettifed = rustfmt_via_cli(&stringified);
-
-    let as_file = syn::parse_file(&prettifed).unwrap();
-    let fmts = dioxus_autofmt::try_fmt_file(&prettifed, &as_file, Default::default()).unwrap();
-    dioxus_autofmt::apply_formats(&prettifed, fmts)
+    prettyplease::unparse(&file_src)
 }
 
 /// Load an mdbook from the filesystem using the target tokens

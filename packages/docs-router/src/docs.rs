@@ -1,6 +1,6 @@
 use crate::desktop_dependencies::*;
-use crate::doc_examples::*;
 use dioxus::prelude::*;
+use dioxus_docs_examples::*;
 use std::hash::Hash;
 
 #[rustfmt::skip]

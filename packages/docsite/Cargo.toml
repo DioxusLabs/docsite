@@ -12,6 +12,7 @@ dioxus = { workspace = true, features = ["router", "launch"] }
 dioxus-web = { workspace = true, features = ["hydrate"], optional = true }
 
 dioxus-docs-router = { workspace = true }
+dioxus-docs-examples = { workspace = true }
 
 # dioxus-material-icons = { version = "3.0.0" }
 syntect-html = { workspace = true }

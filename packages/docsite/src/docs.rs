@@ -3,7 +3,8 @@ use dioxus::prelude::*;
 use mdbook_shared::MdBook;
 use std::hash::Hash;
 
-pub use dioxus_docs_router::{doc_examples::*, docs::*};
+pub use dioxus_docs_examples::*;
+pub use dioxus_docs_router::docs::*;
 
 pub enum CurrentDocsVersion {
     V07(router_07::BookRoute),

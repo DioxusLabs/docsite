@@ -181,200 +181,137 @@ impl BookRoute {
     /// Get the markdown for a page by its ID
     pub const fn page_markdown(id: use_mdbook::mdbook_shared::PageId) -> &'static str {
         match id.0 {
-            33usize => {
-                "# Routing\n\nYou can easily integrate your fullstack application with a client side router using Dioxus Router. This allows you to create different scenes in your app and navigate between them. You can read more about the router in the [router reference](../router.md)\n\n````rust@server_router.rs\n#![allow(non_snake_case)]\n\nuse axum::Router;\nuse dioxus::prelude::*;\n\nuse serde::{Deserialize, Serialize};\n\nfn main() {\n    launch(|| rsx! { Router::<Route> {} });\n}\n\n#[derive(Clone, Routable, Debug, PartialEq, Serialize, Deserialize)]\nenum Route {\n    #[route(\"/\")]\n    Home {},\n    #[route(\"/blog/:id\")]\n    Blog { id: i32 },\n}\n\n#[component]\nfn Blog(id: i32) -> Element {\n    rsx! {\n        Link { to: Route::Home {}, \"Go to counter\" }\n        table {\n            tbody {\n                for _ in 0..id {\n                    tr {\n                        for _ in 0..id {\n                            td { \"hello world!\" }\n                        }\n                    }\n                }\n            }\n        }\n    }\n}\n\n#[component]\nfn Home() -> Element {\n    let mut count = use_signal(|| 0);\n    let mut text = use_signal(|| \"...\".to_string());\n\n    rsx! {\n        Link { to: Route::Blog { id: count() }, \"Go to blog\" }\n        div {\n            h1 { \"High-Five counter: {count}\" }\n            button { onclick: move |_| count += 1, \"Up high!\" }\n            button { onclick: move |_| count -= 1, \"Down low!\" }\n            button {\n                onclick: move |_| {\n                    async move {\n                        if let Ok(data) = get_server_data().await {\n                            println!(\"Client received: {}\", data);\n                            text.set(data.clone());\n                            post_server_data(data).await.unwrap();\n                        }\n                    }\n                },\n                \"Run server function!\"\n            }\n            \"Server said: {text}\"\n        }\n    }\n}\n\n#[server(PostServerData)]\nasync fn post_server_data(data: String) -> Result<(), ServerFnError> {\n    println!(\"Server received: {}\", data);\n\n    Ok(())\n}\n\n#[server(GetServerData)]\nasync fn get_server_data() -> Result<String, ServerFnError> {\n    Ok(\"Hello from the server!\".to_string())\n}\n\n````\n\n````inject-dioxus\nSandBoxFrame {\n\turl: \"https://codesandbox.io/p/sandbox/dioxus-fullstack-router-s75v5q?file=%2Fsrc%2Fmain.rs%3A7%2C1\"\n}\n````"
+            10usize => {
+                "# Component Props\n\nJust like you can pass arguments to a function or attributes to an element, you can pass props to a component that customize its behavior! The components we've seen so far didn't accept any props – so let's write some components that do.\n\n## derive(Props)\n\nComponent props are a single struct annotated with `#[derive(PartialEq, Clone, Props)]`. For a component to accept props, the type of its argument must be `YourPropsStruct`.\n\nExample:\n\n````rust, no_run@component_owned_props.rs\n#[derive(PartialEq, Props, Clone)]\nstruct LikesProps {\n    score: i32,\n}\n\nfn Likes(props: LikesProps) -> Element {\n    rsx! {\n        div {\n            \"This post has \"\n            b { \"{props.score}\" }\n            \" likes\"\n        }\n    }\n}\n````\n\nYou can then pass prop values to the component the same way you would pass attributes to an element:\n\n````rust, no_run@component_owned_props.rs\npub fn App() -> Element {\n    rsx! { Likes { score: 42 } }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n    component_owned_props::App {}\n}\n````\n\n## Prop Options\n\nThe `#[derive(Props)]` macro has some features that let you customize the behavior of props.\n\n### Optional Props\n\nYou can create optional fields by using the `Option<…>` type for a field:\n\n````rust, no_run@component_props_options.rs\n#[derive(PartialEq, Clone, Props)]\nstruct OptionalProps {\n    title: String,\n    subtitle: Option<String>,\n}\n\nfn Title(props: OptionalProps) -> Element {\n    rsx! {\n        h1 { \"{props.title}: \", {props.subtitle.unwrap_or_else(|| \"No subtitle provided\".to_string())} }\n    }\n}\n````\n\nThen, you can choose to either provide them or not:\n\n````rust, no_run@component_props_options.rs\nTitle { title: \"Some Title\" }\nTitle { title: \"Some Title\", subtitle: \"Some Subtitle\" }\n// Providing an Option explicitly won't compile though:\n// Title {\n//     title: \"Some Title\",\n//     subtitle: None,\n// },\n````\n\n### Explicitly Required Option\n\nIf you want to explicitly require an `Option`, and not an optional prop, you can annotate it with `#[props(!optional)]`:\n\n````rust, no_run@component_props_options.rs\n#[derive(PartialEq, Clone, Props)]\nstruct ExplicitOptionProps {\n    title: String,\n    #[props(!optional)]\n    subtitle: Option<String>,\n}\n\nfn ExplicitOption(props: ExplicitOptionProps) -> Element {\n    rsx! {\n        h1 { \"{props.title}: \", {props.subtitle.unwrap_or_else(|| \"No subtitle provided\".to_string())} }\n    }\n}\n````\n\nThen, you have to explicitly pass either `Some(\"str\")` or `None`:\n\n````rust, no_run@component_props_options.rs\nExplicitOption { title: \"Some Title\", subtitle: None }\nExplicitOption { title: \"Some Title\", subtitle: Some(\"Some Title\".to_string()) }\n// This won't compile:\n// ExplicitOption {\n//     title: \"Some Title\",\n// },\n````\n\n### Default Props\n\nYou can use `#[props(default = 42)]` to make a field optional and specify its default value:\n\n````rust, no_run@component_props_options.rs\n#[derive(PartialEq, Props, Clone)]\nstruct DefaultProps {\n    // default to 42 when not provided\n    #[props(default = 42)]\n    number: i64,\n}\n\nfn DefaultComponent(props: DefaultProps) -> Element {\n    rsx! { h1 { \"{props.number}\" } }\n}\n````\n\nThen, similarly to optional props, you don't have to provide it:\n\n````rust, no_run@component_props_options.rs\nDefaultComponent { number: 5 }\nDefaultComponent {}\n````\n\n### Automatic Conversion with into\n\nIt is common for Rust functions to accept `impl Into<SomeType>` rather than just `SomeType` to support a wider range of parameters. If you want similar functionality with props, you can use `#[props(into)]`. For example, you could add it on a `String` prop – and `&str` will also be automatically accepted, as it can be converted into `String`:\n\n````rust, no_run@component_props_options.rs\n#[derive(PartialEq, Props, Clone)]\nstruct IntoProps {\n    #[props(into)]\n    string: String,\n}\n\nfn IntoComponent(props: IntoProps) -> Element {\n    rsx! { h1 { \"{props.string}\" } }\n}\n````\n\nThen, you can use it so:\n\n````rust, no_run@component_props_options.rs\nIntoComponent { string: \"some &str\" }\n````\n\n## The component macro\n\nSo far, every Component function we've seen had a corresponding ComponentProps struct to pass in props. This was quite verbose... Wouldn't it be nice to have props as simple function arguments? Then we wouldn't need to define a Props struct, and instead of typing `props.whatever`, we could just use `whatever` directly!\n\n`component` allows you to do just that. Instead of typing the \"full\" version:\n\n````rust, no_run\n#[derive(Props, Clone, PartialEq)]\nstruct TitleCardProps {\n    title: String,\n}\n\nfn TitleCard(props: TitleCardProps) -> Element {\n    rsx!{\n        h1 { \"{props.title}\" }\n    }\n}\n````\n\n...you can define a function that accepts props as arguments. Then, just annotate it with `#[component]`, and the macro will turn it into a regular Component for you:\n\n````rust, no_run\n#[component]\nfn TitleCard(title: String) -> Element {\n    rsx!{\n        h1 { \"{title}\" }\n    }\n}\n````\n\n > \n > While the new Component is shorter and easier to read, this macro should not be used by library authors since you have less control over Prop documentation.\n\n## Component Children\n\nIn some cases, you may wish to create a component that acts as a container for some other content, without the component needing to know what that content is. To achieve this, create a prop of type `Element`:\n\n````rust, no_run@component_element_props.rs\n#[derive(PartialEq, Clone, Props)]\nstruct ClickableProps {\n    href: String,\n    body: Element,\n}\n\nfn Clickable(props: ClickableProps) -> Element {\n    rsx! {\n        a { href: \"{props.href}\", class: \"fancy-button\", {props.body} }\n    }\n}\n````\n\nThen, when rendering the component, you can pass in the output of `rsx!{...}`:\n\n````rust, no_run@component_element_props.rs\nrsx! {\n    Clickable {\n        href: \"https://www.youtube.com/watch?v=C-M2hs3sXGo\",\n        body: rsx! {\n            \"How to \" i { \"not\" } \" be seen\"\n        }\n    }\n}\n````\n\n > \n > Warning: While it may compile, do not include the same `Element` more than once in the RSX. The resulting behavior is unspecified.\n\n### The children field\n\nRather than passing the RSX through a regular prop, you may wish to accept children similarly to how elements can have children. The \"magic\" `children` prop lets you achieve this:\n\n````rust, no_run@component_children.rs\n#[derive(PartialEq, Clone, Props)]\nstruct ClickableProps {\n    href: String,\n    children: Element,\n}\n\nfn Clickable(props: ClickableProps) -> Element {\n    rsx! {\n        a { href: \"{props.href}\", class: \"fancy-button\", {props.children} }\n    }\n}\n````\n\nThis makes using the component much simpler: simply put the RSX inside the `{}` brackets – and there is no need for a `render` call or another macro!\n\n````rust, no_run@component_children.rs\nrsx! {\n    Clickable { href: \"https://www.youtube.com/watch?v=C-M2hs3sXGo\",\n        \"How to \"\n        i { \"not\" }\n        \" be seen\"\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n    component_children::App {}\n}\n````"
             }
-            13usize => {
-                "# User Input\n\nInterfaces often need to provide a way to input data: e.g. text, numbers, checkboxes, etc. In Dioxus, there are two ways you can work with user input.\n\n## Controlled Inputs\n\nWith controlled inputs, you are directly in charge of the state of the input. This gives you a lot of flexibility, and makes it easy to keep things in sync. For example, this is how you would create a controlled text input:\n\n````rust, no_run@input_controlled.rs\npub fn App() -> Element {\n    let mut name = use_signal(|| \"bob\".to_string());\n\n    rsx! {\n        input {\n            // we tell the component what to render\n            value: \"{name}\",\n            // and what to do when the value changes\n            oninput: move |event| name.set(event.value())\n        }\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n    input_controlled::App {}\n}\n````\n\nNotice the flexibility – you can:\n\n* Also display the same contents in another element, and they will be in sync\n* Transform the input every time it is modified (e.g. to make sure it is upper case)\n* Validate the input every time it changes\n* Have custom logic happening when the input changes (e.g. network request for autocompletion)\n* Programmatically change the value (e.g. a \"randomize\" button that fills the input with nonsense)\n\n## Uncontrolled Inputs\n\nAs an alternative to controlled inputs, you can simply let the platform keep track of the input values. If we don't tell a HTML input what content it should have, it will be editable anyway (this is built into the browser). This approach can be more performant, but less flexible. For example, it's harder to keep the input in sync with another element.\n\nSince you don't necessarily have the current value of the uncontrolled input in state, you can access it either by listening to `oninput` events (similarly to controlled components), or, if the input is part of a form, you can access the form data in the form events (e.g. `oninput` or `onsubmit`):\n\n````rust, no_run@input_uncontrolled.rs\npub fn App() -> Element {\n    rsx! {\n        form { onsubmit: move |event| { log::info!(\"Submitted! {event:?}\") },\n            input { name: \"name\" }\n            input { name: \"age\" }\n            input { name: \"date\" }\n            input { r#type: \"submit\" }\n        }\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n    input_uncontrolled::App {}\n}\n````\n\n````\nSubmitted! UiEvent { data: FormData { value: \"\", values: {\"age\": \"very old\", \"date\": \"1966\", \"name\": \"Fred\"} } }\n````\n\n## Handling files\n\nYou can insert a file picker by using an input element of type `file`. This element supports the `multiple` attribute, to let you pick more files at the same time. You can select a folder by adding the `directory` attribute: Dioxus will map this attribute to browser specific attributes, because there is no standardized way to allow a directory to be selected.\n\n`type` is a Rust keyword, so when specifying the type of the input field, you have to write it as `r#type:\"file\"`.\n\nExtracting the selected files is a bit different from what you may typically use in Javascript.\n\nThe `FormData` event contains a `files` field with data about the uploaded files. This field contains a `FileEngine` struct which lets you fetch the filenames selected by the user. This example saves the filenames of the selected files to a `Vec`:\n\n````rust, no_run@input_fileengine.rs\npub fn App() -> Element {\n    let mut filenames: Signal<Vec<String>> = use_signal(Vec::new);\n    rsx! {\n        input {\n            // tell the input to pick a file\n            r#type: \"file\",\n            // list the accepted extensions\n            accept: \".txt,.rs\",\n            // pick multiple files\n            multiple: true,\n            onchange: move |evt| {\n                if let Some(file_engine) = &evt.files() {\n                    let files = file_engine.files();\n                    for file_name in files {\n                        filenames.write().push(file_name);\n                    }\n                }\n            }\n        }\n    }\n}\n````\n\nIf you're planning to read the file content, you need to do it asynchronously, to keep the rest of the UI interactive. This example event handler loads the content of the selected files in an async closure:\n\n````rust, no_run@input_fileengine_async.rs\nonchange: move |evt| {\n    async move {\n        if let Some(file_engine) = evt.files() {\n            let files = file_engine.files();\n            for file_name in &files {\n                if let Some(file) = file_engine.read_file_to_string(file_name).await\n                {\n                    files_uploaded.write().push(file);\n                }\n            }\n        }\n    }\n}\n````\n\nLastly, this example shows you how to select a folder, by setting the `directory` attribute to `true`.\n\n````rust, no_run@input_fileengine_folder.rs\ninput {\n    r#type: \"file\",\n    // Select a folder by setting the directory attribute\n    directory: true,\n    onchange: move |evt| {\n        if let Some(file_engine) = evt.files() {\n            let files = file_engine.files();\n            for file_name in files {\n                println!(\"{}\", file_name);\n            }\n        }\n    }\n}\n````"
-            }
-            7usize => {
-                "# Dioxus Reference\n\nThis Reference contains more detailed explanations for all concepts covered in the [guide](../guide/index.md) and more.\n\n## Rendering\n\n* [`RSX`](rsx.md) Rsx is a HTML-like macro that allows you to declare UI\n* [`Components`](components.md) Components are the building blocks of UI in Dioxus\n* [`Props`](component_props.md) Props allow you pass information to Components\n* [`Event Listeners`](event_handlers.md) Event listeners let you respond to user input\n* [`User Input`](user_input.md) How to handle User input in Dioxus\n* [`Dynamic Rendering`](dynamic_rendering.md) How to dynamically render data in Dioxus\n\n## State\n\n* [`Hooks`](hooks.md) Hooks allow you to create components state\n* [`Context`](context.md) Context allows you to create state in a parent and consume it in children\n* [`Routing`](router.md) The router helps you manage the URL state\n* [`Resource`](use_resource.md) Use future allows you to create an async task and monitor it's state\n* [`UseCoroutine`](use_coroutine.md) Use coroutine helps you manage external state\n* [`Spawn`](spawn.md) Spawn creates an async task\n\n## Platforms\n\n* [`Choosing a Web Renderer`](choosing_a_web_renderer.md) Overview of the different web renderers\n* [`Desktop`](desktop/index.md) Overview of desktop specific APIS\n* [`Web`](web/index.md) Overview of web specific APIS\n* [`Fullstack`](fullstack/index.md) Overview of Fullstack specific APIS\n  * [`Server Functions`](fullstack/server_functions.md) Server functions make it easy to communicate between your server and client\n  * [`Extractors`](fullstack/extractors.md) Extractors allow you to get extra information out of the headers of a request\n  * [`Middleware`](fullstack/middleware.md) Middleware allows you to wrap a server function request or response\n  * [`Authentication`](fullstack/authentication.md) An overview of how to handle authentication with server functions\n  * [`Routing`](fullstack/routing.md) An overview of how to work with the router in the fullstack renderer\n* [`SSR`](ssr.md) Overview of the SSR renderer\n* [`Liveview`](liveview.md) Overview of liveview specific APIS"
-            }
-            16usize => {
-                "# Router\n\nIn many of your apps, you'll want to have different \"scenes\". For a webpage, these scenes might be the different webpages with their own content. For a desktop app, these scenes might be different views in your app.\n\nTo unify these platforms, Dioxus provides a first-party solution for scene management called Dioxus Router.\n\n## What is it?\n\nFor an app like the Dioxus landing page (https://dioxuslabs.com), we want to have several different scenes:\n\n* Homepage\n* Blog\n\nEach of these scenes is independent – we don't want to render both the homepage and blog at the same time.\n\nThe Dioxus router makes it easy to create these scenes. To make sure we're using the router, add the `router` feature to your `dioxus` dependency:\n\n````shell\ncargo add dioxus@0.5.0 --features router\n````\n\n## Using the router\n\nUnlike other routers in the Rust ecosystem, our router is built declaratively at compile time. This makes it possible to compose our app layout simply by defining an enum.\n\n````rust@router_reference.rs\n// All of our routes will be a variant of this Route enum\n#[derive(Routable, PartialEq, Clone)]\nenum Route {\n    // if the current location is \"/home\", render the Home component\n    #[route(\"/home\")]\n    Home {},\n    // if the current location is \"/blog\", render the Blog component\n    #[route(\"/blog\")]\n    Blog {},\n}\n\nfn Home() -> Element {\n    todo!()\n}\n\nfn Blog() -> Element {\n    todo!()\n}\n````\n\nWhenever we visit this app, we will get either the Home component or the Blog component rendered depending on which route we enter at. If neither of these routes match the current location, then nothing will render.\n\nWe can fix this one of two ways:\n\n* A fallback 404 page\n\n````rust@router_reference.rs\n// All of our routes will be a variant of this Route enum\n#[derive(Routable, PartialEq, Clone)]\nenum Route {\n    #[route(\"/home\")]\n    Home {},\n    #[route(\"/blog\")]\n    Blog {},\n    //  if the current location doesn't match any of the above routes, render the NotFound component\n    #[route(\"/:..segments\")]\n    NotFound { segments: Vec<String> },\n}\n\nfn Home() -> Element {\n    todo!()\n}\n\nfn Blog() -> Element {\n    todo!()\n}\n\n#[component]\nfn NotFound(segments: Vec<String>) -> Element {\n    todo!()\n}\n````\n\n* Redirect 404 to home\n\n````rust@router_reference.rs\n// All of our routes will be a variant of this Route enum\n#[derive(Routable, PartialEq, Clone)]\nenum Route {\n    #[route(\"/home\")]\n    //  if the current location doesn't match any of the other routes, redirect to \"/home\"\n    #[redirect(\"/:..segments\", |segments: Vec<String>| Route::Home {})]\n    Home {},\n    #[route(\"/blog\")]\n    Blog {},\n}\n````\n\n## Links\n\nFor our app to navigate these routes, we can provide clickable elements called Links. These simply wrap `<a>` elements that, when clicked, navigate the app to the given location. Because our route is an enum of valid routes, if you try to link to a page that doesn't exist, you will get a compiler error.\n\n````rust@router_reference.rs\nrsx! {\n    Link { to: Route::Home {}, \"Go home!\" }\n}\n````\n\n## More reading\n\nThis page is just a very brief overview of the router. For more information, check out the [router book](../router/index.md) or some of the [router examples](https://github.com/DioxusLabs/dioxus/blob/master/examples/router.rs)."
-            }
-            49usize => {
-                "# Routing Update Callback\n\nIn some cases, we might want to run custom code when the current route changes. For this reason, the [`RouterConfig`] exposes an `on_update` field.\n\n## How does the callback behave?\n\nThe `on_update` is called whenever the current routing information changes. It is called after the router updated its internal state, but before dependent components and hooks are updated.\n\nIf the callback returns a [`NavigationTarget`], the router will replace the current location with the specified target. It will not call the `on_update` again.\n\nIf at any point the router encounters a navigation failure, it will go to the appropriate state without calling the `on_update`. It doesn't matter if the invalid target initiated the navigation, was found as a redirect target, or was returned by the `on_update` itself.\n\n## Code Example\n\n````rust@routing_update.rs\n#[derive(Routable, Clone, PartialEq)]\nenum Route {\n    #[route(\"/\")]\n    Index {},\n    #[route(\"/home\")]\n    Home {},\n}\n\n#[component]\nfn Home() -> Element {\n    rsx! {\n        p { \"Home\" }\n    }\n}\n\n#[component]\nfn Index() -> Element {\n    rsx! {\n        p { \"Index\" }\n    }\n}\n\nfn app() -> Element {\n    rsx! {\n        Router::<Route> {\n            config: || {\n                RouterConfig::default()\n                    .on_update(|state| {\n                        (state.current() == Route::Index {})\n                            .then_some(NavigationTarget::Internal(Route::Home {}))\n                    })\n            },\n        }\n    }\n}\n````"
-            }
-            58usize => {
-                "# Working with External State\n\nThis guide will help you integrate your Dioxus application with some external state like a different thread or a websocket connection.\n\n## Working with non-reactive State\n\n[Coroutines](../../../reference/use_coroutine.md) are great tool for dealing with non-reactive (state you don't render directly) state within your application.\n\nYou can store your state inside the coroutine async block and communicate with the coroutine with messages from any child components.\n\n````rust@use_coroutine.rs\n// import futures::StreamExt to use the next() method\nuse futures::StreamExt;\nlet mut response_state = use_signal(|| None);\nlet tx = use_coroutine(move |mut rx| async move {\n    // Define your state before the loop\n    let mut state = reqwest::Client::new();\n    let mut cache: HashMap<String, String> = HashMap::new();\n    loop {\n        // Loop and wait for the next message\n        if let Some(request) = rx.next().await {\n            // Resolve the message\n            let response = if let Some(response) = cache.get(&request) {\n                response.clone()\n            } else {\n                let response = state\n                    .get(&request)\n                    .send()\n                    .await\n                    .unwrap()\n                    .text()\n                    .await\n                    .unwrap();\n                cache.insert(request, response.clone());\n                response\n            };\n            response_state.set(Some(response));\n        } else {\n            break;\n        }\n    }\n});\n// Send a message to the coroutine\ntx.send(\"https://example.com\".to_string());\n// Get the current state of the coroutine\nlet response = response_state.read();\n````\n\n## Making Reactive State External\n\nIf you have some reactive state (state that is rendered), that you want to modify from another thread, you can use a signal that is sync. Signals take an optional second generic value with information about syncness. Sync signals have a slightly higher overhead than thread local signals, but they can be used in a multithreaded environment.\n\n````rust@sync_signal.rs\nuse dioxus::prelude::*;\n\nfn main() {\n    launch(app);\n}\n\nfn app() -> Element {\n    let mut signal = use_signal_sync(|| 0);\n\n    use_hook(|| {\n        std::thread::spawn(move || loop {\n            std::thread::sleep(std::time::Duration::from_secs(1));\n            // You can easily update the signal from a different thread\n            signal += 1;\n        });\n    });\n\n    rsx! {\n        button { onclick: move |_| signal += 1, \"Increase\" }\n        \"{signal}\"\n    }\n}\n\n````"
-            }
-            45usize => {
-                "# Links & Navigation\n\nWhen we split our app into pages, we need to provide our users with a way to\nnavigate between them. On regular web pages, we'd use an anchor element for that,\nlike this:\n\n````html\n<a href=\"/other\">Link to an other page</a>\n````\n\nHowever, we cannot do that when using the router for three reasons:\n\n1. Anchor tags make the browser load a new page from the server. This takes a\n   lot of time, and it is much faster to let the router handle the navigation\n   client-side.\n1. Navigation using anchor tags only works when the app is running inside a\n   browser. This means we cannot use them inside apps using Dioxus Desktop.\n1. Anchor tags cannot check if the target page exists. This means we cannot\n   prevent accidentally linking to non-existent pages.\n\nTo solve these problems, the router provides us with a \\[`Link`\\] component we can\nuse like this:\n\n````rust@links.rs\n#[component]\nfn NavBar() -> Element {\n    rsx! {\n        nav {\n            ul {\n                li {\n                    Link { to: Route::Home {}, \"Home\" }\n                }\n            }\n        }\n        Outlet::<Route> {}\n    }\n}\n````\n\nThe `target` in the example above is similar to the `href` of a regular anchor\nelement. However, it tells the router more about what kind of navigation it\nshould perform. It accepts something that can be converted into a\n\\[`NavigationTarget`\\]:\n\n* The example uses a Internal route. This is the most common type of navigation.\n  It tells the router to navigate to a page within our app by passing a variant of a \\[`Routable`\\] enum. This type of navigation can never fail if the link component is used inside a router component.\n* \\[`External`\\] allows us to navigate to URLs outside of our app. This is useful\n  for links to external websites. NavigationTarget::External accepts an URL to navigate to. This type of navigation can fail if the URL is invalid.\n\n > \n > The \\[`Link`\\] accepts several props that modify its behavior. See the API docs\n > for more details."
-            }
-            6usize => {
-                "# Conclusion\n\nWell done! You've completed the Dioxus guide and built a hackernews application in Dioxus.\n\nTo continue your journey, you can attempt a challenge listed below, or look at the [Dioxus reference](../reference/index.md).\n\n## Challenges\n\n* Organize your components into separate files for better maintainability.\n* Give your app some style if you haven't already.\n* Integrate your application with the [Dioxus router](../router/index.md).\n\n## The full code for the hacker news project\n\n````rust@hackernews_complete.rs\n#![allow(non_snake_case)]\nuse dioxus::prelude::*;\n\nfn main() {\n    launch(App);\n}\n\npub fn App() -> Element {\n    use_context_provider(|| Signal::new(PreviewState::Unset));\n\n    rsx! {\n        div { display: \"flex\", flex_direction: \"row\", width: \"100%\",\n            div { width: \"50%\", Stories {} }\n            div { width: \"50%\", Preview {} }\n        }\n    }\n}\n\nfn Stories() -> Element {\n    let stories = use_resource(move || get_stories(10));\n\n    match &*stories.read_unchecked() {\n        Some(Ok(list)) => rsx! {\n            div {\n                for story in list {\n                    StoryListing { story: story.clone() }\n                }\n            }\n        },\n        Some(Err(err)) => rsx! {\"An error occurred while fetching stories {err}\"},\n        None => rsx! {\"Loading items\"},\n    }\n}\n\nasync fn resolve_story(\n    mut full_story: Signal<Option<StoryPageData>>,\n    mut preview_state: Signal<PreviewState>,\n    story_id: i64,\n) {\n    if let Some(cached) = full_story.as_ref() {\n        *preview_state.write() = PreviewState::Loaded(cached.clone());\n        return;\n    }\n\n    *preview_state.write() = PreviewState::Loading;\n    if let Ok(story) = get_story(story_id).await {\n        *preview_state.write() = PreviewState::Loaded(story.clone());\n        *full_story.write() = Some(story);\n    }\n}\n\n#[component]\nfn StoryListing(story: ReadOnlySignal<StoryItem>) -> Element {\n    let preview_state = consume_context::<Signal<PreviewState>>();\n    let StoryItem {\n        title,\n        url,\n        by,\n        score,\n        time,\n        kids,\n        id,\n        ..\n    } = story();\n    let full_story = use_signal(|| None);\n\n    let url = url.as_deref().unwrap_or_default();\n    let hostname = url\n        .trim_start_matches(\"https://\")\n        .trim_start_matches(\"http://\")\n        .trim_start_matches(\"www.\");\n    let score = format!(\"{score} {}\", if score == 1 { \" point\" } else { \" points\" });\n    let comments = format!(\n        \"{} {}\",\n        kids.len(),\n        if kids.len() == 1 {\n            \" comment\"\n        } else {\n            \" comments\"\n        }\n    );\n    let time = time.format(\"%D %l:%M %p\");\n\n    rsx! {\n        div {\n            padding: \"0.5rem\",\n            position: \"relative\",\n            onmouseenter: move |_event| { resolve_story(full_story, preview_state, id) },\n            div { font_size: \"1.5rem\",\n                a {\n                    href: url,\n                    onfocus: move |_event| { resolve_story(full_story, preview_state, id) },\n                    \"{title}\"\n                }\n                a {\n                    color: \"gray\",\n                    href: \"https://news.ycombinator.com/from?site={hostname}\",\n                    text_decoration: \"none\",\n                    \" ({hostname})\"\n                }\n            }\n            div { display: \"flex\", flex_direction: \"row\", color: \"gray\",\n                div { \"{score}\" }\n                div { padding_left: \"0.5rem\", \"by {by}\" }\n                div { padding_left: \"0.5rem\", \"{time}\" }\n                div { padding_left: \"0.5rem\", \"{comments}\" }\n            }\n        }\n    }\n}\n\n#[derive(Clone, Debug)]\nenum PreviewState {\n    Unset,\n    Loading,\n    Loaded(StoryPageData),\n}\n\nfn Preview() -> Element {\n    let preview_state = consume_context::<Signal<PreviewState>>();\n\n    match preview_state() {\n        PreviewState::Unset => rsx! {\"Hover over a story to preview it here\"},\n        PreviewState::Loading => rsx! {\"Loading...\"},\n        PreviewState::Loaded(story) => {\n            rsx! {\n                div { padding: \"0.5rem\",\n                    div { font_size: \"1.5rem\", a { href: story.item.url, \"{story.item.title}\" } }\n                    div { dangerous_inner_html: story.item.text }\n                    for comment in &story.comments {\n                        Comment { comment: comment.clone() }\n                    }\n                }\n            }\n        }\n    }\n}\n\n#[component]\nfn Comment(comment: CommentData) -> Element {\n    rsx! {\n        div { padding: \"0.5rem\",\n            div { color: \"gray\", \"by {comment.by}\" }\n            div { dangerous_inner_html: \"{comment.text}\" }\n            for kid in &comment.sub_comments {\n                Comment { comment: kid.clone() }\n            }\n        }\n    }\n}\n\n// Define the Hackernews API and types\nuse chrono::{DateTime, Utc};\nuse futures::future::join_all;\nuse serde::{Deserialize, Serialize};\n\npub static BASE_API_URL: &str = \"https://hacker-news.firebaseio.com/v0/\";\npub static ITEM_API: &str = \"item/\";\npub static USER_API: &str = \"user/\";\nconst COMMENT_DEPTH: i64 = 2;\n\npub async fn get_story_preview(id: i64) -> Result<StoryItem, reqwest::Error> {\n    let url = format!(\"{}{}{}.json\", BASE_API_URL, ITEM_API, id);\n    reqwest::get(&url).await?.json().await\n}\n\npub async fn get_stories(count: usize) -> Result<Vec<StoryItem>, reqwest::Error> {\n    let url = format!(\"{}topstories.json\", BASE_API_URL);\n    let stories_ids = &reqwest::get(&url).await?.json::<Vec<i64>>().await?[..count];\n\n    let story_futures = stories_ids[..usize::min(stories_ids.len(), count)]\n        .iter()\n        .map(|&story_id| get_story_preview(story_id));\n    Ok(join_all(story_futures)\n        .await\n        .into_iter()\n        .filter_map(|story| story.ok())\n        .collect())\n}\n\n#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]\npub struct StoryPageData {\n    #[serde(flatten)]\n    pub item: StoryItem,\n    #[serde(default)]\n    pub comments: Vec<CommentData>,\n}\n\n#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]\npub struct CommentData {\n    pub id: i64,\n    /// there will be no by field if the comment was deleted\n    #[serde(default)]\n    pub by: String,\n    #[serde(default)]\n    pub text: String,\n    #[serde(with = \"chrono::serde::ts_seconds\")]\n    pub time: DateTime<Utc>,\n    #[serde(default)]\n    pub kids: Vec<i64>,\n    #[serde(default)]\n    pub sub_comments: Vec<CommentData>,\n    pub r#type: String,\n}\n\n#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]\npub struct StoryItem {\n    pub id: i64,\n    pub title: String,\n    pub url: Option<String>,\n    pub text: Option<String>,\n    #[serde(default)]\n    pub by: String,\n    #[serde(default)]\n    pub score: i64,\n    #[serde(default)]\n    pub descendants: i64,\n    #[serde(with = \"chrono::serde::ts_seconds\")]\n    pub time: DateTime<Utc>,\n    #[serde(default)]\n    pub kids: Vec<i64>,\n    pub r#type: String,\n}\n\npub async fn get_story(id: i64) -> Result<StoryPageData, reqwest::Error> {\n    let url = format!(\"{}{}{}.json\", BASE_API_URL, ITEM_API, id);\n    let mut story = reqwest::get(&url).await?.json::<StoryPageData>().await?;\n    let comment_futures = story.item.kids.iter().map(|&id| get_comment(id));\n    let comments = join_all(comment_futures)\n        .await\n        .into_iter()\n        .filter_map(|c| c.ok())\n        .collect();\n\n    story.comments = comments;\n    Ok(story)\n}\n\n#[async_recursion::async_recursion(?Send)]\npub async fn get_comment_with_depth(id: i64, depth: i64) -> Result<CommentData, reqwest::Error> {\n    let url = format!(\"{}{}{}.json\", BASE_API_URL, ITEM_API, id);\n    let mut comment = reqwest::get(&url).await?.json::<CommentData>().await?;\n    if depth > 0 {\n        let sub_comments_futures = comment\n            .kids\n            .iter()\n            .map(|story_id| get_comment_with_depth(*story_id, depth - 1));\n        comment.sub_comments = join_all(sub_comments_futures)\n            .await\n            .into_iter()\n            .filter_map(|c| c.ok())\n            .collect();\n    }\n    Ok(comment)\n}\n\npub async fn get_comment(comment_id: i64) -> Result<CommentData, reqwest::Error> {\n    get_comment_with_depth(comment_id, COMMENT_DEPTH).await\n}\n\n````"
-            }
-            41usize => {
-                "# Adding the router to your application\n\nIn this chapter, we will learn how to add the router to our app. By itself, this\nis not very useful. However, it is a prerequisite for all the functionality\ndescribed in the other chapters.\n\n > \n > Make sure you added the `dioxus-router` dependency as explained in the\n > [introduction](../index.md).\n\nIn most cases, we want to add the router to the root component of our app. This\nway, we can ensure that we have access to all its functionality everywhere.\n\nFirst, we define the router with the router macro:\n\n````rust@first_route.rs\n#![allow(non_snake_case)]\nuse dioxus::prelude::*;\n\n/// An enum of all of the possible routes in the app.\n#[derive(Routable, Clone)]\nenum Route {\n    // The home page is at the / route\n    #[route(\"/\")]\n    Home {},\n}\n````\n\nThen we render the router with the \\[`Router`\\] component.\n\n````rust@first_route.rs\nfn App() -> Element {\n    rsx! { Router::<Route> {} }\n}\n````"
-            }
-            50usize => {
-                "# Cookbook\n\nThe cookbook contains common recipes for different patterns within Dioxus.\n\nThere are a few different sections in the cookbook:\n\n* [Publishing](publishing.md) will teach you how to present your app in a variety of delicious forms.\n* Explore the [Anti-patterns](antipatterns.md) section to discover what ingredients to avoid when preparing your application.\n* Within [Error Handling](error_handling.md), we'll master the fine art of managing spoiled ingredients in Dioxus.\n* Take a culinary journey through [State management](state/index.md), where we'll explore the world of handling local, global, and external state in Dioxus.\n* [Integrations](integrations/index.md) will guide you how to seamlessly blend external libraries into your Dioxus culinary creations.\n* [Testing](testing.md) explains how to examine the unique flavor of Dioxus-specific features, like components.\n* [Tailwind](tailwind.md) reveals the secrets of combining your Tailwind and Dioxus ingredients into a complete meal. You will also learn about using other NPM ingredients (packages) with Dioxus.\n* In the [Custom Renderer](custom_renderer.md) section, we embark on a cooking adventure, inventing new ways to cook with Dioxus!\n* [Optimizing](optimizing.md) will show you how to maximize the quality of your ingredients."
-            }
-            61usize => {
-                "# Tailwind\n\nYou can style your Dioxus application with whatever CSS framework you choose, or just write vanilla CSS.\n\nOne popular option for styling your Dioxus application is [Tailwind](https://tailwindcss.com/). Tailwind allows you to style your elements with CSS utility classes. This guide will show you how to setup tailwind CSS with your Dioxus application.\n\n## Setup\n\n1. Install the Dioxus CLI:\n\n````bash\ncargo install dioxus-cli\n````\n\n2. Install npm: [https://docs.npmjs.com/downloading-and-installing-node-js-and-npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)\n2. Install the tailwind css cli: [https://tailwindcss.com/docs/installation](https://tailwindcss.com/docs/installation)\n2. Initialize the tailwind css project:\n\n````bash\nnpx tailwindcss init\n````\n\nThis should create a `tailwind.config.js` file in the root of the project.\n\n5. Edit the `tailwind.config.js` file to include rust files:\n\n````js\nmodule.exports = {\n    mode: \"all\",\n    content: [\n        // include all rust, html and css files in the src directory\n        \"./src/**/*.{rs,html,css}\",\n        // include all html files in the output (dist) directory\n        \"./dist/**/*.html\",\n    ],\n    theme: {\n        extend: {},\n    },\n    plugins: [],\n}\n````\n\n6. Create a `input.css` file in the root of your project with the following content:\n\n````css\n@tailwind base;\n@tailwind components;\n@tailwind utilities;\n````\n\n7. Add [Manganis](https://github.com/DioxusLabs/manganis) to your project to handle asset collection.\n\n````sh\ncargo add manganis\n````\n\n8. Create a link to the `tailwind.css` file using manganis somewhere in your rust code:\n\n````rust@tailwind.rs\n// Urls are relative to your Cargo.toml file\nconst _TAILWIND_URL: &str = manganis::mg!(file(\"public/tailwind.css\"));\n\n````\n\n### Bonus Steps\n\n1. Install the tailwind css vs code extension\n1. Go to the settings for the extension and find the experimental regex support section. Edit the setting.json file to look like this:\n\n````json\n\"tailwindCSS.experimental.classRegex\": [\"class\\\\s*:\\\\s*\\\"([^\\\"]*)\"],\n\"tailwindCSS.includeLanguages\": {\n    \"rust\": \"html\"\n},\n````\n\n## Development\n\n* Run the following command in the root of the project to start the tailwind css compiler:\n\n````bash\nnpx tailwindcss -i ./input.css -o ./public/tailwind.css --watch\n````\n\n### Web\n\n* Run the following command in the root of the project to start the dioxus dev server:\n\n````bash\ndx serve\n````\n\n* Open the browser to [http://localhost:8080](http://localhost:8080).\n\n### Desktop\n\n* Launch the dioxus desktop app:\n\n````bash\ndx serve --platform desktop\n````"
-            }
-            11usize => {
-                "# Event Handlers\n\nEvent handlers are used to respond to user actions. For example, an event handler could be triggered when the user clicks, scrolls, moves the mouse, or types a character.\n\nEvent handlers are attached to elements. For example, we usually don't care about all the clicks that happen within an app, only those on a particular button.\n\nEvent handlers are similar to regular attributes, but their name usually starts with `on`- and they accept closures as values. The closure will be called whenever the event it listens for is triggered and will be passed that event.\n\nFor example, to handle clicks on an element, we can specify an `onclick` handler:\n\n````rust, no_run@event_click.rs\nrsx! {\n    button { onclick: move |event| log::info!(\"Clicked! Event: {event:?}\"), \"click me!\" }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n    event_click::App {}\n}\n````\n\n## The Event object\n\nEvent handlers receive an [`Event`](https://docs.rs/dioxus-core/latest/dioxus_core/struct.Event.html) object containing information about the event. Different types of events contain different types of data. For example, mouse-related events contain [`MouseData`](https://docs.rs/dioxus/latest/dioxus/events/struct.MouseData.html), which tells you things like where the mouse was clicked and what mouse buttons were used.\n\nIn the example above, this event data was logged to the terminal:\n\n````\nClicked! Event: UiEvent { bubble_state: Cell { value: true }, data: MouseData { coordinates: Coordinates { screen: (242.0, 256.0), client: (26.0, 17.0), element: (16.0, 7.0), page: (26.0, 17.0) }, modifiers: (empty), held_buttons: EnumSet(), trigger_button: Some(Primary) } }\nClicked! Event: UiEvent { bubble_state: Cell { value: true }, data: MouseData { coordinates: Coordinates { screen: (242.0, 256.0), client: (26.0, 17.0), element: (16.0, 7.0), page: (26.0, 17.0) }, modifiers: (empty), held_buttons: EnumSet(), trigger_button: Some(Primary) } }\n````\n\nTo learn what the different event types for HTML provide, read the [events module docs](https://docs.rs/dioxus-html/latest/dioxus_html/events/index.html).\n\n### Event propagation\n\nSome events will trigger first on the element the event originated at upward. For example, a click event on a `button` inside a `div` would first trigger the button's event listener and then the div's event listener.\n\n > \n > For more information about event propagation see [the mdn docs on event bubbling](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#event_bubbling)\n\nIf you want to prevent this behavior, you can call `stop_propagation()` on the event:\n\n````rust, no_run@event_nested.rs\nrsx! {\n    div { onclick: move |_event| {},\n        \"outer\"\n        button {\n            onclick: move |event| {\n                event.stop_propagation();\n            },\n            \"inner\"\n        }\n    }\n}\n````\n\n## Prevent Default\n\nSome events have a default behavior. For keyboard events, this might be entering the typed character. For mouse events, this might be selecting some text.\n\nIn some instances, might want to avoid this default behavior. For this, you can add the `prevent_default` attribute with the name of the handler whose default behavior you want to stop. This attribute can be used for multiple handlers using their name separated by spaces:\n\n````rust, no_run@event_prevent_default.rs\nrsx! {\n    a {\n        href: \"https://example.com\",\n        prevent_default: \"onclick\",\n        \"example.com\"\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n    event_prevent_default::App {}\n}\n````\n\nAny event handlers will still be called.\n\n > \n > Normally, in React or JavaScript, you'd call \"preventDefault\" on the event in the callback. Dioxus does *not* currently support this behavior. Note: this means you cannot conditionally prevent default behavior based on the data in the event.\n\n## Handler Props\n\nSometimes, you might want to make a component that accepts an event handler. A simple example would be a `FancyButton` component, which accepts an `onclick` handler:\n\n````rust, no_run@event_handler_prop.rs\n#[derive(PartialEq, Clone, Props)]\npub struct FancyButtonProps {\n    onclick: EventHandler<MouseEvent>,\n}\n\npub fn FancyButton(props: FancyButtonProps) -> Element {\n    rsx! {\n        button {\n            class: \"fancy-button\",\n            onclick: move |evt| props.onclick.call(evt),\n            \"click me pls.\"\n        }\n    }\n}\n````\n\nThen, you can use it like any other handler:\n\n````rust, no_run@event_handler_prop.rs\nrsx! {\n    FancyButton {\n        onclick: move |event| println!(\"Clicked! {event:?}\"),\n    }\n}\n````\n\n > \n > Note: just like any other attribute, you can name the handlers anything you want! Any closure you pass in will automatically be turned into an `EventHandler`.\n\n#### Async Event Handlers\n\nPassing `EventHandler`s as props does not support passing a closure that returns an async block. Instead, you must manually call `spawn` to do async operations:\n\n````rust, no_run@event_handler_prop.rs\nrsx! {\n    FancyButton {\n        // This does not work!\n        // onclick: move |event| async move {\n        //      println!(\"Clicked! {event:?}\");\n        // },\n\n        // This does work!\n        onclick: move |event| {\n            spawn(async move {\n                println!(\"Clicked! {event:?}\");\n            });\n        },\n    }\n}\n````\n\nThis is only the case for custom event handlers as props.\n\n## Custom Data\n\nEvent Handlers are generic over any type, so you can pass in any data you want to them, e.g:\n\n````rust, no_run@event_handler_prop.rs\nstruct ComplexData(i32);\n\n#[derive(PartialEq, Clone, Props)]\npub struct CustomFancyButtonProps {\n    onclick: EventHandler<ComplexData>,\n}\n\npub fn CustomFancyButton(props: CustomFancyButtonProps) -> Element {\n    rsx! {\n        button {\n            class: \"fancy-button\",\n            onclick: move |_| props.onclick.call(ComplexData(0)),\n            \"click me pls.\"\n        }\n    }\n}\n````"
-            }
-            15usize => {
-                "# Dynamic Rendering\n\nSometimes you want to render different things depending on the state/props. With Dioxus, just describe what you want to see using Rust control flow – the framework will take care of making the necessary changes on the fly if the state or props change!\n\n## Conditional Rendering\n\nTo render different elements based on a condition, you could use an `if-else` statement:\n\n````rust, no_run@conditional_rendering.rs\nif is_logged_in {\n    rsx! {\n        \"Welcome!\"\n        button { onclick: move |_| log_out.call(()), \"Log Out\" }\n    }\n} else {\n    rsx! {\n        button { onclick: move |_| log_in.call(()), \"Log In\" }\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n  conditional_rendering::App {}\n}\n````\n\n > \n > You could also use `match` statements, or any Rust function to conditionally render different things.\n\n### Improving the `if-else` Example\n\nYou may have noticed some repeated code in the `if-else` example above. Repeating code like this is both bad for maintainability and performance. Dioxus will skip diffing static elements like the button, but when switching between multiple `rsx` calls it cannot perform this optimization. For this example either approach is fine, but for components with large parts that are reused between conditionals, it can be more of an issue.\n\nWe can improve this example by splitting up the dynamic parts and inserting them where they are needed.\n\n````rust, no_run@conditional_rendering.rs\nrsx! {\n    // We only render the welcome message if we are logged in\n    // You can use if statements in the middle of a render block to conditionally render elements\n    if is_logged_in {\n        // Notice the body of this if statement is rsx code, not an expression\n        \"Welcome!\"\n    }\n    button {\n        // depending on the value of `is_logged_in`, we will call a different event handler\n        onclick: move |_| if is_logged_in { log_out.call(()) } else { log_in.call(()) },\n        if is_logged_in {\n            // if we are logged in, the button should say \"Log Out\"\n            \"Log Out\"\n        } else {\n            // if we are not logged in, the button should say \"Log In\"\n            \"Log In\"\n        }\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n  conditional_rendering::LogInImprovedApp {}\n}\n````\n\n### Inspecting `Element` props\n\nSince `Element` is a `Option<VNode>`, components accepting `Element` as a prop can inspect its contents, and render different things based on that. Example:\n\n````rust, no_run@component_children_inspect.rs\nfn Clickable(props: ClickableProps) -> Element {\n    match props.children {\n        Some(VNode { .. }) => {\n            todo!(\"render some stuff\")\n        }\n        _ => {\n            todo!(\"render some other stuff\")\n        }\n    }\n}\n````\n\nYou can't mutate the `Element`, but if you need a modified version of it, you can construct a new one based on its attributes/children/etc.\n\n## Rendering Nothing\n\nTo render nothing, you can return `None` from a component. This is useful if you want to conditionally hide something:\n\n````rust, no_run@conditional_rendering.rs\nif is_logged_in {\n    return rsx!();\n}\n\nrsx! {\n    p { \"You must be logged in to comment\" }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n  conditional_rendering::LogInWarningApp {}\n}\n````\n\nThis works because the `Element` type is just an alias for `Option<VNode>`\n\n > \n > Again, you may use a different method to conditionally return `None`. For example the boolean's [`then()`](https://doc.rust-lang.org/std/primitive.bool.html#method.then) function could be used.\n\n## Rendering Lists\n\nOften, you'll want to render a collection of components. For example, you might want to render a list of all comments on a post.\n\nFor this, Dioxus accepts iterators that produce `Element`s. So we need to:\n\n* Get an iterator over all of our items (e.g., if you have a `Vec` of comments, iterate over it with `iter()`)\n* `.map` the iterator to convert each item into a `LazyNode` using `rsx!{...}`\n  * Add a unique `key` attribute to each iterator item\n* Include this iterator in the final RSX (or use it inline)\n\nExample: suppose you have a list of comments you want to render. Then, you can render them like this:\n\n````rust, no_run@rendering_lists.rs\nlet mut comment_field = use_signal(String::new);\nlet mut next_id = use_signal(|| 0);\nlet mut comments = use_signal(Vec::<CommentData>::new);\n\nlet comments_lock = comments.read();\nlet comments_rendered = comments_lock.iter().map(|comment| {\n    rsx! { Comment { comment: comment.clone() } }\n});\n\nrsx! {\n    form {\n        onsubmit: move |_| {\n            comments\n                .write()\n                .push(CommentData {\n                    content: comment_field(),\n                    id: next_id(),\n                });\n            next_id += 1;\n            comment_field.set(String::new());\n        },\n        input {\n            value: \"{comment_field}\",\n            oninput: move |event| comment_field.set(event.value())\n        }\n        input { r#type: \"submit\" }\n    }\n    {comments_rendered}\n}\n````\n\n````inject-dioxus\nDemoFrame {\n  rendering_lists::App {}\n}\n````\n\n### Inline for loops\n\nBecause of how common it is to render a list of items, Dioxus provides a shorthand for this. Instead of using `.iter`, `.map`, and `rsx`, you can use a `for` loop with a body of rsx code:\n\n````rust, no_run@rendering_lists.rs\nlet mut comment_field = use_signal(String::new);\nlet mut next_id = use_signal(|| 0);\nlet mut comments = use_signal(Vec::<CommentData>::new);\n\nrsx! {\n    form {\n        onsubmit: move |_| {\n            comments\n                .write()\n                .push(CommentData {\n                    content: comment_field(),\n                    id: next_id(),\n                });\n            next_id += 1;\n            comment_field.set(String::new());\n        },\n        input {\n            value: \"{comment_field}\",\n            oninput: move |event| comment_field.set(event.value())\n        }\n        input { r#type: \"submit\" }\n    }\n    for comment in comments() {\n        // Notice the body of this for loop is rsx code, not an expression\n        Comment { comment }\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n  rendering_lists::AppForLoop {}\n}\n````\n\n### The key Attribute\n\nEvery time you re-render your list, Dioxus needs to keep track of which items go where to determine what updates need to be made to the UI.\n\nFor example, suppose the `CommentComponent` had some state – e.g. a field where the user typed in a reply. If the order of comments suddenly changes, Dioxus needs to correctly associate that state with the same comment – otherwise, the user will end up replying to a different comment!\n\nTo help Dioxus keep track of list items, we need to associate each item with a unique key. In the example above, we dynamically generated the unique key. In real applications, it's more likely that the key will come from e.g. a database ID. It doesn't matter where you get the key from, as long as it meets the requirements:\n\n* Keys must be unique in a list\n* The same item should always get associated with the same key\n* Keys should be relatively small (i.e. converting the entire Comment structure to a String would be a pretty bad key) so they can be compared efficiently\n\nYou might be tempted to use an item's index in the list as its key. That’s what Dioxus will use if you don’t specify a key at all. This is only acceptable if you can guarantee that the list is constant – i.e., no re-ordering, additions, or deletions.\n\n > \n > Note that if you pass the key to a component you've made, it won't receive the key as a prop. It’s only used as a hint by Dioxus itself. If your component needs an ID, you have to pass it as a separate prop."
-            }
-            0usize => {
-                "# Introduction\n\nDioxus is a portable, performant, and ergonomic framework for building cross-platform user interfaces in Rust. This guide will help you get started with writing Dioxus apps for the Web, Desktop, Mobile, and more.\n\n````rust@readme.rs\nuse dioxus::prelude::*;\n\npub fn App() -> Element {\n    let mut count = use_signal(|| 0);\n\n    rsx! {\n        h1 { \"High-Five counter: {count}\" }\n        button { onclick: move |_| count += 1, \"Up high!\" }\n        button { onclick: move |_| count -= 1, \"Down low!\" }\n    }\n}\n\n````\n\n````inject-dioxus\nDemoFrame {\n    readme::App {}\n}\n````\n\nDioxus is heavily inspired by React. If you know React, getting started with Dioxus will be a breeze.\n\n > \n > This guide assumes you already know some [Rust](https://www.rust-lang.org/)! If not, we recommend reading [*the book*](https://doc.rust-lang.org/book/ch01-00-getting-started.html) to learn Rust first.\n\n## Features\n\n* Cross platform apps in three lines of code. (Web, Desktop, Server, Mobile, and more)\n* Incredibly ergonomic and powerful state management that combines the best parts of react, solid and svelte.\n* Comprehensive inline documentation – hover and guides for all HTML elements, listeners, and events.\n* High performance applications [approaching the fastest web frameworks on the web](https://dioxuslabs.com/blog/templates-diffing) and native speeds on desktop.\n* First-class async support.\n\n### Multiplatform\n\nDioxus is a *portable* toolkit, meaning the Core implementation can run anywhere with no platform-dependent linking. Unlike many other Rust frontend toolkits, Dioxus is not intrinsically linked to WebSys. In fact, every element and event listener can be swapped out at compile time. By default, Dioxus ships with the `html` feature enabled, but this can be disabled depending on your target renderer.\n\nRight now, we have several 1st-party renderers:\n\n* WebSys/Sledgehammer (for WASM): Great support\n* Tao/Tokio (for Desktop apps): Good support\n* Tao/Tokio (for Mobile apps): Poor support\n* Fullstack (for SSR and server functions): Good support\n* TUI/Plasmo (for terminal-based apps): Experimental\n\n## Stability\n\nDioxus has not reached a stable release yet.\n\nWeb: Since the web is a fairly mature platform, we expect there to be very little API churn for web-based features.\n\nDesktop: APIs will likely be in flux as we figure out better patterns than our ElectronJS counterpart.\n\nFullstack: APIs will likely be in flux as we figure out the best API for server communication."
-            }
-            63usize => {
-                "# Optimizing\n\n*Note: This is written primarily for the web, but the main optimizations will work on other platforms too.*\n\nYou might have noticed that Dioxus binaries are pretty big.\nThe WASM binary of a [TodoMVC app](https://github.com/tigerros/dioxus-todo-app) weighs in at 2.36mb!\nDon't worry; we can get it down to a much more manageable 234kb.\nThis will get obviously lower over time.\nWith nightly features, you can even reduce the binary size of a hello world app to less than 100kb!\n\nWe will also discuss ways to optimize your app for increased speed.\n\nHowever, certain optimizations will sacrifice speed for decreased binary size or the other way around.\nThat's what you need to figure out yourself. Does your app perform performance-intensive tasks, such as graphical processing or tons of DOM manipulations?\nYou could go for increased speed. In most cases, though, decreased binary size is the better choice, especially because Dioxus WASM binaries are quite large.\n\nTo test binary sizes, we will use [this](https://github.com/tigerros/dioxus-todo-app) repository as a sample app.\nThe `no-optimizations` package will serve as the base, which weighs 2.36mb as of right now.\n\nAdditional resources:\n\n* [WASM book - Shrinking `.wasm` code size](https://rustwasm.github.io/docs/book/reference/code-size.html)\n* [min-sized-rust](https://github.com/johnthagen/min-sized-rust)\n\n## Building in release mode\n\nThis is the best way to optimize. In fact, the 2.36mb figure at the start of the guide is with release mode.\nIn debug mode, it's actually a whopping 32mb! It also increases the speed of your app.\n\nThankfully, no matter what tool you're using to build your app, it will probably have a `--release` flag to do this.\n\nUsing the [Dioxus CLI](https://dioxuslabs.com/learn/0.5/CLI) or [Trunk](https://trunkrs.dev/):\n\n* Dioxus CLI: `dx build --release`\n* Trunk: `trunk build --release`\n\n## UPX\n\nIf you're not targeting web, you can use the [UPX](https://github.com/upx/upx) CLI tool to compress your executables.\n\nSetup:\n\n* Download a [release](https://github.com/upx/upx/releases) and extract the directory inside to a sensible location.\n* Add the executable located in the directory to your path variable.\n\nYou can run `upx --help` to get the CLI options, but you should also view `upx-doc.html` for more detailed information.\nIt's included in the extracted directory.\n\nAn example command might be: `upx --best -o target/release/compressed.exe target/release/your-executable.exe`.\n\n## Build configuration\n\n*Note: Settings defined in `.cargo/config.toml` will override settings in `Cargo.toml`.*\n\nOther than the `--release` flag, this is the easiest way to optimize your projects, and also the most effective way,\nat least in terms of reducing binary size.\n\n### Stable\n\nThis configuration is 100% stable and decreases the binary size from 2.36mb to 310kb.\nAdd this to your `.cargo/config.toml`:\n\n````toml\n[profile.release]\nopt-level = \"z\"\ndebug = false\nlto = true\ncodegen-units = 1\npanic = \"abort\"\nstrip = true\nincremental = false\n````\n\nLinks to the documentation of each value:\n\n* [`opt-level`](https://doc.rust-lang.org/rustc/codegen-options/index.html#opt-level)\n* [`debug`](https://doc.rust-lang.org/rustc/codegen-options/index.html#debuginfo)\n* [`lto`](https://doc.rust-lang.org/rustc/codegen-options/index.html#lto)\n* [`codegen-units`](https://doc.rust-lang.org/rustc/codegen-options/index.html#codegen-units)\n* [`panic`](https://doc.rust-lang.org/rustc/codegen-options/index.html#panic)\n* [`strip`](https://doc.rust-lang.org/rustc/codegen-options/index.html#strip)\n* [`incremental`](https://doc.rust-lang.org/rustc/codegen-options/index.html#incremental)\n\n### Unstable\n\nThis configuration contains some unstable features, but it should work just fine.\nIt decreases the binary size from 310kb to 234kb.\nAdd this to your `.cargo/config.toml`:\n\n````toml\n[unstable]\nbuild-std = [\"std\", \"panic_abort\", \"core\", \"alloc\"]\nbuild-std-features = [\"panic_immediate_abort\"]\n\n[build]\nrustflags = [\n    \"-Clto\",\n    \"-Zvirtual-function-elimination\",\n    \"-Zlocation-detail=none\"\n]\n\n# Same as in the Stable section\n[profile.release]\nopt-level = \"z\"\ndebug = false\nlto = true\ncodegen-units = 1\npanic = \"abort\"\nstrip = true\nincremental = false\n````\n\n*Note: The omitted space in each flag (e.g., `-C<no space here>lto`) is intentional. It is not a typo.*\n\nThe values in `[profile.release]` are documented in the [Stable](#stable) section. Links to the documentation of each value:\n\n* [`[build.rustflags]`](https://doc.rust-lang.org/cargo/reference/config.html#buildrustflags)\n* [`-C lto`](https://doc.rust-lang.org/rustc/codegen-options/index.html#lto)\n* [`-Z virtual-function-elimination`](https://doc.rust-lang.org/stable/unstable-book/compiler-flags/virtual-function-elimination.html)\n* [`-Z location-detail`](https://doc.rust-lang.org/stable/unstable-book/compiler-flags/location-detail.html)\n\n## wasm-opt\n\n*Note: In the future, `wasm-opt` will be supported natively through the [Dioxus CLI](https://crates.io/crates/dioxus-cli).*\n\n`wasm-opt` is a tool from the [binaryen](https://github.com/WebAssembly/binaryen) library that optimizes your WASM files.\nTo use it, install a [binaryen release](https://github.com/WebAssembly/binaryen/releases) and run this command from the package directory:\n\n````\nwasm-opt dist/assets/dioxus/APP_NAME_bg.wasm -o dist/assets/dioxus/APP_NAME_bg.wasm -Oz\n````\n\nThe `-Oz` flag specifies that `wasm-opt` should optimize for size. For speed, use `-O4`.\n\n## Improving Dioxus code\n\nLet's talk about how you can improve your Dioxus code to be more performant.\n\nIt's important to minimize the number of dynamic parts in your `rsx`, like conditional rendering.\nWhen Dioxus is rendering your component, it will skip parts that are the same as the last render.\nThat means that if you keep dynamic rendering to a minimum, your app will speed up, and quite a bit if it's not just hello world.\nTo see an example of this, check out [Dynamic Rendering](../reference/dynamic_rendering.md).\n\nAlso check out [Anti-patterns](antipatterns.md) for patterns that you should avoid.\nObviously, not all of them are just about performance, but some of them are.\n\n## Optimizing the size of assets\n\nAssets can be a significant part of your app's size. Dioxus includes alpha support for first party [assets](../reference/assets.md). Any assets you include with the `mg!` macro will be optimized for production in release builds."
-            }
-            2usize => {
-                "# Dioxus Guide\n\n## Introduction\n\nIn this guide, you'll learn to use Dioxus to build user interfaces that run anywhere. We will recreate the hackernews homepage in Dioxus:\n\n````inject-dioxus\nDemoFrame {\n    hackernews_complete::App {}\n}\n````\n\nThis guide serves a very brief overview of Dioxus. Throughout the guide, there will be links to the [reference](../reference/index.md) with more details about specific concepts."
-            }
-            39usize => {
-                "# Redirection Perfection\n\nYou're well on your way to becoming a routing master!\n\nIn this chapter, we will cover creating redirects\n\n## Creating Redirects\n\nA redirect is very simple. When dioxus encounters a redirect while finding out\nwhat components to render, it will redirect the user to the target of the\nredirect.\n\nAs a simple example, let's say you want user to still land on your blog, even\nif they used the path `/myblog` or `/myblog/:name`.\n\nRedirects are special attributes in the router enum that accept a route and a closure\nwith the route parameters. The closure should return a route to redirect to.\n\nLet's add a redirect to our router enum:\n\n````rust@full_example.rs\n#[derive(Routable, Clone)]\n#[rustfmt::skip]\nenum Route {\n    #[layout(NavBar)]\n        #[route(\"/\")]\n        Home {},\n        #[nest(\"/blog\")]\n            #[layout(Blog)]\n                #[route(\"/\")]\n                BlogList {},\n                #[route(\"/post/:name\")]\n                BlogPost { name: String },\n            #[end_layout]\n        #[end_nest]\n    #[end_layout]\n    #[nest(\"/myblog\")]\n        #[redirect(\"/\", || Route::BlogList {})]\n        #[redirect(\"/:name\", |name: String| Route::BlogPost { name })]\n    #[end_nest]\n    #[route(\"/:..route\")]\n    PageNotFound {\n        route: Vec<String>,\n    },\n}\n````\n\nThat's it! Now your users will be redirected to the blog.\n\n### Conclusion\n\nWell done! You've completed the Dioxus Router guide. You've built a small\napplication and learned about the many things you can do with Dioxus Router.\nTo continue your journey, you attempt a challenge listed below, look at the [router examples](https://github.com/DioxusLabs/dioxus/tree/v0.5/packages/router/examples), or\nthe [API reference](https://docs.rs/dioxus-router/).\n\n### Challenges\n\n* Organize your components into separate files for better maintainability.\n* Give your app some style if you haven't already.\n* Build an about page so your visitors know who you are.\n* Add a user system that uses URL parameters.\n* Create a simple admin system to create, delete, and edit blogs.\n* If you want to go to the max, hook up your application to a rest API and database."
-            }
-            47usize => {
-                "# History Providers\n\n\\[`HistoryProvider`\\]s are used by the router to keep track of the navigation history\nand update any external state (e.g. the browser's URL).\n\nThe router provides two \\[`HistoryProvider`\\]s, but you can also create your own.\nThe two default implementations are:\n\n* The \\[`MemoryHistory`\\] is a custom implementation that works in memory.\n* The \\[`LiveviewHistory`\\] is a custom implementation that works with the liveview renderer.\n* The \\[`WebHistory`\\] integrates with the browser's URL.\n\nBy default, the router uses the \\[`MemoryHistory`\\]. It might be changed to use\n\\[`WebHistory`\\] when the `web` feature is active, but that is not guaranteed.\n\nYou can override the default history:\n\n````rust@history_provider.rs\n#[component]\nfn App() -> Element {\n    rsx! {Router::<Route> { config: || RouterConfig::default().history(WebHistory::default()) }}\n}\n````"
-            }
-            71usize => {
-                "# Roadmap & Feature-set\n\nThis feature set and roadmap can help you decide if what Dioxus can do today works for you.\n\nIf a feature that you need doesn't exist or you want to contribute to projects on the roadmap, feel free to get involved by [joining the discord](https://discord.gg/XgGxMSkvUM).\n\nGenerally, here's the status of each platform:\n\n* **Web**: Dioxus is a great choice for pure web-apps – especially for CRUD/complex apps. However, it does lack the ecosystem of React, so you might be missing a component library or some useful hook.\n\n* **SSR**: Dioxus is a great choice for pre-rendering, hydration, and rendering HTML on a web endpoint. Be warned – the VirtualDom is not (currently) `Send + Sync`.\n\n* **Desktop**: You can build very competent single-window desktop apps right now. However, multi-window apps require support from Dioxus core and are not ready.\n\n* **Mobile**: Mobile support is very young. You'll be figuring things out as you go and there are not many support crates for peripherals.\n\n* **LiveView**: LiveView support is very young. You'll be figuring things out as you go. Thankfully, none of it is too hard and any work can be upstreamed into Dioxus.\n\n## Features\n\n---\n\n|Feature|Status|Description|\n|-------|------|-----------|\n|Conditional Rendering|x|if/then to hide/show component|\n|Map, Iterator|x|map/filter/reduce to produce rsx!|\n|Keyed Components|x|advanced diffing with keys|\n|Web|x|renderer for web browser|\n|Desktop (webview)|x|renderer for desktop|\n|Shared State (Context)|x|share state through the tree|\n|Hooks|x|memory cells in components|\n|SSR|x|render directly to string|\n|Component Children|x|cx.children() as a list of nodes|\n|Headless components|x|components that don't return real elements|\n|Fragments|x|multiple elements without a real root|\n|Manual Props|x|Manually pass in props with spread syntax|\n|Controlled Inputs|x|stateful wrappers around inputs|\n|CSS/Inline Styles|x|syntax for inline styles/attribute groups|\n|Custom elements|x|Define new element primitives|\n|Suspense|x|schedule future render from future/promise|\n|Integrated error handling|x|Gracefully handle errors with ? syntax|\n|NodeRef|x|gain direct access to nodes|\n|Re-hydration|x|Pre-render to HTML to speed up first contentful paint|\n|Jank-Free Rendering|x|Large diffs are segmented across frames for silky-smooth transitions|\n|Effects|x|Run effects after a component has been committed to render|\n|Portals|\\*|Render nodes outside of the traditional tree structure|\n|Cooperative Scheduling|\\*|Prioritize important events over non-important events|\n|Server Components|\\*|Hybrid components for SPA and Server|\n|Bundle Splitting|i|Efficiently and asynchronously load the app|\n|Lazy Components|i|Dynamically load the new components as the page is loaded|\n|1st class global state|x|redux/recoil/mobx on top of context|\n|Runs natively|x|runs as a portable binary w/o a runtime (Node)|\n|Subtree Memoization|x|skip diffing static element subtrees|\n|High-efficiency templates|x|rsx! calls are translated to templates on the DOM's side|\n|Compile-time correct|x|Throw errors on invalid template layouts|\n|Heuristic Engine|x|track component memory usage to minimize future allocations|\n|Fine-grained reactivity|i|Skip diffing for fine-grain updates|\n\n* x = implemented and working\n* \\* = actively being worked on\n* i = not yet implemented or being worked on\n\n## Roadmap\n\nThese Features are planned for the future of Dioxus:\n\n### Core\n\n* [x] Release of Dioxus Core\n* [x] Upgrade documentation to include more theory and be more comprehensive\n* [x] Support for HTML-side templates for lightning-fast dom manipulation\n* [ ] Support for multiple renderers for same virtualdom (subtrees)\n* [ ] Support for ThreadSafe (Send + Sync)\n* [ ] Support for Portals\n\n### SSR\n\n* [x] SSR Support + Hydration\n* [x] Integrated suspense support for SSR\n\n### Desktop\n\n* [ ] Declarative window management\n* [ ] Templates for building/bundling\n* [ ] Access to Canvas/WebGL context natively\n\n### Mobile\n\n* [ ] Mobile standard library\n  * [ ] GPS\n  * [ ] Camera\n  * [ ] filesystem\n  * [ ] Biometrics\n  * [ ] WiFi\n  * [ ] Bluetooth\n  * [ ] Notifications\n  * [ ] Clipboard\n* [ ] Animations\n\n### Bundling (CLI)\n\n* [x] Translation from HTML into RSX\n* [x] Dev server\n* [x] Live reload\n* [x] Translation from JSX into RSX\n* [ ] Hot module replacement\n* [ ] Code splitting\n* [x] Asset macros\n* [x] Css pipeline\n* [x] Image pipeline\n\n### Essential hooks\n\n* [x] Router\n* [x] Global state management\n* [ ] Resize observer\n\n## Work in Progress\n\n### Build Tool\n\nWe are currently working on our own build tool called [Dioxus CLI](https://github.com/DioxusLabs/dioxus/tree/main/packages/cli) which will support:\n\n* an interactive TUI\n* on-the-fly reconfiguration\n* hot CSS reloading\n* two-way data binding between browser and source code\n* an interpreter for `rsx!`\n* ability to publish to github/netlify/vercel\n* bundling for iOS/Desktop/etc\n\n### Server Component Support\n\nWhile not currently fully implemented, the expectation is that LiveView apps can be a hybrid between Wasm and server-rendered where only portions of a page are \"live\" and the rest of the page is either server-rendered, statically generated, or handled by the host SPA.\n\n### Native rendering\n\nWe are currently working on a native renderer for Dioxus using WGPU called [Blitz](https://github.com/DioxusLabs/blitz/). This will allow you to build apps that are rendered natively for iOS, Android, and Desktop."
-            }
-            30usize => {
-                "# Extractors\n\nServer functions are an ergonomic way to call a function on the server. Server function work by registering an endpoint on the server and using requests on the client. Most of the time, you shouldn't need to worry about how server functions operate, but there are some times when you need to get some value from the request other than the data passed in the server function.\n\nFor example, requests contain information about the user's browser (called the [user agent](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent)). We can use an extractor to retrieve that information.\n\nYou can use the `extract` method within a server function to extract something from the request. You can extract any type that implements `FromServerContext` (or when axum is enabled, you can use axum extractors directly):\n\n````rust@server_function_extract.rs\n#[server]\npub async fn log_headers() -> Result<(), ServerFnError> {\n    let headers: http::HeaderMap = extract().await?;\n    log::info!(\"{:?}\", headers[http::header::USER_AGENT]);\n    Ok(())\n}\n````"
-            }
-            3usize => {
-                "# Your First Component\n\nThis chapter will teach you how to create a [Component](../reference/components.md) that displays a link to a post on hackernews.\n\n## Setup\n\n > \n > Before you start the guide, make sure you have the dioxus CLI and any required dependencies for your platform as described in the [getting started](../getting_started/index.md) guide.\n\nFirst, let's create a new project for our hacker news app. We can use the CLI to create a new project. You can select a platform of your choice or view the getting started guide for more information on each option. If you aren't sure what platform to try out, we recommend getting started with web or desktop:\n\n````sh\ndx new\n````\n\nThe template contains some boilerplate to help you get started. For this guide, we will be rebuilding some of the code from scratch for learning purposes. You can clear the `src/main.rs` file. We will be adding new code in the next sections.\n\nNext, let's setup our dependencies. We need to set up a few dependencies to work with the hacker news API:\n\n````sh\ncargo add chrono --features serde\ncargo add futures\ncargo add reqwest --features json\ncargo add serde --features derive\ncargo add serde_json\ncargo add async_recursion\n````\n\n## Describing the UI\n\nNow, we can define how to display a post. Dioxus is a *declarative* framework. This means that instead of telling Dioxus what to do (e.g. to \"create an element\" or \"set the color to red\") we simply *declare* how we want the UI to look.\n\nTo declare what you want your UI to look like, you will need to use the `rsx` macro. Let's create a `main` function and an `App` component to show information about our story:\n\n````rust@hackernews_post.rs\nfn main() {\n    launch(App);\n}\n\npub fn App() -> Element {\n    rsx! {\"story\"}\n}\n````\n\nNow if you run your application you should see something like this:\n\n````inject-dioxus\nDemoFrame {\n\thackernews_post::story_v1::App {}\n}\n````\n\n > \n > RSX mirrors HTML. Because of this you will need to know some html to use Dioxus.\n > \n > Here are some resources to help get you started learning HTML:\n > \n > * [MDN HTML Guide](https://developer.mozilla.org/en-US/docs/Learn/HTML)\n > * [W3 Schools HTML Tutorial](https://www.w3schools.com/html/default.asp)\n > \n > In addition to HTML, Dioxus uses CSS to style applications. You can either use traditional CSS (what this guide uses) or use a tool like [tailwind CSS](https://tailwindcss.com/docs/installation):\n > \n > * [MDN Traditional CSS Guide](https://developer.mozilla.org/en-US/docs/Learn/HTML)\n > * [W3 Schools Traditional CSS Tutorial](https://www.w3schools.com/css/default.asp)\n > * [Tailwind tutorial](https://tailwindcss.com/docs/installation) (used with the [Tailwind setup example](https://github.com/DioxusLabs/dioxus/tree/v0.5/examples/tailwind))\n > \n > If you have existing html code, you can use the [translate](../CLI/translate.md) command to convert it to RSX. Or if you prefer to write html, you can use the [html! macro](https://github.com/DioxusLabs/dioxus-html-macro) to write html directly in your code.\n\n## Dynamic Text\n\nLet's expand our `App` component to include the story title, author, score, time posted, and number of comments. We can insert dynamic text in the render macro by inserting variables inside `{}`s (this works similarly to the formatting in the [println!](https://doc.rust-lang.org/std/macro.println.html) macro):\n\n````rust@hackernews_post.rs\npub fn App() -> Element {\n    let title = \"title\";\n    let by = \"author\";\n    let score = 0;\n    let time = chrono::Utc::now();\n    let comments = \"comments\";\n\n    rsx! {\"{title} by {by} ({score}) {time} {comments}\"}\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\thackernews_post::story_v2::App {}\n}\n````\n\n## Creating Elements\n\nNext, let's wrap our post description in a [`div`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/div). You can create HTML elements in Dioxus by putting a `{` after the element name and a `}` after the last child of the element:\n\n````rust@hackernews_post.rs\npub fn App() -> Element {\n    let title = \"title\";\n    let by = \"author\";\n    let score = 0;\n    let time = chrono::Utc::now();\n    let comments = \"comments\";\n\n    rsx! { div { \"{title} by {by} ({score}) {time} {comments}\" } }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\thackernews_post::story_v3::App {}\n}\n````\n\n > \n > You can read more about elements in the [rsx reference](../reference/rsx.md).\n\n## Setting Attributes\n\nNext, let's add some padding around our post listing with an attribute.\n\nAttributes (and [listeners](../reference/event_handlers.md)) modify the behavior or appearance of the element they are attached to. They are specified inside the `{}` brackets before any children, using the `name: value` syntax. You can format the text in the attribute as you would with a text node:\n\n````rust@hackernews_post.rs\npub fn App() -> Element {\n    let title = \"title\";\n    let by = \"author\";\n    let score = 0;\n    let time = chrono::Utc::now();\n    let comments = \"comments\";\n\n    rsx! {\n        div { padding: \"0.5rem\", position: \"relative\",\n            \"{title} by {by} ({score}) {time} {comments}\"\n        }\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\thackernews_post::story_v4::App {}\n}\n````\n\n > \n > Note: All attributes defined in [`dioxus-html`](https://docs.rs/dioxus-html/latest/dioxus_html/) follow the snake_case naming convention. They transform their `snake_case` names to HTML's `camelCase` attributes.\n\n > \n > Note: Styles can be used directly outside of the `style:` attribute. In the above example, `padding: \"0.5rem\"` is turned into `style=\"padding: 0.5rem\"`.\n\n > \n > You can read more about elements in the [attribute reference](../reference/rsx.md)\n\n## Creating a Component\n\nJust like you wouldn't want to write a complex program in a single, long, `main` function, you shouldn't build a complex UI in a single `App` function. Instead, you should break down the functionality of an app in logical parts called components.\n\nA component is a Rust function, named in UpperCamelCase, that takes a props parameter and returns an `Element` describing the UI it wants to render. In fact, our `App` function is a component!\n\nLet's pull our story description into a new component:\n\n````rust@hackernews_post.rs\nfn StoryListing() -> Element {\n    let title = \"title\";\n    let by = \"author\";\n    let score = 0;\n    let time = chrono::Utc::now();\n    let comments = \"comments\";\n\n    rsx! {\n        div { padding: \"0.5rem\", position: \"relative\",\n            \"{title} by {by} ({score}) {time} {comments}\"\n        }\n    }\n}\n````\n\nWe can render our component like we would an element by putting `{}`s after the component name. Let's modify our `App` component to render our new StoryListing component:\n\n````rust@hackernews_post.rs\npub fn App() -> Element {\n    rsx! { StoryListing {} }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\thackernews_post::story_v5::App {}\n}\n````\n\n > \n > You can read more about elements in the [component reference](../reference/components.md)\n\n## Creating Props\n\nJust like you can pass arguments to a function or attributes to an element, you can pass props to a component that customize its behavior!\n\nWe can define arguments that components can take when they are rendered (called `Props`) by adding the `#[component]` macro before our function definition and adding extra function arguments.\n\nCurrently, our `StoryListing` component always renders the same story. We can modify it to accept a story to render as a prop.\n\nWe will also define what a post is and include information for how to transform our post to and from a different format using [serde](https://serde.rs). This will be used with the hackernews API in a later chapter:\n\n````rust@hackernews_post.rs\nuse chrono::{DateTime, Utc};\nuse serde::{Deserialize, Serialize};\n\n// Define the Hackernews types\n#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]\npub struct StoryPageData {\n    #[serde(flatten)]\n    pub item: StoryItem,\n    #[serde(default)]\n    pub comments: Vec<CommentData>,\n}\n\n#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]\npub struct CommentData {\n    pub id: i64,\n    /// there will be no by field if the comment was deleted\n    #[serde(default)]\n    pub by: String,\n    #[serde(default)]\n    pub text: String,\n    #[serde(with = \"chrono::serde::ts_seconds\")]\n    pub time: DateTime<Utc>,\n    #[serde(default)]\n    pub kids: Vec<i64>,\n    #[serde(default)]\n    pub sub_comments: Vec<CommentData>,\n    pub r#type: String,\n}\n\n#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]\npub struct StoryItem {\n    pub id: i64,\n    pub title: String,\n    pub url: Option<String>,\n    pub text: Option<String>,\n    #[serde(default)]\n    pub by: String,\n    #[serde(default)]\n    pub score: i64,\n    #[serde(default)]\n    pub descendants: i64,\n    #[serde(with = \"chrono::serde::ts_seconds\")]\n    pub time: DateTime<Utc>,\n    #[serde(default)]\n    pub kids: Vec<i64>,\n    pub r#type: String,\n}\n\n#[component]\nfn StoryListing(story: ReadOnlySignal<StoryItem>) -> Element {\n    let StoryItem {\n        title,\n        url,\n        by,\n        score,\n        time,\n        kids,\n        ..\n    } = &*story.read();\n\n    let comments = kids.len();\n\n    rsx! {\n        div { padding: \"0.5rem\", position: \"relative\",\n            \"{title} by {by} ({score}) {time} {comments}\"\n        }\n    }\n}\n````\n\nMake sure to also add [serde](https://serde.rs) as a dependency:\n\n````bash\ncargo add serde --features derive\ncargo add serde_json\n````\n\nWe will also use the [chrono](https://crates.io/crates/chrono) crate to provide utilities for handling time data from the hackernews API:\n\n````bash\ncargo add chrono --features serde\n````\n\nNow, let's modify the `App` component to pass the story to our `StoryListing` component like we would set an attribute on an element:\n\n````rust@hackernews_post.rs\npub fn App() -> Element {\n    rsx! {\n        StoryListing {\n            story: StoryItem {\n                id: 0,\n                title: \"hello hackernews\".to_string(),\n                url: None,\n                text: None,\n                by: \"Author\".to_string(),\n                score: 0,\n                descendants: 0,\n                time: chrono::Utc::now(),\n                kids: vec![],\n                r#type: \"\".to_string(),\n            }\n        }\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\thackernews_post::story_v6::App {}\n}\n````\n\n > \n > You can read more about Props in the [Props reference](../reference/component_props.md)\n\n## Cleaning Up Our Interface\n\nFinally, by combining elements and attributes, we can make our post listing much more appealing:\n\nFull code up to this point:\n\n````rust@hackernews_post.rs\nuse dioxus::prelude::*;\n\n// Define the Hackernews types\nuse chrono::{DateTime, Utc};\nuse serde::{Deserialize, Serialize};\n\n#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]\npub struct StoryPageData {\n    #[serde(flatten)]\n    pub item: StoryItem,\n    #[serde(default)]\n    pub comments: Vec<CommentData>,\n}\n\n#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]\npub struct CommentData {\n    pub id: i64,\n    /// there will be no by field if the comment was deleted\n    #[serde(default)]\n    pub by: String,\n    #[serde(default)]\n    pub text: String,\n    #[serde(with = \"chrono::serde::ts_seconds\")]\n    pub time: DateTime<Utc>,\n    #[serde(default)]\n    pub kids: Vec<i64>,\n    #[serde(default)]\n    pub sub_comments: Vec<CommentData>,\n    pub r#type: String,\n}\n\n#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]\npub struct StoryItem {\n    pub id: i64,\n    pub title: String,\n    pub url: Option<String>,\n    pub text: Option<String>,\n    #[serde(default)]\n    pub by: String,\n    #[serde(default)]\n    pub score: i64,\n    #[serde(default)]\n    pub descendants: i64,\n    #[serde(with = \"chrono::serde::ts_seconds\")]\n    pub time: DateTime<Utc>,\n    #[serde(default)]\n    pub kids: Vec<i64>,\n    pub r#type: String,\n}\n\nfn main() {\n    launch(App);\n}\n\npub fn App() -> Element {\n    rsx! {\n        StoryListing {\n            story: StoryItem {\n                id: 0,\n                title: \"hello hackernews\".to_string(),\n                url: None,\n                text: None,\n                by: \"Author\".to_string(),\n                score: 0,\n                descendants: 0,\n                time: Utc::now(),\n                kids: vec![],\n                r#type: \"\".to_string(),\n            }\n        }\n    }\n}\n\n#[component]\nfn StoryListing(story: ReadOnlySignal<StoryItem>) -> Element {\n    let StoryItem {\n        title,\n        url,\n        by,\n        score,\n        time,\n        kids,\n        ..\n    } = &*story.read();\n\n    let url = url.as_deref().unwrap_or_default();\n    let hostname = url\n        .trim_start_matches(\"https://\")\n        .trim_start_matches(\"http://\")\n        .trim_start_matches(\"www.\");\n    let score = format!(\"{score} {}\", if *score == 1 { \" point\" } else { \" points\" });\n    let comments = format!(\n        \"{} {}\",\n        kids.len(),\n        if kids.len() == 1 {\n            \" comment\"\n        } else {\n            \" comments\"\n        }\n    );\n    let time = time.format(\"%D %l:%M %p\");\n\n    rsx! {\n        div { padding: \"0.5rem\", position: \"relative\",\n            div { font_size: \"1.5rem\",\n                a { href: url, \"{title}\" }\n                a {\n                    color: \"gray\",\n                    href: \"https://news.ycombinator.com/from?site={hostname}\",\n                    text_decoration: \"none\",\n                    \" ({hostname})\"\n                }\n            }\n            div { display: \"flex\", flex_direction: \"row\", color: \"gray\",\n                div { \"{score}\" }\n                div { padding_left: \"0.5rem\", \"by {by}\" }\n                div { padding_left: \"0.5rem\", \"{time}\" }\n                div { padding_left: \"0.5rem\", \"{comments}\" }\n            }\n        }\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\thackernews_post::story_final::App {}\n}\n````"
-            }
-            14usize => {
-                "# Sharing State\n\nOften, multiple components need to access the same state. Depending on your needs, there are several ways to implement this.\n\n## Lifting State\n\nOne approach to share state between components is to \"lift\" it up to the nearest common ancestor. This means putting the `use_signal` hook in a parent component, and passing the needed values down as props.\n\nSuppose we want to build a meme editor. We want to have an input to edit the meme caption, but also a preview of the meme with the caption. Logically, the meme and the input are 2 separate components, but they need access to the same state (the current caption).\n\n > \n > Of course, in this simple example, we could write everything in one component – but it is better to split everything out in smaller components to make the code more reusable, maintainable, and performant (this is even more important for larger, complex apps).\n\nWe start with a `Meme` component, responsible for rendering a meme with a given caption:\n\n````rust, no_run@meme_editor.rs\n#[component]\nfn Meme(caption: String) -> Element {\n    let container_style = r#\"\n        position: relative;\n        width: fit-content;\n    \"#;\n\n    let caption_container_style = r#\"\n        position: absolute;\n        bottom: 0;\n        left: 0;\n        right: 0;\n        padding: 16px 8px;\n    \"#;\n\n    let caption_style = r\"\n        font-size: 32px;\n        margin: 0;\n        color: white;\n        text-align: center;\n    \";\n\n    rsx! {\n        div { style: \"{container_style}\",\n            img { src: \"https://i.imgflip.com/2zh47r.jpg\", height: \"500px\" }\n            div { style: \"{caption_container_style}\", p { style: \"{caption_style}\", \"{caption}\" } }\n        }\n    }\n}\n````\n\n > \n > Note that the `Meme` component is unaware where the caption is coming from – it could be stored in `use_signal`, or a constant. This ensures that it is very reusable – the same component can be used for a meme gallery without any changes!\n\nWe also create a caption editor, completely decoupled from the meme. The caption editor must not store the caption itself – otherwise, how will we provide it to the `Meme` component? Instead, it should accept the current caption as a prop, as well as an event handler to delegate input events to:\n\n````rust, no_run@meme_editor.rs\n#[component]\nfn CaptionEditor(caption: String, oninput: EventHandler<FormEvent>) -> Element {\n    let input_style = r\"\n        border: none;\n        background: cornflowerblue;\n        padding: 8px 16px;\n        margin: 0;\n        border-radius: 4px;\n        color: white;\n    \";\n\n    rsx! {\n        input {\n            style: \"{input_style}\",\n            value: \"{caption}\",\n            oninput: move |event| oninput.call(event)\n        }\n    }\n}\n````\n\nFinally, a third component will render the other two as children. It will be responsible for keeping the state and passing down the relevant props.\n\n````rust, no_run@meme_editor.rs\nfn MemeEditor() -> Element {\n    let container_style = r\"\n        display: flex;\n        flex-direction: column;\n        gap: 16px;\n        margin: 0 auto;\n        width: fit-content;\n    \";\n\n    let mut caption = use_signal(|| \"me waiting for my rust code to compile\".to_string());\n\n    rsx! {\n        div { style: \"{container_style}\",\n            h1 { \"Meme Editor\" }\n            Meme { caption: caption }\n            CaptionEditor { caption: caption, oninput: move |event: FormEvent| caption.set(event.value()) }\n        }\n    }\n}\n````\n\n![Meme Editor Screenshot: An old plastic skeleton sitting on a park bench. Caption: \"me waiting for a language feature\"](/assets/static/meme_editor_screenshot.png)\n\n## Using Shared State\n\nSometimes, some state needs to be shared between multiple components far down the tree, and passing it down through props is very inconvenient.\n\nSuppose now that we want to implement a dark mode toggle for our app. To achieve this, we will make every component select styling depending on whether dark mode is enabled or not.\n\n > \n > Note: we're choosing this approach for the sake of an example. There are better ways to implement dark mode (e.g. using CSS variables). Let's pretend CSS variables don't exist – welcome to 2013!\n\nNow, we could write another `use_signal` in the top component, and pass `is_dark_mode` down to every component through props. But think about what will happen as the app grows in complexity – almost every component that renders any CSS is going to need to know if dark mode is enabled or not – so they'll all need the same dark mode prop. And every parent component will need to pass it down to them. Imagine how messy and verbose that would get, especially if we had components several levels deep!\n\nDioxus offers a better solution than this \"prop drilling\" – providing context. The [`use_context_provider`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context_provider.html) hook provides any Clone context (including Signals!) to any child components. Child components can use the [`use_context`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context.html) hook to get that context and if it is a Signal, they can read and write to it.\n\nFirst, we have to create a struct for our dark mode configuration:\n\n````rust, no_run@meme_editor_dark_mode.rs\n#[derive(Clone, Copy)]\nstruct DarkMode(bool);\n````\n\nNow, in a top-level component (like `App`), we can provide the `DarkMode` context to all children components:\n\n````rust, no_run@meme_editor_dark_mode.rs\nuse_context_provider(|| Signal::new(DarkMode(false)));\n````\n\nAs a result, any child component of `App` (direct or not), can access the `DarkMode` context.\n\n````rust, no_run@meme_editor_dark_mode.rs\nlet dark_mode_context = use_context::<Signal<DarkMode>>();\n````\n\n > \n > `use_context` returns `Signal<DarkMode>` here, because the Signal was provided by the parent. If the context hadn't been provided `use_context` would have panicked.\n\nIf you have a component where the context might or not be provided, you might want to use `try_consume_context`instead, so you can handle the `None` case. The drawback of this method is that it will not memoize the value between renders, so it won't be as as efficient as `use_context`, you could do it yourself with `use_hook` though.\n\nFor example, here's how we would implement the dark mode toggle, which both reads the context (to determine what color it should render) and writes to it (to toggle dark mode):\n\n````rust, no_run@meme_editor_dark_mode.rs\npub fn DarkModeToggle() -> Element {\n    let mut dark_mode = use_context::<Signal<DarkMode>>();\n\n    let style = if dark_mode().0 { \"color:white\" } else { \"\" };\n\n    rsx! {\n        label { style: \"{style}\",\n            \"Dark Mode\"\n            input {\n                r#type: \"checkbox\",\n                oninput: move |event| {\n                    let is_enabled = event.value() == \"true\";\n                    dark_mode.write().0 = is_enabled;\n                }\n            }\n        }\n    }\n}\n````"
-            }
-            28usize => {
-                "# Fullstack development\n\nDioxus Fullstack contains helpers for:\n\n* Incremental, static, and server side rendering\n* Hydrating your application on the Client\n* Communicating between a server and a client\n\nThis guide will teach you everything you need to know about how to use the utilities in Dioxus fullstack to create amazing fullstack applications.\n\n > \n > In addition to this guide, you can find more examples of full-stack apps and information about how to integrate with other frameworks and desktop renderers in the [dioxus-fullstack examples directory](https://github.com/DioxusLabs/dioxus/tree/v0.5/packages/fullstack/examples)."
-            }
-            67usize => {
-                "# Translating existing HTML\n\nDioxus uses a custom format called RSX to represent the HTML because it is more concise and looks more like Rust code. However, it can be a pain to convert existing HTML to RSX. That's why Dioxus comes with a tool called `dx translate` that can automatically convert HTML to RSX!\n\nDx translate can make converting large chunks of HTML to RSX much easier! Lets try translating some of the HTML from the Dioxus homepage:\n\n````sh\ndx translate --raw  \"<div class=\\\"relative w-full mx-4 sm:mx-auto text-gray-600\\\"><div class=\\\"text-[3em] md:text-[5em] font-semibold dark:text-white text-ghdarkmetal font-sans py-12 flex flex-col\\\"><span>Fullstack, crossplatform,</span><span>lightning fast, fully typed.</span></div><h3 class=\\\"text-[2em] dark:text-white font-extralight text-ghdarkmetal pt-4 max-w-screen-md mx-auto\\\">Dioxus is a Rust library for building apps that run on desktop, web, mobile, and more.</h3><div class=\\\"pt-12 text-white text-[1.2em] font-sans font-bold flex flex-row justify-center space-x-4\\\"><a href=\\\"/learn/0.5/getting_started\\\" dioxus-prevent-default=\\\"onclick\\\" class=\\\"bg-red-600 py-2 px-8 hover:-translate-y-2 transition-transform duration-300\\\" data-dioxus-id=\\\"216\\\">Quickstart</a><a href=\\\"/learn/0.5/reference\\\" dioxus-prevent-default=\\\"onclick\\\" class=\\\"bg-blue-500 py-2 px-8 hover:-translate-y-2 transition-transform duration-300\\\" data-dioxus-id=\\\"214\\\">Read the docs</a></div><div class=\\\"max-w-screen-2xl mx-auto pt-36\\\"><h1 class=\\\"text-md\\\">Trusted by top companies</h1><div class=\\\"pt-4 flex flex-row flex-wrap justify-center\\\"><div class=\\\"h-12 w-40 bg-black p-2 m-4 flex justify-center items-center\\\"><img src=\\\"static/futurewei_bw.png\\\"></div><div class=\\\"h-12 w-40 bg-black p-2 m-4 flex justify-center items-center\\\"><img src=\\\"static/airbuslogo.svg\\\"></div><div class=\\\"h-12 w-40 bg-black p-2 m-4 flex justify-center items-center\\\"><img src=\\\"static/ESA_logo.svg\\\"></div><div class=\\\"h-12 w-40 bg-black p-2 m-4 flex justify-center items-center\\\"><img src=\\\"static/yclogo.svg\\\"></div><div class=\\\"h-12 w-40 bg-black p-2 m-4 flex justify-center items-center\\\"><img src=\\\"static/satellite.webp\\\"></div></div></div></div>\"\n````\n\nWe get the following RSX you can easily copy and paste into your code:\n\n````rs\ndiv { class: \"relative w-full mx-4 sm:mx-auto text-gray-600\",\n   div { class: \"text-[3em] md:text-[5em] font-semibold dark:text-white text-ghdarkmetal font-sans py-12 flex flex-col\",\n      span { \"Fullstack, crossplatform,\" }\n      span { \"lightning fast, fully typed.\" }\n   }\n   h3 { class: \"text-[2em] dark:text-white font-extralight text-ghdarkmetal pt-4 max-w-screen-md mx-auto\",\n      \"Dioxus is a Rust library for building apps that run on desktop, web, mobile, and more.\"\n   }\n   div { class: \"pt-12 text-white text-[1.2em] font-sans font-bold flex flex-row justify-center space-x-4\",\n      a {\n         href: \"/learn/0.5/getting_started\",\n         data_dioxus_id: \"216\",\n         dioxus_prevent_default: \"onclick\",\n         class: \"bg-red-600 py-2 px-8 hover:-translate-y-2 transition-transform duration-300\",\n         \"Quickstart\"\n      }\n      a {\n         dioxus_prevent_default: \"onclick\",\n         href: \"/learn/0.5/reference\",\n         data_dioxus_id: \"214\",\n         class: \"bg-blue-500 py-2 px-8 hover:-translate-y-2 transition-transform duration-300\",\n         \"Read the docs\"\n      }\n   }\n   div { class: \"max-w-screen-2xl mx-auto pt-36\",\n      h1 { class: \"text-md\", \"Trusted by top companies\" }\n      div { class: \"pt-4 flex flex-row flex-wrap justify-center\",\n         div { class: \"h-12 w-40 p-2 m-4 flex justify-center items-center\",\n            img { src: \"static/futurewei_bw.png\" }\n         }\n         div { class: \"h-12 w-40 p-2 m-4 flex justify-center items-center\",\n            img { src: \"static/airbuslogo.svg\" }\n         }\n         div { class: \"h-12 w-40 p-2 m-4 flex justify-center items-center\",\n            img { src: \"static/ESA_logo.svg\" }\n         }\n         div { class: \"h-12 w-40 p-2 m-4 flex justify-center items-center\",\n            img { src: \"static/yclogo.svg\" }\n         }\n         div { class: \"h-12 w-40 p-2 m-4 flex justify-center items-center\",\n            img { src: \"static/satellite.webp\" }\n         }\n      }\n   }\n}\n````\n\n## Usage\n\nThe `dx translate` command has several flags you can use to control your html input and rsx output.\n\nYou can use the `--file` flag to translate an HTML file to RSX:\n\n````sh\ndx translate --file index.html\n````\n\nOr you can use the `--raw` flag to translate a string of HTML to RSX:\n\n````sh\ndx translate --raw \"<div>Hello world</div>\"\n````\n\nBoth of those commands will output the following RSX:\n\n````rs\ndiv { \"Hello world\" }\n````\n\nThe `dx translate` command will output the RSX to stdout. You can use the `--output` flag to write the RSX to a file instead.\n\n````sh\ndx translate --raw \"<div>Hello world</div>\" --output index.rs\n````\n\nYou can automatically create a component with the `--component` flag.\n\n````sh\ndx translate --raw \"<div>Hello world</div>\" --component\n````\n\nThis will output the following component:\n\n````rs\nfn component() -> Element {\n   rsx! {\n      div { \"Hello world\" }\n   }\n}\n````\n\nTo learn more about the different flags `dx translate` supports, run `dx translate --help`."
-            }
-            70usize => {
-                "# Overall Goals\n\nThis document outlines some of the overall goals for Dioxus. These goals are not set in stone, but they represent general guidelines for the project.\n\nThe goal of Dioxus is to make it easy to build **cross-platform applications that scale**.\n\n## Cross-Platform\n\nDioxus is designed to be cross-platform by default. This means that it should be easy to build applications that run on the web, desktop, and mobile. However, Dioxus should also be flexible enough to allow users to opt into platform-specific features when needed. The `use_eval` is one example of this. By default, Dioxus does not assume that the platform supports JavaScript, but it does provide a hook that allows users to opt into JavaScript when needed.\n\n## Performance\n\nAs Dioxus applications grow, they should remain relatively performant without the need for manual optimizations. There will be cases where manual optimizations are needed, but Dioxus should try to make these cases as rare as possible.\n\nOne of the benefits of the core architecture of Dioxus is that it delivers reasonable performance even when components are rerendered often. It is based on a Virtual Dom which performs diffing which should prevent unnecessary re-renders even when large parts of the component tree are rerun. On top of this, Dioxus groups static parts of the RSX tree together to skip diffing them entirely.\n\n## Type Safety\n\nAs teams grow, the Type safety of Rust is a huge advantage. Dioxus should leverage this advantage to make it easy to build applications with large teams.\n\nTo take full advantage of Rust's type system, Dioxus should try to avoid exposing public `Any` types and string-ly typed APIs where possible.\n\n## Developer Experience\n\nDioxus should be easy to learn and ergonomic to use.\n\n* The API of Dioxus attempts to remain close to React's API where possible. This makes it easier for people to learn Dioxus if they already know React\n\n* We can avoid the tradeoff between simplicity and flexibility by providing multiple layers of API: One for the very common use case, one for low-level control\n  \n  * Hooks: the hooks crate has the most common use cases, but `use_hook` provides a way to access the underlying persistent value if needed.\n  * The builder pattern in platform Configs: The builder pattern is used to default to the most common use case, but users can change the defaults if needed.\n* Documentation:\n  \n  * All public APIs should have rust documentation\n  * Examples should be provided for all public features. These examples both serve as documentation and testing. They are checked by CI to ensure that they continue to compile\n  * The most common workflows should be documented in the guide"
-            }
-            54usize => {
-                "This section of the guide provides getting started guides for common tools used with Dioxus.\n\n* [Logging](./logging.md)\n* [Internationalization](./internationalization.md)"
-            }
-            75usize => {
-                "# Fermi\n\nIn dioxus 0.5, fermi atoms have been replaced with global signals and included in the main dioxus library.\n\nThe new global signals can be used directly without hooks and include additional functionality like global memos.\n\nDioxus 0.4:\n\n````rust\nuse dioxus::prelude::*;\nuse fermi::*;\n\nstatic NAME: Atom<String> = Atom(|_| \"world\".to_string());\nstatic NAMES: AtomRef<Vec<String>> = AtomRef(|_| vec![\"world\".to_string()]);\n\nfn app(cx: Scope) -> Element {\n    use_init_atom_root(cx);\n    let set_name = use_set(cx, &NAME);\n\tlet names = use_atom_ref(cx, &NAMES);\n\n    cx.render(rsx! {\n        button {\n\t\t\tonclick: move |_| set_name(\"dioxus\".to_string()),\n\t\t\t\"reset name\"\n\t\t}\n\t\t\"{names.read():?}\"\n    })\n}\n````\n\nDioxus 0.5:\n\n````rust@migration_fermi.rs\nuse dioxus::prelude::*;\n\nstatic NAME: GlobalSignal<String> = Signal::global(|| \"world\".to_string());\n// Global signals work for copy and clone types in the same way\nstatic NAMES: GlobalSignal<Vec<String>> = Signal::global(|| vec![\"world\".to_string()]);\n\nfn app() -> Element {\n    // No need to use use_init_atom_root, use_set, or use_atom_ref. Just use the global signal directly\n    rsx! {\n        button { onclick: move |_| *NAME.write() = \"reset name\".to_string(), \"reset name\" }\n        \"{NAMES:?}\"\n    }\n}\n````\n\n## Memos\n\nDioxus 0.5 introduces global memos which can be used to store computed values globally.\n\n````rust@migration_fermi.rs\nstatic COUNT: GlobalSignal<u32> = Signal::global(|| 0);\nstatic MEMO: GlobalMemo<u32> = Signal::global_memo(|| COUNT() + 1);\n\nfn GlobalMemo() -> Element {\n    rsx! {\n        button { onclick: move |_| *COUNT.write() += 1, \"increment\" }\n        // Global memos can be used like signals\n        \"{MEMO}\"\n    }\n}\n````"
-            }
-            57usize => {
-                "# State Cookbook\n\n* [External State](external/index.md)\n* [Custom Hook](custom_hooks/index.md)"
-            }
-            73usize => {
-                "# Hooks\n\nDioxus now uses signals as the backing for its state management. Signals are a smarter, more flexible version of the `use_ref` hook. Signals now back many hooks in dioxus to provide a more consistent and flexible API.\n\n### State Hooks\n\nState hooks are now backed by signals. `use_state`, `use_ref`, and `use_shared_state` have been replaced with the `use_signal` hook. The `use_signal` hook is a more flexible and powerful version of the `use_ref` hook with smarter scopes that only subscribe to a signal if that signal is read within the scope. You can read more about the `use_signal` hook in the [State Migration](state.md) guide.\n\n### Async Hooks\n\nThe `use_future` hook has been replaced with the `use_resource` hook. `use_resource` automatically subscribes to any signals that are read within the closure instead of using a tuple of dependencies.\n\nDioxus 0.4:\n\n````rust\nfn MyComponent(cx: Scope) -> Element {\n\tlet state = use_state(cx, || 0);\n\tlet my_resource = use_future(cx, (**state,), |(state,)| async move {\n\t\t// start a request that depends on the state\n\t\tprintln!(\"{state}\");\n\t});\n\trender! {\n\t\t\"{state}\"\n\t}\n}\n````\n\nDioxus 0.5:\n\n````rust@migration_hooks.rs\nfn MyComponent() -> Element {\n    let state = use_signal(|| 0);\n    // No need to manually set the dependencies, the use_resource hook will automatically detect signal dependencies\n    let my_resource = use_resource(move || async move {\n        // start a request that depends on the state\n        // Because we read from the state signal, this future will be re-run whenever the state changes\n        println!(\"{state}\");\n    });\n    rsx! {\"{state}\"}\n}\n````\n\n### Dependencies\n\nSome hooks including `use_effect` and `use_resource` now take a single closure with automatic subscriptions instead of a tuple of dependencies. You can read more about the `use_resource` hook in the [Hook Migration](hooks.md) guide.\n\nDioxus 0.4:\n\n````rust\nfn HasDependencies(cx: Scope) -> Element {\n\tlet state = use_state(cx, || 0);\n\tlet my_resource = use_resource(cx, (**state,), |(state,)| async move {\n\t\tprintln!(\"{state}\");\n\t});\n\tlet state_plus_one = use_memo(cx, (**state,), |(state,)| {\n\t\tstate() + 1\n\t});\n\trender! {\n\t\t\"{state_plus_one}\"\n\t}\n}\n````\n\nDioxus 0.5:\n\n````rust@migration_hooks.rs\nfn HasDependencies() -> Element {\n    let state = use_signal(|| 0);\n    // No need to manually set the dependencies, the use_resource hook will automatically detect signal dependencies\n    let my_resource = use_resource(move || async move {\n        // Because we read from the state signal, this future will be re-run whenever the state changes\n        println!(\"{state}\");\n    });\n    let state_plus_one = use_memo(move || {\n        // Because we read from the state signal, this future will be re-run whenever the state changes\n        state() + 1\n    });\n    rsx! {\"{state_plus_one}\"}\n}\n````"
-            }
-            51usize => {
-                "# Publishing\n\nAfter you have build your application, you will need to publish it somewhere. This reference will outline different methods of publishing your desktop or web application.\n\n## Web: Publishing with GitHub Pages\n\nEdit your `Dioxus.toml` to point your `out_dir` to the `docs` folder and the `base_path` to the name of your repo:\n\n````toml\n[application]\n# ...\nout_dir = \"docs\"\n\n[web.app]\nbase_path = \"your_repo\"\n````\n\nThen build your app and publish it to Github:\n\n* Make sure GitHub Pages is set up for your repo to publish any static files in the docs directory\n* Build your app with:\n\n````sh\ndx build --release\n````\n\n* Make a copy of your `docs/index.html` file and rename the copy to `docs/404.html` so that your app will work with client-side routing\n* Add and commit with git\n* Push to GitHub\n\n## Desktop: Creating an installer\n\nDioxus desktop app uses your operating system's WebView library, so it's portable to be distributed for other platforms.\n\nIn this section, we'll cover how to bundle your app for macOS, Windows, and Linux.\n\n## Preparing your application for bundling\n\nDepending on your platform, you may need to add some additional code to your `main.rs` file to make sure your app is ready for bundling. On Windows, you'll need to add the `#![windows_subsystem = \"windows\"]` attribute to your `main.rs` file to hide the terminal window that pops up when you run your app. **If you're developing on Windows, only use this when bundling.** It will disable the terminal, so you will not get logs of any kind. You can gate it behind a feature, like so:\n\n````toml\n# Cargo.toml\n[features]\nbundle = []\n````\n\nAnd then your `main.rs`:\n\n````rust\n#![cfg_attr(feature = \"bundle\", windows_subsystem = \"windows\")]\n````\n\n## Adding assets to your application\n\nIf you want to bundle assets with your application, you can either use them with the `manganis` crate (covered more in the [assets](../reference/assets.md) page), or you can include them in your `Dioxus.toml` file:\n\n````toml\n[bundle]\n# The list of files to include in the bundle. These can contain globs.\nresources = [\"main.css\", \"header.svg\", \"**/*.png\"]\n````\n\n## Install `dioxus CLI`\n\nThe first thing we'll do is install the [dioxus-cli](https://github.com/DioxusLabs/dioxus/tree/v0.5/packages/cli). This extension to cargo will make it very easy to package our app for the various platforms.\n\nTo install, simply run\n\n`cargo install dioxus-cli`\n\n## Building\n\nTo bundle your application you can simply run `dx bundle --release` (also add `--features bundle` if you're using that, see the [this](#preparing-your-application-for-bundling) for more) to produce a final app with all the optimizations and assets builtin.\n\nOnce you've ran the command, your app should be accessible in `dist/bundle/`.\n\nFor example, a macOS app would look like this:\n\n![Published App](/assets/static/publish.png)\n\nNice! And it's only 4.8 Mb – extremely lean!! Because Dioxus leverages your platform's native WebView, Dioxus apps are extremely memory efficient and won't waste your battery.\n\n > \n > Note: not all CSS works the same on all platforms. Make sure to view your app's CSS on each platform – or web browser (Firefox, Chrome, Safari) before publishing."
+            4usize => {
+                "# Interactivity\n\nIn this chapter, we will add a preview for articles you hover over or links you focus on.\n\n## Creating a Preview\n\nFirst, let's split our app into a Stories component on the left side of the screen, and a preview component on the right side of the screen:\n\n````rust@hackernews_state.rs\npub fn App() -> Element {\n    rsx! {\n        div { display: \"flex\", flex_direction: \"row\", width: \"100%\",\n            div { width: \"50%\", Stories {} }\n            div { width: \"50%\", Preview {} }\n        }\n    }\n}\n\n// New\nfn Stories() -> Element {\n    rsx! {\n        StoryListing {\n            story: StoryItem {\n                id: 0,\n                title: \"hello hackernews\".to_string(),\n                url: None,\n                text: None,\n                by: \"Author\".to_string(),\n                score: 0,\n                descendants: 0,\n                time: chrono::Utc::now(),\n                kids: vec![],\n                r#type: \"\".to_string(),\n            }\n        }\n    }\n}\n\n// New\n#[derive(Clone, Debug)]\nenum PreviewState {\n    Unset,\n    Loading,\n    Loaded(StoryPageData),\n}\n\n// New\nfn Preview() -> Element {\n    let preview_state = PreviewState::Unset;\n    match preview_state {\n        PreviewState::Unset => rsx! {\"Hover over a story to preview it here\"},\n        PreviewState::Loading => rsx! {\"Loading...\"},\n        PreviewState::Loaded(story) => {\n            rsx! {\n                div { padding: \"0.5rem\",\n                    div { font_size: \"1.5rem\", a { href: story.item.url, \"{story.item.title}\" } }\n                    div { dangerous_inner_html: story.item.text }\n                    for comment in &story.comments {\n                        Comment { comment: comment.clone() }\n                    }\n                }\n            }\n        }\n    }\n}\n\n// NEW\n#[component]\nfn Comment(comment: CommentData) -> Element {\n    rsx! {\n        div { padding: \"0.5rem\",\n            div { color: \"gray\", \"by {comment.by}\" }\n            div { dangerous_inner_html: \"{comment.text}\" }\n            for kid in &comment.sub_comments {\n                Comment { comment: kid.clone() }\n            }\n        }\n    }\n}\n\n````\n\n````inject-dioxus\nDemoFrame {\n    hackernews_state::app_v1::App {}\n}\n````\n\n## Event Handlers\n\nNext, we need to detect when the user hovers over a section or focuses a link. We can use an [event listener](../reference/event_handlers.md) to listen for the hover and focus events.\n\nEvent handlers are similar to regular attributes, but their name usually starts with `on`- and they accept closures as values. The closure will be called whenever the event it listens for is triggered. When an event is triggered, information about the event is passed to the closure through the [Event](https://docs.rs/dioxus/latest/dioxus/prelude/struct.Event.html) structure.\n\nLet's create a [`onmouseenter`](https://docs.rs/dioxus/latest/dioxus/events/fn.onmouseenter.html) event listener in the `StoryListing` component:\n\n````rust@hackernews_state.rs\nrsx! {\n    div {\n        padding: \"0.5rem\",\n        position: \"relative\",\n        onmouseenter: move |_| {},\n        div { font_size: \"1.5rem\",\n            a { href: url, onfocus: move |_event| {}, \"{title}\" }\n            a {\n                color: \"gray\",\n                href: \"https://news.ycombinator.com/from?site={hostname}\",\n                text_decoration: \"none\",\n                \" ({hostname})\"\n            }\n        }\n        div { display: \"flex\", flex_direction: \"row\", color: \"gray\",\n            div { \"{score}\" }\n            div { padding_left: \"0.5rem\", \"by {by}\" }\n            div { padding_left: \"0.5rem\", \"{time}\" }\n            div { padding_left: \"0.5rem\", \"{comments}\" }\n        }\n    }\n}\n````\n\n > \n > You can read more about Event Handlers in the [Event Handler reference](../reference/event_handlers.md)\n\n## State\n\nSo far our components have had no state like normal rust functions. To make our application change when we hover over a link we need state to store the currently hovered link in the root of the application.\n\nYou can create state in dioxus using hooks. Hooks are Rust functions you call in a constant order in a component that add additional functionality to the component.\n\nIn this case, we will use the `use_context_provider` and `use_context` hooks:\n\n* You can provide a closure to `use_context_provider` that determines the initial value of the shared state and provides the value to all child components\n* You can then use the `use_context` hook to read and modify that state in the `Preview` and `StoryListing` components\n* When the value updates, the `Signal` will cause the component to re-render, and provides you with the new value\n\n > \n > Note: You should prefer local state hooks like use_signal or use_signal_sync when you only use state in one component. Because we use state in multiple components, we can use a [global state pattern](../reference/context.md)\n\n````rust@hackernews_state.rs\npub fn App() -> Element {\n    use_context_provider(|| Signal::new(PreviewState::Unset));\n````\n\n````rust@hackernews_state.rs\n#[component]\nfn StoryListing(story: ReadOnlySignal<StoryItem>) -> Element {\n    let mut preview_state = consume_context::<Signal<PreviewState>>();\n    let StoryItem {\n        title,\n        url,\n        by,\n        score,\n        time,\n        kids,\n        ..\n    } = &*story.read();\n\n    let url = url.as_deref().unwrap_or_default();\n    let hostname = url\n        .trim_start_matches(\"https://\")\n        .trim_start_matches(\"http://\")\n        .trim_start_matches(\"www.\");\n    let score = format!(\"{score} point{}\", if *score > 1 { \"s\" } else { \"\" });\n    let comments = format!(\n        \"{} {}\",\n        kids.len(),\n        if kids.len() == 1 {\n            \" comment\"\n        } else {\n            \" comments\"\n        }\n    );\n    let time = time.format(\"%D %l:%M %p\");\n\n    rsx! {\n        div {\n            padding: \"0.5rem\",\n            position: \"relative\",\n            onmouseenter: move |_event| {\n                *preview_state\n                    .write() = PreviewState::Loaded(StoryPageData {\n                    item: story(),\n                    comments: vec![],\n                });\n            },\n            div { font_size: \"1.5rem\",\n                a {\n                    href: url,\n                    onfocus: move |_event| {\n                        *preview_state\n                            .write() = PreviewState::Loaded(StoryPageData {\n                            item: story(),\n                            comments: vec![],\n                        });\n                    },\n````\n\n````rust@hackernews_state.rs\nfn Preview() -> Element {\n    // New\n    let preview_state = consume_context::<Signal<PreviewState>>();\n\n    // New\n    match preview_state() {\n````\n\n````inject-dioxus\nDemoFrame {\n    hackernews_state::App {}\n}\n````\n\n > \n > You can read more about Hooks in the [Hooks reference](../reference/hooks.md)\n\n### The Rules of Hooks\n\nHooks are a powerful way to manage state in Dioxus, but there are some rules you need to follow to insure they work as expected. Dioxus uses the order you call hooks to differentiate between hooks. Because the order you call hooks matters, you must follow these rules:\n\n1. Hooks may be only used in components or other hooks (we'll get to that later)\n1. On every call to the component function\n   1. The same hooks must be called\n   1. In the same order\n1. Hooks name's should start with `use_` so you don't accidentally confuse them with regular functions\n\nThese rules mean that there are certain things you can't do with hooks:\n\n#### No Hooks in Conditionals\n\n````rust@hooks_bad.rs\n// ❌ don't call hooks in conditionals!\n// We must ensure that the same hooks will be called every time\n// But `if` statements only run if the conditional is true!\n// So we might violate rule 2.\nif you_are_happy && you_know_it {\n    let something = use_signal(|| \"hands\");\n    println!(\"clap your {something}\")\n}\n\n// ✅ instead, *always* call use_signal\n// You can put other stuff in the conditional though\nlet something = use_signal(|| \"hands\");\nif you_are_happy && you_know_it {\n    println!(\"clap your {something}\")\n}\n````\n\n#### No Hooks in Closures\n\n````rust@hooks_bad.rs\n// ❌ don't call hooks inside closures!\n// We can't guarantee that the closure, if used, will be called in the same order every time\nlet _a = || {\n    let b = use_signal(|| 0);\n    b()\n};\n\n// ✅ instead, move hook `b` outside\nlet b = use_signal(|| 0);\nlet _a = || b();\n````\n\n#### No Hooks in Loops\n\n````rust@hooks_bad.rs\n// `names` is a Vec<&str>\n\n// ❌ Do not use hooks in loops!\n// In this case, if the length of the Vec changes, we break rule 2\nfor _name in &names {\n    let is_selected = use_signal(|| false);\n    println!(\"selected: {is_selected}\");\n}\n\n// ✅ Instead, use a hashmap with use_signal\nlet selection_map = use_signal(HashMap::<&str, bool>::new);\n\nfor name in &names {\n    let is_selected = selection_map.read()[name];\n    println!(\"selected: {is_selected}\");\n}\n````"
             }
             26usize => {
                 "# Server-Side Rendering\n\nFor lower-level control over the rendering process, you can use the `dioxus-ssr` crate directly. This can be useful when integrating with a web framework that `dioxus-fullstack` does not support, or pre-rendering pages.\n\n## Setup\n\nFor this guide, we're going to show how to use Dioxus SSR with [Axum](https://docs.rs/axum/latest/axum/).\n\nMake sure you have Rust and Cargo installed, and then create a new project:\n\n````shell\ncargo new --bin demo\ncd demo\n````\n\nAdd Dioxus and the ssr renderer as dependencies:\n\n````shell\ncargo add dioxus@0.5.0\ncargo add dioxus-ssr@0.5.0\n````\n\nNext, add all the Axum dependencies. This will be different if you're using a different Web Framework\n\n````\ncargo add tokio --features full\ncargo add axum\n````\n\nYour dependencies should look roughly like this:\n\n````toml\n[dependencies]\naxum = \"0.7\"\ndioxus = { version = \"*\" }\ndioxus-ssr = { version = \"*\" }\ntokio = { version = \"1.15.0\", features = [\"full\"] }\n````\n\nNow, set up your Axum app to respond on an endpoint.\n\n````rust@ssr.rs\nuse axum::{response::Html, routing::get, Router};\nuse dioxus::prelude::*;\n\n#[tokio::main]\nasync fn main() {\n    let listener = tokio::net::TcpListener::bind(\"127.0.0.1:3000\")\n        .await\n        .unwrap();\n\n    println!(\"listening on http://127.0.0.1:3000\");\n\n    axum::serve(\n        listener,\n        Router::new()\n            .route(\"/\", get(app_endpoint))\n            .into_make_service(),\n    )\n    .await\n    .unwrap();\n}\n````\n\nAnd then add our endpoint. We can either render `rsx!` directly:\n\n````rust@ssr.rs\nasync fn app_endpoint() -> Html<String> {\n    // render the rsx! macro to HTML\n    Html(dioxus_ssr::render_element(rsx! { div { \"hello world!\" } }))\n}\n````\n\nOr we can render VirtualDoms.\n\n````rust@ssr.rs\nasync fn app_endpoint() -> Html<String> {\n    // create a component that renders a div with the text \"hello world\"\n    fn app() -> Element {\n        rsx! { div { \"hello world\" } }\n    }\n    // create a VirtualDom with the app component\n    let mut app = VirtualDom::new(app);\n    // rebuild the VirtualDom before rendering\n    app.rebuild_in_place();\n\n    // render the VirtualDom to HTML\n    Html(dioxus_ssr::render(&app))\n}\n````\n\nFinally, you can run it using `cargo run` rather than `dx serve`.\n\n## Multithreaded Support\n\nThe Dioxus VirtualDom, sadly, is not currently `Send`. Internally, we use quite a bit of interior mutability which is not thread-safe.\nWhen working with web frameworks that require `Send`, it is possible to render a VirtualDom immediately to a String – but you cannot hold the VirtualDom across an await point. For retained-state SSR (essentially LiveView), you'll need to spawn a VirtualDom on its own thread and communicate with it via channels or create a pool of VirtualDoms.\nYou might notice that you cannot hold the VirtualDom across an await point. Because Dioxus is currently not ThreadSafe, it *must* remain on the thread it started. We are working on loosening this requirement."
             }
-            34usize => {
-                "# Introduction\n\n > \n > If you are not familiar with Dioxus itself, check out the [Dioxus guide](../guide/index.md) first.\n\nWhether you are building a website, desktop app, or mobile app, splitting your app's views into \"pages\" can be an effective method for organization and maintainability.\n\nFor this purpose, Dioxus provides a router. Use the `cargo add` command to add the dependency:\n\n````sh\ncargo add dioxus@0.5.0 --features router\n````\n\nThen, add this to your `Dioxus.toml` (learn more about configuration [here](../CLI/configure)):\n\n````toml\n[web.watcher]\nindex_on_404 = true\n````\n\n > \n > This configuration only works when using `dx serve`. If you host your app in a different way (which you most likely do in production), you need to find out how to add a fallback 404 page to your app, and make it a copy of the generated `dist/index.html`.\n\nThis will instruct `dx serve` to redirect any unknown route to the index, to then be resolved by the router.\nThe router works on the client. If we connect through the index route (e.g., `localhost:8080`, then click a link to go to `localhost:8080/contact`), the app renders the new route without reloading.\nHowever, when we go to a route *before* going to the index (go straight to `localhost:8080/contact`), we are trying to access a static route from the server, but the only static route on our server is the index (because the Dioxus frontend is a Single Page Application) and it will fail unless we redirect all missing routes to the index.\n\nThis book is intended to get you up to speed with Dioxus Router. It is split\ninto two sections:\n\n1. The [reference](reference/index.md) section explains individual features in\n   depth. You can read it from start to finish, or you can read individual chapters\n   in whatever order you want.\n1. If you prefer a learning-by-doing approach, you can check out the\n   *[example project](example/index.md)*. It guides you through\n   creating a dioxus app, setting up the router, and using some of its\n   functionality.\n\n > \n > Please note that this is not the only documentation for the Dioxus Router. You\n > can also check out the [API Docs](https://docs.rs/dioxus-router/)."
+            24usize => {
+                "# Mobile\n\nThis guide will cover concepts specific to the Dioxus mobile renderer.\n\n## Running Javascript\n\nDioxus provides some ergonomic wrappers over the browser API, but in some cases you may need to access parts of the browser API Dioxus does not expose.\n\nFor these cases, Dioxus desktop exposes the use_eval hook that allows you to run raw Javascript in the webview:\n\n````rust@eval.rs\nuse dioxus::prelude::*;\n\nfn main() {\n    launch(app);\n}\n\nfn app() -> Element {\n    // You can create as many eval instances as you want\n    let mut eval = eval(\n        r#\"\n        // You can send messages from JavaScript to Rust with the dioxus.send function\n        dioxus.send(\"Hi from JS!\");\n        // You can receive messages from Rust to JavaScript with the dioxus.recv function\n        let msg = await dioxus.recv();\n        console.log(msg);\n        \"#,\n    );\n\n    // You can send messages to JavaScript with the send method\n    eval.send(\"Hi from Rust!\".into()).unwrap();\n\n    let future = use_resource(move || {\n        to_owned![eval];\n        async move {\n            // You can receive any message from JavaScript with the recv method\n            eval.recv().await.unwrap()\n        }\n    });\n\n    match future.read_unchecked().as_ref() {\n        Some(v) => rsx! {\n            p { \"{v}\" }\n        },\n        _ => rsx! {\n            p { \"hello\" }\n        },\n    }\n}\n\n````\n\n## Custom Assets\n\nYou can link to local assets in dioxus mobile instead of using a url:\n\n````rust@custom_assets.rs\nuse dioxus::prelude::*;\n\nfn main() {\n    launch(app);\n}\n\nfn app() -> Element {\n    rsx! {\n        div {\n            img { src: \"/public/static/scanner.png\" }\n        }\n    }\n}\n\n````\n\n## Integrating with Wry\n\nIn cases where you need more low level control over your window, you can use wry APIs exposed through the [Desktop Config](https://docs.rs/dioxus-desktop/0.5.0/dioxus_desktop/struct.Config.html) and the [use_window hook](https://docs.rs/dioxus-desktop/0.5.0/dioxus_desktop/struct.DesktopContext.html)"
             }
-            23usize => {
-                "# Mobile App\n\nBuild a mobile app with Dioxus!\n\nExample: [Mobile Demo](https://github.com/DioxusLabs/dioxus/tree/v0.5/examples/mobile_demo)\n\n## Support\n\nMobile is currently the least-supported renderer target for Dioxus. Mobile apps are rendered with either the platform's WebView or experimentally with [WGPU](https://github.com/DioxusLabs/blitz). WebView doesn't support animations, transparency, and native widgets.\n\nMobile support is currently best suited for CRUD-style apps, ideally for internal teams who need to develop quickly but don't care much about animations or native widgets.\n\n## Getting Set up\n\nGetting set up with mobile can be quite challenging. The tooling here isn't great (yet) and might take some hacking around to get things working.\n\n### Setting up dependencies\n\n#### Android Dependencies\n\nFirst, install the rust Android targets:\n\n````sh\nrustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android\n````\n\nTo develop on Android, you will need to [install Android Studio](https://developer.android.com/studio).\n\nOnce you have installed Android Studio, you will need to install the Android SDK and NDK:\n\n1. Create a blank Android project\n1. Select `Tools > SDK manager`\n1. Navigate to the `SDK tools` window:\n\n![NDK install window](/assets/static/android_ndk_install.png)\n\nThen select:\n\n* The SDK\n* The SDK Command line tools\n* The NDK (side by side)\n* CMAKE\n\n4. Select `apply` and follow the prompts\n\n > \n > More details that could be useful for debugging any errors you encounter are available [in the official android docs](https://developer.android.com/studio/intro/update#sdk-manager)\n\nNext set the Java, Android and NDK home variables:\n\nMac:\n\n````sh\nexport JAVA_HOME=\"/Applications/Android Studio.app/Contents/jbr/Contents/Home\"\nexport ANDROID_HOME=\"$HOME/Library/Android/sdk\"\nexport NDK_HOME=\"$ANDROID_HOME/ndk/25.2.9519653\"\n````\n\nWindows:\n\n````powershell\n[System.Environment]::SetEnvironmentVariable(\"JAVA_HOME\", \"C:\\Program Files\\Android\\Android Studio\\jbr\", \"User\")\n[System.Environment]::SetEnvironmentVariable(\"ANDROID_HOME\", \"$env:LocalAppData\\Android\\Sdk\", \"User\")\n[System.Environment]::SetEnvironmentVariable(\"NDK_HOME\", \"$env:LocalAppData\\Android\\Sdk\\ndk\\25.2.9519653\", \"User\")\n````\n\n > \n > The NDK version in the paths should match the version you installed in the last step\n\n#### IOS Dependencies\n\nFirst, install the rust IOS targets:\n\n````sh\nrustup target add aarch64-apple-ios x86_64-apple-ios aarch64-apple-ios-sim\n````\n\nTo develop on IOS, you will need to [install XCode](https://apps.apple.com/us/app/xcode/id497799835).\n\n > \n > Note: On Apple silicon you must run Xcode on rosetta. Goto Application > Right Click Xcode > Get Info > Open in Rosetta.\n > If you are using M1, you will have to run `cargo build --target x86_64-apple-ios` instead of `cargo apple build` if you want to run in simulator.\n\n### Setting up your project\n\nFirst, we need to create a rust project:\n\n````sh\ncargo new dioxus-mobile-test --lib\ncd dioxus-mobile-test\n````\n\nNext, we can use `cargo-mobile2` to create a project for mobile:\n\n````shell\ncargo install --git https://github.com/tauri-apps/cargo-mobile2\ncargo mobile init\n````\n\nWhen you run `cargo mobile init`, you will be asked a series of questions about your project. One of those questions is what template you should use. Dioxus currently doesn't have a template in Tauri mobile, instead you can use the `wry` template.\n\n > \n > You may also be asked to input your team ID for IOS. You can find your team id [here](https://developer.apple.com/help/account/manage-your-team/locate-your-team-id/) or create a team id by creating a developer account [here](https://developer.apple.com/help/account/get-started/about-your-developer-account)\n\nNext, we need to modify our dependencies to include dioxus and ensure the right version of wry is installed. Change the `[dependencies]` section of your `Cargo.toml`:\n\n````toml\n[dependencies]\nanyhow = \"1.0.56\"\nlog = \"0.4.11\"\ndioxus = { version = \"0.5\", features = [\"mobile\"] }\nwry = \"0.35.0\"\ntao = \"0.25.0\"\n````\n\nFinally, we need to add a component to renderer. Replace the wry template in your `lib.rs` file with this code:\n\n````rust\nuse anyhow::Result;\nuse dioxus::prelude::*;\n\n#[cfg(target_os = \"android\")]\nfn init_logging() {\n    android_logger::init_once(\n        android_logger::Config::default()\n            .with_max_level(log::LevelFilter::Trace)\n    );\n}\n\n#[cfg(not(target_os = \"android\"))]\nfn init_logging() {\n    env_logger::init();\n}\n\n#[cfg(any(target_os = \"android\", target_os = \"ios\"))]\nfn stop_unwind<F: FnOnce() -> T, T>(f: F) -> T {\n    match std::panic::catch_unwind(std::panic::AssertUnwindSafe(f)) {\n        Ok(t) => t,\n        Err(err) => {\n            eprintln!(\"attempt to unwind out of `rust` with err: {:?}\", err);\n            std::process::abort()\n        }\n    }\n}\n\n#[no_mangle]\n#[inline(never)]\n#[cfg(any(target_os = \"android\", target_os = \"ios\"))]\npub extern \"C\" fn start_app() {\n    fn _start_app() {\n        stop_unwind(|| main().unwrap());\n    }\n\n    #[cfg(target_os = \"android\")]\n    {\n        tao::android_binding!(\n            com_example,\n            dioxus_mobile_test,\n            WryActivity,\n            wry::android_setup, // pass the wry::android_setup function to tao which will invoke when the event loop is created\n            _start_app\n        );\n        wry::android_binding!(com_example, dioxus_mobile_test);\n    }\n    #[cfg(target_os = \"ios\")]\n    _start_app()\n}\n\npub fn main() -> Result<()> {\n    init_logging();\n\n    launch(app);\n\n    Ok(())\n}\n\nfn app() -> Element {\n    let mut items = use_signal(|| vec![1, 2, 3]);\n\n    log::debug!(\"Hello from the app\");\n\n    rsx! {\n        div {\n            h1 { \"Hello, Mobile\"}\n            div { margin_left: \"auto\", margin_right: \"auto\", width: \"200px\", padding: \"10px\", border: \"1px solid black\",\n                button {\n                    onclick: move|_| {\n                        println!(\"Clicked!\");\n                        let mut items_mut = items.write();\n                        let new_item = items_mut.len() + 1;\n                        items_mut.push(new_item);\n                        println!(\"Requested update\");\n                    },\n                    \"Add item\"\n                }\n                for item in items.read().iter() {\n                    div { \"- {item}\" }\n                }\n            }\n        }\n    }\n}\n````\n\n## Running\n\nFrom there, you'll want to get a build of the crate using whichever platform you're targeting (simulator or actual hardware). For now, we'll just stick with the simulator.\n\nFirst, you need to make sure that the build variant is correct in Android Studio:\n\n1. Click \"Build\" in the top menu bar.\n1. Click \"Select Build Variant...\" in the dropdown.\n1. Find the \"Build Variants\" panel and use the dropdown to change the selected build variant.\n\n![android studio build dropdown](/assets/static/as-build-dropdown.png)\n![android studio build variants](/assets/static/as-build-variant-menu.png)\n\n### Android\n\nTo build your project on Android you can run:\n\n````sh\ncargo android build\n````\n\nNext, open Android studio:\n\n````sh\ncargo android open\n````\n\nThis will open an android studio project for this application.\n\nNext we need to create a simulator in Android studio to run our app in. To create a simulator click on the phone icon in the top right of Android studio:\n\n![android studio manage devices](/assets/static/android-studio-simulator.png)\n\nThen click the `create a virtual device` button and follow the prompts:\n\n![android studio devices](/assets/static/android-studio-devices.png)\n\nFinally, launch your device by clicking the play button on the device you created:\n\n![android studio device](/assets/static/android-studio-device.png)\n\nNow you can start your application from your terminal by running:\n\n````sh\ncargo android run\n````\n\n![android_demo](/assets/static/Android-Dioxus-demo.png)\n\n > \n > More information is available in the Android docs:\n > \n > * https://developer.android.com/ndk/guides\n > * https://developer.android.com/studio/projects/install-ndk\n > * https://source.android.com/docs/setup/build/rust/building-rust-modules/overview\n\n### IOS\n\nTo build your project for IOS, you can run:\n\n````sh\ncargo build --target aarch64-apple-ios-sim\n````\n\nNext, open XCode (this might take awhile if you've never opened XCode before):\n\n````sh\ncargo apple open\n````\n\nThis will open XCode with this particular project.\n\nFrom there, just click the \"play\" button with the right target and the app should be running!\n\n![ios_demo](/assets/static/IOS-dioxus-demo.png)\n\nNote that clicking play doesn't cause a new build, so you'll need to keep rebuilding the app between changes. The tooling here is very young, so please be patient. If you want to contribute to make things easier, please do! We'll be happy to help."
+            33usize => {
+                "# Routing\n\nYou can easily integrate your fullstack application with a client side router using Dioxus Router. This allows you to create different scenes in your app and navigate between them. You can read more about the router in the [router reference](../router.md)\n\n````rust@server_router.rs\n#![allow(non_snake_case)]\n\nuse axum::Router;\nuse dioxus::prelude::*;\n\nuse serde::{Deserialize, Serialize};\n\nfn main() {\n    launch(|| rsx! { Router::<Route> {} });\n}\n\n#[derive(Clone, Routable, Debug, PartialEq, Serialize, Deserialize)]\nenum Route {\n    #[route(\"/\")]\n    Home {},\n    #[route(\"/blog/:id\")]\n    Blog { id: i32 },\n}\n\n#[component]\nfn Blog(id: i32) -> Element {\n    rsx! {\n        Link { to: Route::Home {}, \"Go to counter\" }\n        table {\n            tbody {\n                for _ in 0..id {\n                    tr {\n                        for _ in 0..id {\n                            td { \"hello world!\" }\n                        }\n                    }\n                }\n            }\n        }\n    }\n}\n\n#[component]\nfn Home() -> Element {\n    let mut count = use_signal(|| 0);\n    let mut text = use_signal(|| \"...\".to_string());\n\n    rsx! {\n        Link { to: Route::Blog { id: count() }, \"Go to blog\" }\n        div {\n            h1 { \"High-Five counter: {count}\" }\n            button { onclick: move |_| count += 1, \"Up high!\" }\n            button { onclick: move |_| count -= 1, \"Down low!\" }\n            button {\n                onclick: move |_| {\n                    async move {\n                        if let Ok(data) = get_server_data().await {\n                            println!(\"Client received: {}\", data);\n                            text.set(data.clone());\n                            post_server_data(data).await.unwrap();\n                        }\n                    }\n                },\n                \"Run server function!\"\n            }\n            \"Server said: {text}\"\n        }\n    }\n}\n\n#[server(PostServerData)]\nasync fn post_server_data(data: String) -> Result<(), ServerFnError> {\n    println!(\"Server received: {}\", data);\n\n    Ok(())\n}\n\n#[server(GetServerData)]\nasync fn get_server_data() -> Result<String, ServerFnError> {\n    Ok(\"Hello from the server!\".to_string())\n}\n\n````\n\n````inject-dioxus\nSandBoxFrame {\n\turl: \"https://codesandbox.io/p/sandbox/dioxus-fullstack-router-s75v5q?file=%2Fsrc%2Fmain.rs%3A7%2C1\"\n}\n````"
             }
-            68usize => {
-                "# Contributing\n\nDevelopment happens in the [Dioxus GitHub repository](https://github.com/DioxusLabs/dioxus). If you've found a bug or have an idea for a feature, please submit an issue (but first check if someone hasn't [done it already](https://github.com/DioxusLabs/dioxus/issues)).\n\n[GitHub discussions](https://github.com/DioxusLabs/dioxus/discussions) can be used as a place to ask for help or talk about features. You can also join [our Discord channel](https://discord.gg/XgGxMSkvUM) where some development discussion happens.\n\n## Improving Docs\n\nIf you'd like to improve the docs, PRs are welcome! The Rust docs ([source](https://github.com/DioxusLabs/dioxus/tree/main/packages)) and this guide ([source](https://github.com/DioxusLabs/docsite/tree/main/docs-src/0.5/en)) can be found in their respective GitHub repos.\n\n## Working on the Ecosystem\n\nPart of what makes React great is the rich ecosystem. We'd like the same for Dioxus! So if you have a library in mind that you'd like to write and many people would benefit from, it will be appreciated. You can [browse npm.js](https://www.npmjs.com/search?q=keywords:react-component) for inspiration. Once you are done, add your library to the [awesome dioxus](https://github.com/DioxusLabs/awesome-dioxus) list or share it in the `#I-made-a-thing` channel on [Discord](https://discord.gg/XgGxMSkvUM).\n\n## Bugs & Features\n\nIf you've fixed [an open issue](https://github.com/DioxusLabs/dioxus/issues), feel free to submit a PR! You can also take a look at [the roadmap](./roadmap.md) and work on something in there. Consider [reaching out](https://discord.gg/XgGxMSkvUM) to the team first to make sure everyone's on the same page, and you don't do useless work!\n\nAll pull requests (including those made by a team member) must be approved by at least one other team member.\nLarger, more nuanced decisions about design, architecture, breaking changes, trade-offs, etc. are made by team consensus.\n\n## Before you contribute\n\nYou might be surprised that a lot of checks fail when making your first PR.\nThat's why you should first run these commands before contributing, and it will save you *lots* of time, because the\nGitHub CI is much slower at executing all of these than your PC.\n\n* Format code with [rustfmt](https://github.com/rust-lang/rustfmt):\n\n````sh\ncargo fmt -- src/**/**.rs\n````\n\n* You might need to install some packages on Linux (Ubuntu/deb) before the following commands will complete successfully (there is also a Nix flake in the repo root):\n\n````sh\nsudo apt install libgdk3.0-cil libatk1.0-dev libcairo2-dev libpango1.0-dev libgdk-pixbuf2.0-dev libsoup-3.0-dev libjavascriptcoregtk-4.1-dev libwebkit2gtk-4.1-dev\n````\n\n* Check all code [cargo check](https://doc.rust-lang.org/cargo/commands/cargo-check.html):\n\n````sh\ncargo check --workspace --examples --tests\n````\n\n* Check if [Clippy](https://doc.rust-lang.org/clippy/) generates any warnings. Please fix these!\n\n````sh\ncargo clippy --workspace --examples --tests -- -D warnings\n````\n\n* Test all code with [cargo-test](https://doc.rust-lang.org/cargo/commands/cargo-test.html):\n\n````sh\ncargo test --all --tests\n````\n\n* More tests, this time with [cargo-make](https://sagiegurari.github.io/cargo-make/). Here are all steps, including installation:\n\n````sh\ncargo install --force cargo-make\ncargo make tests\n````\n\n* Test unsafe crates with [MIRI](https://github.com/rust-lang/miri). Currently, this is used for the two MIRI tests in `dioxus-core` and `dioxus-native-core`:\n\n````sh\ncargo miri test --package dioxus-core --test miri_stress\ncargo miri test --package dioxus-native-core --test miri_native\n````\n\n* Test with Playwright. This tests the UI itself, right in a browser. Here are all steps, including installation:\n  **Disclaimer: This might inexplicably fail on your machine without it being your fault.** Make that PR anyway!\n\n````sh\ncd playwright-tests\nnpm ci\nnpm install -D @playwright/test\nnpx playwright install --with-deps\nnpx playwright test\n````\n\n## How to test dioxus with local crate\n\nIf you are developing a feature, you should test it in your local setup before raising a PR. This process makes sure you are aware of your code functionality before being reviewed by peers.\n\n* Fork the following github repo (DioxusLabs/dioxus):\n\n`https://github.com/DioxusLabs/dioxus`\n\n* Create a new or use an existing rust crate (ignore this step if you will use an existing rust crate):\n  This is where we will be testing the features of the forked\n\n````sh\ncargo new --bin demo\n````\n\n* Add the dioxus dependency to your rust crate (new/existing) in Cargo.toml:\n\n````toml\ndioxus = { path = \"<path to forked dioxus project>/dioxus/packages/dioxus\", features = [\"web\", \"router\"] }\n````\n\nThis above example is for dioxus-web, with dioxus-router. To know about the dependencies for different renderer visit [here](https://dioxuslabs.com/learn/0.5/getting_started).\n\n* Run and test your feature\n\n````sh\ndx serve\n````\n\nIf this is your first time with dioxus, please read [the guide](https://dioxuslabs.com/learn/0.5/guide) to get familiar with dioxus."
+            16usize => {
+                "# Router\n\nIn many of your apps, you'll want to have different \"scenes\". For a webpage, these scenes might be the different webpages with their own content. For a desktop app, these scenes might be different views in your app.\n\nTo unify these platforms, Dioxus provides a first-party solution for scene management called Dioxus Router.\n\n## What is it?\n\nFor an app like the Dioxus landing page (https://dioxuslabs.com), we want to have several different scenes:\n\n* Homepage\n* Blog\n\nEach of these scenes is independent – we don't want to render both the homepage and blog at the same time.\n\nThe Dioxus router makes it easy to create these scenes. To make sure we're using the router, add the `router` feature to your `dioxus` dependency:\n\n````shell\ncargo add dioxus@0.5.0 --features router\n````\n\n## Using the router\n\nUnlike other routers in the Rust ecosystem, our router is built declaratively at compile time. This makes it possible to compose our app layout simply by defining an enum.\n\n````rust@router_reference.rs\n// All of our routes will be a variant of this Route enum\n#[derive(Routable, PartialEq, Clone)]\nenum Route {\n    // if the current location is \"/home\", render the Home component\n    #[route(\"/home\")]\n    Home {},\n    // if the current location is \"/blog\", render the Blog component\n    #[route(\"/blog\")]\n    Blog {},\n}\n\nfn Home() -> Element {\n    todo!()\n}\n\nfn Blog() -> Element {\n    todo!()\n}\n````\n\nWhenever we visit this app, we will get either the Home component or the Blog component rendered depending on which route we enter at. If neither of these routes match the current location, then nothing will render.\n\nWe can fix this one of two ways:\n\n* A fallback 404 page\n\n````rust@router_reference.rs\n// All of our routes will be a variant of this Route enum\n#[derive(Routable, PartialEq, Clone)]\nenum Route {\n    #[route(\"/home\")]\n    Home {},\n    #[route(\"/blog\")]\n    Blog {},\n    //  if the current location doesn't match any of the above routes, render the NotFound component\n    #[route(\"/:..segments\")]\n    NotFound { segments: Vec<String> },\n}\n\nfn Home() -> Element {\n    todo!()\n}\n\nfn Blog() -> Element {\n    todo!()\n}\n\n#[component]\nfn NotFound(segments: Vec<String>) -> Element {\n    todo!()\n}\n````\n\n* Redirect 404 to home\n\n````rust@router_reference.rs\n// All of our routes will be a variant of this Route enum\n#[derive(Routable, PartialEq, Clone)]\nenum Route {\n    #[route(\"/home\")]\n    //  if the current location doesn't match any of the other routes, redirect to \"/home\"\n    #[redirect(\"/:..segments\", |segments: Vec<String>| Route::Home {})]\n    Home {},\n    #[route(\"/blog\")]\n    Blog {},\n}\n````\n\n## Links\n\nFor our app to navigate these routes, we can provide clickable elements called Links. These simply wrap `<a>` elements that, when clicked, navigate the app to the given location. Because our route is an enum of valid routes, if you try to link to a page that doesn't exist, you will get a compiler error.\n\n````rust@router_reference.rs\nrsx! {\n    Link { to: Route::Home {}, \"Go home!\" }\n}\n````\n\n## More reading\n\nThis page is just a very brief overview of the router. For more information, check out the [router book](../router/index.md) or some of the [router examples](https://github.com/DioxusLabs/dioxus/blob/master/examples/router.rs)."
             }
-            72usize => {
-                "# How to Upgrade to Dioxus 0.5\n\nThis guide will outline the API changes between the `0.4` and `0.5` releases.\n\n`0.5` has includes significant changes to hooks, props, and global state.\n\n## Cheat Sheet\n\nHere is a quick cheat sheet for the changes:\n\n### Scope\n\nDioxus 0.4:\n\n````rust\nfn app(cx: Scope) -> Element {\n    cx.use_hook(|| {\n        /*...*/\n    });\n    cx.provide_context({\n        /*...*/\n    });\n    cx.spawn(async move {\n        /*...*/\n    });\n    cx.render(rsx! {\n        /*...*/\n    })\n}\n````\n\nDioxus 0.5:\n\n````rust@migration.rs\nuse dioxus::prelude::*;\n\n// In dioxus 0.5, the scope is no longer passed as an argument to the function\nfn app() -> Element {\n    // Hooks, context, and spawn are now called directly\n    use_hook(|| { /*...*/ });\n    provide_context({ /*...*/ });\n    spawn(async move { /*...*/ });\n    rsx! {\n        /*...*/\n    }\n}\n````\n\n### Props\n\nDioxus 0.4:\n\n````rust\n#[component]\nfn Comp(cx: Scope, name: String) -> Element {\n    // You pass in an owned prop, but inside the component, it is borrowed (name is the type &String inside the function)\n    let owned_name: String = name.clone();\n\n    cx.render(rsx! {\n        \"Hello {owned_name}\"\n        BorrowedComp {\n            \"{name}\"\n        }\n        ManualPropsComponent {\n            name: name\n        }\n    })\n}\n\n#[component]\nfn BorrowedComp<'a>(cx: Scope<'a>, name: &'a str) -> Element<'a> {\n    cx.render(rsx! {\n        \"Hello {name}\"\n    })\n}\n\n#[derive(Props, PartialEq)]\nstruct ManualProps {\n    name: String\n}\n\nfn ManualPropsComponent(cx: Scope<ManualProps>) -> Element {\n    cx.render(rsx! {\n        \"Hello {cx.props.name}\"\n    })\n}\n````\n\nDioxus 0.5:\n\n````rust@migration.rs\nuse dioxus::prelude::*;\n\n// In dioxus 0.5, props are always owned. You pass in owned props and you get owned props in the body of the component\n#[component]\nfn Comp(name: String) -> Element {\n    // Name is owned here already (name is the type String inside the function)\n    let owned_name: String = name;\n\n    rsx! {\n        \"Hello {owned_name}\"\n        BorrowedComp {\n            name: \"other name\"\n        }\n        ManualPropsComponent {\n            name: \"other name 2\"\n        }\n    }\n}\n\n// Borrowed props are removed in dioxus 0.5. Mapped signals can act similarly to borrowed props if your props are borrowed from state\n// ReadOnlySignal is a copy wrapper over a state that will be automatically converted to\n#[component]\nfn BorrowedComp(name: ReadOnlySignal<String>) -> Element {\n    rsx! {\n        \"Hello {name}\"\n    }\n}\n\n// In dioxus 0.5, props need to implement Props, Clone, and PartialEq\n#[derive(Props, Clone, PartialEq)]\nstruct ManualProps {\n    name: String,\n}\n\n// Functions accept the props directly instead of the scope\nfn ManualPropsComponent(props: ManualProps) -> Element {\n    rsx! {\n        \"Hello {props.name}\"\n    }\n}\n````\n\nYou can read more about the new props API in the [Props Migration](props.md) guide.\n\n### Futures\n\nDioxus 0.4:\n\n````rust\nuse_future((dependency1, dependency2,), move |(dependency1, dependency2,)| async move {\n\t/*use dependency1 and dependency2*/\n});\n````\n\nDioxus 0.5:\n\n````rust@migration.rs\n// dependency1 and dependency2 must be Signal-like types like Signal, ReadOnlySignal, GlobalSignal, or another Resource\nuse_resource(|| async move { /*use dependency1 and dependency2*/ });\n\nlet non_reactive_state = 0;\n// You can also add non-reactive state to the resource hook with the use_reactive macro\nuse_resource(use_reactive!(|(non_reactive_state,)| async move {\n    tokio::time::sleep(std::time::Duration::from_secs(1)).await;\n    non_reactive_state + 1\n}));\n````\n\nRead more about the `use_resource` hook in the [Hook Migration](hooks.md) guide.\n\n### State Hooks\n\nDioxus 0.4:\n\n````rust\nlet copy_state = use_state(cx, || 0);\nlet clone_local_state = use_ref(cx, || String::from(\"Hello\"));\nuse_shared_state_provider(cx, || String::from(\"Hello\"));\nlet clone_shared_state = use_shared_state::<String>(cx);\n\nlet copy_state_value = **copy_state;\nlet clone_local_state_value = clone_local_state.read();\nlet clone_shared_state_value = clone_shared_state.read();\n\ncx.render(rsx!{\n\t\"{copy_state_value}\"\n\t\"{clone_shared_state_value}\"\n\t\"{clone_local_state_value}\"\n\tbutton {\n\t\tonclick: move |_| {\n\t\t\tcopy_state.set(1);\n\t\t\t*clone_local_state.write() = \"World\".to_string();\n\t\t\t*clone_shared_state.write() = \"World\".to_string();\n\t\t},\n\t\t\"Set State\"\n\t}\n})\n````\n\nDioxus 0.5:\n\n````rust@migration.rs\n// You can now use signals for local copy state, local clone state, and shared state with the same API\nlet mut copy_state = use_signal(|| 0);\nlet mut clone_shared_state = use_context_provider(|| Signal::new(String::from(\"Hello\")));\nlet mut clone_local_state = use_signal(|| String::from(\"Hello\"));\n\n// Call the signal like a function to clone the current value\nlet copy_state_value = copy_state();\n// Or use the read method to borrow the current value\nlet clone_local_state_value = clone_local_state.read();\nlet clone_shared_state_value = clone_shared_state.read();\n\nrsx! {\n    \"{copy_state_value}\"\n    \"{clone_shared_state_value}\"\n    \"{clone_local_state_value}\"\n    button {\n        onclick: move |_| {\n            // All three states have the same API for updating the state\n            copy_state.set(1);\n            clone_shared_state.set(\"World\".to_string());\n            clone_local_state.set(\"World\".to_string());\n        },\n        \"Set State\"\n    }\n}\n````\n\nRead more about the `use_signal` hook in the [State Migration](state.md) guide.\n\n### Fermi\n\nDioxus 0.4:\n\n````rust\nuse dioxus::prelude::*;\nuse fermi::*;\n\nstatic NAME: Atom<String> = Atom(|_| \"world\".to_string());\n\nfn app(cx: Scope) -> Element {\n    use_init_atom_root(cx);\n    let name = use_read(cx, &NAME);\n\n    cx.render(rsx! {\n        div { \"hello {name}!\" }\n        Child {}\n        ChildWithRef {}\n    })\n}\n\nfn Child(cx: Scope) -> Element {\n    let set_name = use_set(cx, &NAME);\n\n    cx.render(rsx! {\n        button {\n            onclick: move |_| set_name(\"dioxus\".to_string()),\n            \"reset name\"\n        }\n    })\n}\n\nstatic NAMES: AtomRef<Vec<String>> = AtomRef(|_| vec![\"world\".to_string()]);\n\nfn ChildWithRef(cx: Scope) -> Element {\n    let names = use_atom_ref(cx, &NAMES);\n\n    cx.render(rsx! {\n        div {\n            ul {\n                names.read().iter().map(|f| rsx!{\n                    li { \"hello: {f}\" }\n                })\n            }\n            button {\n                onclick: move |_| {\n                    let names = names.clone();\n                    cx.spawn(async move {\n                        names.write().push(\"asd\".to_string());\n                    })\n                },\n                \"Add name\"\n            }\n        }\n    })\n}\n````\n\nDioxus 0.5:\n\n````rust@migration.rs\nuse dioxus::prelude::*;\n\n// Atoms and AtomRefs have been replaced with GlobalSignals\nstatic NAME: GlobalSignal<String> = Signal::global(|| \"world\".to_string());\n\nfn app() -> Element {\n    rsx! {\n        // You can use global state directly without the use_read or use_set hooks\n        div { \"hello {NAME}!\" }\n        Child {}\n        ChildWithRef {}\n    }\n}\n\nfn Child() -> Element {\n    rsx! {\n        button {\n            onclick: move |_| *NAME.write() = \"dioxus\".to_string(),\n            \"reset name\"\n        }\n    }\n}\n\n// Atoms and AtomRefs have been replaced with GlobalSignals\nstatic NAMES: GlobalSignal<Vec<String>> = Signal::global(|| vec![\"world\".to_string()]);\n\nfn ChildWithRef() -> Element {\n    rsx! {\n        div {\n            ul {\n                for name in NAMES.read().iter() {\n                    li { \"hello: {name}\" }\n                }\n            }\n            button {\n                onclick: move |_| {\n                    // No need to clone the signal into futures, you can use it directly\n                    async move {\n                        NAMES.write().push(\"asd\".to_string());\n                    }\n                },\n                \"Add name\"\n            }\n        }\n    }\n}\n````\n\nYou can read more about global signals in the [Fermi migration guide](fermi.md)."
-            }
-            42usize => {
-                "# Defining Routes\n\nWhen creating a \\[`Routable`\\] enum, we can define routes for our application using the `route(\"path\")` attribute.\n\n## Route Segments\n\nEach route is made up of segments. Most segments are separated by `/` characters in the path.\n\nThere are four fundamental types of segments:\n\n1. [Static segments](#static-segments) are fixed strings that must be present in the path.\n1. [Dynamic segments](#dynamic-segments) are types that can be parsed from a segment.\n1. [Catch-all segments](#catch-all-segments) are types that can be parsed from multiple segments.\n1. [Query segments](#query-segments) are types that can be parsed from the query string.\n\nRoutes are matched:\n\n* First, from most specific to least specific (Static then Dynamic then Catch All) (Query is always matched)\n* Then, if multiple routes match the same path, the order in which they are defined in the enum is followed.\n\n## Static segments\n\nFixed routes match a specific path. For example, the route `#[route(\"/about\")]` will match the path `/about`.\n\n````rust@static_segments.rs\n#[derive(Routable, Clone)]\n#[rustfmt::skip]\nenum Route {\n    // Routes always start with a slash\n    #[route(\"/\")]\n    Home {},\n    // You can have multiple segments in a route\n    #[route(\"/hello/world\")]\n    HelloWorld {},\n}\n\n#[component]\nfn Home() -> Element {\n    todo!()\n}\n\n#[component]\nfn HelloWorld() -> Element {\n    todo!()\n}\n````\n\n## Dynamic Segments\n\nDynamic segments are in the form of `:name` where `name` is\nthe name of the field in the route variant. If the segment is parsed\nsuccessfully then the route matches, otherwise the matching continues.\n\nThe segment can be of any type that implements `FromStr`.\n\n````rust@dynamic_segments.rs\n#[derive(Routable, Clone)]\n#[rustfmt::skip]\nenum Route {\n    // segments that start with : are dynamic segments\n    #[route(\"/post/:name\")]\n    BlogPost {\n        // You must include dynamic segments in child variants\n        name: String,\n    },\n    #[route(\"/document/:id\")]\n    Document {\n        // You can use any type that implements FromStr\n        // If the segment can't be parsed, the route will not match\n        id: usize,\n    },\n}\n\n// Components must contain the same dynamic segments as their corresponding variant\n#[component]\nfn BlogPost(name: String) -> Element {\n    todo!()\n}\n\n#[component]\nfn Document(id: usize) -> Element {\n    todo!()\n}\n````\n\n## Catch All Segments\n\nCatch All segments are in the form of `:..name` where `name` is the name of the field in the route variant. If the segments are parsed successfully then the route matches, otherwise the matching continues.\n\nThe segment can be of any type that implements `FromSegments`. (Vec<String> implements this by default)\n\nCatch All segments must be the *last route segment* in the path (query segments are not counted) and cannot be included in nests.\n\n````rust@catch_all_segments.rs\n#[derive(Routable, Clone)]\n#[rustfmt::skip]\nenum Route {\n    // segments that start with :.. are catch all segments\n    #[route(\"/blog/:..segments\")]\n    BlogPost {\n        // You must include catch all segment in child variants\n        segments: Vec<String>,\n    },\n}\n\n// Components must contain the same catch all segments as their corresponding variant\n#[component]\nfn BlogPost(segments: Vec<String>) -> Element {\n    todo!()\n}\n````\n\n## Query Segments\n\nQuery segments are in the form of `?:name&:othername` where `name` and `othername` are the names of fields in the route variant.\n\nUnlike [Dynamic Segments](#dynamic-segments) and [Catch All Segments](#catch-all-segments), parsing a Query segment must not fail.\n\nThe segment can be of any type that implements `FromQueryArgument`.\n\nQuery segments must be the *after all route segments* and cannot be included in nests.\n\n````rust@query_segments.rs\n#[derive(Routable, Clone)]\n#[rustfmt::skip]\nenum Route {\n    // segments that start with ?: are query segments\n    #[route(\"/blog?:name&:surname\")]\n    BlogPost {\n        // You must include query segments in child variants\n        name: String,\n        surname: String,\n    },\n}\n\n#[component]\nfn BlogPost(name: String, surname: String) -> Element {\n    rsx! {\n        div { \"This is your blogpost with a query segment:\" }\n        div { \"Name: {name}\" }\n        div { \"Surname: {surname}\" }\n    }\n}\n\nfn App() -> Element {\n    rsx! { Router::<Route> {} }\n}\n\nfn main() {}\n````"
-            }
-            8usize => {
-                "# Describing the UI\n\nDioxus is a *declarative* framework. This means that instead of telling Dioxus what to do (e.g. to \"create an element\" or \"set the color to red\") we simply *declare* what we want the UI to look like using RSX.\n\nYou have already seen a simple example of RSX syntax in the \"hello world\" application:\n\n````rust, no_run@hello_world_desktop.rs\n// define a component that renders a div with the text \"Hello, world!\"\nfn App() -> Element {\n    rsx! {\n        div { \"Hello, world!\" }\n    }\n}\n````\n\nHere, we use the `rsx!` macro to *declare* that we want a `div` element, containing the text `\"Hello, world!\"`. Dioxus takes the RSX and constructs a UI from it.\n\n## RSX Features\n\nRSX is very similar to HTML in that it describes elements with attributes and children. Here's an empty `button` element in RSX, as well as the resulting HTML:\n\n````rust, no_run@rsx_overview.rs\nrsx! {\n    button {\n        // attributes / listeners\n        // children\n        \"Hello, World!\"\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\trsx_overview::Button {}\n}\n````\n\n### Attributes\n\nAttributes (and [event handlers](event_handlers.md)) modify the behavior or appearance of the element they are attached to. They are specified inside the `{}` brackets, using the `name: value` syntax. You can provide the value as a literal in the RSX:\n\n````rust, no_run@rsx_overview.rs\nrsx! {\n    img {\n        src: \"https://avatars.githubusercontent.com/u/79236386?s=200&v=4\",\n        class: \"primary_button\",\n        width: \"10px\",\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\trsx_overview::Attributes {}\n}\n````\n\nSome attributes, such as the `type` attribute for `input` elements won't work on their own in Rust. This is because `type` is a reserved Rust keyword. To get around this, Dioxus uses the `r#` specifier:\n\n````rust, no_run@rsx_overview.rs\nrsx! {\n    input { r#type: \"text\", color: \"red\" }\n}\n````\n\n > \n > Note: All attributes defined in `dioxus-html` follow the snake_case naming convention. They transform their `snake_case` names to HTML's `camelCase` attributes.\n\n > \n > Note: Styles can be used directly outside of the `style:` attribute. In the above example, `color: \"red\"` is turned into `style=\"color: red\"`.\n\n#### Conditional Attributes\n\nYou can also conditionally include attributes by using an if statement without an else branch. This is useful for adding an attribute only if a certain condition is met:\n\n````rust, no_run@rsx_overview.rs\nlet large_font = true;\nrsx! {\n    div { class: if large_font { \"text-xl\" }, \"Hello, World!\" }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\trsx_overview::ConditionalAttributes {}\n}\n````\n\nRepeating an attribute joins the values with a space. This makes it easy to add values like classes conditionally:\n\n````rust, no_run@rsx_overview.rs\nlet large_font = true;\nrsx! {\n    div {\n        class: \"base-class another-class\",\n        class: if large_font { \"text-xl\" },\n        \"Hello, World!\"\n    }\n}\n````\n\n#### Custom Attributes\n\nDioxus has a pre-configured set of attributes that you can use. RSX is validated at compile time to make sure you didn't specify an invalid attribute. If you want to override this behavior with a custom attribute name, specify the attribute in quotes:\n\n````rust, no_run@rsx_overview.rs\nrsx! {\n    div { \"style\": \"width: 20px; height: 20px; background-color: red;\" }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\trsx_overview::CustomAttributes {}\n}\n````\n\n### Special Attributes\n\nWhile most attributes are simply passed on to the HTML, some have special behaviors.\n\n#### The HTML Escape Hatch\n\nIf you're working with pre-rendered assets, output from templates, or output from a JS library, then you might want to pass HTML directly instead of going through Dioxus. In these instances, reach for `dangerous_inner_html`.\n\nFor example, shipping a markdown-to-Dioxus converter might significantly bloat your final application size. Instead, you'll want to pre-render your markdown to HTML and then include the HTML directly in your output. We use this approach for the [Dioxus homepage](https://dioxuslabs.com):\n\n````rust, no_run@dangerous_inner_html.rs\n// this should come from a trusted source\nlet contents = \"live <b>dangerously</b>\";\n\nrsx! {\n    div { dangerous_inner_html: \"{contents}\" }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\tdangerous_inner_html::App {}\n}\n````\n\n > \n > Note! This attribute is called \"dangerous_inner_html\" because it is **dangerous** to pass it data you don't trust. If you're not careful, you can easily expose [cross-site scripting (XSS)](https://en.wikipedia.org/wiki/Cross-site_scripting) attacks to your users.\n > \n > If you're handling untrusted input, make sure to sanitize your HTML before passing it into `dangerous_inner_html` – or just pass it to a Text Element to escape any HTML tags.\n\n#### Boolean Attributes\n\nMost attributes, when rendered, will be rendered exactly as the input you provided. However, some attributes are considered \"boolean\" attributes and just their presence determines whether they affect the output. For these attributes, a provided value of `\"false\"` will cause them to be removed from the target element.\n\nSo this RSX wouldn't actually render the `hidden` attribute:\n\n````rust, no_run@boolean_attribute.rs\nrsx! {\n    div { hidden: false, \"hello\" }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\tboolean_attribute::App {}\n}\n````\n\nNot all attributes work like this however. *Only the following attributes* have this behavior:\n\n* `allowfullscreen`\n* `allowpaymentrequest`\n* `async`\n* `autofocus`\n* `autoplay`\n* `checked`\n* `controls`\n* `default`\n* `defer`\n* `disabled`\n* `formnovalidate`\n* `hidden`\n* `ismap`\n* `itemscope`\n* `loop`\n* `multiple`\n* `muted`\n* `nomodule`\n* `novalidate`\n* `open`\n* `playsinline`\n* `readonly`\n* `required`\n* `reversed`\n* `selected`\n* `truespeed`\n\nFor any other attributes, a value of `\"false\"` will be sent directly to the DOM.\n\n### Interpolation\n\nSimilarly to how you can [format](https://doc.rust-lang.org/rust-by-example/hello/print/fmt.html) Rust strings, you can also interpolate in RSX text. Use `{variable}` to Display the value of a variable in a string, or `{variable:?}` to use the Debug representation:\n\n````rust, no_run@rsx_overview.rs\nlet coordinates = (42, 0);\nlet country = \"es\";\nrsx! {\n    div {\n        class: \"country-{country}\",\n        left: \"{coordinates.0:?}\",\n        top: \"{coordinates.1:?}\",\n        // arbitrary expressions are allowed,\n        // as long as they don't contain `{}`\n        div { \"{country.to_uppercase()}\" }\n        div { \"{7*6}\" }\n        // {} can be escaped with {{}}\n        div { \"{{}}\" }\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\trsx_overview::Formatting {}\n}\n````\n\n### Children\n\nTo add children to an element, put them inside the `{}` brackets after all attributes and listeners in the element. They can be other elements, text, or [components](components.md). For example, you could have an `ol` (ordered list) element, containing 3 `li` (list item) elements, each of which contains some text:\n\n````rust, no_run@rsx_overview.rs\nrsx! {\n    ol {\n        li { \"First Item\" }\n        li { \"Second Item\" }\n        li { \"Third Item\" }\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\trsx_overview::Children {}\n}\n````\n\n### Fragments\n\nYou can render multiple elements at the top level of `rsx!` and they will be automatically grouped.\n\n````rust, no_run@rsx_overview.rs\nrsx! {\n    p { \"First Item\" }\n    p { \"Second Item\" }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\trsx_overview::ManyRoots {}\n}\n````\n\n### Expressions\n\nYou can include arbitrary Rust expressions as children within RSX by surrounding your expression with `{}`s. Any expression that implements [IntoDynNode](https://docs.rs/dioxus-core/0.3/dioxus_core/trait.IntoDynNode.html) can be used within rsx. This is useful for displaying data from an [iterator](https://doc.rust-lang.org/stable/book/ch13-02-iterators.html#processing-a-series-of-items-with-iterators):\n\n````rust, no_run@rsx_overview.rs\nlet text = \"Dioxus\";\nrsx! {\n    span {\n        {text.to_uppercase()}\n        // create a list of text from 0 to 9\n        {(0..10).map(|i| rsx! {\n        \"{i}\"\n        })}\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\trsx_overview::Expression {}\n}\n````\n\n### Loops\n\nIn addition to iterators you can also use for loops directly within RSX:\n\n````rust, no_run@rsx_overview.rs\nrsx! {\n    // use a for loop where the body itself is RSX\n    div {\n        // create a list of text from 0 to 9\n        for i in 0..3 {\n            // NOTE: the body of the loop is RSX not a rust statement\n            div { \"{i}\" }\n        }\n    }\n    // iterator equivalent\n    div {\n        {(0..3).map(|i| rsx! {\n            div { \"{i}\" }\n        })}\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\trsx_overview::Loops {}\n}\n````\n\n### If statements\n\nYou can also use if statements without an else branch within RSX:\n\n````rust, no_run@rsx_overview.rs\nrsx! {\n    // use if statements without an else\n    if true {\n        div { \"true\" }\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\trsx_overview::IfStatements {}\n}\n````"
-            }
-            21usize => {
-                "# Choosing a web renderer\n\nDioxus has three different renderers that target the web:\n\n* [dioxus-web](web/index.md) allows you to render your application to HTML with [WebAssembly](https://rustwasm.github.io/docs/book/) on the client\n* [dioxus-liveview](liveview.md) allows you to run your application on the server and render it to HTML on the client with a websocket\n* [dioxus-fullstack](fullstack/index.md) allows you to initially render static HTML on the server and then update that HTML from the client with [WebAssembly](https://rustwasm.github.io/docs/book/)\n\nEach approach has its tradeoffs:\n\n### Dioxus Liveview\n\n* Liveview rendering communicates with the server over a WebSocket connection. It essentially moves all of the work that Client-side rendering does to the server.\n\n* This makes it **easy to communicate with the server, but more difficult to communicate with the client/browser APIS**.\n\n* Each interaction also requires a message to be sent to the server and back which can cause **issues with latency**.\n\n* Because Liveview uses a websocket to render, the page will be blank until the WebSocket connection has been established and the first renderer has been sent from the websocket. Just like with client side rendering, this can make the page **less SEO-friendly**.\n\n* Because the page is rendered on the server and the page is sent to the client piece by piece, you never need to send the entire application to the client. The initial load time can be faster than client-side rendering with large applications because Liveview only needs to send a constant small websocket script regardless of the size of the application.\n\n > \n > Liveview is a good fit for applications that already need to communicate with the server frequently (like real time collaborative apps), but don't need to communicate with as many client/browser APIs.\n\n[![](https://mermaid.ink/img/pako:eNplULFOw0AM_RXLc7Mw3sBQVUIMRYgKdcli5ZzkRHIuPl8QqvrvXJICRXiy3nt-9-6dsRHP6DAZGe8CdUpjNd3VEcpsVT4SK1TVPRxYJ1YHL_yeOdkqWMGF3w4U32Y6nSQmXvknMQYNXW8g7bfk2JPBg0g3MCTmdH1rJhenx2is1FiYri43wJ8or3O2H1Liv0w3hw724kMb2MMzdcUYNziyjhR8-f15Pq3Reh65RldWzy3lwWqs46VIKZscPmODzjTzBvPJ__aFrqUhFZR9MNH92uhS7OULYSF1lw?type=png)](https://mermaid.live/edit#pako:eNplULFOw0AM_RXLc7Mw3sBQVUIMRYgKdcli5ZzkRHIuPl8QqvrvXJICRXiy3nt-9-6dsRHP6DAZGe8CdUpjNd3VEcpsVT4SK1TVPRxYJ1YHL_yeOdkqWMGF3w4U32Y6nSQmXvknMQYNXW8g7bfk2JPBg0g3MCTmdH1rJhenx2is1FiYri43wJ8or3O2H1Liv0w3hw724kMb2MMzdcUYNziyjhR8-f15Pq3Reh65RldWzy3lwWqs46VIKZscPmODzjTzBvPJ__aFrqUhFZR9MNH92uhS7OULYSF1lw)\n\n### Dioxus Web\n\n* With Client side rendering, you send your application to the client, and then the client generates all of the HTML of the page dynamically.\n\n* This means that the page will be blank until the JavaScript bundle has loaded and the application has initialized. This can result in **slower first render times and poor SEO performance**.\n\n > \n > SEO stands for Search Engine Optimization. It refers to the practice of making your website more likely to appear in search engine results. Search engines like Google and Bing use web crawlers to index the content of websites. Most of these crawlers are not able to run JavaScript, so they will not be able to index the content of your page if it is rendered client-side.\n\n* Client-side rendered applications need to use **weakly typed requests to communicate with the server**.\n\n > \n > Client-side rendering is a good starting point for most applications. It is well supported and makes it easy to communicate with the client/browser APIs.\n\n[![](https://mermaid.ink/img/pako:eNpVkDFPwzAQhf-KdXOzMHpgqJAQAwytEIsXK35JLBJfez4Xoar_HSemQtzke9_z2e-u1HMAWcrqFU_Rj-KX7vLgkqm1F_7KENN1j-YIuUCsOeBckLUZmrjx_ezT54rziVNG42-sMBLHSQ0Pd8vH5NU8M48zTAby71sr3CYdkAIEoen37h-y5n3910tSiO81cqIdLZDFx1DDXNerjnTCAke2HgMGX2Z15NKtWn1RPn6nnqxKwY7KKfzFJzv4OVcVISrLa1vQtqfbDzd0ZKY?type=png)](https://mermaid.live/edit#pako:eNpVkDFPwzAQhf-KdXOzMHpgqJAQAwytEIsXK35JLBJfez4Xoar_HSemQtzke9_z2e-u1HMAWcrqFU_Rj-KX7vLgkqm1F_7KENN1j-YIuUCsOeBckLUZmrjx_ezT54rziVNG42-sMBLHSQ0Pd8vH5NU8M48zTAby71sr3CYdkAIEoen37h-y5n3910tSiO81cqIdLZDFx1DDXNerjnTCAke2HgMGX2Z15NKtWn1RPn6nnqxKwY7KKfzFJzv4OVcVISrLa1vQtqfbDzd0ZKY)\n\n### Dioxus Fullstack\n\nFullstack rendering happens in two parts:\n\n1. The page is rendered on the server. This can include fetching any data you need to render the page.\n1. The page is hydrated on the client. (Hydration is taking the HTML page from the server and adding all of the event listeners Dioxus needs on the client). Any updates to the page happen on the client after this point.\n\nBecause the page is initially rendered on the server, the page will be fully rendered when it is sent to the client. This results in a faster first render time and makes the page more SEO-friendly.\n\n* **Fast initial render**\n* **Works well with SEO**\n* **Type safe easy communication with the server**\n* **Access to the client/browser APIs**\n* **Fast interactivity**\n\nFinally, we can use [server functions](../reference/fullstack/server_functions.md) to communicate with the server in a type-safe way.\n\nThis approach uses both the dioxus-web and dioxus-ssr crates. To integrate those two packages Dioxus provides the `dioxus-fullstack` crate.\n\nThere can be more complexity with fullstack applications because your code runs in two different places. Dioxus tries to mitigate this with server functions and other helpers.\n\n[![](https://mermaid.ink/img/pako:eNpdkL1uwzAMhF9F4BwvHTV0KAIUHdohQdFFi2CdbQG2mFCUiyDIu9e2-hOUE3H34UDelVoOIEtZvWIffS9-auYHl8wyT8KfGWKa5tEcITPEmgPOBVkrUMXNPyAFCMJK5BOnjIq8scJI7Ac13N1RH4NX88zcjzAZyJX-8bfIl6QQ32qcv7PuhP-ANe_rpb8KJ9rRBJl8DMt71zXAkQ6Y4Mgua0Dny6iOXLotqC_Kx0tqyaoU7Kicwl8hZDs_5kVFiMryWivbmrt9AacxbGg?type=png)](https://mermaid.live/edit#pako:eNpdkL1uwzAMhF9F4BwvHTV0KAIUHdohQdFFi2CdbQG2mFCUiyDIu9e2-hOUE3H34UDelVoOIEtZvWIffS9-auYHl8wyT8KfGWKa5tEcITPEmgPOBVkrUMXNPyAFCMJK5BOnjIq8scJI7Ac13N1RH4NX88zcjzAZyJX-8bfIl6QQ32qcv7PuhP-ANe_rpb8KJ9rRBJl8DMt71zXAkQ6Y4Mgua0Dny6iOXLotqC_Kx0tqyaoU7Kicwl8hZDs_5kVFiMryWivbmrt9AacxbGg)"
-            }
-            37usize => {
-                "# Building a Nest\n\nIn this chapter, we will begin to build the blog portion of our site which will\ninclude links, nested routes, and route parameters.\n\n## Site Navigation\n\nOur site visitors won't know all the available pages and blogs on our site so we\nshould provide a navigation bar for them. Our navbar will be a list of links going between our pages.\n\nWe want our navbar component to be rendered on several different pages on our site. Instead of duplicating the code, we can create a component that wraps all children routes. This is called a layout component. To tell the router where to render the child routes, we use the [`Outlet`](https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Outlet.html) component.\n\nLet's create a new `NavBar` component:\n\n````rust@nested_routes.rs\n#[component]\nfn NavBar() -> Element {\n    rsx! {\n        nav {\n            ul { li { \"links\" } }\n        }\n        // The Outlet component will render child routes (In this case just the Home component) inside the Outlet component\n        Outlet::<Route> {}\n    }\n}\n````\n\nNext, let's add our `NavBar` component as a layout to our Route enum:\n\n````rust@nested_routes.rs\n#[derive(Routable, Clone)]\n#[rustfmt::skip]\nenum Route {\n    // All routes under the NavBar layout will be rendered inside of the NavBar Outlet\n    #[layout(NavBar)]\n        #[route(\"/\")]\n        Home {},\n    #[end_layout]\n    #[route(\"/:..route\")]\n    PageNotFound { route: Vec<String> },\n}\n````\n\nTo add links to our `NavBar`, we could always use an HTML anchor element but that has two issues:\n\n1. It causes a full-page reload\n1. We can accidentally link to a page that doesn't exist\n\nInstead, we want to use the [`Link`] component provided by Dioxus Router.\n\nThe [`Link`] is similar to a regular `<a>` tag. It takes a target and children.\n\nUnlike a regular `<a>` tag, we can pass in our Route enum as the target. Because we annotated our routes with the `#[route(path)]` attribute, the [`Link`] will know how to generate the correct URL. If we use the Route enum, the rust compiler will prevent us from linking to a page that doesn't exist.\n\nLet's add our links:\n\n````rust@links.rs\n#[component]\nfn NavBar() -> Element {\n    rsx! {\n        nav {\n            ul {\n                li {\n                    Link { to: Route::Home {}, \"Home\" }\n                }\n            }\n        }\n        Outlet::<Route> {}\n    }\n}\n````\n\n > \n > Using this method, the [`Link`] component only works for links within our\n > application. To learn more about navigation targets see\n > [here](./navigation-targets.md).\n\nNow you should see a list of links near the top of your page. Click on one and\nyou should seamlessly travel between pages.\n\n## URL Parameters and Nested Routes\n\nMany websites such as GitHub put parameters in their URL. For example,\n`https://github.com/DioxusLabs` utilizes the text after the domain to\ndynamically search and display content about an organization.\n\nWe want to store our blogs in a database and load them as needed. We also\nwant our users to be able to send people a link to a specific blog post.\nInstead of listing all of the blog titles at compile time, we can make a dynamic route.\n\nWe could utilize a search page that loads a blog when clicked but then our users\nwon't be able to share our blogs easily. This is where URL parameters come in.\n\nThe path to our blog will look like `/blog/myBlogPage`, `myBlogPage` being the\nURL parameter.\n\nFirst, let's create a layout component (similar to the navbar) that wraps the blog content. This allows us to add a heading that tells the user they are on the blog.\n\n````rust@dynamic_route.rs\n#[component]\nfn Blog() -> Element {\n    rsx! {\n        h1 { \"Blog\" }\n        Outlet::<Route> {}\n    }\n}\n````\n\nNow we'll create another index component, that'll be displayed when no blog post\nis selected:\n\n````rust@dynamic_route.rs\n#[component]\nfn BlogList() -> Element {\n    rsx! {\n        h2 { \"Choose a post\" }\n        ul {\n            li {\n                Link {\n                    to: Route::BlogPost {\n                        name: \"Blog post 1\".into(),\n                    },\n                    \"Read the first blog post\"\n                }\n            }\n            li {\n                Link {\n                    to: Route::BlogPost {\n                        name: \"Blog post 2\".into(),\n                    },\n                    \"Read the second blog post\"\n                }\n            }\n        }\n    }\n}\n````\n\nWe also need to create a component that displays an actual blog post. This component will accept the URL parameters as props:\n\n````rust@dynamic_route.rs\n// The name prop comes from the /:name route segment\n#[component]\nfn BlogPost(name: String) -> Element {\n    rsx! { h2 { \"Blog Post: {name}\" } }\n}\n````\n\nFinally, let's tell our router about those components:\n\n````rust@dynamic_route.rs\n#[derive(Routable, Clone)]\n#[rustfmt::skip]\nenum Route {\n    #[layout(NavBar)]\n        #[route(\"/\")]\n        Home {},\n        #[nest(\"/blog\")]\n            #[layout(Blog)]\n            #[route(\"/\")]\n            BlogList {},\n            #[route(\"/post/:name\")]\n            BlogPost { name: String },\n            #[end_layout]\n        #[end_nest]\n    #[end_layout]\n    #[route(\"/:..route\")]\n    PageNotFound {\n        route: Vec<String>,\n    },\n}\n````\n\nThat's it! If you head to `/blog/1` you should see our sample post.\n\n## Conclusion\n\nIn this chapter, we utilized Dioxus Router's Link, and Route Parameter\nfunctionality to build the blog portion of our application. In the next chapter,\nwe will go over how navigation targets (like the one we passed to our links)\nwork."
-            }
-            65usize => {
-                "# Create a Project\n\nOnce you have the Dioxus CLI installed, you can use it to create your own project!\n\n## Initializing a project\n\nFirst, run the `dx new` command to create a new project.\n\n > \n > It clones this [template](https://github.com/DioxusLabs/dioxus-template), which is used to create dioxus apps.\n > \n > You can create your project from a different template by passing the `template` argument:\n > \n > ````\n > dx new --template gh:dioxuslabs/dioxus-template\n > ````\n\nNext, navigate into your new project using `cd project-name`, or simply opening it in an IDE.\n\n > \n > Make sure the WASM target is installed before running the projects.\n > You can install the WASM target for rust using rustup:\n > \n > ````\n > rustup target add wasm32-unknown-unknown\n > ````\n\nFinally, serve your project with `dx serve`! The CLI will tell you the address it is serving on, along with additional\ninfo such as code warnings."
-            }
-            35usize => {
-                "# Overview\n\nIn this guide, you'll learn to effectively use Dioxus Router whether you're\nbuilding a small todo app or the next FAANG company. We will create a small\nwebsite with a blog, homepage, and more!\n\n > \n > To follow along with the router example, you'll need a working Dioxus app.\n > Check out the [Dioxus book](https://dioxuslabs.com/learn/0.5/getting_started) to get started.\n\n > \n > Make sure to add Dioxus Router as a dependency, as explained in the\n > [introduction](../index.md).\n\n## You'll learn how to\n\n* Create routes and render \"pages\".\n* Utilize nested routes, create a navigation bar, and render content for a\n  set of routes.\n* Parse URL parameters to dynamically display content.\n* Redirect visitors to different routes.\n\n > \n > **Disclaimer**\n > \n > The example will only display the features of Dioxus Router. It will not\n > include any actual functionality. To keep things simple we will only be using\n > a single file, this is not the recommended way of doing things with a real\n > application.\n\nYou can find the complete application in the [full code](full-code.md) chapter."
-            }
-            9usize => {
-                "# Components\n\nJust like you wouldn't want to write a complex program in a single, long, `main` function, you shouldn't build a complex UI in a single `App` function. Instead, you should break down the functionality of an app in logical parts called components.\n\nA component is a Rust function, named in UpperCamelCase, that either takes no parameters or a properties struct and returns an `Element` describing the UI it wants to render.\n\n````rust, no_run@hello_world_desktop.rs\n// define a component that renders a div with the text \"Hello, world!\"\nfn App() -> Element {\n    rsx! {\n        div { \"Hello, world!\" }\n    }\n}\n````\n\n > \n > You'll probably want to add `#![allow(non_snake_case)]` to the top of your crate to avoid warnings about UpperCamelCase component names\n\nA Component is responsible for some rendering task – typically, rendering an isolated part of the user interface. For example, you could have an `About` component that renders a short description of Dioxus Labs:\n\n````rust, no_run@components.rs\npub fn About() -> Element {\n    rsx! {\n        p {\n            b { \"Dioxus Labs\" }\n            \" An Open Source project dedicated to making Rust UI wonderful.\"\n        }\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\tcomponents::About {}\n}\n````\n\nThen, you can render your component in another component, similarly to how elements are rendered:\n\n````rust, no_run@components.rs\npub fn App() -> Element {\n    rsx! {\n        About {}\n        About {}\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\tcomponents::App {}\n}\n````\n\n > \n > At this point, it might seem like components are nothing more than functions. However, as you learn more about the features of Dioxus, you'll see that they are actually more powerful!"
-            }
-            38usize => {
-                "# Navigation Targets\n\nIn the previous chapter, we learned how to create links to pages within our app.\nWe told them where to go using the `target` property. This property takes something that can be converted to a [`NavigationTarget`].\n\n## What is a navigation target?\n\nA [`NavigationTarget`] is similar to the `href` of an HTML anchor element. It\ntells the router where to navigate to. The Dioxus Router knows two kinds of\nnavigation targets:\n\n* [`Internal`]: We used internal links in the previous chapter. It's a link to a page within our\n  app represented as a Route enum.\n* [`External`]: This works exactly like an HTML anchors' `href`. Don't use this for in-app\n  navigation as it will trigger a page reload by the browser.\n\n## External navigation\n\nIf we need a link to an external page we can do it like this:\n\n````rust@external_link.rs\nfn GoToDioxus() -> Element {\n    rsx! {\n        Link { to: \"https://dioxuslabs.com\", \"ExternalTarget target\" }\n    }\n}\n````"
-            }
-            64usize => {
-                "# Introduction\n\nThe ✨**Dioxus CLI**✨ is a tool to get Dioxus projects off the ground.\n\nThere's no documentation for commands here, but you can see all commands using `dx --help` once you've installed the CLI! Furthermore, you can run `dx <command> --help` to get help with a specific command.\n\n## Features\n\n* Build and pack a Dioxus project.\n* Format `rsx` code.\n* Hot Reload.\n* Create a Dioxus project from a template repository.\n* And more!"
+            0usize => {
+                "# Introduction\n\nDioxus is a portable, performant, and ergonomic framework for building cross-platform user interfaces in Rust. This guide will help you get started with writing Dioxus apps for the Web, Desktop, Mobile, and more.\n\n````rust@readme.rs\nuse dioxus::prelude::*;\n\npub fn App() -> Element {\n    let mut count = use_signal(|| 0);\n\n    rsx! {\n        h1 { \"High-Five counter: {count}\" }\n        button { onclick: move |_| count += 1, \"Up high!\" }\n        button { onclick: move |_| count -= 1, \"Down low!\" }\n    }\n}\n\n````\n\n````inject-dioxus\nDemoFrame {\n    readme::App {}\n}\n````\n\nDioxus is heavily inspired by React. If you know React, getting started with Dioxus will be a breeze.\n\n > \n > This guide assumes you already know some [Rust](https://www.rust-lang.org/)! If not, we recommend reading [*the book*](https://doc.rust-lang.org/book/ch01-00-getting-started.html) to learn Rust first.\n\n## Features\n\n* Cross platform apps in three lines of code. (Web, Desktop, Server, Mobile, and more)\n* Incredibly ergonomic and powerful state management that combines the best parts of react, solid and svelte.\n* Comprehensive inline documentation – hover and guides for all HTML elements, listeners, and events.\n* High performance applications [approaching the fastest web frameworks on the web](https://dioxuslabs.com/blog/templates-diffing) and native speeds on desktop.\n* First-class async support.\n\n### Multiplatform\n\nDioxus is a *portable* toolkit, meaning the Core implementation can run anywhere with no platform-dependent linking. Unlike many other Rust frontend toolkits, Dioxus is not intrinsically linked to WebSys. In fact, every element and event listener can be swapped out at compile time. By default, Dioxus ships with the `html` feature enabled, but this can be disabled depending on your target renderer.\n\nRight now, we have several 1st-party renderers:\n\n* WebSys/Sledgehammer (for WASM): Great support\n* Tao/Tokio (for Desktop apps): Good support\n* Tao/Tokio (for Mobile apps): Poor support\n* Fullstack (for SSR and server functions): Good support\n* TUI/Plasmo (for terminal-based apps): Experimental\n\n## Stability\n\nDioxus has not reached a stable release yet.\n\nWeb: Since the web is a fairly mature platform, we expect there to be very little API churn for web-based features.\n\nDesktop: APIs will likely be in flux as we figure out better patterns than our ElectronJS counterpart.\n\nFullstack: APIs will likely be in flux as we figure out the best API for server communication."
             }
             5usize => {
                 "# Fetching Data\n\nIn this chapter, we will fetch data from the hacker news API and use it to render the list of top posts in our application.\n\n## Defining the API\n\nFirst we need to create some utilities to fetch data from the hackernews API using [reqwest](https://docs.rs/reqwest/latest/reqwest/index.html):\n\n````rust@hackernews_async.rs\n// Define the Hackernews API\nuse futures::future::join_all;\n\npub static BASE_API_URL: &str = \"https://hacker-news.firebaseio.com/v0/\";\npub static ITEM_API: &str = \"item/\";\npub static USER_API: &str = \"user/\";\nconst COMMENT_DEPTH: i64 = 2;\n\npub async fn get_story_preview(id: i64) -> Result<StoryItem, reqwest::Error> {\n    let url = format!(\"{}{}{}.json\", BASE_API_URL, ITEM_API, id);\n    reqwest::get(&url).await?.json().await\n}\n\npub async fn get_stories(count: usize) -> Result<Vec<StoryItem>, reqwest::Error> {\n    let url = format!(\"{}topstories.json\", BASE_API_URL);\n    let stories_ids = &reqwest::get(&url).await?.json::<Vec<i64>>().await?[..count];\n\n    let story_futures = stories_ids[..usize::min(stories_ids.len(), count)]\n        .iter()\n        .map(|&story_id| get_story_preview(story_id));\n    let stories = join_all(story_futures)\n        .await\n        .into_iter()\n        .filter_map(|story| story.ok())\n        .collect();\n    Ok(stories)\n}\n\npub async fn get_story(id: i64) -> Result<StoryPageData, reqwest::Error> {\n    let url = format!(\"{}{}{}.json\", BASE_API_URL, ITEM_API, id);\n    let mut story = reqwest::get(&url).await?.json::<StoryPageData>().await?;\n    let comment_futures = story.item.kids.iter().map(|&id| get_comment(id));\n    let comments = join_all(comment_futures)\n        .await\n        .into_iter()\n        .filter_map(|c| c.ok())\n        .collect();\n\n    story.comments = comments;\n    Ok(story)\n}\n\n#[async_recursion::async_recursion(?Send)]\npub async fn get_comment_with_depth(id: i64, depth: i64) -> Result<CommentData, reqwest::Error> {\n    let url = format!(\"{}{}{}.json\", BASE_API_URL, ITEM_API, id);\n    let mut comment = reqwest::get(&url).await?.json::<CommentData>().await?;\n    if depth > 0 {\n        let sub_comments_futures = comment\n            .kids\n            .iter()\n            .map(|story_id| get_comment_with_depth(*story_id, depth - 1));\n        comment.sub_comments = join_all(sub_comments_futures)\n            .await\n            .into_iter()\n            .filter_map(|c| c.ok())\n            .collect();\n    }\n    Ok(comment)\n}\n\npub async fn get_comment(comment_id: i64) -> Result<CommentData, reqwest::Error> {\n    let comment = get_comment_with_depth(comment_id, COMMENT_DEPTH).await?;\n    Ok(comment)\n}\n````\n\nThe code above requires you to add the [reqwest](https://crates.io/crates/reqwest), [async_recursion](https://crates.io/crates/async-recursion), and [futures](https://crates.io/crates/futures) crate:\n\n````bash\ncargo add reqwest --features json\ncargo add async_recursion\ncargo add futures\n````\n\nA quick overview of the supporting crates:\n\n* [reqwest](https://crates.io/crates/reqwest) allows us to create HTTP calls to the hackernews API.\n* [async_recursion](https://crates.io/crates/async-recursion) provides a utility macro to allow us to recursively use an async function.\n* [futures](https://crates.io/crates/futures) provides us with utilities all around Rust's futures.\n\n## Working with Async\n\n[`use_resource`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_resource.html) is a [hook](./state.md) that lets you run an async closure, and provides you with its result.\n\nFor example, we can make an API request (using [reqwest](https://docs.rs/reqwest/latest/reqwest/index.html)) inside `use_resource`:\n\n````rust@hackernews_async.rs\nfn Stories() -> Element {\n    // Fetch the top 10 stories on Hackernews\n    let stories = use_resource(move || get_stories(10));\n\n    // check if the future is resolved\n    match &*stories.read_unchecked() {\n        Some(Ok(list)) => {\n            // if it is, render the stories\n            rsx! {\n                div {\n                    // iterate over the stories with a for loop\n                    for story in list {\n                        // render every story with the StoryListing component\n                        StoryListing { story: story.clone() }\n                    }\n                }\n            }\n        }\n        Some(Err(err)) => {\n            // if there was an error, render the error\n            rsx! {\"An error occurred while fetching stories {err}\"}\n        }\n        None => {\n            // if the future is not resolved yet, render a loading message\n            rsx! {\"Loading items\"}\n        }\n    }\n}\n````\n\nThe code inside `use_resource` will be submitted to the Dioxus scheduler once the component has rendered.\n\nWe can use `.read()` to get the result of the future. On the first run, since there's no data ready when the component loads, its value will be `None`.  However, once the future is finished, the component will be re-rendered and the value will now be `Some(...)`, containing the return value of the closure.\n\nWe can then render the result by looping over each of the posts and rendering them with the `StoryListing` component.\n\n````inject-dioxus\nDemoFrame {\n\thackernews_async::fetch::App {}\n}\n````\n\n > \n > You can read more about working with Async in Dioxus in the [Async reference](../reference/index.md)\n\n## Lazily Fetching Data\n\nFinally, we will lazily fetch the comments on each post as the user hovers over the post.\n\nWe need to revisit the code that handles hovering over an item. Instead of passing an empty list of comments, we can fetch all the related comments when the user hovers over the item.\n\nWe will cache the list of comments with a [use_signal](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_signal.html) hook. This hook allows you to store some state in a single component. When the user triggers fetching the comments we will check if the response has already been cached before fetching the data from the hackernews API.\n\n````rust@hackernews_async.rs\n// New\nasync fn resolve_story(\n    mut full_story: Signal<Option<StoryPageData>>,\n    mut preview_state: Signal<PreviewState>,\n    story_id: i64,\n) {\n    if let Some(cached) = full_story.as_ref() {\n        *preview_state.write() = PreviewState::Loaded(cached.clone());\n        return;\n    }\n\n    *preview_state.write() = PreviewState::Loading;\n    if let Ok(story) = get_story(story_id).await {\n        *preview_state.write() = PreviewState::Loaded(story.clone());\n        *full_story.write() = Some(story);\n    }\n}\n\n#[component]\nfn StoryListing(story: ReadOnlySignal<StoryItem>) -> Element {\n    let mut preview_state = consume_context::<Signal<PreviewState>>();\n    let StoryItem {\n        title,\n        url,\n        by,\n        score,\n        time,\n        kids,\n        id,\n        ..\n    } = story();\n    // New\n    let full_story = use_signal(|| None);\n\n    let url = url.as_deref().unwrap_or_default();\n    let hostname = url\n        .trim_start_matches(\"https://\")\n        .trim_start_matches(\"http://\")\n        .trim_start_matches(\"www.\");\n    let score = format!(\"{score} {}\", if score == 1 { \" point\" } else { \" points\" });\n    let comments = format!(\n        \"{} {}\",\n        kids.len(),\n        if kids.len() == 1 {\n            \" comment\"\n        } else {\n            \" comments\"\n        }\n    );\n    let time = time.format(\"%D %l:%M %p\");\n\n    rsx! {\n        div {\n            padding: \"0.5rem\",\n            position: \"relative\",\n            onmouseenter: move |_event| { resolve_story(full_story, preview_state, id) },\n            div { font_size: \"1.5rem\",\n                a {\n                    href: url,\n                    onfocus: move |_event| { resolve_story(full_story, preview_state, id) },\n                    // ...\n\n````\n\n````inject-dioxus\nDemoFrame {\n\thackernews_async::App {}\n}\n````"
             }
-            22usize => {
-                "# Desktop\n\nThis guide will cover concepts specific to the Dioxus desktop renderer.\n\nApps built with Dioxus desktop use the system WebView to render the page. This makes the final size of application much smaller than other WebView renderers (typically under 5MB).\n\nAlthough desktop apps are rendered in a WebView, your Rust code runs natively. This means that browser APIs are *not* available, so rendering WebGL, Canvas, etc is not as easy as the Web. However, native system APIs *are* accessible, so streaming, WebSockets, filesystem, etc are all easily accessible though system APIs.\n\nDioxus desktop is built off [Tauri](https://tauri.app/). Right now there are limited Dioxus abstractions over the menubar, event handling, etc. In some places you may need to leverage Tauri directly – through [Wry](http://github.com/tauri-apps/wry/) and [Tao](http://github.com/tauri-apps/tao).\n\n > \n > In the future, we plan to move to a custom web renderer-based DOM renderer with WGPU integrations ([Blitz](https://github.com/DioxusLabs/blitz)).\n\n## Examples\n\n* [File Explorer](https://github.com/DioxusLabs/dioxus/blob/main/example-projects/file-explorer)\n* [Tailwind App](https://github.com/DioxusLabs/dioxus/tree/v0.5/examples/tailwind)\n\n[![Tailwind App screenshot](/assets/static/tailwind_desktop_app.png)](https://github.com/DioxusLabs/dioxus/tree/v0.5/examples/tailwind)\n\n## Running Javascript\n\nDioxus provides some ergonomic wrappers over the browser API, but in some cases you may need to access parts of the browser API Dioxus does not expose.\n\nFor these cases, Dioxus desktop exposes the use_eval hook that allows you to run raw Javascript in the webview:\n\n````rust@eval.rs\nuse dioxus::prelude::*;\n\nfn main() {\n    launch(app);\n}\n\nfn app() -> Element {\n    // You can create as many eval instances as you want\n    let mut eval = eval(\n        r#\"\n        // You can send messages from JavaScript to Rust with the dioxus.send function\n        dioxus.send(\"Hi from JS!\");\n        // You can receive messages from Rust to JavaScript with the dioxus.recv function\n        let msg = await dioxus.recv();\n        console.log(msg);\n        \"#,\n    );\n\n    // You can send messages to JavaScript with the send method\n    eval.send(\"Hi from Rust!\".into()).unwrap();\n\n    let future = use_resource(move || {\n        to_owned![eval];\n        async move {\n            // You can receive any message from JavaScript with the recv method\n            eval.recv().await.unwrap()\n        }\n    });\n\n    match future.read_unchecked().as_ref() {\n        Some(v) => rsx! {\n            p { \"{v}\" }\n        },\n        _ => rsx! {\n            p { \"hello\" }\n        },\n    }\n}\n\n````\n\n## Custom Assets\n\nYou can link to local assets in dioxus desktop instead of using a url:\n\n````rust@custom_assets.rs\nuse dioxus::prelude::*;\n\nfn main() {\n    launch(app);\n}\n\nfn app() -> Element {\n    rsx! {\n        div {\n            img { src: \"/public/static/scanner.png\" }\n        }\n    }\n}\n\n````\n\nYou can read more about assets in the [assets](../assets.md) reference.\n\n## Integrating with Wry\n\nIn cases where you need more low level control over your window, you can use wry APIs exposed through the [Desktop Config](https://docs.rs/dioxus-desktop/0.5.0/dioxus_desktop/struct.Config.html) and the [use_window hook](https://docs.rs/dioxus-desktop/0.5.0/dioxus_desktop/fn.use_window.html)"
+            49usize => {
+                "# Routing Update Callback\n\nIn some cases, we might want to run custom code when the current route changes. For this reason, the [`RouterConfig`] exposes an `on_update` field.\n\n## How does the callback behave?\n\nThe `on_update` is called whenever the current routing information changes. It is called after the router updated its internal state, but before dependent components and hooks are updated.\n\nIf the callback returns a [`NavigationTarget`], the router will replace the current location with the specified target. It will not call the `on_update` again.\n\nIf at any point the router encounters a navigation failure, it will go to the appropriate state without calling the `on_update`. It doesn't matter if the invalid target initiated the navigation, was found as a redirect target, or was returned by the `on_update` itself.\n\n## Code Example\n\n````rust@routing_update.rs\n#[derive(Routable, Clone, PartialEq)]\nenum Route {\n    #[route(\"/\")]\n    Index {},\n    #[route(\"/home\")]\n    Home {},\n}\n\n#[component]\nfn Home() -> Element {\n    rsx! {\n        p { \"Home\" }\n    }\n}\n\n#[component]\nfn Index() -> Element {\n    rsx! {\n        p { \"Index\" }\n    }\n}\n\nfn app() -> Element {\n    rsx! {\n        Router::<Route> {\n            config: || {\n                RouterConfig::default()\n                    .on_update(|state| {\n                        (state.current() == Route::Index {})\n                            .then_some(NavigationTarget::Internal(Route::Home {}))\n                    })\n            },\n        }\n    }\n}\n````"
             }
-            52usize => {
-                "# Antipatterns\n\nThis example shows what not to do and provides a reason why a given pattern is considered an \"AntiPattern\". Most anti-patterns are considered wrong for performance or code re-usability reasons.\n\n## Unnecessarily Nested Fragments\n\nFragments don't mount a physical element to the DOM immediately, so Dioxus must recurse into its children to find a physical DOM node. This process is called \"normalization\". This means that deeply nested fragments make Dioxus perform unnecessary work. Prefer one or two levels of fragments / nested components until presenting a true DOM element.\n\nOnly Component and Fragment nodes are susceptible to this issue. Dioxus mitigates this with components by providing an API for registering shared state without the Context Provider pattern.\n\n````rust@anti_patterns.rs\n// ❌ Don't unnecessarily nest fragments\nlet _ = rsx! {\n    Fragment {\n        Fragment {\n            Fragment {\n                Fragment {\n                    Fragment { div { \"Finally have a real node!\" } }\n                }\n            }\n        }\n    }\n};\n\n// ✅ Render shallow structures\nrsx! { div { \"Finally have a real node!\" } }\n````\n\n## Incorrect Iterator Keys\n\nAs described in the [dynamic rendering chapter](../reference/dynamic_rendering#the-key-attribute), list items must have unique keys that are associated with the same items across renders. This helps Dioxus associate state with the contained components and ensures good diffing performance. Do not omit keys, unless you know that the list will never change.\n\n````rust@anti_patterns.rs\nlet data: &HashMap<_, _> = &props.data;\n\n// ❌ No keys\nrsx! {\n    ul {\n        for value in data.values() {\n            li { \"List item: {value}\" }\n        }\n    }\n};\n\n// ❌ Using index as keys\nrsx! {\n    ul {\n        for (index , value) in data.values().enumerate() {\n            li { key: \"{index}\", \"List item: {value}\" }\n        }\n    }\n};\n\n// ✅ Using unique IDs as keys:\nrsx! {\n    ul {\n        for (key , value) in props.data.iter() {\n            li { key: \"{key}\", \"List item: {value}\" }\n        }\n    }\n}\n````\n\n## Avoid Interior Mutability in Props\n\nWhile it is technically acceptable to have a `Mutex` or a `RwLock` in the props, they will be difficult to use.\n\nSuppose you have a struct `User` containing the field `username: String`. If you pass a `Mutex<User>` prop to a `UserComponent` component, that component may wish to write to the `username` field. However, when it does, the parent component will not be aware of the change, and the component will not re-render which causes the UI to be out of sync with the state. Instead, consider passing down a reactive value like a `Signal` or immutable data.\n\n````rust@anti_patterns.rs\n// ❌ Mutex/RwLock/RefCell in props\n#[derive(Props, Clone)]\nstruct AntipatternInteriorMutability {\n    map: Rc<RefCell<HashMap<u32, String>>>,\n}\n\nimpl PartialEq for AntipatternInteriorMutability {\n    fn eq(&self, other: &Self) -> bool {\n        std::rc::Rc::ptr_eq(&self.map, &other.map)\n    }\n}\n\nfn AntipatternInteriorMutability(map: Rc<RefCell<HashMap<u32, String>>>) -> Element {\n    rsx! {\n        button {\n            onclick: {\n                let map = map.clone();\n                move |_| {\n                    // Writing to map will not rerun any components\n                    map.borrow_mut().insert(0, \"Hello\".to_string());\n                }\n            },\n            \"Mutate map\"\n        }\n        // Since writing to map will not rerun any components, this will get out of date\n        \"{map.borrow().get(&0).unwrap()}\"\n    }\n}\n\n// ✅ Use a signal to pass mutable state\n#[component]\nfn AntipatternInteriorMutabilitySignal(map: Signal<HashMap<u32, String>>) -> Element {\n    rsx! {\n        button {\n            onclick: move |_| {\n                // Writing to map will rerun any components that read the map\n                map.write().insert(0, \"Hello\".to_string());\n            },\n            \"Mutate map\"\n        }\n        // Since writing to map will rerun subscribers, this will get updated\n        \"{map.read().get(&0).unwrap()}\"\n    }\n}\n````\n\n## Avoid Updating State During Render\n\nEvery time you update the state, Dioxus needs to re-render the component – this is inefficient! Consider refactoring your code to avoid this.\n\nAlso, if you unconditionally update the state during render, it will be re-rendered in an infinite loop.\n\n````rust@anti_patterns.rs\n// ❌ Updating state in render\nlet first_signal = use_signal(|| 0);\nlet mut second_signal = use_signal(|| 0);\n\n// Updating the state during a render can easily lead to infinite loops\nif first_signal() + 1 != second_signal() {\n    second_signal.set(first_signal() + 1);\n}\n\n// ✅ Update state in an effect\nlet first_signal = use_signal(|| 0);\nlet mut second_signal = use_signal(|| 0);\n\n// The closure you pass to use_effect will be rerun whenever any of the dependencies change without re-rendering the component\nuse_effect(move || {\n    if first_signal() + 1 != second_signal() {\n        second_signal.set(first_signal() + 1);\n    }\n});\n\n// ✅ Deriving state with use_memo\nlet first_signal = use_signal(|| 0);\n// Memos are specifically designed for derived state. If your state fits this pattern, use it.\nlet second_signal = use_memo(move || first_signal() + 1);\n````\n\n## Avoid Large Groups of State\n\nIt can be tempting to have a single large state struct that contains all of your application's state. However, this can lead to issues:\n\n* It can be easy to accidentally mutate the state in a way that causes an infinite loop\n* It can be difficult to reason about when and how the state is updated\n* It can lead to performance issues because many components will need to re-render when the state changes\n\nInstead, consider breaking your state into smaller, more manageable pieces. This will make it easier to reason about the state, avoid update loops, and improve performance.\n\n````rust@anti_patterns.rs\nfn app() -> Element {\n    // ❌ Large state struct\n    #[derive(Props, Clone, PartialEq)]\n    struct LargeState {\n        users: Vec<User>,\n        logged_in: bool,\n        warnings: Vec<String>,\n    }\n\n    #[derive(Props, Clone, PartialEq)]\n    struct User {\n        name: String,\n        email: String,\n    }\n\n    let mut all_my_state = use_signal(|| LargeState {\n        users: vec![User {\n            name: \"Alice\".to_string(),\n            email: \"alice@example.com\".to_string(),\n        }],\n        logged_in: true,\n        warnings: vec![],\n    });\n\n    use_effect(move || {\n        // It is very easy to accidentally read and write to the state object if it contains all your state\n        let read = all_my_state.read();\n        let logged_in = read.logged_in;\n        if !logged_in {\n            all_my_state\n                .write_unchecked()\n                .warnings\n                .push(\"You are not logged in\".to_string());\n        }\n    });\n\n    // ✅ Use multiple signals to manage state\n    let users = use_signal(|| {\n        vec![User {\n            name: \"Alice\".to_string(),\n            email: \"alice@example.com\".to_string(),\n        }]\n    });\n    let logged_in = use_signal(|| true);\n    let mut warnings = use_signal(|| vec![]);\n\n    use_effect(move || {\n        // Now you can read and write to separate signals which will not cause issues\n        if !logged_in() {\n            warnings.write().push(\"You are not logged in\".to_string());\n        }\n    });\n\n    // ✅ Use memos to create derived state when larger states are unavoidable\n    // Notice we didn't split everything into separate signals. Users still make sense as a vec of data\n    let users = use_signal(|| {\n        vec![User {\n            name: \"Alice\".to_string(),\n            email: \"alice@example.com\".to_string(),\n        }]\n    });\n    let logged_in = use_signal(|| true);\n    let warnings: Signal<Vec<String>> = use_signal(|| vec![]);\n\n    // In child components, you can use the memo to create derived that will only update when a specific part of the state changes\n    // This will help you avoid unnecessary re-renders and infinite loops\n    #[component]\n    fn FirstUser(users: Signal<Vec<User>>) -> Element {\n        let first_user = use_memo(move || users.read().first().unwrap().clone());\n\n        rsx! {\n            div {\n                \"First user: {first_user().name}\"\n            }\n        }\n    }\n\n    rsx! {\n        FirstUser {\n            users\n        }\n    }\n}\n````\n\n## Running Non-Deterministic Code in the Body of a Component\n\nIf you have a component that contains non-deterministic code, that code should generally not be run in the body of the component. If it is put in the body of the component, it will be executed every time the component is re-rendered which can lead to performance issues.\n\nInstead, consider moving the non-deterministic code into a hook that only runs when the component is first created or an effect that reruns when dependencies change.\n\n````rust@anti_patterns.rs\n// ❌ Non-deterministic code in the body of a component\n#[component]\nfn NonDeterministic(name: String) -> Element {\n    let my_random_id = rand::random::<u64>();\n\n    rsx! {\n        div {\n            // Id will change every single time the component is re-rendered\n            id: \"{my_random_id}\",\n            \"Hello {name}\"\n        }\n    }\n}\n\n// ✅ Use a hook to run non-deterministic code\nfn NonDeterministicHook(name: String) -> Element {\n    // If you store the result of the non-deterministic code in a hook, it will stay the same between renders\n    let my_random_id = use_hook(|| rand::random::<u64>());\n\n    rsx! {\n        div {\n            id: \"{my_random_id}\",\n            \"Hello {name}\"\n        }\n    }\n}\n````\n\n## Overly Permissive PartialEq for Props\n\nYou may have noticed that `Props` requires a `PartialEq` implementation. That `PartialEq` is very important for Dioxus to work correctly. It is used to determine if a component should re-render or not when the parent component re-renders.\n\nIf you cannot derive `PartialEq` for your `Props`, you will need to implement it yourself. If you do implement `PartialEq`, make sure to return `false` any time the props change in a way that would cause the UI in the child component to change.\n\nIn general, returning `false` from `PartialEq` if you aren't sure if the props have changed or not is better than returning `true`. This will help you avoid out of date UI in your child components.\n\n````rust@anti_patterns.rs\n// ❌ Permissive PartialEq for Props\n#[derive(Props, Clone)]\nstruct PermissivePartialEqProps {\n    name: String,\n}\n\n// This will cause the component to **never** re-render when the parent component re-renders\nimpl PartialEq for PermissivePartialEqProps {\n    fn eq(&self, _: &Self) -> bool {\n        true\n    }\n}\n\nfn PermissivePartialEq(name: PermissivePartialEqProps) -> Element {\n    rsx! {\n        div {\n            \"Hello {name.name}\"\n        }\n    }\n}\n\n#[component]\nfn PermissivePartialEqParent() -> Element {\n    let name = use_signal(|| \"Alice\".to_string());\n\n    rsx! {\n        PermissivePartialEq {\n            // The PermissivePartialEq component will not get the updated value of name because the PartialEq implementation says that the props are the same\n            name: name()\n        }\n    }\n}\n\n// ✅ Derive PartialEq for Props\n#[derive(Props, Clone, PartialEq)]\nstruct DerivePartialEqProps {\n    name: String,\n}\n\nfn DerivePartialEq(name: DerivePartialEqProps) -> Element {\n    rsx! {\n        div {\n            \"Hello {name.name}\"\n        }\n    }\n}\n\n#[component]\nfn DerivePartialEqParent() -> Element {\n    let name = use_signal(|| \"Alice\".to_string());\n\n    rsx! {\n        DerivePartialEq {\n            name: name()\n        }\n    }\n}\n\n// ✅ Return false from PartialEq if you are unsure if the props have changed\n#[derive(Debug)]\nstruct NonPartialEq;\n\n#[derive(Props, Clone)]\nstruct RcPartialEqProps {\n    name: Rc<NonPartialEq>,\n}\n\nimpl PartialEq for RcPartialEqProps {\n    fn eq(&self, other: &Self) -> bool {\n        // This will almost always return false because the Rc will likely point to a different value\n        // Implementing PartialEq for NonPartialEq would be better, but if it is controlled by another library, it may not be possible\n        // **Always** return false if you are unsure if the props have changed\n        std::rc::Rc::ptr_eq(&self.name, &other.name)\n    }\n}\n\nfn RcPartialEq(name: RcPartialEqProps) -> Element {\n    rsx! {\n        div {\n            \"Hello {name.name:?}\"\n        }\n    }\n}\n\nfn RcPartialEqParent() -> Element {\n    let name = use_signal(|| Rc::new(NonPartialEq));\n\n    rsx! {\n        RcPartialEq {\n            // Generally, RcPartialEq will rerun even if the value of name hasn't actually changed because the Rc will point to a different value\n            name: name()\n        }\n    }\n}\n````"
+            53usize => {
+                "# Error handling\n\nA selling point of Rust for web development is the reliability of always knowing where errors can occur and being forced to handle them\n\nHowever, we haven't talked about error handling at all in this guide! In this chapter, we'll cover some strategies in handling errors to ensure your app never crashes.\n\n## The simplest – returning None\n\nAstute observers might have noticed that `Element` is actually a type alias for `Option<VNode>`. You don't need to know what a `VNode` is, but it's important to recognize that we could actually return nothing at all:\n\n````rust@error_handling.rs\nfn App() -> Element {\n    None\n}\n````\n\nThis lets us add in some syntactic sugar for operations we think *shouldn't* fail, but we're still not confident enough to \"unwrap\" on.\n\n > \n > The nature of `Option<VNode>` might change in the future as the `try` trait gets upgraded.\n\n````rust@error_handling.rs\nfn App() -> Element {\n    // immediately return \"None\"\n    let name = use_hook(|| Some(\"hi\"))?;\n\n    todo!()\n}\n````\n\n## Early return on result\n\nBecause Rust can't accept both Options and Results with the existing try infrastructure, you'll need to manually handle Results. This can be done by converting them into Options or by explicitly handling them. If you choose to convert your Result into an Option and bubble it with a `?`, keep in mind that if you do hit an error you will lose error information and nothing will be rendered for that component.\n\n````rust@error_handling.rs\nfn App() -> Element {\n    // Convert Result to Option\n    let name: i32 = use_hook(|| \"1.234\").parse().ok()?;\n\n    // Early return\n    let count = use_hook(|| \"1.234\");\n    let val: i32 = match count.parse() {\n        Ok(val) => val,\n        Err(err) => return rsx! {\"Parsing failed\"},\n    };\n\n    todo!()\n}\n````\n\nNotice that while hooks in Dioxus do not like being called in conditionals or loops, they *are* okay with early returns. Returning an error state early is a completely valid way of handling errors.\n\n## Match results\n\nThe next \"best\" way of handling errors in Dioxus is to match on the error locally. This is the most robust way of handling errors, but it doesn't scale to architectures beyond a single component.\n\nTo do this, we simply have an error state built into our component:\n\n````rust@error_handling.rs\nlet mut error = use_signal(|| None);\n````\n\nWhenever we perform an action that generates an error, we'll set that error state. We can then match on the error in a number of ways (early return, return Element, etc).\n\n````rust@error_handling.rs\nfn Commandline() -> Element {\n    let mut error = use_signal(|| None);\n\n    match error() {\n        Some(error) => rsx! { h1 { \"An error occurred\" } },\n        None => rsx! { input { oninput: move |_| error.set(Some(\"bad thing happened!\")) } },\n    }\n}\n````\n\n## Passing error states through components\n\nIf you're dealing with a handful of components with minimal nesting, you can just pass the error handle into child components.\n\n````rust@error_handling.rs\nfn Commandline() -> Element {\n    let error = use_signal(|| None);\n\n    if let Some(error) = error() {\n        return rsx! {\"An error occurred\"};\n    }\n\n    rsx! {\n        Child { error }\n        Child { error }\n        Child { error }\n        Child { error }\n    }\n}\n\n#[component]\nfn Child(error: Signal<Option<&'static str>>) -> Element {\n    rsx! { input { oninput: move |_| error.set(Some(\"bad thing happened!\")) } }\n}\n````\n\nMuch like before, our child components can manually set the error during their own actions. The advantage to this pattern is that we can easily isolate error states to a few components at a time, making our app more predictable and robust.\n\n## Throwing errors\n\nDioxus provides a much easier way to handle errors: throwing them. Throwing errors combines the best parts of an error state and early return: you can easily throw and error with `?`, but you keep information about the error so that you can handle it in a parent component.\n\nYou can call `throw` on any `Result` type that implements `Debug` to turn it into an error state and then use `?` to return early if you do hit an error. You can capture the error state with an `ErrorBoundary` component that will render the a different component if an error is thrown in any of its children.\n\n````rust@error_handling.rs\nfn Parent() -> Element {\n    rsx! {\n        ErrorBoundary {\n            handle_error: |error| {\n                rsx! {\n                    \"Oops, we encountered an error. Please report {error} to the developer of this application\"\n                }\n            },\n            ThrowsError {}\n        }\n    }\n}\n\nfn ThrowsError() -> Element {\n    let name: i32 = use_hook(|| \"1.234\").parse().throw()?;\n\n    todo!()\n}\n````\n\nYou can even nest `ErrorBoundary` components to capture errors at different levels of your app.\n\n````rust@error_handling.rs\nfn App() -> Element {\n    rsx! {\n        ErrorBoundary {\n            handle_error: |error| {\n                rsx! {\n                    \"Hmm, something went wrong. Please report {error} to the developer of this application\"\n                }\n            },\n            Parent {}\n        }\n    }\n}\n\nfn Parent() -> Element {\n    rsx! {\n        ErrorBoundary {\n            handle_error: |error| {\n                rsx! {\n                    \"The child component encountered an error: {error}\"\n                }\n            },\n            ThrowsError {}\n        }\n    }\n}\n\nfn ThrowsError() -> Element {\n    let name: i32 = use_hook(|| \"1.234\").parse().throw()?;\n\n    todo!()\n}\n````\n\nThis pattern is particularly helpful whenever your code generates a non-recoverable error. You can gracefully capture these \"global\" error states without panicking or handling state for each error yourself."
             }
-            31usize => {
-                "# Middleware\n\nExtractors allow you to wrap your server function in some code that changes either the request or the response. Dioxus fullstack integrates with [Tower](https://docs.rs/tower/latest/tower/index.html) to allow you to wrap your server functions in middleware.\n\nYou can use the `#[middleware]` attribute to add a layer of middleware to your server function. Let's add a timeout middleware to a server function. This middleware will stop running the server function if it reaches a certain timeout:\n\n````rust@server_function_middleware.rs\n#[server]\n// Add a timeout middleware to the server function that will return an error if the function takes longer than 1 second to execute\n#[middleware(tower_http::timeout::TimeoutLayer::new(std::time::Duration::from_secs(1)))]\npub async fn timeout() -> Result<(), ServerFnError> {\n    tokio::time::sleep(std::time::Duration::from_secs(2)).await;\n    Ok(())\n}\n````"
+            73usize => {
+                "# Hooks\n\nDioxus now uses signals as the backing for its state management. Signals are a smarter, more flexible version of the `use_ref` hook. Signals now back many hooks in dioxus to provide a more consistent and flexible API.\n\n### State Hooks\n\nState hooks are now backed by signals. `use_state`, `use_ref`, and `use_shared_state` have been replaced with the `use_signal` hook. The `use_signal` hook is a more flexible and powerful version of the `use_ref` hook with smarter scopes that only subscribe to a signal if that signal is read within the scope. You can read more about the `use_signal` hook in the [State Migration](state.md) guide.\n\n### Async Hooks\n\nThe `use_future` hook has been replaced with the `use_resource` hook. `use_resource` automatically subscribes to any signals that are read within the closure instead of using a tuple of dependencies.\n\nDioxus 0.4:\n\n````rust\nfn MyComponent(cx: Scope) -> Element {\n\tlet state = use_state(cx, || 0);\n\tlet my_resource = use_future(cx, (**state,), |(state,)| async move {\n\t\t// start a request that depends on the state\n\t\tprintln!(\"{state}\");\n\t});\n\trender! {\n\t\t\"{state}\"\n\t}\n}\n````\n\nDioxus 0.5:\n\n````rust@migration_hooks.rs\nfn MyComponent() -> Element {\n    let state = use_signal(|| 0);\n    // No need to manually set the dependencies, the use_resource hook will automatically detect signal dependencies\n    let my_resource = use_resource(move || async move {\n        // start a request that depends on the state\n        // Because we read from the state signal, this future will be re-run whenever the state changes\n        println!(\"{state}\");\n    });\n    rsx! {\"{state}\"}\n}\n````\n\n### Dependencies\n\nSome hooks including `use_effect` and `use_resource` now take a single closure with automatic subscriptions instead of a tuple of dependencies. You can read more about the `use_resource` hook in the [Hook Migration](hooks.md) guide.\n\nDioxus 0.4:\n\n````rust\nfn HasDependencies(cx: Scope) -> Element {\n\tlet state = use_state(cx, || 0);\n\tlet my_resource = use_resource(cx, (**state,), |(state,)| async move {\n\t\tprintln!(\"{state}\");\n\t});\n\tlet state_plus_one = use_memo(cx, (**state,), |(state,)| {\n\t\tstate() + 1\n\t});\n\trender! {\n\t\t\"{state_plus_one}\"\n\t}\n}\n````\n\nDioxus 0.5:\n\n````rust@migration_hooks.rs\nfn HasDependencies() -> Element {\n    let state = use_signal(|| 0);\n    // No need to manually set the dependencies, the use_resource hook will automatically detect signal dependencies\n    let my_resource = use_resource(move || async move {\n        // Because we read from the state signal, this future will be re-run whenever the state changes\n        println!(\"{state}\");\n    });\n    let state_plus_one = use_memo(move || {\n        // Because we read from the state signal, this future will be re-run whenever the state changes\n        state() + 1\n    });\n    rsx! {\"{state_plus_one}\"}\n}\n````"
+            }
+            28usize => {
+                "# Fullstack development\n\nDioxus Fullstack contains helpers for:\n\n* Incremental, static, and server side rendering\n* Hydrating your application on the Client\n* Communicating between a server and a client\n\nThis guide will teach you everything you need to know about how to use the utilities in Dioxus fullstack to create amazing fullstack applications.\n\n > \n > In addition to this guide, you can find more examples of full-stack apps and information about how to integrate with other frameworks and desktop renderers in the [dioxus-fullstack examples directory](https://github.com/DioxusLabs/dioxus/tree/v0.5/packages/fullstack/examples)."
+            }
+            71usize => {
+                "# Roadmap & Feature-set\n\nThis feature set and roadmap can help you decide if what Dioxus can do today works for you.\n\nIf a feature that you need doesn't exist or you want to contribute to projects on the roadmap, feel free to get involved by [joining the discord](https://discord.gg/XgGxMSkvUM).\n\nGenerally, here's the status of each platform:\n\n* **Web**: Dioxus is a great choice for pure web-apps – especially for CRUD/complex apps. However, it does lack the ecosystem of React, so you might be missing a component library or some useful hook.\n\n* **SSR**: Dioxus is a great choice for pre-rendering, hydration, and rendering HTML on a web endpoint. Be warned – the VirtualDom is not (currently) `Send + Sync`.\n\n* **Desktop**: You can build very competent single-window desktop apps right now. However, multi-window apps require support from Dioxus core and are not ready.\n\n* **Mobile**: Mobile support is very young. You'll be figuring things out as you go and there are not many support crates for peripherals.\n\n* **LiveView**: LiveView support is very young. You'll be figuring things out as you go. Thankfully, none of it is too hard and any work can be upstreamed into Dioxus.\n\n## Features\n\n---\n\n|Feature|Status|Description|\n|-------|------|-----------|\n|Conditional Rendering|x|if/then to hide/show component|\n|Map, Iterator|x|map/filter/reduce to produce rsx!|\n|Keyed Components|x|advanced diffing with keys|\n|Web|x|renderer for web browser|\n|Desktop (webview)|x|renderer for desktop|\n|Shared State (Context)|x|share state through the tree|\n|Hooks|x|memory cells in components|\n|SSR|x|render directly to string|\n|Component Children|x|cx.children() as a list of nodes|\n|Headless components|x|components that don't return real elements|\n|Fragments|x|multiple elements without a real root|\n|Manual Props|x|Manually pass in props with spread syntax|\n|Controlled Inputs|x|stateful wrappers around inputs|\n|CSS/Inline Styles|x|syntax for inline styles/attribute groups|\n|Custom elements|x|Define new element primitives|\n|Suspense|x|schedule future render from future/promise|\n|Integrated error handling|x|Gracefully handle errors with ? syntax|\n|NodeRef|x|gain direct access to nodes|\n|Re-hydration|x|Pre-render to HTML to speed up first contentful paint|\n|Jank-Free Rendering|x|Large diffs are segmented across frames for silky-smooth transitions|\n|Effects|x|Run effects after a component has been committed to render|\n|Portals|\\*|Render nodes outside of the traditional tree structure|\n|Cooperative Scheduling|\\*|Prioritize important events over non-important events|\n|Server Components|\\*|Hybrid components for SPA and Server|\n|Bundle Splitting|i|Efficiently and asynchronously load the app|\n|Lazy Components|i|Dynamically load the new components as the page is loaded|\n|1st class global state|x|redux/recoil/mobx on top of context|\n|Runs natively|x|runs as a portable binary w/o a runtime (Node)|\n|Subtree Memoization|x|skip diffing static element subtrees|\n|High-efficiency templates|x|rsx! calls are translated to templates on the DOM's side|\n|Compile-time correct|x|Throw errors on invalid template layouts|\n|Heuristic Engine|x|track component memory usage to minimize future allocations|\n|Fine-grained reactivity|i|Skip diffing for fine-grain updates|\n\n* x = implemented and working\n* \\* = actively being worked on\n* i = not yet implemented or being worked on\n\n## Roadmap\n\nThese Features are planned for the future of Dioxus:\n\n### Core\n\n* [x] Release of Dioxus Core\n* [x] Upgrade documentation to include more theory and be more comprehensive\n* [x] Support for HTML-side templates for lightning-fast dom manipulation\n* [ ] Support for multiple renderers for same virtualdom (subtrees)\n* [ ] Support for ThreadSafe (Send + Sync)\n* [ ] Support for Portals\n\n### SSR\n\n* [x] SSR Support + Hydration\n* [x] Integrated suspense support for SSR\n\n### Desktop\n\n* [ ] Declarative window management\n* [ ] Templates for building/bundling\n* [ ] Access to Canvas/WebGL context natively\n\n### Mobile\n\n* [ ] Mobile standard library\n  * [ ] GPS\n  * [ ] Camera\n  * [ ] filesystem\n  * [ ] Biometrics\n  * [ ] WiFi\n  * [ ] Bluetooth\n  * [ ] Notifications\n  * [ ] Clipboard\n* [ ] Animations\n\n### Bundling (CLI)\n\n* [x] Translation from HTML into RSX\n* [x] Dev server\n* [x] Live reload\n* [x] Translation from JSX into RSX\n* [ ] Hot module replacement\n* [ ] Code splitting\n* [x] Asset macros\n* [x] Css pipeline\n* [x] Image pipeline\n\n### Essential hooks\n\n* [x] Router\n* [x] Global state management\n* [ ] Resize observer\n\n## Work in Progress\n\n### Build Tool\n\nWe are currently working on our own build tool called [Dioxus CLI](https://github.com/DioxusLabs/dioxus/tree/main/packages/cli) which will support:\n\n* an interactive TUI\n* on-the-fly reconfiguration\n* hot CSS reloading\n* two-way data binding between browser and source code\n* an interpreter for `rsx!`\n* ability to publish to github/netlify/vercel\n* bundling for iOS/Desktop/etc\n\n### Server Component Support\n\nWhile not currently fully implemented, the expectation is that LiveView apps can be a hybrid between Wasm and server-rendered where only portions of a page are \"live\" and the rest of the page is either server-rendered, statically generated, or handled by the host SPA.\n\n### Native rendering\n\nWe are currently working on a native renderer for Dioxus using WGPU called [Blitz](https://github.com/DioxusLabs/blitz/). This will allow you to build apps that are rendered natively for iOS, Android, and Desktop."
+            }
+            65usize => {
+                "# Create a Project\n\nOnce you have the Dioxus CLI installed, you can use it to create your own project!\n\n## Initializing a project\n\nFirst, run the `dx new` command to create a new project.\n\n > \n > It clones this [template](https://github.com/DioxusLabs/dioxus-template), which is used to create dioxus apps.\n > \n > You can create your project from a different template by passing the `template` argument:\n > \n > ````\n > dx new --template gh:dioxuslabs/dioxus-template\n > ````\n\nNext, navigate into your new project using `cd project-name`, or simply opening it in an IDE.\n\n > \n > Make sure the WASM target is installed before running the projects.\n > You can install the WASM target for rust using rustup:\n > \n > ````\n > rustup target add wasm32-unknown-unknown\n > ````\n\nFinally, serve your project with `dx serve`! The CLI will tell you the address it is serving on, along with additional\ninfo such as code warnings."
             }
             43usize => {
                 "# Nested Routes\n\nWhen developing bigger applications we often want to nest routes within each\nother. As an example, we might want to organize a settings menu using this\npattern:\n\n````plain\n└ Settings\n  ├ General Settings (displayed when opening the settings)\n  ├ Change Password\n  └ Privacy Settings\n````\n\nWe might want to map this structure to these paths and components:\n\n````plain\n/settings\t\t  -> Settings { GeneralSettings }\n/settings/password -> Settings { PWSettings }\n/settings/privacy  -> Settings { PrivacySettings }\n````\n\nNested routes allow us to do this without repeating /settings in every route.\n\n## Nesting\n\nTo nest routes, we use the `#[nest(\"path\")]` and `#[end_nest]` attributes.\n\nThe path in nest must not:\n\n1. Contain a [Catch All Segment](index.md#catch-all-segments)\n1. Contain a [Query Segment](index.md#query-segments)\n\nIf you define a dynamic segment in a nest, it will be available to all child routes and layouts.\n\nTo finish a nest, we use the `#[end_nest]` attribute or the end of the enum.\n\n````rust@nest.rs\n#[derive(Routable, Clone)]\n// Skipping formatting allows you to indent nests\n#[rustfmt::skip]\nenum Route {\n    // Start the /blog nest\n    #[nest(\"/blog\")]\n        // You can nest as many times as you want\n        #[nest(\"/:id\")]\n            #[route(\"/post\")]\n            PostId {\n                // You must include parent dynamic segments in child variants\n                id: usize,\n            },\n        // End nests manually with #[end_nest]\n        #[end_nest]\n        #[route(\"/:id\")]\n        // The absolute route of BlogPost is /blog/:name\n        BlogPost {\n            id: usize,\n        },\n    // Or nests are ended automatically at the end of the enum\n}\n\n#[component]\nfn BlogPost(id: usize) -> Element {\n    todo!()\n}\n\n#[component]\nfn PostId(id: usize) -> Element {\n    todo!()\n}\n````"
             }
-            55usize => {
-                "# Logging\n\nDioxus has a wide range of supported platforms, each with their own logging requirements. We'll discuss the different options available for your projects.\n\n#### The Tracing Crate\n\nThe [Tracing](https://crates.io/crates/tracing) crate is the logging interface that the Dioxus library uses. It is not required to use the Tracing crate, but you will not recieve logs from the Dioxus library.\n\nThe Tracing crate provides a variety of simple `println`-like macros with varying levels of severity.\nThe available macros are as follows with the highest severity on the bottom:\n\n````rs\nfn main() {\n    tracing::trace!(\"trace\");\n    tracing::debug!(\"debug\");\n    tracing::info!(\"info\");\n    tracing::warn!(\"warn\");\n    tracing::error!(\"error\");\n}\n````\n\nAll the loggers provided on this page are, besides configuration and initialization, interfaced using these macros. Often you will also utilize the Tracing crate's `Level` enum. This enum usually represents the maximum log severity you want your application to emit and can be loaded from a variety of sources such as configuration file, environment variable, and more.\n\nFor more information, visit the Tracing crate's [docs](https://docs.rs/tracing/latest/tracing/).\n\n## Dioxus Logger\n\n[Dioxus Logger](https://crates.io/crates/dioxus-logger) is a logging utility that will start the appropriate logger for the platform. Currently every platform except mobile is supported.\n\nTo use Dioxus Logger, call the `init()` function:\n\n````rs\nuse tracing::Level;\n\nfn main() {\n    // Init logger\n    dioxus_logger::init(Level::INFO).expect(\"failed to init logger\");\n    // Dioxus launch code\n}\n````\n\nThe `dioxus_logger::init()` function initializes Dioxus Logger with the appropriate tracing logger using the default configuration and provided `Level`.\n\n#### Platform Intricacies\n\nOn web, Dioxus Logger will use [tracing-wasm](https://crates.io/crates/tracing-wasm). On Desktop and server-based targets, Dioxus Logger will use [tracing-subscriber](https://crates.io/crates/tracing-subscriber)'s `FmtSubscriber`.\n\n#### Final Notes\n\nDioxus Logger is the preferred logger to use with Dioxus if it suites your needs. There are more features to come and Dioxus Logger is planned to become an integral part of Dioxus. If there are any feature suggestions or issues with Dioxus Logger, feel free to reach out on the [Dioxus Discord Server](https://discord.gg/XgGxMSkvUM)!\n\nFor more information, visit Dioxus Logger's [docs](https://docs.rs/dioxus-logger/latest/dioxus_logger/).\n\n## Desktop and Server\n\nFor Dioxus' desktop and server targets, you can generally use the logger of your choice.\n\nSome popular options are:\n\n* [tracing-subscriber](https://crates.io/crates/tracing-subscriber)'s `FmtSubscriber` for console output.\n* [tracing-appender](https://crates.io/crates/tracing-appender) for logging to files.\n* [tracing-bunyan-formatter](https://crates.io/crates/tracing-bunyan-formatter) for the Bunyan format.\n\nTo keep this guide short, we will not be covering the usage of these crates.\n\nFor a full list of popular tracing-based logging crates, visit [this](https://docs.rs/tracing/latest/tracing/#related-crates) list in the Tracing crate's docs.\n\n## Web\n\n[tracing-wasm](https://crates.io/crates/tracing-wasm) is a logging interface that can be used with Dioxus' web platform.\n\nThe easiest way to use WASM Logger is with the `set_as_global_default` function:\n\n````rs\nfn main() {\n    // Init logger\n    tracing_wasm::set_as_global_default();\n    // Dioxus code\n}\n````\n\nThis starts tracing with a `Level` of `Trace`.\n\nUsing a custom `level` is a little trickier. We need to use the `WasmLayerConfigBuilder` and start the logger with `set_as_global_default_with_config()`:\n\n````rs\nuse tracing::Level;\n\nfn main() {\n    // Init logger\n    let tracing_config = tracing_wasm::WASMLayerConfigBuilder::new().set_max_level(Level::INFO).build();\n    tracing_wasm::set_as_global_default_with_config(tracing_config);\n    // Dioxus code\n}\n````\n\n# Mobile\n\nUnfortunately there are no tracing crates that work with mobile targets. As an alternative you can use the [log](https://crates.io/crates/log) crate.\n\n## Android\n\n[Android Logger](https://crates.io/crates/android_logger) is a logging interface that can be used when targeting Android. Android Logger runs whenever an event `native_activity_create` is called by the Android system:\n\n````rs\nuse log::LevelFilter;\nuse android_logger::Config;\n\nfn native_activity_create() {\n    android_logger::init_once(\n        Config::default()\n            .with_max_level(LevelFilter::Info)\n            .with_tag(\"myapp\");\n    );\n}\n````\n\nThe `with_tag()` is what your app's logs will show as.\n\n#### Viewing Android Logs\n\nAndroid logs are sent to logcat. To use logcat through the Android debugger, run:\n\n````cmd\nadb -d logcat\n````\n\nYour Android device will need developer options/usb debugging enabled.\n\nFor more information, visit android_logger's [docs](https://docs.rs/android_logger/latest/android_logger/).\n\n## iOS\n\nThe current option for iOS is the [oslog](https://crates.io/crates/oslog) crate.\n\n````rs\nfn main() {\n    // Init logger\n    OsLogger::new(\"com.example.test\")\n        .level_filter(LevelFilter::Debug)\n        .init()\n        .expect(\"failed to init logger\");\n    // Dioxus code\n}\n````\n\n#### Viewing IOS Logs\n\nYou can view the emitted logs in Xcode.\n\nFor more information, visit [oslog](https://crates.io/crates/oslog)."
+            34usize => {
+                "# Introduction\n\n > \n > If you are not familiar with Dioxus itself, check out the [Dioxus guide](../guide/index.md) first.\n\nWhether you are building a website, desktop app, or mobile app, splitting your app's views into \"pages\" can be an effective method for organization and maintainability.\n\nFor this purpose, Dioxus provides a router. Use the `cargo add` command to add the dependency:\n\n````sh\ncargo add dioxus@0.5.0 --features router\n````\n\nThen, add this to your `Dioxus.toml` (learn more about configuration [here](../CLI/configure)):\n\n````toml\n[web.watcher]\nindex_on_404 = true\n````\n\n > \n > This configuration only works when using `dx serve`. If you host your app in a different way (which you most likely do in production), you need to find out how to add a fallback 404 page to your app, and make it a copy of the generated `dist/index.html`.\n\nThis will instruct `dx serve` to redirect any unknown route to the index, to then be resolved by the router.\nThe router works on the client. If we connect through the index route (e.g., `localhost:8080`, then click a link to go to `localhost:8080/contact`), the app renders the new route without reloading.\nHowever, when we go to a route *before* going to the index (go straight to `localhost:8080/contact`), we are trying to access a static route from the server, but the only static route on our server is the index (because the Dioxus frontend is a Single Page Application) and it will fail unless we redirect all missing routes to the index.\n\nThis book is intended to get you up to speed with Dioxus Router. It is split\ninto two sections:\n\n1. The [reference](reference/index.md) section explains individual features in\n   depth. You can read it from start to finish, or you can read individual chapters\n   in whatever order you want.\n1. If you prefer a learning-by-doing approach, you can check out the\n   *[example project](example/index.md)*. It guides you through\n   creating a dioxus app, setting up the router, and using some of its\n   functionality.\n\n > \n > Please note that this is not the only documentation for the Dioxus Router. You\n > can also check out the [API Docs](https://docs.rs/dioxus-router/)."
             }
-            40usize => {
-                "# Full Code\n\n````rust@full_example.rs\n#![allow(non_snake_case)]\n\nuse dioxus::prelude::*;\n\n// ANCHOR: router\n#[derive(Routable, Clone)]\n#[rustfmt::skip]\nenum Route {\n    #[layout(NavBar)]\n        #[route(\"/\")]\n        Home {},\n        #[nest(\"/blog\")]\n            #[layout(Blog)]\n                #[route(\"/\")]\n                BlogList {},\n                #[route(\"/post/:name\")]\n                BlogPost { name: String },\n            #[end_layout]\n        #[end_nest]\n    #[end_layout]\n    #[nest(\"/myblog\")]\n        #[redirect(\"/\", || Route::BlogList {})]\n        #[redirect(\"/:name\", |name: String| Route::BlogPost { name })]\n    #[end_nest]\n    #[route(\"/:..route\")]\n    PageNotFound {\n        route: Vec<String>,\n    },\n}\n// ANCHOR_END: router\n\npub fn App() -> Element {\n    rsx! {\n        Router::<Route> {}\n    }\n}\n\n#[component]\nfn NavBar() -> Element {\n    rsx! {\n        nav {\n            ul {\n                li {\n                    Link { to: Route::Home {}, \"Home\" }\n                }\n                li {\n                    Link { to: Route::BlogList {}, \"Blog\" }\n                }\n            }\n        }\n        Outlet::<Route> {}\n    }\n}\n\n#[component]\nfn Home() -> Element {\n    rsx! {\n        h1 { \"Welcome to the Dioxus Blog!\" }\n    }\n}\n\n#[component]\nfn Blog() -> Element {\n    rsx! {\n        h1 { \"Blog\" }\n        Outlet::<Route> {}\n    }\n}\n\n#[component]\nfn BlogList() -> Element {\n    rsx! {\n        h2 { \"Choose a post\" }\n        ul {\n            li {\n                Link {\n                    to: Route::BlogPost {\n                        name: \"Blog post 1\".into(),\n                    },\n                    \"Read the first blog post\"\n                }\n            }\n            li {\n                Link {\n                    to: Route::BlogPost {\n                        name: \"Blog post 2\".into(),\n                    },\n                    \"Read the second blog post\"\n                }\n            }\n        }\n    }\n}\n\n#[component]\nfn BlogPost(name: String) -> Element {\n    rsx! {\n        h2 { \"Blog Post: {name}\" }\n    }\n}\n\n#[component]\nfn PageNotFound(route: Vec<String>) -> Element {\n    rsx! {\n        h1 { \"Page not found\" }\n        p { \"We are terribly sorry, but the page you requested doesn't exist.\" }\n        pre { color: \"red\", \"log:\\nattemped to navigate to: {route:?}\" }\n    }\n}\n\n````"
+            46usize => {
+                "# Programmatic Navigation\n\nSometimes we want our application to navigate to another page without having the\nuser click on a link. This is called programmatic navigation.\n\n## Using a Navigator\n\nWe can get a navigator with the [`navigator`] function which returns a [`Navigator`].\n\nWe can use the [`Navigator`] to trigger four different kinds of navigation:\n\n* `push` will navigate to the target. It works like a regular anchor tag.\n* `replace` works like `push`, except that it replaces the current history entry\n  instead of adding a new one. This means the prior page cannot be restored with the browser's back button.\n* `Go back` works like the browser's back button.\n* `Go forward` works like the browser's forward button.\n\n````rust@navigator.rs\n#[component]\nfn Home() -> Element {\n    let nav = navigator();\n\n    // push\n    nav.push(Route::PageNotFound { route: vec![] });\n\n    // replace\n    nav.replace(Route::Home {});\n\n    // go back\n    nav.go_back();\n\n    // go forward\n    nav.go_forward();\n\n    rsx! { h1 { \"Welcome to the Dioxus Blog!\" } }\n}\n````\n\nYou might have noticed that, like [`Link`], the [`Navigator`]s `push` and\n`replace` functions take a [`NavigationTarget`]. This means we can use either\n`Internal`, or `External` targets.\n\n## External Navigation Targets\n\nUnlike a [`Link`], the [`Navigator`] cannot rely on the browser (or webview) to\nhandle navigation to external targets via a generated anchor element.\n\nThis means, that under certain conditions, navigation to external targets can\nfail."
             }
-            25usize => {
-                "# Web\n\nTo run on the Web, your app must be compiled to WebAssembly and depend on the `dioxus` and `dioxus-web` crates.\n\nA build of Dioxus for the web will be roughly equivalent to the size of a React build (70kb vs 65kb) but it will load significantly faster because [WebAssembly can be compiled as it is streamed](https://hacks.mozilla.org/2018/01/making-webassembly-even-faster-firefoxs-new-streaming-and-tiering-compiler/).\n\nExamples:\n\n* [TodoMVC](https://github.com/DioxusLabs/dioxus/blob/main/examples/todomvc.rs)\n* [Tailwind App](https://github.com/DioxusLabs/dioxus/tree/v0.5/examples/tailwind)\n\n[![TodoMVC example](https://github.com/DioxusLabs/example-projects/raw/master/todomvc/example.png)](https://github.com/DioxusLabs/dioxus/blob/main/examples/todomvc.rs)\n\n > \n > Note: Because of the limitations of Wasm, [not every crate will work](https://rustwasm.github.io/docs/book/reference/which-crates-work-with-wasm.html) with your web apps, so you'll need to make sure that your crates work without native system calls (timers, IO, etc).\n\n## Support\n\nThe Web is the best-supported target platform for Dioxus.\n\n* Because your app will be compiled to WASM you have access to browser APIs through [wasm-bindgen](https://rustwasm.github.io/docs/wasm-bindgen/introduction.html).\n* Dioxus provides hydration to resume apps that are rendered on the server. See the [fullstack](../fullstack/index.md) reference for more information.\n\n## Running Javascript\n\nDioxus provides some ergonomic wrappers over the browser API, but in some cases you may need to access parts of the browser API Dioxus does not expose.\n\nFor these cases, Dioxus web exposes the use_eval hook that allows you to run raw Javascript in the webview:\n\n````rust@eval.rs\nuse dioxus::prelude::*;\n\nfn main() {\n    launch(app);\n}\n\nfn app() -> Element {\n    // You can create as many eval instances as you want\n    let mut eval = eval(\n        r#\"\n        // You can send messages from JavaScript to Rust with the dioxus.send function\n        dioxus.send(\"Hi from JS!\");\n        // You can receive messages from Rust to JavaScript with the dioxus.recv function\n        let msg = await dioxus.recv();\n        console.log(msg);\n        \"#,\n    );\n\n    // You can send messages to JavaScript with the send method\n    eval.send(\"Hi from Rust!\".into()).unwrap();\n\n    let future = use_resource(move || {\n        to_owned![eval];\n        async move {\n            // You can receive any message from JavaScript with the recv method\n            eval.recv().await.unwrap()\n        }\n    });\n\n    match future.read_unchecked().as_ref() {\n        Some(v) => rsx! {\n            p { \"{v}\" }\n        },\n        _ => rsx! {\n            p { \"hello\" }\n        },\n    }\n}\n\n````\n\nIf you are targeting web, but don't plan on targeting any other Dioxus renderer you can also use the generated wrappers in the [web-sys](https://rustwasm.github.io/wasm-bindgen/web-sys/index.html) and [gloo](https://gloo-rs.web.app/) crates.\n\n## Customizing Index Template\n\nDioxus supports providing custom index.html templates. The index.html must include a `div` with the id `main` to be used. Hot Reload is still supported. An example\nis provided in the [PWA-Example](https://github.com/DioxusLabs/dioxus/blob/main/examples/PWA-example/index.html)."
+            57usize => {
+                "# State Cookbook\n\n* [External State](external/index.md)\n* [Custom Hook](custom_hooks/index.md)"
             }
-            32usize => {
-                "# Authentication\n\nYou can use [extractors](./extractors) to integrate auth with your Fullstack application.\n\nYou can create a custom extractors that extracts the auth session from the request. From that auth session, you can check if the user has the required privileges before returning the private data.\n\nA [full auth example](https://github.com/DioxusLabs/dioxus/blob/v0.5/packages/fullstack/examples/axum-auth/src/main.rs) with the complete implementation is available in the fullstack examples."
+            41usize => {
+                "# Adding the router to your application\n\nIn this chapter, we will learn how to add the router to our app. By itself, this\nis not very useful. However, it is a prerequisite for all the functionality\ndescribed in the other chapters.\n\n > \n > Make sure you added the `dioxus-router` dependency as explained in the\n > [introduction](../index.md).\n\nIn most cases, we want to add the router to the root component of our app. This\nway, we can ensure that we have access to all its functionality everywhere.\n\nFirst, we define the router with the router macro:\n\n````rust@first_route.rs\n#![allow(non_snake_case)]\nuse dioxus::prelude::*;\n\n/// An enum of all of the possible routes in the app.\n#[derive(Routable, Clone)]\nenum Route {\n    // The home page is at the / route\n    #[route(\"/\")]\n    Home {},\n}\n````\n\nThen we render the router with the \\[`Router`\\] component.\n\n````rust@first_route.rs\nfn App() -> Element {\n    rsx! { Router::<Route> {} }\n}\n````"
             }
-            62usize => {
-                "# Custom Renderer\n\nDioxus is an incredibly portable framework for UI development. The lessons, knowledge, hooks, and components you acquire over time can always be used for future projects. However, sometimes those projects cannot leverage a supported renderer or you need to implement your own better renderer.\n\nGreat news: the design of the renderer is entirely up to you! We provide suggestions and inspiration with the 1st party renderers, but only really require processing `Mutations` and sending `UserEvents`.\n\n## The specifics:\n\nImplementing the renderer is fairly straightforward. The renderer needs to:\n\n1. Handle the stream of edits generated by updates to the virtual DOM\n1. Register listeners and pass events into the virtual DOM's event system\n\nEssentially, your renderer needs to process edits and generate events to update the VirtualDOM. From there, you'll have everything needed to render the VirtualDOM to the screen.\n\nInternally, Dioxus handles the tree relationship, diffing, memory management, and the event system, leaving as little as possible required for renderers to implement themselves.\n\nFor reference, check out the [javascript interpreter](https://github.com/DioxusLabs/dioxus/tree/v0.5/packages/interpreter) or [tui renderer](https://github.com/DioxusLabs/blitz/tree/master/packages/dioxus-tui) as a starting point for your custom renderer.\n\n## Templates\n\nDioxus is built around the concept of [Templates](https://docs.rs/dioxus-core/latest/dioxus_core/prelude/struct.Template.html). Templates describe a UI tree known at compile time with dynamic parts filled at runtime. This is useful internally to make skip diffing static nodes, but it is also useful for the renderer to reuse parts of the UI tree. This can be useful for things like a list of items. Each item could contain some static parts and some dynamic parts. The renderer can use the template to create a static part of the UI once, clone it for each element in the list, and then fill in the dynamic parts.\n\n## Mutations\n\nThe `Mutation` type is a serialized enum that represents an operation that should be applied to update the UI. The variants roughly follow this set:\n\n````rust\nenum Mutation {\n\tAppendChildren,\n\tAssignId,\n\tCreatePlaceholder,\n\tCreateTextNode,\n\tHydrateText,\n\tLoadTemplate,\n\tReplaceWith,\n\tReplacePlaceholder,\n\tInsertAfter,\n\tInsertBefore,\n\tSetAttribute,\n\tSetText,\n\tNewEventListener,\n\tRemoveEventListener,\n\tRemove,\n\tPushRoot,\n}\n````\n\nThe Dioxus diffing mechanism operates as a [stack machine](https://en.wikipedia.org/wiki/Stack_machine) where the [LoadTemplate](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.LoadTemplate), [CreatePlaceholder](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.CreatePlaceholder), and [CreateTextNode](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.CreateTextNode) mutations pushes a new \"real\" DOM node onto the stack and [AppendChildren](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.AppendChildren), [InsertAfter](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.InsertAfter), [InsertBefore](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.InsertBefore), [ReplacePlaceholder](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.ReplacePlaceholder), and [ReplaceWith](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.ReplaceWith) all remove nodes from the stack.\n\n## Node storage\n\nDioxus saves and loads elements with IDs. Inside the VirtualDOM, this is just tracked as as a u64.\n\nWhenever a `CreateElement` edit is generated during diffing, Dioxus increments its node counter and assigns that new element its current NodeCount. The RealDom is responsible for remembering this ID and pushing the correct node when id is used in a mutation. Dioxus reclaims the IDs of elements when removed. To stay in sync with Dioxus you can use a sparse Vec (Vec\\<Option<T>\\>) with possibly unoccupied items. You can use the ids as indexes into the Vec for elements, and grow the Vec when an id does not exist.\n\n### An Example\n\nFor the sake of understanding, let's consider this example – a very simple UI declaration:\n\n````rust\nrsx! {\n\th1 { \"count: {x}\" }\n}\n````\n\n#### Building Templates\n\nThe above rsx will create a template that contains one static h1 tag and a placeholder for a dynamic text node. The template contains the static parts of the UI, and ids for the dynamic parts along with the paths to access them.\n\nThe template will look something like this:\n\n````rust\nTemplate {\n\t// Some id that is unique for the entire project\n\tname: \"main.rs:1:1:0\",\n\t// The root nodes of the template\n\troots: &[\n\t\tTemplateNode::Element {\n\t\t\ttag: \"h1\",\n\t\t\tnamespace: None,\n\t\t\tattrs: &[],\n\t\t\tchildren: &[\n\t\t\t\tTemplateNode::DynamicText {\n\t\t\t\t\tid: 0\n\t\t\t\t},\n\t\t\t],\n\t\t}\n\t],\n\t// the path to each of the dynamic nodes\n\tnode_paths: &[\n\t\t// the path to dynamic node with a id of 0\n\t\t&[\n\t\t\t// on the first root node\n\t\t\t0,\n\t\t\t// the first child of the root node\n\t\t\t0,\n\t\t]\n\t],\n\t// the path to each of the dynamic attributes\n\tattr_paths: &'a [&'a [u8]],\n}\n````\n\n > \n > For more detailed docs about the structure of templates see the [Template api docs](https://docs.rs/dioxus-core/latest/dioxus_core/prelude/struct.Template.html)\n\nThis template will be sent to the renderer in the [list of templates](https://docs.rs/dioxus-core/latest/dioxus_core/struct.Mutations.html#structfield.templates) supplied with the mutations the first time it is used. Any time the renderer encounters a [LoadTemplate](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.LoadTemplate) mutation after this, it should clone the template and store it in the given id.\n\nFor dynamic nodes and dynamic text nodes, a placeholder node should be created and inserted into the UI so that the node can be modified later.\n\nIn HTML renderers, this template could look like this:\n\n````html\n<h1>\"\"</h1>\n````\n\n#### Applying Mutations\n\nAfter the renderer has created all of the new templates, it can begin to process the mutations.\n\nWhen the renderer starts, it should contain the Root node on the stack and store the Root node with an id of 0. The Root node is the top-level node of the UI. In HTML, this is the `<div id=\"main\">` element.\n\n````rust\ninstructions: []\nstack: [\n\tRootNode,\n]\nnodes: [\n\tRootNode,\n]\n````\n\nThe first mutation is a `LoadTemplate` mutation. This tells the renderer to load a root from the template with the given id. The renderer will then push the root node of the template onto the stack and store it with an id for later. In this case, the root node is an h1 element.\n\n````rust\ninstructions: [\n\tLoadTemplate {\n\t\t// the id of the template\n\t\tname: \"main.rs:1:1:0\",\n\t\t// the index of the root node in the template\n\t\tindex: 0,\n\t\t// the id to store\n\t\tid: ElementId(1),\n\t}\n]\nstack: [\n\tRootNode,\n\t<h1>\"\"</h1>,\n]\nnodes: [\n\tRootNode,\n\t<h1>\"\"</h1>,\n]\n````\n\nNext, Dioxus will create the dynamic text node. The diff algorithm decides that this node needs to be created, so Dioxus will generate the Mutation `HydrateText`. When the renderer receives this instruction, it will navigate to the placeholder text node in the template and replace it with the new text.\n\n````rust\ninstructions: [\n\tLoadTemplate {\n\t\tname: \"main.rs:1:1:0\",\n\t\tindex: 0,\n\t\tid: ElementId(1),\n\t},\n\tHydrateText {\n\t\t// the id to store the text node\n\t\tid: ElementId(2),\n\t\t// the text to set\n\t\ttext: \"count: 0\",\n\t}\n]\nstack: [\n\tRootNode,\n\t<h1>\"count: 0\"</h1>,\n]\nnodes: [\n\tRootNode,\n\t<h1>\"count: 0\"</h1>,\n\t\"count: 0\",\n]\n````\n\nRemember, the h1 node is not attached to anything (it is unmounted) so Dioxus needs to generate an Edit that connects the h1 node to the Root. It depends on the situation, but in this case, we use `AppendChildren`. This pops the text node off the stack, leaving the Root element as the next element on the stack.\n\n````rust\ninstructions: [\n\tLoadTemplate {\n\t\tname: \"main.rs:1:1:0\",\n\t\tindex: 0,\n\t\tid: ElementId(1),\n\t},\n\tHydrateText {\n\t\tid: ElementId(2),\n\t\ttext: \"count: 0\",\n\t},\n\tAppendChildren {\n\t\t// the id of the parent node\n\t\tid: ElementId(0),\n\t\t// the number of nodes to pop off the stack and append\n\t\tm: 1\n\t}\n]\nstack: [\n\tRootNode,\n]\nnodes: [\n\tRootNode,\n\t<h1>\"count: 0\"</h1>,\n\t\"count: 0\",\n]\n````\n\nOver time, our stack looked like this:\n\n````rust\n[Root]\n[Root, <h1>\"\"</h1>]\n[Root, <h1>\"count: 0\"</h1>]\n[Root]\n````\n\nConveniently, this approach completely separates the Virtual DOM and the Real DOM. Additionally, these edits are serializable, meaning we can even manage UIs across a network connection. This little stack machine and serialized edits make Dioxus independent of platform specifics.\n\nDioxus is also really fast. Because Dioxus splits the diff and patch phase, it's able to make all the edits to the RealDOM in a very short amount of time (less than a single frame) making rendering very snappy. It also allows Dioxus to cancel large diffing operations if higher priority work comes in while it's diffing.\n\nThis little demo serves to show exactly how a Renderer would need to process a mutation stream to build UIs.\n\n## Event loop\n\nLike most GUIs, Dioxus relies on an event loop to progress the VirtualDOM. The VirtualDOM itself can produce events as well, so it's important for your custom renderer can handle those too.\n\nThe code for the WebSys implementation is straightforward, so we'll add it here to demonstrate how simple an event loop is:\n\n````rust, ignore\npub async fn run(&mut self) -> dioxus_core::error::Result<()> {\n\t// Push the body element onto the WebsysDom's stack machine\n\tlet mut websys_dom = crate::new::WebsysDom::new(prepare_websys_dom());\n\twebsys_dom.stack.push(root_node);\n\n\t// Rebuild or hydrate the virtualdom\n\tlet mutations = self.internal_dom.rebuild();\n\twebsys_dom.apply_mutations(mutations);\n\n\t// Wait for updates from the real dom and progress the virtual dom\n\tloop {\n\t\tlet user_input_future = websys_dom.wait_for_event();\n\t\tlet internal_event_future = self.internal_dom.wait_for_work();\n\n\t\tmatch select(user_input_future, internal_event_future).await {\n\t\t\tEither::Left((_, _)) => {\n\t\t\t\tlet mutations = self.internal_dom.work_with_deadline(|| false);\n\t\t\t\twebsys_dom.apply_mutations(mutations);\n\t\t\t},\n\t\t\tEither::Right((event, _)) => websys_dom.handle_event(event),\n\t\t}\n\n\t\t// render\n\t}\n}\n````\n\nIt's important to decode what the real events are for your event system into Dioxus' synthetic event system (synthetic meaning abstracted). This simply means matching your event type and creating a Dioxus `UserEvent` type. Right now, the virtual event system is modeled almost entirely around the HTML spec, but we are interested in slimming it down.\n\n````rust, ignore\nfn virtual_event_from_websys_event(event: &web_sys::Event) -> VirtualEvent {\n\tmatch event.type_().as_str() {\n\t\t\"keydown\" => {\n\t\t\tlet event: web_sys::KeyboardEvent = event.clone().dyn_into().unwrap();\n\t\t\tUserEvent::KeyboardEvent(UserEvent {\n\t\t\t\tscope_id: None,\n\t\t\t\tpriority: EventPriority::Medium,\n\t\t\t\tname: \"keydown\",\n\t\t\t\t// This should be whatever element is focused\n\t\t\t\telement: Some(ElementId(0)),\n\t\t\t\tdata: Arc::new(KeyboardData{\n\t\t\t\t\tchar_code: event.char_code(),\n\t\t\t\t\tkey: event.key(),\n\t\t\t\t\tkey_code: event.key_code(),\n\t\t\t\t\talt_key: event.alt_key(),\n\t\t\t\t\tctrl_key: event.ctrl_key(),\n\t\t\t\t\tmeta_key: event.meta_key(),\n\t\t\t\t\tshift_key: event.shift_key(),\n\t\t\t\t\tlocation: event.location(),\n\t\t\t\t\trepeat: event.repeat(),\n\t\t\t\t\twhich: event.which(),\n\t\t\t\t})\n\t\t\t})\n\t\t}\n\t\t_ => todo!()\n\t}\n}\n````\n\n## Custom raw elements\n\nIf you need to go as far as relying on custom elements/attributes for your renderer – you totally can. This still enables you to use Dioxus' reactive nature, component system, shared state, and other features, but will ultimately generate different nodes. All attributes and listeners for the HTML and SVG namespace are shuttled through helper structs that essentially compile away. You can drop in your elements any time you want, with little hassle. However, you must be sure your renderer can handle the new namespace.\n\nFor more examples and information on how to create custom namespaces, see the [`dioxus_html` crate](https://github.com/DioxusLabs/dioxus/blob/main/packages/html/README.md#how-to-extend-it).\n\n# Native Core\n\nIf you are creating a renderer in rust, the [native-core](https://github.com/DioxusLabs/blitz/tree/master/packages/native-core) crate provides some utilities to implement a renderer. It provides an abstraction over Mutations and Templates and contains helpers that can handle the layout and text editing for you.\n\n## The RealDom\n\nThe `RealDom` is a higher-level abstraction over updating the Dom. It uses an entity component system to manage the state of nodes. This system allows you to modify insert and modify arbitrary components on nodes. On top of this, the RealDom provides a way to manage a tree of nodes, and the State trait provides a way to automatically add and update these components when the tree is modified. It also provides a way to apply `Mutations` to the RealDom.\n\n### Example\n\nLet's build a toy renderer with borders, size, and text color.\nBefore we start let's take a look at an example element we can render:\n\n````rust\nrsx!{\n\tdiv{\n\t\tcolor: \"red\",\n\t\tp{\n\t\t\tborder: \"1px solid black\",\n\t\t\t\"hello world\"\n\t\t}\n\t}\n}\n````\n\nIn this tree, the color depends on the parent's color. The layout depends on the children's layout, the current text, and the text size. The border depends on only the current node.\n\nIn the following diagram arrows represent dataflow:\n\n[![](https://mermaid.ink/img/pako:eNqllV1vgjAUhv8K6W4wkQVa2QdLdrHsdlfukmSptEhjoaSWqTH-9xVwONAKst70g5739JzzlO5BJAgFAYi52EQJlsr6fAszS7d1sVhKnCdWJDJFt6peLVs5-9owohK7HFrVcFJ_pxnpmK8VVvRkTJikkWIiaxy1dhP23bUwW1WW5WbPrrqJ4ziR4EJ6dtVN2ls5y1ZztePUcrWZFCvqVEcPPDffvlyS1XoLIQnVgnVvVPR6FU9Zc-6dV453ojjOPbuetRJ57gIeXQR3cez7rjtteZyZQ2j5MqmjqwE0ZW0VKx9RKtgpFewp1aw3sXXFy6TWgiYlv8mfq1scD8ofbBCAfQg8_AMBOAyBxzEIwA4CxgQ99QbQkjnD2KT7_CfxGF8_9WXQEsq5sDZCcjICOXRCri4h6r3NA38Q6Jdi1EOx5w3DGDYYI6MUvJFjM3VoGHUeGoMd6mBnDmh2E3fo7O4Yhf0x4OkBmIKUyhQzol_GfbkcApXQlIYg0EOC5SoEYXbQ-3ChxHyXRSBQsqBTUOREx_7OsAY3BUGM-VqvUsKUkB_1U6vf05gtweEHTk4_HQ?type=png)](https://mermaid.live/edit#pako:eNqllV1vgjAUhv8K6W4wkQVa2QdLdrHsdlfukmSptEhjoaSWqTH-9xVwONAKst70g5739JzzlO5BJAgFAYi52EQJlsr6fAszS7d1sVhKnCdWJDJFt6peLVs5-9owohK7HFrVcFJ_pxnpmK8VVvRkTJikkWIiaxy1dhP23bUwW1WW5WbPrrqJ4ziR4EJ6dtVN2ls5y1ZztePUcrWZFCvqVEcPPDffvlyS1XoLIQnVgnVvVPR6FU9Zc-6dV453ojjOPbuetRJ57gIeXQR3cez7rjtteZyZQ2j5MqmjqwE0ZW0VKx9RKtgpFewp1aw3sXXFy6TWgiYlv8mfq1scD8ofbBCAfQg8_AMBOAyBxzEIwA4CxgQ99QbQkjnD2KT7_CfxGF8_9WXQEsq5sDZCcjICOXRCri4h6r3NA38Q6Jdi1EOx5w3DGDYYI6MUvJFjM3VoGHUeGoMd6mBnDmh2E3fo7O4Yhf0x4OkBmIKUyhQzol_GfbkcApXQlIYg0EOC5SoEYXbQ-3ChxHyXRSBQsqBTUOREx_7OsAY3BUGM-VqvUsKUkB_1U6vf05gtweEHTk4_HQ)\n\nTo help in building a Dom, native-core provides the State trait and a RealDom struct. The State trait provides a way to describe how states in a node depend on other states in its relatives. By describing how to update a single node from its relations, native-core will derive a way to update the states of all nodes for you. Once you have a state you can provide it as a generic to RealDom. RealDom provides all of the methods to interact and update your new dom.\n\nNative Core cannot create all of the required methods for the State trait, but it can derive some of them. To implement the State trait, you must implement the following methods and let the `#[partial_derive_state]` macro handle the rest:\n\n````rust, ignore@custom_renderer.rs\n\n````\n\nLets take a look at how to implement the State trait for a simple renderer.\n\n````rust@custom_renderer.rs\n\n````\n\nNow that we have our state, we can put it to use in our RealDom. We can update the RealDom with apply_mutations to update the structure of the dom (adding, removing, and changing properties of nodes) and then update_state to update the States for each of the nodes that changed.\n\n````rust@custom_renderer.rs\n\n````\n\n## Layout\n\nFor most platforms, the layout of the Elements will stay the same. The [layout_attributes](https://docs.rs/dioxus-native-core/latest/dioxus_native_core/layout_attributes/index.html) module provides a way to apply HTML attributes a [Taffy](https://docs.rs/taffy/latest/taffy/index.html) layout style.\n\n## Text Editing\n\nTo make it easier to implement text editing in rust renderers, `native-core` also contains a renderer-agnostic cursor system. The cursor can handle text editing, selection, and movement with common keyboard shortcuts integrated.\n\n````rust@custom_renderer.rs\n\n````\n\n## Conclusion\n\nThat should be it! You should have nearly all the knowledge required on how to implement your renderer. We're super interested in seeing Dioxus apps brought to custom desktop renderers, mobile renderers, video game UI, and even augmented reality! If you're interested in contributing to any of these projects, don't be afraid to reach out or join the [community](https://discord.gg/XgGxMSkvUM)."
+            58usize => {
+                "# Working with External State\n\nThis guide will help you integrate your Dioxus application with some external state like a different thread or a websocket connection.\n\n## Working with non-reactive State\n\n[Coroutines](../../../reference/use_coroutine.md) are great tool for dealing with non-reactive (state you don't render directly) state within your application.\n\nYou can store your state inside the coroutine async block and communicate with the coroutine with messages from any child components.\n\n````rust@use_coroutine.rs\n// import futures::StreamExt to use the next() method\nuse futures::StreamExt;\nlet mut response_state = use_signal(|| None);\nlet tx = use_coroutine(move |mut rx| async move {\n    // Define your state before the loop\n    let mut state = reqwest::Client::new();\n    let mut cache: HashMap<String, String> = HashMap::new();\n    loop {\n        // Loop and wait for the next message\n        if let Some(request) = rx.next().await {\n            // Resolve the message\n            let response = if let Some(response) = cache.get(&request) {\n                response.clone()\n            } else {\n                let response = state\n                    .get(&request)\n                    .send()\n                    .await\n                    .unwrap()\n                    .text()\n                    .await\n                    .unwrap();\n                cache.insert(request, response.clone());\n                response\n            };\n            response_state.set(Some(response));\n        } else {\n            break;\n        }\n    }\n});\n// Send a message to the coroutine\ntx.send(\"https://example.com\".to_string());\n// Get the current state of the coroutine\nlet response = response_state.read();\n````\n\n## Making Reactive State External\n\nIf you have some reactive state (state that is rendered), that you want to modify from another thread, you can use a signal that is sync. Signals take an optional second generic value with information about syncness. Sync signals have a slightly higher overhead than thread local signals, but they can be used in a multithreaded environment.\n\n````rust@sync_signal.rs\nuse dioxus::prelude::*;\n\nfn main() {\n    launch(app);\n}\n\nfn app() -> Element {\n    let mut signal = use_signal_sync(|| 0);\n\n    use_hook(|| {\n        std::thread::spawn(move || loop {\n            std::thread::sleep(std::time::Duration::from_secs(1));\n            // You can easily update the signal from a different thread\n            signal += 1;\n        });\n    });\n\n    rsx! {\n        button { onclick: move |_| signal += 1, \"Increase\" }\n        \"{signal}\"\n    }\n}\n\n````"
             }
-            44usize => {
-                "# Layouts\n\nLayouts allow you to wrap all child routes in a component. This can be useful when creating something like a header that will be used in many different routes.\n\n[`Outlet`] tells the router where to render content in layouts. In the following example,\nthe Index will be rendered within the [`Outlet`].\n\nThis page is built with the Dioxus. It uses Layouts in several different places. Here is an outline of how layouts are used on the current page. Hover over different layouts to see what elements they are on the page.\n\n````inject-dioxus\nLayoutsExplanation {}\n````\n\nHere is a more complete example of a layout wrapping the body of a page.\n\n````rust@outlet.rs\n#[derive(Routable, Clone)]\n#[rustfmt::skip]\nenum Route {\n    #[layout(Wrapper)]\n        #[route(\"/\")]\n        Index {},\n}\n\n#[component]\nfn Wrapper() -> Element {\n    rsx! {\n        header { \"header\" }\n        // The index route will be rendered here\n        Outlet::<Route> {}\n        footer { \"footer\" }\n    }\n}\n\n#[component]\nfn Index() -> Element {\n    rsx! { h1 { \"Index\" } }\n}\n````\n\nThe example above will output the following HTML (line breaks added for\nreadability):\n\n````html\n<header>header</header>\n<h1>Index</h1>\n<footer>footer</footer>\n````\n\n## Layouts with dynamic segments\n\nYou can combine layouts with [nested routes](./routes/nested.md) to create dynamic layouts with content that changes based on the current route.\n\nJust like routes, layouts components must accept a prop for each dynamic segment in the route. For example, if you have a route with a dynamic segment like `/:name`, your layout component must accept a `name` prop:\n\n````rust@outlet.rs\n#[derive(Routable, Clone)]\n#[rustfmt::skip]\nenum Route {\n    #[nest(\"/:name\")]\n        #[layout(Wrapper)]\n            #[route(\"/\")]\n            Index {\n                name: String,\n            },\n}\n\n#[component]\nfn Wrapper(name: String) -> Element {\n    rsx! {\n        header { \"Welcome {name}!\" }\n        // The index route will be rendered here\n        Outlet::<Route> {}\n        footer { \"footer\" }\n    }\n}\n\n#[component]\nfn Index(name: String) -> Element {\n    rsx! { h1 { \"This is a homepage for {name}\" } }\n}\n````\n\nOr to get the full route, you can use the `use_route` hook.\n\n````rust@outlet.rs\n#[derive(Routable, Clone)]\n#[rustfmt::skip]\nenum Route {\n    #[layout(Wrapper)]\n        #[route(\"/:name\")]\n        Index {\n            name: String,\n        },\n}\n\n#[component]\nfn Wrapper() -> Element {\n    let full_route = use_route::<Route>();\n    rsx! {\n        header { \"Welcome to {full_route}!\" }\n        // The index route will be rendered here\n        Outlet::<Route> {}\n        footer { \"footer\" }\n    }\n}\n\n#[component]\nfn Index(name: String) -> Element {\n    rsx! { h1 { \"This is a homepage for {name}\" } }\n}\n````"
+            59usize => {
+                "# Custom Hooks\n\nHooks are a great way to encapsulate business logic. If none of the existing hooks work for your problem, you can write your own.\n\nWhen writing your hook, you can make a function that starts with `use_` and takes any arguments you need. You can then use the `use_hook` method to create a hook that will be called the first time the component is rendered.\n\n## Composing Hooks\n\nTo avoid repetition, you can encapsulate business logic based on existing hooks to create a new hook.\n\nFor example, if many components need to access an `AppSettings` struct, you can create a \"shortcut\" hook:\n\n````rust@hooks_composed.rs\nfn use_settings() -> Signal<AppSettings> {\n    consume_context()\n}\n````\n\nOr if you want to wrap a hook that persists reloads with the storage API, you can build on top of the use_signal hook to work with mutable state:\n\n````rust@hooks_composed.rs\nuse gloo_storage::{LocalStorage, Storage};\nuse serde::{de::DeserializeOwned, Serialize};\n\n/// A persistent storage hook that can be used to store data across application reloads.\n#[allow(clippy::needless_return)]\npub fn use_persistent<T: Serialize + DeserializeOwned + Default + 'static>(\n    // A unique key for the storage entry\n    key: impl ToString,\n    // A function that returns the initial value if the storage entry is empty\n    init: impl FnOnce() -> T,\n) -> UsePersistent<T> {\n    // Use the use_signal hook to create a mutable state for the storage entry\n    let state = use_signal(move || {\n        // This closure will run when the hook is created\n        let key = key.to_string();\n        let value = LocalStorage::get(key.as_str()).ok().unwrap_or_else(init);\n        StorageEntry { key, value }\n    });\n\n    // Wrap the state in a new struct with a custom API\n    UsePersistent { inner: state }\n}\n\nstruct StorageEntry<T> {\n    key: String,\n    value: T,\n}\n\n/// Storage that persists across application reloads\npub struct UsePersistent<T: 'static> {\n    inner: Signal<StorageEntry<T>>,\n}\n\nimpl<T> Clone for UsePersistent<T> {\n    fn clone(&self) -> Self {\n        *self\n    }\n}\n\nimpl<T> Copy for UsePersistent<T> {}\n\nimpl<T: Serialize + DeserializeOwned + Clone + 'static> UsePersistent<T> {\n    /// Returns a reference to the value\n    pub fn get(&self) -> T {\n        self.inner.read().value.clone()\n    }\n\n    /// Sets the value\n    pub fn set(&mut self, value: T) {\n        let mut inner = self.inner.write();\n        // Write the new value to local storage\n        LocalStorage::set(inner.key.as_str(), &value);\n        inner.value = value;\n    }\n}\n````\n\n## Custom Hook Logic\n\nYou can use [`use_hook`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_hook.html) to build your own hooks. In fact, this is what all the standard hooks are built on!\n\n`use_hook` accepts a single closure for initializing the hook. It will be only run the first time the component is rendered. The return value of that closure will be used as the value of the hook – Dioxus will take it, and store it for as long as the component is alive. On every render (not just the first one!), you will get a reference to this value.\n\n > \n > Note: You can use the `use_on_destroy` hook to clean up any resources the hook uses when the component is destroyed.\n\nInside the initialization closure, you will typically make calls to other `cx` methods. For example:\n\n* The `use_signal` hook tracks state in the hook value, and uses [`schedule_update`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.schedule_update.html) to make Dioxus re-render the component whenever it changes.\n\nHere is a simplified implementation of the `use_signal` hook:\n\n````rust@hooks_custom_logic.rs\nuse std::cell::RefCell;\nuse std::rc::Rc;\nuse std::sync::Arc;\n\nstruct Signal<T> {\n    value: Rc<RefCell<T>>,\n    update: Arc<dyn Fn()>,\n}\n\nimpl<T> Clone for Signal<T> {\n    fn clone(&self) -> Self {\n        Self {\n            value: self.value.clone(),\n            update: self.update.clone(),\n        }\n    }\n}\n\nfn my_use_signal<T: 'static>(init: impl FnOnce() -> T) -> Signal<T> {\n    use_hook(|| {\n        // The update function will trigger a re-render in the component cx is attached to\n        let update = schedule_update();\n        // Create the initial state\n        let value = Rc::new(RefCell::new(init()));\n\n        Signal { value, update }\n    })\n}\n\nimpl<T: Clone> Signal<T> {\n    fn get(&self) -> T {\n        self.value.borrow().clone()\n    }\n\n    fn set(&self, value: T) {\n        // Update the state\n        *self.value.borrow_mut() = value;\n        // Trigger a re-render on the component the state is from\n        (self.update)();\n    }\n}\n````\n\n* The `use_context` hook calls [`consume_context`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.consume_context.html) (which would be expensive to call on every render) to get some context from the component\n\nHere is an implementation of the `use_context` and `use_context_provider` hooks:\n\n````rust@hooks_custom_logic.rs\npub fn use_context<T: 'static + Clone>() -> T {\n    use_hook(|| consume_context())\n}\n\npub fn use_context_provider<T: 'static + Clone>(f: impl FnOnce() -> T) -> T {\n    use_hook(|| {\n        let val = f();\n        // Provide the context state to the component\n        provide_context(val.clone());\n        val\n    })\n}\n\n````"
             }
-            12usize => {
-                "# Hooks and component state\n\nSo far, our components have had no state like a normal Rust function. However, in a UI component, it is often useful to have stateful functionality to build user interactions. For example, you might want to track whether the user has opened a drop-down and render different things accordingly.\n\nHooks allow us to create state in our components. Hooks are Rust functions you call in a constant order in a component that add additional functionality to the component.\n\nDioxus provides many built-in hooks, but if those hooks don't fit your specific use case, you also can [create your own hook](../cookbook/state/custom_hooks/index.md)\n\n## use_signal hook\n\n[`use_signal`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_signal.html) is one of the simplest hooks.\n\n* You provide a closure that determines the initial value: `let mut count = use_signal(|| 0);`\n* `use_signal` gives you the current value, and a way to write to the value\n* When the value updates, `use_signal` makes the component re-render (along with any other component that references it), and then provides you with the new value.\n\nFor example, you might have seen the counter example, in which state (a number) is tracked using the `use_signal` hook:\n\n````rust, no_run@hooks_counter.rs\npub fn App() -> Element {\n    // count will be initialized to 0 the first time the component is rendered\n    let mut count = use_signal(|| 0);\n\n    rsx! {\n        h1 { \"High-Five counter: {count}\" }\n        button { onclick: move |_| count += 1, \"Up high!\" }\n        button { onclick: move |_| count -= 1, \"Down low!\" }\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n   hooks_counter::App {}\n}\n````\n\nEvery time the component's state changes, it re-renders, and the component function is called, so you can describe what you want the new UI to look like. You don't have to worry about \"changing\" anything – describe what you want in terms of the state, and Dioxus will take care of the rest!\n\n > \n > `use_signal` returns your value wrapped in a smart pointer of type [`Signal`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.Signal.html) that is `Copy`. This is why you can both read the value and update it, even within an event handler.\n\nYou can use multiple hooks in the same component if you want:\n\n````rust, no_run@hooks_counter_two_state.rs\npub fn App() -> Element {\n    let mut count_a = use_signal(|| 0);\n    let mut count_b = use_signal(|| 0);\n\n    rsx! {\n        h1 { \"Counter_a: {count_a}\" }\n        button { onclick: move |_| count_a += 1, \"a++\" }\n        button { onclick: move |_| count_a -= 1, \"a--\" }\n        h1 { \"Counter_b: {count_b}\" }\n        button { onclick: move |_| count_b += 1, \"b++\" }\n        button { onclick: move |_| count_b -= 1, \"b--\" }\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n  hooks_counter_two_state::App {}\n}\n````\n\nYou can also use `use_signal` to store more complex state, like a Vec. You can read and write to the state with the `read` and `write` methods:\n\n````rust, no_run@hooks_use_signal.rs\npub fn App() -> Element {\n    let mut list = use_signal(Vec::new);\n\n    rsx! {\n        p { \"Current list: {list:?}\" }\n        button {\n            onclick: move |event| {\n                let list_len = list.len();\n                list.push(list_len);\n                list.push(list_len);\n            },\n            \"Add two elements!\"\n        }\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n  hooks_use_signal::App {}\n}\n````\n\n## Rules of hooks\n\nThe above example might seem a bit magic since Rust functions are typically not associated with state. Dioxus allows hooks to maintain state across renders through a hidden scope that is associated with the component.\n\nBut how can Dioxus differentiate between multiple hooks in the same component? As you saw in the second example, both `use_signal` functions were called with the same parameters, so how come they can return different things when the counters are different?\n\n````rust, no_run@hooks_counter_two_state.rs\nlet mut count_a = use_signal(|| 0);\nlet mut count_b = use_signal(|| 0);\n````\n\nThis is only possible because the two hooks are always called in the same order, so Dioxus knows which is which. Because the order you call hooks matters, you must follow certain rules when using hooks:\n\n1. Hooks may be only used in components or other hooks (we'll get to that later).\n1. On every call to a component function.\n1. The same hooks must be called (except in the case of early returns, as explained later in the [Error Handling chapter](../cookbook/error_handling.md)).\n1. In the same order.\n1. Hook names should start with `use_` so you don't accidentally confuse them with regular\n   functions (`use_signal()`, `use_effect()`, `use_resource()`, etc...).\n\nThese rules mean that there are certain things you can't do with hooks:\n\n### No hooks in conditionals\n\n````rust, no_run@hooks_bad.rs\n// ❌ don't call hooks in conditionals!\n// We must ensure that the same hooks will be called every time\n// But `if` statements only run if the conditional is true!\n// So we might violate rule 2.\nif you_are_happy && you_know_it {\n    let something = use_signal(|| \"hands\");\n    println!(\"clap your {something}\")\n}\n\n// ✅ instead, *always* call use_signal\n// You can put other stuff in the conditional though\nlet something = use_signal(|| \"hands\");\nif you_are_happy && you_know_it {\n    println!(\"clap your {something}\")\n}\n````\n\n### No hooks in closures\n\n````rust, no_run@hooks_bad.rs\n// ❌ don't call hooks inside closures!\n// We can't guarantee that the closure, if used, will be called in the same order every time\nlet _a = || {\n    let b = use_signal(|| 0);\n    b()\n};\n\n// ✅ instead, move hook `b` outside\nlet b = use_signal(|| 0);\nlet _a = || b();\n````\n\n### No hooks in loops\n\n````rust, no_run@hooks_bad.rs\n// `names` is a Vec<&str>\n\n// ❌ Do not use hooks in loops!\n// In this case, if the length of the Vec changes, we break rule 2\nfor _name in &names {\n    let is_selected = use_signal(|| false);\n    println!(\"selected: {is_selected}\");\n}\n\n// ✅ Instead, use a hashmap with use_signal\nlet selection_map = use_signal(HashMap::<&str, bool>::new);\n\nfor name in &names {\n    let is_selected = selection_map.read()[name];\n    println!(\"selected: {is_selected}\");\n}\n````\n\n## Additional resources\n\n* [dioxus_hooks API docs](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/)\n* [dioxus_hooks source code](https://github.com/DioxusLabs/dioxus/tree/v0.5/packages/hooks)"
+            67usize => {
+                "# Translating existing HTML\n\nDioxus uses a custom format called RSX to represent the HTML because it is more concise and looks more like Rust code. However, it can be a pain to convert existing HTML to RSX. That's why Dioxus comes with a tool called `dx translate` that can automatically convert HTML to RSX!\n\nDx translate can make converting large chunks of HTML to RSX much easier! Lets try translating some of the HTML from the Dioxus homepage:\n\n````sh\ndx translate --raw  \"<div class=\\\"relative w-full mx-4 sm:mx-auto text-gray-600\\\"><div class=\\\"text-[3em] md:text-[5em] font-semibold dark:text-white text-ghdarkmetal font-sans py-12 flex flex-col\\\"><span>Fullstack, crossplatform,</span><span>lightning fast, fully typed.</span></div><h3 class=\\\"text-[2em] dark:text-white font-extralight text-ghdarkmetal pt-4 max-w-screen-md mx-auto\\\">Dioxus is a Rust library for building apps that run on desktop, web, mobile, and more.</h3><div class=\\\"pt-12 text-white text-[1.2em] font-sans font-bold flex flex-row justify-center space-x-4\\\"><a href=\\\"/learn/0.5/getting_started\\\" dioxus-prevent-default=\\\"onclick\\\" class=\\\"bg-red-600 py-2 px-8 hover:-translate-y-2 transition-transform duration-300\\\" data-dioxus-id=\\\"216\\\">Quickstart</a><a href=\\\"/learn/0.5/reference\\\" dioxus-prevent-default=\\\"onclick\\\" class=\\\"bg-blue-500 py-2 px-8 hover:-translate-y-2 transition-transform duration-300\\\" data-dioxus-id=\\\"214\\\">Read the docs</a></div><div class=\\\"max-w-screen-2xl mx-auto pt-36\\\"><h1 class=\\\"text-md\\\">Trusted by top companies</h1><div class=\\\"pt-4 flex flex-row flex-wrap justify-center\\\"><div class=\\\"h-12 w-40 bg-black p-2 m-4 flex justify-center items-center\\\"><img src=\\\"static/futurewei_bw.png\\\"></div><div class=\\\"h-12 w-40 bg-black p-2 m-4 flex justify-center items-center\\\"><img src=\\\"static/airbuslogo.svg\\\"></div><div class=\\\"h-12 w-40 bg-black p-2 m-4 flex justify-center items-center\\\"><img src=\\\"static/ESA_logo.svg\\\"></div><div class=\\\"h-12 w-40 bg-black p-2 m-4 flex justify-center items-center\\\"><img src=\\\"static/yclogo.svg\\\"></div><div class=\\\"h-12 w-40 bg-black p-2 m-4 flex justify-center items-center\\\"><img src=\\\"static/satellite.webp\\\"></div></div></div></div>\"\n````\n\nWe get the following RSX you can easily copy and paste into your code:\n\n````rs\ndiv { class: \"relative w-full mx-4 sm:mx-auto text-gray-600\",\n   div { class: \"text-[3em] md:text-[5em] font-semibold dark:text-white text-ghdarkmetal font-sans py-12 flex flex-col\",\n      span { \"Fullstack, crossplatform,\" }\n      span { \"lightning fast, fully typed.\" }\n   }\n   h3 { class: \"text-[2em] dark:text-white font-extralight text-ghdarkmetal pt-4 max-w-screen-md mx-auto\",\n      \"Dioxus is a Rust library for building apps that run on desktop, web, mobile, and more.\"\n   }\n   div { class: \"pt-12 text-white text-[1.2em] font-sans font-bold flex flex-row justify-center space-x-4\",\n      a {\n         href: \"/learn/0.5/getting_started\",\n         data_dioxus_id: \"216\",\n         dioxus_prevent_default: \"onclick\",\n         class: \"bg-red-600 py-2 px-8 hover:-translate-y-2 transition-transform duration-300\",\n         \"Quickstart\"\n      }\n      a {\n         dioxus_prevent_default: \"onclick\",\n         href: \"/learn/0.5/reference\",\n         data_dioxus_id: \"214\",\n         class: \"bg-blue-500 py-2 px-8 hover:-translate-y-2 transition-transform duration-300\",\n         \"Read the docs\"\n      }\n   }\n   div { class: \"max-w-screen-2xl mx-auto pt-36\",\n      h1 { class: \"text-md\", \"Trusted by top companies\" }\n      div { class: \"pt-4 flex flex-row flex-wrap justify-center\",\n         div { class: \"h-12 w-40 p-2 m-4 flex justify-center items-center\",\n            img { src: \"static/futurewei_bw.png\" }\n         }\n         div { class: \"h-12 w-40 p-2 m-4 flex justify-center items-center\",\n            img { src: \"static/airbuslogo.svg\" }\n         }\n         div { class: \"h-12 w-40 p-2 m-4 flex justify-center items-center\",\n            img { src: \"static/ESA_logo.svg\" }\n         }\n         div { class: \"h-12 w-40 p-2 m-4 flex justify-center items-center\",\n            img { src: \"static/yclogo.svg\" }\n         }\n         div { class: \"h-12 w-40 p-2 m-4 flex justify-center items-center\",\n            img { src: \"static/satellite.webp\" }\n         }\n      }\n   }\n}\n````\n\n## Usage\n\nThe `dx translate` command has several flags you can use to control your html input and rsx output.\n\nYou can use the `--file` flag to translate an HTML file to RSX:\n\n````sh\ndx translate --file index.html\n````\n\nOr you can use the `--raw` flag to translate a string of HTML to RSX:\n\n````sh\ndx translate --raw \"<div>Hello world</div>\"\n````\n\nBoth of those commands will output the following RSX:\n\n````rs\ndiv { \"Hello world\" }\n````\n\nThe `dx translate` command will output the RSX to stdout. You can use the `--output` flag to write the RSX to a file instead.\n\n````sh\ndx translate --raw \"<div>Hello world</div>\" --output index.rs\n````\n\nYou can automatically create a component with the `--component` flag.\n\n````sh\ndx translate --raw \"<div>Hello world</div>\" --component\n````\n\nThis will output the following component:\n\n````rs\nfn component() -> Element {\n   rsx! {\n      div { \"Hello world\" }\n   }\n}\n````\n\nTo learn more about the different flags `dx translate` supports, run `dx translate --help`."
             }
-            10usize => {
-                "# Component Props\n\nJust like you can pass arguments to a function or attributes to an element, you can pass props to a component that customize its behavior! The components we've seen so far didn't accept any props – so let's write some components that do.\n\n## derive(Props)\n\nComponent props are a single struct annotated with `#[derive(PartialEq, Clone, Props)]`. For a component to accept props, the type of its argument must be `YourPropsStruct`.\n\nExample:\n\n````rust, no_run@component_owned_props.rs\n#[derive(PartialEq, Props, Clone)]\nstruct LikesProps {\n    score: i32,\n}\n\nfn Likes(props: LikesProps) -> Element {\n    rsx! {\n        div {\n            \"This post has \"\n            b { \"{props.score}\" }\n            \" likes\"\n        }\n    }\n}\n````\n\nYou can then pass prop values to the component the same way you would pass attributes to an element:\n\n````rust, no_run@component_owned_props.rs\npub fn App() -> Element {\n    rsx! { Likes { score: 42 } }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n    component_owned_props::App {}\n}\n````\n\n## Prop Options\n\nThe `#[derive(Props)]` macro has some features that let you customize the behavior of props.\n\n### Optional Props\n\nYou can create optional fields by using the `Option<…>` type for a field:\n\n````rust, no_run@component_props_options.rs\n#[derive(PartialEq, Clone, Props)]\nstruct OptionalProps {\n    title: String,\n    subtitle: Option<String>,\n}\n\nfn Title(props: OptionalProps) -> Element {\n    rsx! {\n        h1 { \"{props.title}: \", {props.subtitle.unwrap_or_else(|| \"No subtitle provided\".to_string())} }\n    }\n}\n````\n\nThen, you can choose to either provide them or not:\n\n````rust, no_run@component_props_options.rs\nTitle { title: \"Some Title\" }\nTitle { title: \"Some Title\", subtitle: \"Some Subtitle\" }\n// Providing an Option explicitly won't compile though:\n// Title {\n//     title: \"Some Title\",\n//     subtitle: None,\n// },\n````\n\n### Explicitly Required Option\n\nIf you want to explicitly require an `Option`, and not an optional prop, you can annotate it with `#[props(!optional)]`:\n\n````rust, no_run@component_props_options.rs\n#[derive(PartialEq, Clone, Props)]\nstruct ExplicitOptionProps {\n    title: String,\n    #[props(!optional)]\n    subtitle: Option<String>,\n}\n\nfn ExplicitOption(props: ExplicitOptionProps) -> Element {\n    rsx! {\n        h1 { \"{props.title}: \", {props.subtitle.unwrap_or_else(|| \"No subtitle provided\".to_string())} }\n    }\n}\n````\n\nThen, you have to explicitly pass either `Some(\"str\")` or `None`:\n\n````rust, no_run@component_props_options.rs\nExplicitOption { title: \"Some Title\", subtitle: None }\nExplicitOption { title: \"Some Title\", subtitle: Some(\"Some Title\".to_string()) }\n// This won't compile:\n// ExplicitOption {\n//     title: \"Some Title\",\n// },\n````\n\n### Default Props\n\nYou can use `#[props(default = 42)]` to make a field optional and specify its default value:\n\n````rust, no_run@component_props_options.rs\n#[derive(PartialEq, Props, Clone)]\nstruct DefaultProps {\n    // default to 42 when not provided\n    #[props(default = 42)]\n    number: i64,\n}\n\nfn DefaultComponent(props: DefaultProps) -> Element {\n    rsx! { h1 { \"{props.number}\" } }\n}\n````\n\nThen, similarly to optional props, you don't have to provide it:\n\n````rust, no_run@component_props_options.rs\nDefaultComponent { number: 5 }\nDefaultComponent {}\n````\n\n### Automatic Conversion with into\n\nIt is common for Rust functions to accept `impl Into<SomeType>` rather than just `SomeType` to support a wider range of parameters. If you want similar functionality with props, you can use `#[props(into)]`. For example, you could add it on a `String` prop – and `&str` will also be automatically accepted, as it can be converted into `String`:\n\n````rust, no_run@component_props_options.rs\n#[derive(PartialEq, Props, Clone)]\nstruct IntoProps {\n    #[props(into)]\n    string: String,\n}\n\nfn IntoComponent(props: IntoProps) -> Element {\n    rsx! { h1 { \"{props.string}\" } }\n}\n````\n\nThen, you can use it so:\n\n````rust, no_run@component_props_options.rs\nIntoComponent { string: \"some &str\" }\n````\n\n## The component macro\n\nSo far, every Component function we've seen had a corresponding ComponentProps struct to pass in props. This was quite verbose... Wouldn't it be nice to have props as simple function arguments? Then we wouldn't need to define a Props struct, and instead of typing `props.whatever`, we could just use `whatever` directly!\n\n`component` allows you to do just that. Instead of typing the \"full\" version:\n\n````rust, no_run\n#[derive(Props, Clone, PartialEq)]\nstruct TitleCardProps {\n    title: String,\n}\n\nfn TitleCard(props: TitleCardProps) -> Element {\n    rsx!{\n        h1 { \"{props.title}\" }\n    }\n}\n````\n\n...you can define a function that accepts props as arguments. Then, just annotate it with `#[component]`, and the macro will turn it into a regular Component for you:\n\n````rust, no_run\n#[component]\nfn TitleCard(title: String) -> Element {\n    rsx!{\n        h1 { \"{title}\" }\n    }\n}\n````\n\n > \n > While the new Component is shorter and easier to read, this macro should not be used by library authors since you have less control over Prop documentation.\n\n## Component Children\n\nIn some cases, you may wish to create a component that acts as a container for some other content, without the component needing to know what that content is. To achieve this, create a prop of type `Element`:\n\n````rust, no_run@component_element_props.rs\n#[derive(PartialEq, Clone, Props)]\nstruct ClickableProps {\n    href: String,\n    body: Element,\n}\n\nfn Clickable(props: ClickableProps) -> Element {\n    rsx! {\n        a { href: \"{props.href}\", class: \"fancy-button\", {props.body} }\n    }\n}\n````\n\nThen, when rendering the component, you can pass in the output of `rsx!{...}`:\n\n````rust, no_run@component_element_props.rs\nrsx! {\n    Clickable {\n        href: \"https://www.youtube.com/watch?v=C-M2hs3sXGo\",\n        body: rsx! {\n            \"How to \" i { \"not\" } \" be seen\"\n        }\n    }\n}\n````\n\n > \n > Warning: While it may compile, do not include the same `Element` more than once in the RSX. The resulting behavior is unspecified.\n\n### The children field\n\nRather than passing the RSX through a regular prop, you may wish to accept children similarly to how elements can have children. The \"magic\" `children` prop lets you achieve this:\n\n````rust, no_run@component_children.rs\n#[derive(PartialEq, Clone, Props)]\nstruct ClickableProps {\n    href: String,\n    children: Element,\n}\n\nfn Clickable(props: ClickableProps) -> Element {\n    rsx! {\n        a { href: \"{props.href}\", class: \"fancy-button\", {props.children} }\n    }\n}\n````\n\nThis makes using the component much simpler: simply put the RSX inside the `{}` brackets – and there is no need for a `render` call or another macro!\n\n````rust, no_run@component_children.rs\nrsx! {\n    Clickable { href: \"https://www.youtube.com/watch?v=C-M2hs3sXGo\",\n        \"How to \"\n        i { \"not\" }\n        \" be seen\"\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n    component_children::App {}\n}\n````"
-            }
-            69usize => {
-                "# Project Structure\n\nThere are many packages in the Dioxus organization. This document will help you understand the purpose of each package and how they fit together.\n\n## Renderers\n\n* [Desktop](https://github.com/DioxusLabs/dioxus/tree/main/packages/desktop): A Render that Runs Dioxus applications natively, but renders them with the system webview\n* [Mobile](https://github.com/DioxusLabs/dioxus/tree/main/packages/mobile): A Render that Runs Dioxus applications natively, but renders them with the system webview. This is currently a copy of the desktop render\n* [Web](https://github.com/DioxusLabs/dioxus/tree/main/packages/web): Renders Dioxus applications in the browser by compiling to WASM and manipulating the DOM\n* [Liveview](https://github.com/DioxusLabs/dioxus/tree/main/packages/liveview): A Render that Runs on the server, and renders using a websocket proxy in the browser\n* [Plasmo](https://github.com/DioxusLabs/blitz/tree/master/packages/plasmo): A Renderer that renders a HTML-like tree into a terminal\n* [TUI](https://github.com/DioxusLabs/blitz/tree/master/packages/dioxus-tui): A Renderer that uses Plasmo to render a Dioxus application in a terminal\n* [Blitz-Core](https://github.com/DioxusLabs/blitz/tree/master/packages/blitz-core): An experimental native renderer that renders a HTML-like tree using WGPU.\n* [Blitz](https://github.com/DioxusLabs/blitz): An experimental native renderer that uses Blitz-Core to render a Dioxus application using WGPU.\n* [SSR](https://github.com/DioxusLabs/dioxus/tree/main/packages/ssr): A Render that Runs Dioxus applications on the server, and renders them to HTML\n\n## State Management/Hooks\n\n* [Hooks](https://github.com/DioxusLabs/dioxus/tree/main/packages/hooks): A collection of common hooks for Dioxus applications\n* [Signals](https://github.com/DioxusLabs/dioxus/tree/main/packages/signals): A experimental state management library for Dioxus applications. This currently contains a `Copy` version of Signal\n* [SDK](https://github.com/DioxusLabs/sdk): A collection of platform agnostic hooks to interact with system interfaces (The clipboard, camera, etc.).\n* [Fermi](https://github.com/DioxusLabs/dioxus/tree/main/packages/fermi): A global state management library for Dioxus applications.\n* [Router](https://github.com/DioxusLabs/dioxus/tree/main/packages/router): A client-side router for Dioxus applications\n\n## Core utilities\n\n* [core](https://github.com/DioxusLabs/dioxus/tree/main/packages/core): The core virtual dom implementation every Dioxus application uses\n  * You can read more about the architecture of the core [in this blog post](https://dioxuslabs.com/blog/templates-diffing/) and the [custom renderer section of the guide](../cookbook/custom_renderer.md)\n* [RSX](https://github.com/DioxusLabs/dioxus/tree/main/packages/rsx): The core parsing for RSX used for hot reloading, autoformatting, and the macro\n* [core-macro](https://github.com/DioxusLabs/dioxus/tree/main/packages/core-macro): The rsx! macro used to write Dioxus applications. (This is a wrapper over the RSX crate)\n* [HTML macro](https://github.com/DioxusLabs/dioxus-html-macro): A html-like alternative to the RSX macro\n\n## Native Renderer Utilities\n\n* [native-core](https://github.com/DioxusLabs/blitz/tree/main/packages/native-core): Incrementally computed tree of states (mostly styles)\n  * You can read more about how native-core can help you build native renderers in the [custom renderer section of the guide](../cookbook/custom_renderer.md#native-core)\n* [native-core-macro](https://github.com/DioxusLabs/blitz/tree/main/packages/native-core-macro): A helper macro for native core\n* [Taffy](https://github.com/DioxusLabs/taffy): Layout engine powering Blitz-Core, Plasmo, and Bevy UI\n\n## Web renderer tooling\n\n* [HTML](https://github.com/DioxusLabs/dioxus/tree/main/packages/html): defines html specific elements, events, and attributes\n* [Interpreter](https://github.com/DioxusLabs/dioxus/tree/main/packages/interpreter): defines browser bindings used by the web and desktop renderers\n\n## Developer tooling\n\n* [hot-reload](https://github.com/DioxusLabs/dioxus/tree/main/packages/hot-reload): Macro that uses the RSX crate to hot reload static parts of any rsx! macro. This macro works with any non-web renderer with an [integration](https://crates.io/crates/dioxus-hot-reload)\n* [autofmt](https://github.com/DioxusLabs/dioxus/tree/main/packages/autofmt): Formats RSX code\n* [rsx-rosetta](https://github.com/DioxusLabs/dioxus/tree/main/packages/rsx-rosetta): Handles conversion between HTML and RSX\n* [CLI](https://github.com/DioxusLabs/dioxus/tree/main/packages/cli): A Command Line Interface and VSCode extension to assist with Dioxus usage"
+            72usize => {
+                "# How to Upgrade to Dioxus 0.5\n\nThis guide will outline the API changes between the `0.4` and `0.5` releases.\n\n`0.5` has includes significant changes to hooks, props, and global state.\n\n## Cheat Sheet\n\nHere is a quick cheat sheet for the changes:\n\n### Scope\n\nDioxus 0.4:\n\n````rust\nfn app(cx: Scope) -> Element {\n    cx.use_hook(|| {\n        /*...*/\n    });\n    cx.provide_context({\n        /*...*/\n    });\n    cx.spawn(async move {\n        /*...*/\n    });\n    cx.render(rsx! {\n        /*...*/\n    })\n}\n````\n\nDioxus 0.5:\n\n````rust@migration.rs\nuse dioxus::prelude::*;\n\n// In dioxus 0.5, the scope is no longer passed as an argument to the function\nfn app() -> Element {\n    // Hooks, context, and spawn are now called directly\n    use_hook(|| { /*...*/ });\n    provide_context({ /*...*/ });\n    spawn(async move { /*...*/ });\n    rsx! {\n        /*...*/\n    }\n}\n````\n\n### Props\n\nDioxus 0.4:\n\n````rust\n#[component]\nfn Comp(cx: Scope, name: String) -> Element {\n    // You pass in an owned prop, but inside the component, it is borrowed (name is the type &String inside the function)\n    let owned_name: String = name.clone();\n\n    cx.render(rsx! {\n        \"Hello {owned_name}\"\n        BorrowedComp {\n            \"{name}\"\n        }\n        ManualPropsComponent {\n            name: name\n        }\n    })\n}\n\n#[component]\nfn BorrowedComp<'a>(cx: Scope<'a>, name: &'a str) -> Element<'a> {\n    cx.render(rsx! {\n        \"Hello {name}\"\n    })\n}\n\n#[derive(Props, PartialEq)]\nstruct ManualProps {\n    name: String\n}\n\nfn ManualPropsComponent(cx: Scope<ManualProps>) -> Element {\n    cx.render(rsx! {\n        \"Hello {cx.props.name}\"\n    })\n}\n````\n\nDioxus 0.5:\n\n````rust@migration.rs\nuse dioxus::prelude::*;\n\n// In dioxus 0.5, props are always owned. You pass in owned props and you get owned props in the body of the component\n#[component]\nfn Comp(name: String) -> Element {\n    // Name is owned here already (name is the type String inside the function)\n    let owned_name: String = name;\n\n    rsx! {\n        \"Hello {owned_name}\"\n        BorrowedComp {\n            name: \"other name\"\n        }\n        ManualPropsComponent {\n            name: \"other name 2\"\n        }\n    }\n}\n\n// Borrowed props are removed in dioxus 0.5. Mapped signals can act similarly to borrowed props if your props are borrowed from state\n// ReadOnlySignal is a copy wrapper over a state that will be automatically converted to\n#[component]\nfn BorrowedComp(name: ReadOnlySignal<String>) -> Element {\n    rsx! {\n        \"Hello {name}\"\n    }\n}\n\n// In dioxus 0.5, props need to implement Props, Clone, and PartialEq\n#[derive(Props, Clone, PartialEq)]\nstruct ManualProps {\n    name: String,\n}\n\n// Functions accept the props directly instead of the scope\nfn ManualPropsComponent(props: ManualProps) -> Element {\n    rsx! {\n        \"Hello {props.name}\"\n    }\n}\n````\n\nYou can read more about the new props API in the [Props Migration](props.md) guide.\n\n### Futures\n\nDioxus 0.4:\n\n````rust\nuse_future((dependency1, dependency2,), move |(dependency1, dependency2,)| async move {\n\t/*use dependency1 and dependency2*/\n});\n````\n\nDioxus 0.5:\n\n````rust@migration.rs\n// dependency1 and dependency2 must be Signal-like types like Signal, ReadOnlySignal, GlobalSignal, or another Resource\nuse_resource(|| async move { /*use dependency1 and dependency2*/ });\n\nlet non_reactive_state = 0;\n// You can also add non-reactive state to the resource hook with the use_reactive macro\nuse_resource(use_reactive!(|(non_reactive_state,)| async move {\n    tokio::time::sleep(std::time::Duration::from_secs(1)).await;\n    non_reactive_state + 1\n}));\n````\n\nRead more about the `use_resource` hook in the [Hook Migration](hooks.md) guide.\n\n### State Hooks\n\nDioxus 0.4:\n\n````rust\nlet copy_state = use_state(cx, || 0);\nlet clone_local_state = use_ref(cx, || String::from(\"Hello\"));\nuse_shared_state_provider(cx, || String::from(\"Hello\"));\nlet clone_shared_state = use_shared_state::<String>(cx);\n\nlet copy_state_value = **copy_state;\nlet clone_local_state_value = clone_local_state.read();\nlet clone_shared_state_value = clone_shared_state.read();\n\ncx.render(rsx!{\n\t\"{copy_state_value}\"\n\t\"{clone_shared_state_value}\"\n\t\"{clone_local_state_value}\"\n\tbutton {\n\t\tonclick: move |_| {\n\t\t\tcopy_state.set(1);\n\t\t\t*clone_local_state.write() = \"World\".to_string();\n\t\t\t*clone_shared_state.write() = \"World\".to_string();\n\t\t},\n\t\t\"Set State\"\n\t}\n})\n````\n\nDioxus 0.5:\n\n````rust@migration.rs\n// You can now use signals for local copy state, local clone state, and shared state with the same API\nlet mut copy_state = use_signal(|| 0);\nlet mut clone_shared_state = use_context_provider(|| Signal::new(String::from(\"Hello\")));\nlet mut clone_local_state = use_signal(|| String::from(\"Hello\"));\n\n// Call the signal like a function to clone the current value\nlet copy_state_value = copy_state();\n// Or use the read method to borrow the current value\nlet clone_local_state_value = clone_local_state.read();\nlet clone_shared_state_value = clone_shared_state.read();\n\nrsx! {\n    \"{copy_state_value}\"\n    \"{clone_shared_state_value}\"\n    \"{clone_local_state_value}\"\n    button {\n        onclick: move |_| {\n            // All three states have the same API for updating the state\n            copy_state.set(1);\n            clone_shared_state.set(\"World\".to_string());\n            clone_local_state.set(\"World\".to_string());\n        },\n        \"Set State\"\n    }\n}\n````\n\nRead more about the `use_signal` hook in the [State Migration](state.md) guide.\n\n### Fermi\n\nDioxus 0.4:\n\n````rust\nuse dioxus::prelude::*;\nuse fermi::*;\n\nstatic NAME: Atom<String> = Atom(|_| \"world\".to_string());\n\nfn app(cx: Scope) -> Element {\n    use_init_atom_root(cx);\n    let name = use_read(cx, &NAME);\n\n    cx.render(rsx! {\n        div { \"hello {name}!\" }\n        Child {}\n        ChildWithRef {}\n    })\n}\n\nfn Child(cx: Scope) -> Element {\n    let set_name = use_set(cx, &NAME);\n\n    cx.render(rsx! {\n        button {\n            onclick: move |_| set_name(\"dioxus\".to_string()),\n            \"reset name\"\n        }\n    })\n}\n\nstatic NAMES: AtomRef<Vec<String>> = AtomRef(|_| vec![\"world\".to_string()]);\n\nfn ChildWithRef(cx: Scope) -> Element {\n    let names = use_atom_ref(cx, &NAMES);\n\n    cx.render(rsx! {\n        div {\n            ul {\n                names.read().iter().map(|f| rsx!{\n                    li { \"hello: {f}\" }\n                })\n            }\n            button {\n                onclick: move |_| {\n                    let names = names.clone();\n                    cx.spawn(async move {\n                        names.write().push(\"asd\".to_string());\n                    })\n                },\n                \"Add name\"\n            }\n        }\n    })\n}\n````\n\nDioxus 0.5:\n\n````rust@migration.rs\nuse dioxus::prelude::*;\n\n// Atoms and AtomRefs have been replaced with GlobalSignals\nstatic NAME: GlobalSignal<String> = Signal::global(|| \"world\".to_string());\n\nfn app() -> Element {\n    rsx! {\n        // You can use global state directly without the use_read or use_set hooks\n        div { \"hello {NAME}!\" }\n        Child {}\n        ChildWithRef {}\n    }\n}\n\nfn Child() -> Element {\n    rsx! {\n        button {\n            onclick: move |_| *NAME.write() = \"dioxus\".to_string(),\n            \"reset name\"\n        }\n    }\n}\n\n// Atoms and AtomRefs have been replaced with GlobalSignals\nstatic NAMES: GlobalSignal<Vec<String>> = Signal::global(|| vec![\"world\".to_string()]);\n\nfn ChildWithRef() -> Element {\n    rsx! {\n        div {\n            ul {\n                for name in NAMES.read().iter() {\n                    li { \"hello: {name}\" }\n                }\n            }\n            button {\n                onclick: move |_| {\n                    // No need to clone the signal into futures, you can use it directly\n                    async move {\n                        NAMES.write().push(\"asd\".to_string());\n                    }\n                },\n                \"Add name\"\n            }\n        }\n    }\n}\n````\n\nYou can read more about global signals in the [Fermi migration guide](fermi.md)."
             }
             17usize => {
                 "# Resource\n\n[`use_resource`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_resource.html) lets you run an async closure, and provides you with its result.\n\nFor example, we can make an API request (using [reqwest](https://docs.rs/reqwest/latest/reqwest/index.html)) inside `use_resource`:\n\n````rust@use_resource.rs\nlet mut future = use_resource(|| async move {\n    reqwest::get(\"https://dog.ceo/api/breeds/image/random\")\n        .await\n        .unwrap()\n        .json::<ApiResponse>()\n        .await\n});\n````\n\nThe code inside `use_resource` will be submitted to the Dioxus scheduler once the component has rendered.\n\nWe can use `.read()` to get the result of the future. On the first run, since there's no data ready when the component loads, its value will be `None`. However, once the future is finished, the component will be re-rendered and the value will now be `Some(...)`, containing the return value of the closure.\n\nWe can then render that result:\n\n````rust@use_resource.rs\nmatch &*future.read_unchecked() {\n    Some(Ok(response)) => rsx! {\n        button { onclick: move |_| future.restart(), \"Click to fetch another doggo\" }\n        div {\n            img {\n                max_width: \"500px\",\n                max_height: \"500px\",\n                src: \"{response.image_url}\",\n            }\n        }\n    },\n    Some(Err(_)) => rsx! {\n        div { \"Loading dogs failed\" }\n    },\n    None => rsx! {\n        div { \"Loading dogs...\" }\n    },\n}\n````\n\n````inject-dioxus\nDemoFrame {\n    use_resource::App {}\n}\n````\n\n## Restarting the Future\n\nThe `Resource` handle provides a `restart` method. It can be used to execute the future again, producing a new value.\n\n## Dependencies\n\nOften, you will need to run the future again every time some value (e.g. a state) changes. Rather than calling `restart` manually, you can read a signal inside of the future. It will automatically re-run the future when any of the states you read inside the future change. Example:\n\n````rust, no_run@use_resource.rs\nlet future = use_resource(move || async move {\n    reqwest::get(format!(\"https://dog.ceo/api/breed/{breed}/images/random\"))\n        .await\n        .unwrap()\n        .json::<ApiResponse>()\n        .await\n});\n\n// You can also add non-reactive state to the resource hook with the use_reactive method\nlet non_reactive_state = \"poodle\";\nuse_resource(use_reactive!(|(non_reactive_state,)| async move {\n    reqwest::get(format!(\n        \"https://dog.ceo/api/breed/{non_reactive_state}/images/random\"\n    ))\n    .await\n    .unwrap()\n    .json::<ApiResponse>()\n    .await\n}));\n````"
             }
-            56usize => {
-                "# Internationalization\n\nIf your application supports multiple languages, the [Dioxus SDK](https://github.com/DioxusLabs/sdk) crate contains helpers to make working with translations in your application easier.\n\n## The full code for internationalization\n\n````rust@i18n.rs\nuse dioxus::prelude::*;\nuse dioxus_sdk::i18n::*;\nuse dioxus_sdk::translate;\nuse std::str::FromStr;\n\nfn main() {\n    launch(app);\n}\n\nstatic EN_US: &str = r#\"{\n    \"id\": \"en-US\",\n    \"texts\": {\n        \"messages\": {\n            \"hello_world\": \"Hello World!\"\n        },\n        \"messages.hello\": \"Hello {name}\"\n    }\n}\"#;\nstatic ES_ES: &str = r#\"{\n    \"id\": \"es-ES\",\n    \"texts\": {\n        \"messages\": {\n            \"hello_world\": \"Hola Mundo!\"\n        },\n        \"messages.hello\": \"Hola {name}\"\n    }\n}\"#;\n\n#[allow(non_snake_case)]\nfn Body() -> Element {\n    let mut i18 = use_i18();\n\n    let change_to_english = move |_| i18.set_language(\"en-US\".parse().unwrap());\n    let change_to_spanish = move |_| i18.set_language(\"es-ES\".parse().unwrap());\n\n    rsx! {\n        button { onclick: change_to_english, label { \"English\" } }\n        button { onclick: change_to_spanish, label { \"Spanish\" } }\n        p { {translate!(i18, \"messages.hello_world\")} }\n        p { {translate!(i18, \"messages.hello\", name: \"Dioxus\")} }\n    }\n}\n\nfn app() -> Element {\n    use_init_i18n(\"en-US\".parse().unwrap(), \"en-US\".parse().unwrap(), || {\n        let en_us = Language::from_str(EN_US).unwrap();\n        let es_es = Language::from_str(ES_ES).unwrap();\n        vec![en_us, es_es]\n    });\n\n    rsx! { Body {} }\n}\n\n````"
+            12usize => {
+                "# Hooks and component state\n\nSo far, our components have had no state like a normal Rust function. However, in a UI component, it is often useful to have stateful functionality to build user interactions. For example, you might want to track whether the user has opened a drop-down and render different things accordingly.\n\nHooks allow us to create state in our components. Hooks are Rust functions you call in a constant order in a component that add additional functionality to the component.\n\nDioxus provides many built-in hooks, but if those hooks don't fit your specific use case, you also can [create your own hook](../cookbook/state/custom_hooks/index.md)\n\n## use_signal hook\n\n[`use_signal`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_signal.html) is one of the simplest hooks.\n\n* You provide a closure that determines the initial value: `let mut count = use_signal(|| 0);`\n* `use_signal` gives you the current value, and a way to write to the value\n* When the value updates, `use_signal` makes the component re-render (along with any other component that references it), and then provides you with the new value.\n\nFor example, you might have seen the counter example, in which state (a number) is tracked using the `use_signal` hook:\n\n````rust, no_run@hooks_counter.rs\npub fn App() -> Element {\n    // count will be initialized to 0 the first time the component is rendered\n    let mut count = use_signal(|| 0);\n\n    rsx! {\n        h1 { \"High-Five counter: {count}\" }\n        button { onclick: move |_| count += 1, \"Up high!\" }\n        button { onclick: move |_| count -= 1, \"Down low!\" }\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n   hooks_counter::App {}\n}\n````\n\nEvery time the component's state changes, it re-renders, and the component function is called, so you can describe what you want the new UI to look like. You don't have to worry about \"changing\" anything – describe what you want in terms of the state, and Dioxus will take care of the rest!\n\n > \n > `use_signal` returns your value wrapped in a smart pointer of type [`Signal`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.Signal.html) that is `Copy`. This is why you can both read the value and update it, even within an event handler.\n\nYou can use multiple hooks in the same component if you want:\n\n````rust, no_run@hooks_counter_two_state.rs\npub fn App() -> Element {\n    let mut count_a = use_signal(|| 0);\n    let mut count_b = use_signal(|| 0);\n\n    rsx! {\n        h1 { \"Counter_a: {count_a}\" }\n        button { onclick: move |_| count_a += 1, \"a++\" }\n        button { onclick: move |_| count_a -= 1, \"a--\" }\n        h1 { \"Counter_b: {count_b}\" }\n        button { onclick: move |_| count_b += 1, \"b++\" }\n        button { onclick: move |_| count_b -= 1, \"b--\" }\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n  hooks_counter_two_state::App {}\n}\n````\n\nYou can also use `use_signal` to store more complex state, like a Vec. You can read and write to the state with the `read` and `write` methods:\n\n````rust, no_run@hooks_use_signal.rs\npub fn App() -> Element {\n    let mut list = use_signal(Vec::new);\n\n    rsx! {\n        p { \"Current list: {list:?}\" }\n        button {\n            onclick: move |event| {\n                let list_len = list.len();\n                list.push(list_len);\n                list.push(list_len);\n            },\n            \"Add two elements!\"\n        }\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n  hooks_use_signal::App {}\n}\n````\n\n## Rules of hooks\n\nThe above example might seem a bit magic since Rust functions are typically not associated with state. Dioxus allows hooks to maintain state across renders through a hidden scope that is associated with the component.\n\nBut how can Dioxus differentiate between multiple hooks in the same component? As you saw in the second example, both `use_signal` functions were called with the same parameters, so how come they can return different things when the counters are different?\n\n````rust, no_run@hooks_counter_two_state.rs\nlet mut count_a = use_signal(|| 0);\nlet mut count_b = use_signal(|| 0);\n````\n\nThis is only possible because the two hooks are always called in the same order, so Dioxus knows which is which. Because the order you call hooks matters, you must follow certain rules when using hooks:\n\n1. Hooks may be only used in components or other hooks (we'll get to that later).\n1. On every call to a component function.\n1. The same hooks must be called (except in the case of early returns, as explained later in the [Error Handling chapter](../cookbook/error_handling.md)).\n1. In the same order.\n1. Hook names should start with `use_` so you don't accidentally confuse them with regular\n   functions (`use_signal()`, `use_effect()`, `use_resource()`, etc...).\n\nThese rules mean that there are certain things you can't do with hooks:\n\n### No hooks in conditionals\n\n````rust, no_run@hooks_bad.rs\n// ❌ don't call hooks in conditionals!\n// We must ensure that the same hooks will be called every time\n// But `if` statements only run if the conditional is true!\n// So we might violate rule 2.\nif you_are_happy && you_know_it {\n    let something = use_signal(|| \"hands\");\n    println!(\"clap your {something}\")\n}\n\n// ✅ instead, *always* call use_signal\n// You can put other stuff in the conditional though\nlet something = use_signal(|| \"hands\");\nif you_are_happy && you_know_it {\n    println!(\"clap your {something}\")\n}\n````\n\n### No hooks in closures\n\n````rust, no_run@hooks_bad.rs\n// ❌ don't call hooks inside closures!\n// We can't guarantee that the closure, if used, will be called in the same order every time\nlet _a = || {\n    let b = use_signal(|| 0);\n    b()\n};\n\n// ✅ instead, move hook `b` outside\nlet b = use_signal(|| 0);\nlet _a = || b();\n````\n\n### No hooks in loops\n\n````rust, no_run@hooks_bad.rs\n// `names` is a Vec<&str>\n\n// ❌ Do not use hooks in loops!\n// In this case, if the length of the Vec changes, we break rule 2\nfor _name in &names {\n    let is_selected = use_signal(|| false);\n    println!(\"selected: {is_selected}\");\n}\n\n// ✅ Instead, use a hashmap with use_signal\nlet selection_map = use_signal(HashMap::<&str, bool>::new);\n\nfor name in &names {\n    let is_selected = selection_map.read()[name];\n    println!(\"selected: {is_selected}\");\n}\n````\n\n## Additional resources\n\n* [dioxus_hooks API docs](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/)\n* [dioxus_hooks source code](https://github.com/DioxusLabs/dioxus/tree/v0.5/packages/hooks)"
             }
-            27usize => {
-                "# Liveview\n\nLiveview allows apps to *run* on the server and *render* in the browser. It uses WebSockets to communicate between the server and the browser.\n\nExamples:\n\n* [Simple Example](https://github.com/DioxusLabs/dioxus/tree/v0.5/packages/liveview/examples/axum.rs)\n\n## Support\n\nDioxus liveview will be migrated to [dioxus-fullstack](./fullstack/index.md) in a future release. Once this migration occurs, you may need to update your code. We plan for this migration to be minimal.\n\nLiveview is currently limited in capability when compared to the Web platform. Liveview apps run on the server in a native thread. This means that browser APIs are not available, so rendering WebGL, Canvas, etc is not as easy as the Web. However, native system APIs are accessible, so streaming, WebSockets, filesystem, etc are all viable APIs.\n\n## Router Integration\n\nCurrently, the Dioxus router does not integrate with the browser history in the liveview renderer. If you are interested in contributing this feature to Dioxus this issue is tracked [here](https://github.com/DioxusLabs/dioxus/issues/1038).\n\n## Managing Latency\n\nLiveview makes it incredibly convenient to talk to your server from the client, but there are some downsides. Mainly in Dioxus Liveview every interaction goes through the server by default.\n\nBecause of this, with the liveview renderer you need to be very deliberate about managing latency. Events that would be fast enough on other renderers like [controlled inputs](../reference/user_input.md), can be frustrating to use in the liveview renderer.\n\nTo get around this issue you can inject bits of javascript in your liveview application. If you use a raw attribute as a listener, you can inject some javascript that will be run when the event is triggered:\n\n````rust\nrsx! {\n    div {\n        input {\n            \"oninput\": \"console.log('input changed!')\"\n        }\n    }\n}\n````"
+            23usize => {
+                "# Mobile App\n\nBuild a mobile app with Dioxus!\n\nExample: [Mobile Demo](https://github.com/DioxusLabs/dioxus/tree/v0.5/examples/mobile_demo)\n\n## Support\n\nMobile is currently the least-supported renderer target for Dioxus. Mobile apps are rendered with either the platform's WebView or experimentally with [WGPU](https://github.com/DioxusLabs/blitz). WebView doesn't support animations, transparency, and native widgets.\n\nMobile support is currently best suited for CRUD-style apps, ideally for internal teams who need to develop quickly but don't care much about animations or native widgets.\n\n## Getting Set up\n\nGetting set up with mobile can be quite challenging. The tooling here isn't great (yet) and might take some hacking around to get things working.\n\n### Setting up dependencies\n\n#### Android Dependencies\n\nFirst, install the rust Android targets:\n\n````sh\nrustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android\n````\n\nTo develop on Android, you will need to [install Android Studio](https://developer.android.com/studio).\n\nOnce you have installed Android Studio, you will need to install the Android SDK and NDK:\n\n1. Create a blank Android project\n1. Select `Tools > SDK manager`\n1. Navigate to the `SDK tools` window:\n\n![NDK install window](/assets/static/android_ndk_install.png)\n\nThen select:\n\n* The SDK\n* The SDK Command line tools\n* The NDK (side by side)\n* CMAKE\n\n4. Select `apply` and follow the prompts\n\n > \n > More details that could be useful for debugging any errors you encounter are available [in the official android docs](https://developer.android.com/studio/intro/update#sdk-manager)\n\nNext set the Java, Android and NDK home variables:\n\nMac:\n\n````sh\nexport JAVA_HOME=\"/Applications/Android Studio.app/Contents/jbr/Contents/Home\"\nexport ANDROID_HOME=\"$HOME/Library/Android/sdk\"\nexport NDK_HOME=\"$ANDROID_HOME/ndk/25.2.9519653\"\n````\n\nWindows:\n\n````powershell\n[System.Environment]::SetEnvironmentVariable(\"JAVA_HOME\", \"C:\\Program Files\\Android\\Android Studio\\jbr\", \"User\")\n[System.Environment]::SetEnvironmentVariable(\"ANDROID_HOME\", \"$env:LocalAppData\\Android\\Sdk\", \"User\")\n[System.Environment]::SetEnvironmentVariable(\"NDK_HOME\", \"$env:LocalAppData\\Android\\Sdk\\ndk\\25.2.9519653\", \"User\")\n````\n\n > \n > The NDK version in the paths should match the version you installed in the last step\n\n#### IOS Dependencies\n\nFirst, install the rust IOS targets:\n\n````sh\nrustup target add aarch64-apple-ios x86_64-apple-ios aarch64-apple-ios-sim\n````\n\nTo develop on IOS, you will need to [install XCode](https://apps.apple.com/us/app/xcode/id497799835).\n\n > \n > Note: On Apple silicon you must run Xcode on rosetta. Goto Application > Right Click Xcode > Get Info > Open in Rosetta.\n > If you are using M1, you will have to run `cargo build --target x86_64-apple-ios` instead of `cargo apple build` if you want to run in simulator.\n\n### Setting up your project\n\nFirst, we need to create a rust project:\n\n````sh\ncargo new dioxus-mobile-test --lib\ncd dioxus-mobile-test\n````\n\nNext, we can use `cargo-mobile2` to create a project for mobile:\n\n````shell\ncargo install --git https://github.com/tauri-apps/cargo-mobile2\ncargo mobile init\n````\n\nWhen you run `cargo mobile init`, you will be asked a series of questions about your project. One of those questions is what template you should use. Dioxus currently doesn't have a template in Tauri mobile, instead you can use the `wry` template.\n\n > \n > You may also be asked to input your team ID for IOS. You can find your team id [here](https://developer.apple.com/help/account/manage-your-team/locate-your-team-id/) or create a team id by creating a developer account [here](https://developer.apple.com/help/account/get-started/about-your-developer-account)\n\nNext, we need to modify our dependencies to include dioxus and ensure the right version of wry is installed. Change the `[dependencies]` section of your `Cargo.toml`:\n\n````toml\n[dependencies]\nanyhow = \"1.0.56\"\nlog = \"0.4.11\"\ndioxus = { version = \"0.5\", features = [\"mobile\"] }\nwry = \"0.35.0\"\ntao = \"0.25.0\"\n````\n\nFinally, we need to add a component to renderer. Replace the wry template in your `lib.rs` file with this code:\n\n````rust\nuse anyhow::Result;\nuse dioxus::prelude::*;\n\n#[cfg(target_os = \"android\")]\nfn init_logging() {\n    android_logger::init_once(\n        android_logger::Config::default()\n            .with_max_level(log::LevelFilter::Trace)\n    );\n}\n\n#[cfg(not(target_os = \"android\"))]\nfn init_logging() {\n    env_logger::init();\n}\n\n#[cfg(any(target_os = \"android\", target_os = \"ios\"))]\nfn stop_unwind<F: FnOnce() -> T, T>(f: F) -> T {\n    match std::panic::catch_unwind(std::panic::AssertUnwindSafe(f)) {\n        Ok(t) => t,\n        Err(err) => {\n            eprintln!(\"attempt to unwind out of `rust` with err: {:?}\", err);\n            std::process::abort()\n        }\n    }\n}\n\n#[no_mangle]\n#[inline(never)]\n#[cfg(any(target_os = \"android\", target_os = \"ios\"))]\npub extern \"C\" fn start_app() {\n    fn _start_app() {\n        stop_unwind(|| main().unwrap());\n    }\n\n    #[cfg(target_os = \"android\")]\n    {\n        tao::android_binding!(\n            com_example,\n            dioxus_mobile_test,\n            WryActivity,\n            wry::android_setup, // pass the wry::android_setup function to tao which will invoke when the event loop is created\n            _start_app\n        );\n        wry::android_binding!(com_example, dioxus_mobile_test);\n    }\n    #[cfg(target_os = \"ios\")]\n    _start_app()\n}\n\npub fn main() -> Result<()> {\n    init_logging();\n\n    launch(app);\n\n    Ok(())\n}\n\nfn app() -> Element {\n    let mut items = use_signal(|| vec![1, 2, 3]);\n\n    log::debug!(\"Hello from the app\");\n\n    rsx! {\n        div {\n            h1 { \"Hello, Mobile\"}\n            div { margin_left: \"auto\", margin_right: \"auto\", width: \"200px\", padding: \"10px\", border: \"1px solid black\",\n                button {\n                    onclick: move|_| {\n                        println!(\"Clicked!\");\n                        let mut items_mut = items.write();\n                        let new_item = items_mut.len() + 1;\n                        items_mut.push(new_item);\n                        println!(\"Requested update\");\n                    },\n                    \"Add item\"\n                }\n                for item in items.read().iter() {\n                    div { \"- {item}\" }\n                }\n            }\n        }\n    }\n}\n````\n\n## Running\n\nFrom there, you'll want to get a build of the crate using whichever platform you're targeting (simulator or actual hardware). For now, we'll just stick with the simulator.\n\nFirst, you need to make sure that the build variant is correct in Android Studio:\n\n1. Click \"Build\" in the top menu bar.\n1. Click \"Select Build Variant...\" in the dropdown.\n1. Find the \"Build Variants\" panel and use the dropdown to change the selected build variant.\n\n![android studio build dropdown](/assets/static/as-build-dropdown.png)\n![android studio build variants](/assets/static/as-build-variant-menu.png)\n\n### Android\n\nTo build your project on Android you can run:\n\n````sh\ncargo android build\n````\n\nNext, open Android studio:\n\n````sh\ncargo android open\n````\n\nThis will open an android studio project for this application.\n\nNext we need to create a simulator in Android studio to run our app in. To create a simulator click on the phone icon in the top right of Android studio:\n\n![android studio manage devices](/assets/static/android-studio-simulator.png)\n\nThen click the `create a virtual device` button and follow the prompts:\n\n![android studio devices](/assets/static/android-studio-devices.png)\n\nFinally, launch your device by clicking the play button on the device you created:\n\n![android studio device](/assets/static/android-studio-device.png)\n\nNow you can start your application from your terminal by running:\n\n````sh\ncargo android run\n````\n\n![android_demo](/assets/static/Android-Dioxus-demo.png)\n\n > \n > More information is available in the Android docs:\n > \n > * https://developer.android.com/ndk/guides\n > * https://developer.android.com/studio/projects/install-ndk\n > * https://source.android.com/docs/setup/build/rust/building-rust-modules/overview\n\n### IOS\n\nTo build your project for IOS, you can run:\n\n````sh\ncargo build --target aarch64-apple-ios-sim\n````\n\nNext, open XCode (this might take awhile if you've never opened XCode before):\n\n````sh\ncargo apple open\n````\n\nThis will open XCode with this particular project.\n\nFrom there, just click the \"play\" button with the right target and the app should be running!\n\n![ios_demo](/assets/static/IOS-dioxus-demo.png)\n\nNote that clicking play doesn't cause a new build, so you'll need to keep rebuilding the app between changes. The tooling here is very young, so please be patient. If you want to contribute to make things easier, please do! We'll be happy to help."
             }
-            36usize => {
-                "# Creating Our First Route\n\nIn this chapter, we will start utilizing Dioxus Router and add a homepage and a\n404 page to our project.\n\n## Fundamentals\n\nThe core of the Dioxus Router is the [`Routable`] macro and the [`Router`] component.\n\nRoutable is a trait for anything that can:\n\n* Be parsed from a URL\n* Be turned into a URL\n* Be rendered as to a Element\n\nLet's create a new router. First, we need an actual page to route to! Let's add a homepage component:\n\n````rust@first_route.rs\n#[component]\nfn Home() -> Element {\n    rsx! { h1 { \"Welcome to the Dioxus Blog!\" } }\n}\n````\n\n## Creating Routes\n\nWe want to use Dioxus Router to separate our application into different \"pages\".\nDioxus Router will then determine which page to render based on the URL path.\n\nTo start using Dioxus Router, we need to use the [`Routable`] macro.\n\nThe [`Routable`] macro takes an enum with all of the possible routes in our application. Each variant of the enum represents a route and must be annotated with the `#[route(path)]` attribute.\n\n````rust@first_route.rs\n#![allow(non_snake_case)]\nuse dioxus::prelude::*;\n\n/// An enum of all of the possible routes in the app.\n#[derive(Routable, Clone)]\nenum Route {\n    // The home page is at the / route\n    #[route(\"/\")]\n    Home {},\n}\n````\n\nThe [`Router`] component will provide a router context for all the inner components and hooks to use. You usually will want to place this at the top of your components tree.\n\n````rust@first_route.rs\nfn App() -> Element {\n    rsx! { Router::<Route> {} }\n}\n````\n\nIf you head to your application's browser tab, you should now see the text\n`Welcome to Dioxus Blog!` when on the root URL (`http://localhost:8080/`). If\nyou enter a different path for the URL, nothing should be displayed.\n\nThis is because we told Dioxus Router to render the `Home` component only when\nthe URL path is `/`.\n\n## Fallback Route\n\nIn our example, when a route doesn't exist Dioxus Router doesn't render anything. Many sites also have a \"404\" page when a path does not exist. Let's add one to our site.\n\nFirst, we create a new `PageNotFound` component.\n\n````rust@catch_all.rs\n#[component]\nfn PageNotFound(route: Vec<String>) -> Element {\n    rsx! {\n        h1 { \"Page not found\" }\n        p { \"We are terribly sorry, but the page you requested doesn't exist.\" }\n        pre { color: \"red\", \"log:\\nattemped to navigate to: {route:?}\" }\n    }\n}\n````\n\nNext, register the route in the Route enum to match if all other routes fail.\n\n````rust@catch_all.rs\n#[derive(Routable, Clone)]\nenum Route {\n    #[route(\"/\")]\n    Home {},\n    // PageNotFound is a catch all route that will match any route and placing the matched segments in the route field\n    #[route(\"/:..route\")]\n    PageNotFound { route: Vec<String> },\n}\n````\n\nNow when you go to a route that doesn't exist, you should see the page not found\ntext.\n\n## Conclusion\n\nIn this chapter, we learned how to create a route and tell Dioxus Router what\ncomponent to render when the URL path is `/`. We also created a 404 page to\nhandle when a route doesn't exist. Next, we'll create the blog portion of our\nsite. We will utilize nested routes and URL parameters."
+            37usize => {
+                "# Building a Nest\n\nIn this chapter, we will begin to build the blog portion of our site which will\ninclude links, nested routes, and route parameters.\n\n## Site Navigation\n\nOur site visitors won't know all the available pages and blogs on our site so we\nshould provide a navigation bar for them. Our navbar will be a list of links going between our pages.\n\nWe want our navbar component to be rendered on several different pages on our site. Instead of duplicating the code, we can create a component that wraps all children routes. This is called a layout component. To tell the router where to render the child routes, we use the [`Outlet`](https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Outlet.html) component.\n\nLet's create a new `NavBar` component:\n\n````rust@nested_routes.rs\n#[component]\nfn NavBar() -> Element {\n    rsx! {\n        nav {\n            ul { li { \"links\" } }\n        }\n        // The Outlet component will render child routes (In this case just the Home component) inside the Outlet component\n        Outlet::<Route> {}\n    }\n}\n````\n\nNext, let's add our `NavBar` component as a layout to our Route enum:\n\n````rust@nested_routes.rs\n#[derive(Routable, Clone)]\n#[rustfmt::skip]\nenum Route {\n    // All routes under the NavBar layout will be rendered inside of the NavBar Outlet\n    #[layout(NavBar)]\n        #[route(\"/\")]\n        Home {},\n    #[end_layout]\n    #[route(\"/:..route\")]\n    PageNotFound { route: Vec<String> },\n}\n````\n\nTo add links to our `NavBar`, we could always use an HTML anchor element but that has two issues:\n\n1. It causes a full-page reload\n1. We can accidentally link to a page that doesn't exist\n\nInstead, we want to use the [`Link`] component provided by Dioxus Router.\n\nThe [`Link`] is similar to a regular `<a>` tag. It takes a target and children.\n\nUnlike a regular `<a>` tag, we can pass in our Route enum as the target. Because we annotated our routes with the `#[route(path)]` attribute, the [`Link`] will know how to generate the correct URL. If we use the Route enum, the rust compiler will prevent us from linking to a page that doesn't exist.\n\nLet's add our links:\n\n````rust@links.rs\n#[component]\nfn NavBar() -> Element {\n    rsx! {\n        nav {\n            ul {\n                li {\n                    Link { to: Route::Home {}, \"Home\" }\n                }\n            }\n        }\n        Outlet::<Route> {}\n    }\n}\n````\n\n > \n > Using this method, the [`Link`] component only works for links within our\n > application. To learn more about navigation targets see\n > [here](./navigation-targets.md).\n\nNow you should see a list of links near the top of your page. Click on one and\nyou should seamlessly travel between pages.\n\n## URL Parameters and Nested Routes\n\nMany websites such as GitHub put parameters in their URL. For example,\n`https://github.com/DioxusLabs` utilizes the text after the domain to\ndynamically search and display content about an organization.\n\nWe want to store our blogs in a database and load them as needed. We also\nwant our users to be able to send people a link to a specific blog post.\nInstead of listing all of the blog titles at compile time, we can make a dynamic route.\n\nWe could utilize a search page that loads a blog when clicked but then our users\nwon't be able to share our blogs easily. This is where URL parameters come in.\n\nThe path to our blog will look like `/blog/myBlogPage`, `myBlogPage` being the\nURL parameter.\n\nFirst, let's create a layout component (similar to the navbar) that wraps the blog content. This allows us to add a heading that tells the user they are on the blog.\n\n````rust@dynamic_route.rs\n#[component]\nfn Blog() -> Element {\n    rsx! {\n        h1 { \"Blog\" }\n        Outlet::<Route> {}\n    }\n}\n````\n\nNow we'll create another index component, that'll be displayed when no blog post\nis selected:\n\n````rust@dynamic_route.rs\n#[component]\nfn BlogList() -> Element {\n    rsx! {\n        h2 { \"Choose a post\" }\n        ul {\n            li {\n                Link {\n                    to: Route::BlogPost {\n                        name: \"Blog post 1\".into(),\n                    },\n                    \"Read the first blog post\"\n                }\n            }\n            li {\n                Link {\n                    to: Route::BlogPost {\n                        name: \"Blog post 2\".into(),\n                    },\n                    \"Read the second blog post\"\n                }\n            }\n        }\n    }\n}\n````\n\nWe also need to create a component that displays an actual blog post. This component will accept the URL parameters as props:\n\n````rust@dynamic_route.rs\n// The name prop comes from the /:name route segment\n#[component]\nfn BlogPost(name: String) -> Element {\n    rsx! { h2 { \"Blog Post: {name}\" } }\n}\n````\n\nFinally, let's tell our router about those components:\n\n````rust@dynamic_route.rs\n#[derive(Routable, Clone)]\n#[rustfmt::skip]\nenum Route {\n    #[layout(NavBar)]\n        #[route(\"/\")]\n        Home {},\n        #[nest(\"/blog\")]\n            #[layout(Blog)]\n            #[route(\"/\")]\n            BlogList {},\n            #[route(\"/post/:name\")]\n            BlogPost { name: String },\n            #[end_layout]\n        #[end_nest]\n    #[end_layout]\n    #[route(\"/:..route\")]\n    PageNotFound {\n        route: Vec<String>,\n    },\n}\n````\n\nThat's it! If you head to `/blog/1` you should see our sample post.\n\n## Conclusion\n\nIn this chapter, we utilized Dioxus Router's Link, and Route Parameter\nfunctionality to build the blog portion of our application. In the next chapter,\nwe will go over how navigation targets (like the one we passed to our links)\nwork."
+            }
+            32usize => {
+                "# Authentication\n\nYou can use [extractors](./extractors) to integrate auth with your Fullstack application.\n\nYou can create a custom extractors that extracts the auth session from the request. From that auth session, you can check if the user has the required privileges before returning the private data.\n\nA [full auth example](https://github.com/DioxusLabs/dioxus/blob/v0.5/packages/fullstack/examples/axum-auth/src/main.rs) with the complete implementation is available in the fullstack examples."
+            }
+            13usize => {
+                "# User Input\n\nInterfaces often need to provide a way to input data: e.g. text, numbers, checkboxes, etc. In Dioxus, there are two ways you can work with user input.\n\n## Controlled Inputs\n\nWith controlled inputs, you are directly in charge of the state of the input. This gives you a lot of flexibility, and makes it easy to keep things in sync. For example, this is how you would create a controlled text input:\n\n````rust, no_run@input_controlled.rs\npub fn App() -> Element {\n    let mut name = use_signal(|| \"bob\".to_string());\n\n    rsx! {\n        input {\n            // we tell the component what to render\n            value: \"{name}\",\n            // and what to do when the value changes\n            oninput: move |event| name.set(event.value())\n        }\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n    input_controlled::App {}\n}\n````\n\nNotice the flexibility – you can:\n\n* Also display the same contents in another element, and they will be in sync\n* Transform the input every time it is modified (e.g. to make sure it is upper case)\n* Validate the input every time it changes\n* Have custom logic happening when the input changes (e.g. network request for autocompletion)\n* Programmatically change the value (e.g. a \"randomize\" button that fills the input with nonsense)\n\n## Uncontrolled Inputs\n\nAs an alternative to controlled inputs, you can simply let the platform keep track of the input values. If we don't tell a HTML input what content it should have, it will be editable anyway (this is built into the browser). This approach can be more performant, but less flexible. For example, it's harder to keep the input in sync with another element.\n\nSince you don't necessarily have the current value of the uncontrolled input in state, you can access it either by listening to `oninput` events (similarly to controlled components), or, if the input is part of a form, you can access the form data in the form events (e.g. `oninput` or `onsubmit`):\n\n````rust, no_run@input_uncontrolled.rs\npub fn App() -> Element {\n    rsx! {\n        form { onsubmit: move |event| { log::info!(\"Submitted! {event:?}\") },\n            input { name: \"name\" }\n            input { name: \"age\" }\n            input { name: \"date\" }\n            input { r#type: \"submit\" }\n        }\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n    input_uncontrolled::App {}\n}\n````\n\n````\nSubmitted! UiEvent { data: FormData { value: \"\", values: {\"age\": \"very old\", \"date\": \"1966\", \"name\": \"Fred\"} } }\n````\n\n## Handling files\n\nYou can insert a file picker by using an input element of type `file`. This element supports the `multiple` attribute, to let you pick more files at the same time. You can select a folder by adding the `directory` attribute: Dioxus will map this attribute to browser specific attributes, because there is no standardized way to allow a directory to be selected.\n\n`type` is a Rust keyword, so when specifying the type of the input field, you have to write it as `r#type:\"file\"`.\n\nExtracting the selected files is a bit different from what you may typically use in Javascript.\n\nThe `FormData` event contains a `files` field with data about the uploaded files. This field contains a `FileEngine` struct which lets you fetch the filenames selected by the user. This example saves the filenames of the selected files to a `Vec`:\n\n````rust, no_run@input_fileengine.rs\npub fn App() -> Element {\n    let mut filenames: Signal<Vec<String>> = use_signal(Vec::new);\n    rsx! {\n        input {\n            // tell the input to pick a file\n            r#type: \"file\",\n            // list the accepted extensions\n            accept: \".txt,.rs\",\n            // pick multiple files\n            multiple: true,\n            onchange: move |evt| {\n                if let Some(file_engine) = &evt.files() {\n                    let files = file_engine.files();\n                    for file_name in files {\n                        filenames.write().push(file_name);\n                    }\n                }\n            }\n        }\n    }\n}\n````\n\nIf you're planning to read the file content, you need to do it asynchronously, to keep the rest of the UI interactive. This example event handler loads the content of the selected files in an async closure:\n\n````rust, no_run@input_fileengine_async.rs\nonchange: move |evt| {\n    async move {\n        if let Some(file_engine) = evt.files() {\n            let files = file_engine.files();\n            for file_name in &files {\n                if let Some(file) = file_engine.read_file_to_string(file_name).await\n                {\n                    files_uploaded.write().push(file);\n                }\n            }\n        }\n    }\n}\n````\n\nLastly, this example shows you how to select a folder, by setting the `directory` attribute to `true`.\n\n````rust, no_run@input_fileengine_folder.rs\ninput {\n    r#type: \"file\",\n    // Select a folder by setting the directory attribute\n    directory: true,\n    onchange: move |evt| {\n        if let Some(file_engine) = evt.files() {\n            let files = file_engine.files();\n            for file_name in files {\n                println!(\"{}\", file_name);\n            }\n        }\n    }\n}\n````"
+            }
+            18usize => {
+                "# Coroutines\n\nAnother tool in your async toolbox are coroutines. Coroutines are futures that can have values sent to them.\n\nLike regular futures, code in a coroutine will run until the next `await` point before yielding. This low-level control over asynchronous tasks is quite powerful, allowing for infinitely looping tasks like WebSocket polling, background timers, and other periodic actions.\n\n## use_coroutine\n\nThe `use_coroutine` hook allows you to create a coroutine. Most coroutines we write will be polling loops using await.\n\n````rust, no_run@use_coroutine_reference.rs\nuse futures_util::StreamExt;\n\nfn app() {\n    let ws: Coroutine<()> = use_coroutine(|rx| async move {\n        // Connect to some sort of service\n        let mut conn = connect_to_ws_server().await;\n\n        // Wait for data on the service\n        while let Some(msg) = conn.next().await {\n            // handle messages\n        }\n    });\n}\n````\n\nFor many services, a simple async loop will handle the majority of use cases.\n\n## Yielding Values\n\nTo yield values from a coroutine, simply bring in a `Signal` handle and set the value whenever your coroutine completes its work.\n\nThe future must be `'static` – so any values captured by the task cannot carry any references to `cx`, such as a `Signal`.\n\nYou can use [to_owned](https://doc.rust-lang.org/std/borrow/trait.ToOwned.html#tymethod.to_owned) to create a clone of the hook handle which can be moved into the async closure.\n\n````rust, no_run@use_coroutine_reference.rs\nlet sync_status = use_signal(|| Status::Launching);\nlet sync_task = use_coroutine(|rx: UnboundedReceiver<SyncAction>| {\n    let mut sync_status = sync_status.to_owned();\n    async move {\n        loop {\n            tokio::time::sleep(Duration::from_secs(1)).await;\n            sync_status.set(Status::Working);\n        }\n    }\n});\n````\n\nTo make this a bit less verbose, Dioxus exports the `to_owned!` macro which will create a binding as shown above, which can be quite helpful when dealing with many values.\n\n````rust, no_run@use_coroutine_reference.rs\nlet sync_status = use_signal(|| Status::Launching);\nlet load_status = use_signal(|| Status::Launching);\nlet sync_task = use_coroutine(|rx: UnboundedReceiver<SyncAction>| {\n    async move {\n        // ...\n    }\n});\n````\n\n## Sending Values\n\nYou might've noticed the `use_coroutine` closure takes an argument called `rx`. What is that? Well, a common pattern in complex apps is to handle a bunch of async code at once. With libraries like Redux Toolkit, managing multiple promises at once can be challenging and a common source of bugs.\n\nWith Coroutines, we can centralize our async logic. The `rx` parameter is an Channel that allows code external to the coroutine to send data *into* the coroutine. Instead of looping on an external service, we can loop on the channel itself, processing messages from within our app without needing to spawn a new future. To send data into the coroutine, we would call \"send\" on the handle.\n\n````rust, no_run@use_coroutine_reference.rs\nuse futures_util::StreamExt;\n\nenum ProfileUpdate {\n    SetUsername(String),\n    SetAge(i32),\n}\n\nlet profile = use_coroutine(|mut rx: UnboundedReceiver<ProfileUpdate>| async move {\n    let mut server = connect_to_server().await;\n\n    while let Some(msg) = rx.next().await {\n        match msg {\n            ProfileUpdate::SetUsername(name) => server.update_username(name).await,\n            ProfileUpdate::SetAge(age) => server.update_age(age).await,\n        }\n    }\n});\n\nrsx! {\n    button { onclick: move |_| profile.send(ProfileUpdate::SetUsername(\"Bob\".to_string())),\n        \"Update username\"\n    }\n}\n````\n\n > \n > Note: In order to use/run the `rx.next().await` statement you will need to extend the \\[`Stream`\\] trait (used by \\[`UnboundedReceiver`\\]) by adding 'futures_util' as a dependency to your project and adding the `use futures_util::stream::StreamExt;`.\n\nFor sufficiently complex apps, we could build a bunch of different useful \"services\" that loop on channels to update the app.\n\n````rust, no_run@use_coroutine_reference.rs\nlet profile = use_coroutine(profile_service);\nlet editor = use_coroutine(editor_service);\nlet sync = use_coroutine(sync_service);\n\nasync fn profile_service(rx: UnboundedReceiver<ProfileCommand>) {\n    // do stuff\n}\n\nasync fn sync_service(rx: UnboundedReceiver<SyncCommand>) {\n    // do stuff\n}\n\nasync fn editor_service(rx: UnboundedReceiver<EditorCommand>) {\n    // do stuff\n}\n````\n\nWe can combine coroutines with Global State to emulate Redux Toolkit's Thunk system with much less headache. This lets us store all of our app's state *within* a task and then simply update the \"view\" values stored in Atoms. It cannot be understated how powerful this technique is: we get all the perks of native Rust tasks with the optimizations and ergonomics of global state. This means your *actual* state does not need to be tied up in a system like `Signal::global` or Redux – the only Atoms that need to exist are those that are used to drive the display/UI.\n\n````rust, no_run@use_coroutine_reference.rs\nstatic USERNAME: GlobalSignal<String> = Signal::global(|| \"default\".to_string());\n\nfn app() -> Element {\n    use_coroutine(sync_service);\n\n    rsx! { Banner {} }\n}\n\nfn Banner() -> Element {\n    rsx! { h1 { \"Welcome back, {USERNAME}\" } }\n}\n````\n\nNow, in our sync service, we can structure our state however we want. We only need to update the view values when ready.\n\n````rust, no_run@use_coroutine_reference.rs\nuse futures_util::StreamExt;\n\nstatic USERNAME: GlobalSignal<String> = Signal::global(|| \"default\".to_string());\nstatic ERRORS: GlobalSignal<Vec<String>> = Signal::global(|| Vec::new());\n\nenum SyncAction {\n    SetUsername(String),\n}\n\nasync fn sync_service(mut rx: UnboundedReceiver<SyncAction>) {\n    while let Some(msg) = rx.next().await {\n        match msg {\n            SyncAction::SetUsername(name) => {\n                if set_name_on_server(&name).await.is_ok() {\n                    *USERNAME.write() = name;\n                } else {\n                    *ERRORS.write() = vec![\"Failed to set username\".to_string()];\n                }\n            }\n        }\n    }\n}\n````\n\n## Automatic injection into the Context API\n\nCoroutine handles are automatically injected through the context API. You can use the `use_coroutine_handle` hook with the message type as a generic to fetch a handle.\n\n````rust, no_run@use_coroutine_reference.rs\nfn Child() -> Element {\n    let sync_task = use_coroutine_handle::<SyncAction>();\n\n    sync_task.send(SyncAction::SetUsername);\n\n    todo!()\n}\n````"
+            }
+            35usize => {
+                "# Overview\n\nIn this guide, you'll learn to effectively use Dioxus Router whether you're\nbuilding a small todo app or the next FAANG company. We will create a small\nwebsite with a blog, homepage, and more!\n\n > \n > To follow along with the router example, you'll need a working Dioxus app.\n > Check out the [Dioxus book](https://dioxuslabs.com/learn/0.5/getting_started) to get started.\n\n > \n > Make sure to add Dioxus Router as a dependency, as explained in the\n > [introduction](../index.md).\n\n## You'll learn how to\n\n* Create routes and render \"pages\".\n* Utilize nested routes, create a navigation bar, and render content for a\n  set of routes.\n* Parse URL parameters to dynamically display content.\n* Redirect visitors to different routes.\n\n > \n > **Disclaimer**\n > \n > The example will only display the features of Dioxus Router. It will not\n > include any actual functionality. To keep things simple we will only be using\n > a single file, this is not the recommended way of doing things with a real\n > application.\n\nYou can find the complete application in the [full code](full-code.md) chapter."
             }
             1usize => {
                 "# Getting Started\n\nThis section will help you set up your Dioxus project!\n\n## Prerequisites\n\n### An Editor\n\nDioxus integrates very well with the [Rust-Analyzer LSP plugin](https://rust-analyzer.github.io) which will provide appropriate syntax highlighting, code navigation, folding, and more.\n\n### Rust\n\nHead over to [https://rust-lang.org](http://rust-lang.org) and install the Rust compiler.\n\nWe strongly recommend going through the [official Rust book](https://doc.rust-lang.org/book/ch01-00-getting-started.html) *completely*. However, we hope that a Dioxus app can serve as a great first Rust project. With Dioxus, you'll learn about:\n\n* Error handling\n* Structs, Functions, Enums\n* Closures\n* Macros\n\nWe've put a lot of care into making Dioxus syntax familiar and easy to understand, so you won't need deep knowledge of async, lifetimes, or smart pointers until you start building complex Dioxus apps.\n\n### Platform-specific dependencies\n\nMost platforms don't require any additional dependencies, but if you are targeting desktop, you can install the following dependencies:\n\n````inject-dioxus\nDesktopDependencies {}\n````\n\n### Dioxus CLI\n\nNext, lets install the Dioxus CLI:\n\n````\ncargo install dioxus-cli\n````\n\nIf you get an OpenSSL error on installation, ensure the dependencies listed [here](https://docs.rs/openssl/latest/openssl/#automatic) are installed.\n\n## Create a new project\n\nYou can create a new Dioxus project by running the following command and following the prompts:\n\n````sh\ndx new\n````\n\nFirst you will need to select a platform. Each platform has its own reference with more information on how to set up a project for that platform. Here are the platforms we recommend starting with:\n\n* Web\n  * [Client Side](../reference/web/index.md): runs in the browser through WebAssembly\n  * [Fullstack](../reference/fullstack/index.md): renders to HTML text on the server and hydrates it on the client\n\n > \n > If you are not sure which web platform you want to use, check out the [choosing a web renderer](../reference/choosing_a_web_renderer.md) chapter.\n\n* WebView\n  * [Desktop](../reference/desktop/index.md): runs in a web view on desktop\n  * [Mobile](../reference/mobile/index.md): runs in a web view on mobile. Mobile is currently not supported by the dioxus CLI. The [mobile reference](../reference/mobile/index.md) has more information about setting up a mobile project\n\nNext, you can choose a styling library. For this project, we will use vanilla CSS.\n\nFinally, you can choose to start the project with the router enabled. The router is covered in the [router guide](../router/index.md).\n\n## Running the project\n\nOnce you have created your project, you can start it with the following command:\n\n````sh\ncd my_project\ndx serve\n````\n\nFor projects using the liveview template, run `dx serve --desktop`.\n\nFor Web targets the application will be served at [http://localhost:8080](http://localhost:8080)\n\n## Conclusion\n\nThat's it! You now have a working Dioxus project. You can continue learning about dioxus by [making a hackernews clone in the guide](../guide/index.md), or learning about specific topics/platforms in the [reference](../reference/index.md). If you have any questions, feel free to ask in the [discord](https://discord.gg/XgGxMSkvUM) or [open a discussion](https://github.com/DioxusLabs/dioxus/discussions)."
             }
-            76usize => {
-                "# Props Migration\n\nIn dioxus 0.4, props are passed into the component through the scope. In dioxus 0.5, props are passed into the component through the props struct directly.\n\n## Owned Props\n\nThe props were borrowed with the lifetime from the scope. The props are cloned every render, and passed into the component as an owned value.\n\nDioxus 0.4:\n\n````rust\n#[component]\nfn Comp(cx: Scope, name: String) -> Element {\n    // You pass in an owned prop, but inside the component, it is borrowed (name is the type &String inside the function)\n    let owned_name: String = name.clone();\n\n    cx.render(rsx! {\n        \"Hello {owned_name}\"\n    })\n}\n````\n\nDioxus 0.5:\n\n````rust@migration_props.rs\n// In dioxus 0.5, props are always owned. You pass in owned props and you get owned props in the body of the component\n#[component]\nfn Comp(name: String) -> Element {\n    // Name is owned here already (name is the type String inside the function)\n    let owned_name: String = name;\n\n    rsx! {\"Hello {owned_name}\"}\n}\n````\n\nBecause props are cloned every render, making props Copy is recommended. You can easily make a field Copy by accepting `ReadOnlySignal<T>` instead of `T` in the props struct:\n\n````rust@migration_props.rs\n// In dioxus 0.5, props are always owned. You pass in owned props and you get owned props in the body of the component\n#[component]\nfn CopyPropsComp(name: ReadOnlySignal<String>) -> Element {\n    rsx! {\n        button {\n            // You can easily copy the value of a signal into a closure\n            onclick: move |_| {\n                println!(\"Hello {name}\");\n                async move {\n                    println!(\"Hello {name}\");\n                }\n            },\n            \"Click me\"\n        }\n    }\n}\n\nfn CopyPropsCompParent() -> Element {\n    rsx! { CopyPropsComp { name: \"World\" } }\n}\n````\n\n## Borrowed Props\n\nBorrowed props are removed in dioxus 0.5. Mapped signals can act similarly to borrowed props if your props are borrowed from state.\n\nDioxus 0.4:\n\n````rust\nfn Parent(cx: Scope) -> Element {\n    let state = use_state(cx, || (1, \"World\".to_string()));\n    rsx! {\n        BorrowedComp {\n            name: &state.get().1\n        }\n    }\n}\n\n#[component]\nfn BorrowedComp<'a>(cx: Scope<'a>, name: &'a str) -> Element<'a> {\n    rsx! {\n        \"Hello {name}\"\n    }\n}\n````\n\nDioxus 0.5:\n\n````rust@migration_props.rs\nfn Parent() -> Element {\n    let state = use_signal(|| (1, \"World\".to_string()));\n\n    rsx! { BorrowedComp { name: state.map(|s| &s.1) } }\n}\n\n#[component]\nfn BorrowedComp(name: MappedSignal<String>) -> Element {\n    rsx! {\"Hello {name}\"}\n}\n````\n\n## Manual Props\n\nManual prop structs in dioxus 0.5 need to derive `Clone` in addition to `Props` and `PartialEq`:\n\nDioxus 0.4:\n\n````rust\n#[derive(Props, PartialEq)]\nstruct ManualProps {\n    name: String,\n}\n\n// Functions accept the props directly instead of the scope\nfn ManualPropsComponent(cx: Scope<ManualProps>) -> Element {\n    render! {\n        \"Hello {cx.props.name}\"\n    }\n}\n````\n\nDioxus 0.5:\n\n````rust@migration_props.rs\n#[derive(Props, Clone, PartialEq)]\nstruct ManualProps {\n    name: String,\n}\n\n// Functions accept the props directly instead of the component\nfn ManualPropsComponent(props: ManualProps) -> Element {\n    rsx! {\"Hello {props.name}\"}\n}\n````"
+            69usize => {
+                "# Project Structure\n\nThere are many packages in the Dioxus organization. This document will help you understand the purpose of each package and how they fit together.\n\n## Renderers\n\n* [Desktop](https://github.com/DioxusLabs/dioxus/tree/main/packages/desktop): A Render that Runs Dioxus applications natively, but renders them with the system webview\n* [Mobile](https://github.com/DioxusLabs/dioxus/tree/main/packages/mobile): A Render that Runs Dioxus applications natively, but renders them with the system webview. This is currently a copy of the desktop render\n* [Web](https://github.com/DioxusLabs/dioxus/tree/main/packages/web): Renders Dioxus applications in the browser by compiling to WASM and manipulating the DOM\n* [Liveview](https://github.com/DioxusLabs/dioxus/tree/main/packages/liveview): A Render that Runs on the server, and renders using a websocket proxy in the browser\n* [Plasmo](https://github.com/DioxusLabs/blitz/tree/master/packages/plasmo): A Renderer that renders a HTML-like tree into a terminal\n* [TUI](https://github.com/DioxusLabs/blitz/tree/master/packages/dioxus-tui): A Renderer that uses Plasmo to render a Dioxus application in a terminal\n* [Blitz-Core](https://github.com/DioxusLabs/blitz/tree/master/packages/blitz-core): An experimental native renderer that renders a HTML-like tree using WGPU.\n* [Blitz](https://github.com/DioxusLabs/blitz): An experimental native renderer that uses Blitz-Core to render a Dioxus application using WGPU.\n* [SSR](https://github.com/DioxusLabs/dioxus/tree/main/packages/ssr): A Render that Runs Dioxus applications on the server, and renders them to HTML\n\n## State Management/Hooks\n\n* [Hooks](https://github.com/DioxusLabs/dioxus/tree/main/packages/hooks): A collection of common hooks for Dioxus applications\n* [Signals](https://github.com/DioxusLabs/dioxus/tree/main/packages/signals): A experimental state management library for Dioxus applications. This currently contains a `Copy` version of Signal\n* [SDK](https://github.com/DioxusLabs/sdk): A collection of platform agnostic hooks to interact with system interfaces (The clipboard, camera, etc.).\n* [Fermi](https://github.com/DioxusLabs/dioxus/tree/main/packages/fermi): A global state management library for Dioxus applications.\n* [Router](https://github.com/DioxusLabs/dioxus/tree/main/packages/router): A client-side router for Dioxus applications\n\n## Core utilities\n\n* [core](https://github.com/DioxusLabs/dioxus/tree/main/packages/core): The core virtual dom implementation every Dioxus application uses\n  * You can read more about the architecture of the core [in this blog post](https://dioxuslabs.com/blog/templates-diffing/) and the [custom renderer section of the guide](../cookbook/custom_renderer.md)\n* [RSX](https://github.com/DioxusLabs/dioxus/tree/main/packages/rsx): The core parsing for RSX used for hot reloading, autoformatting, and the macro\n* [core-macro](https://github.com/DioxusLabs/dioxus/tree/main/packages/core-macro): The rsx! macro used to write Dioxus applications. (This is a wrapper over the RSX crate)\n* [HTML macro](https://github.com/DioxusLabs/dioxus-html-macro): A html-like alternative to the RSX macro\n\n## Native Renderer Utilities\n\n* [native-core](https://github.com/DioxusLabs/blitz/tree/main/packages/native-core): Incrementally computed tree of states (mostly styles)\n  * You can read more about how native-core can help you build native renderers in the [custom renderer section of the guide](../cookbook/custom_renderer.md#native-core)\n* [native-core-macro](https://github.com/DioxusLabs/blitz/tree/main/packages/native-core-macro): A helper macro for native core\n* [Taffy](https://github.com/DioxusLabs/taffy): Layout engine powering Blitz-Core, Plasmo, and Bevy UI\n\n## Web renderer tooling\n\n* [HTML](https://github.com/DioxusLabs/dioxus/tree/main/packages/html): defines html specific elements, events, and attributes\n* [Interpreter](https://github.com/DioxusLabs/dioxus/tree/main/packages/interpreter): defines browser bindings used by the web and desktop renderers\n\n## Developer tooling\n\n* [hot-reload](https://github.com/DioxusLabs/dioxus/tree/main/packages/hot-reload): Macro that uses the RSX crate to hot reload static parts of any rsx! macro. This macro works with any non-web renderer with an [integration](https://crates.io/crates/dioxus-hot-reload)\n* [autofmt](https://github.com/DioxusLabs/dioxus/tree/main/packages/autofmt): Formats RSX code\n* [rsx-rosetta](https://github.com/DioxusLabs/dioxus/tree/main/packages/rsx-rosetta): Handles conversion between HTML and RSX\n* [CLI](https://github.com/DioxusLabs/dioxus/tree/main/packages/cli): A Command Line Interface and VSCode extension to assist with Dioxus usage"
             }
-            48usize => {
-                "# History Buttons\n\nSome platforms, like web browsers, provide users with an easy way to navigate\nthrough an app's history. They have UI elements or integrate with the OS.\n\nHowever, native platforms usually don't provide such amenities, which means that\napps wanting users to have access to them, need to implement them. For this\nreason, the router comes with two components, which emulate a browser's back and\nforward buttons:\n\n* [`GoBackButton`]\n* [`GoForwardButton`]\n\n > \n > If you want to navigate through the history programmatically, take a look at\n > [`programmatic navigation`](./navigation/programmatic.md).\n\n````rust@history_buttons.rs\nfn HistoryNavigation() -> Element {\n    rsx! {\n        GoBackButton { \"Back to the Past\" }\n        GoForwardButton { \"Back to the Future\" }\n    }\n}\n````\n\nAs you might know, browsers usually disable the back and forward buttons if\nthere is no history to navigate to. The router's history buttons try to do that\ntoo, but depending on the \\[history provider\\] that might not be possible.\n\nImportantly, neither `WebHistory` supports that feature.\nThis is due to limitations of the browser History API.\n\nHowever, in both cases, the router will just ignore button presses, if there is\nno history to navigate to.\n\nAlso, when using `WebHistory`, the history buttons might\nnavigate a user to a history entry outside your app."
+            9usize => {
+                "# Components\n\nJust like you wouldn't want to write a complex program in a single, long, `main` function, you shouldn't build a complex UI in a single `App` function. Instead, you should break down the functionality of an app in logical parts called components.\n\nA component is a Rust function, named in UpperCamelCase, that either takes no parameters or a properties struct and returns an `Element` describing the UI it wants to render.\n\n````rust, no_run@hello_world_desktop.rs\n// define a component that renders a div with the text \"Hello, world!\"\nfn App() -> Element {\n    rsx! {\n        div { \"Hello, world!\" }\n    }\n}\n````\n\n > \n > You'll probably want to add `#![allow(non_snake_case)]` to the top of your crate to avoid warnings about UpperCamelCase component names\n\nA Component is responsible for some rendering task – typically, rendering an isolated part of the user interface. For example, you could have an `About` component that renders a short description of Dioxus Labs:\n\n````rust, no_run@components.rs\npub fn About() -> Element {\n    rsx! {\n        p {\n            b { \"Dioxus Labs\" }\n            \" An Open Source project dedicated to making Rust UI wonderful.\"\n        }\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\tcomponents::About {}\n}\n````\n\nThen, you can render your component in another component, similarly to how elements are rendered:\n\n````rust, no_run@components.rs\npub fn App() -> Element {\n    rsx! {\n        About {}\n        About {}\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\tcomponents::App {}\n}\n````\n\n > \n > At this point, it might seem like components are nothing more than functions. However, as you learn more about the features of Dioxus, you'll see that they are actually more powerful!"
+            }
+            56usize => {
+                "# Internationalization\n\nIf your application supports multiple languages, the [Dioxus SDK](https://github.com/DioxusLabs/sdk) crate contains helpers to make working with translations in your application easier.\n\n## The full code for internationalization\n\n````rust@i18n.rs\nuse dioxus::prelude::*;\nuse dioxus_sdk::i18n::*;\nuse dioxus_sdk::translate;\nuse std::str::FromStr;\n\nfn main() {\n    launch(app);\n}\n\nstatic EN_US: &str = r#\"{\n    \"id\": \"en-US\",\n    \"texts\": {\n        \"messages\": {\n            \"hello_world\": \"Hello World!\"\n        },\n        \"messages.hello\": \"Hello {name}\"\n    }\n}\"#;\nstatic ES_ES: &str = r#\"{\n    \"id\": \"es-ES\",\n    \"texts\": {\n        \"messages\": {\n            \"hello_world\": \"Hola Mundo!\"\n        },\n        \"messages.hello\": \"Hola {name}\"\n    }\n}\"#;\n\n#[allow(non_snake_case)]\nfn Body() -> Element {\n    let mut i18 = use_i18();\n\n    let change_to_english = move |_| i18.set_language(\"en-US\".parse().unwrap());\n    let change_to_spanish = move |_| i18.set_language(\"es-ES\".parse().unwrap());\n\n    rsx! {\n        button { onclick: change_to_english, label { \"English\" } }\n        button { onclick: change_to_spanish, label { \"Spanish\" } }\n        p { {translate!(i18, \"messages.hello_world\")} }\n        p { {translate!(i18, \"messages.hello\", name: \"Dioxus\")} }\n    }\n}\n\nfn app() -> Element {\n    use_init_i18n(\"en-US\".parse().unwrap(), \"en-US\".parse().unwrap(), || {\n        let en_us = Language::from_str(EN_US).unwrap();\n        let es_es = Language::from_str(ES_ES).unwrap();\n        vec![en_us, es_es]\n    });\n\n    rsx! { Body {} }\n}\n\n````"
+            }
+            3usize => {
+                "# Your First Component\n\nThis chapter will teach you how to create a [Component](../reference/components.md) that displays a link to a post on hackernews.\n\n## Setup\n\n > \n > Before you start the guide, make sure you have the dioxus CLI and any required dependencies for your platform as described in the [getting started](../getting_started/index.md) guide.\n\nFirst, let's create a new project for our hacker news app. We can use the CLI to create a new project. You can select a platform of your choice or view the getting started guide for more information on each option. If you aren't sure what platform to try out, we recommend getting started with web or desktop:\n\n````sh\ndx new\n````\n\nThe template contains some boilerplate to help you get started. For this guide, we will be rebuilding some of the code from scratch for learning purposes. You can clear the `src/main.rs` file. We will be adding new code in the next sections.\n\nNext, let's setup our dependencies. We need to set up a few dependencies to work with the hacker news API:\n\n````sh\ncargo add chrono --features serde\ncargo add futures\ncargo add reqwest --features json\ncargo add serde --features derive\ncargo add serde_json\ncargo add async_recursion\n````\n\n## Describing the UI\n\nNow, we can define how to display a post. Dioxus is a *declarative* framework. This means that instead of telling Dioxus what to do (e.g. to \"create an element\" or \"set the color to red\") we simply *declare* how we want the UI to look.\n\nTo declare what you want your UI to look like, you will need to use the `rsx` macro. Let's create a `main` function and an `App` component to show information about our story:\n\n````rust@hackernews_post.rs\nfn main() {\n    launch(App);\n}\n\npub fn App() -> Element {\n    rsx! {\"story\"}\n}\n````\n\nNow if you run your application you should see something like this:\n\n````inject-dioxus\nDemoFrame {\n\thackernews_post::story_v1::App {}\n}\n````\n\n > \n > RSX mirrors HTML. Because of this you will need to know some html to use Dioxus.\n > \n > Here are some resources to help get you started learning HTML:\n > \n > * [MDN HTML Guide](https://developer.mozilla.org/en-US/docs/Learn/HTML)\n > * [W3 Schools HTML Tutorial](https://www.w3schools.com/html/default.asp)\n > \n > In addition to HTML, Dioxus uses CSS to style applications. You can either use traditional CSS (what this guide uses) or use a tool like [tailwind CSS](https://tailwindcss.com/docs/installation):\n > \n > * [MDN Traditional CSS Guide](https://developer.mozilla.org/en-US/docs/Learn/HTML)\n > * [W3 Schools Traditional CSS Tutorial](https://www.w3schools.com/css/default.asp)\n > * [Tailwind tutorial](https://tailwindcss.com/docs/installation) (used with the [Tailwind setup example](https://github.com/DioxusLabs/dioxus/tree/v0.5/examples/tailwind))\n > \n > If you have existing html code, you can use the [translate](../CLI/translate.md) command to convert it to RSX. Or if you prefer to write html, you can use the [html! macro](https://github.com/DioxusLabs/dioxus-html-macro) to write html directly in your code.\n\n## Dynamic Text\n\nLet's expand our `App` component to include the story title, author, score, time posted, and number of comments. We can insert dynamic text in the render macro by inserting variables inside `{}`s (this works similarly to the formatting in the [println!](https://doc.rust-lang.org/std/macro.println.html) macro):\n\n````rust@hackernews_post.rs\npub fn App() -> Element {\n    let title = \"title\";\n    let by = \"author\";\n    let score = 0;\n    let time = chrono::Utc::now();\n    let comments = \"comments\";\n\n    rsx! {\"{title} by {by} ({score}) {time} {comments}\"}\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\thackernews_post::story_v2::App {}\n}\n````\n\n## Creating Elements\n\nNext, let's wrap our post description in a [`div`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/div). You can create HTML elements in Dioxus by putting a `{` after the element name and a `}` after the last child of the element:\n\n````rust@hackernews_post.rs\npub fn App() -> Element {\n    let title = \"title\";\n    let by = \"author\";\n    let score = 0;\n    let time = chrono::Utc::now();\n    let comments = \"comments\";\n\n    rsx! { div { \"{title} by {by} ({score}) {time} {comments}\" } }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\thackernews_post::story_v3::App {}\n}\n````\n\n > \n > You can read more about elements in the [rsx reference](../reference/rsx.md).\n\n## Setting Attributes\n\nNext, let's add some padding around our post listing with an attribute.\n\nAttributes (and [listeners](../reference/event_handlers.md)) modify the behavior or appearance of the element they are attached to. They are specified inside the `{}` brackets before any children, using the `name: value` syntax. You can format the text in the attribute as you would with a text node:\n\n````rust@hackernews_post.rs\npub fn App() -> Element {\n    let title = \"title\";\n    let by = \"author\";\n    let score = 0;\n    let time = chrono::Utc::now();\n    let comments = \"comments\";\n\n    rsx! {\n        div { padding: \"0.5rem\", position: \"relative\",\n            \"{title} by {by} ({score}) {time} {comments}\"\n        }\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\thackernews_post::story_v4::App {}\n}\n````\n\n > \n > Note: All attributes defined in [`dioxus-html`](https://docs.rs/dioxus-html/latest/dioxus_html/) follow the snake_case naming convention. They transform their `snake_case` names to HTML's `camelCase` attributes.\n\n > \n > Note: Styles can be used directly outside of the `style:` attribute. In the above example, `padding: \"0.5rem\"` is turned into `style=\"padding: 0.5rem\"`.\n\n > \n > You can read more about elements in the [attribute reference](../reference/rsx.md)\n\n## Creating a Component\n\nJust like you wouldn't want to write a complex program in a single, long, `main` function, you shouldn't build a complex UI in a single `App` function. Instead, you should break down the functionality of an app in logical parts called components.\n\nA component is a Rust function, named in UpperCamelCase, that takes a props parameter and returns an `Element` describing the UI it wants to render. In fact, our `App` function is a component!\n\nLet's pull our story description into a new component:\n\n````rust@hackernews_post.rs\nfn StoryListing() -> Element {\n    let title = \"title\";\n    let by = \"author\";\n    let score = 0;\n    let time = chrono::Utc::now();\n    let comments = \"comments\";\n\n    rsx! {\n        div { padding: \"0.5rem\", position: \"relative\",\n            \"{title} by {by} ({score}) {time} {comments}\"\n        }\n    }\n}\n````\n\nWe can render our component like we would an element by putting `{}`s after the component name. Let's modify our `App` component to render our new StoryListing component:\n\n````rust@hackernews_post.rs\npub fn App() -> Element {\n    rsx! { StoryListing {} }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\thackernews_post::story_v5::App {}\n}\n````\n\n > \n > You can read more about elements in the [component reference](../reference/components.md)\n\n## Creating Props\n\nJust like you can pass arguments to a function or attributes to an element, you can pass props to a component that customize its behavior!\n\nWe can define arguments that components can take when they are rendered (called `Props`) by adding the `#[component]` macro before our function definition and adding extra function arguments.\n\nCurrently, our `StoryListing` component always renders the same story. We can modify it to accept a story to render as a prop.\n\nWe will also define what a post is and include information for how to transform our post to and from a different format using [serde](https://serde.rs). This will be used with the hackernews API in a later chapter:\n\n````rust@hackernews_post.rs\nuse chrono::{DateTime, Utc};\nuse serde::{Deserialize, Serialize};\n\n// Define the Hackernews types\n#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]\npub struct StoryPageData {\n    #[serde(flatten)]\n    pub item: StoryItem,\n    #[serde(default)]\n    pub comments: Vec<CommentData>,\n}\n\n#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]\npub struct CommentData {\n    pub id: i64,\n    /// there will be no by field if the comment was deleted\n    #[serde(default)]\n    pub by: String,\n    #[serde(default)]\n    pub text: String,\n    #[serde(with = \"chrono::serde::ts_seconds\")]\n    pub time: DateTime<Utc>,\n    #[serde(default)]\n    pub kids: Vec<i64>,\n    #[serde(default)]\n    pub sub_comments: Vec<CommentData>,\n    pub r#type: String,\n}\n\n#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]\npub struct StoryItem {\n    pub id: i64,\n    pub title: String,\n    pub url: Option<String>,\n    pub text: Option<String>,\n    #[serde(default)]\n    pub by: String,\n    #[serde(default)]\n    pub score: i64,\n    #[serde(default)]\n    pub descendants: i64,\n    #[serde(with = \"chrono::serde::ts_seconds\")]\n    pub time: DateTime<Utc>,\n    #[serde(default)]\n    pub kids: Vec<i64>,\n    pub r#type: String,\n}\n\n#[component]\nfn StoryListing(story: ReadOnlySignal<StoryItem>) -> Element {\n    let StoryItem {\n        title,\n        url,\n        by,\n        score,\n        time,\n        kids,\n        ..\n    } = &*story.read();\n\n    let comments = kids.len();\n\n    rsx! {\n        div { padding: \"0.5rem\", position: \"relative\",\n            \"{title} by {by} ({score}) {time} {comments}\"\n        }\n    }\n}\n````\n\nMake sure to also add [serde](https://serde.rs) as a dependency:\n\n````bash\ncargo add serde --features derive\ncargo add serde_json\n````\n\nWe will also use the [chrono](https://crates.io/crates/chrono) crate to provide utilities for handling time data from the hackernews API:\n\n````bash\ncargo add chrono --features serde\n````\n\nNow, let's modify the `App` component to pass the story to our `StoryListing` component like we would set an attribute on an element:\n\n````rust@hackernews_post.rs\npub fn App() -> Element {\n    rsx! {\n        StoryListing {\n            story: StoryItem {\n                id: 0,\n                title: \"hello hackernews\".to_string(),\n                url: None,\n                text: None,\n                by: \"Author\".to_string(),\n                score: 0,\n                descendants: 0,\n                time: chrono::Utc::now(),\n                kids: vec![],\n                r#type: \"\".to_string(),\n            }\n        }\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\thackernews_post::story_v6::App {}\n}\n````\n\n > \n > You can read more about Props in the [Props reference](../reference/component_props.md)\n\n## Cleaning Up Our Interface\n\nFinally, by combining elements and attributes, we can make our post listing much more appealing:\n\nFull code up to this point:\n\n````rust@hackernews_post.rs\nuse dioxus::prelude::*;\n\n// Define the Hackernews types\nuse chrono::{DateTime, Utc};\nuse serde::{Deserialize, Serialize};\n\n#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]\npub struct StoryPageData {\n    #[serde(flatten)]\n    pub item: StoryItem,\n    #[serde(default)]\n    pub comments: Vec<CommentData>,\n}\n\n#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]\npub struct CommentData {\n    pub id: i64,\n    /// there will be no by field if the comment was deleted\n    #[serde(default)]\n    pub by: String,\n    #[serde(default)]\n    pub text: String,\n    #[serde(with = \"chrono::serde::ts_seconds\")]\n    pub time: DateTime<Utc>,\n    #[serde(default)]\n    pub kids: Vec<i64>,\n    #[serde(default)]\n    pub sub_comments: Vec<CommentData>,\n    pub r#type: String,\n}\n\n#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]\npub struct StoryItem {\n    pub id: i64,\n    pub title: String,\n    pub url: Option<String>,\n    pub text: Option<String>,\n    #[serde(default)]\n    pub by: String,\n    #[serde(default)]\n    pub score: i64,\n    #[serde(default)]\n    pub descendants: i64,\n    #[serde(with = \"chrono::serde::ts_seconds\")]\n    pub time: DateTime<Utc>,\n    #[serde(default)]\n    pub kids: Vec<i64>,\n    pub r#type: String,\n}\n\nfn main() {\n    launch(App);\n}\n\npub fn App() -> Element {\n    rsx! {\n        StoryListing {\n            story: StoryItem {\n                id: 0,\n                title: \"hello hackernews\".to_string(),\n                url: None,\n                text: None,\n                by: \"Author\".to_string(),\n                score: 0,\n                descendants: 0,\n                time: Utc::now(),\n                kids: vec![],\n                r#type: \"\".to_string(),\n            }\n        }\n    }\n}\n\n#[component]\nfn StoryListing(story: ReadOnlySignal<StoryItem>) -> Element {\n    let StoryItem {\n        title,\n        url,\n        by,\n        score,\n        time,\n        kids,\n        ..\n    } = &*story.read();\n\n    let url = url.as_deref().unwrap_or_default();\n    let hostname = url\n        .trim_start_matches(\"https://\")\n        .trim_start_matches(\"http://\")\n        .trim_start_matches(\"www.\");\n    let score = format!(\"{score} {}\", if *score == 1 { \" point\" } else { \" points\" });\n    let comments = format!(\n        \"{} {}\",\n        kids.len(),\n        if kids.len() == 1 {\n            \" comment\"\n        } else {\n            \" comments\"\n        }\n    );\n    let time = time.format(\"%D %l:%M %p\");\n\n    rsx! {\n        div { padding: \"0.5rem\", position: \"relative\",\n            div { font_size: \"1.5rem\",\n                a { href: url, \"{title}\" }\n                a {\n                    color: \"gray\",\n                    href: \"https://news.ycombinator.com/from?site={hostname}\",\n                    text_decoration: \"none\",\n                    \" ({hostname})\"\n                }\n            }\n            div { display: \"flex\", flex_direction: \"row\", color: \"gray\",\n                div { \"{score}\" }\n                div { padding_left: \"0.5rem\", \"by {by}\" }\n                div { padding_left: \"0.5rem\", \"{time}\" }\n                div { padding_left: \"0.5rem\", \"{comments}\" }\n            }\n        }\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\thackernews_post::story_final::App {}\n}\n````"
+            }
+            70usize => {
+                "# Overall Goals\n\nThis document outlines some of the overall goals for Dioxus. These goals are not set in stone, but they represent general guidelines for the project.\n\nThe goal of Dioxus is to make it easy to build **cross-platform applications that scale**.\n\n## Cross-Platform\n\nDioxus is designed to be cross-platform by default. This means that it should be easy to build applications that run on the web, desktop, and mobile. However, Dioxus should also be flexible enough to allow users to opt into platform-specific features when needed. The `use_eval` is one example of this. By default, Dioxus does not assume that the platform supports JavaScript, but it does provide a hook that allows users to opt into JavaScript when needed.\n\n## Performance\n\nAs Dioxus applications grow, they should remain relatively performant without the need for manual optimizations. There will be cases where manual optimizations are needed, but Dioxus should try to make these cases as rare as possible.\n\nOne of the benefits of the core architecture of Dioxus is that it delivers reasonable performance even when components are rerendered often. It is based on a Virtual Dom which performs diffing which should prevent unnecessary re-renders even when large parts of the component tree are rerun. On top of this, Dioxus groups static parts of the RSX tree together to skip diffing them entirely.\n\n## Type Safety\n\nAs teams grow, the Type safety of Rust is a huge advantage. Dioxus should leverage this advantage to make it easy to build applications with large teams.\n\nTo take full advantage of Rust's type system, Dioxus should try to avoid exposing public `Any` types and string-ly typed APIs where possible.\n\n## Developer Experience\n\nDioxus should be easy to learn and ergonomic to use.\n\n* The API of Dioxus attempts to remain close to React's API where possible. This makes it easier for people to learn Dioxus if they already know React\n\n* We can avoid the tradeoff between simplicity and flexibility by providing multiple layers of API: One for the very common use case, one for low-level control\n  \n  * Hooks: the hooks crate has the most common use cases, but `use_hook` provides a way to access the underlying persistent value if needed.\n  * The builder pattern in platform Configs: The builder pattern is used to default to the most common use case, but users can change the defaults if needed.\n* Documentation:\n  \n  * All public APIs should have rust documentation\n  * Examples should be provided for all public features. These examples both serve as documentation and testing. They are checked by CI to ensure that they continue to compile\n  * The most common workflows should be documented in the guide"
+            }
+            61usize => {
+                "# Tailwind\n\nYou can style your Dioxus application with whatever CSS framework you choose, or just write vanilla CSS.\n\nOne popular option for styling your Dioxus application is [Tailwind](https://tailwindcss.com/). Tailwind allows you to style your elements with CSS utility classes. This guide will show you how to setup tailwind CSS with your Dioxus application.\n\n## Setup\n\n1. Install the Dioxus CLI:\n\n````bash\ncargo install dioxus-cli\n````\n\n2. Install npm: [https://docs.npmjs.com/downloading-and-installing-node-js-and-npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)\n2. Install the tailwind css cli: [https://tailwindcss.com/docs/installation](https://tailwindcss.com/docs/installation)\n2. Initialize the tailwind css project:\n\n````bash\nnpx tailwindcss init\n````\n\nThis should create a `tailwind.config.js` file in the root of the project.\n\n5. Edit the `tailwind.config.js` file to include rust files:\n\n````js\nmodule.exports = {\n    mode: \"all\",\n    content: [\n        // include all rust, html and css files in the src directory\n        \"./src/**/*.{rs,html,css}\",\n        // include all html files in the output (dist) directory\n        \"./dist/**/*.html\",\n    ],\n    theme: {\n        extend: {},\n    },\n    plugins: [],\n}\n````\n\n6. Create a `input.css` file in the root of your project with the following content:\n\n````css\n@tailwind base;\n@tailwind components;\n@tailwind utilities;\n````\n\n7. Add [Manganis](https://github.com/DioxusLabs/manganis) to your project to handle asset collection.\n\n````sh\ncargo add manganis\n````\n\n8. Create a link to the `tailwind.css` file using manganis somewhere in your rust code:\n\n````rust@tailwind.rs\n// Urls are relative to your Cargo.toml file\nconst _TAILWIND_URL: &str = manganis::mg!(file(\"public/tailwind.css\"));\n\n````\n\n### Bonus Steps\n\n1. Install the tailwind css vs code extension\n1. Go to the settings for the extension and find the experimental regex support section. Edit the setting.json file to look like this:\n\n````json\n\"tailwindCSS.experimental.classRegex\": [\"class\\\\s*:\\\\s*\\\"([^\\\"]*)\"],\n\"tailwindCSS.includeLanguages\": {\n    \"rust\": \"html\"\n},\n````\n\n## Development\n\n* Run the following command in the root of the project to start the tailwind css compiler:\n\n````bash\nnpx tailwindcss -i ./input.css -o ./public/tailwind.css --watch\n````\n\n### Web\n\n* Run the following command in the root of the project to start the dioxus dev server:\n\n````bash\ndx serve\n````\n\n* Open the browser to [http://localhost:8080](http://localhost:8080).\n\n### Desktop\n\n* Launch the dioxus desktop app:\n\n````bash\ndx serve --platform desktop\n````"
+            }
+            31usize => {
+                "# Middleware\n\nExtractors allow you to wrap your server function in some code that changes either the request or the response. Dioxus fullstack integrates with [Tower](https://docs.rs/tower/latest/tower/index.html) to allow you to wrap your server functions in middleware.\n\nYou can use the `#[middleware]` attribute to add a layer of middleware to your server function. Let's add a timeout middleware to a server function. This middleware will stop running the server function if it reaches a certain timeout:\n\n````rust@server_function_middleware.rs\n#[server]\n// Add a timeout middleware to the server function that will return an error if the function takes longer than 1 second to execute\n#[middleware(tower_http::timeout::TimeoutLayer::new(std::time::Duration::from_secs(1)))]\npub async fn timeout() -> Result<(), ServerFnError> {\n    tokio::time::sleep(std::time::Duration::from_secs(2)).await;\n    Ok(())\n}\n````"
+            }
+            44usize => {
+                "# Layouts\n\nLayouts allow you to wrap all child routes in a component. This can be useful when creating something like a header that will be used in many different routes.\n\n[`Outlet`] tells the router where to render content in layouts. In the following example,\nthe Index will be rendered within the [`Outlet`].\n\nThis page is built with the Dioxus. It uses Layouts in several different places. Here is an outline of how layouts are used on the current page. Hover over different layouts to see what elements they are on the page.\n\n````inject-dioxus\nLayoutsExplanation {}\n````\n\nHere is a more complete example of a layout wrapping the body of a page.\n\n````rust@outlet.rs\n#[derive(Routable, Clone)]\n#[rustfmt::skip]\nenum Route {\n    #[layout(Wrapper)]\n        #[route(\"/\")]\n        Index {},\n}\n\n#[component]\nfn Wrapper() -> Element {\n    rsx! {\n        header { \"header\" }\n        // The index route will be rendered here\n        Outlet::<Route> {}\n        footer { \"footer\" }\n    }\n}\n\n#[component]\nfn Index() -> Element {\n    rsx! { h1 { \"Index\" } }\n}\n````\n\nThe example above will output the following HTML (line breaks added for\nreadability):\n\n````html\n<header>header</header>\n<h1>Index</h1>\n<footer>footer</footer>\n````\n\n## Layouts with dynamic segments\n\nYou can combine layouts with [nested routes](./routes/nested.md) to create dynamic layouts with content that changes based on the current route.\n\nJust like routes, layouts components must accept a prop for each dynamic segment in the route. For example, if you have a route with a dynamic segment like `/:name`, your layout component must accept a `name` prop:\n\n````rust@outlet.rs\n#[derive(Routable, Clone)]\n#[rustfmt::skip]\nenum Route {\n    #[nest(\"/:name\")]\n        #[layout(Wrapper)]\n            #[route(\"/\")]\n            Index {\n                name: String,\n            },\n}\n\n#[component]\nfn Wrapper(name: String) -> Element {\n    rsx! {\n        header { \"Welcome {name}!\" }\n        // The index route will be rendered here\n        Outlet::<Route> {}\n        footer { \"footer\" }\n    }\n}\n\n#[component]\nfn Index(name: String) -> Element {\n    rsx! { h1 { \"This is a homepage for {name}\" } }\n}\n````\n\nOr to get the full route, you can use the `use_route` hook.\n\n````rust@outlet.rs\n#[derive(Routable, Clone)]\n#[rustfmt::skip]\nenum Route {\n    #[layout(Wrapper)]\n        #[route(\"/:name\")]\n        Index {\n            name: String,\n        },\n}\n\n#[component]\nfn Wrapper() -> Element {\n    let full_route = use_route::<Route>();\n    rsx! {\n        header { \"Welcome to {full_route}!\" }\n        // The index route will be rendered here\n        Outlet::<Route> {}\n        footer { \"footer\" }\n    }\n}\n\n#[component]\nfn Index(name: String) -> Element {\n    rsx! { h1 { \"This is a homepage for {name}\" } }\n}\n````"
+            }
+            64usize => {
+                "# Introduction\n\nThe ✨**Dioxus CLI**✨ is a tool to get Dioxus projects off the ground.\n\nThere's no documentation for commands here, but you can see all commands using `dx --help` once you've installed the CLI! Furthermore, you can run `dx <command> --help` to get help with a specific command.\n\n## Features\n\n* Build and pack a Dioxus project.\n* Format `rsx` code.\n* Hot Reload.\n* Create a Dioxus project from a template repository.\n* And more!"
+            }
+            74usize => {
+                "# State Migration\n\nThe `use_state` and `use_ref` hooks have been replaced with the `use_signal` hook. The `use_signal` hook is a more flexible and powerful version of the `use_ref` hook with smarter scopes that only subscribe to a signal if that signal is read within the scope.\n\nWith `use_state`, if you had this code:\n\n````rust\nfn Parent(cx: Scope) -> Element {\n\tlet state = use_state(cx, || 0);\n\n\trender! {\n\t\tChild {\n\t\t\tstate: state.clone()\n\t\t}\n\t}\n}\n\n#[component]\nfn Child(cx: Scope, state: UseState<i32>) -> Element {\n\trender! {\n\t\t\"{state}\"\n\t}\n}\n````\n\nParent would re-render every time the state changed even though only the child component was using the state. With the new `use_signal` hook, the parent would only re-render if the state was changed within the parent component:\n\n````rust@migration_state.rs\nfn Parent() -> Element {\n    let state = use_signal(|| 0);\n\n    rsx! { Child { state } }\n}\n\n#[component]\nfn Child(state: Signal<i32>) -> Element {\n    rsx! {\"{state}\"}\n}\n````\n\nOnly the child component will re-render when the state changes because only the child component is reading the state.\n\n## Context Based State\n\nThe `use_shared_state_provider` and `use_shared_state` hooks have been replaced with using the `use_context_provider` and `use_context` hooks with a `Signal`:\n\n````rust@migration_state.rs\nfn Parent() -> Element {\n    // Create a new signal and provide it to the context API\n    let state = use_context_provider(|| Signal::new(0));\n\n    rsx! { Child {} }\n}\n\nfn Child() -> Element {\n    // Get the state from the context API\n    let state = use_context::<Signal<i32>>();\n\n    rsx! {\"{state}\"}\n}\n````\n\nSignals are smart enough to handle subscribing to the right scopes without a special shared state hook.\n\n## Opting Out of Subscriptions\n\nSome state hooks including `use_shared_state` and `use_ref` hooks had a function called `write_silent` in `0.4`. This function allowed you to update the state without triggering a re-render any subscribers. This function has been removed in `0.5`.\n\nInstead, you can use the `peek` function to read the current value of a signal without subscribing to it. This inverts the subscription model so that you can opt out of subscribing to a signal instead of opting all subscribers out of updates:\n\n````rust@migration_state.rs\nfn Parent() -> Element {\n    let state = use_signal(|| 0);\n\n    // Even though we are reading the state, we don't need to subscribe to it\n    let read_without_subscribing = state.peek();\n    println!(\"{}\", state.peek());\n\n    rsx! { Child { state } }\n}\n\n#[component]\nfn Child(state: Signal<i32>) -> Element {\n    rsx! {\n        button { onclick: move |_| {\n                state += 1;\n            }, \"count is {state}\" }\n    }\n}\n````\n\n`peek` gives you more fine-grained control over when you want to subscribe to a signal. This can be useful for performance optimizations and for updating state without re-rendering components.\n\n## Global State\n\nIn `0.4`, the fermi crate provided a separate global state API called atoms. In `0.5`, the `Signal` type has been extended to provide a global state API. You can use the `Signal::global` function to create a global signal:\n\n````rust@migration_state.rs\nstatic COUNT: GlobalSignal<i32> = Signal::global(|| 0);\n\nfn Parent() -> Element {\n    rsx! {\n        div { \"{COUNT}\" }\n        button {\n            onclick: move |_| {\n                *COUNT.write() += 1;\n            },\n            \"Increment\"\n        }\n    }\n}\n````\n\nYou can read more about global signals in the [Fermi migration guide](fermi.md)."
+            }
+            22usize => {
+                "# Desktop\n\nThis guide will cover concepts specific to the Dioxus desktop renderer.\n\nApps built with Dioxus desktop use the system WebView to render the page. This makes the final size of application much smaller than other WebView renderers (typically under 5MB).\n\nAlthough desktop apps are rendered in a WebView, your Rust code runs natively. This means that browser APIs are *not* available, so rendering WebGL, Canvas, etc is not as easy as the Web. However, native system APIs *are* accessible, so streaming, WebSockets, filesystem, etc are all easily accessible though system APIs.\n\nDioxus desktop is built off [Tauri](https://tauri.app/). Right now there are limited Dioxus abstractions over the menubar, event handling, etc. In some places you may need to leverage Tauri directly – through [Wry](http://github.com/tauri-apps/wry/) and [Tao](http://github.com/tauri-apps/tao).\n\n > \n > In the future, we plan to move to a custom web renderer-based DOM renderer with WGPU integrations ([Blitz](https://github.com/DioxusLabs/blitz)).\n\n## Examples\n\n* [File Explorer](https://github.com/DioxusLabs/dioxus/blob/main/example-projects/file-explorer)\n* [Tailwind App](https://github.com/DioxusLabs/dioxus/tree/v0.5/examples/tailwind)\n\n[![Tailwind App screenshot](/assets/static/tailwind_desktop_app.png)](https://github.com/DioxusLabs/dioxus/tree/v0.5/examples/tailwind)\n\n## Running Javascript\n\nDioxus provides some ergonomic wrappers over the browser API, but in some cases you may need to access parts of the browser API Dioxus does not expose.\n\nFor these cases, Dioxus desktop exposes the use_eval hook that allows you to run raw Javascript in the webview:\n\n````rust@eval.rs\nuse dioxus::prelude::*;\n\nfn main() {\n    launch(app);\n}\n\nfn app() -> Element {\n    // You can create as many eval instances as you want\n    let mut eval = eval(\n        r#\"\n        // You can send messages from JavaScript to Rust with the dioxus.send function\n        dioxus.send(\"Hi from JS!\");\n        // You can receive messages from Rust to JavaScript with the dioxus.recv function\n        let msg = await dioxus.recv();\n        console.log(msg);\n        \"#,\n    );\n\n    // You can send messages to JavaScript with the send method\n    eval.send(\"Hi from Rust!\".into()).unwrap();\n\n    let future = use_resource(move || {\n        to_owned![eval];\n        async move {\n            // You can receive any message from JavaScript with the recv method\n            eval.recv().await.unwrap()\n        }\n    });\n\n    match future.read_unchecked().as_ref() {\n        Some(v) => rsx! {\n            p { \"{v}\" }\n        },\n        _ => rsx! {\n            p { \"hello\" }\n        },\n    }\n}\n\n````\n\n## Custom Assets\n\nYou can link to local assets in dioxus desktop instead of using a url:\n\n````rust@custom_assets.rs\nuse dioxus::prelude::*;\n\nfn main() {\n    launch(app);\n}\n\nfn app() -> Element {\n    rsx! {\n        div {\n            img { src: \"/public/static/scanner.png\" }\n        }\n    }\n}\n\n````\n\nYou can read more about assets in the [assets](../assets.md) reference.\n\n## Integrating with Wry\n\nIn cases where you need more low level control over your window, you can use wry APIs exposed through the [Desktop Config](https://docs.rs/dioxus-desktop/0.5.0/dioxus_desktop/struct.Config.html) and the [use_window hook](https://docs.rs/dioxus-desktop/0.5.0/dioxus_desktop/fn.use_window.html)"
+            }
+            47usize => {
+                "# History Providers\n\n\\[`HistoryProvider`\\]s are used by the router to keep track of the navigation history\nand update any external state (e.g. the browser's URL).\n\nThe router provides two \\[`HistoryProvider`\\]s, but you can also create your own.\nThe two default implementations are:\n\n* The \\[`MemoryHistory`\\] is a custom implementation that works in memory.\n* The \\[`LiveviewHistory`\\] is a custom implementation that works with the liveview renderer.\n* The \\[`WebHistory`\\] integrates with the browser's URL.\n\nBy default, the router uses the \\[`MemoryHistory`\\]. It might be changed to use\n\\[`WebHistory`\\] when the `web` feature is active, but that is not guaranteed.\n\nYou can override the default history:\n\n````rust@history_provider.rs\n#[component]\nfn App() -> Element {\n    rsx! {Router::<Route> { config: || RouterConfig::default().history(WebHistory::default()) }}\n}\n````"
             }
             60usize => {
                 "# Testing\n\nWhen building application or libraries with Dioxus, you may want to include some tests to check the behavior of parts of your application. This guide will teach you how to test different parts of your Dioxus application.\n\n## Component Testing\n\nYou can use a combination of [pretty-assertions](https://docs.rs/pretty_assertions/latest/pretty_assertions/) and [dioxus-ssr](https://docs.rs/dioxus-ssr/latest/dioxus_ssr/) to check that two snippets of rsx are equal:\n\n````rust@component_test.rs\nuse futures::FutureExt;\nuse std::{cell::RefCell, sync::Arc};\n\nuse dioxus::prelude::*;\n\n#[test]\nfn test() {\n    assert_rsx_eq(\n        rsx! {\n            div { \"Hello world\" }\n            div { \"Hello world\" }\n        },\n        rsx! {\n            for _ in 0..2 {\n                div { \"Hello world\" }\n            }\n        },\n    )\n}\n\nfn assert_rsx_eq(first: Element, second: Element) {\n    let first = dioxus_ssr::render_element(first);\n    let second = dioxus_ssr::render_element(second);\n    pretty_assertions::assert_str_eq!(first, second);\n}\n\n````\n\n## Hook Testing\n\nWhen creating libraries around Dioxus, it can be helpful to make tests for your [custom hooks](./state/custom_hooks/index.md).\n\nDioxus does not currently have a full hook testing library, but you can build a bespoke testing framework by manually driving the virtual dom.\n\n````rust@hook_test.rs\nuse futures::FutureExt;\nuse std::{cell::RefCell, rc::Rc, sync::Arc, thread::Scope};\n\nuse dioxus::{dioxus_core::NoOpMutations, prelude::*};\n\n#[test]\nfn test() {\n    test_hook(\n        || use_signal(|| 0),\n        |mut value, mut proxy| match proxy.generation {\n            0 => {\n                value.set(1);\n            }\n            1 => {\n                assert_eq!(*value.read(), 1);\n                value.set(2);\n            }\n            2 => {\n                proxy.rerun();\n            }\n            3 => {}\n            _ => todo!(),\n        },\n        |proxy| assert_eq!(proxy.generation, 4),\n    );\n}\n\nfn test_hook<V: 'static>(\n    initialize: impl FnMut() -> V + 'static,\n    check: impl FnMut(V, MockProxy) + 'static,\n    mut final_check: impl FnMut(MockProxy) + 'static,\n) {\n    #[derive(Props)]\n    struct MockAppComponent<I: 'static, C: 'static> {\n        hook: Rc<RefCell<I>>,\n        check: Rc<RefCell<C>>,\n    }\n\n    impl<I, C> PartialEq for MockAppComponent<I, C> {\n        fn eq(&self, _: &Self) -> bool {\n            true\n        }\n    }\n\n    impl<I, C> Clone for MockAppComponent<I, C> {\n        fn clone(&self) -> Self {\n            Self {\n                hook: self.hook.clone(),\n                check: self.check.clone(),\n            }\n        }\n    }\n\n    fn mock_app<I: FnMut() -> V, C: FnMut(V, MockProxy), V>(\n        props: MockAppComponent<I, C>,\n    ) -> Element {\n        let value = props.hook.borrow_mut()();\n\n        props.check.borrow_mut()(value, MockProxy::new());\n\n        rsx! {\n            div {}\n        }\n    }\n\n    let mut vdom = VirtualDom::new_with_props(\n        mock_app,\n        MockAppComponent {\n            hook: Rc::new(RefCell::new(initialize)),\n            check: Rc::new(RefCell::new(check)),\n        },\n    );\n\n    vdom.rebuild_in_place();\n\n    while vdom.wait_for_work().now_or_never().is_some() {\n        vdom.render_immediate(&mut NoOpMutations);\n    }\n\n    vdom.in_runtime(|| {\n        ScopeId::ROOT.in_runtime(|| {\n            final_check(MockProxy::new());\n        })\n    })\n}\n\nstruct MockProxy {\n    rerender: Arc<dyn Fn()>,\n    pub generation: usize,\n}\n\nimpl MockProxy {\n    fn new() -> Self {\n        let generation = dioxus::core::generation();\n        let rerender = dioxus::core::schedule_update();\n\n        Self {\n            rerender,\n            generation,\n        }\n    }\n\n    pub fn rerun(&mut self) {\n        (self.rerender)();\n    }\n}\n\n````\n\n## End to End Testing\n\nYou can use [Playwright](https://playwright.dev/) to create end to end tests for your dioxus application.\n\nIn your `playwright.config.js`, you will need to run cargo run or dx serve instead of the default build command. Here is a snippet from the end to end web example:\n\n````js\n//...\nwebServer: [\n    {\n        cwd: path.join(process.cwd(), 'playwright-tests', 'web'),\n        command: 'dx serve',\n        port: 8080,\n        timeout: 10 * 60 * 1000,\n        reuseExistingServer: !process.env.CI,\n        stdout: \"pipe\",\n    },\n],\n````\n\n* [Web example](https://github.com/DioxusLabs/dioxus/tree/v0.5/playwright-tests/web)\n* [Liveview example](https://github.com/DioxusLabs/dioxus/tree/v0.5/playwright-tests/liveview)\n* [Fullstack example](https://github.com/DioxusLabs/dioxus/tree/v0.5/playwright-tests/fullstack)"
@@ -382,35 +319,98 @@ impl BookRoute {
             66usize => {
                 "# Configure Project\n\nThis chapter will teach you how to configure the CLI with the `Dioxus.toml` file. There's an [example](#config-example) which has comments to describe individual keys. You can copy that or view this documentation for a more complete learning experience.\n\n\"🔒\" indicates a mandatory item. Some headers are mandatory, but none of the keys inside them are. In that case, you only need to include the header, but no keys. It might look weird, but it's normal.\n\n## Structure\n\nEach header has its TOML form directly under it.\n\n### Application 🔒\n\n````toml\n[application]\n````\n\nApplication-wide configuration. Applies to both web and desktop.\n\n* **name** 🔒 - Project name & title.\n  ````toml\n  name = \"my_project\"\n  ````\n\n* **default_platform** 🔒 - The platform this project targets\n  ````toml\n  # Currently supported platforms: web, desktop\n  default_platform = \"web\"\n  ````\n\n* **out_dir** - The directory to place the build artifacts from `dx build` or `dx serve` into. This is also where the `assets` directory will be copied into.\n  ````toml\n  out_dir = \"dist\"\n  ````\n\n* **asset_dir** - The directory with your static assets. The CLI will automatically copy these assets into the **out_dir** after a build/serve.\n  ````toml\n  asset_dir = \"public\"\n  ````\n\n* **sub_package** - The sub package in the workspace to build by default.\n  ````toml\n  sub_package = \"my-crate\"\n  ````\n\n### Web.App 🔒\n\n````toml\n[web.app]\n````\n\nWeb-specific configuration.\n\n* **title** - The title of the web page.\n  ````toml\n  # HTML title tag content\n  title = \"project_name\"\n  ````\n\n* **base_path** - The base path to build the application for serving at. This can be useful when serving your application in a subdirectory under a domain. For example, when building a site to be served on GitHub Pages.\n  ````toml\n  # The application will be served at domain.com/my_application/, so we need to modify the base_path to the path where the application will be served\n  base_path = \"my_application\"\n  ````\n\n### Web.Watcher 🔒\n\n````toml\n[web.watcher]\n````\n\nDevelopment server configuration.\n\n* **reload_html** - If this is true, the cli will rebuild the index.html file every time the application is rebuilt\n  \n  ````toml\n  reload_html = true\n  ````\n\n* **watch_path** - The files & directories to monitor for changes\n  \n  ````toml\n  watch_path = [\"src\", \"public\"]\n  ````\n\n* **index_on_404** - If enabled, Dioxus will serve the root page when a route is not found.\n  *This is needed when serving an application that uses the router*. However, when serving your app using something else than Dioxus (e.g. GitHub Pages), you will have to check how to configure it on that platform. In GitHub Pages, you can make a copy of `index.html` named `404.html` in the same directory.\n  \n  ````toml\n  index_on_404 = true\n  ````\n\n### Web.Resource 🔒\n\n````toml\n[web.resource]\n````\n\nStatic resource configuration.\n\n* **style** - CSS files to include in your application.\n  \n  ````toml\n  style = [\n     # Include from public_dir.\n     \"./assets/style.css\",\n     # Or some asset from online cdn.\n     \"https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.css\"\n  ]\n  ````\n\n* **script** - JavaScript files to include in your application.\n  \n  ````toml\n  script = [\n      # Include from asset_dir.\n      \"./public/index.js\",\n      # Or from an online CDN.\n      \"https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.js\"\n  ]\n  ````\n\n### Web.Resource.Dev 🔒\n\n````toml\n[web.resource.dev]\n````\n\nThis is the same as [`[web.resource]`](#webresource-), but it only works in development servers. For example, if you want to include a file in a `dx serve` server, but not a `dx serve --release` server, put it here.\n\n### Web.Proxy\n\n````toml\n[[web.proxy]]\n````\n\nConfiguration related to any proxies your application requires during development. Proxies will forward requests to a new service.\n\n* **backend** - The URL to the server to proxy. The CLI will forward any requests under the backend relative route to the backend instead of returning 404\n  ````toml\n  backend = \"http://localhost:8000/api/\"\n  ````\n  \n  This will cause any requests made to the dev server with prefix /api/ to be redirected to the backend server at http://localhost:8000. The path and query parameters will be passed on as-is (path rewriting is currently not supported).\n\n## Config example\n\nThis includes all fields, mandatory or not.\n\n````toml\n[application]\n\n# App name\nname = \"project_name\"\n\n# The Dioxus platform to default to\ndefault_platform = \"web\"\n\n# `build` & `serve` output path\nout_dir = \"dist\"\n\n# The static resource path\nasset_dir = \"public\"\n\n[web.app]\n\n# HTML title tag content\ntitle = \"project_name\"\n\n[web.watcher]\n\n# When watcher is triggered, regenerate the `index.html`\nreload_html = true\n\n# Which files or dirs will be monitored\nwatch_path = [\"src\", \"public\"]\n\n# Include style or script assets\n[web.resource]\n\n# CSS style file\nstyle = []\n\n# Javascript code file\nscript = []\n\n[web.resource.dev]\n\n# Same as [web.resource], but for development servers\n\n# CSS style file\nstyle = []\n\n# JavaScript files\nscript = []\n\n[[web.proxy]]\nbackend = \"http://localhost:8000/api/\"\n````"
             }
-            18usize => {
-                "# Coroutines\n\nAnother tool in your async toolbox are coroutines. Coroutines are futures that can have values sent to them.\n\nLike regular futures, code in a coroutine will run until the next `await` point before yielding. This low-level control over asynchronous tasks is quite powerful, allowing for infinitely looping tasks like WebSocket polling, background timers, and other periodic actions.\n\n## use_coroutine\n\nThe `use_coroutine` hook allows you to create a coroutine. Most coroutines we write will be polling loops using await.\n\n````rust, no_run@use_coroutine_reference.rs\nuse futures_util::StreamExt;\n\nfn app() {\n    let ws: Coroutine<()> = use_coroutine(|rx| async move {\n        // Connect to some sort of service\n        let mut conn = connect_to_ws_server().await;\n\n        // Wait for data on the service\n        while let Some(msg) = conn.next().await {\n            // handle messages\n        }\n    });\n}\n````\n\nFor many services, a simple async loop will handle the majority of use cases.\n\n## Yielding Values\n\nTo yield values from a coroutine, simply bring in a `Signal` handle and set the value whenever your coroutine completes its work.\n\nThe future must be `'static` – so any values captured by the task cannot carry any references to `cx`, such as a `Signal`.\n\nYou can use [to_owned](https://doc.rust-lang.org/std/borrow/trait.ToOwned.html#tymethod.to_owned) to create a clone of the hook handle which can be moved into the async closure.\n\n````rust, no_run@use_coroutine_reference.rs\nlet sync_status = use_signal(|| Status::Launching);\nlet sync_task = use_coroutine(|rx: UnboundedReceiver<SyncAction>| {\n    let mut sync_status = sync_status.to_owned();\n    async move {\n        loop {\n            tokio::time::sleep(Duration::from_secs(1)).await;\n            sync_status.set(Status::Working);\n        }\n    }\n});\n````\n\nTo make this a bit less verbose, Dioxus exports the `to_owned!` macro which will create a binding as shown above, which can be quite helpful when dealing with many values.\n\n````rust, no_run@use_coroutine_reference.rs\nlet sync_status = use_signal(|| Status::Launching);\nlet load_status = use_signal(|| Status::Launching);\nlet sync_task = use_coroutine(|rx: UnboundedReceiver<SyncAction>| {\n    async move {\n        // ...\n    }\n});\n````\n\n## Sending Values\n\nYou might've noticed the `use_coroutine` closure takes an argument called `rx`. What is that? Well, a common pattern in complex apps is to handle a bunch of async code at once. With libraries like Redux Toolkit, managing multiple promises at once can be challenging and a common source of bugs.\n\nWith Coroutines, we can centralize our async logic. The `rx` parameter is an Channel that allows code external to the coroutine to send data *into* the coroutine. Instead of looping on an external service, we can loop on the channel itself, processing messages from within our app without needing to spawn a new future. To send data into the coroutine, we would call \"send\" on the handle.\n\n````rust, no_run@use_coroutine_reference.rs\nuse futures_util::StreamExt;\n\nenum ProfileUpdate {\n    SetUsername(String),\n    SetAge(i32),\n}\n\nlet profile = use_coroutine(|mut rx: UnboundedReceiver<ProfileUpdate>| async move {\n    let mut server = connect_to_server().await;\n\n    while let Some(msg) = rx.next().await {\n        match msg {\n            ProfileUpdate::SetUsername(name) => server.update_username(name).await,\n            ProfileUpdate::SetAge(age) => server.update_age(age).await,\n        }\n    }\n});\n\nrsx! {\n    button { onclick: move |_| profile.send(ProfileUpdate::SetUsername(\"Bob\".to_string())),\n        \"Update username\"\n    }\n}\n````\n\n > \n > Note: In order to use/run the `rx.next().await` statement you will need to extend the \\[`Stream`\\] trait (used by \\[`UnboundedReceiver`\\]) by adding 'futures_util' as a dependency to your project and adding the `use futures_util::stream::StreamExt;`.\n\nFor sufficiently complex apps, we could build a bunch of different useful \"services\" that loop on channels to update the app.\n\n````rust, no_run@use_coroutine_reference.rs\nlet profile = use_coroutine(profile_service);\nlet editor = use_coroutine(editor_service);\nlet sync = use_coroutine(sync_service);\n\nasync fn profile_service(rx: UnboundedReceiver<ProfileCommand>) {\n    // do stuff\n}\n\nasync fn sync_service(rx: UnboundedReceiver<SyncCommand>) {\n    // do stuff\n}\n\nasync fn editor_service(rx: UnboundedReceiver<EditorCommand>) {\n    // do stuff\n}\n````\n\nWe can combine coroutines with Global State to emulate Redux Toolkit's Thunk system with much less headache. This lets us store all of our app's state *within* a task and then simply update the \"view\" values stored in Atoms. It cannot be understated how powerful this technique is: we get all the perks of native Rust tasks with the optimizations and ergonomics of global state. This means your *actual* state does not need to be tied up in a system like `Signal::global` or Redux – the only Atoms that need to exist are those that are used to drive the display/UI.\n\n````rust, no_run@use_coroutine_reference.rs\nstatic USERNAME: GlobalSignal<String> = Signal::global(|| \"default\".to_string());\n\nfn app() -> Element {\n    use_coroutine(sync_service);\n\n    rsx! { Banner {} }\n}\n\nfn Banner() -> Element {\n    rsx! { h1 { \"Welcome back, {USERNAME}\" } }\n}\n````\n\nNow, in our sync service, we can structure our state however we want. We only need to update the view values when ready.\n\n````rust, no_run@use_coroutine_reference.rs\nuse futures_util::StreamExt;\n\nstatic USERNAME: GlobalSignal<String> = Signal::global(|| \"default\".to_string());\nstatic ERRORS: GlobalSignal<Vec<String>> = Signal::global(|| Vec::new());\n\nenum SyncAction {\n    SetUsername(String),\n}\n\nasync fn sync_service(mut rx: UnboundedReceiver<SyncAction>) {\n    while let Some(msg) = rx.next().await {\n        match msg {\n            SyncAction::SetUsername(name) => {\n                if set_name_on_server(&name).await.is_ok() {\n                    *USERNAME.write() = name;\n                } else {\n                    *ERRORS.write() = vec![\"Failed to set username\".to_string()];\n                }\n            }\n        }\n    }\n}\n````\n\n## Automatic injection into the Context API\n\nCoroutine handles are automatically injected through the context API. You can use the `use_coroutine_handle` hook with the message type as a generic to fetch a handle.\n\n````rust, no_run@use_coroutine_reference.rs\nfn Child() -> Element {\n    let sync_task = use_coroutine_handle::<SyncAction>();\n\n    sync_task.send(SyncAction::SetUsername);\n\n    todo!()\n}\n````"
-            }
-            24usize => {
-                "# Mobile\n\nThis guide will cover concepts specific to the Dioxus mobile renderer.\n\n## Running Javascript\n\nDioxus provides some ergonomic wrappers over the browser API, but in some cases you may need to access parts of the browser API Dioxus does not expose.\n\nFor these cases, Dioxus desktop exposes the use_eval hook that allows you to run raw Javascript in the webview:\n\n````rust@eval.rs\nuse dioxus::prelude::*;\n\nfn main() {\n    launch(app);\n}\n\nfn app() -> Element {\n    // You can create as many eval instances as you want\n    let mut eval = eval(\n        r#\"\n        // You can send messages from JavaScript to Rust with the dioxus.send function\n        dioxus.send(\"Hi from JS!\");\n        // You can receive messages from Rust to JavaScript with the dioxus.recv function\n        let msg = await dioxus.recv();\n        console.log(msg);\n        \"#,\n    );\n\n    // You can send messages to JavaScript with the send method\n    eval.send(\"Hi from Rust!\".into()).unwrap();\n\n    let future = use_resource(move || {\n        to_owned![eval];\n        async move {\n            // You can receive any message from JavaScript with the recv method\n            eval.recv().await.unwrap()\n        }\n    });\n\n    match future.read_unchecked().as_ref() {\n        Some(v) => rsx! {\n            p { \"{v}\" }\n        },\n        _ => rsx! {\n            p { \"hello\" }\n        },\n    }\n}\n\n````\n\n## Custom Assets\n\nYou can link to local assets in dioxus mobile instead of using a url:\n\n````rust@custom_assets.rs\nuse dioxus::prelude::*;\n\nfn main() {\n    launch(app);\n}\n\nfn app() -> Element {\n    rsx! {\n        div {\n            img { src: \"/public/static/scanner.png\" }\n        }\n    }\n}\n\n````\n\n## Integrating with Wry\n\nIn cases where you need more low level control over your window, you can use wry APIs exposed through the [Desktop Config](https://docs.rs/dioxus-desktop/0.5.0/dioxus_desktop/struct.Config.html) and the [use_window hook](https://docs.rs/dioxus-desktop/0.5.0/dioxus_desktop/struct.DesktopContext.html)"
-            }
-            20usize => {
-                "# Assets\n\n > \n > ⚠\u{fe0f} Support: Manganis is currently in alpha. API changes are planned and bugs are more likely\n\nAssets are files that are included in the final build of the application. They can be images, fonts, stylesheets, or any other file that is not a source file. Dioxus includes first class support for assets, and provides a simple way to include them in your application and automatically optimize them for production.\n\nAssets in dioxus are also compatible with libraries! If you are building a library, you can include assets in your library and they will be automatically included in the final build of any application that uses your library.\n\nFirst, you need to add the `manganis` crate to your `Cargo.toml` file:\n\n````sh\ncargo add manganis\n````\n\n## Including images\n\nTo include an asset in your application, you can simply wrap the path to the asset in a `mg!` call. For example, to include an image in your application, you can use the following code:\n\n````rust@assets.rs\nuse dioxus::prelude::*;\n\nfn App() -> Element {\n    // You can link to assets that are relative to the package root or even link to an asset from a url\n    // These assets will automatically be picked up by the dioxus cli, optimized, and bundled with your final applications\n    const ASSET: Asset = asset!(\"/assets/static/ferrous_wave.png\");\n\n    rsx! {\n        img { src: \"{ASSET}\" }\n    }\n}\n````\n\nYou can also optimize, resize, and preload images using the `mg!` macro. Choosing an optimized file type (like WebP) and a reasonable quality setting can significantly reduce the size of your images which helps your application load faster. For example, you can use the following code to include an optimized image in your application:\n\n````rust@assets.rs\npub const ENUM_ROUTER_IMG: Asset = asset!(\"/assets/static/enum_router.png\");\n\nfn EnumRouter() -> Element {\n    rsx! {\n        img { src: \"{ENUM_ROUTER_IMG}\" }\n    }\n}\n````\n\n## Including arbitrary files\n\nIn dioxus desktop, you may want to include a file with data for your application. You can use the `file` function to include arbitrary files in your application. For example, you can use the following code to include a file in your application:\n\n````rust@assets.rs\n// You can also collect arbitrary files. Relative paths are resolved relative to the package root\nconst PATH_TO_BUNDLED_CARGO_TOML: &str = manganis::mg!(file(\"./Cargo.toml\"));\n````\n\nThese files will be automatically included in the final build of your application, and you can use them in your application as you would any other file.\n\n## Including stylesheets\n\nYou can include stylesheets in your application using the `mg!` macro. For example, you can use the following code to include a stylesheet in your application:\n\n````rust@assets.rs\n// You can also bundle stylesheets with your application\n// Any files that end with .css will be minified and bundled with your application even if you don't explicitly include them in your <head>\nconst _: &str = manganis::mg!(file(\"./tailwind.css\"));\n````\n\n > \n > The [tailwind guide](../cookbook/tailwind.md) has more information on how to use tailwind with dioxus.\n\n## Conclusion\n\nDioxus provides first class support for assets, and makes it easy to include them in your application. You can include images, arbitrary files, and stylesheets in your application, and dioxus will automatically optimize them for production. This makes it easy to include assets in your application and ensure that they are optimized for production.\n\nYou can read more about assets and all the options available to optimize your assets in the [manganis documentation](https://docs.rs/manganis/0.2.2/manganis/)."
-            }
-            46usize => {
-                "# Programmatic Navigation\n\nSometimes we want our application to navigate to another page without having the\nuser click on a link. This is called programmatic navigation.\n\n## Using a Navigator\n\nWe can get a navigator with the [`navigator`] function which returns a [`Navigator`].\n\nWe can use the [`Navigator`] to trigger four different kinds of navigation:\n\n* `push` will navigate to the target. It works like a regular anchor tag.\n* `replace` works like `push`, except that it replaces the current history entry\n  instead of adding a new one. This means the prior page cannot be restored with the browser's back button.\n* `Go back` works like the browser's back button.\n* `Go forward` works like the browser's forward button.\n\n````rust@navigator.rs\n#[component]\nfn Home() -> Element {\n    let nav = navigator();\n\n    // push\n    nav.push(Route::PageNotFound { route: vec![] });\n\n    // replace\n    nav.replace(Route::Home {});\n\n    // go back\n    nav.go_back();\n\n    // go forward\n    nav.go_forward();\n\n    rsx! { h1 { \"Welcome to the Dioxus Blog!\" } }\n}\n````\n\nYou might have noticed that, like [`Link`], the [`Navigator`]s `push` and\n`replace` functions take a [`NavigationTarget`]. This means we can use either\n`Internal`, or `External` targets.\n\n## External Navigation Targets\n\nUnlike a [`Link`], the [`Navigator`] cannot rely on the browser (or webview) to\nhandle navigation to external targets via a generated anchor element.\n\nThis means, that under certain conditions, navigation to external targets can\nfail."
+            21usize => {
+                "# Choosing a web renderer\n\nDioxus has three different renderers that target the web:\n\n* [dioxus-web](web/index.md) allows you to render your application to HTML with [WebAssembly](https://rustwasm.github.io/docs/book/) on the client\n* [dioxus-liveview](liveview.md) allows you to run your application on the server and render it to HTML on the client with a websocket\n* [dioxus-fullstack](fullstack/index.md) allows you to initially render static HTML on the server and then update that HTML from the client with [WebAssembly](https://rustwasm.github.io/docs/book/)\n\nEach approach has its tradeoffs:\n\n### Dioxus Liveview\n\n* Liveview rendering communicates with the server over a WebSocket connection. It essentially moves all of the work that Client-side rendering does to the server.\n\n* This makes it **easy to communicate with the server, but more difficult to communicate with the client/browser APIS**.\n\n* Each interaction also requires a message to be sent to the server and back which can cause **issues with latency**.\n\n* Because Liveview uses a websocket to render, the page will be blank until the WebSocket connection has been established and the first renderer has been sent from the websocket. Just like with client side rendering, this can make the page **less SEO-friendly**.\n\n* Because the page is rendered on the server and the page is sent to the client piece by piece, you never need to send the entire application to the client. The initial load time can be faster than client-side rendering with large applications because Liveview only needs to send a constant small websocket script regardless of the size of the application.\n\n > \n > Liveview is a good fit for applications that already need to communicate with the server frequently (like real time collaborative apps), but don't need to communicate with as many client/browser APIs.\n\n[![](https://mermaid.ink/img/pako:eNplULFOw0AM_RXLc7Mw3sBQVUIMRYgKdcli5ZzkRHIuPl8QqvrvXJICRXiy3nt-9-6dsRHP6DAZGe8CdUpjNd3VEcpsVT4SK1TVPRxYJ1YHL_yeOdkqWMGF3w4U32Y6nSQmXvknMQYNXW8g7bfk2JPBg0g3MCTmdH1rJhenx2is1FiYri43wJ8or3O2H1Liv0w3hw724kMb2MMzdcUYNziyjhR8-f15Pq3Reh65RldWzy3lwWqs46VIKZscPmODzjTzBvPJ__aFrqUhFZR9MNH92uhS7OULYSF1lw?type=png)](https://mermaid.live/edit#pako:eNplULFOw0AM_RXLc7Mw3sBQVUIMRYgKdcli5ZzkRHIuPl8QqvrvXJICRXiy3nt-9-6dsRHP6DAZGe8CdUpjNd3VEcpsVT4SK1TVPRxYJ1YHL_yeOdkqWMGF3w4U32Y6nSQmXvknMQYNXW8g7bfk2JPBg0g3MCTmdH1rJhenx2is1FiYri43wJ8or3O2H1Liv0w3hw724kMb2MMzdcUYNziyjhR8-f15Pq3Reh65RldWzy3lwWqs46VIKZscPmODzjTzBvPJ__aFrqUhFZR9MNH92uhS7OULYSF1lw)\n\n### Dioxus Web\n\n* With Client side rendering, you send your application to the client, and then the client generates all of the HTML of the page dynamically.\n\n* This means that the page will be blank until the JavaScript bundle has loaded and the application has initialized. This can result in **slower first render times and poor SEO performance**.\n\n > \n > SEO stands for Search Engine Optimization. It refers to the practice of making your website more likely to appear in search engine results. Search engines like Google and Bing use web crawlers to index the content of websites. Most of these crawlers are not able to run JavaScript, so they will not be able to index the content of your page if it is rendered client-side.\n\n* Client-side rendered applications need to use **weakly typed requests to communicate with the server**.\n\n > \n > Client-side rendering is a good starting point for most applications. It is well supported and makes it easy to communicate with the client/browser APIs.\n\n[![](https://mermaid.ink/img/pako:eNpVkDFPwzAQhf-KdXOzMHpgqJAQAwytEIsXK35JLBJfez4Xoar_HSemQtzke9_z2e-u1HMAWcrqFU_Rj-KX7vLgkqm1F_7KENN1j-YIuUCsOeBckLUZmrjx_ezT54rziVNG42-sMBLHSQ0Pd8vH5NU8M48zTAby71sr3CYdkAIEoen37h-y5n3910tSiO81cqIdLZDFx1DDXNerjnTCAke2HgMGX2Z15NKtWn1RPn6nnqxKwY7KKfzFJzv4OVcVISrLa1vQtqfbDzd0ZKY?type=png)](https://mermaid.live/edit#pako:eNpVkDFPwzAQhf-KdXOzMHpgqJAQAwytEIsXK35JLBJfez4Xoar_HSemQtzke9_z2e-u1HMAWcrqFU_Rj-KX7vLgkqm1F_7KENN1j-YIuUCsOeBckLUZmrjx_ezT54rziVNG42-sMBLHSQ0Pd8vH5NU8M48zTAby71sr3CYdkAIEoen37h-y5n3910tSiO81cqIdLZDFx1DDXNerjnTCAke2HgMGX2Z15NKtWn1RPn6nnqxKwY7KKfzFJzv4OVcVISrLa1vQtqfbDzd0ZKY)\n\n### Dioxus Fullstack\n\nFullstack rendering happens in two parts:\n\n1. The page is rendered on the server. This can include fetching any data you need to render the page.\n1. The page is hydrated on the client. (Hydration is taking the HTML page from the server and adding all of the event listeners Dioxus needs on the client). Any updates to the page happen on the client after this point.\n\nBecause the page is initially rendered on the server, the page will be fully rendered when it is sent to the client. This results in a faster first render time and makes the page more SEO-friendly.\n\n* **Fast initial render**\n* **Works well with SEO**\n* **Type safe easy communication with the server**\n* **Access to the client/browser APIs**\n* **Fast interactivity**\n\nFinally, we can use [server functions](../reference/fullstack/server_functions.md) to communicate with the server in a type-safe way.\n\nThis approach uses both the dioxus-web and dioxus-ssr crates. To integrate those two packages Dioxus provides the `dioxus-fullstack` crate.\n\nThere can be more complexity with fullstack applications because your code runs in two different places. Dioxus tries to mitigate this with server functions and other helpers.\n\n[![](https://mermaid.ink/img/pako:eNpdkL1uwzAMhF9F4BwvHTV0KAIUHdohQdFFi2CdbQG2mFCUiyDIu9e2-hOUE3H34UDelVoOIEtZvWIffS9-auYHl8wyT8KfGWKa5tEcITPEmgPOBVkrUMXNPyAFCMJK5BOnjIq8scJI7Ac13N1RH4NX88zcjzAZyJX-8bfIl6QQ32qcv7PuhP-ANe_rpb8KJ9rRBJl8DMt71zXAkQ6Y4Mgua0Dny6iOXLotqC_Kx0tqyaoU7Kicwl8hZDs_5kVFiMryWivbmrt9AacxbGg?type=png)](https://mermaid.live/edit#pako:eNpdkL1uwzAMhF9F4BwvHTV0KAIUHdohQdFFi2CdbQG2mFCUiyDIu9e2-hOUE3H34UDelVoOIEtZvWIffS9-auYHl8wyT8KfGWKa5tEcITPEmgPOBVkrUMXNPyAFCMJK5BOnjIq8scJI7Ac13N1RH4NX88zcjzAZyJX-8bfIl6QQ32qcv7PuhP-ANe_rpb8KJ9rRBJl8DMt71zXAkQ6Y4Mgua0Dny6iOXLotqC_Kx0tqyaoU7Kicwl8hZDs_5kVFiMryWivbmrt9AacxbGg)"
             }
             29usize => {
                 "# Communicating with the server\n\n`dioxus-fullstack` provides server functions that allow you to call an automatically generated API on the server from the client as if it were a local function.\n\nTo make a server function, simply add the `#[server(YourUniqueType)]` attribute to a function. The function must:\n\n* Be an async function\n* Have arguments and a return type that both implement serialize and deserialize (with [serde](https://serde.rs/)).\n* Return a `Result` with an error type of ServerFnError\n\n > \n > If you are targeting WASM on the server with WASI, you must call `register` on the type you passed into the server macro in your main function before starting your server to tell Dioxus about the server function. For all other targets, the server function will be registered automatically.\n\nLet's continue building on the app we made in the [getting started](../../getting_started/index.md) guide. We will add a server function to our app that allows us to double the count on the server.\n\nFirst, add serde as a dependency:\n\n````shell\ncargo add serde\n````\n\nNext, add the server function to your `main.rs`:\n\n````rust@server_function.rs\n#![allow(non_snake_case)]\n\nuse dioxus::prelude::*;\n\nfn main() {\n    launch(App)\n}\n\nfn App() -> Element {\n    let mut count = use_signal(|| 0);\n\n    rsx! {\n        h1 { \"High-Five counter: {count}\" }\n        button { onclick: move |_| count += 1, \"Up high!\" }\n        button { onclick: move |_| count -= 1, \"Down low!\" }\n        button {\n            onclick: move |_| {\n                async move {\n                    if let Ok(new_count) = double_server(count()).await {\n                        count.set(new_count);\n                    }\n                }\n            },\n            \"Double\"\n        }\n    }\n}\n\n#[server]\nasync fn double_server(number: i32) -> Result<i32, ServerFnError> {\n    // Perform some expensive computation or access a database on the server\n    tokio::time::sleep(std::time::Duration::from_secs(1)).await;\n    let result = number * 2;\n    println!(\"server calculated {result}\");\n    Ok(result)\n}\n\n````\n\nNow, build your client-side bundle with `dx build --features web` and run your server with `cargo run --features ssr`. You should see a new button that multiplies the count by 2.\n\n## Cached data fetching\n\nOne common use case for server functions is fetching data from the server:\n\n````rust@server_data_fetch.rs\n#![allow(non_snake_case, unused)]\n\nuse dioxus::prelude::*;\n\nfn main() {\n    launch(app)\n}\n\nfn app() -> Element {\n    let mut count = use_resource(get_server_data);\n\n    rsx! {\"server data is {count.value():?}\"}\n}\n\n#[server]\nasync fn get_server_data() -> Result<String, ServerFnError> {\n    // Access a database\n    tokio::time::sleep(std::time::Duration::from_millis(100)).await;\n    Ok(\"Hello from the server!\".to_string())\n}\n\n````\n\nIf you navigate to the site above, you will first see `server data is None`, then after the `WASM` has loaded and the request to the server has finished, you will see `server data is Some(Ok(\"Hello from the server!\"))`.\n\nThis approach works, but it can be slow. Instead of waiting for the client to load and send a request to the server, what if we could get all of the data we needed for the page on the server and send it down to the client with the initial HTML page?\n\nThis is exactly what the `use_server_future` hook allows us to do! `use_server_future` is similar to the `use_resource` hook, but it allows you to wait for a future on the server and send the result of the future down to the client.\n\nLet's change our data fetching to use `use_server_future`:\n\n````rust@server_data_prefetch.rs\n#![allow(non_snake_case, unused)]\n\nuse dioxus::prelude::*;\n\nfn main() {\n    launch(app);\n}\n\nfn app() -> Element {\n    let mut count = use_server_future(get_server_data)?;\n\n    rsx! {\"server data is {count.value():?}\"}\n}\n\n#[server]\nasync fn get_server_data() -> Result<String, ServerFnError> {\n    // Access a database\n    tokio::time::sleep(std::time::Duration::from_millis(100)).await;\n    Ok(\"Hello from the server!\".to_string())\n}\n\n````\n\n > \n > Notice the `?` after `use_server_future`. This is what tells Dioxus fullstack to wait for the future to resolve before continuing rendering. If you want to not wait for a specific future, you can just remove the ? and deal with the `Option` manually.\n\nNow when you load the page, you should see `server data is Ok(\"Hello from the server!\")`. No need to wait for the `WASM` to load or wait for the request to finish!\n\n````inject-dioxus\nSandBoxFrame {\n\turl: \"https://codesandbox.io/p/sandbox/dioxus-fullstack-server-future-qwpp4p?file=/src/main.rs:3,24\"\n}\n````\n\n## Running the client with dioxus-desktop\n\nThe project presented so far makes a web browser interact with the server, but it is also possible to make a desktop program interact with the server in a similar fashion. (The full example code is available in the [Dioxus repo](https://github.com/DioxusLabs/dioxus/tree/v0.5/packages/fullstack/examples/axum-desktop))\n\nFirst, we need to make two binary targets, one for the desktop program (the `client.rs` file), one for the server (the `server.rs` file). The client app and the server functions are written in a shared `lib.rs` file.\n\nThe desktop and server targets have slightly different build configuration to enable additional dependencies or features.\nThe Cargo.toml in the full example has more information, but the main points are:\n\n* the client.rs has to be run with the `desktop` feature, so that the optional `dioxus-desktop` dependency is included\n* the server.rs has to be run with the `ssr` features; this will generate the server part of the server functions and will run our backend server.\n\nOnce you create your project, you can run the server executable with:\n\n````bash\ncargo run --bin server --features ssr\n````\n\nand the client desktop executable with:\n\n````bash\ncargo run --bin client --features desktop\n````\n\n### Client code\n\nThe client file is pretty straightforward. You only need to set the server url in the client code, so it knows where to send the network requests. Then, dioxus_desktop launches the app.\n\nFor development, the example project runs the server on `localhost:8080`. **Before you release remember to update the url to your production url.**\n\n### Server code\n\nIn the server code, first you have to set the network address and port where the server will listen to.\n\n````rust@server_function_desktop_client.rs\nlet listener = tokio::net::TcpListener::bind(\"127.0.0.1:3000\")\n    .await\n    .unwrap();\nprintln!(\"listening on http://127.0.0.1:3000\");\n````\n\nThen, you have to register the types declared in the server function macros into the server.\nFor example, consider this server function:\n\n````rust@server_function_desktop_client.rs\n#[server(GetServerData)]\nasync fn get_server_data() -> Result<String, ServerFnError> {\n    Ok(\"Hello from the server!\".to_string())\n}\n````"
             }
-            4usize => {
-                "# Interactivity\n\nIn this chapter, we will add a preview for articles you hover over or links you focus on.\n\n## Creating a Preview\n\nFirst, let's split our app into a Stories component on the left side of the screen, and a preview component on the right side of the screen:\n\n````rust@hackernews_state.rs\npub fn App() -> Element {\n    rsx! {\n        div { display: \"flex\", flex_direction: \"row\", width: \"100%\",\n            div { width: \"50%\", Stories {} }\n            div { width: \"50%\", Preview {} }\n        }\n    }\n}\n\n// New\nfn Stories() -> Element {\n    rsx! {\n        StoryListing {\n            story: StoryItem {\n                id: 0,\n                title: \"hello hackernews\".to_string(),\n                url: None,\n                text: None,\n                by: \"Author\".to_string(),\n                score: 0,\n                descendants: 0,\n                time: chrono::Utc::now(),\n                kids: vec![],\n                r#type: \"\".to_string(),\n            }\n        }\n    }\n}\n\n// New\n#[derive(Clone, Debug)]\nenum PreviewState {\n    Unset,\n    Loading,\n    Loaded(StoryPageData),\n}\n\n// New\nfn Preview() -> Element {\n    let preview_state = PreviewState::Unset;\n    match preview_state {\n        PreviewState::Unset => rsx! {\"Hover over a story to preview it here\"},\n        PreviewState::Loading => rsx! {\"Loading...\"},\n        PreviewState::Loaded(story) => {\n            rsx! {\n                div { padding: \"0.5rem\",\n                    div { font_size: \"1.5rem\", a { href: story.item.url, \"{story.item.title}\" } }\n                    div { dangerous_inner_html: story.item.text }\n                    for comment in &story.comments {\n                        Comment { comment: comment.clone() }\n                    }\n                }\n            }\n        }\n    }\n}\n\n// NEW\n#[component]\nfn Comment(comment: CommentData) -> Element {\n    rsx! {\n        div { padding: \"0.5rem\",\n            div { color: \"gray\", \"by {comment.by}\" }\n            div { dangerous_inner_html: \"{comment.text}\" }\n            for kid in &comment.sub_comments {\n                Comment { comment: kid.clone() }\n            }\n        }\n    }\n}\n\n````\n\n````inject-dioxus\nDemoFrame {\n    hackernews_state::app_v1::App {}\n}\n````\n\n## Event Handlers\n\nNext, we need to detect when the user hovers over a section or focuses a link. We can use an [event listener](../reference/event_handlers.md) to listen for the hover and focus events.\n\nEvent handlers are similar to regular attributes, but their name usually starts with `on`- and they accept closures as values. The closure will be called whenever the event it listens for is triggered. When an event is triggered, information about the event is passed to the closure through the [Event](https://docs.rs/dioxus/latest/dioxus/prelude/struct.Event.html) structure.\n\nLet's create a [`onmouseenter`](https://docs.rs/dioxus/latest/dioxus/events/fn.onmouseenter.html) event listener in the `StoryListing` component:\n\n````rust@hackernews_state.rs\nrsx! {\n    div {\n        padding: \"0.5rem\",\n        position: \"relative\",\n        onmouseenter: move |_| {},\n        div { font_size: \"1.5rem\",\n            a { href: url, onfocus: move |_event| {}, \"{title}\" }\n            a {\n                color: \"gray\",\n                href: \"https://news.ycombinator.com/from?site={hostname}\",\n                text_decoration: \"none\",\n                \" ({hostname})\"\n            }\n        }\n        div { display: \"flex\", flex_direction: \"row\", color: \"gray\",\n            div { \"{score}\" }\n            div { padding_left: \"0.5rem\", \"by {by}\" }\n            div { padding_left: \"0.5rem\", \"{time}\" }\n            div { padding_left: \"0.5rem\", \"{comments}\" }\n        }\n    }\n}\n````\n\n > \n > You can read more about Event Handlers in the [Event Handler reference](../reference/event_handlers.md)\n\n## State\n\nSo far our components have had no state like normal rust functions. To make our application change when we hover over a link we need state to store the currently hovered link in the root of the application.\n\nYou can create state in dioxus using hooks. Hooks are Rust functions you call in a constant order in a component that add additional functionality to the component.\n\nIn this case, we will use the `use_context_provider` and `use_context` hooks:\n\n* You can provide a closure to `use_context_provider` that determines the initial value of the shared state and provides the value to all child components\n* You can then use the `use_context` hook to read and modify that state in the `Preview` and `StoryListing` components\n* When the value updates, the `Signal` will cause the component to re-render, and provides you with the new value\n\n > \n > Note: You should prefer local state hooks like use_signal or use_signal_sync when you only use state in one component. Because we use state in multiple components, we can use a [global state pattern](../reference/context.md)\n\n````rust@hackernews_state.rs\npub fn App() -> Element {\n    use_context_provider(|| Signal::new(PreviewState::Unset));\n````\n\n````rust@hackernews_state.rs\n#[component]\nfn StoryListing(story: ReadOnlySignal<StoryItem>) -> Element {\n    let mut preview_state = consume_context::<Signal<PreviewState>>();\n    let StoryItem {\n        title,\n        url,\n        by,\n        score,\n        time,\n        kids,\n        ..\n    } = &*story.read();\n\n    let url = url.as_deref().unwrap_or_default();\n    let hostname = url\n        .trim_start_matches(\"https://\")\n        .trim_start_matches(\"http://\")\n        .trim_start_matches(\"www.\");\n    let score = format!(\"{score} point{}\", if *score > 1 { \"s\" } else { \"\" });\n    let comments = format!(\n        \"{} {}\",\n        kids.len(),\n        if kids.len() == 1 {\n            \" comment\"\n        } else {\n            \" comments\"\n        }\n    );\n    let time = time.format(\"%D %l:%M %p\");\n\n    rsx! {\n        div {\n            padding: \"0.5rem\",\n            position: \"relative\",\n            onmouseenter: move |_event| {\n                *preview_state\n                    .write() = PreviewState::Loaded(StoryPageData {\n                    item: story(),\n                    comments: vec![],\n                });\n            },\n            div { font_size: \"1.5rem\",\n                a {\n                    href: url,\n                    onfocus: move |_event| {\n                        *preview_state\n                            .write() = PreviewState::Loaded(StoryPageData {\n                            item: story(),\n                            comments: vec![],\n                        });\n                    },\n````\n\n````rust@hackernews_state.rs\nfn Preview() -> Element {\n    // New\n    let preview_state = consume_context::<Signal<PreviewState>>();\n\n    // New\n    match preview_state() {\n````\n\n````inject-dioxus\nDemoFrame {\n    hackernews_state::App {}\n}\n````\n\n > \n > You can read more about Hooks in the [Hooks reference](../reference/hooks.md)\n\n### The Rules of Hooks\n\nHooks are a powerful way to manage state in Dioxus, but there are some rules you need to follow to insure they work as expected. Dioxus uses the order you call hooks to differentiate between hooks. Because the order you call hooks matters, you must follow these rules:\n\n1. Hooks may be only used in components or other hooks (we'll get to that later)\n1. On every call to the component function\n   1. The same hooks must be called\n   1. In the same order\n1. Hooks name's should start with `use_` so you don't accidentally confuse them with regular functions\n\nThese rules mean that there are certain things you can't do with hooks:\n\n#### No Hooks in Conditionals\n\n````rust@hooks_bad.rs\n// ❌ don't call hooks in conditionals!\n// We must ensure that the same hooks will be called every time\n// But `if` statements only run if the conditional is true!\n// So we might violate rule 2.\nif you_are_happy && you_know_it {\n    let something = use_signal(|| \"hands\");\n    println!(\"clap your {something}\")\n}\n\n// ✅ instead, *always* call use_signal\n// You can put other stuff in the conditional though\nlet something = use_signal(|| \"hands\");\nif you_are_happy && you_know_it {\n    println!(\"clap your {something}\")\n}\n````\n\n#### No Hooks in Closures\n\n````rust@hooks_bad.rs\n// ❌ don't call hooks inside closures!\n// We can't guarantee that the closure, if used, will be called in the same order every time\nlet _a = || {\n    let b = use_signal(|| 0);\n    b()\n};\n\n// ✅ instead, move hook `b` outside\nlet b = use_signal(|| 0);\nlet _a = || b();\n````\n\n#### No Hooks in Loops\n\n````rust@hooks_bad.rs\n// `names` is a Vec<&str>\n\n// ❌ Do not use hooks in loops!\n// In this case, if the length of the Vec changes, we break rule 2\nfor _name in &names {\n    let is_selected = use_signal(|| false);\n    println!(\"selected: {is_selected}\");\n}\n\n// ✅ Instead, use a hashmap with use_signal\nlet selection_map = use_signal(HashMap::<&str, bool>::new);\n\nfor name in &names {\n    let is_selected = selection_map.read()[name];\n    println!(\"selected: {is_selected}\");\n}\n````"
+            30usize => {
+                "# Extractors\n\nServer functions are an ergonomic way to call a function on the server. Server function work by registering an endpoint on the server and using requests on the client. Most of the time, you shouldn't need to worry about how server functions operate, but there are some times when you need to get some value from the request other than the data passed in the server function.\n\nFor example, requests contain information about the user's browser (called the [user agent](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent)). We can use an extractor to retrieve that information.\n\nYou can use the `extract` method within a server function to extract something from the request. You can extract any type that implements `FromServerContext` (or when axum is enabled, you can use axum extractors directly):\n\n````rust@server_function_extract.rs\n#[server]\npub async fn log_headers() -> Result<(), ServerFnError> {\n    let headers: http::HeaderMap = extract().await?;\n    log::info!(\"{:?}\", headers[http::header::USER_AGENT]);\n    Ok(())\n}\n````"
+            }
+            52usize => {
+                "# Antipatterns\n\nThis example shows what not to do and provides a reason why a given pattern is considered an \"AntiPattern\". Most anti-patterns are considered wrong for performance or code re-usability reasons.\n\n## Unnecessarily Nested Fragments\n\nFragments don't mount a physical element to the DOM immediately, so Dioxus must recurse into its children to find a physical DOM node. This process is called \"normalization\". This means that deeply nested fragments make Dioxus perform unnecessary work. Prefer one or two levels of fragments / nested components until presenting a true DOM element.\n\nOnly Component and Fragment nodes are susceptible to this issue. Dioxus mitigates this with components by providing an API for registering shared state without the Context Provider pattern.\n\n````rust@anti_patterns.rs\n// ❌ Don't unnecessarily nest fragments\nlet _ = rsx! {\n    Fragment {\n        Fragment {\n            Fragment {\n                Fragment {\n                    Fragment { div { \"Finally have a real node!\" } }\n                }\n            }\n        }\n    }\n};\n\n// ✅ Render shallow structures\nrsx! { div { \"Finally have a real node!\" } }\n````\n\n## Incorrect Iterator Keys\n\nAs described in the [dynamic rendering chapter](../reference/dynamic_rendering#the-key-attribute), list items must have unique keys that are associated with the same items across renders. This helps Dioxus associate state with the contained components and ensures good diffing performance. Do not omit keys, unless you know that the list will never change.\n\n````rust@anti_patterns.rs\nlet data: &HashMap<_, _> = &props.data;\n\n// ❌ No keys\nrsx! {\n    ul {\n        for value in data.values() {\n            li { \"List item: {value}\" }\n        }\n    }\n};\n\n// ❌ Using index as keys\nrsx! {\n    ul {\n        for (index , value) in data.values().enumerate() {\n            li { key: \"{index}\", \"List item: {value}\" }\n        }\n    }\n};\n\n// ✅ Using unique IDs as keys:\nrsx! {\n    ul {\n        for (key , value) in props.data.iter() {\n            li { key: \"{key}\", \"List item: {value}\" }\n        }\n    }\n}\n````\n\n## Avoid Interior Mutability in Props\n\nWhile it is technically acceptable to have a `Mutex` or a `RwLock` in the props, they will be difficult to use.\n\nSuppose you have a struct `User` containing the field `username: String`. If you pass a `Mutex<User>` prop to a `UserComponent` component, that component may wish to write to the `username` field. However, when it does, the parent component will not be aware of the change, and the component will not re-render which causes the UI to be out of sync with the state. Instead, consider passing down a reactive value like a `Signal` or immutable data.\n\n````rust@anti_patterns.rs\n// ❌ Mutex/RwLock/RefCell in props\n#[derive(Props, Clone)]\nstruct AntipatternInteriorMutability {\n    map: Rc<RefCell<HashMap<u32, String>>>,\n}\n\nimpl PartialEq for AntipatternInteriorMutability {\n    fn eq(&self, other: &Self) -> bool {\n        std::rc::Rc::ptr_eq(&self.map, &other.map)\n    }\n}\n\nfn AntipatternInteriorMutability(map: Rc<RefCell<HashMap<u32, String>>>) -> Element {\n    rsx! {\n        button {\n            onclick: {\n                let map = map.clone();\n                move |_| {\n                    // Writing to map will not rerun any components\n                    map.borrow_mut().insert(0, \"Hello\".to_string());\n                }\n            },\n            \"Mutate map\"\n        }\n        // Since writing to map will not rerun any components, this will get out of date\n        \"{map.borrow().get(&0).unwrap()}\"\n    }\n}\n\n// ✅ Use a signal to pass mutable state\n#[component]\nfn AntipatternInteriorMutabilitySignal(map: Signal<HashMap<u32, String>>) -> Element {\n    rsx! {\n        button {\n            onclick: move |_| {\n                // Writing to map will rerun any components that read the map\n                map.write().insert(0, \"Hello\".to_string());\n            },\n            \"Mutate map\"\n        }\n        // Since writing to map will rerun subscribers, this will get updated\n        \"{map.read().get(&0).unwrap()}\"\n    }\n}\n````\n\n## Avoid Updating State During Render\n\nEvery time you update the state, Dioxus needs to re-render the component – this is inefficient! Consider refactoring your code to avoid this.\n\nAlso, if you unconditionally update the state during render, it will be re-rendered in an infinite loop.\n\n````rust@anti_patterns.rs\n// ❌ Updating state in render\nlet first_signal = use_signal(|| 0);\nlet mut second_signal = use_signal(|| 0);\n\n// Updating the state during a render can easily lead to infinite loops\nif first_signal() + 1 != second_signal() {\n    second_signal.set(first_signal() + 1);\n}\n\n// ✅ Update state in an effect\nlet first_signal = use_signal(|| 0);\nlet mut second_signal = use_signal(|| 0);\n\n// The closure you pass to use_effect will be rerun whenever any of the dependencies change without re-rendering the component\nuse_effect(move || {\n    if first_signal() + 1 != second_signal() {\n        second_signal.set(first_signal() + 1);\n    }\n});\n\n// ✅ Deriving state with use_memo\nlet first_signal = use_signal(|| 0);\n// Memos are specifically designed for derived state. If your state fits this pattern, use it.\nlet second_signal = use_memo(move || first_signal() + 1);\n````\n\n## Avoid Large Groups of State\n\nIt can be tempting to have a single large state struct that contains all of your application's state. However, this can lead to issues:\n\n* It can be easy to accidentally mutate the state in a way that causes an infinite loop\n* It can be difficult to reason about when and how the state is updated\n* It can lead to performance issues because many components will need to re-render when the state changes\n\nInstead, consider breaking your state into smaller, more manageable pieces. This will make it easier to reason about the state, avoid update loops, and improve performance.\n\n````rust@anti_patterns.rs\nfn app() -> Element {\n    // ❌ Large state struct\n    #[derive(Props, Clone, PartialEq)]\n    struct LargeState {\n        users: Vec<User>,\n        logged_in: bool,\n        warnings: Vec<String>,\n    }\n\n    #[derive(Props, Clone, PartialEq)]\n    struct User {\n        name: String,\n        email: String,\n    }\n\n    let mut all_my_state = use_signal(|| LargeState {\n        users: vec![User {\n            name: \"Alice\".to_string(),\n            email: \"alice@example.com\".to_string(),\n        }],\n        logged_in: true,\n        warnings: vec![],\n    });\n\n    use_effect(move || {\n        // It is very easy to accidentally read and write to the state object if it contains all your state\n        let read = all_my_state.read();\n        let logged_in = read.logged_in;\n        if !logged_in {\n            all_my_state\n                .write_unchecked()\n                .warnings\n                .push(\"You are not logged in\".to_string());\n        }\n    });\n\n    // ✅ Use multiple signals to manage state\n    let users = use_signal(|| {\n        vec![User {\n            name: \"Alice\".to_string(),\n            email: \"alice@example.com\".to_string(),\n        }]\n    });\n    let logged_in = use_signal(|| true);\n    let mut warnings = use_signal(|| vec![]);\n\n    use_effect(move || {\n        // Now you can read and write to separate signals which will not cause issues\n        if !logged_in() {\n            warnings.write().push(\"You are not logged in\".to_string());\n        }\n    });\n\n    // ✅ Use memos to create derived state when larger states are unavoidable\n    // Notice we didn't split everything into separate signals. Users still make sense as a vec of data\n    let users = use_signal(|| {\n        vec![User {\n            name: \"Alice\".to_string(),\n            email: \"alice@example.com\".to_string(),\n        }]\n    });\n    let logged_in = use_signal(|| true);\n    let warnings: Signal<Vec<String>> = use_signal(|| vec![]);\n\n    // In child components, you can use the memo to create derived that will only update when a specific part of the state changes\n    // This will help you avoid unnecessary re-renders and infinite loops\n    #[component]\n    fn FirstUser(users: Signal<Vec<User>>) -> Element {\n        let first_user = use_memo(move || users.read().first().unwrap().clone());\n\n        rsx! {\n            div {\n                \"First user: {first_user().name}\"\n            }\n        }\n    }\n\n    rsx! {\n        FirstUser {\n            users\n        }\n    }\n}\n````\n\n## Running Non-Deterministic Code in the Body of a Component\n\nIf you have a component that contains non-deterministic code, that code should generally not be run in the body of the component. If it is put in the body of the component, it will be executed every time the component is re-rendered which can lead to performance issues.\n\nInstead, consider moving the non-deterministic code into a hook that only runs when the component is first created or an effect that reruns when dependencies change.\n\n````rust@anti_patterns.rs\n// ❌ Non-deterministic code in the body of a component\n#[component]\nfn NonDeterministic(name: String) -> Element {\n    let my_random_id = rand::random::<u64>();\n\n    rsx! {\n        div {\n            // Id will change every single time the component is re-rendered\n            id: \"{my_random_id}\",\n            \"Hello {name}\"\n        }\n    }\n}\n\n// ✅ Use a hook to run non-deterministic code\nfn NonDeterministicHook(name: String) -> Element {\n    // If you store the result of the non-deterministic code in a hook, it will stay the same between renders\n    let my_random_id = use_hook(|| rand::random::<u64>());\n\n    rsx! {\n        div {\n            id: \"{my_random_id}\",\n            \"Hello {name}\"\n        }\n    }\n}\n````\n\n## Overly Permissive PartialEq for Props\n\nYou may have noticed that `Props` requires a `PartialEq` implementation. That `PartialEq` is very important for Dioxus to work correctly. It is used to determine if a component should re-render or not when the parent component re-renders.\n\nIf you cannot derive `PartialEq` for your `Props`, you will need to implement it yourself. If you do implement `PartialEq`, make sure to return `false` any time the props change in a way that would cause the UI in the child component to change.\n\nIn general, returning `false` from `PartialEq` if you aren't sure if the props have changed or not is better than returning `true`. This will help you avoid out of date UI in your child components.\n\n````rust@anti_patterns.rs\n// ❌ Permissive PartialEq for Props\n#[derive(Props, Clone)]\nstruct PermissivePartialEqProps {\n    name: String,\n}\n\n// This will cause the component to **never** re-render when the parent component re-renders\nimpl PartialEq for PermissivePartialEqProps {\n    fn eq(&self, _: &Self) -> bool {\n        true\n    }\n}\n\nfn PermissivePartialEq(name: PermissivePartialEqProps) -> Element {\n    rsx! {\n        div {\n            \"Hello {name.name}\"\n        }\n    }\n}\n\n#[component]\nfn PermissivePartialEqParent() -> Element {\n    let name = use_signal(|| \"Alice\".to_string());\n\n    rsx! {\n        PermissivePartialEq {\n            // The PermissivePartialEq component will not get the updated value of name because the PartialEq implementation says that the props are the same\n            name: name()\n        }\n    }\n}\n\n// ✅ Derive PartialEq for Props\n#[derive(Props, Clone, PartialEq)]\nstruct DerivePartialEqProps {\n    name: String,\n}\n\nfn DerivePartialEq(name: DerivePartialEqProps) -> Element {\n    rsx! {\n        div {\n            \"Hello {name.name}\"\n        }\n    }\n}\n\n#[component]\nfn DerivePartialEqParent() -> Element {\n    let name = use_signal(|| \"Alice\".to_string());\n\n    rsx! {\n        DerivePartialEq {\n            name: name()\n        }\n    }\n}\n\n// ✅ Return false from PartialEq if you are unsure if the props have changed\n#[derive(Debug)]\nstruct NonPartialEq;\n\n#[derive(Props, Clone)]\nstruct RcPartialEqProps {\n    name: Rc<NonPartialEq>,\n}\n\nimpl PartialEq for RcPartialEqProps {\n    fn eq(&self, other: &Self) -> bool {\n        // This will almost always return false because the Rc will likely point to a different value\n        // Implementing PartialEq for NonPartialEq would be better, but if it is controlled by another library, it may not be possible\n        // **Always** return false if you are unsure if the props have changed\n        std::rc::Rc::ptr_eq(&self.name, &other.name)\n    }\n}\n\nfn RcPartialEq(name: RcPartialEqProps) -> Element {\n    rsx! {\n        div {\n            \"Hello {name.name:?}\"\n        }\n    }\n}\n\nfn RcPartialEqParent() -> Element {\n    let name = use_signal(|| Rc::new(NonPartialEq));\n\n    rsx! {\n        RcPartialEq {\n            // Generally, RcPartialEq will rerun even if the value of name hasn't actually changed because the Rc will point to a different value\n            name: name()\n        }\n    }\n}\n````"
+            }
+            39usize => {
+                "# Redirection Perfection\n\nYou're well on your way to becoming a routing master!\n\nIn this chapter, we will cover creating redirects\n\n## Creating Redirects\n\nA redirect is very simple. When dioxus encounters a redirect while finding out\nwhat components to render, it will redirect the user to the target of the\nredirect.\n\nAs a simple example, let's say you want user to still land on your blog, even\nif they used the path `/myblog` or `/myblog/:name`.\n\nRedirects are special attributes in the router enum that accept a route and a closure\nwith the route parameters. The closure should return a route to redirect to.\n\nLet's add a redirect to our router enum:\n\n````rust@full_example.rs\n#[derive(Routable, Clone)]\n#[rustfmt::skip]\nenum Route {\n    #[layout(NavBar)]\n        #[route(\"/\")]\n        Home {},\n        #[nest(\"/blog\")]\n            #[layout(Blog)]\n                #[route(\"/\")]\n                BlogList {},\n                #[route(\"/post/:name\")]\n                BlogPost { name: String },\n            #[end_layout]\n        #[end_nest]\n    #[end_layout]\n    #[nest(\"/myblog\")]\n        #[redirect(\"/\", || Route::BlogList {})]\n        #[redirect(\"/:name\", |name: String| Route::BlogPost { name })]\n    #[end_nest]\n    #[route(\"/:..route\")]\n    PageNotFound {\n        route: Vec<String>,\n    },\n}\n````\n\nThat's it! Now your users will be redirected to the blog.\n\n### Conclusion\n\nWell done! You've completed the Dioxus Router guide. You've built a small\napplication and learned about the many things you can do with Dioxus Router.\nTo continue your journey, you attempt a challenge listed below, look at the [router examples](https://github.com/DioxusLabs/dioxus/tree/v0.5/packages/router/examples), or\nthe [API reference](https://docs.rs/dioxus-router/).\n\n### Challenges\n\n* Organize your components into separate files for better maintainability.\n* Give your app some style if you haven't already.\n* Build an about page so your visitors know who you are.\n* Add a user system that uses URL parameters.\n* Create a simple admin system to create, delete, and edit blogs.\n* If you want to go to the max, hook up your application to a rest API and database."
+            }
+            54usize => {
+                "This section of the guide provides getting started guides for common tools used with Dioxus.\n\n* [Logging](./logging.md)\n* [Internationalization](./internationalization.md)"
+            }
+            11usize => {
+                "# Event Handlers\n\nEvent handlers are used to respond to user actions. For example, an event handler could be triggered when the user clicks, scrolls, moves the mouse, or types a character.\n\nEvent handlers are attached to elements. For example, we usually don't care about all the clicks that happen within an app, only those on a particular button.\n\nEvent handlers are similar to regular attributes, but their name usually starts with `on`- and they accept closures as values. The closure will be called whenever the event it listens for is triggered and will be passed that event.\n\nFor example, to handle clicks on an element, we can specify an `onclick` handler:\n\n````rust, no_run@event_click.rs\nrsx! {\n    button { onclick: move |event| log::info!(\"Clicked! Event: {event:?}\"), \"click me!\" }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n    event_click::App {}\n}\n````\n\n## The Event object\n\nEvent handlers receive an [`Event`](https://docs.rs/dioxus-core/latest/dioxus_core/struct.Event.html) object containing information about the event. Different types of events contain different types of data. For example, mouse-related events contain [`MouseData`](https://docs.rs/dioxus/latest/dioxus/events/struct.MouseData.html), which tells you things like where the mouse was clicked and what mouse buttons were used.\n\nIn the example above, this event data was logged to the terminal:\n\n````\nClicked! Event: UiEvent { bubble_state: Cell { value: true }, data: MouseData { coordinates: Coordinates { screen: (242.0, 256.0), client: (26.0, 17.0), element: (16.0, 7.0), page: (26.0, 17.0) }, modifiers: (empty), held_buttons: EnumSet(), trigger_button: Some(Primary) } }\nClicked! Event: UiEvent { bubble_state: Cell { value: true }, data: MouseData { coordinates: Coordinates { screen: (242.0, 256.0), client: (26.0, 17.0), element: (16.0, 7.0), page: (26.0, 17.0) }, modifiers: (empty), held_buttons: EnumSet(), trigger_button: Some(Primary) } }\n````\n\nTo learn what the different event types for HTML provide, read the [events module docs](https://docs.rs/dioxus-html/latest/dioxus_html/events/index.html).\n\n### Event propagation\n\nSome events will trigger first on the element the event originated at upward. For example, a click event on a `button` inside a `div` would first trigger the button's event listener and then the div's event listener.\n\n > \n > For more information about event propagation see [the mdn docs on event bubbling](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#event_bubbling)\n\nIf you want to prevent this behavior, you can call `stop_propagation()` on the event:\n\n````rust, no_run@event_nested.rs\nrsx! {\n    div { onclick: move |_event| {},\n        \"outer\"\n        button {\n            onclick: move |event| {\n                event.stop_propagation();\n            },\n            \"inner\"\n        }\n    }\n}\n````\n\n## Prevent Default\n\nSome events have a default behavior. For keyboard events, this might be entering the typed character. For mouse events, this might be selecting some text.\n\nIn some instances, might want to avoid this default behavior. For this, you can add the `prevent_default` attribute with the name of the handler whose default behavior you want to stop. This attribute can be used for multiple handlers using their name separated by spaces:\n\n````rust, no_run@event_prevent_default.rs\nrsx! {\n    a {\n        href: \"https://example.com\",\n        prevent_default: \"onclick\",\n        \"example.com\"\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n    event_prevent_default::App {}\n}\n````\n\nAny event handlers will still be called.\n\n > \n > Normally, in React or JavaScript, you'd call \"preventDefault\" on the event in the callback. Dioxus does *not* currently support this behavior. Note: this means you cannot conditionally prevent default behavior based on the data in the event.\n\n## Handler Props\n\nSometimes, you might want to make a component that accepts an event handler. A simple example would be a `FancyButton` component, which accepts an `onclick` handler:\n\n````rust, no_run@event_handler_prop.rs\n#[derive(PartialEq, Clone, Props)]\npub struct FancyButtonProps {\n    onclick: EventHandler<MouseEvent>,\n}\n\npub fn FancyButton(props: FancyButtonProps) -> Element {\n    rsx! {\n        button {\n            class: \"fancy-button\",\n            onclick: move |evt| props.onclick.call(evt),\n            \"click me pls.\"\n        }\n    }\n}\n````\n\nThen, you can use it like any other handler:\n\n````rust, no_run@event_handler_prop.rs\nrsx! {\n    FancyButton {\n        onclick: move |event| println!(\"Clicked! {event:?}\"),\n    }\n}\n````\n\n > \n > Note: just like any other attribute, you can name the handlers anything you want! Any closure you pass in will automatically be turned into an `EventHandler`.\n\n#### Async Event Handlers\n\nPassing `EventHandler`s as props does not support passing a closure that returns an async block. Instead, you must manually call `spawn` to do async operations:\n\n````rust, no_run@event_handler_prop.rs\nrsx! {\n    FancyButton {\n        // This does not work!\n        // onclick: move |event| async move {\n        //      println!(\"Clicked! {event:?}\");\n        // },\n\n        // This does work!\n        onclick: move |event| {\n            spawn(async move {\n                println!(\"Clicked! {event:?}\");\n            });\n        },\n    }\n}\n````\n\nThis is only the case for custom event handlers as props.\n\n## Custom Data\n\nEvent Handlers are generic over any type, so you can pass in any data you want to them, e.g:\n\n````rust, no_run@event_handler_prop.rs\nstruct ComplexData(i32);\n\n#[derive(PartialEq, Clone, Props)]\npub struct CustomFancyButtonProps {\n    onclick: EventHandler<ComplexData>,\n}\n\npub fn CustomFancyButton(props: CustomFancyButtonProps) -> Element {\n    rsx! {\n        button {\n            class: \"fancy-button\",\n            onclick: move |_| props.onclick.call(ComplexData(0)),\n            \"click me pls.\"\n        }\n    }\n}\n````"
+            }
+            8usize => {
+                "# Describing the UI\n\nDioxus is a *declarative* framework. This means that instead of telling Dioxus what to do (e.g. to \"create an element\" or \"set the color to red\") we simply *declare* what we want the UI to look like using RSX.\n\nYou have already seen a simple example of RSX syntax in the \"hello world\" application:\n\n````rust, no_run@hello_world_desktop.rs\n// define a component that renders a div with the text \"Hello, world!\"\nfn App() -> Element {\n    rsx! {\n        div { \"Hello, world!\" }\n    }\n}\n````\n\nHere, we use the `rsx!` macro to *declare* that we want a `div` element, containing the text `\"Hello, world!\"`. Dioxus takes the RSX and constructs a UI from it.\n\n## RSX Features\n\nRSX is very similar to HTML in that it describes elements with attributes and children. Here's an empty `button` element in RSX, as well as the resulting HTML:\n\n````rust, no_run@rsx_overview.rs\nrsx! {\n    button {\n        // attributes / listeners\n        // children\n        \"Hello, World!\"\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\trsx_overview::Button {}\n}\n````\n\n### Attributes\n\nAttributes (and [event handlers](event_handlers.md)) modify the behavior or appearance of the element they are attached to. They are specified inside the `{}` brackets, using the `name: value` syntax. You can provide the value as a literal in the RSX:\n\n````rust, no_run@rsx_overview.rs\nrsx! {\n    img {\n        src: \"https://avatars.githubusercontent.com/u/79236386?s=200&v=4\",\n        class: \"primary_button\",\n        width: \"10px\",\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\trsx_overview::Attributes {}\n}\n````\n\nSome attributes, such as the `type` attribute for `input` elements won't work on their own in Rust. This is because `type` is a reserved Rust keyword. To get around this, Dioxus uses the `r#` specifier:\n\n````rust, no_run@rsx_overview.rs\nrsx! {\n    input { r#type: \"text\", color: \"red\" }\n}\n````\n\n > \n > Note: All attributes defined in `dioxus-html` follow the snake_case naming convention. They transform their `snake_case` names to HTML's `camelCase` attributes.\n\n > \n > Note: Styles can be used directly outside of the `style:` attribute. In the above example, `color: \"red\"` is turned into `style=\"color: red\"`.\n\n#### Conditional Attributes\n\nYou can also conditionally include attributes by using an if statement without an else branch. This is useful for adding an attribute only if a certain condition is met:\n\n````rust, no_run@rsx_overview.rs\nlet large_font = true;\nrsx! {\n    div { class: if large_font { \"text-xl\" }, \"Hello, World!\" }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\trsx_overview::ConditionalAttributes {}\n}\n````\n\nRepeating an attribute joins the values with a space. This makes it easy to add values like classes conditionally:\n\n````rust, no_run@rsx_overview.rs\nlet large_font = true;\nrsx! {\n    div {\n        class: \"base-class another-class\",\n        class: if large_font { \"text-xl\" },\n        \"Hello, World!\"\n    }\n}\n````\n\n#### Custom Attributes\n\nDioxus has a pre-configured set of attributes that you can use. RSX is validated at compile time to make sure you didn't specify an invalid attribute. If you want to override this behavior with a custom attribute name, specify the attribute in quotes:\n\n````rust, no_run@rsx_overview.rs\nrsx! {\n    div { \"style\": \"width: 20px; height: 20px; background-color: red;\" }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\trsx_overview::CustomAttributes {}\n}\n````\n\n### Special Attributes\n\nWhile most attributes are simply passed on to the HTML, some have special behaviors.\n\n#### The HTML Escape Hatch\n\nIf you're working with pre-rendered assets, output from templates, or output from a JS library, then you might want to pass HTML directly instead of going through Dioxus. In these instances, reach for `dangerous_inner_html`.\n\nFor example, shipping a markdown-to-Dioxus converter might significantly bloat your final application size. Instead, you'll want to pre-render your markdown to HTML and then include the HTML directly in your output. We use this approach for the [Dioxus homepage](https://dioxuslabs.com):\n\n````rust, no_run@dangerous_inner_html.rs\n// this should come from a trusted source\nlet contents = \"live <b>dangerously</b>\";\n\nrsx! {\n    div { dangerous_inner_html: \"{contents}\" }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\tdangerous_inner_html::App {}\n}\n````\n\n > \n > Note! This attribute is called \"dangerous_inner_html\" because it is **dangerous** to pass it data you don't trust. If you're not careful, you can easily expose [cross-site scripting (XSS)](https://en.wikipedia.org/wiki/Cross-site_scripting) attacks to your users.\n > \n > If you're handling untrusted input, make sure to sanitize your HTML before passing it into `dangerous_inner_html` – or just pass it to a Text Element to escape any HTML tags.\n\n#### Boolean Attributes\n\nMost attributes, when rendered, will be rendered exactly as the input you provided. However, some attributes are considered \"boolean\" attributes and just their presence determines whether they affect the output. For these attributes, a provided value of `\"false\"` will cause them to be removed from the target element.\n\nSo this RSX wouldn't actually render the `hidden` attribute:\n\n````rust, no_run@boolean_attribute.rs\nrsx! {\n    div { hidden: false, \"hello\" }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\tboolean_attribute::App {}\n}\n````\n\nNot all attributes work like this however. *Only the following attributes* have this behavior:\n\n* `allowfullscreen`\n* `allowpaymentrequest`\n* `async`\n* `autofocus`\n* `autoplay`\n* `checked`\n* `controls`\n* `default`\n* `defer`\n* `disabled`\n* `formnovalidate`\n* `hidden`\n* `ismap`\n* `itemscope`\n* `loop`\n* `multiple`\n* `muted`\n* `nomodule`\n* `novalidate`\n* `open`\n* `playsinline`\n* `readonly`\n* `required`\n* `reversed`\n* `selected`\n* `truespeed`\n\nFor any other attributes, a value of `\"false\"` will be sent directly to the DOM.\n\n### Interpolation\n\nSimilarly to how you can [format](https://doc.rust-lang.org/rust-by-example/hello/print/fmt.html) Rust strings, you can also interpolate in RSX text. Use `{variable}` to Display the value of a variable in a string, or `{variable:?}` to use the Debug representation:\n\n````rust, no_run@rsx_overview.rs\nlet coordinates = (42, 0);\nlet country = \"es\";\nrsx! {\n    div {\n        class: \"country-{country}\",\n        left: \"{coordinates.0:?}\",\n        top: \"{coordinates.1:?}\",\n        // arbitrary expressions are allowed,\n        // as long as they don't contain `{}`\n        div { \"{country.to_uppercase()}\" }\n        div { \"{7*6}\" }\n        // {} can be escaped with {{}}\n        div { \"{{}}\" }\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\trsx_overview::Formatting {}\n}\n````\n\n### Children\n\nTo add children to an element, put them inside the `{}` brackets after all attributes and listeners in the element. They can be other elements, text, or [components](components.md). For example, you could have an `ol` (ordered list) element, containing 3 `li` (list item) elements, each of which contains some text:\n\n````rust, no_run@rsx_overview.rs\nrsx! {\n    ol {\n        li { \"First Item\" }\n        li { \"Second Item\" }\n        li { \"Third Item\" }\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\trsx_overview::Children {}\n}\n````\n\n### Fragments\n\nYou can render multiple elements at the top level of `rsx!` and they will be automatically grouped.\n\n````rust, no_run@rsx_overview.rs\nrsx! {\n    p { \"First Item\" }\n    p { \"Second Item\" }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\trsx_overview::ManyRoots {}\n}\n````\n\n### Expressions\n\nYou can include arbitrary Rust expressions as children within RSX by surrounding your expression with `{}`s. Any expression that implements [IntoDynNode](https://docs.rs/dioxus-core/0.3/dioxus_core/trait.IntoDynNode.html) can be used within rsx. This is useful for displaying data from an [iterator](https://doc.rust-lang.org/stable/book/ch13-02-iterators.html#processing-a-series-of-items-with-iterators):\n\n````rust, no_run@rsx_overview.rs\nlet text = \"Dioxus\";\nrsx! {\n    span {\n        {text.to_uppercase()}\n        // create a list of text from 0 to 9\n        {(0..10).map(|i| rsx! {\n        \"{i}\"\n        })}\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\trsx_overview::Expression {}\n}\n````\n\n### Loops\n\nIn addition to iterators you can also use for loops directly within RSX:\n\n````rust, no_run@rsx_overview.rs\nrsx! {\n    // use a for loop where the body itself is RSX\n    div {\n        // create a list of text from 0 to 9\n        for i in 0..3 {\n            // NOTE: the body of the loop is RSX not a rust statement\n            div { \"{i}\" }\n        }\n    }\n    // iterator equivalent\n    div {\n        {(0..3).map(|i| rsx! {\n            div { \"{i}\" }\n        })}\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\trsx_overview::Loops {}\n}\n````\n\n### If statements\n\nYou can also use if statements without an else branch within RSX:\n\n````rust, no_run@rsx_overview.rs\nrsx! {\n    // use if statements without an else\n    if true {\n        div { \"true\" }\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n\trsx_overview::IfStatements {}\n}\n````"
+            }
+            55usize => {
+                "# Logging\n\nDioxus has a wide range of supported platforms, each with their own logging requirements. We'll discuss the different options available for your projects.\n\n#### The Tracing Crate\n\nThe [Tracing](https://crates.io/crates/tracing) crate is the logging interface that the Dioxus library uses. It is not required to use the Tracing crate, but you will not recieve logs from the Dioxus library.\n\nThe Tracing crate provides a variety of simple `println`-like macros with varying levels of severity.\nThe available macros are as follows with the highest severity on the bottom:\n\n````rs\nfn main() {\n    tracing::trace!(\"trace\");\n    tracing::debug!(\"debug\");\n    tracing::info!(\"info\");\n    tracing::warn!(\"warn\");\n    tracing::error!(\"error\");\n}\n````\n\nAll the loggers provided on this page are, besides configuration and initialization, interfaced using these macros. Often you will also utilize the Tracing crate's `Level` enum. This enum usually represents the maximum log severity you want your application to emit and can be loaded from a variety of sources such as configuration file, environment variable, and more.\n\nFor more information, visit the Tracing crate's [docs](https://docs.rs/tracing/latest/tracing/).\n\n## Dioxus Logger\n\n[Dioxus Logger](https://crates.io/crates/dioxus-logger) is a logging utility that will start the appropriate logger for the platform. Currently every platform except mobile is supported.\n\nTo use Dioxus Logger, call the `init()` function:\n\n````rs\nuse tracing::Level;\n\nfn main() {\n    // Init logger\n    dioxus_logger::init(Level::INFO).expect(\"failed to init logger\");\n    // Dioxus launch code\n}\n````\n\nThe `dioxus_logger::init()` function initializes Dioxus Logger with the appropriate tracing logger using the default configuration and provided `Level`.\n\n#### Platform Intricacies\n\nOn web, Dioxus Logger will use [tracing-wasm](https://crates.io/crates/tracing-wasm). On Desktop and server-based targets, Dioxus Logger will use [tracing-subscriber](https://crates.io/crates/tracing-subscriber)'s `FmtSubscriber`.\n\n#### Final Notes\n\nDioxus Logger is the preferred logger to use with Dioxus if it suites your needs. There are more features to come and Dioxus Logger is planned to become an integral part of Dioxus. If there are any feature suggestions or issues with Dioxus Logger, feel free to reach out on the [Dioxus Discord Server](https://discord.gg/XgGxMSkvUM)!\n\nFor more information, visit Dioxus Logger's [docs](https://docs.rs/dioxus-logger/latest/dioxus_logger/).\n\n## Desktop and Server\n\nFor Dioxus' desktop and server targets, you can generally use the logger of your choice.\n\nSome popular options are:\n\n* [tracing-subscriber](https://crates.io/crates/tracing-subscriber)'s `FmtSubscriber` for console output.\n* [tracing-appender](https://crates.io/crates/tracing-appender) for logging to files.\n* [tracing-bunyan-formatter](https://crates.io/crates/tracing-bunyan-formatter) for the Bunyan format.\n\nTo keep this guide short, we will not be covering the usage of these crates.\n\nFor a full list of popular tracing-based logging crates, visit [this](https://docs.rs/tracing/latest/tracing/#related-crates) list in the Tracing crate's docs.\n\n## Web\n\n[tracing-wasm](https://crates.io/crates/tracing-wasm) is a logging interface that can be used with Dioxus' web platform.\n\nThe easiest way to use WASM Logger is with the `set_as_global_default` function:\n\n````rs\nfn main() {\n    // Init logger\n    tracing_wasm::set_as_global_default();\n    // Dioxus code\n}\n````\n\nThis starts tracing with a `Level` of `Trace`.\n\nUsing a custom `level` is a little trickier. We need to use the `WasmLayerConfigBuilder` and start the logger with `set_as_global_default_with_config()`:\n\n````rs\nuse tracing::Level;\n\nfn main() {\n    // Init logger\n    let tracing_config = tracing_wasm::WASMLayerConfigBuilder::new().set_max_level(Level::INFO).build();\n    tracing_wasm::set_as_global_default_with_config(tracing_config);\n    // Dioxus code\n}\n````\n\n# Mobile\n\nUnfortunately there are no tracing crates that work with mobile targets. As an alternative you can use the [log](https://crates.io/crates/log) crate.\n\n## Android\n\n[Android Logger](https://crates.io/crates/android_logger) is a logging interface that can be used when targeting Android. Android Logger runs whenever an event `native_activity_create` is called by the Android system:\n\n````rs\nuse log::LevelFilter;\nuse android_logger::Config;\n\nfn native_activity_create() {\n    android_logger::init_once(\n        Config::default()\n            .with_max_level(LevelFilter::Info)\n            .with_tag(\"myapp\");\n    );\n}\n````\n\nThe `with_tag()` is what your app's logs will show as.\n\n#### Viewing Android Logs\n\nAndroid logs are sent to logcat. To use logcat through the Android debugger, run:\n\n````cmd\nadb -d logcat\n````\n\nYour Android device will need developer options/usb debugging enabled.\n\nFor more information, visit android_logger's [docs](https://docs.rs/android_logger/latest/android_logger/).\n\n## iOS\n\nThe current option for iOS is the [oslog](https://crates.io/crates/oslog) crate.\n\n````rs\nfn main() {\n    // Init logger\n    OsLogger::new(\"com.example.test\")\n        .level_filter(LevelFilter::Debug)\n        .init()\n        .expect(\"failed to init logger\");\n    // Dioxus code\n}\n````\n\n#### Viewing IOS Logs\n\nYou can view the emitted logs in Xcode.\n\nFor more information, visit [oslog](https://crates.io/crates/oslog)."
             }
             19usize => {
                 "# Spawning Futures\n\nThe `use_resource` and `use_coroutine` hooks are useful if you want to unconditionally spawn the future. Sometimes, though, you'll want to only spawn a future in response to an event, such as a mouse click. For example, suppose you need to send a request when the user clicks a \"log in\" button. For this, you can use `spawn`:\n\n````rust@spawn.rs\nlet mut response = use_signal(|| String::from(\"...\"));\n\nlet log_in = move |_| {\n    spawn(async move {\n        let resp = reqwest::Client::new()\n            .get(\"https://dioxuslabs.com\")\n            .send()\n            .await;\n\n        match resp {\n            Ok(_data) => {\n                log::info!(\"dioxuslabs.com responded!\");\n                response.set(\"dioxuslabs.com responded!\".into());\n            }\n            Err(err) => {\n                log::info!(\"Request failed with error: {err:?}\")\n            }\n        }\n    });\n};\n\nrsx! {\n    button { onclick: log_in, \"Response: {response}\" }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n    spawn::App {}\n}\n````\n\n > \n > Note: `spawn` will always spawn a *new* future. You most likely don't want to call it on every render.\n\nCalling `spawn` will give you a `JoinHandle` which lets you cancel or pause the future.\n\n## Spawning Tokio Tasks\n\nSometimes, you might want to spawn a background task that needs multiple threads or talk to hardware that might block your app code. In these cases, we can directly spawn a Tokio task from our future. For Dioxus-Desktop, your task will be spawned onto Tokio's Multithreaded runtime:\n\n````rust@spawn.rs\nspawn(async {\n    let _ = tokio::spawn(async {}).await;\n\n    let _ = tokio::task::spawn_local(async {\n        // some !Send work\n    })\n    .await;\n});\n````"
             }
-            74usize => {
-                "# State Migration\n\nThe `use_state` and `use_ref` hooks have been replaced with the `use_signal` hook. The `use_signal` hook is a more flexible and powerful version of the `use_ref` hook with smarter scopes that only subscribe to a signal if that signal is read within the scope.\n\nWith `use_state`, if you had this code:\n\n````rust\nfn Parent(cx: Scope) -> Element {\n\tlet state = use_state(cx, || 0);\n\n\trender! {\n\t\tChild {\n\t\t\tstate: state.clone()\n\t\t}\n\t}\n}\n\n#[component]\nfn Child(cx: Scope, state: UseState<i32>) -> Element {\n\trender! {\n\t\t\"{state}\"\n\t}\n}\n````\n\nParent would re-render every time the state changed even though only the child component was using the state. With the new `use_signal` hook, the parent would only re-render if the state was changed within the parent component:\n\n````rust@migration_state.rs\nfn Parent() -> Element {\n    let state = use_signal(|| 0);\n\n    rsx! { Child { state } }\n}\n\n#[component]\nfn Child(state: Signal<i32>) -> Element {\n    rsx! {\"{state}\"}\n}\n````\n\nOnly the child component will re-render when the state changes because only the child component is reading the state.\n\n## Context Based State\n\nThe `use_shared_state_provider` and `use_shared_state` hooks have been replaced with using the `use_context_provider` and `use_context` hooks with a `Signal`:\n\n````rust@migration_state.rs\nfn Parent() -> Element {\n    // Create a new signal and provide it to the context API\n    let state = use_context_provider(|| Signal::new(0));\n\n    rsx! { Child {} }\n}\n\nfn Child() -> Element {\n    // Get the state from the context API\n    let state = use_context::<Signal<i32>>();\n\n    rsx! {\"{state}\"}\n}\n````\n\nSignals are smart enough to handle subscribing to the right scopes without a special shared state hook.\n\n## Opting Out of Subscriptions\n\nSome state hooks including `use_shared_state` and `use_ref` hooks had a function called `write_silent` in `0.4`. This function allowed you to update the state without triggering a re-render any subscribers. This function has been removed in `0.5`.\n\nInstead, you can use the `peek` function to read the current value of a signal without subscribing to it. This inverts the subscription model so that you can opt out of subscribing to a signal instead of opting all subscribers out of updates:\n\n````rust@migration_state.rs\nfn Parent() -> Element {\n    let state = use_signal(|| 0);\n\n    // Even though we are reading the state, we don't need to subscribe to it\n    let read_without_subscribing = state.peek();\n    println!(\"{}\", state.peek());\n\n    rsx! { Child { state } }\n}\n\n#[component]\nfn Child(state: Signal<i32>) -> Element {\n    rsx! {\n        button { onclick: move |_| {\n                state += 1;\n            }, \"count is {state}\" }\n    }\n}\n````\n\n`peek` gives you more fine-grained control over when you want to subscribe to a signal. This can be useful for performance optimizations and for updating state without re-rendering components.\n\n## Global State\n\nIn `0.4`, the fermi crate provided a separate global state API called atoms. In `0.5`, the `Signal` type has been extended to provide a global state API. You can use the `Signal::global` function to create a global signal:\n\n````rust@migration_state.rs\nstatic COUNT: GlobalSignal<i32> = Signal::global(|| 0);\n\nfn Parent() -> Element {\n    rsx! {\n        div { \"{COUNT}\" }\n        button {\n            onclick: move |_| {\n                *COUNT.write() += 1;\n            },\n            \"Increment\"\n        }\n    }\n}\n````\n\nYou can read more about global signals in the [Fermi migration guide](fermi.md)."
+            75usize => {
+                "# Fermi\n\nIn dioxus 0.5, fermi atoms have been replaced with global signals and included in the main dioxus library.\n\nThe new global signals can be used directly without hooks and include additional functionality like global memos.\n\nDioxus 0.4:\n\n````rust\nuse dioxus::prelude::*;\nuse fermi::*;\n\nstatic NAME: Atom<String> = Atom(|_| \"world\".to_string());\nstatic NAMES: AtomRef<Vec<String>> = AtomRef(|_| vec![\"world\".to_string()]);\n\nfn app(cx: Scope) -> Element {\n    use_init_atom_root(cx);\n    let set_name = use_set(cx, &NAME);\n\tlet names = use_atom_ref(cx, &NAMES);\n\n    cx.render(rsx! {\n        button {\n\t\t\tonclick: move |_| set_name(\"dioxus\".to_string()),\n\t\t\t\"reset name\"\n\t\t}\n\t\t\"{names.read():?}\"\n    })\n}\n````\n\nDioxus 0.5:\n\n````rust@migration_fermi.rs\nuse dioxus::prelude::*;\n\nstatic NAME: GlobalSignal<String> = Signal::global(|| \"world\".to_string());\n// Global signals work for copy and clone types in the same way\nstatic NAMES: GlobalSignal<Vec<String>> = Signal::global(|| vec![\"world\".to_string()]);\n\nfn app() -> Element {\n    // No need to use use_init_atom_root, use_set, or use_atom_ref. Just use the global signal directly\n    rsx! {\n        button { onclick: move |_| *NAME.write() = \"reset name\".to_string(), \"reset name\" }\n        \"{NAMES:?}\"\n    }\n}\n````\n\n## Memos\n\nDioxus 0.5 introduces global memos which can be used to store computed values globally.\n\n````rust@migration_fermi.rs\nstatic COUNT: GlobalSignal<u32> = Signal::global(|| 0);\nstatic MEMO: GlobalMemo<u32> = Signal::global_memo(|| COUNT() + 1);\n\nfn GlobalMemo() -> Element {\n    rsx! {\n        button { onclick: move |_| *COUNT.write() += 1, \"increment\" }\n        // Global memos can be used like signals\n        \"{MEMO}\"\n    }\n}\n````"
             }
-            59usize => {
-                "# Custom Hooks\n\nHooks are a great way to encapsulate business logic. If none of the existing hooks work for your problem, you can write your own.\n\nWhen writing your hook, you can make a function that starts with `use_` and takes any arguments you need. You can then use the `use_hook` method to create a hook that will be called the first time the component is rendered.\n\n## Composing Hooks\n\nTo avoid repetition, you can encapsulate business logic based on existing hooks to create a new hook.\n\nFor example, if many components need to access an `AppSettings` struct, you can create a \"shortcut\" hook:\n\n````rust@hooks_composed.rs\nfn use_settings() -> Signal<AppSettings> {\n    consume_context()\n}\n````\n\nOr if you want to wrap a hook that persists reloads with the storage API, you can build on top of the use_signal hook to work with mutable state:\n\n````rust@hooks_composed.rs\nuse gloo_storage::{LocalStorage, Storage};\nuse serde::{de::DeserializeOwned, Serialize};\n\n/// A persistent storage hook that can be used to store data across application reloads.\n#[allow(clippy::needless_return)]\npub fn use_persistent<T: Serialize + DeserializeOwned + Default + 'static>(\n    // A unique key for the storage entry\n    key: impl ToString,\n    // A function that returns the initial value if the storage entry is empty\n    init: impl FnOnce() -> T,\n) -> UsePersistent<T> {\n    // Use the use_signal hook to create a mutable state for the storage entry\n    let state = use_signal(move || {\n        // This closure will run when the hook is created\n        let key = key.to_string();\n        let value = LocalStorage::get(key.as_str()).ok().unwrap_or_else(init);\n        StorageEntry { key, value }\n    });\n\n    // Wrap the state in a new struct with a custom API\n    UsePersistent { inner: state }\n}\n\nstruct StorageEntry<T> {\n    key: String,\n    value: T,\n}\n\n/// Storage that persists across application reloads\npub struct UsePersistent<T: 'static> {\n    inner: Signal<StorageEntry<T>>,\n}\n\nimpl<T> Clone for UsePersistent<T> {\n    fn clone(&self) -> Self {\n        *self\n    }\n}\n\nimpl<T> Copy for UsePersistent<T> {}\n\nimpl<T: Serialize + DeserializeOwned + Clone + 'static> UsePersistent<T> {\n    /// Returns a reference to the value\n    pub fn get(&self) -> T {\n        self.inner.read().value.clone()\n    }\n\n    /// Sets the value\n    pub fn set(&mut self, value: T) {\n        let mut inner = self.inner.write();\n        // Write the new value to local storage\n        LocalStorage::set(inner.key.as_str(), &value);\n        inner.value = value;\n    }\n}\n````\n\n## Custom Hook Logic\n\nYou can use [`use_hook`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_hook.html) to build your own hooks. In fact, this is what all the standard hooks are built on!\n\n`use_hook` accepts a single closure for initializing the hook. It will be only run the first time the component is rendered. The return value of that closure will be used as the value of the hook – Dioxus will take it, and store it for as long as the component is alive. On every render (not just the first one!), you will get a reference to this value.\n\n > \n > Note: You can use the `use_on_destroy` hook to clean up any resources the hook uses when the component is destroyed.\n\nInside the initialization closure, you will typically make calls to other `cx` methods. For example:\n\n* The `use_signal` hook tracks state in the hook value, and uses [`schedule_update`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.schedule_update.html) to make Dioxus re-render the component whenever it changes.\n\nHere is a simplified implementation of the `use_signal` hook:\n\n````rust@hooks_custom_logic.rs\nuse std::cell::RefCell;\nuse std::rc::Rc;\nuse std::sync::Arc;\n\nstruct Signal<T> {\n    value: Rc<RefCell<T>>,\n    update: Arc<dyn Fn()>,\n}\n\nimpl<T> Clone for Signal<T> {\n    fn clone(&self) -> Self {\n        Self {\n            value: self.value.clone(),\n            update: self.update.clone(),\n        }\n    }\n}\n\nfn my_use_signal<T: 'static>(init: impl FnOnce() -> T) -> Signal<T> {\n    use_hook(|| {\n        // The update function will trigger a re-render in the component cx is attached to\n        let update = schedule_update();\n        // Create the initial state\n        let value = Rc::new(RefCell::new(init()));\n\n        Signal { value, update }\n    })\n}\n\nimpl<T: Clone> Signal<T> {\n    fn get(&self) -> T {\n        self.value.borrow().clone()\n    }\n\n    fn set(&self, value: T) {\n        // Update the state\n        *self.value.borrow_mut() = value;\n        // Trigger a re-render on the component the state is from\n        (self.update)();\n    }\n}\n````\n\n* The `use_context` hook calls [`consume_context`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.consume_context.html) (which would be expensive to call on every render) to get some context from the component\n\nHere is an implementation of the `use_context` and `use_context_provider` hooks:\n\n````rust@hooks_custom_logic.rs\npub fn use_context<T: 'static + Clone>() -> T {\n    use_hook(|| consume_context())\n}\n\npub fn use_context_provider<T: 'static + Clone>(f: impl FnOnce() -> T) -> T {\n    use_hook(|| {\n        let val = f();\n        // Provide the context state to the component\n        provide_context(val.clone());\n        val\n    })\n}\n\n````"
+            40usize => {
+                "# Full Code\n\n````rust@full_example.rs\n#![allow(non_snake_case)]\n\nuse dioxus::prelude::*;\n\n// ANCHOR: router\n#[derive(Routable, Clone)]\n#[rustfmt::skip]\nenum Route {\n    #[layout(NavBar)]\n        #[route(\"/\")]\n        Home {},\n        #[nest(\"/blog\")]\n            #[layout(Blog)]\n                #[route(\"/\")]\n                BlogList {},\n                #[route(\"/post/:name\")]\n                BlogPost { name: String },\n            #[end_layout]\n        #[end_nest]\n    #[end_layout]\n    #[nest(\"/myblog\")]\n        #[redirect(\"/\", || Route::BlogList {})]\n        #[redirect(\"/:name\", |name: String| Route::BlogPost { name })]\n    #[end_nest]\n    #[route(\"/:..route\")]\n    PageNotFound {\n        route: Vec<String>,\n    },\n}\n// ANCHOR_END: router\n\npub fn App() -> Element {\n    rsx! {\n        Router::<Route> {}\n    }\n}\n\n#[component]\nfn NavBar() -> Element {\n    rsx! {\n        nav {\n            ul {\n                li {\n                    Link { to: Route::Home {}, \"Home\" }\n                }\n                li {\n                    Link { to: Route::BlogList {}, \"Blog\" }\n                }\n            }\n        }\n        Outlet::<Route> {}\n    }\n}\n\n#[component]\nfn Home() -> Element {\n    rsx! {\n        h1 { \"Welcome to the Dioxus Blog!\" }\n    }\n}\n\n#[component]\nfn Blog() -> Element {\n    rsx! {\n        h1 { \"Blog\" }\n        Outlet::<Route> {}\n    }\n}\n\n#[component]\nfn BlogList() -> Element {\n    rsx! {\n        h2 { \"Choose a post\" }\n        ul {\n            li {\n                Link {\n                    to: Route::BlogPost {\n                        name: \"Blog post 1\".into(),\n                    },\n                    \"Read the first blog post\"\n                }\n            }\n            li {\n                Link {\n                    to: Route::BlogPost {\n                        name: \"Blog post 2\".into(),\n                    },\n                    \"Read the second blog post\"\n                }\n            }\n        }\n    }\n}\n\n#[component]\nfn BlogPost(name: String) -> Element {\n    rsx! {\n        h2 { \"Blog Post: {name}\" }\n    }\n}\n\n#[component]\nfn PageNotFound(route: Vec<String>) -> Element {\n    rsx! {\n        h1 { \"Page not found\" }\n        p { \"We are terribly sorry, but the page you requested doesn't exist.\" }\n        pre { color: \"red\", \"log:\\nattemped to navigate to: {route:?}\" }\n    }\n}\n\n````"
             }
-            53usize => {
-                "# Error handling\n\nA selling point of Rust for web development is the reliability of always knowing where errors can occur and being forced to handle them\n\nHowever, we haven't talked about error handling at all in this guide! In this chapter, we'll cover some strategies in handling errors to ensure your app never crashes.\n\n## The simplest – returning None\n\nAstute observers might have noticed that `Element` is actually a type alias for `Option<VNode>`. You don't need to know what a `VNode` is, but it's important to recognize that we could actually return nothing at all:\n\n````rust@error_handling.rs\nfn App() -> Element {\n    None\n}\n````\n\nThis lets us add in some syntactic sugar for operations we think *shouldn't* fail, but we're still not confident enough to \"unwrap\" on.\n\n > \n > The nature of `Option<VNode>` might change in the future as the `try` trait gets upgraded.\n\n````rust@error_handling.rs\nfn App() -> Element {\n    // immediately return \"None\"\n    let name = use_hook(|| Some(\"hi\"))?;\n\n    todo!()\n}\n````\n\n## Early return on result\n\nBecause Rust can't accept both Options and Results with the existing try infrastructure, you'll need to manually handle Results. This can be done by converting them into Options or by explicitly handling them. If you choose to convert your Result into an Option and bubble it with a `?`, keep in mind that if you do hit an error you will lose error information and nothing will be rendered for that component.\n\n````rust@error_handling.rs\nfn App() -> Element {\n    // Convert Result to Option\n    let name: i32 = use_hook(|| \"1.234\").parse().ok()?;\n\n    // Early return\n    let count = use_hook(|| \"1.234\");\n    let val: i32 = match count.parse() {\n        Ok(val) => val,\n        Err(err) => return rsx! {\"Parsing failed\"},\n    };\n\n    todo!()\n}\n````\n\nNotice that while hooks in Dioxus do not like being called in conditionals or loops, they *are* okay with early returns. Returning an error state early is a completely valid way of handling errors.\n\n## Match results\n\nThe next \"best\" way of handling errors in Dioxus is to match on the error locally. This is the most robust way of handling errors, but it doesn't scale to architectures beyond a single component.\n\nTo do this, we simply have an error state built into our component:\n\n````rust@error_handling.rs\nlet mut error = use_signal(|| None);\n````\n\nWhenever we perform an action that generates an error, we'll set that error state. We can then match on the error in a number of ways (early return, return Element, etc).\n\n````rust@error_handling.rs\nfn Commandline() -> Element {\n    let mut error = use_signal(|| None);\n\n    match error() {\n        Some(error) => rsx! { h1 { \"An error occurred\" } },\n        None => rsx! { input { oninput: move |_| error.set(Some(\"bad thing happened!\")) } },\n    }\n}\n````\n\n## Passing error states through components\n\nIf you're dealing with a handful of components with minimal nesting, you can just pass the error handle into child components.\n\n````rust@error_handling.rs\nfn Commandline() -> Element {\n    let error = use_signal(|| None);\n\n    if let Some(error) = error() {\n        return rsx! {\"An error occurred\"};\n    }\n\n    rsx! {\n        Child { error }\n        Child { error }\n        Child { error }\n        Child { error }\n    }\n}\n\n#[component]\nfn Child(error: Signal<Option<&'static str>>) -> Element {\n    rsx! { input { oninput: move |_| error.set(Some(\"bad thing happened!\")) } }\n}\n````\n\nMuch like before, our child components can manually set the error during their own actions. The advantage to this pattern is that we can easily isolate error states to a few components at a time, making our app more predictable and robust.\n\n## Throwing errors\n\nDioxus provides a much easier way to handle errors: throwing them. Throwing errors combines the best parts of an error state and early return: you can easily throw and error with `?`, but you keep information about the error so that you can handle it in a parent component.\n\nYou can call `throw` on any `Result` type that implements `Debug` to turn it into an error state and then use `?` to return early if you do hit an error. You can capture the error state with an `ErrorBoundary` component that will render the a different component if an error is thrown in any of its children.\n\n````rust@error_handling.rs\nfn Parent() -> Element {\n    rsx! {\n        ErrorBoundary {\n            handle_error: |error| {\n                rsx! {\n                    \"Oops, we encountered an error. Please report {error} to the developer of this application\"\n                }\n            },\n            ThrowsError {}\n        }\n    }\n}\n\nfn ThrowsError() -> Element {\n    let name: i32 = use_hook(|| \"1.234\").parse().throw()?;\n\n    todo!()\n}\n````\n\nYou can even nest `ErrorBoundary` components to capture errors at different levels of your app.\n\n````rust@error_handling.rs\nfn App() -> Element {\n    rsx! {\n        ErrorBoundary {\n            handle_error: |error| {\n                rsx! {\n                    \"Hmm, something went wrong. Please report {error} to the developer of this application\"\n                }\n            },\n            Parent {}\n        }\n    }\n}\n\nfn Parent() -> Element {\n    rsx! {\n        ErrorBoundary {\n            handle_error: |error| {\n                rsx! {\n                    \"The child component encountered an error: {error}\"\n                }\n            },\n            ThrowsError {}\n        }\n    }\n}\n\nfn ThrowsError() -> Element {\n    let name: i32 = use_hook(|| \"1.234\").parse().throw()?;\n\n    todo!()\n}\n````\n\nThis pattern is particularly helpful whenever your code generates a non-recoverable error. You can gracefully capture these \"global\" error states without panicking or handling state for each error yourself."
+            42usize => {
+                "# Defining Routes\n\nWhen creating a \\[`Routable`\\] enum, we can define routes for our application using the `route(\"path\")` attribute.\n\n## Route Segments\n\nEach route is made up of segments. Most segments are separated by `/` characters in the path.\n\nThere are four fundamental types of segments:\n\n1. [Static segments](#static-segments) are fixed strings that must be present in the path.\n1. [Dynamic segments](#dynamic-segments) are types that can be parsed from a segment.\n1. [Catch-all segments](#catch-all-segments) are types that can be parsed from multiple segments.\n1. [Query segments](#query-segments) are types that can be parsed from the query string.\n\nRoutes are matched:\n\n* First, from most specific to least specific (Static then Dynamic then Catch All) (Query is always matched)\n* Then, if multiple routes match the same path, the order in which they are defined in the enum is followed.\n\n## Static segments\n\nFixed routes match a specific path. For example, the route `#[route(\"/about\")]` will match the path `/about`.\n\n````rust@static_segments.rs\n#[derive(Routable, Clone)]\n#[rustfmt::skip]\nenum Route {\n    // Routes always start with a slash\n    #[route(\"/\")]\n    Home {},\n    // You can have multiple segments in a route\n    #[route(\"/hello/world\")]\n    HelloWorld {},\n}\n\n#[component]\nfn Home() -> Element {\n    todo!()\n}\n\n#[component]\nfn HelloWorld() -> Element {\n    todo!()\n}\n````\n\n## Dynamic Segments\n\nDynamic segments are in the form of `:name` where `name` is\nthe name of the field in the route variant. If the segment is parsed\nsuccessfully then the route matches, otherwise the matching continues.\n\nThe segment can be of any type that implements `FromStr`.\n\n````rust@dynamic_segments.rs\n#[derive(Routable, Clone)]\n#[rustfmt::skip]\nenum Route {\n    // segments that start with : are dynamic segments\n    #[route(\"/post/:name\")]\n    BlogPost {\n        // You must include dynamic segments in child variants\n        name: String,\n    },\n    #[route(\"/document/:id\")]\n    Document {\n        // You can use any type that implements FromStr\n        // If the segment can't be parsed, the route will not match\n        id: usize,\n    },\n}\n\n// Components must contain the same dynamic segments as their corresponding variant\n#[component]\nfn BlogPost(name: String) -> Element {\n    todo!()\n}\n\n#[component]\nfn Document(id: usize) -> Element {\n    todo!()\n}\n````\n\n## Catch All Segments\n\nCatch All segments are in the form of `:..name` where `name` is the name of the field in the route variant. If the segments are parsed successfully then the route matches, otherwise the matching continues.\n\nThe segment can be of any type that implements `FromSegments`. (Vec<String> implements this by default)\n\nCatch All segments must be the *last route segment* in the path (query segments are not counted) and cannot be included in nests.\n\n````rust@catch_all_segments.rs\n#[derive(Routable, Clone)]\n#[rustfmt::skip]\nenum Route {\n    // segments that start with :.. are catch all segments\n    #[route(\"/blog/:..segments\")]\n    BlogPost {\n        // You must include catch all segment in child variants\n        segments: Vec<String>,\n    },\n}\n\n// Components must contain the same catch all segments as their corresponding variant\n#[component]\nfn BlogPost(segments: Vec<String>) -> Element {\n    todo!()\n}\n````\n\n## Query Segments\n\nQuery segments are in the form of `?:name&:othername` where `name` and `othername` are the names of fields in the route variant.\n\nUnlike [Dynamic Segments](#dynamic-segments) and [Catch All Segments](#catch-all-segments), parsing a Query segment must not fail.\n\nThe segment can be of any type that implements `FromQueryArgument`.\n\nQuery segments must be the *after all route segments* and cannot be included in nests.\n\n````rust@query_segments.rs\n#[derive(Routable, Clone)]\n#[rustfmt::skip]\nenum Route {\n    // segments that start with ?: are query segments\n    #[route(\"/blog?:name&:surname\")]\n    BlogPost {\n        // You must include query segments in child variants\n        name: String,\n        surname: String,\n    },\n}\n\n#[component]\nfn BlogPost(name: String, surname: String) -> Element {\n    rsx! {\n        div { \"This is your blogpost with a query segment:\" }\n        div { \"Name: {name}\" }\n        div { \"Surname: {surname}\" }\n    }\n}\n\nfn App() -> Element {\n    rsx! { Router::<Route> {} }\n}\n\nfn main() {}\n````"
+            }
+            45usize => {
+                "# Links & Navigation\n\nWhen we split our app into pages, we need to provide our users with a way to\nnavigate between them. On regular web pages, we'd use an anchor element for that,\nlike this:\n\n````html\n<a href=\"/other\">Link to an other page</a>\n````\n\nHowever, we cannot do that when using the router for three reasons:\n\n1. Anchor tags make the browser load a new page from the server. This takes a\n   lot of time, and it is much faster to let the router handle the navigation\n   client-side.\n1. Navigation using anchor tags only works when the app is running inside a\n   browser. This means we cannot use them inside apps using Dioxus Desktop.\n1. Anchor tags cannot check if the target page exists. This means we cannot\n   prevent accidentally linking to non-existent pages.\n\nTo solve these problems, the router provides us with a \\[`Link`\\] component we can\nuse like this:\n\n````rust@links.rs\n#[component]\nfn NavBar() -> Element {\n    rsx! {\n        nav {\n            ul {\n                li {\n                    Link { to: Route::Home {}, \"Home\" }\n                }\n            }\n        }\n        Outlet::<Route> {}\n    }\n}\n````\n\nThe `target` in the example above is similar to the `href` of a regular anchor\nelement. However, it tells the router more about what kind of navigation it\nshould perform. It accepts something that can be converted into a\n\\[`NavigationTarget`\\]:\n\n* The example uses a Internal route. This is the most common type of navigation.\n  It tells the router to navigate to a page within our app by passing a variant of a \\[`Routable`\\] enum. This type of navigation can never fail if the link component is used inside a router component.\n* \\[`External`\\] allows us to navigate to URLs outside of our app. This is useful\n  for links to external websites. NavigationTarget::External accepts an URL to navigate to. This type of navigation can fail if the URL is invalid.\n\n > \n > The \\[`Link`\\] accepts several props that modify its behavior. See the API docs\n > for more details."
+            }
+            68usize => {
+                "# Contributing\n\nDevelopment happens in the [Dioxus GitHub repository](https://github.com/DioxusLabs/dioxus). If you've found a bug or have an idea for a feature, please submit an issue (but first check if someone hasn't [done it already](https://github.com/DioxusLabs/dioxus/issues)).\n\n[GitHub discussions](https://github.com/DioxusLabs/dioxus/discussions) can be used as a place to ask for help or talk about features. You can also join [our Discord channel](https://discord.gg/XgGxMSkvUM) where some development discussion happens.\n\n## Improving Docs\n\nIf you'd like to improve the docs, PRs are welcome! The Rust docs ([source](https://github.com/DioxusLabs/dioxus/tree/main/packages)) and this guide ([source](https://github.com/DioxusLabs/docsite/tree/main/docs-src/0.5/en)) can be found in their respective GitHub repos.\n\n## Working on the Ecosystem\n\nPart of what makes React great is the rich ecosystem. We'd like the same for Dioxus! So if you have a library in mind that you'd like to write and many people would benefit from, it will be appreciated. You can [browse npm.js](https://www.npmjs.com/search?q=keywords:react-component) for inspiration. Once you are done, add your library to the [awesome dioxus](https://github.com/DioxusLabs/awesome-dioxus) list or share it in the `#I-made-a-thing` channel on [Discord](https://discord.gg/XgGxMSkvUM).\n\n## Bugs & Features\n\nIf you've fixed [an open issue](https://github.com/DioxusLabs/dioxus/issues), feel free to submit a PR! You can also take a look at [the roadmap](./roadmap.md) and work on something in there. Consider [reaching out](https://discord.gg/XgGxMSkvUM) to the team first to make sure everyone's on the same page, and you don't do useless work!\n\nAll pull requests (including those made by a team member) must be approved by at least one other team member.\nLarger, more nuanced decisions about design, architecture, breaking changes, trade-offs, etc. are made by team consensus.\n\n## Before you contribute\n\nYou might be surprised that a lot of checks fail when making your first PR.\nThat's why you should first run these commands before contributing, and it will save you *lots* of time, because the\nGitHub CI is much slower at executing all of these than your PC.\n\n* Format code with [rustfmt](https://github.com/rust-lang/rustfmt):\n\n````sh\ncargo fmt -- src/**/**.rs\n````\n\n* You might need to install some packages on Linux (Ubuntu/deb) before the following commands will complete successfully (there is also a Nix flake in the repo root):\n\n````sh\nsudo apt install libgdk3.0-cil libatk1.0-dev libcairo2-dev libpango1.0-dev libgdk-pixbuf2.0-dev libsoup-3.0-dev libjavascriptcoregtk-4.1-dev libwebkit2gtk-4.1-dev\n````\n\n* Check all code [cargo check](https://doc.rust-lang.org/cargo/commands/cargo-check.html):\n\n````sh\ncargo check --workspace --examples --tests\n````\n\n* Check if [Clippy](https://doc.rust-lang.org/clippy/) generates any warnings. Please fix these!\n\n````sh\ncargo clippy --workspace --examples --tests -- -D warnings\n````\n\n* Test all code with [cargo-test](https://doc.rust-lang.org/cargo/commands/cargo-test.html):\n\n````sh\ncargo test --all --tests\n````\n\n* More tests, this time with [cargo-make](https://sagiegurari.github.io/cargo-make/). Here are all steps, including installation:\n\n````sh\ncargo install --force cargo-make\ncargo make tests\n````\n\n* Test unsafe crates with [MIRI](https://github.com/rust-lang/miri). Currently, this is used for the two MIRI tests in `dioxus-core` and `dioxus-native-core`:\n\n````sh\ncargo miri test --package dioxus-core --test miri_stress\ncargo miri test --package dioxus-native-core --test miri_native\n````\n\n* Test with Playwright. This tests the UI itself, right in a browser. Here are all steps, including installation:\n  **Disclaimer: This might inexplicably fail on your machine without it being your fault.** Make that PR anyway!\n\n````sh\ncd playwright-tests\nnpm ci\nnpm install -D @playwright/test\nnpx playwright install --with-deps\nnpx playwright test\n````\n\n## How to test dioxus with local crate\n\nIf you are developing a feature, you should test it in your local setup before raising a PR. This process makes sure you are aware of your code functionality before being reviewed by peers.\n\n* Fork the following github repo (DioxusLabs/dioxus):\n\n`https://github.com/DioxusLabs/dioxus`\n\n* Create a new or use an existing rust crate (ignore this step if you will use an existing rust crate):\n  This is where we will be testing the features of the forked\n\n````sh\ncargo new --bin demo\n````\n\n* Add the dioxus dependency to your rust crate (new/existing) in Cargo.toml:\n\n````toml\ndioxus = { path = \"<path to forked dioxus project>/dioxus/packages/dioxus\", features = [\"web\", \"router\"] }\n````\n\nThis above example is for dioxus-web, with dioxus-router. To know about the dependencies for different renderer visit [here](https://dioxuslabs.com/learn/0.5/getting_started).\n\n* Run and test your feature\n\n````sh\ndx serve\n````\n\nIf this is your first time with dioxus, please read [the guide](https://dioxuslabs.com/learn/0.5/guide) to get familiar with dioxus."
+            }
+            15usize => {
+                "# Dynamic Rendering\n\nSometimes you want to render different things depending on the state/props. With Dioxus, just describe what you want to see using Rust control flow – the framework will take care of making the necessary changes on the fly if the state or props change!\n\n## Conditional Rendering\n\nTo render different elements based on a condition, you could use an `if-else` statement:\n\n````rust, no_run@conditional_rendering.rs\nif is_logged_in {\n    rsx! {\n        \"Welcome!\"\n        button { onclick: move |_| log_out.call(()), \"Log Out\" }\n    }\n} else {\n    rsx! {\n        button { onclick: move |_| log_in.call(()), \"Log In\" }\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n  conditional_rendering::App {}\n}\n````\n\n > \n > You could also use `match` statements, or any Rust function to conditionally render different things.\n\n### Improving the `if-else` Example\n\nYou may have noticed some repeated code in the `if-else` example above. Repeating code like this is both bad for maintainability and performance. Dioxus will skip diffing static elements like the button, but when switching between multiple `rsx` calls it cannot perform this optimization. For this example either approach is fine, but for components with large parts that are reused between conditionals, it can be more of an issue.\n\nWe can improve this example by splitting up the dynamic parts and inserting them where they are needed.\n\n````rust, no_run@conditional_rendering.rs\nrsx! {\n    // We only render the welcome message if we are logged in\n    // You can use if statements in the middle of a render block to conditionally render elements\n    if is_logged_in {\n        // Notice the body of this if statement is rsx code, not an expression\n        \"Welcome!\"\n    }\n    button {\n        // depending on the value of `is_logged_in`, we will call a different event handler\n        onclick: move |_| if is_logged_in { log_out.call(()) } else { log_in.call(()) },\n        if is_logged_in {\n            // if we are logged in, the button should say \"Log Out\"\n            \"Log Out\"\n        } else {\n            // if we are not logged in, the button should say \"Log In\"\n            \"Log In\"\n        }\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n  conditional_rendering::LogInImprovedApp {}\n}\n````\n\n### Inspecting `Element` props\n\nSince `Element` is a `Option<VNode>`, components accepting `Element` as a prop can inspect its contents, and render different things based on that. Example:\n\n````rust, no_run@component_children_inspect.rs\nfn Clickable(props: ClickableProps) -> Element {\n    match props.children {\n        Some(VNode { .. }) => {\n            todo!(\"render some stuff\")\n        }\n        _ => {\n            todo!(\"render some other stuff\")\n        }\n    }\n}\n````\n\nYou can't mutate the `Element`, but if you need a modified version of it, you can construct a new one based on its attributes/children/etc.\n\n## Rendering Nothing\n\nTo render nothing, you can return `None` from a component. This is useful if you want to conditionally hide something:\n\n````rust, no_run@conditional_rendering.rs\nif is_logged_in {\n    return rsx!();\n}\n\nrsx! {\n    p { \"You must be logged in to comment\" }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n  conditional_rendering::LogInWarningApp {}\n}\n````\n\nThis works because the `Element` type is just an alias for `Option<VNode>`\n\n > \n > Again, you may use a different method to conditionally return `None`. For example the boolean's [`then()`](https://doc.rust-lang.org/std/primitive.bool.html#method.then) function could be used.\n\n## Rendering Lists\n\nOften, you'll want to render a collection of components. For example, you might want to render a list of all comments on a post.\n\nFor this, Dioxus accepts iterators that produce `Element`s. So we need to:\n\n* Get an iterator over all of our items (e.g., if you have a `Vec` of comments, iterate over it with `iter()`)\n* `.map` the iterator to convert each item into a `LazyNode` using `rsx!{...}`\n  * Add a unique `key` attribute to each iterator item\n* Include this iterator in the final RSX (or use it inline)\n\nExample: suppose you have a list of comments you want to render. Then, you can render them like this:\n\n````rust, no_run@rendering_lists.rs\nlet mut comment_field = use_signal(String::new);\nlet mut next_id = use_signal(|| 0);\nlet mut comments = use_signal(Vec::<CommentData>::new);\n\nlet comments_lock = comments.read();\nlet comments_rendered = comments_lock.iter().map(|comment| {\n    rsx! { Comment { comment: comment.clone() } }\n});\n\nrsx! {\n    form {\n        onsubmit: move |_| {\n            comments\n                .write()\n                .push(CommentData {\n                    content: comment_field(),\n                    id: next_id(),\n                });\n            next_id += 1;\n            comment_field.set(String::new());\n        },\n        input {\n            value: \"{comment_field}\",\n            oninput: move |event| comment_field.set(event.value())\n        }\n        input { r#type: \"submit\" }\n    }\n    {comments_rendered}\n}\n````\n\n````inject-dioxus\nDemoFrame {\n  rendering_lists::App {}\n}\n````\n\n### Inline for loops\n\nBecause of how common it is to render a list of items, Dioxus provides a shorthand for this. Instead of using `.iter`, `.map`, and `rsx`, you can use a `for` loop with a body of rsx code:\n\n````rust, no_run@rendering_lists.rs\nlet mut comment_field = use_signal(String::new);\nlet mut next_id = use_signal(|| 0);\nlet mut comments = use_signal(Vec::<CommentData>::new);\n\nrsx! {\n    form {\n        onsubmit: move |_| {\n            comments\n                .write()\n                .push(CommentData {\n                    content: comment_field(),\n                    id: next_id(),\n                });\n            next_id += 1;\n            comment_field.set(String::new());\n        },\n        input {\n            value: \"{comment_field}\",\n            oninput: move |event| comment_field.set(event.value())\n        }\n        input { r#type: \"submit\" }\n    }\n    for comment in comments() {\n        // Notice the body of this for loop is rsx code, not an expression\n        Comment { comment }\n    }\n}\n````\n\n````inject-dioxus\nDemoFrame {\n  rendering_lists::AppForLoop {}\n}\n````\n\n### The key Attribute\n\nEvery time you re-render your list, Dioxus needs to keep track of which items go where to determine what updates need to be made to the UI.\n\nFor example, suppose the `CommentComponent` had some state – e.g. a field where the user typed in a reply. If the order of comments suddenly changes, Dioxus needs to correctly associate that state with the same comment – otherwise, the user will end up replying to a different comment!\n\nTo help Dioxus keep track of list items, we need to associate each item with a unique key. In the example above, we dynamically generated the unique key. In real applications, it's more likely that the key will come from e.g. a database ID. It doesn't matter where you get the key from, as long as it meets the requirements:\n\n* Keys must be unique in a list\n* The same item should always get associated with the same key\n* Keys should be relatively small (i.e. converting the entire Comment structure to a String would be a pretty bad key) so they can be compared efficiently\n\nYou might be tempted to use an item's index in the list as its key. That’s what Dioxus will use if you don’t specify a key at all. This is only acceptable if you can guarantee that the list is constant – i.e., no re-ordering, additions, or deletions.\n\n > \n > Note that if you pass the key to a component you've made, it won't receive the key as a prop. It’s only used as a hint by Dioxus itself. If your component needs an ID, you have to pass it as a separate prop."
+            }
+            36usize => {
+                "# Creating Our First Route\n\nIn this chapter, we will start utilizing Dioxus Router and add a homepage and a\n404 page to our project.\n\n## Fundamentals\n\nThe core of the Dioxus Router is the [`Routable`] macro and the [`Router`] component.\n\nRoutable is a trait for anything that can:\n\n* Be parsed from a URL\n* Be turned into a URL\n* Be rendered as to a Element\n\nLet's create a new router. First, we need an actual page to route to! Let's add a homepage component:\n\n````rust@first_route.rs\n#[component]\nfn Home() -> Element {\n    rsx! { h1 { \"Welcome to the Dioxus Blog!\" } }\n}\n````\n\n## Creating Routes\n\nWe want to use Dioxus Router to separate our application into different \"pages\".\nDioxus Router will then determine which page to render based on the URL path.\n\nTo start using Dioxus Router, we need to use the [`Routable`] macro.\n\nThe [`Routable`] macro takes an enum with all of the possible routes in our application. Each variant of the enum represents a route and must be annotated with the `#[route(path)]` attribute.\n\n````rust@first_route.rs\n#![allow(non_snake_case)]\nuse dioxus::prelude::*;\n\n/// An enum of all of the possible routes in the app.\n#[derive(Routable, Clone)]\nenum Route {\n    // The home page is at the / route\n    #[route(\"/\")]\n    Home {},\n}\n````\n\nThe [`Router`] component will provide a router context for all the inner components and hooks to use. You usually will want to place this at the top of your components tree.\n\n````rust@first_route.rs\nfn App() -> Element {\n    rsx! { Router::<Route> {} }\n}\n````\n\nIf you head to your application's browser tab, you should now see the text\n`Welcome to Dioxus Blog!` when on the root URL (`http://localhost:8080/`). If\nyou enter a different path for the URL, nothing should be displayed.\n\nThis is because we told Dioxus Router to render the `Home` component only when\nthe URL path is `/`.\n\n## Fallback Route\n\nIn our example, when a route doesn't exist Dioxus Router doesn't render anything. Many sites also have a \"404\" page when a path does not exist. Let's add one to our site.\n\nFirst, we create a new `PageNotFound` component.\n\n````rust@catch_all.rs\n#[component]\nfn PageNotFound(route: Vec<String>) -> Element {\n    rsx! {\n        h1 { \"Page not found\" }\n        p { \"We are terribly sorry, but the page you requested doesn't exist.\" }\n        pre { color: \"red\", \"log:\\nattemped to navigate to: {route:?}\" }\n    }\n}\n````\n\nNext, register the route in the Route enum to match if all other routes fail.\n\n````rust@catch_all.rs\n#[derive(Routable, Clone)]\nenum Route {\n    #[route(\"/\")]\n    Home {},\n    // PageNotFound is a catch all route that will match any route and placing the matched segments in the route field\n    #[route(\"/:..route\")]\n    PageNotFound { route: Vec<String> },\n}\n````\n\nNow when you go to a route that doesn't exist, you should see the page not found\ntext.\n\n## Conclusion\n\nIn this chapter, we learned how to create a route and tell Dioxus Router what\ncomponent to render when the URL path is `/`. We also created a 404 page to\nhandle when a route doesn't exist. Next, we'll create the blog portion of our\nsite. We will utilize nested routes and URL parameters."
+            }
+            76usize => {
+                "# Props Migration\n\nIn dioxus 0.4, props are passed into the component through the scope. In dioxus 0.5, props are passed into the component through the props struct directly.\n\n## Owned Props\n\nThe props were borrowed with the lifetime from the scope. The props are cloned every render, and passed into the component as an owned value.\n\nDioxus 0.4:\n\n````rust\n#[component]\nfn Comp(cx: Scope, name: String) -> Element {\n    // You pass in an owned prop, but inside the component, it is borrowed (name is the type &String inside the function)\n    let owned_name: String = name.clone();\n\n    cx.render(rsx! {\n        \"Hello {owned_name}\"\n    })\n}\n````\n\nDioxus 0.5:\n\n````rust@migration_props.rs\n// In dioxus 0.5, props are always owned. You pass in owned props and you get owned props in the body of the component\n#[component]\nfn Comp(name: String) -> Element {\n    // Name is owned here already (name is the type String inside the function)\n    let owned_name: String = name;\n\n    rsx! {\"Hello {owned_name}\"}\n}\n````\n\nBecause props are cloned every render, making props Copy is recommended. You can easily make a field Copy by accepting `ReadOnlySignal<T>` instead of `T` in the props struct:\n\n````rust@migration_props.rs\n// In dioxus 0.5, props are always owned. You pass in owned props and you get owned props in the body of the component\n#[component]\nfn CopyPropsComp(name: ReadOnlySignal<String>) -> Element {\n    rsx! {\n        button {\n            // You can easily copy the value of a signal into a closure\n            onclick: move |_| {\n                println!(\"Hello {name}\");\n                async move {\n                    println!(\"Hello {name}\");\n                }\n            },\n            \"Click me\"\n        }\n    }\n}\n\nfn CopyPropsCompParent() -> Element {\n    rsx! { CopyPropsComp { name: \"World\" } }\n}\n````\n\n## Borrowed Props\n\nBorrowed props are removed in dioxus 0.5. Mapped signals can act similarly to borrowed props if your props are borrowed from state.\n\nDioxus 0.4:\n\n````rust\nfn Parent(cx: Scope) -> Element {\n    let state = use_state(cx, || (1, \"World\".to_string()));\n    rsx! {\n        BorrowedComp {\n            name: &state.get().1\n        }\n    }\n}\n\n#[component]\nfn BorrowedComp<'a>(cx: Scope<'a>, name: &'a str) -> Element<'a> {\n    rsx! {\n        \"Hello {name}\"\n    }\n}\n````\n\nDioxus 0.5:\n\n````rust@migration_props.rs\nfn Parent() -> Element {\n    let state = use_signal(|| (1, \"World\".to_string()));\n\n    rsx! { BorrowedComp { name: state.map(|s| &s.1) } }\n}\n\n#[component]\nfn BorrowedComp(name: MappedSignal<String>) -> Element {\n    rsx! {\"Hello {name}\"}\n}\n````\n\n## Manual Props\n\nManual prop structs in dioxus 0.5 need to derive `Clone` in addition to `Props` and `PartialEq`:\n\nDioxus 0.4:\n\n````rust\n#[derive(Props, PartialEq)]\nstruct ManualProps {\n    name: String,\n}\n\n// Functions accept the props directly instead of the scope\nfn ManualPropsComponent(cx: Scope<ManualProps>) -> Element {\n    render! {\n        \"Hello {cx.props.name}\"\n    }\n}\n````\n\nDioxus 0.5:\n\n````rust@migration_props.rs\n#[derive(Props, Clone, PartialEq)]\nstruct ManualProps {\n    name: String,\n}\n\n// Functions accept the props directly instead of the component\nfn ManualPropsComponent(props: ManualProps) -> Element {\n    rsx! {\"Hello {props.name}\"}\n}\n````"
+            }
+            51usize => {
+                "# Publishing\n\nAfter you have build your application, you will need to publish it somewhere. This reference will outline different methods of publishing your desktop or web application.\n\n## Web: Publishing with GitHub Pages\n\nEdit your `Dioxus.toml` to point your `out_dir` to the `docs` folder and the `base_path` to the name of your repo:\n\n````toml\n[application]\n# ...\nout_dir = \"docs\"\n\n[web.app]\nbase_path = \"your_repo\"\n````\n\nThen build your app and publish it to Github:\n\n* Make sure GitHub Pages is set up for your repo to publish any static files in the docs directory\n* Build your app with:\n\n````sh\ndx build --release\n````\n\n* Make a copy of your `docs/index.html` file and rename the copy to `docs/404.html` so that your app will work with client-side routing\n* Add and commit with git\n* Push to GitHub\n\n## Desktop: Creating an installer\n\nDioxus desktop app uses your operating system's WebView library, so it's portable to be distributed for other platforms.\n\nIn this section, we'll cover how to bundle your app for macOS, Windows, and Linux.\n\n## Preparing your application for bundling\n\nDepending on your platform, you may need to add some additional code to your `main.rs` file to make sure your app is ready for bundling. On Windows, you'll need to add the `#![windows_subsystem = \"windows\"]` attribute to your `main.rs` file to hide the terminal window that pops up when you run your app. **If you're developing on Windows, only use this when bundling.** It will disable the terminal, so you will not get logs of any kind. You can gate it behind a feature, like so:\n\n````toml\n# Cargo.toml\n[features]\nbundle = []\n````\n\nAnd then your `main.rs`:\n\n````rust\n#![cfg_attr(feature = \"bundle\", windows_subsystem = \"windows\")]\n````\n\n## Adding assets to your application\n\nIf you want to bundle assets with your application, you can either use them with the `manganis` crate (covered more in the [assets](../reference/assets.md) page), or you can include them in your `Dioxus.toml` file:\n\n````toml\n[bundle]\n# The list of files to include in the bundle. These can contain globs.\nresources = [\"main.css\", \"header.svg\", \"**/*.png\"]\n````\n\n## Install `dioxus CLI`\n\nThe first thing we'll do is install the [dioxus-cli](https://github.com/DioxusLabs/dioxus/tree/v0.5/packages/cli). This extension to cargo will make it very easy to package our app for the various platforms.\n\nTo install, simply run\n\n`cargo install dioxus-cli`\n\n## Building\n\nTo bundle your application you can simply run `dx bundle --release` (also add `--features bundle` if you're using that, see the [this](#preparing-your-application-for-bundling) for more) to produce a final app with all the optimizations and assets builtin.\n\nOnce you've ran the command, your app should be accessible in `dist/bundle/`.\n\nFor example, a macOS app would look like this:\n\n![Published App](/assets/static/publish.png)\n\nNice! And it's only 4.8 Mb – extremely lean!! Because Dioxus leverages your platform's native WebView, Dioxus apps are extremely memory efficient and won't waste your battery.\n\n > \n > Note: not all CSS works the same on all platforms. Make sure to view your app's CSS on each platform – or web browser (Firefox, Chrome, Safari) before publishing."
+            }
+            25usize => {
+                "# Web\n\nTo run on the Web, your app must be compiled to WebAssembly and depend on the `dioxus` and `dioxus-web` crates.\n\nA build of Dioxus for the web will be roughly equivalent to the size of a React build (70kb vs 65kb) but it will load significantly faster because [WebAssembly can be compiled as it is streamed](https://hacks.mozilla.org/2018/01/making-webassembly-even-faster-firefoxs-new-streaming-and-tiering-compiler/).\n\nExamples:\n\n* [TodoMVC](https://github.com/DioxusLabs/dioxus/blob/main/examples/todomvc.rs)\n* [Tailwind App](https://github.com/DioxusLabs/dioxus/tree/v0.5/examples/tailwind)\n\n[![TodoMVC example](https://github.com/DioxusLabs/example-projects/raw/master/todomvc/example.png)](https://github.com/DioxusLabs/dioxus/blob/main/examples/todomvc.rs)\n\n > \n > Note: Because of the limitations of Wasm, [not every crate will work](https://rustwasm.github.io/docs/book/reference/which-crates-work-with-wasm.html) with your web apps, so you'll need to make sure that your crates work without native system calls (timers, IO, etc).\n\n## Support\n\nThe Web is the best-supported target platform for Dioxus.\n\n* Because your app will be compiled to WASM you have access to browser APIs through [wasm-bindgen](https://rustwasm.github.io/docs/wasm-bindgen/introduction.html).\n* Dioxus provides hydration to resume apps that are rendered on the server. See the [fullstack](../fullstack/index.md) reference for more information.\n\n## Running Javascript\n\nDioxus provides some ergonomic wrappers over the browser API, but in some cases you may need to access parts of the browser API Dioxus does not expose.\n\nFor these cases, Dioxus web exposes the use_eval hook that allows you to run raw Javascript in the webview:\n\n````rust@eval.rs\nuse dioxus::prelude::*;\n\nfn main() {\n    launch(app);\n}\n\nfn app() -> Element {\n    // You can create as many eval instances as you want\n    let mut eval = eval(\n        r#\"\n        // You can send messages from JavaScript to Rust with the dioxus.send function\n        dioxus.send(\"Hi from JS!\");\n        // You can receive messages from Rust to JavaScript with the dioxus.recv function\n        let msg = await dioxus.recv();\n        console.log(msg);\n        \"#,\n    );\n\n    // You can send messages to JavaScript with the send method\n    eval.send(\"Hi from Rust!\".into()).unwrap();\n\n    let future = use_resource(move || {\n        to_owned![eval];\n        async move {\n            // You can receive any message from JavaScript with the recv method\n            eval.recv().await.unwrap()\n        }\n    });\n\n    match future.read_unchecked().as_ref() {\n        Some(v) => rsx! {\n            p { \"{v}\" }\n        },\n        _ => rsx! {\n            p { \"hello\" }\n        },\n    }\n}\n\n````\n\nIf you are targeting web, but don't plan on targeting any other Dioxus renderer you can also use the generated wrappers in the [web-sys](https://rustwasm.github.io/wasm-bindgen/web-sys/index.html) and [gloo](https://gloo-rs.web.app/) crates.\n\n## Customizing Index Template\n\nDioxus supports providing custom index.html templates. The index.html must include a `div` with the id `main` to be used. Hot Reload is still supported. An example\nis provided in the [PWA-Example](https://github.com/DioxusLabs/dioxus/blob/main/examples/PWA-example/index.html)."
+            }
+            50usize => {
+                "# Cookbook\n\nThe cookbook contains common recipes for different patterns within Dioxus.\n\nThere are a few different sections in the cookbook:\n\n* [Publishing](publishing.md) will teach you how to present your app in a variety of delicious forms.\n* Explore the [Anti-patterns](antipatterns.md) section to discover what ingredients to avoid when preparing your application.\n* Within [Error Handling](error_handling.md), we'll master the fine art of managing spoiled ingredients in Dioxus.\n* Take a culinary journey through [State management](state/index.md), where we'll explore the world of handling local, global, and external state in Dioxus.\n* [Integrations](integrations/index.md) will guide you how to seamlessly blend external libraries into your Dioxus culinary creations.\n* [Testing](testing.md) explains how to examine the unique flavor of Dioxus-specific features, like components.\n* [Tailwind](tailwind.md) reveals the secrets of combining your Tailwind and Dioxus ingredients into a complete meal. You will also learn about using other NPM ingredients (packages) with Dioxus.\n* In the [Custom Renderer](custom_renderer.md) section, we embark on a cooking adventure, inventing new ways to cook with Dioxus!\n* [Optimizing](optimizing.md) will show you how to maximize the quality of your ingredients."
+            }
+            7usize => {
+                "# Dioxus Reference\n\nThis Reference contains more detailed explanations for all concepts covered in the [guide](../guide/index.md) and more.\n\n## Rendering\n\n* [`RSX`](rsx.md) Rsx is a HTML-like macro that allows you to declare UI\n* [`Components`](components.md) Components are the building blocks of UI in Dioxus\n* [`Props`](component_props.md) Props allow you pass information to Components\n* [`Event Listeners`](event_handlers.md) Event listeners let you respond to user input\n* [`User Input`](user_input.md) How to handle User input in Dioxus\n* [`Dynamic Rendering`](dynamic_rendering.md) How to dynamically render data in Dioxus\n\n## State\n\n* [`Hooks`](hooks.md) Hooks allow you to create components state\n* [`Context`](context.md) Context allows you to create state in a parent and consume it in children\n* [`Routing`](router.md) The router helps you manage the URL state\n* [`Resource`](use_resource.md) Use future allows you to create an async task and monitor it's state\n* [`UseCoroutine`](use_coroutine.md) Use coroutine helps you manage external state\n* [`Spawn`](spawn.md) Spawn creates an async task\n\n## Platforms\n\n* [`Choosing a Web Renderer`](choosing_a_web_renderer.md) Overview of the different web renderers\n* [`Desktop`](desktop/index.md) Overview of desktop specific APIS\n* [`Web`](web/index.md) Overview of web specific APIS\n* [`Fullstack`](fullstack/index.md) Overview of Fullstack specific APIS\n  * [`Server Functions`](fullstack/server_functions.md) Server functions make it easy to communicate between your server and client\n  * [`Extractors`](fullstack/extractors.md) Extractors allow you to get extra information out of the headers of a request\n  * [`Middleware`](fullstack/middleware.md) Middleware allows you to wrap a server function request or response\n  * [`Authentication`](fullstack/authentication.md) An overview of how to handle authentication with server functions\n  * [`Routing`](fullstack/routing.md) An overview of how to work with the router in the fullstack renderer\n* [`SSR`](ssr.md) Overview of the SSR renderer\n* [`Liveview`](liveview.md) Overview of liveview specific APIS"
+            }
+            6usize => {
+                "# Conclusion\n\nWell done! You've completed the Dioxus guide and built a hackernews application in Dioxus.\n\nTo continue your journey, you can attempt a challenge listed below, or look at the [Dioxus reference](../reference/index.md).\n\n## Challenges\n\n* Organize your components into separate files for better maintainability.\n* Give your app some style if you haven't already.\n* Integrate your application with the [Dioxus router](../router/index.md).\n\n## The full code for the hacker news project\n\n````rust@hackernews_complete.rs\n#![allow(non_snake_case)]\nuse dioxus::prelude::*;\n\nfn main() {\n    launch(App);\n}\n\npub fn App() -> Element {\n    use_context_provider(|| Signal::new(PreviewState::Unset));\n\n    rsx! {\n        div { display: \"flex\", flex_direction: \"row\", width: \"100%\",\n            div { width: \"50%\", Stories {} }\n            div { width: \"50%\", Preview {} }\n        }\n    }\n}\n\nfn Stories() -> Element {\n    let stories = use_resource(move || get_stories(10));\n\n    match &*stories.read_unchecked() {\n        Some(Ok(list)) => rsx! {\n            div {\n                for story in list {\n                    StoryListing { story: story.clone() }\n                }\n            }\n        },\n        Some(Err(err)) => rsx! {\"An error occurred while fetching stories {err}\"},\n        None => rsx! {\"Loading items\"},\n    }\n}\n\nasync fn resolve_story(\n    mut full_story: Signal<Option<StoryPageData>>,\n    mut preview_state: Signal<PreviewState>,\n    story_id: i64,\n) {\n    if let Some(cached) = full_story.as_ref() {\n        *preview_state.write() = PreviewState::Loaded(cached.clone());\n        return;\n    }\n\n    *preview_state.write() = PreviewState::Loading;\n    if let Ok(story) = get_story(story_id).await {\n        *preview_state.write() = PreviewState::Loaded(story.clone());\n        *full_story.write() = Some(story);\n    }\n}\n\n#[component]\nfn StoryListing(story: ReadOnlySignal<StoryItem>) -> Element {\n    let preview_state = consume_context::<Signal<PreviewState>>();\n    let StoryItem {\n        title,\n        url,\n        by,\n        score,\n        time,\n        kids,\n        id,\n        ..\n    } = story();\n    let full_story = use_signal(|| None);\n\n    let url = url.as_deref().unwrap_or_default();\n    let hostname = url\n        .trim_start_matches(\"https://\")\n        .trim_start_matches(\"http://\")\n        .trim_start_matches(\"www.\");\n    let score = format!(\"{score} {}\", if score == 1 { \" point\" } else { \" points\" });\n    let comments = format!(\n        \"{} {}\",\n        kids.len(),\n        if kids.len() == 1 {\n            \" comment\"\n        } else {\n            \" comments\"\n        }\n    );\n    let time = time.format(\"%D %l:%M %p\");\n\n    rsx! {\n        div {\n            padding: \"0.5rem\",\n            position: \"relative\",\n            onmouseenter: move |_event| { resolve_story(full_story, preview_state, id) },\n            div { font_size: \"1.5rem\",\n                a {\n                    href: url,\n                    onfocus: move |_event| { resolve_story(full_story, preview_state, id) },\n                    \"{title}\"\n                }\n                a {\n                    color: \"gray\",\n                    href: \"https://news.ycombinator.com/from?site={hostname}\",\n                    text_decoration: \"none\",\n                    \" ({hostname})\"\n                }\n            }\n            div { display: \"flex\", flex_direction: \"row\", color: \"gray\",\n                div { \"{score}\" }\n                div { padding_left: \"0.5rem\", \"by {by}\" }\n                div { padding_left: \"0.5rem\", \"{time}\" }\n                div { padding_left: \"0.5rem\", \"{comments}\" }\n            }\n        }\n    }\n}\n\n#[derive(Clone, Debug)]\nenum PreviewState {\n    Unset,\n    Loading,\n    Loaded(StoryPageData),\n}\n\nfn Preview() -> Element {\n    let preview_state = consume_context::<Signal<PreviewState>>();\n\n    match preview_state() {\n        PreviewState::Unset => rsx! {\"Hover over a story to preview it here\"},\n        PreviewState::Loading => rsx! {\"Loading...\"},\n        PreviewState::Loaded(story) => {\n            rsx! {\n                div { padding: \"0.5rem\",\n                    div { font_size: \"1.5rem\", a { href: story.item.url, \"{story.item.title}\" } }\n                    div { dangerous_inner_html: story.item.text }\n                    for comment in &story.comments {\n                        Comment { comment: comment.clone() }\n                    }\n                }\n            }\n        }\n    }\n}\n\n#[component]\nfn Comment(comment: CommentData) -> Element {\n    rsx! {\n        div { padding: \"0.5rem\",\n            div { color: \"gray\", \"by {comment.by}\" }\n            div { dangerous_inner_html: \"{comment.text}\" }\n            for kid in &comment.sub_comments {\n                Comment { comment: kid.clone() }\n            }\n        }\n    }\n}\n\n// Define the Hackernews API and types\nuse chrono::{DateTime, Utc};\nuse futures::future::join_all;\nuse serde::{Deserialize, Serialize};\n\npub static BASE_API_URL: &str = \"https://hacker-news.firebaseio.com/v0/\";\npub static ITEM_API: &str = \"item/\";\npub static USER_API: &str = \"user/\";\nconst COMMENT_DEPTH: i64 = 2;\n\npub async fn get_story_preview(id: i64) -> Result<StoryItem, reqwest::Error> {\n    let url = format!(\"{}{}{}.json\", BASE_API_URL, ITEM_API, id);\n    reqwest::get(&url).await?.json().await\n}\n\npub async fn get_stories(count: usize) -> Result<Vec<StoryItem>, reqwest::Error> {\n    let url = format!(\"{}topstories.json\", BASE_API_URL);\n    let stories_ids = &reqwest::get(&url).await?.json::<Vec<i64>>().await?[..count];\n\n    let story_futures = stories_ids[..usize::min(stories_ids.len(), count)]\n        .iter()\n        .map(|&story_id| get_story_preview(story_id));\n    Ok(join_all(story_futures)\n        .await\n        .into_iter()\n        .filter_map(|story| story.ok())\n        .collect())\n}\n\n#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]\npub struct StoryPageData {\n    #[serde(flatten)]\n    pub item: StoryItem,\n    #[serde(default)]\n    pub comments: Vec<CommentData>,\n}\n\n#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]\npub struct CommentData {\n    pub id: i64,\n    /// there will be no by field if the comment was deleted\n    #[serde(default)]\n    pub by: String,\n    #[serde(default)]\n    pub text: String,\n    #[serde(with = \"chrono::serde::ts_seconds\")]\n    pub time: DateTime<Utc>,\n    #[serde(default)]\n    pub kids: Vec<i64>,\n    #[serde(default)]\n    pub sub_comments: Vec<CommentData>,\n    pub r#type: String,\n}\n\n#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]\npub struct StoryItem {\n    pub id: i64,\n    pub title: String,\n    pub url: Option<String>,\n    pub text: Option<String>,\n    #[serde(default)]\n    pub by: String,\n    #[serde(default)]\n    pub score: i64,\n    #[serde(default)]\n    pub descendants: i64,\n    #[serde(with = \"chrono::serde::ts_seconds\")]\n    pub time: DateTime<Utc>,\n    #[serde(default)]\n    pub kids: Vec<i64>,\n    pub r#type: String,\n}\n\npub async fn get_story(id: i64) -> Result<StoryPageData, reqwest::Error> {\n    let url = format!(\"{}{}{}.json\", BASE_API_URL, ITEM_API, id);\n    let mut story = reqwest::get(&url).await?.json::<StoryPageData>().await?;\n    let comment_futures = story.item.kids.iter().map(|&id| get_comment(id));\n    let comments = join_all(comment_futures)\n        .await\n        .into_iter()\n        .filter_map(|c| c.ok())\n        .collect();\n\n    story.comments = comments;\n    Ok(story)\n}\n\n#[async_recursion::async_recursion(?Send)]\npub async fn get_comment_with_depth(id: i64, depth: i64) -> Result<CommentData, reqwest::Error> {\n    let url = format!(\"{}{}{}.json\", BASE_API_URL, ITEM_API, id);\n    let mut comment = reqwest::get(&url).await?.json::<CommentData>().await?;\n    if depth > 0 {\n        let sub_comments_futures = comment\n            .kids\n            .iter()\n            .map(|story_id| get_comment_with_depth(*story_id, depth - 1));\n        comment.sub_comments = join_all(sub_comments_futures)\n            .await\n            .into_iter()\n            .filter_map(|c| c.ok())\n            .collect();\n    }\n    Ok(comment)\n}\n\npub async fn get_comment(comment_id: i64) -> Result<CommentData, reqwest::Error> {\n    get_comment_with_depth(comment_id, COMMENT_DEPTH).await\n}\n\n````"
+            }
+            2usize => {
+                "# Dioxus Guide\n\n## Introduction\n\nIn this guide, you'll learn to use Dioxus to build user interfaces that run anywhere. We will recreate the hackernews homepage in Dioxus:\n\n````inject-dioxus\nDemoFrame {\n    hackernews_complete::App {}\n}\n````\n\nThis guide serves a very brief overview of Dioxus. Throughout the guide, there will be links to the [reference](../reference/index.md) with more details about specific concepts."
+            }
+            38usize => {
+                "# Navigation Targets\n\nIn the previous chapter, we learned how to create links to pages within our app.\nWe told them where to go using the `target` property. This property takes something that can be converted to a [`NavigationTarget`].\n\n## What is a navigation target?\n\nA [`NavigationTarget`] is similar to the `href` of an HTML anchor element. It\ntells the router where to navigate to. The Dioxus Router knows two kinds of\nnavigation targets:\n\n* [`Internal`]: We used internal links in the previous chapter. It's a link to a page within our\n  app represented as a Route enum.\n* [`External`]: This works exactly like an HTML anchors' `href`. Don't use this for in-app\n  navigation as it will trigger a page reload by the browser.\n\n## External navigation\n\nIf we need a link to an external page we can do it like this:\n\n````rust@external_link.rs\nfn GoToDioxus() -> Element {\n    rsx! {\n        Link { to: \"https://dioxuslabs.com\", \"ExternalTarget target\" }\n    }\n}\n````"
+            }
+            48usize => {
+                "# History Buttons\n\nSome platforms, like web browsers, provide users with an easy way to navigate\nthrough an app's history. They have UI elements or integrate with the OS.\n\nHowever, native platforms usually don't provide such amenities, which means that\napps wanting users to have access to them, need to implement them. For this\nreason, the router comes with two components, which emulate a browser's back and\nforward buttons:\n\n* [`GoBackButton`]\n* [`GoForwardButton`]\n\n > \n > If you want to navigate through the history programmatically, take a look at\n > [`programmatic navigation`](./navigation/programmatic.md).\n\n````rust@history_buttons.rs\nfn HistoryNavigation() -> Element {\n    rsx! {\n        GoBackButton { \"Back to the Past\" }\n        GoForwardButton { \"Back to the Future\" }\n    }\n}\n````\n\nAs you might know, browsers usually disable the back and forward buttons if\nthere is no history to navigate to. The router's history buttons try to do that\ntoo, but depending on the \\[history provider\\] that might not be possible.\n\nImportantly, neither `WebHistory` supports that feature.\nThis is due to limitations of the browser History API.\n\nHowever, in both cases, the router will just ignore button presses, if there is\nno history to navigate to.\n\nAlso, when using `WebHistory`, the history buttons might\nnavigate a user to a history entry outside your app."
+            }
+            63usize => {
+                "# Optimizing\n\n*Note: This is written primarily for the web, but the main optimizations will work on other platforms too.*\n\nYou might have noticed that Dioxus binaries are pretty big.\nThe WASM binary of a [TodoMVC app](https://github.com/tigerros/dioxus-todo-app) weighs in at 2.36mb!\nDon't worry; we can get it down to a much more manageable 234kb.\nThis will get obviously lower over time.\nWith nightly features, you can even reduce the binary size of a hello world app to less than 100kb!\n\nWe will also discuss ways to optimize your app for increased speed.\n\nHowever, certain optimizations will sacrifice speed for decreased binary size or the other way around.\nThat's what you need to figure out yourself. Does your app perform performance-intensive tasks, such as graphical processing or tons of DOM manipulations?\nYou could go for increased speed. In most cases, though, decreased binary size is the better choice, especially because Dioxus WASM binaries are quite large.\n\nTo test binary sizes, we will use [this](https://github.com/tigerros/dioxus-todo-app) repository as a sample app.\nThe `no-optimizations` package will serve as the base, which weighs 2.36mb as of right now.\n\nAdditional resources:\n\n* [WASM book - Shrinking `.wasm` code size](https://rustwasm.github.io/docs/book/reference/code-size.html)\n* [min-sized-rust](https://github.com/johnthagen/min-sized-rust)\n\n## Building in release mode\n\nThis is the best way to optimize. In fact, the 2.36mb figure at the start of the guide is with release mode.\nIn debug mode, it's actually a whopping 32mb! It also increases the speed of your app.\n\nThankfully, no matter what tool you're using to build your app, it will probably have a `--release` flag to do this.\n\nUsing the [Dioxus CLI](https://dioxuslabs.com/learn/0.5/CLI) or [Trunk](https://trunkrs.dev/):\n\n* Dioxus CLI: `dx build --release`\n* Trunk: `trunk build --release`\n\n## UPX\n\nIf you're not targeting web, you can use the [UPX](https://github.com/upx/upx) CLI tool to compress your executables.\n\nSetup:\n\n* Download a [release](https://github.com/upx/upx/releases) and extract the directory inside to a sensible location.\n* Add the executable located in the directory to your path variable.\n\nYou can run `upx --help` to get the CLI options, but you should also view `upx-doc.html` for more detailed information.\nIt's included in the extracted directory.\n\nAn example command might be: `upx --best -o target/release/compressed.exe target/release/your-executable.exe`.\n\n## Build configuration\n\n*Note: Settings defined in `.cargo/config.toml` will override settings in `Cargo.toml`.*\n\nOther than the `--release` flag, this is the easiest way to optimize your projects, and also the most effective way,\nat least in terms of reducing binary size.\n\n### Stable\n\nThis configuration is 100% stable and decreases the binary size from 2.36mb to 310kb.\nAdd this to your `.cargo/config.toml`:\n\n````toml\n[profile.release]\nopt-level = \"z\"\ndebug = false\nlto = true\ncodegen-units = 1\npanic = \"abort\"\nstrip = true\nincremental = false\n````\n\nLinks to the documentation of each value:\n\n* [`opt-level`](https://doc.rust-lang.org/rustc/codegen-options/index.html#opt-level)\n* [`debug`](https://doc.rust-lang.org/rustc/codegen-options/index.html#debuginfo)\n* [`lto`](https://doc.rust-lang.org/rustc/codegen-options/index.html#lto)\n* [`codegen-units`](https://doc.rust-lang.org/rustc/codegen-options/index.html#codegen-units)\n* [`panic`](https://doc.rust-lang.org/rustc/codegen-options/index.html#panic)\n* [`strip`](https://doc.rust-lang.org/rustc/codegen-options/index.html#strip)\n* [`incremental`](https://doc.rust-lang.org/rustc/codegen-options/index.html#incremental)\n\n### Unstable\n\nThis configuration contains some unstable features, but it should work just fine.\nIt decreases the binary size from 310kb to 234kb.\nAdd this to your `.cargo/config.toml`:\n\n````toml\n[unstable]\nbuild-std = [\"std\", \"panic_abort\", \"core\", \"alloc\"]\nbuild-std-features = [\"panic_immediate_abort\"]\n\n[build]\nrustflags = [\n    \"-Clto\",\n    \"-Zvirtual-function-elimination\",\n    \"-Zlocation-detail=none\"\n]\n\n# Same as in the Stable section\n[profile.release]\nopt-level = \"z\"\ndebug = false\nlto = true\ncodegen-units = 1\npanic = \"abort\"\nstrip = true\nincremental = false\n````\n\n*Note: The omitted space in each flag (e.g., `-C<no space here>lto`) is intentional. It is not a typo.*\n\nThe values in `[profile.release]` are documented in the [Stable](#stable) section. Links to the documentation of each value:\n\n* [`[build.rustflags]`](https://doc.rust-lang.org/cargo/reference/config.html#buildrustflags)\n* [`-C lto`](https://doc.rust-lang.org/rustc/codegen-options/index.html#lto)\n* [`-Z virtual-function-elimination`](https://doc.rust-lang.org/stable/unstable-book/compiler-flags/virtual-function-elimination.html)\n* [`-Z location-detail`](https://doc.rust-lang.org/stable/unstable-book/compiler-flags/location-detail.html)\n\n## wasm-opt\n\n*Note: In the future, `wasm-opt` will be supported natively through the [Dioxus CLI](https://crates.io/crates/dioxus-cli).*\n\n`wasm-opt` is a tool from the [binaryen](https://github.com/WebAssembly/binaryen) library that optimizes your WASM files.\nTo use it, install a [binaryen release](https://github.com/WebAssembly/binaryen/releases) and run this command from the package directory:\n\n````\nwasm-opt dist/assets/dioxus/APP_NAME_bg.wasm -o dist/assets/dioxus/APP_NAME_bg.wasm -Oz\n````\n\nThe `-Oz` flag specifies that `wasm-opt` should optimize for size. For speed, use `-O4`.\n\n## Improving Dioxus code\n\nLet's talk about how you can improve your Dioxus code to be more performant.\n\nIt's important to minimize the number of dynamic parts in your `rsx`, like conditional rendering.\nWhen Dioxus is rendering your component, it will skip parts that are the same as the last render.\nThat means that if you keep dynamic rendering to a minimum, your app will speed up, and quite a bit if it's not just hello world.\nTo see an example of this, check out [Dynamic Rendering](../reference/dynamic_rendering.md).\n\nAlso check out [Anti-patterns](antipatterns.md) for patterns that you should avoid.\nObviously, not all of them are just about performance, but some of them are.\n\n## Optimizing the size of assets\n\nAssets can be a significant part of your app's size. Dioxus includes alpha support for first party [assets](../reference/assets.md). Any assets you include with the `mg!` macro will be optimized for production in release builds."
+            }
+            20usize => {
+                "# Assets\n\n > \n > ⚠\u{fe0f} Support: Manganis is currently in alpha. API changes are planned and bugs are more likely\n\nAssets are files that are included in the final build of the application. They can be images, fonts, stylesheets, or any other file that is not a source file. Dioxus includes first class support for assets, and provides a simple way to include them in your application and automatically optimize them for production.\n\nAssets in dioxus are also compatible with libraries! If you are building a library, you can include assets in your library and they will be automatically included in the final build of any application that uses your library.\n\nFirst, you need to add the `manganis` crate to your `Cargo.toml` file:\n\n````sh\ncargo add manganis\n````\n\n## Including images\n\nTo include an asset in your application, you can simply wrap the path to the asset in a `mg!` call. For example, to include an image in your application, you can use the following code:\n\n````rust@assets.rs\nuse dioxus::prelude::*;\n\nfn App() -> Element {\n    // You can link to assets that are relative to the package root or even link to an asset from a url\n    // These assets will automatically be picked up by the dioxus cli, optimized, and bundled with your final applications\n    const ASSET: Asset = asset!(\"/assets/static/ferrous_wave.png\");\n\n    rsx! {\n        img { src: \"{ASSET}\" }\n    }\n}\n````\n\nYou can also optimize, resize, and preload images using the `mg!` macro. Choosing an optimized file type (like WebP) and a reasonable quality setting can significantly reduce the size of your images which helps your application load faster. For example, you can use the following code to include an optimized image in your application:\n\n````rust@assets.rs\npub const ENUM_ROUTER_IMG: Asset = asset!(\"/assets/static/enum_router.png\");\n\nfn EnumRouter() -> Element {\n    rsx! {\n        img { src: \"{ENUM_ROUTER_IMG}\" }\n    }\n}\n````\n\n## Including arbitrary files\n\nIn dioxus desktop, you may want to include a file with data for your application. You can use the `file` function to include arbitrary files in your application. For example, you can use the following code to include a file in your application:\n\n````rust@assets.rs\n// You can also collect arbitrary files. Relative paths are resolved relative to the package root\nconst PATH_TO_BUNDLED_CARGO_TOML: &str = manganis::mg!(file(\"./Cargo.toml\"));\n````\n\nThese files will be automatically included in the final build of your application, and you can use them in your application as you would any other file.\n\n## Including stylesheets\n\nYou can include stylesheets in your application using the `mg!` macro. For example, you can use the following code to include a stylesheet in your application:\n\n````rust@assets.rs\n// You can also bundle stylesheets with your application\n// Any files that end with .css will be minified and bundled with your application even if you don't explicitly include them in your <head>\nconst _: &str = manganis::mg!(file(\"./tailwind.css\"));\n````\n\n > \n > The [tailwind guide](../cookbook/tailwind.md) has more information on how to use tailwind with dioxus.\n\n## Conclusion\n\nDioxus provides first class support for assets, and makes it easy to include them in your application. You can include images, arbitrary files, and stylesheets in your application, and dioxus will automatically optimize them for production. This makes it easy to include assets in your application and ensure that they are optimized for production.\n\nYou can read more about assets and all the options available to optimize your assets in the [manganis documentation](https://docs.rs/manganis/0.2.2/manganis/)."
+            }
+            27usize => {
+                "# Liveview\n\nLiveview allows apps to *run* on the server and *render* in the browser. It uses WebSockets to communicate between the server and the browser.\n\nExamples:\n\n* [Simple Example](https://github.com/DioxusLabs/dioxus/tree/v0.5/packages/liveview/examples/axum.rs)\n\n## Support\n\nDioxus liveview will be migrated to [dioxus-fullstack](./fullstack/index.md) in a future release. Once this migration occurs, you may need to update your code. We plan for this migration to be minimal.\n\nLiveview is currently limited in capability when compared to the Web platform. Liveview apps run on the server in a native thread. This means that browser APIs are not available, so rendering WebGL, Canvas, etc is not as easy as the Web. However, native system APIs are accessible, so streaming, WebSockets, filesystem, etc are all viable APIs.\n\n## Router Integration\n\nCurrently, the Dioxus router does not integrate with the browser history in the liveview renderer. If you are interested in contributing this feature to Dioxus this issue is tracked [here](https://github.com/DioxusLabs/dioxus/issues/1038).\n\n## Managing Latency\n\nLiveview makes it incredibly convenient to talk to your server from the client, but there are some downsides. Mainly in Dioxus Liveview every interaction goes through the server by default.\n\nBecause of this, with the liveview renderer you need to be very deliberate about managing latency. Events that would be fast enough on other renderers like [controlled inputs](../reference/user_input.md), can be frustrating to use in the liveview renderer.\n\nTo get around this issue you can inject bits of javascript in your liveview application. If you use a raw attribute as a listener, you can inject some javascript that will be run when the event is triggered:\n\n````rust\nrsx! {\n    div {\n        input {\n            \"oninput\": \"console.log('input changed!')\"\n        }\n    }\n}\n````"
+            }
+            14usize => {
+                "# Sharing State\n\nOften, multiple components need to access the same state. Depending on your needs, there are several ways to implement this.\n\n## Lifting State\n\nOne approach to share state between components is to \"lift\" it up to the nearest common ancestor. This means putting the `use_signal` hook in a parent component, and passing the needed values down as props.\n\nSuppose we want to build a meme editor. We want to have an input to edit the meme caption, but also a preview of the meme with the caption. Logically, the meme and the input are 2 separate components, but they need access to the same state (the current caption).\n\n > \n > Of course, in this simple example, we could write everything in one component – but it is better to split everything out in smaller components to make the code more reusable, maintainable, and performant (this is even more important for larger, complex apps).\n\nWe start with a `Meme` component, responsible for rendering a meme with a given caption:\n\n````rust, no_run@meme_editor.rs\n#[component]\nfn Meme(caption: String) -> Element {\n    let container_style = r#\"\n        position: relative;\n        width: fit-content;\n    \"#;\n\n    let caption_container_style = r#\"\n        position: absolute;\n        bottom: 0;\n        left: 0;\n        right: 0;\n        padding: 16px 8px;\n    \"#;\n\n    let caption_style = r\"\n        font-size: 32px;\n        margin: 0;\n        color: white;\n        text-align: center;\n    \";\n\n    rsx! {\n        div { style: \"{container_style}\",\n            img { src: \"https://i.imgflip.com/2zh47r.jpg\", height: \"500px\" }\n            div { style: \"{caption_container_style}\", p { style: \"{caption_style}\", \"{caption}\" } }\n        }\n    }\n}\n````\n\n > \n > Note that the `Meme` component is unaware where the caption is coming from – it could be stored in `use_signal`, or a constant. This ensures that it is very reusable – the same component can be used for a meme gallery without any changes!\n\nWe also create a caption editor, completely decoupled from the meme. The caption editor must not store the caption itself – otherwise, how will we provide it to the `Meme` component? Instead, it should accept the current caption as a prop, as well as an event handler to delegate input events to:\n\n````rust, no_run@meme_editor.rs\n#[component]\nfn CaptionEditor(caption: String, oninput: EventHandler<FormEvent>) -> Element {\n    let input_style = r\"\n        border: none;\n        background: cornflowerblue;\n        padding: 8px 16px;\n        margin: 0;\n        border-radius: 4px;\n        color: white;\n    \";\n\n    rsx! {\n        input {\n            style: \"{input_style}\",\n            value: \"{caption}\",\n            oninput: move |event| oninput.call(event)\n        }\n    }\n}\n````\n\nFinally, a third component will render the other two as children. It will be responsible for keeping the state and passing down the relevant props.\n\n````rust, no_run@meme_editor.rs\nfn MemeEditor() -> Element {\n    let container_style = r\"\n        display: flex;\n        flex-direction: column;\n        gap: 16px;\n        margin: 0 auto;\n        width: fit-content;\n    \";\n\n    let mut caption = use_signal(|| \"me waiting for my rust code to compile\".to_string());\n\n    rsx! {\n        div { style: \"{container_style}\",\n            h1 { \"Meme Editor\" }\n            Meme { caption: caption }\n            CaptionEditor { caption: caption, oninput: move |event: FormEvent| caption.set(event.value()) }\n        }\n    }\n}\n````\n\n![Meme Editor Screenshot: An old plastic skeleton sitting on a park bench. Caption: \"me waiting for a language feature\"](/assets/static/meme_editor_screenshot.png)\n\n## Using Shared State\n\nSometimes, some state needs to be shared between multiple components far down the tree, and passing it down through props is very inconvenient.\n\nSuppose now that we want to implement a dark mode toggle for our app. To achieve this, we will make every component select styling depending on whether dark mode is enabled or not.\n\n > \n > Note: we're choosing this approach for the sake of an example. There are better ways to implement dark mode (e.g. using CSS variables). Let's pretend CSS variables don't exist – welcome to 2013!\n\nNow, we could write another `use_signal` in the top component, and pass `is_dark_mode` down to every component through props. But think about what will happen as the app grows in complexity – almost every component that renders any CSS is going to need to know if dark mode is enabled or not – so they'll all need the same dark mode prop. And every parent component will need to pass it down to them. Imagine how messy and verbose that would get, especially if we had components several levels deep!\n\nDioxus offers a better solution than this \"prop drilling\" – providing context. The [`use_context_provider`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context_provider.html) hook provides any Clone context (including Signals!) to any child components. Child components can use the [`use_context`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context.html) hook to get that context and if it is a Signal, they can read and write to it.\n\nFirst, we have to create a struct for our dark mode configuration:\n\n````rust, no_run@meme_editor_dark_mode.rs\n#[derive(Clone, Copy)]\nstruct DarkMode(bool);\n````\n\nNow, in a top-level component (like `App`), we can provide the `DarkMode` context to all children components:\n\n````rust, no_run@meme_editor_dark_mode.rs\nuse_context_provider(|| Signal::new(DarkMode(false)));\n````\n\nAs a result, any child component of `App` (direct or not), can access the `DarkMode` context.\n\n````rust, no_run@meme_editor_dark_mode.rs\nlet dark_mode_context = use_context::<Signal<DarkMode>>();\n````\n\n > \n > `use_context` returns `Signal<DarkMode>` here, because the Signal was provided by the parent. If the context hadn't been provided `use_context` would have panicked.\n\nIf you have a component where the context might or not be provided, you might want to use `try_consume_context`instead, so you can handle the `None` case. The drawback of this method is that it will not memoize the value between renders, so it won't be as as efficient as `use_context`, you could do it yourself with `use_hook` though.\n\nFor example, here's how we would implement the dark mode toggle, which both reads the context (to determine what color it should render) and writes to it (to toggle dark mode):\n\n````rust, no_run@meme_editor_dark_mode.rs\npub fn DarkModeToggle() -> Element {\n    let mut dark_mode = use_context::<Signal<DarkMode>>();\n\n    let style = if dark_mode().0 { \"color:white\" } else { \"\" };\n\n    rsx! {\n        label { style: \"{style}\",\n            \"Dark Mode\"\n            input {\n                r#type: \"checkbox\",\n                oninput: move |event| {\n                    let is_enabled = event.value() == \"true\";\n                    dark_mode.write().0 = is_enabled;\n                }\n            }\n        }\n    }\n}\n````"
+            }
+            62usize => {
+                "# Custom Renderer\n\nDioxus is an incredibly portable framework for UI development. The lessons, knowledge, hooks, and components you acquire over time can always be used for future projects. However, sometimes those projects cannot leverage a supported renderer or you need to implement your own better renderer.\n\nGreat news: the design of the renderer is entirely up to you! We provide suggestions and inspiration with the 1st party renderers, but only really require processing `Mutations` and sending `UserEvents`.\n\n## The specifics:\n\nImplementing the renderer is fairly straightforward. The renderer needs to:\n\n1. Handle the stream of edits generated by updates to the virtual DOM\n1. Register listeners and pass events into the virtual DOM's event system\n\nEssentially, your renderer needs to process edits and generate events to update the VirtualDOM. From there, you'll have everything needed to render the VirtualDOM to the screen.\n\nInternally, Dioxus handles the tree relationship, diffing, memory management, and the event system, leaving as little as possible required for renderers to implement themselves.\n\nFor reference, check out the [javascript interpreter](https://github.com/DioxusLabs/dioxus/tree/v0.5/packages/interpreter) or [tui renderer](https://github.com/DioxusLabs/blitz/tree/master/packages/dioxus-tui) as a starting point for your custom renderer.\n\n## Templates\n\nDioxus is built around the concept of [Templates](https://docs.rs/dioxus-core/latest/dioxus_core/prelude/struct.Template.html). Templates describe a UI tree known at compile time with dynamic parts filled at runtime. This is useful internally to make skip diffing static nodes, but it is also useful for the renderer to reuse parts of the UI tree. This can be useful for things like a list of items. Each item could contain some static parts and some dynamic parts. The renderer can use the template to create a static part of the UI once, clone it for each element in the list, and then fill in the dynamic parts.\n\n## Mutations\n\nThe `Mutation` type is a serialized enum that represents an operation that should be applied to update the UI. The variants roughly follow this set:\n\n````rust\nenum Mutation {\n\tAppendChildren,\n\tAssignId,\n\tCreatePlaceholder,\n\tCreateTextNode,\n\tHydrateText,\n\tLoadTemplate,\n\tReplaceWith,\n\tReplacePlaceholder,\n\tInsertAfter,\n\tInsertBefore,\n\tSetAttribute,\n\tSetText,\n\tNewEventListener,\n\tRemoveEventListener,\n\tRemove,\n\tPushRoot,\n}\n````\n\nThe Dioxus diffing mechanism operates as a [stack machine](https://en.wikipedia.org/wiki/Stack_machine) where the [LoadTemplate](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.LoadTemplate), [CreatePlaceholder](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.CreatePlaceholder), and [CreateTextNode](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.CreateTextNode) mutations pushes a new \"real\" DOM node onto the stack and [AppendChildren](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.AppendChildren), [InsertAfter](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.InsertAfter), [InsertBefore](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.InsertBefore), [ReplacePlaceholder](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.ReplacePlaceholder), and [ReplaceWith](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.ReplaceWith) all remove nodes from the stack.\n\n## Node storage\n\nDioxus saves and loads elements with IDs. Inside the VirtualDOM, this is just tracked as as a u64.\n\nWhenever a `CreateElement` edit is generated during diffing, Dioxus increments its node counter and assigns that new element its current NodeCount. The RealDom is responsible for remembering this ID and pushing the correct node when id is used in a mutation. Dioxus reclaims the IDs of elements when removed. To stay in sync with Dioxus you can use a sparse Vec (Vec\\<Option<T>\\>) with possibly unoccupied items. You can use the ids as indexes into the Vec for elements, and grow the Vec when an id does not exist.\n\n### An Example\n\nFor the sake of understanding, let's consider this example – a very simple UI declaration:\n\n````rust\nrsx! {\n\th1 { \"count: {x}\" }\n}\n````\n\n#### Building Templates\n\nThe above rsx will create a template that contains one static h1 tag and a placeholder for a dynamic text node. The template contains the static parts of the UI, and ids for the dynamic parts along with the paths to access them.\n\nThe template will look something like this:\n\n````rust\nTemplate {\n\t// Some id that is unique for the entire project\n\tname: \"main.rs:1:1:0\",\n\t// The root nodes of the template\n\troots: &[\n\t\tTemplateNode::Element {\n\t\t\ttag: \"h1\",\n\t\t\tnamespace: None,\n\t\t\tattrs: &[],\n\t\t\tchildren: &[\n\t\t\t\tTemplateNode::DynamicText {\n\t\t\t\t\tid: 0\n\t\t\t\t},\n\t\t\t],\n\t\t}\n\t],\n\t// the path to each of the dynamic nodes\n\tnode_paths: &[\n\t\t// the path to dynamic node with a id of 0\n\t\t&[\n\t\t\t// on the first root node\n\t\t\t0,\n\t\t\t// the first child of the root node\n\t\t\t0,\n\t\t]\n\t],\n\t// the path to each of the dynamic attributes\n\tattr_paths: &'a [&'a [u8]],\n}\n````\n\n > \n > For more detailed docs about the structure of templates see the [Template api docs](https://docs.rs/dioxus-core/latest/dioxus_core/prelude/struct.Template.html)\n\nThis template will be sent to the renderer in the [list of templates](https://docs.rs/dioxus-core/latest/dioxus_core/struct.Mutations.html#structfield.templates) supplied with the mutations the first time it is used. Any time the renderer encounters a [LoadTemplate](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.LoadTemplate) mutation after this, it should clone the template and store it in the given id.\n\nFor dynamic nodes and dynamic text nodes, a placeholder node should be created and inserted into the UI so that the node can be modified later.\n\nIn HTML renderers, this template could look like this:\n\n````html\n<h1>\"\"</h1>\n````\n\n#### Applying Mutations\n\nAfter the renderer has created all of the new templates, it can begin to process the mutations.\n\nWhen the renderer starts, it should contain the Root node on the stack and store the Root node with an id of 0. The Root node is the top-level node of the UI. In HTML, this is the `<div id=\"main\">` element.\n\n````rust\ninstructions: []\nstack: [\n\tRootNode,\n]\nnodes: [\n\tRootNode,\n]\n````\n\nThe first mutation is a `LoadTemplate` mutation. This tells the renderer to load a root from the template with the given id. The renderer will then push the root node of the template onto the stack and store it with an id for later. In this case, the root node is an h1 element.\n\n````rust\ninstructions: [\n\tLoadTemplate {\n\t\t// the id of the template\n\t\tname: \"main.rs:1:1:0\",\n\t\t// the index of the root node in the template\n\t\tindex: 0,\n\t\t// the id to store\n\t\tid: ElementId(1),\n\t}\n]\nstack: [\n\tRootNode,\n\t<h1>\"\"</h1>,\n]\nnodes: [\n\tRootNode,\n\t<h1>\"\"</h1>,\n]\n````\n\nNext, Dioxus will create the dynamic text node. The diff algorithm decides that this node needs to be created, so Dioxus will generate the Mutation `HydrateText`. When the renderer receives this instruction, it will navigate to the placeholder text node in the template and replace it with the new text.\n\n````rust\ninstructions: [\n\tLoadTemplate {\n\t\tname: \"main.rs:1:1:0\",\n\t\tindex: 0,\n\t\tid: ElementId(1),\n\t},\n\tHydrateText {\n\t\t// the id to store the text node\n\t\tid: ElementId(2),\n\t\t// the text to set\n\t\ttext: \"count: 0\",\n\t}\n]\nstack: [\n\tRootNode,\n\t<h1>\"count: 0\"</h1>,\n]\nnodes: [\n\tRootNode,\n\t<h1>\"count: 0\"</h1>,\n\t\"count: 0\",\n]\n````\n\nRemember, the h1 node is not attached to anything (it is unmounted) so Dioxus needs to generate an Edit that connects the h1 node to the Root. It depends on the situation, but in this case, we use `AppendChildren`. This pops the text node off the stack, leaving the Root element as the next element on the stack.\n\n````rust\ninstructions: [\n\tLoadTemplate {\n\t\tname: \"main.rs:1:1:0\",\n\t\tindex: 0,\n\t\tid: ElementId(1),\n\t},\n\tHydrateText {\n\t\tid: ElementId(2),\n\t\ttext: \"count: 0\",\n\t},\n\tAppendChildren {\n\t\t// the id of the parent node\n\t\tid: ElementId(0),\n\t\t// the number of nodes to pop off the stack and append\n\t\tm: 1\n\t}\n]\nstack: [\n\tRootNode,\n]\nnodes: [\n\tRootNode,\n\t<h1>\"count: 0\"</h1>,\n\t\"count: 0\",\n]\n````\n\nOver time, our stack looked like this:\n\n````rust\n[Root]\n[Root, <h1>\"\"</h1>]\n[Root, <h1>\"count: 0\"</h1>]\n[Root]\n````\n\nConveniently, this approach completely separates the Virtual DOM and the Real DOM. Additionally, these edits are serializable, meaning we can even manage UIs across a network connection. This little stack machine and serialized edits make Dioxus independent of platform specifics.\n\nDioxus is also really fast. Because Dioxus splits the diff and patch phase, it's able to make all the edits to the RealDOM in a very short amount of time (less than a single frame) making rendering very snappy. It also allows Dioxus to cancel large diffing operations if higher priority work comes in while it's diffing.\n\nThis little demo serves to show exactly how a Renderer would need to process a mutation stream to build UIs.\n\n## Event loop\n\nLike most GUIs, Dioxus relies on an event loop to progress the VirtualDOM. The VirtualDOM itself can produce events as well, so it's important for your custom renderer can handle those too.\n\nThe code for the WebSys implementation is straightforward, so we'll add it here to demonstrate how simple an event loop is:\n\n````rust, ignore\npub async fn run(&mut self) -> dioxus_core::error::Result<()> {\n\t// Push the body element onto the WebsysDom's stack machine\n\tlet mut websys_dom = crate::new::WebsysDom::new(prepare_websys_dom());\n\twebsys_dom.stack.push(root_node);\n\n\t// Rebuild or hydrate the virtualdom\n\tlet mutations = self.internal_dom.rebuild();\n\twebsys_dom.apply_mutations(mutations);\n\n\t// Wait for updates from the real dom and progress the virtual dom\n\tloop {\n\t\tlet user_input_future = websys_dom.wait_for_event();\n\t\tlet internal_event_future = self.internal_dom.wait_for_work();\n\n\t\tmatch select(user_input_future, internal_event_future).await {\n\t\t\tEither::Left((_, _)) => {\n\t\t\t\tlet mutations = self.internal_dom.work_with_deadline(|| false);\n\t\t\t\twebsys_dom.apply_mutations(mutations);\n\t\t\t},\n\t\t\tEither::Right((event, _)) => websys_dom.handle_event(event),\n\t\t}\n\n\t\t// render\n\t}\n}\n````\n\nIt's important to decode what the real events are for your event system into Dioxus' synthetic event system (synthetic meaning abstracted). This simply means matching your event type and creating a Dioxus `UserEvent` type. Right now, the virtual event system is modeled almost entirely around the HTML spec, but we are interested in slimming it down.\n\n````rust, ignore\nfn virtual_event_from_websys_event(event: &web_sys::Event) -> VirtualEvent {\n\tmatch event.type_().as_str() {\n\t\t\"keydown\" => {\n\t\t\tlet event: web_sys::KeyboardEvent = event.clone().dyn_into().unwrap();\n\t\t\tUserEvent::KeyboardEvent(UserEvent {\n\t\t\t\tscope_id: None,\n\t\t\t\tpriority: EventPriority::Medium,\n\t\t\t\tname: \"keydown\",\n\t\t\t\t// This should be whatever element is focused\n\t\t\t\telement: Some(ElementId(0)),\n\t\t\t\tdata: Arc::new(KeyboardData{\n\t\t\t\t\tchar_code: event.char_code(),\n\t\t\t\t\tkey: event.key(),\n\t\t\t\t\tkey_code: event.key_code(),\n\t\t\t\t\talt_key: event.alt_key(),\n\t\t\t\t\tctrl_key: event.ctrl_key(),\n\t\t\t\t\tmeta_key: event.meta_key(),\n\t\t\t\t\tshift_key: event.shift_key(),\n\t\t\t\t\tlocation: event.location(),\n\t\t\t\t\trepeat: event.repeat(),\n\t\t\t\t\twhich: event.which(),\n\t\t\t\t})\n\t\t\t})\n\t\t}\n\t\t_ => todo!()\n\t}\n}\n````\n\n## Custom raw elements\n\nIf you need to go as far as relying on custom elements/attributes for your renderer – you totally can. This still enables you to use Dioxus' reactive nature, component system, shared state, and other features, but will ultimately generate different nodes. All attributes and listeners for the HTML and SVG namespace are shuttled through helper structs that essentially compile away. You can drop in your elements any time you want, with little hassle. However, you must be sure your renderer can handle the new namespace.\n\nFor more examples and information on how to create custom namespaces, see the [`dioxus_html` crate](https://github.com/DioxusLabs/dioxus/blob/main/packages/html/README.md#how-to-extend-it).\n\n# Native Core\n\nIf you are creating a renderer in rust, the [native-core](https://github.com/DioxusLabs/blitz/tree/master/packages/native-core) crate provides some utilities to implement a renderer. It provides an abstraction over Mutations and Templates and contains helpers that can handle the layout and text editing for you.\n\n## The RealDom\n\nThe `RealDom` is a higher-level abstraction over updating the Dom. It uses an entity component system to manage the state of nodes. This system allows you to modify insert and modify arbitrary components on nodes. On top of this, the RealDom provides a way to manage a tree of nodes, and the State trait provides a way to automatically add and update these components when the tree is modified. It also provides a way to apply `Mutations` to the RealDom.\n\n### Example\n\nLet's build a toy renderer with borders, size, and text color.\nBefore we start let's take a look at an example element we can render:\n\n````rust\nrsx!{\n\tdiv{\n\t\tcolor: \"red\",\n\t\tp{\n\t\t\tborder: \"1px solid black\",\n\t\t\t\"hello world\"\n\t\t}\n\t}\n}\n````\n\nIn this tree, the color depends on the parent's color. The layout depends on the children's layout, the current text, and the text size. The border depends on only the current node.\n\nIn the following diagram arrows represent dataflow:\n\n[![](https://mermaid.ink/img/pako:eNqllV1vgjAUhv8K6W4wkQVa2QdLdrHsdlfukmSptEhjoaSWqTH-9xVwONAKst70g5739JzzlO5BJAgFAYi52EQJlsr6fAszS7d1sVhKnCdWJDJFt6peLVs5-9owohK7HFrVcFJ_pxnpmK8VVvRkTJikkWIiaxy1dhP23bUwW1WW5WbPrrqJ4ziR4EJ6dtVN2ls5y1ZztePUcrWZFCvqVEcPPDffvlyS1XoLIQnVgnVvVPR6FU9Zc-6dV453ojjOPbuetRJ57gIeXQR3cez7rjtteZyZQ2j5MqmjqwE0ZW0VKx9RKtgpFewp1aw3sXXFy6TWgiYlv8mfq1scD8ofbBCAfQg8_AMBOAyBxzEIwA4CxgQ99QbQkjnD2KT7_CfxGF8_9WXQEsq5sDZCcjICOXRCri4h6r3NA38Q6Jdi1EOx5w3DGDYYI6MUvJFjM3VoGHUeGoMd6mBnDmh2E3fo7O4Yhf0x4OkBmIKUyhQzol_GfbkcApXQlIYg0EOC5SoEYXbQ-3ChxHyXRSBQsqBTUOREx_7OsAY3BUGM-VqvUsKUkB_1U6vf05gtweEHTk4_HQ?type=png)](https://mermaid.live/edit#pako:eNqllV1vgjAUhv8K6W4wkQVa2QdLdrHsdlfukmSptEhjoaSWqTH-9xVwONAKst70g5739JzzlO5BJAgFAYi52EQJlsr6fAszS7d1sVhKnCdWJDJFt6peLVs5-9owohK7HFrVcFJ_pxnpmK8VVvRkTJikkWIiaxy1dhP23bUwW1WW5WbPrrqJ4ziR4EJ6dtVN2ls5y1ZztePUcrWZFCvqVEcPPDffvlyS1XoLIQnVgnVvVPR6FU9Zc-6dV453ojjOPbuetRJ57gIeXQR3cez7rjtteZyZQ2j5MqmjqwE0ZW0VKx9RKtgpFewp1aw3sXXFy6TWgiYlv8mfq1scD8ofbBCAfQg8_AMBOAyBxzEIwA4CxgQ99QbQkjnD2KT7_CfxGF8_9WXQEsq5sDZCcjICOXRCri4h6r3NA38Q6Jdi1EOx5w3DGDYYI6MUvJFjM3VoGHUeGoMd6mBnDmh2E3fo7O4Yhf0x4OkBmIKUyhQzol_GfbkcApXQlIYg0EOC5SoEYXbQ-3ChxHyXRSBQsqBTUOREx_7OsAY3BUGM-VqvUsKUkB_1U6vf05gtweEHTk4_HQ)\n\nTo help in building a Dom, native-core provides the State trait and a RealDom struct. The State trait provides a way to describe how states in a node depend on other states in its relatives. By describing how to update a single node from its relations, native-core will derive a way to update the states of all nodes for you. Once you have a state you can provide it as a generic to RealDom. RealDom provides all of the methods to interact and update your new dom.\n\nNative Core cannot create all of the required methods for the State trait, but it can derive some of them. To implement the State trait, you must implement the following methods and let the `#[partial_derive_state]` macro handle the rest:\n\n````rust, ignore@custom_renderer.rs\n\n````\n\nLets take a look at how to implement the State trait for a simple renderer.\n\n````rust@custom_renderer.rs\n\n````\n\nNow that we have our state, we can put it to use in our RealDom. We can update the RealDom with apply_mutations to update the structure of the dom (adding, removing, and changing properties of nodes) and then update_state to update the States for each of the nodes that changed.\n\n````rust@custom_renderer.rs\n\n````\n\n## Layout\n\nFor most platforms, the layout of the Elements will stay the same. The [layout_attributes](https://docs.rs/dioxus-native-core/latest/dioxus_native_core/layout_attributes/index.html) module provides a way to apply HTML attributes a [Taffy](https://docs.rs/taffy/latest/taffy/index.html) layout style.\n\n## Text Editing\n\nTo make it easier to implement text editing in rust renderers, `native-core` also contains a renderer-agnostic cursor system. The cursor can handle text editing, selection, and movement with common keyboard shortcuts integrated.\n\n````rust@custom_renderer.rs\n\n````\n\n## Conclusion\n\nThat should be it! You should have nearly all the knowledge required on how to implement your renderer. We're super interested in seeing Dioxus apps brought to custom desktop renderers, mobile renderers, video game UI, and even augmented reality! If you're interested in contributing to any of these projects, don't be afraid to reach out or join the [community](https://discord.gg/XgGxMSkvUM)."
             }
             _ => panic!("Invalid page ID:"),
         }
@@ -643,3589 +643,4051 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
     {
         let mut page_id_mapping = ::std::collections::HashMap::new();
         let mut pages = Vec::new();
-        pages
-            .push((
-                0usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Introduction".to_string(),
-                        url: BookRoute::Index {
-                            section: IndexSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Introduction".to_string(),
-                                id: "introduction".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Features".to_string(),
-                                id: "features".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Multiplatform".to_string(),
-                                id: "multiplatform".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Stability".to_string(),
-                                id: "stability".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(0usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::Index {
-                    section: IndexSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(0usize),
-            );
-        pages
-            .push((
-                1usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Getting Started".to_string(),
-                        url: BookRoute::GettingStartedIndex {
-                            section: GettingStartedIndexSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Getting Started".to_string(),
-                                id: "getting-started".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Prerequisites".to_string(),
-                                id: "prerequisites".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "An Editor".to_string(),
-                                id: "an-editor".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Rust".to_string(),
-                                id: "rust".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Platform-specific dependencies".to_string(),
-                                id: "platform-specific-dependencies".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Dioxus CLI".to_string(),
-                                id: "dioxus-cli".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Create a new project".to_string(),
-                                id: "create-a-new-project".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Running the project".to_string(),
-                                id: "running-the-project".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Conclusion".to_string(),
-                                id: "conclusion".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(1usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::GettingStartedIndex {
-                    section: GettingStartedIndexSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(1usize),
-            );
-        pages
-            .push((
-                2usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Guide".to_string(),
-                        url: BookRoute::GuideIndex {
-                            section: GuideIndexSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Dioxus Guide".to_string(),
-                                id: "dioxus-guide".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Introduction".to_string(),
-                                id: "introduction".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(2usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::GuideIndex {
-                    section: GuideIndexSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(2usize),
-            );
-        pages
-            .push((
-                3usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Your First Component".to_string(),
-                        url: BookRoute::GuideYourFirstComponent {
-                            section: GuideYourFirstComponentSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Your First Component".to_string(),
-                                id: "your-first-component".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Setup".to_string(),
-                                id: "setup".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Describing the UI".to_string(),
-                                id: "describing-the-ui".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Dynamic Text".to_string(),
-                                id: "dynamic-text".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Creating Elements".to_string(),
-                                id: "creating-elements".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Setting Attributes".to_string(),
-                                id: "setting-attributes".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Creating a Component".to_string(),
-                                id: "creating-a-component".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Creating Props".to_string(),
-                                id: "creating-props".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Cleaning Up Our Interface".to_string(),
-                                id: "cleaning-up-our-interface".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(3usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::GuideYourFirstComponent {
-                    section: GuideYourFirstComponentSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(3usize),
-            );
-        pages
-            .push((
-                4usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "State".to_string(),
-                        url: BookRoute::GuideState {
-                            section: GuideStateSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Interactivity".to_string(),
-                                id: "interactivity".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Creating a Preview".to_string(),
-                                id: "creating-a-preview".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Event Handlers".to_string(),
-                                id: "event-handlers".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "State".to_string(),
-                                id: "state".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "The Rules of Hooks".to_string(),
-                                id: "the-rules-of-hooks".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "No Hooks in Conditionals".to_string(),
-                                id: "no-hooks-in-conditionals".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "No Hooks in Closures".to_string(),
-                                id: "no-hooks-in-closures".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "No Hooks in Loops".to_string(),
-                                id: "no-hooks-in-loops".to_string(),
-                                level: 4usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(4usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::GuideState {
-                    section: GuideStateSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(4usize),
-            );
-        pages
-            .push((
-                5usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Data Fetching".to_string(),
-                        url: BookRoute::GuideDataFetching {
-                            section: GuideDataFetchingSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Fetching Data".to_string(),
-                                id: "fetching-data".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Defining the API".to_string(),
-                                id: "defining-the-api".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Working with Async".to_string(),
-                                id: "working-with-async".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Lazily Fetching Data".to_string(),
-                                id: "lazily-fetching-data".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(5usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::GuideDataFetching {
-                    section: GuideDataFetchingSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(5usize),
-            );
-        pages
-            .push((
-                6usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Full Code".to_string(),
-                        url: BookRoute::GuideFullCode {
-                            section: GuideFullCodeSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Conclusion".to_string(),
-                                id: "conclusion".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Challenges".to_string(),
-                                id: "challenges".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "The full code for the hacker news project"
-                                    .to_string(),
-                                id: "the-full-code-for-the-hacker-news-project".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(6usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::GuideFullCode {
-                    section: GuideFullCodeSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(6usize),
-            );
-        pages
-            .push((
-                7usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Reference".to_string(),
-                        url: BookRoute::ReferenceIndex {
-                            section: ReferenceIndexSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Dioxus Reference".to_string(),
-                                id: "dioxus-reference".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Rendering".to_string(),
-                                id: "rendering".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "State".to_string(),
-                                id: "state".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Platforms".to_string(),
-                                id: "platforms".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(7usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceIndex {
-                    section: ReferenceIndexSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(7usize),
-            );
-        pages
-            .push((
-                8usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "RSX".to_string(),
-                        url: BookRoute::ReferenceRsx {
-                            section: ReferenceRsxSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Describing the UI".to_string(),
-                                id: "describing-the-ui".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "RSX Features".to_string(),
-                                id: "rsx-features".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Attributes".to_string(),
-                                id: "attributes".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Conditional Attributes".to_string(),
-                                id: "conditional-attributes".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Custom Attributes".to_string(),
-                                id: "custom-attributes".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Special Attributes".to_string(),
-                                id: "special-attributes".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "The HTML Escape Hatch".to_string(),
-                                id: "the-html-escape-hatch".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Boolean Attributes".to_string(),
-                                id: "boolean-attributes".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Interpolation".to_string(),
-                                id: "interpolation".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Children".to_string(),
-                                id: "children".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Fragments".to_string(),
-                                id: "fragments".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Expressions".to_string(),
-                                id: "expressions".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Loops".to_string(),
-                                id: "loops".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "If statements".to_string(),
-                                id: "if-statements".to_string(),
-                                level: 3usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(8usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceRsx {
-                    section: ReferenceRsxSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(8usize),
-            );
-        pages
-            .push((
-                9usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Components".to_string(),
-                        url: BookRoute::ReferenceComponents {
-                            section: ReferenceComponentsSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Components".to_string(),
-                                id: "components".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(9usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceComponents {
-                    section: ReferenceComponentsSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(9usize),
-            );
-        pages
-            .push((
-                10usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Props".to_string(),
-                        url: BookRoute::ReferenceComponentProps {
-                            section: ReferenceComponentPropsSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Component Props".to_string(),
-                                id: "component-props".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "derive(Props)".to_string(),
-                                id: "deriveprops".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Prop Options".to_string(),
-                                id: "prop-options".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Optional Props".to_string(),
-                                id: "optional-props".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Explicitly Required Option".to_string(),
-                                id: "explicitly-required-option".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Default Props".to_string(),
-                                id: "default-props".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Automatic Conversion with into".to_string(),
-                                id: "automatic-conversion-with-into".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "The component macro".to_string(),
-                                id: "the-component-macro".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Component Children".to_string(),
-                                id: "component-children".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "The children field".to_string(),
-                                id: "the-children-field".to_string(),
-                                level: 3usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(10usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceComponentProps {
-                    section: ReferenceComponentPropsSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(10usize),
-            );
-        pages
-            .push((
-                11usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Event Handlers".to_string(),
-                        url: BookRoute::ReferenceEventHandlers {
-                            section: ReferenceEventHandlersSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Event Handlers".to_string(),
-                                id: "event-handlers".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "The Event object".to_string(),
-                                id: "the-event-object".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Event propagation".to_string(),
-                                id: "event-propagation".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Prevent Default".to_string(),
-                                id: "prevent-default".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Handler Props".to_string(),
-                                id: "handler-props".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Async Event Handlers".to_string(),
-                                id: "async-event-handlers".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Custom Data".to_string(),
-                                id: "custom-data".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(11usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceEventHandlers {
-                    section: ReferenceEventHandlersSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(11usize),
-            );
-        pages
-            .push((
-                12usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Hooks".to_string(),
-                        url: BookRoute::ReferenceHooks {
-                            section: ReferenceHooksSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Hooks and component state".to_string(),
-                                id: "hooks-and-component-state".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "use_signal hook".to_string(),
-                                id: "use-signal-hook".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Rules of hooks".to_string(),
-                                id: "rules-of-hooks".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "No hooks in conditionals".to_string(),
-                                id: "no-hooks-in-conditionals".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "No hooks in closures".to_string(),
-                                id: "no-hooks-in-closures".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "No hooks in loops".to_string(),
-                                id: "no-hooks-in-loops".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Additional resources".to_string(),
-                                id: "additional-resources".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(12usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceHooks {
-                    section: ReferenceHooksSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(12usize),
-            );
-        pages
-            .push((
-                13usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "User Input".to_string(),
-                        url: BookRoute::ReferenceUserInput {
-                            section: ReferenceUserInputSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "User Input".to_string(),
-                                id: "user-input".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Controlled Inputs".to_string(),
-                                id: "controlled-inputs".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Uncontrolled Inputs".to_string(),
-                                id: "uncontrolled-inputs".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Handling files".to_string(),
-                                id: "handling-files".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(13usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceUserInput {
-                    section: ReferenceUserInputSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(13usize),
-            );
-        pages
-            .push((
-                14usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Context".to_string(),
-                        url: BookRoute::ReferenceContext {
-                            section: ReferenceContextSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Sharing State".to_string(),
-                                id: "sharing-state".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Lifting State".to_string(),
-                                id: "lifting-state".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Using Shared State".to_string(),
-                                id: "using-shared-state".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(14usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceContext {
-                    section: ReferenceContextSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(14usize),
-            );
-        pages
-            .push((
-                15usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Dynamic Rendering".to_string(),
-                        url: BookRoute::ReferenceDynamicRendering {
-                            section: ReferenceDynamicRenderingSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Dynamic Rendering".to_string(),
-                                id: "dynamic-rendering".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Conditional Rendering".to_string(),
-                                id: "conditional-rendering".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Improving the if-else Example".to_string(),
-                                id: "improving-the-if-else-example".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Inspecting Element props".to_string(),
-                                id: "inspecting-element-props".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Rendering Nothing".to_string(),
-                                id: "rendering-nothing".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Rendering Lists".to_string(),
-                                id: "rendering-lists".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Inline for loops".to_string(),
-                                id: "inline-for-loops".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "The key Attribute".to_string(),
-                                id: "the-key-attribute".to_string(),
-                                level: 3usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(15usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceDynamicRendering {
-                    section: ReferenceDynamicRenderingSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(15usize),
-            );
-        pages
-            .push((
-                16usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Routing".to_string(),
-                        url: BookRoute::ReferenceRouter {
-                            section: ReferenceRouterSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Router".to_string(),
-                                id: "router".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "What is it?".to_string(),
-                                id: "what-is-it".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Using the router".to_string(),
-                                id: "using-the-router".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Links".to_string(),
-                                id: "links".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "More reading".to_string(),
-                                id: "more-reading".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(16usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceRouter {
-                    section: ReferenceRouterSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(16usize),
-            );
-        pages
-            .push((
-                17usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Resource".to_string(),
-                        url: BookRoute::ReferenceUseResource {
-                            section: ReferenceUseResourceSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Resource".to_string(),
-                                id: "resource".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Restarting the Future".to_string(),
-                                id: "restarting-the-future".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Dependencies".to_string(),
-                                id: "dependencies".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(17usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceUseResource {
-                    section: ReferenceUseResourceSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(17usize),
-            );
-        pages
-            .push((
-                18usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "UseCoroutine".to_string(),
-                        url: BookRoute::ReferenceUseCoroutine {
-                            section: ReferenceUseCoroutineSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Coroutines".to_string(),
-                                id: "coroutines".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "use_coroutine".to_string(),
-                                id: "use-coroutine".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Yielding Values".to_string(),
-                                id: "yielding-values".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Sending Values".to_string(),
-                                id: "sending-values".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Automatic injection into the Context API"
-                                    .to_string(),
-                                id: "automatic-injection-into-the-context-api".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(18usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceUseCoroutine {
-                    section: ReferenceUseCoroutineSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(18usize),
-            );
-        pages
-            .push((
-                19usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Spawn".to_string(),
-                        url: BookRoute::ReferenceSpawn {
-                            section: ReferenceSpawnSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Spawning Futures".to_string(),
-                                id: "spawning-futures".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Spawning Tokio Tasks".to_string(),
-                                id: "spawning-tokio-tasks".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(19usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceSpawn {
-                    section: ReferenceSpawnSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(19usize),
-            );
-        pages
-            .push((
-                20usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Assets".to_string(),
-                        url: BookRoute::ReferenceAssets {
-                            section: ReferenceAssetsSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Assets".to_string(),
-                                id: "assets".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Including images".to_string(),
-                                id: "including-images".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Including arbitrary files".to_string(),
-                                id: "including-arbitrary-files".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Including stylesheets".to_string(),
-                                id: "including-stylesheets".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Conclusion".to_string(),
-                                id: "conclusion".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(20usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceAssets {
-                    section: ReferenceAssetsSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(20usize),
-            );
-        pages
-            .push((
-                21usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Choosing A Web Renderer".to_string(),
-                        url: BookRoute::ReferenceChoosingAWebRenderer {
-                            section: ReferenceChoosingAWebRendererSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Choosing a web renderer".to_string(),
-                                id: "choosing-a-web-renderer".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Dioxus Liveview".to_string(),
-                                id: "dioxus-liveview".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Dioxus Web".to_string(),
-                                id: "dioxus-web".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Dioxus Fullstack".to_string(),
-                                id: "dioxus-fullstack".to_string(),
-                                level: 3usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(21usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceChoosingAWebRenderer {
-                    section: ReferenceChoosingAWebRendererSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(21usize),
-            );
-        pages
-            .push((
-                22usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Desktop".to_string(),
-                        url: BookRoute::ReferenceDesktopIndex {
-                            section: ReferenceDesktopIndexSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Desktop".to_string(),
-                                id: "desktop".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Examples".to_string(),
-                                id: "examples".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Running Javascript".to_string(),
-                                id: "running-javascript".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Custom Assets".to_string(),
-                                id: "custom-assets".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Integrating with Wry".to_string(),
-                                id: "integrating-with-wry".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(22usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceDesktopIndex {
-                    section: ReferenceDesktopIndexSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(22usize),
-            );
-        pages
-            .push((
-                23usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Mobile".to_string(),
-                        url: BookRoute::ReferenceMobileIndex {
-                            section: ReferenceMobileIndexSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Mobile App".to_string(),
-                                id: "mobile-app".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Support".to_string(),
-                                id: "support".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Getting Set up".to_string(),
-                                id: "getting-set-up".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Setting up dependencies".to_string(),
-                                id: "setting-up-dependencies".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Android Dependencies".to_string(),
-                                id: "android-dependencies".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "IOS Dependencies".to_string(),
-                                id: "ios-dependencies".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Setting up your project".to_string(),
-                                id: "setting-up-your-project".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Running".to_string(),
-                                id: "running".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Android".to_string(),
-                                id: "android".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "IOS".to_string(),
-                                id: "ios".to_string(),
-                                level: 3usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(23usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceMobileIndex {
-                    section: ReferenceMobileIndexSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(23usize),
-            );
-        pages
-            .push((
-                24usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "APIs".to_string(),
-                        url: BookRoute::ReferenceMobileApis {
-                            section: ReferenceMobileApisSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Mobile".to_string(),
-                                id: "mobile".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Running Javascript".to_string(),
-                                id: "running-javascript".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Custom Assets".to_string(),
-                                id: "custom-assets".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Integrating with Wry".to_string(),
-                                id: "integrating-with-wry".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(24usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceMobileApis {
-                    section: ReferenceMobileApisSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(24usize),
-            );
-        pages
-            .push((
-                25usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Web".to_string(),
-                        url: BookRoute::ReferenceWebIndex {
-                            section: ReferenceWebIndexSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Web".to_string(),
-                                id: "web".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Support".to_string(),
-                                id: "support".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Running Javascript".to_string(),
-                                id: "running-javascript".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Customizing Index Template".to_string(),
-                                id: "customizing-index-template".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(25usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceWebIndex {
-                    section: ReferenceWebIndexSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(25usize),
-            );
-        pages
-            .push((
-                26usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "SSR".to_string(),
-                        url: BookRoute::ReferenceSsr {
-                            section: ReferenceSsrSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Server-Side Rendering".to_string(),
-                                id: "server-side-rendering".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Setup".to_string(),
-                                id: "setup".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Multithreaded Support".to_string(),
-                                id: "multithreaded-support".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(26usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceSsr {
-                    section: ReferenceSsrSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(26usize),
-            );
-        pages
-            .push((
-                27usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Liveview".to_string(),
-                        url: BookRoute::ReferenceLiveview {
-                            section: ReferenceLiveviewSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Liveview".to_string(),
-                                id: "liveview".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Support".to_string(),
-                                id: "support".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Router Integration".to_string(),
-                                id: "router-integration".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Managing Latency".to_string(),
-                                id: "managing-latency".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(27usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceLiveview {
-                    section: ReferenceLiveviewSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(27usize),
-            );
-        pages
-            .push((
-                28usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Fullstack".to_string(),
-                        url: BookRoute::ReferenceFullstackIndex {
-                            section: ReferenceFullstackIndexSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Fullstack development".to_string(),
-                                id: "fullstack-development".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(28usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceFullstackIndex {
-                    section: ReferenceFullstackIndexSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(28usize),
-            );
-        pages
-            .push((
-                29usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Server Functions".to_string(),
-                        url: BookRoute::ReferenceFullstackServerFunctions {
-                            section: ReferenceFullstackServerFunctionsSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Communicating with the server".to_string(),
-                                id: "communicating-with-the-server".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Cached data fetching".to_string(),
-                                id: "cached-data-fetching".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Running the client with dioxus-desktop".to_string(),
-                                id: "running-the-client-with-dioxus-desktop".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Client code".to_string(),
-                                id: "client-code".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Server code".to_string(),
-                                id: "server-code".to_string(),
-                                level: 3usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(29usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceFullstackServerFunctions {
-                    section: ReferenceFullstackServerFunctionsSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(29usize),
-            );
-        pages
-            .push((
-                30usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Extractors".to_string(),
-                        url: BookRoute::ReferenceFullstackExtractors {
-                            section: ReferenceFullstackExtractorsSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Extractors".to_string(),
-                                id: "extractors".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(30usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceFullstackExtractors {
-                    section: ReferenceFullstackExtractorsSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(30usize),
-            );
-        pages
-            .push((
-                31usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Middleware".to_string(),
-                        url: BookRoute::ReferenceFullstackMiddleware {
-                            section: ReferenceFullstackMiddlewareSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Middleware".to_string(),
-                                id: "middleware".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(31usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceFullstackMiddleware {
-                    section: ReferenceFullstackMiddlewareSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(31usize),
-            );
-        pages
-            .push((
-                32usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Authentication".to_string(),
-                        url: BookRoute::ReferenceFullstackAuthentication {
-                            section: ReferenceFullstackAuthenticationSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Authentication".to_string(),
-                                id: "authentication".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(32usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceFullstackAuthentication {
-                    section: ReferenceFullstackAuthenticationSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(32usize),
-            );
-        pages
-            .push((
-                33usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Routing".to_string(),
-                        url: BookRoute::ReferenceFullstackRouting {
-                            section: ReferenceFullstackRoutingSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Routing".to_string(),
-                                id: "routing".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(33usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceFullstackRouting {
-                    section: ReferenceFullstackRoutingSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(33usize),
-            );
-        pages
-            .push((
-                34usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Router".to_string(),
-                        url: BookRoute::RouterIndex {
-                            section: RouterIndexSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Introduction".to_string(),
-                                id: "introduction".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(34usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterIndex {
-                    section: RouterIndexSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(34usize),
-            );
-        pages
-            .push((
-                35usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Example Project".to_string(),
-                        url: BookRoute::RouterExampleIndex {
-                            section: RouterExampleIndexSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Overview".to_string(),
-                                id: "overview".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "You'll learn how to".to_string(),
-                                id: "youll-learn-how-to".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(35usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterExampleIndex {
-                    section: RouterExampleIndexSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(35usize),
-            );
-        pages
-            .push((
-                36usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Creating Our First Route".to_string(),
-                        url: BookRoute::RouterExampleFirstRoute {
-                            section: RouterExampleFirstRouteSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Creating Our First Route".to_string(),
-                                id: "creating-our-first-route".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Fundamentals".to_string(),
-                                id: "fundamentals".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Creating Routes".to_string(),
-                                id: "creating-routes".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Fallback Route".to_string(),
-                                id: "fallback-route".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Conclusion".to_string(),
-                                id: "conclusion".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(36usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterExampleFirstRoute {
-                    section: RouterExampleFirstRouteSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(36usize),
-            );
-        pages
-            .push((
-                37usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Building a Nest".to_string(),
-                        url: BookRoute::RouterExampleBuildingANest {
-                            section: RouterExampleBuildingANestSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Building a Nest".to_string(),
-                                id: "building-a-nest".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Site Navigation".to_string(),
-                                id: "site-navigation".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "URL Parameters and Nested Routes".to_string(),
-                                id: "url-parameters-and-nested-routes".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Conclusion".to_string(),
-                                id: "conclusion".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(37usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterExampleBuildingANest {
-                    section: RouterExampleBuildingANestSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(37usize),
-            );
-        pages
-            .push((
-                38usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Navigation Targets".to_string(),
-                        url: BookRoute::RouterExampleNavigationTargets {
-                            section: RouterExampleNavigationTargetsSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Navigation Targets".to_string(),
-                                id: "navigation-targets".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "What is a navigation target?".to_string(),
-                                id: "what-is-a-navigation-target".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "External navigation".to_string(),
-                                id: "external-navigation".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(38usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterExampleNavigationTargets {
-                    section: RouterExampleNavigationTargetsSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(38usize),
-            );
-        pages
-            .push((
-                39usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Redirection Perfection".to_string(),
-                        url: BookRoute::RouterExampleRedirectionPerfection {
-                            section: RouterExampleRedirectionPerfectionSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Redirection Perfection".to_string(),
-                                id: "redirection-perfection".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Creating Redirects".to_string(),
-                                id: "creating-redirects".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Conclusion".to_string(),
-                                id: "conclusion".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Challenges".to_string(),
-                                id: "challenges".to_string(),
-                                level: 3usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(39usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterExampleRedirectionPerfection {
-                    section: RouterExampleRedirectionPerfectionSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(39usize),
-            );
-        pages
-            .push((
-                40usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Full Code".to_string(),
-                        url: BookRoute::RouterExampleFullCode {
-                            section: RouterExampleFullCodeSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Full Code".to_string(),
-                                id: "full-code".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(40usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterExampleFullCode {
-                    section: RouterExampleFullCodeSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(40usize),
-            );
-        pages
-            .push((
-                41usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Reference".to_string(),
-                        url: BookRoute::RouterReferenceIndex {
-                            section: RouterReferenceIndexSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Adding the router to your application".to_string(),
-                                id: "adding-the-router-to-your-application".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(41usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterReferenceIndex {
-                    section: RouterReferenceIndexSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(41usize),
-            );
-        pages
-            .push((
-                42usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Defining Routes".to_string(),
-                        url: BookRoute::RouterReferenceRoutesIndex {
-                            section: RouterReferenceRoutesIndexSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Defining Routes".to_string(),
-                                id: "defining-routes".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Route Segments".to_string(),
-                                id: "route-segments".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Static segments".to_string(),
-                                id: "static-segments".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Dynamic Segments".to_string(),
-                                id: "dynamic-segments".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Catch All Segments".to_string(),
-                                id: "catch-all-segments".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Query Segments".to_string(),
-                                id: "query-segments".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(42usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterReferenceRoutesIndex {
-                    section: RouterReferenceRoutesIndexSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(42usize),
-            );
-        pages
-            .push((
-                43usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Nested Routes".to_string(),
-                        url: BookRoute::RouterReferenceRoutesNested {
-                            section: RouterReferenceRoutesNestedSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Nested Routes".to_string(),
-                                id: "nested-routes".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Nesting".to_string(),
-                                id: "nesting".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(43usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterReferenceRoutesNested {
-                    section: RouterReferenceRoutesNestedSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(43usize),
-            );
-        pages
-            .push((
-                44usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Layouts".to_string(),
-                        url: BookRoute::RouterReferenceLayouts {
-                            section: RouterReferenceLayoutsSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Layouts".to_string(),
-                                id: "layouts".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Layouts with dynamic segments".to_string(),
-                                id: "layouts-with-dynamic-segments".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(44usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterReferenceLayouts {
-                    section: RouterReferenceLayoutsSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(44usize),
-            );
-        pages
-            .push((
-                45usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Navigation".to_string(),
-                        url: BookRoute::RouterReferenceNavigationIndex {
-                            section: RouterReferenceNavigationIndexSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Links & Navigation".to_string(),
-                                id: "links--navigation".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(45usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterReferenceNavigationIndex {
-                    section: RouterReferenceNavigationIndexSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(45usize),
-            );
-        pages
-            .push((
-                46usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Programmatic Navigation".to_string(),
-                        url: BookRoute::RouterReferenceNavigationProgrammatic {
-                            section: RouterReferenceNavigationProgrammaticSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Programmatic Navigation".to_string(),
-                                id: "programmatic-navigation".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Using a Navigator".to_string(),
-                                id: "using-a-navigator".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "External Navigation Targets".to_string(),
-                                id: "external-navigation-targets".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(46usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterReferenceNavigationProgrammatic {
-                    section: RouterReferenceNavigationProgrammaticSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(46usize),
-            );
-        pages
-            .push((
-                47usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "History Providers".to_string(),
-                        url: BookRoute::RouterReferenceHistoryProviders {
-                            section: RouterReferenceHistoryProvidersSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "History Providers".to_string(),
-                                id: "history-providers".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(47usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterReferenceHistoryProviders {
-                    section: RouterReferenceHistoryProvidersSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(47usize),
-            );
-        pages
-            .push((
-                48usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "History Buttons".to_string(),
-                        url: BookRoute::RouterReferenceHistoryButtons {
-                            section: RouterReferenceHistoryButtonsSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "History Buttons".to_string(),
-                                id: "history-buttons".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(48usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterReferenceHistoryButtons {
-                    section: RouterReferenceHistoryButtonsSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(48usize),
-            );
-        pages
-            .push((
-                49usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Routing Update Callback".to_string(),
-                        url: BookRoute::RouterReferenceRoutingUpdateCallback {
-                            section: RouterReferenceRoutingUpdateCallbackSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Routing Update Callback".to_string(),
-                                id: "routing-update-callback".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "How does the callback behave?".to_string(),
-                                id: "how-does-the-callback-behave".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Code Example".to_string(),
-                                id: "code-example".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(49usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterReferenceRoutingUpdateCallback {
-                    section: RouterReferenceRoutingUpdateCallbackSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(49usize),
-            );
-        pages
-            .push((
-                50usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Cookbook".to_string(),
-                        url: BookRoute::CookbookIndex {
-                            section: CookbookIndexSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Cookbook".to_string(),
-                                id: "cookbook".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(50usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookIndex {
-                    section: CookbookIndexSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(50usize),
-            );
-        pages
-            .push((
-                51usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Publishing".to_string(),
-                        url: BookRoute::CookbookPublishing {
-                            section: CookbookPublishingSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Publishing".to_string(),
-                                id: "publishing".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Web: Publishing with GitHub Pages".to_string(),
-                                id: "web-publishing-with-github-pages".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Desktop: Creating an installer".to_string(),
-                                id: "desktop-creating-an-installer".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Preparing your application for bundling"
-                                    .to_string(),
-                                id: "preparing-your-application-for-bundling".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Adding assets to your application".to_string(),
-                                id: "adding-assets-to-your-application".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Install dioxus CLI".to_string(),
-                                id: "install-dioxus-cli".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Building".to_string(),
-                                id: "building".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(51usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookPublishing {
-                    section: CookbookPublishingSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(51usize),
-            );
-        pages
-            .push((
-                52usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Anti-patterns".to_string(),
-                        url: BookRoute::CookbookAntipatterns {
-                            section: CookbookAntipatternsSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Antipatterns".to_string(),
-                                id: "antipatterns".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Unnecessarily Nested Fragments".to_string(),
-                                id: "unnecessarily-nested-fragments".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Incorrect Iterator Keys".to_string(),
-                                id: "incorrect-iterator-keys".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Avoid Interior Mutability in Props".to_string(),
-                                id: "avoid-interior-mutability-in-props".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Avoid Updating State During Render".to_string(),
-                                id: "avoid-updating-state-during-render".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Avoid Large Groups of State".to_string(),
-                                id: "avoid-large-groups-of-state".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Running Non-Deterministic Code in the Body of a Component"
-                                    .to_string(),
-                                id: "running-non-deterministic-code-in-the-body-of-a-component"
-                                    .to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Overly Permissive PartialEq for Props".to_string(),
-                                id: "overly-permissive-partialeq-for-props".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(52usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookAntipatterns {
-                    section: CookbookAntipatternsSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(52usize),
-            );
-        pages
-            .push((
-                53usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Error Handling".to_string(),
-                        url: BookRoute::CookbookErrorHandling {
-                            section: CookbookErrorHandlingSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Error handling".to_string(),
-                                id: "error-handling".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "The simplest – returning None".to_string(),
-                                id: "the-simplest--returning-none".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Early return on result".to_string(),
-                                id: "early-return-on-result".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Match results".to_string(),
-                                id: "match-results".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Passing error states through components"
-                                    .to_string(),
-                                id: "passing-error-states-through-components".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Throwing errors".to_string(),
-                                id: "throwing-errors".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(53usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookErrorHandling {
-                    section: CookbookErrorHandlingSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(53usize),
-            );
-        pages
-            .push((
-                54usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Integrations".to_string(),
-                        url: BookRoute::CookbookIntegrationsIndex {
-                            section: CookbookIntegrationsIndexSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(54usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookIntegrationsIndex {
-                    section: CookbookIntegrationsIndexSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(54usize),
-            );
-        pages
-            .push((
-                55usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Logging".to_string(),
-                        url: BookRoute::CookbookIntegrationsLogging {
-                            section: CookbookIntegrationsLoggingSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Logging".to_string(),
-                                id: "logging".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "The Tracing Crate".to_string(),
-                                id: "the-tracing-crate".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Dioxus Logger".to_string(),
-                                id: "dioxus-logger".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Platform Intricacies".to_string(),
-                                id: "platform-intricacies".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Final Notes".to_string(),
-                                id: "final-notes".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Desktop and Server".to_string(),
-                                id: "desktop-and-server".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Web".to_string(),
-                                id: "web".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Mobile".to_string(),
-                                id: "mobile".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Android".to_string(),
-                                id: "android".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Viewing Android Logs".to_string(),
-                                id: "viewing-android-logs".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "iOS".to_string(),
-                                id: "ios".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Viewing IOS Logs".to_string(),
-                                id: "viewing-ios-logs".to_string(),
-                                level: 4usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(55usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookIntegrationsLogging {
-                    section: CookbookIntegrationsLoggingSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(55usize),
-            );
-        pages
-            .push((
-                56usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Internationalization".to_string(),
-                        url: BookRoute::CookbookIntegrationsInternationalization {
-                            section: CookbookIntegrationsInternationalizationSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Internationalization".to_string(),
-                                id: "internationalization".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "The full code for internationalization".to_string(),
-                                id: "the-full-code-for-internationalization".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(56usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookIntegrationsInternationalization {
-                    section: CookbookIntegrationsInternationalizationSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(56usize),
-            );
-        pages
-            .push((
-                57usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "State Management".to_string(),
-                        url: BookRoute::CookbookStateIndex {
-                            section: CookbookStateIndexSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "State Cookbook".to_string(),
-                                id: "state-cookbook".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(57usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookStateIndex {
-                    section: CookbookStateIndexSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(57usize),
-            );
-        pages
-            .push((
-                58usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "External State".to_string(),
-                        url: BookRoute::CookbookStateExternalIndex {
-                            section: CookbookStateExternalIndexSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Working with External State".to_string(),
-                                id: "working-with-external-state".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Working with non-reactive State".to_string(),
-                                id: "working-with-non-reactive-state".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Making Reactive State External".to_string(),
-                                id: "making-reactive-state-external".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(58usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookStateExternalIndex {
-                    section: CookbookStateExternalIndexSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(58usize),
-            );
-        pages
-            .push((
-                59usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Custom Hooks".to_string(),
-                        url: BookRoute::CookbookStateCustomHooksIndex {
-                            section: CookbookStateCustomHooksIndexSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Custom Hooks".to_string(),
-                                id: "custom-hooks".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Composing Hooks".to_string(),
-                                id: "composing-hooks".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Custom Hook Logic".to_string(),
-                                id: "custom-hook-logic".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(59usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookStateCustomHooksIndex {
-                    section: CookbookStateCustomHooksIndexSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(59usize),
-            );
-        pages
-            .push((
-                60usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Testing".to_string(),
-                        url: BookRoute::CookbookTesting {
-                            section: CookbookTestingSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Testing".to_string(),
-                                id: "testing".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Component Testing".to_string(),
-                                id: "component-testing".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Hook Testing".to_string(),
-                                id: "hook-testing".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "End to End Testing".to_string(),
-                                id: "end-to-end-testing".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(60usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookTesting {
-                    section: CookbookTestingSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(60usize),
-            );
-        pages
-            .push((
-                61usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Tailwind".to_string(),
-                        url: BookRoute::CookbookTailwind {
-                            section: CookbookTailwindSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Tailwind".to_string(),
-                                id: "tailwind".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Setup".to_string(),
-                                id: "setup".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Bonus Steps".to_string(),
-                                id: "bonus-steps".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Development".to_string(),
-                                id: "development".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Web".to_string(),
-                                id: "web".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Desktop".to_string(),
-                                id: "desktop".to_string(),
-                                level: 3usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(61usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookTailwind {
-                    section: CookbookTailwindSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(61usize),
-            );
-        pages
-            .push((
-                62usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Custom Renderer".to_string(),
-                        url: BookRoute::CookbookCustomRenderer {
-                            section: CookbookCustomRendererSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Custom Renderer".to_string(),
-                                id: "custom-renderer".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "The specifics:".to_string(),
-                                id: "the-specifics".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Templates".to_string(),
-                                id: "templates".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Mutations".to_string(),
-                                id: "mutations".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Node storage".to_string(),
-                                id: "node-storage".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "An Example".to_string(),
-                                id: "an-example".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Building Templates".to_string(),
-                                id: "building-templates".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Applying Mutations".to_string(),
-                                id: "applying-mutations".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Event loop".to_string(),
-                                id: "event-loop".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Custom raw elements".to_string(),
-                                id: "custom-raw-elements".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Native Core".to_string(),
-                                id: "native-core".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "The RealDom".to_string(),
-                                id: "the-realdom".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Example".to_string(),
-                                id: "example".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Layout".to_string(),
-                                id: "layout".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Text Editing".to_string(),
-                                id: "text-editing".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Conclusion".to_string(),
-                                id: "conclusion".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(62usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookCustomRenderer {
-                    section: CookbookCustomRendererSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(62usize),
-            );
-        pages
-            .push((
-                63usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Optimizing".to_string(),
-                        url: BookRoute::CookbookOptimizing {
-                            section: CookbookOptimizingSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Optimizing".to_string(),
-                                id: "optimizing".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Building in release mode".to_string(),
-                                id: "building-in-release-mode".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "UPX".to_string(),
-                                id: "upx".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Build configuration".to_string(),
-                                id: "build-configuration".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Stable".to_string(),
-                                id: "stable".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Unstable".to_string(),
-                                id: "unstable".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "wasm-opt".to_string(),
-                                id: "wasm-opt".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Improving Dioxus code".to_string(),
-                                id: "improving-dioxus-code".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Optimizing the size of assets".to_string(),
-                                id: "optimizing-the-size-of-assets".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(63usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookOptimizing {
-                    section: CookbookOptimizingSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(63usize),
-            );
-        pages
-            .push((
-                64usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "CLI".to_string(),
-                        url: BookRoute::CliIndex {
-                            section: CliIndexSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Introduction".to_string(),
-                                id: "introduction".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Features".to_string(),
-                                id: "features".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(64usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CliIndex {
-                    section: CliIndexSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(64usize),
-            );
-        pages
-            .push((
-                65usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Create a Project".to_string(),
-                        url: BookRoute::CliCreating {
-                            section: CliCreatingSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Create a Project".to_string(),
-                                id: "create-a-project".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Initializing a project".to_string(),
-                                id: "initializing-a-project".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(65usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CliCreating {
-                    section: CliCreatingSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(65usize),
-            );
-        pages
-            .push((
-                66usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Configure Project".to_string(),
-                        url: BookRoute::CliConfigure {
-                            section: CliConfigureSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Configure Project".to_string(),
-                                id: "configure-project".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Structure".to_string(),
-                                id: "structure".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Application 🔒".to_string(),
-                                id: "application-".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Web.App 🔒".to_string(),
-                                id: "webapp-".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Web.Watcher 🔒".to_string(),
-                                id: "webwatcher-".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Web.Resource 🔒".to_string(),
-                                id: "webresource-".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Web.Resource.Dev 🔒".to_string(),
-                                id: "webresourcedev-".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Web.Proxy".to_string(),
-                                id: "webproxy".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Config example".to_string(),
-                                id: "config-example".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(66usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CliConfigure {
-                    section: CliConfigureSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(66usize),
-            );
-        pages
-            .push((
-                67usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Translate HTML".to_string(),
-                        url: BookRoute::CliTranslate {
-                            section: CliTranslateSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Translating existing HTML".to_string(),
-                                id: "translating-existing-html".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Usage".to_string(),
-                                id: "usage".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(67usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CliTranslate {
-                    section: CliTranslateSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(67usize),
-            );
-        pages
-            .push((
-                68usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Contributing".to_string(),
-                        url: BookRoute::ContributingIndex {
-                            section: ContributingIndexSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Contributing".to_string(),
-                                id: "contributing".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Improving Docs".to_string(),
-                                id: "improving-docs".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Working on the Ecosystem".to_string(),
-                                id: "working-on-the-ecosystem".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Bugs & Features".to_string(),
-                                id: "bugs--features".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Before you contribute".to_string(),
-                                id: "before-you-contribute".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "How to test dioxus with local crate".to_string(),
-                                id: "how-to-test-dioxus-with-local-crate".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(68usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ContributingIndex {
-                    section: ContributingIndexSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(68usize),
-            );
-        pages
-            .push((
-                69usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Project Structure".to_string(),
-                        url: BookRoute::ContributingProjectStructure {
-                            section: ContributingProjectStructureSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Project Structure".to_string(),
-                                id: "project-structure".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Renderers".to_string(),
-                                id: "renderers".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "State Management/Hooks".to_string(),
-                                id: "state-managementhooks".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Core utilities".to_string(),
-                                id: "core-utilities".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Native Renderer Utilities".to_string(),
-                                id: "native-renderer-utilities".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Web renderer tooling".to_string(),
-                                id: "web-renderer-tooling".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Developer tooling".to_string(),
-                                id: "developer-tooling".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(69usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ContributingProjectStructure {
-                    section: ContributingProjectStructureSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(69usize),
-            );
-        pages
-            .push((
-                70usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Guiding Principles".to_string(),
-                        url: BookRoute::ContributingGuidingPrinciples {
-                            section: ContributingGuidingPrinciplesSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Overall Goals".to_string(),
-                                id: "overall-goals".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Cross-Platform".to_string(),
-                                id: "cross-platform".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Performance".to_string(),
-                                id: "performance".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Type Safety".to_string(),
-                                id: "type-safety".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Developer Experience".to_string(),
-                                id: "developer-experience".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(70usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ContributingGuidingPrinciples {
-                    section: ContributingGuidingPrinciplesSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(70usize),
-            );
-        pages
-            .push((
-                71usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Roadmap".to_string(),
-                        url: BookRoute::ContributingRoadmap {
-                            section: ContributingRoadmapSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Roadmap & Feature-set".to_string(),
-                                id: "roadmap--feature-set".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Features".to_string(),
-                                id: "features".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Roadmap".to_string(),
-                                id: "roadmap".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Core".to_string(),
-                                id: "core".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "SSR".to_string(),
-                                id: "ssr".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Desktop".to_string(),
-                                id: "desktop".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Mobile".to_string(),
-                                id: "mobile".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Bundling (CLI)".to_string(),
-                                id: "bundling-cli".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Essential hooks".to_string(),
-                                id: "essential-hooks".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Work in Progress".to_string(),
-                                id: "work-in-progress".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Build Tool".to_string(),
-                                id: "build-tool".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Server Component Support".to_string(),
-                                id: "server-component-support".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Native rendering".to_string(),
-                                id: "native-rendering".to_string(),
-                                level: 3usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(71usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ContributingRoadmap {
-                    section: ContributingRoadmapSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(71usize),
-            );
-        pages
-            .push((
-                72usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Migration".to_string(),
-                        url: BookRoute::MigrationIndex {
-                            section: MigrationIndexSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "How to Upgrade to Dioxus 0.5".to_string(),
-                                id: "how-to-upgrade-to-dioxus-05".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Cheat Sheet".to_string(),
-                                id: "cheat-sheet".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Scope".to_string(),
-                                id: "scope".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Props".to_string(),
-                                id: "props".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Futures".to_string(),
-                                id: "futures".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "State Hooks".to_string(),
-                                id: "state-hooks".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Fermi".to_string(),
-                                id: "fermi".to_string(),
-                                level: 3usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(72usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::MigrationIndex {
-                    section: MigrationIndexSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(72usize),
-            );
-        pages
-            .push((
-                73usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Hooks".to_string(),
-                        url: BookRoute::MigrationHooks {
-                            section: MigrationHooksSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Hooks".to_string(),
-                                id: "hooks".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "State Hooks".to_string(),
-                                id: "state-hooks".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Async Hooks".to_string(),
-                                id: "async-hooks".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Dependencies".to_string(),
-                                id: "dependencies".to_string(),
-                                level: 3usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(73usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::MigrationHooks {
-                    section: MigrationHooksSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(73usize),
-            );
-        pages
-            .push((
-                74usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "State".to_string(),
-                        url: BookRoute::MigrationState {
-                            section: MigrationStateSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "State Migration".to_string(),
-                                id: "state-migration".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Context Based State".to_string(),
-                                id: "context-based-state".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Opting Out of Subscriptions".to_string(),
-                                id: "opting-out-of-subscriptions".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Global State".to_string(),
-                                id: "global-state".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(74usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::MigrationState {
-                    section: MigrationStateSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(74usize),
-            );
-        pages
-            .push((
-                75usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Fermi".to_string(),
-                        url: BookRoute::MigrationFermi {
-                            section: MigrationFermiSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Fermi".to_string(),
-                                id: "fermi".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Memos".to_string(),
-                                id: "memos".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(75usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::MigrationFermi {
-                    section: MigrationFermiSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(75usize),
-            );
-        pages
-            .push((
-                76usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Props".to_string(),
-                        url: BookRoute::MigrationProps {
-                            section: MigrationPropsSection::Empty,
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Props Migration".to_string(),
-                                id: "props-migration".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Owned Props".to_string(),
-                                id: "owned-props".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Borrowed Props".to_string(),
-                                id: "borrowed-props".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Manual Props".to_string(),
-                                id: "manual-props".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(76usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::MigrationProps {
-                    section: MigrationPropsSection::Empty,
-                },
-                ::use_mdbook::mdbook_shared::PageId(76usize),
-            );
+        let __push_page_0: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    0usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Introduction".to_string(),
+                            url: BookRoute::Index {
+                                section: IndexSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Introduction".to_string(),
+                                    id: "introduction".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Features".to_string(),
+                                    id: "features".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Multiplatform".to_string(),
+                                    id: "multiplatform".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Stability".to_string(),
+                                    id: "stability".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(0usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::Index {
+                        section: IndexSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(0usize),
+                );
+        };
+        __push_page_0(&mut pages, &mut page_id_mapping);
+        let __push_page_1: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    1usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Getting Started".to_string(),
+                            url: BookRoute::GettingStartedIndex {
+                                section: GettingStartedIndexSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Getting Started".to_string(),
+                                    id: "getting-started".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Prerequisites".to_string(),
+                                    id: "prerequisites".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "An Editor".to_string(),
+                                    id: "an-editor".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Rust".to_string(),
+                                    id: "rust".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Platform-specific dependencies".to_string(),
+                                    id: "platform-specific-dependencies".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Dioxus CLI".to_string(),
+                                    id: "dioxus-cli".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Create a new project".to_string(),
+                                    id: "create-a-new-project".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Running the project".to_string(),
+                                    id: "running-the-project".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Conclusion".to_string(),
+                                    id: "conclusion".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(1usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::GettingStartedIndex {
+                        section: GettingStartedIndexSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(1usize),
+                );
+        };
+        __push_page_1(&mut pages, &mut page_id_mapping);
+        let __push_page_2: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    2usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Guide".to_string(),
+                            url: BookRoute::GuideIndex {
+                                section: GuideIndexSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Dioxus Guide".to_string(),
+                                    id: "dioxus-guide".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Introduction".to_string(),
+                                    id: "introduction".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(2usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::GuideIndex {
+                        section: GuideIndexSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(2usize),
+                );
+        };
+        __push_page_2(&mut pages, &mut page_id_mapping);
+        let __push_page_3: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    3usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Your First Component".to_string(),
+                            url: BookRoute::GuideYourFirstComponent {
+                                section: GuideYourFirstComponentSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Your First Component".to_string(),
+                                    id: "your-first-component".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Setup".to_string(),
+                                    id: "setup".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Describing the UI".to_string(),
+                                    id: "describing-the-ui".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Dynamic Text".to_string(),
+                                    id: "dynamic-text".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Creating Elements".to_string(),
+                                    id: "creating-elements".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Setting Attributes".to_string(),
+                                    id: "setting-attributes".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Creating a Component".to_string(),
+                                    id: "creating-a-component".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Creating Props".to_string(),
+                                    id: "creating-props".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Cleaning Up Our Interface".to_string(),
+                                    id: "cleaning-up-our-interface".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(3usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::GuideYourFirstComponent {
+                        section: GuideYourFirstComponentSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(3usize),
+                );
+        };
+        __push_page_3(&mut pages, &mut page_id_mapping);
+        let __push_page_4: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    4usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "State".to_string(),
+                            url: BookRoute::GuideState {
+                                section: GuideStateSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Interactivity".to_string(),
+                                    id: "interactivity".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Creating a Preview".to_string(),
+                                    id: "creating-a-preview".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Event Handlers".to_string(),
+                                    id: "event-handlers".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "State".to_string(),
+                                    id: "state".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "The Rules of Hooks".to_string(),
+                                    id: "the-rules-of-hooks".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "No Hooks in Conditionals".to_string(),
+                                    id: "no-hooks-in-conditionals".to_string(),
+                                    level: 4usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "No Hooks in Closures".to_string(),
+                                    id: "no-hooks-in-closures".to_string(),
+                                    level: 4usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "No Hooks in Loops".to_string(),
+                                    id: "no-hooks-in-loops".to_string(),
+                                    level: 4usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(4usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::GuideState {
+                        section: GuideStateSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(4usize),
+                );
+        };
+        __push_page_4(&mut pages, &mut page_id_mapping);
+        let __push_page_5: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    5usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Data Fetching".to_string(),
+                            url: BookRoute::GuideDataFetching {
+                                section: GuideDataFetchingSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Fetching Data".to_string(),
+                                    id: "fetching-data".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Defining the API".to_string(),
+                                    id: "defining-the-api".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Working with Async".to_string(),
+                                    id: "working-with-async".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Lazily Fetching Data".to_string(),
+                                    id: "lazily-fetching-data".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(5usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::GuideDataFetching {
+                        section: GuideDataFetchingSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(5usize),
+                );
+        };
+        __push_page_5(&mut pages, &mut page_id_mapping);
+        let __push_page_6: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    6usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Full Code".to_string(),
+                            url: BookRoute::GuideFullCode {
+                                section: GuideFullCodeSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Conclusion".to_string(),
+                                    id: "conclusion".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Challenges".to_string(),
+                                    id: "challenges".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "The full code for the hacker news project"
+                                        .to_string(),
+                                    id: "the-full-code-for-the-hacker-news-project".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(6usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::GuideFullCode {
+                        section: GuideFullCodeSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(6usize),
+                );
+        };
+        __push_page_6(&mut pages, &mut page_id_mapping);
+        let __push_page_7: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    7usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Reference".to_string(),
+                            url: BookRoute::ReferenceIndex {
+                                section: ReferenceIndexSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Dioxus Reference".to_string(),
+                                    id: "dioxus-reference".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Rendering".to_string(),
+                                    id: "rendering".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "State".to_string(),
+                                    id: "state".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Platforms".to_string(),
+                                    id: "platforms".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(7usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::ReferenceIndex {
+                        section: ReferenceIndexSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(7usize),
+                );
+        };
+        __push_page_7(&mut pages, &mut page_id_mapping);
+        let __push_page_8: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    8usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "RSX".to_string(),
+                            url: BookRoute::ReferenceRsx {
+                                section: ReferenceRsxSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Describing the UI".to_string(),
+                                    id: "describing-the-ui".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "RSX Features".to_string(),
+                                    id: "rsx-features".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Attributes".to_string(),
+                                    id: "attributes".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Conditional Attributes".to_string(),
+                                    id: "conditional-attributes".to_string(),
+                                    level: 4usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Custom Attributes".to_string(),
+                                    id: "custom-attributes".to_string(),
+                                    level: 4usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Special Attributes".to_string(),
+                                    id: "special-attributes".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "The HTML Escape Hatch".to_string(),
+                                    id: "the-html-escape-hatch".to_string(),
+                                    level: 4usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Boolean Attributes".to_string(),
+                                    id: "boolean-attributes".to_string(),
+                                    level: 4usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Interpolation".to_string(),
+                                    id: "interpolation".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Children".to_string(),
+                                    id: "children".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Fragments".to_string(),
+                                    id: "fragments".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Expressions".to_string(),
+                                    id: "expressions".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Loops".to_string(),
+                                    id: "loops".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "If statements".to_string(),
+                                    id: "if-statements".to_string(),
+                                    level: 3usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(8usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::ReferenceRsx {
+                        section: ReferenceRsxSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(8usize),
+                );
+        };
+        __push_page_8(&mut pages, &mut page_id_mapping);
+        let __push_page_9: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    9usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Components".to_string(),
+                            url: BookRoute::ReferenceComponents {
+                                section: ReferenceComponentsSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Components".to_string(),
+                                    id: "components".to_string(),
+                                    level: 1usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(9usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::ReferenceComponents {
+                        section: ReferenceComponentsSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(9usize),
+                );
+        };
+        __push_page_9(&mut pages, &mut page_id_mapping);
+        let __push_page_10: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    10usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Props".to_string(),
+                            url: BookRoute::ReferenceComponentProps {
+                                section: ReferenceComponentPropsSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Component Props".to_string(),
+                                    id: "component-props".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "derive(Props)".to_string(),
+                                    id: "deriveprops".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Prop Options".to_string(),
+                                    id: "prop-options".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Optional Props".to_string(),
+                                    id: "optional-props".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Explicitly Required Option".to_string(),
+                                    id: "explicitly-required-option".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Default Props".to_string(),
+                                    id: "default-props".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Automatic Conversion with into".to_string(),
+                                    id: "automatic-conversion-with-into".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "The component macro".to_string(),
+                                    id: "the-component-macro".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Component Children".to_string(),
+                                    id: "component-children".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "The children field".to_string(),
+                                    id: "the-children-field".to_string(),
+                                    level: 3usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(10usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::ReferenceComponentProps {
+                        section: ReferenceComponentPropsSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(10usize),
+                );
+        };
+        __push_page_10(&mut pages, &mut page_id_mapping);
+        let __push_page_11: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    11usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Event Handlers".to_string(),
+                            url: BookRoute::ReferenceEventHandlers {
+                                section: ReferenceEventHandlersSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Event Handlers".to_string(),
+                                    id: "event-handlers".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "The Event object".to_string(),
+                                    id: "the-event-object".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Event propagation".to_string(),
+                                    id: "event-propagation".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Prevent Default".to_string(),
+                                    id: "prevent-default".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Handler Props".to_string(),
+                                    id: "handler-props".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Async Event Handlers".to_string(),
+                                    id: "async-event-handlers".to_string(),
+                                    level: 4usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Custom Data".to_string(),
+                                    id: "custom-data".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(11usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::ReferenceEventHandlers {
+                        section: ReferenceEventHandlersSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(11usize),
+                );
+        };
+        __push_page_11(&mut pages, &mut page_id_mapping);
+        let __push_page_12: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    12usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Hooks".to_string(),
+                            url: BookRoute::ReferenceHooks {
+                                section: ReferenceHooksSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Hooks and component state".to_string(),
+                                    id: "hooks-and-component-state".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "use_signal hook".to_string(),
+                                    id: "use-signal-hook".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Rules of hooks".to_string(),
+                                    id: "rules-of-hooks".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "No hooks in conditionals".to_string(),
+                                    id: "no-hooks-in-conditionals".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "No hooks in closures".to_string(),
+                                    id: "no-hooks-in-closures".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "No hooks in loops".to_string(),
+                                    id: "no-hooks-in-loops".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Additional resources".to_string(),
+                                    id: "additional-resources".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(12usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::ReferenceHooks {
+                        section: ReferenceHooksSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(12usize),
+                );
+        };
+        __push_page_12(&mut pages, &mut page_id_mapping);
+        let __push_page_13: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    13usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "User Input".to_string(),
+                            url: BookRoute::ReferenceUserInput {
+                                section: ReferenceUserInputSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "User Input".to_string(),
+                                    id: "user-input".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Controlled Inputs".to_string(),
+                                    id: "controlled-inputs".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Uncontrolled Inputs".to_string(),
+                                    id: "uncontrolled-inputs".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Handling files".to_string(),
+                                    id: "handling-files".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(13usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::ReferenceUserInput {
+                        section: ReferenceUserInputSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(13usize),
+                );
+        };
+        __push_page_13(&mut pages, &mut page_id_mapping);
+        let __push_page_14: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    14usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Context".to_string(),
+                            url: BookRoute::ReferenceContext {
+                                section: ReferenceContextSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Sharing State".to_string(),
+                                    id: "sharing-state".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Lifting State".to_string(),
+                                    id: "lifting-state".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Using Shared State".to_string(),
+                                    id: "using-shared-state".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(14usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::ReferenceContext {
+                        section: ReferenceContextSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(14usize),
+                );
+        };
+        __push_page_14(&mut pages, &mut page_id_mapping);
+        let __push_page_15: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    15usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Dynamic Rendering".to_string(),
+                            url: BookRoute::ReferenceDynamicRendering {
+                                section: ReferenceDynamicRenderingSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Dynamic Rendering".to_string(),
+                                    id: "dynamic-rendering".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Conditional Rendering".to_string(),
+                                    id: "conditional-rendering".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Improving the if-else Example".to_string(),
+                                    id: "improving-the-if-else-example".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Inspecting Element props".to_string(),
+                                    id: "inspecting-element-props".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Rendering Nothing".to_string(),
+                                    id: "rendering-nothing".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Rendering Lists".to_string(),
+                                    id: "rendering-lists".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Inline for loops".to_string(),
+                                    id: "inline-for-loops".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "The key Attribute".to_string(),
+                                    id: "the-key-attribute".to_string(),
+                                    level: 3usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(15usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::ReferenceDynamicRendering {
+                        section: ReferenceDynamicRenderingSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(15usize),
+                );
+        };
+        __push_page_15(&mut pages, &mut page_id_mapping);
+        let __push_page_16: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    16usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Routing".to_string(),
+                            url: BookRoute::ReferenceRouter {
+                                section: ReferenceRouterSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Router".to_string(),
+                                    id: "router".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "What is it?".to_string(),
+                                    id: "what-is-it".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Using the router".to_string(),
+                                    id: "using-the-router".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Links".to_string(),
+                                    id: "links".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "More reading".to_string(),
+                                    id: "more-reading".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(16usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::ReferenceRouter {
+                        section: ReferenceRouterSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(16usize),
+                );
+        };
+        __push_page_16(&mut pages, &mut page_id_mapping);
+        let __push_page_17: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    17usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Resource".to_string(),
+                            url: BookRoute::ReferenceUseResource {
+                                section: ReferenceUseResourceSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Resource".to_string(),
+                                    id: "resource".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Restarting the Future".to_string(),
+                                    id: "restarting-the-future".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Dependencies".to_string(),
+                                    id: "dependencies".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(17usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::ReferenceUseResource {
+                        section: ReferenceUseResourceSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(17usize),
+                );
+        };
+        __push_page_17(&mut pages, &mut page_id_mapping);
+        let __push_page_18: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    18usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "UseCoroutine".to_string(),
+                            url: BookRoute::ReferenceUseCoroutine {
+                                section: ReferenceUseCoroutineSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Coroutines".to_string(),
+                                    id: "coroutines".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "use_coroutine".to_string(),
+                                    id: "use-coroutine".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Yielding Values".to_string(),
+                                    id: "yielding-values".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Sending Values".to_string(),
+                                    id: "sending-values".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Automatic injection into the Context API"
+                                        .to_string(),
+                                    id: "automatic-injection-into-the-context-api".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(18usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::ReferenceUseCoroutine {
+                        section: ReferenceUseCoroutineSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(18usize),
+                );
+        };
+        __push_page_18(&mut pages, &mut page_id_mapping);
+        let __push_page_19: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    19usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Spawn".to_string(),
+                            url: BookRoute::ReferenceSpawn {
+                                section: ReferenceSpawnSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Spawning Futures".to_string(),
+                                    id: "spawning-futures".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Spawning Tokio Tasks".to_string(),
+                                    id: "spawning-tokio-tasks".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(19usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::ReferenceSpawn {
+                        section: ReferenceSpawnSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(19usize),
+                );
+        };
+        __push_page_19(&mut pages, &mut page_id_mapping);
+        let __push_page_20: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    20usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Assets".to_string(),
+                            url: BookRoute::ReferenceAssets {
+                                section: ReferenceAssetsSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Assets".to_string(),
+                                    id: "assets".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Including images".to_string(),
+                                    id: "including-images".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Including arbitrary files".to_string(),
+                                    id: "including-arbitrary-files".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Including stylesheets".to_string(),
+                                    id: "including-stylesheets".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Conclusion".to_string(),
+                                    id: "conclusion".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(20usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::ReferenceAssets {
+                        section: ReferenceAssetsSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(20usize),
+                );
+        };
+        __push_page_20(&mut pages, &mut page_id_mapping);
+        let __push_page_21: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    21usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Choosing A Web Renderer".to_string(),
+                            url: BookRoute::ReferenceChoosingAWebRenderer {
+                                section: ReferenceChoosingAWebRendererSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Choosing a web renderer".to_string(),
+                                    id: "choosing-a-web-renderer".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Dioxus Liveview".to_string(),
+                                    id: "dioxus-liveview".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Dioxus Web".to_string(),
+                                    id: "dioxus-web".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Dioxus Fullstack".to_string(),
+                                    id: "dioxus-fullstack".to_string(),
+                                    level: 3usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(21usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::ReferenceChoosingAWebRenderer {
+                        section: ReferenceChoosingAWebRendererSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(21usize),
+                );
+        };
+        __push_page_21(&mut pages, &mut page_id_mapping);
+        let __push_page_22: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    22usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Desktop".to_string(),
+                            url: BookRoute::ReferenceDesktopIndex {
+                                section: ReferenceDesktopIndexSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Desktop".to_string(),
+                                    id: "desktop".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Examples".to_string(),
+                                    id: "examples".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Running Javascript".to_string(),
+                                    id: "running-javascript".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Custom Assets".to_string(),
+                                    id: "custom-assets".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Integrating with Wry".to_string(),
+                                    id: "integrating-with-wry".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(22usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::ReferenceDesktopIndex {
+                        section: ReferenceDesktopIndexSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(22usize),
+                );
+        };
+        __push_page_22(&mut pages, &mut page_id_mapping);
+        let __push_page_23: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    23usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Mobile".to_string(),
+                            url: BookRoute::ReferenceMobileIndex {
+                                section: ReferenceMobileIndexSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Mobile App".to_string(),
+                                    id: "mobile-app".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Support".to_string(),
+                                    id: "support".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Getting Set up".to_string(),
+                                    id: "getting-set-up".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Setting up dependencies".to_string(),
+                                    id: "setting-up-dependencies".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Android Dependencies".to_string(),
+                                    id: "android-dependencies".to_string(),
+                                    level: 4usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "IOS Dependencies".to_string(),
+                                    id: "ios-dependencies".to_string(),
+                                    level: 4usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Setting up your project".to_string(),
+                                    id: "setting-up-your-project".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Running".to_string(),
+                                    id: "running".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Android".to_string(),
+                                    id: "android".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "IOS".to_string(),
+                                    id: "ios".to_string(),
+                                    level: 3usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(23usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::ReferenceMobileIndex {
+                        section: ReferenceMobileIndexSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(23usize),
+                );
+        };
+        __push_page_23(&mut pages, &mut page_id_mapping);
+        let __push_page_24: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    24usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "APIs".to_string(),
+                            url: BookRoute::ReferenceMobileApis {
+                                section: ReferenceMobileApisSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Mobile".to_string(),
+                                    id: "mobile".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Running Javascript".to_string(),
+                                    id: "running-javascript".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Custom Assets".to_string(),
+                                    id: "custom-assets".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Integrating with Wry".to_string(),
+                                    id: "integrating-with-wry".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(24usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::ReferenceMobileApis {
+                        section: ReferenceMobileApisSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(24usize),
+                );
+        };
+        __push_page_24(&mut pages, &mut page_id_mapping);
+        let __push_page_25: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    25usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Web".to_string(),
+                            url: BookRoute::ReferenceWebIndex {
+                                section: ReferenceWebIndexSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Web".to_string(),
+                                    id: "web".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Support".to_string(),
+                                    id: "support".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Running Javascript".to_string(),
+                                    id: "running-javascript".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Customizing Index Template".to_string(),
+                                    id: "customizing-index-template".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(25usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::ReferenceWebIndex {
+                        section: ReferenceWebIndexSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(25usize),
+                );
+        };
+        __push_page_25(&mut pages, &mut page_id_mapping);
+        let __push_page_26: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    26usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "SSR".to_string(),
+                            url: BookRoute::ReferenceSsr {
+                                section: ReferenceSsrSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Server-Side Rendering".to_string(),
+                                    id: "server-side-rendering".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Setup".to_string(),
+                                    id: "setup".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Multithreaded Support".to_string(),
+                                    id: "multithreaded-support".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(26usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::ReferenceSsr {
+                        section: ReferenceSsrSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(26usize),
+                );
+        };
+        __push_page_26(&mut pages, &mut page_id_mapping);
+        let __push_page_27: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    27usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Liveview".to_string(),
+                            url: BookRoute::ReferenceLiveview {
+                                section: ReferenceLiveviewSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Liveview".to_string(),
+                                    id: "liveview".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Support".to_string(),
+                                    id: "support".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Router Integration".to_string(),
+                                    id: "router-integration".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Managing Latency".to_string(),
+                                    id: "managing-latency".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(27usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::ReferenceLiveview {
+                        section: ReferenceLiveviewSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(27usize),
+                );
+        };
+        __push_page_27(&mut pages, &mut page_id_mapping);
+        let __push_page_28: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    28usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Fullstack".to_string(),
+                            url: BookRoute::ReferenceFullstackIndex {
+                                section: ReferenceFullstackIndexSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Fullstack development".to_string(),
+                                    id: "fullstack-development".to_string(),
+                                    level: 1usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(28usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::ReferenceFullstackIndex {
+                        section: ReferenceFullstackIndexSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(28usize),
+                );
+        };
+        __push_page_28(&mut pages, &mut page_id_mapping);
+        let __push_page_29: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    29usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Server Functions".to_string(),
+                            url: BookRoute::ReferenceFullstackServerFunctions {
+                                section: ReferenceFullstackServerFunctionsSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Communicating with the server".to_string(),
+                                    id: "communicating-with-the-server".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Cached data fetching".to_string(),
+                                    id: "cached-data-fetching".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Running the client with dioxus-desktop".to_string(),
+                                    id: "running-the-client-with-dioxus-desktop".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Client code".to_string(),
+                                    id: "client-code".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Server code".to_string(),
+                                    id: "server-code".to_string(),
+                                    level: 3usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(29usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::ReferenceFullstackServerFunctions {
+                        section: ReferenceFullstackServerFunctionsSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(29usize),
+                );
+        };
+        __push_page_29(&mut pages, &mut page_id_mapping);
+        let __push_page_30: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    30usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Extractors".to_string(),
+                            url: BookRoute::ReferenceFullstackExtractors {
+                                section: ReferenceFullstackExtractorsSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Extractors".to_string(),
+                                    id: "extractors".to_string(),
+                                    level: 1usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(30usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::ReferenceFullstackExtractors {
+                        section: ReferenceFullstackExtractorsSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(30usize),
+                );
+        };
+        __push_page_30(&mut pages, &mut page_id_mapping);
+        let __push_page_31: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    31usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Middleware".to_string(),
+                            url: BookRoute::ReferenceFullstackMiddleware {
+                                section: ReferenceFullstackMiddlewareSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Middleware".to_string(),
+                                    id: "middleware".to_string(),
+                                    level: 1usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(31usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::ReferenceFullstackMiddleware {
+                        section: ReferenceFullstackMiddlewareSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(31usize),
+                );
+        };
+        __push_page_31(&mut pages, &mut page_id_mapping);
+        let __push_page_32: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    32usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Authentication".to_string(),
+                            url: BookRoute::ReferenceFullstackAuthentication {
+                                section: ReferenceFullstackAuthenticationSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Authentication".to_string(),
+                                    id: "authentication".to_string(),
+                                    level: 1usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(32usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::ReferenceFullstackAuthentication {
+                        section: ReferenceFullstackAuthenticationSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(32usize),
+                );
+        };
+        __push_page_32(&mut pages, &mut page_id_mapping);
+        let __push_page_33: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    33usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Routing".to_string(),
+                            url: BookRoute::ReferenceFullstackRouting {
+                                section: ReferenceFullstackRoutingSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Routing".to_string(),
+                                    id: "routing".to_string(),
+                                    level: 1usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(33usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::ReferenceFullstackRouting {
+                        section: ReferenceFullstackRoutingSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(33usize),
+                );
+        };
+        __push_page_33(&mut pages, &mut page_id_mapping);
+        let __push_page_34: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    34usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Router".to_string(),
+                            url: BookRoute::RouterIndex {
+                                section: RouterIndexSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Introduction".to_string(),
+                                    id: "introduction".to_string(),
+                                    level: 1usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(34usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::RouterIndex {
+                        section: RouterIndexSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(34usize),
+                );
+        };
+        __push_page_34(&mut pages, &mut page_id_mapping);
+        let __push_page_35: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    35usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Example Project".to_string(),
+                            url: BookRoute::RouterExampleIndex {
+                                section: RouterExampleIndexSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Overview".to_string(),
+                                    id: "overview".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "You'll learn how to".to_string(),
+                                    id: "youll-learn-how-to".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(35usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::RouterExampleIndex {
+                        section: RouterExampleIndexSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(35usize),
+                );
+        };
+        __push_page_35(&mut pages, &mut page_id_mapping);
+        let __push_page_36: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    36usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Creating Our First Route".to_string(),
+                            url: BookRoute::RouterExampleFirstRoute {
+                                section: RouterExampleFirstRouteSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Creating Our First Route".to_string(),
+                                    id: "creating-our-first-route".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Fundamentals".to_string(),
+                                    id: "fundamentals".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Creating Routes".to_string(),
+                                    id: "creating-routes".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Fallback Route".to_string(),
+                                    id: "fallback-route".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Conclusion".to_string(),
+                                    id: "conclusion".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(36usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::RouterExampleFirstRoute {
+                        section: RouterExampleFirstRouteSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(36usize),
+                );
+        };
+        __push_page_36(&mut pages, &mut page_id_mapping);
+        let __push_page_37: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    37usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Building a Nest".to_string(),
+                            url: BookRoute::RouterExampleBuildingANest {
+                                section: RouterExampleBuildingANestSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Building a Nest".to_string(),
+                                    id: "building-a-nest".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Site Navigation".to_string(),
+                                    id: "site-navigation".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "URL Parameters and Nested Routes".to_string(),
+                                    id: "url-parameters-and-nested-routes".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Conclusion".to_string(),
+                                    id: "conclusion".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(37usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::RouterExampleBuildingANest {
+                        section: RouterExampleBuildingANestSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(37usize),
+                );
+        };
+        __push_page_37(&mut pages, &mut page_id_mapping);
+        let __push_page_38: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    38usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Navigation Targets".to_string(),
+                            url: BookRoute::RouterExampleNavigationTargets {
+                                section: RouterExampleNavigationTargetsSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Navigation Targets".to_string(),
+                                    id: "navigation-targets".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "What is a navigation target?".to_string(),
+                                    id: "what-is-a-navigation-target".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "External navigation".to_string(),
+                                    id: "external-navigation".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(38usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::RouterExampleNavigationTargets {
+                        section: RouterExampleNavigationTargetsSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(38usize),
+                );
+        };
+        __push_page_38(&mut pages, &mut page_id_mapping);
+        let __push_page_39: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    39usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Redirection Perfection".to_string(),
+                            url: BookRoute::RouterExampleRedirectionPerfection {
+                                section: RouterExampleRedirectionPerfectionSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Redirection Perfection".to_string(),
+                                    id: "redirection-perfection".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Creating Redirects".to_string(),
+                                    id: "creating-redirects".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Conclusion".to_string(),
+                                    id: "conclusion".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Challenges".to_string(),
+                                    id: "challenges".to_string(),
+                                    level: 3usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(39usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::RouterExampleRedirectionPerfection {
+                        section: RouterExampleRedirectionPerfectionSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(39usize),
+                );
+        };
+        __push_page_39(&mut pages, &mut page_id_mapping);
+        let __push_page_40: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    40usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Full Code".to_string(),
+                            url: BookRoute::RouterExampleFullCode {
+                                section: RouterExampleFullCodeSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Full Code".to_string(),
+                                    id: "full-code".to_string(),
+                                    level: 1usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(40usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::RouterExampleFullCode {
+                        section: RouterExampleFullCodeSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(40usize),
+                );
+        };
+        __push_page_40(&mut pages, &mut page_id_mapping);
+        let __push_page_41: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    41usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Reference".to_string(),
+                            url: BookRoute::RouterReferenceIndex {
+                                section: RouterReferenceIndexSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Adding the router to your application".to_string(),
+                                    id: "adding-the-router-to-your-application".to_string(),
+                                    level: 1usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(41usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::RouterReferenceIndex {
+                        section: RouterReferenceIndexSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(41usize),
+                );
+        };
+        __push_page_41(&mut pages, &mut page_id_mapping);
+        let __push_page_42: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    42usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Defining Routes".to_string(),
+                            url: BookRoute::RouterReferenceRoutesIndex {
+                                section: RouterReferenceRoutesIndexSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Defining Routes".to_string(),
+                                    id: "defining-routes".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Route Segments".to_string(),
+                                    id: "route-segments".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Static segments".to_string(),
+                                    id: "static-segments".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Dynamic Segments".to_string(),
+                                    id: "dynamic-segments".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Catch All Segments".to_string(),
+                                    id: "catch-all-segments".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Query Segments".to_string(),
+                                    id: "query-segments".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(42usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::RouterReferenceRoutesIndex {
+                        section: RouterReferenceRoutesIndexSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(42usize),
+                );
+        };
+        __push_page_42(&mut pages, &mut page_id_mapping);
+        let __push_page_43: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    43usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Nested Routes".to_string(),
+                            url: BookRoute::RouterReferenceRoutesNested {
+                                section: RouterReferenceRoutesNestedSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Nested Routes".to_string(),
+                                    id: "nested-routes".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Nesting".to_string(),
+                                    id: "nesting".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(43usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::RouterReferenceRoutesNested {
+                        section: RouterReferenceRoutesNestedSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(43usize),
+                );
+        };
+        __push_page_43(&mut pages, &mut page_id_mapping);
+        let __push_page_44: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    44usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Layouts".to_string(),
+                            url: BookRoute::RouterReferenceLayouts {
+                                section: RouterReferenceLayoutsSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Layouts".to_string(),
+                                    id: "layouts".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Layouts with dynamic segments".to_string(),
+                                    id: "layouts-with-dynamic-segments".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(44usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::RouterReferenceLayouts {
+                        section: RouterReferenceLayoutsSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(44usize),
+                );
+        };
+        __push_page_44(&mut pages, &mut page_id_mapping);
+        let __push_page_45: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    45usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Navigation".to_string(),
+                            url: BookRoute::RouterReferenceNavigationIndex {
+                                section: RouterReferenceNavigationIndexSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Links & Navigation".to_string(),
+                                    id: "links--navigation".to_string(),
+                                    level: 1usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(45usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::RouterReferenceNavigationIndex {
+                        section: RouterReferenceNavigationIndexSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(45usize),
+                );
+        };
+        __push_page_45(&mut pages, &mut page_id_mapping);
+        let __push_page_46: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    46usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Programmatic Navigation".to_string(),
+                            url: BookRoute::RouterReferenceNavigationProgrammatic {
+                                section: RouterReferenceNavigationProgrammaticSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Programmatic Navigation".to_string(),
+                                    id: "programmatic-navigation".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Using a Navigator".to_string(),
+                                    id: "using-a-navigator".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "External Navigation Targets".to_string(),
+                                    id: "external-navigation-targets".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(46usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::RouterReferenceNavigationProgrammatic {
+                        section: RouterReferenceNavigationProgrammaticSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(46usize),
+                );
+        };
+        __push_page_46(&mut pages, &mut page_id_mapping);
+        let __push_page_47: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    47usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "History Providers".to_string(),
+                            url: BookRoute::RouterReferenceHistoryProviders {
+                                section: RouterReferenceHistoryProvidersSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "History Providers".to_string(),
+                                    id: "history-providers".to_string(),
+                                    level: 1usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(47usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::RouterReferenceHistoryProviders {
+                        section: RouterReferenceHistoryProvidersSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(47usize),
+                );
+        };
+        __push_page_47(&mut pages, &mut page_id_mapping);
+        let __push_page_48: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    48usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "History Buttons".to_string(),
+                            url: BookRoute::RouterReferenceHistoryButtons {
+                                section: RouterReferenceHistoryButtonsSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "History Buttons".to_string(),
+                                    id: "history-buttons".to_string(),
+                                    level: 1usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(48usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::RouterReferenceHistoryButtons {
+                        section: RouterReferenceHistoryButtonsSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(48usize),
+                );
+        };
+        __push_page_48(&mut pages, &mut page_id_mapping);
+        let __push_page_49: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    49usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Routing Update Callback".to_string(),
+                            url: BookRoute::RouterReferenceRoutingUpdateCallback {
+                                section: RouterReferenceRoutingUpdateCallbackSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Routing Update Callback".to_string(),
+                                    id: "routing-update-callback".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "How does the callback behave?".to_string(),
+                                    id: "how-does-the-callback-behave".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Code Example".to_string(),
+                                    id: "code-example".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(49usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::RouterReferenceRoutingUpdateCallback {
+                        section: RouterReferenceRoutingUpdateCallbackSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(49usize),
+                );
+        };
+        __push_page_49(&mut pages, &mut page_id_mapping);
+        let __push_page_50: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    50usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Cookbook".to_string(),
+                            url: BookRoute::CookbookIndex {
+                                section: CookbookIndexSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Cookbook".to_string(),
+                                    id: "cookbook".to_string(),
+                                    level: 1usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(50usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::CookbookIndex {
+                        section: CookbookIndexSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(50usize),
+                );
+        };
+        __push_page_50(&mut pages, &mut page_id_mapping);
+        let __push_page_51: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    51usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Publishing".to_string(),
+                            url: BookRoute::CookbookPublishing {
+                                section: CookbookPublishingSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Publishing".to_string(),
+                                    id: "publishing".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Web: Publishing with GitHub Pages".to_string(),
+                                    id: "web-publishing-with-github-pages".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Desktop: Creating an installer".to_string(),
+                                    id: "desktop-creating-an-installer".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Preparing your application for bundling"
+                                        .to_string(),
+                                    id: "preparing-your-application-for-bundling".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Adding assets to your application".to_string(),
+                                    id: "adding-assets-to-your-application".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Install dioxus CLI".to_string(),
+                                    id: "install-dioxus-cli".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Building".to_string(),
+                                    id: "building".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(51usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::CookbookPublishing {
+                        section: CookbookPublishingSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(51usize),
+                );
+        };
+        __push_page_51(&mut pages, &mut page_id_mapping);
+        let __push_page_52: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    52usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Anti-patterns".to_string(),
+                            url: BookRoute::CookbookAntipatterns {
+                                section: CookbookAntipatternsSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Antipatterns".to_string(),
+                                    id: "antipatterns".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Unnecessarily Nested Fragments".to_string(),
+                                    id: "unnecessarily-nested-fragments".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Incorrect Iterator Keys".to_string(),
+                                    id: "incorrect-iterator-keys".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Avoid Interior Mutability in Props".to_string(),
+                                    id: "avoid-interior-mutability-in-props".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Avoid Updating State During Render".to_string(),
+                                    id: "avoid-updating-state-during-render".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Avoid Large Groups of State".to_string(),
+                                    id: "avoid-large-groups-of-state".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Running Non-Deterministic Code in the Body of a Component"
+                                        .to_string(),
+                                    id: "running-non-deterministic-code-in-the-body-of-a-component"
+                                        .to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Overly Permissive PartialEq for Props".to_string(),
+                                    id: "overly-permissive-partialeq-for-props".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(52usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::CookbookAntipatterns {
+                        section: CookbookAntipatternsSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(52usize),
+                );
+        };
+        __push_page_52(&mut pages, &mut page_id_mapping);
+        let __push_page_53: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    53usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Error Handling".to_string(),
+                            url: BookRoute::CookbookErrorHandling {
+                                section: CookbookErrorHandlingSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Error handling".to_string(),
+                                    id: "error-handling".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "The simplest – returning None".to_string(),
+                                    id: "the-simplest--returning-none".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Early return on result".to_string(),
+                                    id: "early-return-on-result".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Match results".to_string(),
+                                    id: "match-results".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Passing error states through components"
+                                        .to_string(),
+                                    id: "passing-error-states-through-components".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Throwing errors".to_string(),
+                                    id: "throwing-errors".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(53usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::CookbookErrorHandling {
+                        section: CookbookErrorHandlingSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(53usize),
+                );
+        };
+        __push_page_53(&mut pages, &mut page_id_mapping);
+        let __push_page_54: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    54usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Integrations".to_string(),
+                            url: BookRoute::CookbookIntegrationsIndex {
+                                section: CookbookIntegrationsIndexSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(54usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::CookbookIntegrationsIndex {
+                        section: CookbookIntegrationsIndexSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(54usize),
+                );
+        };
+        __push_page_54(&mut pages, &mut page_id_mapping);
+        let __push_page_55: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    55usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Logging".to_string(),
+                            url: BookRoute::CookbookIntegrationsLogging {
+                                section: CookbookIntegrationsLoggingSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Logging".to_string(),
+                                    id: "logging".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "The Tracing Crate".to_string(),
+                                    id: "the-tracing-crate".to_string(),
+                                    level: 4usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Dioxus Logger".to_string(),
+                                    id: "dioxus-logger".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Platform Intricacies".to_string(),
+                                    id: "platform-intricacies".to_string(),
+                                    level: 4usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Final Notes".to_string(),
+                                    id: "final-notes".to_string(),
+                                    level: 4usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Desktop and Server".to_string(),
+                                    id: "desktop-and-server".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Web".to_string(),
+                                    id: "web".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Mobile".to_string(),
+                                    id: "mobile".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Android".to_string(),
+                                    id: "android".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Viewing Android Logs".to_string(),
+                                    id: "viewing-android-logs".to_string(),
+                                    level: 4usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "iOS".to_string(),
+                                    id: "ios".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Viewing IOS Logs".to_string(),
+                                    id: "viewing-ios-logs".to_string(),
+                                    level: 4usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(55usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::CookbookIntegrationsLogging {
+                        section: CookbookIntegrationsLoggingSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(55usize),
+                );
+        };
+        __push_page_55(&mut pages, &mut page_id_mapping);
+        let __push_page_56: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    56usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Internationalization".to_string(),
+                            url: BookRoute::CookbookIntegrationsInternationalization {
+                                section: CookbookIntegrationsInternationalizationSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Internationalization".to_string(),
+                                    id: "internationalization".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "The full code for internationalization".to_string(),
+                                    id: "the-full-code-for-internationalization".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(56usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::CookbookIntegrationsInternationalization {
+                        section: CookbookIntegrationsInternationalizationSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(56usize),
+                );
+        };
+        __push_page_56(&mut pages, &mut page_id_mapping);
+        let __push_page_57: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    57usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "State Management".to_string(),
+                            url: BookRoute::CookbookStateIndex {
+                                section: CookbookStateIndexSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "State Cookbook".to_string(),
+                                    id: "state-cookbook".to_string(),
+                                    level: 1usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(57usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::CookbookStateIndex {
+                        section: CookbookStateIndexSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(57usize),
+                );
+        };
+        __push_page_57(&mut pages, &mut page_id_mapping);
+        let __push_page_58: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    58usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "External State".to_string(),
+                            url: BookRoute::CookbookStateExternalIndex {
+                                section: CookbookStateExternalIndexSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Working with External State".to_string(),
+                                    id: "working-with-external-state".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Working with non-reactive State".to_string(),
+                                    id: "working-with-non-reactive-state".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Making Reactive State External".to_string(),
+                                    id: "making-reactive-state-external".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(58usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::CookbookStateExternalIndex {
+                        section: CookbookStateExternalIndexSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(58usize),
+                );
+        };
+        __push_page_58(&mut pages, &mut page_id_mapping);
+        let __push_page_59: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    59usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Custom Hooks".to_string(),
+                            url: BookRoute::CookbookStateCustomHooksIndex {
+                                section: CookbookStateCustomHooksIndexSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Custom Hooks".to_string(),
+                                    id: "custom-hooks".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Composing Hooks".to_string(),
+                                    id: "composing-hooks".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Custom Hook Logic".to_string(),
+                                    id: "custom-hook-logic".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(59usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::CookbookStateCustomHooksIndex {
+                        section: CookbookStateCustomHooksIndexSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(59usize),
+                );
+        };
+        __push_page_59(&mut pages, &mut page_id_mapping);
+        let __push_page_60: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    60usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Testing".to_string(),
+                            url: BookRoute::CookbookTesting {
+                                section: CookbookTestingSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Testing".to_string(),
+                                    id: "testing".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Component Testing".to_string(),
+                                    id: "component-testing".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Hook Testing".to_string(),
+                                    id: "hook-testing".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "End to End Testing".to_string(),
+                                    id: "end-to-end-testing".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(60usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::CookbookTesting {
+                        section: CookbookTestingSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(60usize),
+                );
+        };
+        __push_page_60(&mut pages, &mut page_id_mapping);
+        let __push_page_61: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    61usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Tailwind".to_string(),
+                            url: BookRoute::CookbookTailwind {
+                                section: CookbookTailwindSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Tailwind".to_string(),
+                                    id: "tailwind".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Setup".to_string(),
+                                    id: "setup".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Bonus Steps".to_string(),
+                                    id: "bonus-steps".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Development".to_string(),
+                                    id: "development".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Web".to_string(),
+                                    id: "web".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Desktop".to_string(),
+                                    id: "desktop".to_string(),
+                                    level: 3usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(61usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::CookbookTailwind {
+                        section: CookbookTailwindSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(61usize),
+                );
+        };
+        __push_page_61(&mut pages, &mut page_id_mapping);
+        let __push_page_62: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    62usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Custom Renderer".to_string(),
+                            url: BookRoute::CookbookCustomRenderer {
+                                section: CookbookCustomRendererSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Custom Renderer".to_string(),
+                                    id: "custom-renderer".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "The specifics:".to_string(),
+                                    id: "the-specifics".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Templates".to_string(),
+                                    id: "templates".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Mutations".to_string(),
+                                    id: "mutations".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Node storage".to_string(),
+                                    id: "node-storage".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "An Example".to_string(),
+                                    id: "an-example".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Building Templates".to_string(),
+                                    id: "building-templates".to_string(),
+                                    level: 4usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Applying Mutations".to_string(),
+                                    id: "applying-mutations".to_string(),
+                                    level: 4usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Event loop".to_string(),
+                                    id: "event-loop".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Custom raw elements".to_string(),
+                                    id: "custom-raw-elements".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Native Core".to_string(),
+                                    id: "native-core".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "The RealDom".to_string(),
+                                    id: "the-realdom".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Example".to_string(),
+                                    id: "example".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Layout".to_string(),
+                                    id: "layout".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Text Editing".to_string(),
+                                    id: "text-editing".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Conclusion".to_string(),
+                                    id: "conclusion".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(62usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::CookbookCustomRenderer {
+                        section: CookbookCustomRendererSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(62usize),
+                );
+        };
+        __push_page_62(&mut pages, &mut page_id_mapping);
+        let __push_page_63: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    63usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Optimizing".to_string(),
+                            url: BookRoute::CookbookOptimizing {
+                                section: CookbookOptimizingSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Optimizing".to_string(),
+                                    id: "optimizing".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Building in release mode".to_string(),
+                                    id: "building-in-release-mode".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "UPX".to_string(),
+                                    id: "upx".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Build configuration".to_string(),
+                                    id: "build-configuration".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Stable".to_string(),
+                                    id: "stable".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Unstable".to_string(),
+                                    id: "unstable".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "wasm-opt".to_string(),
+                                    id: "wasm-opt".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Improving Dioxus code".to_string(),
+                                    id: "improving-dioxus-code".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Optimizing the size of assets".to_string(),
+                                    id: "optimizing-the-size-of-assets".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(63usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::CookbookOptimizing {
+                        section: CookbookOptimizingSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(63usize),
+                );
+        };
+        __push_page_63(&mut pages, &mut page_id_mapping);
+        let __push_page_64: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    64usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "CLI".to_string(),
+                            url: BookRoute::CliIndex {
+                                section: CliIndexSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Introduction".to_string(),
+                                    id: "introduction".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Features".to_string(),
+                                    id: "features".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(64usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::CliIndex {
+                        section: CliIndexSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(64usize),
+                );
+        };
+        __push_page_64(&mut pages, &mut page_id_mapping);
+        let __push_page_65: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    65usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Create a Project".to_string(),
+                            url: BookRoute::CliCreating {
+                                section: CliCreatingSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Create a Project".to_string(),
+                                    id: "create-a-project".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Initializing a project".to_string(),
+                                    id: "initializing-a-project".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(65usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::CliCreating {
+                        section: CliCreatingSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(65usize),
+                );
+        };
+        __push_page_65(&mut pages, &mut page_id_mapping);
+        let __push_page_66: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    66usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Configure Project".to_string(),
+                            url: BookRoute::CliConfigure {
+                                section: CliConfigureSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Configure Project".to_string(),
+                                    id: "configure-project".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Structure".to_string(),
+                                    id: "structure".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Application 🔒".to_string(),
+                                    id: "application-".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Web.App 🔒".to_string(),
+                                    id: "webapp-".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Web.Watcher 🔒".to_string(),
+                                    id: "webwatcher-".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Web.Resource 🔒".to_string(),
+                                    id: "webresource-".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Web.Resource.Dev 🔒".to_string(),
+                                    id: "webresourcedev-".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Web.Proxy".to_string(),
+                                    id: "webproxy".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Config example".to_string(),
+                                    id: "config-example".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(66usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::CliConfigure {
+                        section: CliConfigureSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(66usize),
+                );
+        };
+        __push_page_66(&mut pages, &mut page_id_mapping);
+        let __push_page_67: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    67usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Translate HTML".to_string(),
+                            url: BookRoute::CliTranslate {
+                                section: CliTranslateSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Translating existing HTML".to_string(),
+                                    id: "translating-existing-html".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Usage".to_string(),
+                                    id: "usage".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(67usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::CliTranslate {
+                        section: CliTranslateSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(67usize),
+                );
+        };
+        __push_page_67(&mut pages, &mut page_id_mapping);
+        let __push_page_68: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    68usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Contributing".to_string(),
+                            url: BookRoute::ContributingIndex {
+                                section: ContributingIndexSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Contributing".to_string(),
+                                    id: "contributing".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Improving Docs".to_string(),
+                                    id: "improving-docs".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Working on the Ecosystem".to_string(),
+                                    id: "working-on-the-ecosystem".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Bugs & Features".to_string(),
+                                    id: "bugs--features".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Before you contribute".to_string(),
+                                    id: "before-you-contribute".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "How to test dioxus with local crate".to_string(),
+                                    id: "how-to-test-dioxus-with-local-crate".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(68usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::ContributingIndex {
+                        section: ContributingIndexSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(68usize),
+                );
+        };
+        __push_page_68(&mut pages, &mut page_id_mapping);
+        let __push_page_69: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    69usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Project Structure".to_string(),
+                            url: BookRoute::ContributingProjectStructure {
+                                section: ContributingProjectStructureSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Project Structure".to_string(),
+                                    id: "project-structure".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Renderers".to_string(),
+                                    id: "renderers".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "State Management/Hooks".to_string(),
+                                    id: "state-managementhooks".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Core utilities".to_string(),
+                                    id: "core-utilities".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Native Renderer Utilities".to_string(),
+                                    id: "native-renderer-utilities".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Web renderer tooling".to_string(),
+                                    id: "web-renderer-tooling".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Developer tooling".to_string(),
+                                    id: "developer-tooling".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(69usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::ContributingProjectStructure {
+                        section: ContributingProjectStructureSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(69usize),
+                );
+        };
+        __push_page_69(&mut pages, &mut page_id_mapping);
+        let __push_page_70: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    70usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Guiding Principles".to_string(),
+                            url: BookRoute::ContributingGuidingPrinciples {
+                                section: ContributingGuidingPrinciplesSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Overall Goals".to_string(),
+                                    id: "overall-goals".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Cross-Platform".to_string(),
+                                    id: "cross-platform".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Performance".to_string(),
+                                    id: "performance".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Type Safety".to_string(),
+                                    id: "type-safety".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Developer Experience".to_string(),
+                                    id: "developer-experience".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(70usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::ContributingGuidingPrinciples {
+                        section: ContributingGuidingPrinciplesSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(70usize),
+                );
+        };
+        __push_page_70(&mut pages, &mut page_id_mapping);
+        let __push_page_71: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    71usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Roadmap".to_string(),
+                            url: BookRoute::ContributingRoadmap {
+                                section: ContributingRoadmapSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Roadmap & Feature-set".to_string(),
+                                    id: "roadmap--feature-set".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Features".to_string(),
+                                    id: "features".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Roadmap".to_string(),
+                                    id: "roadmap".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Core".to_string(),
+                                    id: "core".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "SSR".to_string(),
+                                    id: "ssr".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Desktop".to_string(),
+                                    id: "desktop".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Mobile".to_string(),
+                                    id: "mobile".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Bundling (CLI)".to_string(),
+                                    id: "bundling-cli".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Essential hooks".to_string(),
+                                    id: "essential-hooks".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Work in Progress".to_string(),
+                                    id: "work-in-progress".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Build Tool".to_string(),
+                                    id: "build-tool".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Server Component Support".to_string(),
+                                    id: "server-component-support".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Native rendering".to_string(),
+                                    id: "native-rendering".to_string(),
+                                    level: 3usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(71usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::ContributingRoadmap {
+                        section: ContributingRoadmapSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(71usize),
+                );
+        };
+        __push_page_71(&mut pages, &mut page_id_mapping);
+        let __push_page_72: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    72usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Migration".to_string(),
+                            url: BookRoute::MigrationIndex {
+                                section: MigrationIndexSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "How to Upgrade to Dioxus 0.5".to_string(),
+                                    id: "how-to-upgrade-to-dioxus-05".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Cheat Sheet".to_string(),
+                                    id: "cheat-sheet".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Scope".to_string(),
+                                    id: "scope".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Props".to_string(),
+                                    id: "props".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Futures".to_string(),
+                                    id: "futures".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "State Hooks".to_string(),
+                                    id: "state-hooks".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Fermi".to_string(),
+                                    id: "fermi".to_string(),
+                                    level: 3usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(72usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::MigrationIndex {
+                        section: MigrationIndexSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(72usize),
+                );
+        };
+        __push_page_72(&mut pages, &mut page_id_mapping);
+        let __push_page_73: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    73usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Hooks".to_string(),
+                            url: BookRoute::MigrationHooks {
+                                section: MigrationHooksSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Hooks".to_string(),
+                                    id: "hooks".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "State Hooks".to_string(),
+                                    id: "state-hooks".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Async Hooks".to_string(),
+                                    id: "async-hooks".to_string(),
+                                    level: 3usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Dependencies".to_string(),
+                                    id: "dependencies".to_string(),
+                                    level: 3usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(73usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::MigrationHooks {
+                        section: MigrationHooksSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(73usize),
+                );
+        };
+        __push_page_73(&mut pages, &mut page_id_mapping);
+        let __push_page_74: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    74usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "State".to_string(),
+                            url: BookRoute::MigrationState {
+                                section: MigrationStateSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "State Migration".to_string(),
+                                    id: "state-migration".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Context Based State".to_string(),
+                                    id: "context-based-state".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Opting Out of Subscriptions".to_string(),
+                                    id: "opting-out-of-subscriptions".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Global State".to_string(),
+                                    id: "global-state".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(74usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::MigrationState {
+                        section: MigrationStateSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(74usize),
+                );
+        };
+        __push_page_74(&mut pages, &mut page_id_mapping);
+        let __push_page_75: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    75usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Fermi".to_string(),
+                            url: BookRoute::MigrationFermi {
+                                section: MigrationFermiSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Fermi".to_string(),
+                                    id: "fermi".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Memos".to_string(),
+                                    id: "memos".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(75usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::MigrationFermi {
+                        section: MigrationFermiSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(75usize),
+                );
+        };
+        __push_page_75(&mut pages, &mut page_id_mapping);
+        let __push_page_76: fn(_, _) = |
+            _pages: &mut Vec<_>,
+            _page_id_mapping: &mut std::collections::HashMap<_, _>|
+        {
+            _pages
+                .push((
+                    76usize,
+                    {
+                        ::use_mdbook::mdbook_shared::Page {
+                            title: "Props".to_string(),
+                            url: BookRoute::MigrationProps {
+                                section: MigrationPropsSection::Empty,
+                            },
+                            segments: vec![],
+                            sections: vec![
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Props Migration".to_string(),
+                                    id: "props-migration".to_string(),
+                                    level: 1usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Owned Props".to_string(),
+                                    id: "owned-props".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Borrowed Props".to_string(),
+                                    id: "borrowed-props".to_string(),
+                                    level: 2usize,
+                                },
+                                ::use_mdbook::mdbook_shared::Section {
+                                    title: "Manual Props".to_string(),
+                                    id: "manual-props".to_string(),
+                                    level: 2usize,
+                                },
+                            ],
+                            raw: String::new(),
+                            id: ::use_mdbook::mdbook_shared::PageId(76usize),
+                        }
+                    },
+                ));
+            _page_id_mapping
+                .insert(
+                    BookRoute::MigrationProps {
+                        section: MigrationPropsSection::Empty,
+                    },
+                    ::use_mdbook::mdbook_shared::PageId(76usize),
+                );
+        };
+        __push_page_76(&mut pages, &mut page_id_mapping);
         ::use_mdbook::mdbook_shared::MdBook {
             summary: ::use_mdbook::mdbook_shared::Summary {
                 title: Some("Summary".to_string()),

@@ -110,7 +110,7 @@ codegen-units = 1
 [profile.web-dev]
 inherits = "dev"
 debug = 0
-opt-level = 1
+panic = "abort"
 
 [profile.release.build-override]
 opt-level = 3

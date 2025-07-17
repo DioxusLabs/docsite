@@ -7,7 +7,7 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0.71"
-tracing = "0.1.41"
+log = "0.4.18"
 memchr = "2.5.0"
 pulldown-cmark = "0.9.3"
 serde = { version = "1.0.163", features = ["derive"] }

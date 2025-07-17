@@ -152,7 +152,7 @@ where
                     })
                 }
                 Err(err) => {
-                    tracing::error!("Failed to parse url ({}): {err}", result.entry.url);
+                    log::error!("Failed to parse url ({}): {err}", result.entry.url);
                 }
             }
         }
@@ -205,7 +205,7 @@ impl Config {
             if let Some(path) = mapping.map_route(route) {
                 let path = &path.strip_prefix("/").unwrap_or(&path);
                 let absolute_path = base_directory.join(path);
-                tracing::trace!("Adding {:?} to search index", absolute_path);
+                log::trace!("Adding {:?} to search index", absolute_path);
                 match std::fs::read_to_string(&absolute_path) {
                     Ok(contents) => {
                         let document = Html::parse_document(&contents);
@@ -236,7 +236,7 @@ impl Config {
                         })
                     }
                     Err(err) => {
-                        tracing::error!("Error reading file: {:?}: {}", absolute_path, err);
+                        log::error!("Error reading file: {:?}: {}", absolute_path, err);
                     }
                 }
             }

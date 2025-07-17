@@ -75,7 +75,6 @@ pub fn generate_router(mdbook_dir: PathBuf, book: mdbook_shared::MdBook<PathBuf>
 
                 // Create the fragment enum for the section
                 let section_enum = path_to_route_section(&page.url).unwrap();
-                let section_parse_error = format_ident!("{}ParseError", section_enum);
                 let mut error_message = format!("Invalid section name. Expected one of {}", section_enum);
                 for (i, section) in parsed.sections.iter().enumerate() {
                     if i > 0 {
@@ -102,7 +101,7 @@ pub fn generate_router(mdbook_dir: PathBuf, book: mdbook_shared::MdBook<PathBuf>
                     }
 
                     impl std::str::FromStr for #section_enum {
-                        type Err = #section_parse_error;
+                        type Err = &'static str;
 
                         fn from_str(s: &str) -> Result<Self, Self::Err> {
                             match s {
@@ -110,7 +109,7 @@ pub fn generate_router(mdbook_dir: PathBuf, book: mdbook_shared::MdBook<PathBuf>
                                 #(
                                     #section_names => Ok(Self::#section_idents),
                                 )*
-                                _ => Err(#section_parse_error)
+                                _ => Err(#error_message)
                             }
                         }
                     }
@@ -125,26 +124,13 @@ pub fn generate_router(mdbook_dir: PathBuf, book: mdbook_shared::MdBook<PathBuf>
                             }
                         }
                     }
-
-                    #[derive(Debug)]
-                    pub struct #section_parse_error;
-
-                    impl std::fmt::Display for #section_parse_error {
-                        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-                            f.write_str(#error_message)?;
-                            Ok(())
-                        }
-                    }
-
-                    impl std::error::Error for #section_parse_error {}
                 };
 
                 quote! {
                     #fragment
 
                     #[component(no_case_check)]
-                    pub fn #name(section: #section_enum) -> dioxus::prelude::Element {
-                        use dioxus::prelude::*;
+                    pub fn #name(section: #section_enum) -> Element {
                         rsx! {
                             #rsx
                         }
@@ -225,8 +211,6 @@ pub fn generate_router(mdbook_dir: PathBuf, book: mdbook_shared::MdBook<PathBuf>
     };
 
     quote! {
-        use dioxus::prelude::*;
-
         #[derive(Clone, Copy, dioxus_router::Routable, PartialEq, Eq, Hash, Debug, serde::Serialize, serde::Deserialize)]
         pub enum BookRoute {
             #(#book_routes)*

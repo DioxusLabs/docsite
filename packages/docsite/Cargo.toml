@@ -11,7 +11,12 @@ resolver = "2"
 dioxus = { workspace = true, features = ["router", "launch"] }
 dioxus-web = { workspace = true, features = ["hydrate"], optional = true }
 
-dioxus-docs-router = { workspace = true }
+dioxus-docs-03 = { workspace = true }
+dioxus-docs-04 = { workspace = true }
+dioxus-docs-05 = { workspace = true }
+dioxus-docs-06 = { workspace = true }
+dioxus-docs-07 = { workspace = true }
+dioxus-docs-blog = { workspace = true }
 dioxus-docs-examples = { workspace = true }
 
 # dioxus-material-icons = { version = "3.0.0" }
@@ -63,19 +68,19 @@ stork-lib = { workspace = true, features = [
 default = []
 fullstack = [
     "dioxus/fullstack",
-    "dioxus-docs-router/fullstack",
+    "dioxus-docs-examples/fullstack",
 ]
 web = [
     "dioxus/web",
-    "dioxus-docs-router/web",
+    "dioxus-docs-examples/web",
 ]
 server = [
     "dioxus/server",
     "dioxus/ssr",
-    "dioxus-docs-router/server",
+    "dioxus-docs-examples/server",
     "dep:askama_escape",
 ]
 production = [
-    "dioxus-docs-router/production",
+    "dioxus-docs-examples/production",
 ]
 doc_test = []

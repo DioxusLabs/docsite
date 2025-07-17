@@ -874,8 +874,7 @@ Some assets:
 
     let out: syn::File = parse_quote! {
         #[component(no_case_check)]
-        pub fn Hmm() -> dioxus::prelude::Element {
-            use dioxus::prelude::*;
+        pub fn Hmm() -> Element {
             rsx! {
                 #tokens_out
             }

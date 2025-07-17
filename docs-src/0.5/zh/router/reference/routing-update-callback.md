@@ -13,5 +13,5 @@ If at any point the router encounters a navigation failure, it will go to the ap
 ## Code Example
 
 \```rust
-{{#include src/doc_examples/routing_update.rs:router}}
+{{#include ../docs-examples/src/routing_update.rs:router}}
 \```

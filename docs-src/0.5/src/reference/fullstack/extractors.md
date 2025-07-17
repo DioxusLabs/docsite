@@ -7,5 +7,5 @@ For example, requests contain information about the user's browser (called the [
 You can use the `extract` method within a server function to extract something from the request. You can extract any type that implements `FromServerContext` (or when axum is enabled, you can use axum extractors directly):
 
 ```rust
-{{#include src/doc_examples/untested_05/server_function_extract.rs:server_function_extract}}
+{{#include ../docs-examples/src/untested_05/server_function_extract.rs:server_function_extract}}
 ```

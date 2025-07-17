@@ -30,7 +30,7 @@ cargo add dioxus-tui
 Then, edit your `main.rs` with the basic template.
 
 ```rust
-{{#include src/doc_examples/untested_04/hello_world_tui.rs}}
+{{#include ../docs-examples/src/untested_04/hello_world_tui.rs}}
 ```
 
 To run our app:
@@ -42,7 +42,7 @@ cargo run
 Press "ctrl-c" to close the app. To switch from "ctrl-c" to just "q" to quit you can launch the app with a configuration to disable the default quit and use the root TuiContext to quit on your own.
 
 ```rust
-{{#include src/doc_examples/untested_04/hello_world_tui_no_ctrl_c.rs}}
+{{#include ../docs-examples/src/untested_04/hello_world_tui_no_ctrl_c.rs}}
 ```
 
 ## Hot Reload

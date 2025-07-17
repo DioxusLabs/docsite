@@ -58,7 +58,7 @@ cargo add manganis
 8. Create a link to the `tailwind.css` file using manganis somewhere in your rust code:
 
 ```rust
-{{#include src/doc_examples/untested_05/tailwind.rs}}
+{{#include ../docs-examples/src/untested_05/tailwind.rs}}
 ```
 
 ### Bonus Steps

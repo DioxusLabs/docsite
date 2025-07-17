@@ -1,5 +1,5 @@
 # Full Code
 
 ```rust
-{{#include src/doc_examples/untested_06/full_example.rs}}
+{{#include ../docs-examples/src/untested_06/full_example.rs}}
 ```

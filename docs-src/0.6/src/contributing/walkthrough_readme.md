@@ -12,7 +12,7 @@ The core crate roughly works like this:
 We start will a hello world program. This program renders a desktop app with the text "Hello World" in a webview.
 
 ```rust, no_run
-{{#include src/doc_examples/untested_06/readme.rs}}
+{{#include ../docs-examples/src/untested_06/readme.rs}}
 ```
 
 [![](https://mermaid.ink/img/pako:eNqNkT1vwyAQhv8KvSlR48HphtQtqjK0S6tuSBGBS0CxwcJHk8rxfy_YVqxKVdR3ug_u4YXrQHmNwOFQ-bMyMhB7fReOJbVxfwyyMSy0l7GSpW1ARda727ksUy5MuSyKgvBC5ULA1h5N8WK_kCkfHWHgrBuiXsBynrvdsY9E3u1iM_eyvFOVVadMnELOap-o1911JLPHZ1b-YqLTc3LjTt7WifTZMJPsPdx1ov3Z_ellfcdL8R8vmTy5eUqsTUpZ-vzZzjAEK6gx1NLqtJwuNwSQwRoF8BRqGU4ChOvTORnJf3w7BZxCxBXERkvCjZXpQTXwg6zaVEVtyYe3cdvD0vsf4bucgw?type=png)](https://mermaid.live/edit#pako:eNqNkT1vwyAQhv8KvSlR48HphtQtqjK0S6tuSBGBS0CxwcJHk8rxfy_YVqxKVdR3ug_u4YXrQHmNwOFQ-bMyMhB7fReOJbVxfwyyMSy0l7GSpW1ARda727ksUy5MuSyKgvBC5ULA1h5N8WK_kCkfHWHgrBuiXsBynrvdsY9E3u1iM_eyvFOVVadMnELOap-o1911JLPHZ1b-YqLTc3LjTt7WifTZMJPsPdx1ov3Z_ellfcdL8R8vmTy5eUqsTUpZ-vzZzjAEK6gx1NLqtJwuNwSQwRoF8BRqGU4ChOvTORnJf3w7BZxCxBXERkvCjZXpQTXwg6zaVEVtyYe3cdvD0vsf4bucgw)
@@ -22,7 +22,7 @@ We start will a hello world program. This program renders a desktop app with the
 Before the Rust compiler runs the program, it will expand all [macros](https://doc.rust-lang.org/reference/procedural-macros.html). Here is what the hello world example looks like expanded:
 
 ```rust, no_run
-{{#include src/doc_examples/untested_06/readme_expanded.rs}}
+{{#include ../docs-examples/src/untested_06/readme_expanded.rs}}
 ```
 
 The rsx macro separates the static parts of the rsx (the template) and the dynamic parts (the [dynamic_nodes](https://github.com/DioxusLabs/dioxus/blob/38cb2759e842780cdcdcf957fce526ed49c5db97/packages/core/src/nodes.rs#L57) and [dynamic_attributes](https://github.com/DioxusLabs/dioxus/blob/38cb2759e842780cdcdcf957fce526ed49c5db97/packages/core/src/nodes.rs#L90)).

@@ -5,7 +5,7 @@ Just like you wouldn't want to write a complex program in a single, long, `main`
 A component is a Rust function, named in UpperCamelCase, that takes a `Scope` parameter and returns an `Element` describing the UI it wants to render. In fact, our `App` function is a component!
 
 ```rust
-{{#include src/doc_examples/untested_03/hello_world_desktop.rs:component}}
+{{#include ../docs-examples/src/untested_03/hello_world_desktop.rs:component}}
 ```
 
 > You'll probably want to add `#![allow(non_snake_case)]` to the top of your crate to avoid warnings about UpperCamelCase component names
@@ -13,13 +13,13 @@ A component is a Rust function, named in UpperCamelCase, that takes a `Scope` pa
 A Component is responsible for some rendering task – typically, rendering an isolated part of the user interface. For example, you could have an `About` component that renders a short description of Dioxus Labs:
 
 ```rust
-{{#include src/doc_examples/untested_03/components.rs:About}}
+{{#include ../docs-examples/src/untested_03/components.rs:About}}
 ```
 
 Then, you can render your component in another component, similarly to how elements are rendered:
 
 ```rust
-{{#include src/doc_examples/untested_03/components.rs:App}}
+{{#include ../docs-examples/src/untested_03/components.rs:App}}
 ```
 
 ![Screenshot containing the About component twice](/assets/blog/release-03/screenshot_about_component.png)

@@ -7,7 +7,7 @@ Interfaces often need to provide a way to input data: e.g. text, numbers, checkb
 With controlled inputs, you are directly in charge of the state of the input. This gives you a lot of flexibility, and makes it easy to keep things in sync. For example, this is how you would create a controlled text input:
 
 ```rust, no_run
-{{#include src/doc_examples/input_controlled.rs:component}}
+{{#include ../docs-examples/src/input_controlled.rs:component}}
 ```
 
 ```inject-dioxus
@@ -31,7 +31,7 @@ As an alternative to controlled inputs, you can simply let the platform keep tra
 Since you don't necessarily have the current value of the uncontrolled input in state, you can access it either by listening to `oninput` events (similarly to controlled components), or, if the input is part of a form, you can access the form data in the form events (e.g. `oninput` or `onsubmit`):
 
 ```rust, no_run
-{{#include src/doc_examples/input_uncontrolled.rs:component}}
+{{#include ../docs-examples/src/input_uncontrolled.rs:component}}
 ```
 ```inject-dioxus
 DemoFrame {
@@ -52,17 +52,17 @@ Extracting the selected files is a bit different from what you may typically use
 The `FormData` event contains a `files` field with data about the uploaded files. This field contains a `FileEngine` struct which lets you fetch the filenames selected by the user. This example saves the filenames of the selected files to a `Vec`:
 
 ```rust, no_run
-{{#include src/doc_examples/input_fileengine.rs:component}}
+{{#include ../docs-examples/src/input_fileengine.rs:component}}
 ```
 
 If you're planning to read the file content, you need to do it asynchronously, to keep the rest of the UI interactive. This example event handler loads the content of the selected files in an async closure:
 
 ```rust, no_run
-{{#include src/doc_examples/input_fileengine_async.rs:onchange_event}}
+{{#include ../docs-examples/src/input_fileengine_async.rs:onchange_event}}
 ```
 
 Lastly, this example shows you how to select a folder, by setting the `directory` attribute to `true`.
 
 ```rust, no_run
-{{#include src/doc_examples/input_fileengine_folder.rs:rsx}}
+{{#include ../docs-examples/src/input_fileengine_folder.rs:rsx}}
 ```

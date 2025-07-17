@@ -17,13 +17,13 @@ cargo add manganis
 To include an asset in your application, you can simply wrap the path to the asset in a `mg!` call. For example, to include an image in your application, you can use the following code:
 
 \```rust
-{{#include src/doc_examples/assets.rs:images}}
+{{#include ../docs-examples/src/assets.rs:images}}
 \```
 
 You can also optimize, resize, and preload images using the `mg!` macro. Choosing an optimized file type (like WebP) and a reasonable quality setting can significantly reduce the size of your images which helps your application load faster. For example, you can use the following code to include an optimized image in your application:
 
 \```rust
-{{#include src/doc_examples/assets.rs:optimized_images}}
+{{#include ../docs-examples/src/assets.rs:optimized_images}}
 \```
 
 ## Including arbitrary files
@@ -31,7 +31,7 @@ You can also optimize, resize, and preload images using the `mg!` macro. Choosin
 In dioxus desktop, you may want to include a file with data for your application. You can use the `file` function to include arbitrary files in your application. For example, you can use the following code to include a file in your application:
 
 \```rust
-{{#include src/doc_examples/assets.rs:arbitrary_files}}
+{{#include ../docs-examples/src/assets.rs:arbitrary_files}}
 \```
 
 These files will be automatically included in the final build of your application, and you can use them in your application as you would any other file.
@@ -41,7 +41,7 @@ These files will be automatically included in the final build of your applicatio
 You can include stylesheets in your application using the `mg!` macro. For example, you can use the following code to include a stylesheet in your application:
 
 \```rust
-{{#include src/doc_examples/assets.rs:style_sheets}}
+{{#include ../docs-examples/src/assets.rs:style_sheets}}
 \```
 
 > The [tailwind guide](../cookbook/tailwind.md) has more information on how to use tailwind with dioxus.

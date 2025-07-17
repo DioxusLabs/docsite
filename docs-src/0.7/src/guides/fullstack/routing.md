@@ -3,7 +3,7 @@
 You can easily integrate your fullstack application with a client side router using Dioxus Router. This allows you to create different scenes in your app and navigate between them. You can read more about the router in the [router reference](../../router/index.md)
 
 ```rust
-{{#include src/doc_examples/server_router.rs}}
+{{#include ../docs-examples/src/server_router.rs}}
 ```
 
 ```inject-dioxus

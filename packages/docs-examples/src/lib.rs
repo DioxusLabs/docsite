@@ -53,7 +53,7 @@ pub fn ComponentWithLogs(children: Element) -> Element {
 }
 
 #[component]
-pub(crate) fn FakePage(children: Element) -> Element {
+pub fn FakePage(children: Element) -> Element {
     let mut uuid = use_signal(|| 0);
     rsx! {
         button { onclick: move |_| uuid += 1, "🔄" }

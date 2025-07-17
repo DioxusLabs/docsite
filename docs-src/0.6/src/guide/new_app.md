@@ -109,7 +109,7 @@ Finally, the `main.rs`. The `main.rs` file is the entrypoint of our app, contain
 The `main` of our HotDog app looks like this:
 
 ```rust
-{{#include src/doc_examples/untested_06/guide_new_app.rs:new_app}}
+{{#include ../docs-examples/src/untested_06/guide_new_app.rs:new_app}}
 ```
 
 The `launch` function calls the platform-specific `launch` function depending on which feature (web/desktop/mobile) is enabled on `dioxus`. `launch` accepts a root component, typically called `App`.
@@ -121,5 +121,5 @@ We'll cover components more in-depth in the [next chapter](component.md).
 The bare-bones template provides basic starter code for our app. However, we want to start *truly* from scratch, so we'll wipe away the `Hero` component and empty the `App` component to its basics:
 
 ```rust
-{{#include src/doc_examples/untested_06/guide_new_app.rs:new_app_full}}
+{{#include ../docs-examples/src/untested_06/guide_new_app.rs:new_app_full}}
 ```

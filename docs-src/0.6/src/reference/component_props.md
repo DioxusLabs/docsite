@@ -9,13 +9,13 @@ Component props are a single struct annotated with `#[derive(PartialEq, Clone, P
 Example:
 
 ```rust, no_run
-{{#include src/doc_examples/untested_06/component_owned_props.rs:Likes}}
+{{#include ../docs-examples/src/untested_06/component_owned_props.rs:Likes}}
 ```
 
 You can then pass prop values to the component the same way you would pass attributes to an element:
 
 ```rust, no_run
-{{#include src/doc_examples/untested_06/component_owned_props.rs:App}}
+{{#include ../docs-examples/src/untested_06/component_owned_props.rs:App}}
 ```
 
 ```inject-dioxus
@@ -33,13 +33,13 @@ The `#[derive(Props)]` macro has some features that let you customize the behavi
 You can create optional fields by using the `Option<…>` type for a field:
 
 ```rust, no_run
-{{#include src/doc_examples/untested_06/component_props_options.rs:OptionalProps}}
+{{#include ../docs-examples/src/untested_06/component_props_options.rs:OptionalProps}}
 ```
 
 Then, you can choose to either provide them or not:
 
 ```rust, no_run
-{{#include src/doc_examples/untested_06/component_props_options.rs:OptionalProps_usage}}
+{{#include ../docs-examples/src/untested_06/component_props_options.rs:OptionalProps_usage}}
 ```
 
 ### Explicitly Required Option
@@ -47,13 +47,13 @@ Then, you can choose to either provide them or not:
 If you want to explicitly require an `Option`, and not an optional prop, you can annotate it with `#[props(!optional)]`:
 
 ```rust, no_run
-{{#include src/doc_examples/untested_06/component_props_options.rs:ExplicitOption}}
+{{#include ../docs-examples/src/untested_06/component_props_options.rs:ExplicitOption}}
 ```
 
 Then, you have to explicitly pass either `Some("str")` or `None`:
 
 ```rust, no_run
-{{#include src/doc_examples/untested_06/component_props_options.rs:ExplicitOption_usage}}
+{{#include ../docs-examples/src/untested_06/component_props_options.rs:ExplicitOption_usage}}
 ```
 
 ### Default Props
@@ -61,13 +61,13 @@ Then, you have to explicitly pass either `Some("str")` or `None`:
 You can use `#[props(default = 42)]` to make a field optional and specify its default value:
 
 ```rust, no_run
-{{#include src/doc_examples/untested_06/component_props_options.rs:DefaultComponent}}
+{{#include ../docs-examples/src/untested_06/component_props_options.rs:DefaultComponent}}
 ```
 
 Then, similarly to optional props, you don't have to provide it:
 
 ```rust, no_run
-{{#include src/doc_examples/untested_06/component_props_options.rs:DefaultComponent_usage}}
+{{#include ../docs-examples/src/untested_06/component_props_options.rs:DefaultComponent_usage}}
 ```
 
 ### Automatic Conversion with into
@@ -75,13 +75,13 @@ Then, similarly to optional props, you don't have to provide it:
 It is common for Rust functions to accept `impl Into<SomeType>` rather than just `SomeType` to support a wider range of parameters. If you want similar functionality with props, you can use `#[props(into)]`. For example, you could add it on a `String` prop – and `&str` will also be automatically accepted, as it can be converted into `String`:
 
 ```rust, no_run
-{{#include src/doc_examples/untested_06/component_props_options.rs:IntoComponent}}
+{{#include ../docs-examples/src/untested_06/component_props_options.rs:IntoComponent}}
 ```
 
 Then, you can use it so:
 
 ```rust, no_run
-{{#include src/doc_examples/untested_06/component_props_options.rs:IntoComponent_usage}}
+{{#include ../docs-examples/src/untested_06/component_props_options.rs:IntoComponent_usage}}
 ```
 
 ## The component macro
@@ -121,13 +121,13 @@ fn TitleCard(title: String) -> Element {
 In some cases, you may wish to create a component that acts as a container for some other content, without the component needing to know what that content is. To achieve this, create a prop of type `Element`:
 
 ```rust, no_run
-{{#include src/doc_examples/untested_06/component_element_props.rs:Clickable}}
+{{#include ../docs-examples/src/untested_06/component_element_props.rs:Clickable}}
 ```
 
-Then, when rendering the component, you can pass in the output of `rsx!{...}`: 
+Then, when rendering the component, you can pass in the output of `rsx!{...}`:
 
 ```rust, no_run
-{{#include src/doc_examples/untested_06/component_element_props.rs:Clickable_usage}}
+{{#include ../docs-examples/src/untested_06/component_element_props.rs:Clickable_usage}}
 ```
 
 > Warning: While it may compile, do not include the same `Element` more than once in the RSX. The resulting behavior is unspecified.
@@ -137,13 +137,13 @@ Then, when rendering the component, you can pass in the output of `rsx!{...}`:
 Rather than passing the RSX through a regular prop, you may wish to accept children similarly to how elements can have children. The "magic" `children` prop lets you achieve this:
 
 ```rust, no_run
-{{#include src/doc_examples/untested_06/component_children.rs:Clickable}}
+{{#include ../docs-examples/src/untested_06/component_children.rs:Clickable}}
 ```
 
 This makes using the component much simpler: simply put the RSX inside the `{}` brackets – and there is no need for a `render` call or another macro!
 
 ```rust, no_run
-{{#include src/doc_examples/untested_06/component_children.rs:Clickable_usage}}
+{{#include ../docs-examples/src/untested_06/component_children.rs:Clickable_usage}}
 ```
 
 ```inject-dioxus

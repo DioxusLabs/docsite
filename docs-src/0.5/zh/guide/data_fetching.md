@@ -7,7 +7,7 @@ In this chapter, we will fetch data from the hacker news API and use it to rende
 First we need to create some utilities to fetch data from the hackernews API using [reqwest](https://docs.rs/reqwest/latest/reqwest/index.html):
 
 \```rust
-{{#include src/doc_examples/hackernews_async.rs:api}}
+{{#include ../docs-examples/src/hackernews_async.rs:api}}
 \```
 
 The code above requires you to add the [reqwest](https://crates.io/crates/reqwest), [async_recursion](https://crates.io/crates/async-recursion), and [futures](https://crates.io/crates/futures) crate:
@@ -19,7 +19,7 @@ cargo add futures
 \```
 
 A quick overview of the supporting crates:
-- [reqwest](https://crates.io/crates/reqwest) allows us to create HTTP calls to the hackernews API. 
+- [reqwest](https://crates.io/crates/reqwest) allows us to create HTTP calls to the hackernews API.
 - [async_recursion](https://crates.io/crates/async-recursion) provides a utility macro to allow us to recursively use an async function.
 - [futures](https://crates.io/crates/futures) provides us with utilities all around Rust's futures.
 
@@ -31,7 +31,7 @@ A quick overview of the supporting crates:
 For example, we can make an API request (using [reqwest](https://docs.rs/reqwest/latest/reqwest/index.html)) inside `use_resource`:
 
 \```rust
-{{#include src/doc_examples/hackernews_async.rs:use_resource}}
+{{#include ../docs-examples/src/hackernews_async.rs:use_resource}}
 \```
 
 The code inside `use_resource` will be submitted to the Dioxus scheduler once the component has rendered.
@@ -59,7 +59,7 @@ We need to revisit the code that handles hovering over an item. Instead of passi
 We will cache the list of comments with a [use_signal](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_signal.html) hook. This hook allows you to store some state in a single component. When the user triggers fetching the comments we will check if the response has already been cached before fetching the data from the hackernews API.
 
 \```rust
-{{#include src/doc_examples/hackernews_async.rs:resolve_story}}
+{{#include ../docs-examples/src/hackernews_async.rs:resolve_story}}
 \```
 
 \```inject-dioxus

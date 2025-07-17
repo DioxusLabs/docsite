@@ -10,7 +10,7 @@ This guide will help you integrate your Dioxus application with some external st
 You can store your state inside the coroutine async block and communicate with the coroutine with messages from any child components.
 
 ```rust
-{{#include src/doc_examples/untested_04/use_coroutine.rs:use_coroutine}}
+{{#include ../docs-examples/src/untested_04/use_coroutine.rs:use_coroutine}}
 ```
 
 ## Making Reactive State External

@@ -1,6 +1,6 @@
 # Conclusion
 
-Well done! You've completed the Dioxus guide and built a hackernews application in Dioxus. 
+Well done! You've completed the Dioxus guide and built a hackernews application in Dioxus.
 
 To continue your journey, you can attempt a challenge listed below, or look at the [Dioxus reference](../reference/index.md).
 
@@ -14,5 +14,5 @@ To continue your journey, you can attempt a challenge listed below, or look at t
 ## The full code for the hacker news project
 
 \```rust
-{{#include src/doc_examples/hackernews_complete.rs}}
+{{#include ../docs-examples/src/hackernews_complete.rs}}
 \```

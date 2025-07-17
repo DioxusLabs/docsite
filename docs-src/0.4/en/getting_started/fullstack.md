@@ -47,7 +47,7 @@ web = ["dioxus-fullstack/web"]
 Now, set up your Axum app to serve the Dioxus app.
 
 ```rust
-{{#include src/doc_examples/untested_04/server_basic.rs}}
+{{#include ../docs-examples/src/untested_04/server_basic.rs}}
 ```
 
 Now, run your app with:

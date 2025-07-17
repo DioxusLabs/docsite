@@ -7,7 +7,7 @@ In this chapter, we will add a preview for articles you hover over or links you 
 First, let's split our app into a Stories component on the left side of the screen, and a preview component on the right side of the screen:
 
 ```rust
-{{#include src/doc_examples/hackernews_state.rs:app_v1}}
+{{#include ../docs-examples/src/hackernews_state.rs:app_v1}}
 ```
 
 ```inject-dioxus
@@ -25,7 +25,7 @@ Event handlers are similar to regular attributes, but their name usually starts 
 Let's create a [`onmouseenter`](https://docs.rs/dioxus/latest/dioxus/events/fn.onmouseenter.html) event listener in the `StoryListing` component:
 
 ```rust
-{{#include src/doc_examples/hackernews_state.rs:story_listing_listener}}
+{{#include ../docs-examples/src/hackernews_state.rs:story_listing_listener}}
 ```
 
 > You can read more about Event Handlers in the [Event Handler reference](../reference/event_handlers.md)
@@ -45,15 +45,15 @@ In this case, we will use the `use_context_provider` and `use_context` hooks:
 > Note: You should prefer local state hooks like use_signal or use_signal_sync when you only use state in one component. Because we use state in multiple components, we can use a [global state pattern](../reference/context.md)
 
 ```rust
-{{#include src/doc_examples/hackernews_state.rs:shared_state_app}}
+{{#include ../docs-examples/src/hackernews_state.rs:shared_state_app}}
 ```
 
 ```rust
-{{#include src/doc_examples/hackernews_state.rs:shared_state_stories}}
+{{#include ../docs-examples/src/hackernews_state.rs:shared_state_stories}}
 ```
 
 ```rust
-{{#include src/doc_examples/hackernews_state.rs:shared_state_preview}}
+{{#include ../docs-examples/src/hackernews_state.rs:shared_state_preview}}
 ```
 
 ```inject-dioxus
@@ -78,15 +78,15 @@ These rules mean that there are certain things you can't do with hooks:
 
 #### No Hooks in Conditionals
 ```rust
-{{#include src/doc_examples/untested_05/hooks_bad.rs:conditional}}
+{{#include ../docs-examples/src/untested_05/hooks_bad.rs:conditional}}
 ```
 
 #### No Hooks in Closures
 ```rust
-{{#include src/doc_examples/untested_05/hooks_bad.rs:closure}}
+{{#include ../docs-examples/src/untested_05/hooks_bad.rs:closure}}
 ```
 
 #### No Hooks in Loops
 ```rust
-{{#include src/doc_examples/untested_05/hooks_bad.rs:loop}}
+{{#include ../docs-examples/src/untested_05/hooks_bad.rs:loop}}
 ```

@@ -40,19 +40,19 @@ tokio = { version = "1.15.0", features = ["full"] }
 Now, set up your Axum app to respond on an endpoint.
 
 ```rust
-{{#include src/doc_examples/untested_06/ssr.rs:main}}
+{{#include ../docs-examples/src/untested_06/ssr.rs:main}}
 ```
 
 And then add our endpoint. We can either render `rsx!` directly:
 
 ```rust
-{{#include src/doc_examples/untested_06/ssr.rs:app_endpoint}}
+{{#include ../docs-examples/src/untested_06/ssr.rs:app_endpoint}}
 ```
 
 Or we can render VirtualDoms.
 
 ```rust
-{{#include src/doc_examples/untested_06/ssr.rs:app_endpoint_vdom}}
+{{#include ../docs-examples/src/untested_06/ssr.rs:app_endpoint_vdom}}
 ```
 
 Finally, you can run it using `cargo run` rather than `dx serve`.

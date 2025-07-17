@@ -30,7 +30,7 @@ The Dog API docs outline a sample API response:
 
 Our Rust struct needs to match that format, though for now we'll only include the "message" field.
 ```rust
-{{#include src/doc_examples/guide_data_fetching.rs:dog_api}}
+{{#include ../docs-examples/src/guide_data_fetching.rs:dog_api}}
 ```
 
 ## Using `reqwest` and `async`
@@ -42,13 +42,13 @@ Dioxus has great support for asynchronous Rust. We can simply convert our `oncli
 The changes to our code are quite simple - just add the `reqwest::get` call and then call `.set()` on `img_src` with the result.
 
 ```rust
-{{#include src/doc_examples/guide_data_fetching.rs:dog_view_reqwest}}
+{{#include ../docs-examples/src/guide_data_fetching.rs:dog_view_reqwest}}
 ```
 
 Dioxus automatically calls `dioxus::spawn` on asynchronous closures. You can also use `dioxus::spawn` to perform async work *without* async closures - just call `dioxus::spawn()` on any async block. Futures spawned with `dioxus::spawn` automatically run on the current async executor and are dropped automatically.
 
 ```rust
-{{#include src/doc_examples/guide_data_fetching.rs:spawn}}
+{{#include ../docs-examples/src/guide_data_fetching.rs:spawn}}
 ```
 
 The futures passed to `dioxus::spawn` can not borrow data from outside the async block. Data that is `Copy` *can* be captured by async blocks, but all other data must be *moved*, usually by calling `.clone()`.
@@ -62,7 +62,7 @@ In Dioxus, *Resources* are pieces of state whose value is dependent on the compl
 Let's change our component to use a resource instead:
 
 ```rust
-{{#include src/doc_examples/guide_data_fetching.rs:dog_view_resource}}
+{{#include ../docs-examples/src/guide_data_fetching.rs:dog_view_resource}}
 ```
 
 Resources are very powerful: they integrate with Suspense, Streaming HTML, reactivity, and more.

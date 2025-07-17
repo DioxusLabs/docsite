@@ -5,5 +5,5 @@ Extractors allow you to wrap your server function in some code that changes eith
 You can use the `#[middleware]` attribute to add a layer of middleware to your server function. Let's add a timeout middleware to a server function. This middleware will stop running the server function if it reaches a certain timeout:
 
 ```rust
-{{#include src/doc_examples/untested_05/server_function_middleware.rs:server_function_middleware}}
+{{#include ../docs-examples/src/untested_05/server_function_middleware.rs:server_function_middleware}}
 ```

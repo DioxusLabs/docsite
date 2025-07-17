@@ -21,7 +21,7 @@ cargo add serde
 Next, add the server function to your `main.rs`:
 
 ```rust
-{{#include src/doc_examples/server_function.rs}}
+{{#include ../docs-examples/src/server_function.rs}}
 ```
 
 Now, build your client-side bundle with `dx build --features web` and run your server with `cargo run --features ssr`. You should see a new button that multiplies the count by 2.
@@ -31,7 +31,7 @@ Now, build your client-side bundle with `dx build --features web` and run your s
 One common use case for server functions is fetching data from the server:
 
 ```rust
-{{#include src/doc_examples/server_data_fetch.rs}}
+{{#include ../docs-examples/src/server_data_fetch.rs}}
 ```
 
 If you navigate to the site above, you will first see `server data is None`, then after the `WASM` has loaded and the request to the server has finished, you will see `server data is Some(Ok("Hello from the server!"))`.
@@ -46,7 +46,7 @@ This is exactly what the `use_server_future` hook allows us to do! `use_server_f
 Let's change our data fetching to use `use_server_future`:
 
 ```rust
-{{#include src/doc_examples/server_data_prefetch.rs}}
+{{#include ../docs-examples/src/server_data_prefetch.rs}}
 ```
 
 > Notice the `?` after `use_server_future`. This is what tells Dioxus fullstack to wait for the future to resolve before continuing rendering. If you want to not wait for a specific future, you can just remove the ? and deal with the `Option` manually.
@@ -91,12 +91,12 @@ For development, the example project runs the server on `localhost:8080`. **Befo
 
 In the server code, first you have to set the network address and port where the server will listen to.
 ```rust
-{{#include src/doc_examples/untested_05/server_function_desktop_client.rs:server_url}}
+{{#include ../docs-examples/src/untested_05/server_function_desktop_client.rs:server_url}}
 ```
 
 Then, you have to register the types declared in the server function macros into the server.
 For example, consider this server function:
 ```rust
-{{#include src/doc_examples/untested_05/server_function_desktop_client.rs:server_function}}
+{{#include ../docs-examples/src/untested_05/server_function_desktop_client.rs:server_function}}
 ```
 

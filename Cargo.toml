@@ -4,6 +4,7 @@ members = [
     # Docs
     "packages/docsite",
     "packages/docs-router",
+    "packages/docs-examples",
 
     # Playground
     "packages/playground/model",
@@ -23,12 +24,13 @@ members = [
     # search
     "packages/search/search",
     "packages/search/search-macro",
-    "packages/search/search-shared",
+    "packages/search/search-shared", "packages/docs-examples",
 ]
 exclude = ["packages/playground/server/template"]
 
 [workspace.dependencies]
-dioxus_docs_router = { path = "packages/docs-router" }
+dioxus-docs-router = { path = "packages/docs-router" }
+dioxus-docs-examples = { path = "packages/docs-examples" }
 stork-lib = { git = "https://github.com/dioxuslabs/stork", default-features = false }
 
 # mdbook

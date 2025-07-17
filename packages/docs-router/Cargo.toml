@@ -1,5 +1,5 @@
 [package]
-name = "dioxus_docs_router"
+name = "dioxus-docs-router"
 version = "0.0.0"
 authors = ["Jonathan Kelley <jkelleyrtp@gmail.com>"]
 edition = "2018"

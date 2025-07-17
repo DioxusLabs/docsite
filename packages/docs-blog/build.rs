@@ -1,4 +1,4 @@
 fn main() {
-    println!("cargo:rerun-if-changed=../../docs-src/0.8");
-    mdbook_gen::make_docs_from_ws("0.8");
+    println!("cargo:rerun-if-changed=../../docs-src/blog");
+    mdbook_gen::make_docs_from_ws("blog");
 }

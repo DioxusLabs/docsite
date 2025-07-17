@@ -150,7 +150,7 @@ When bundling installable apps, there are many distribution formats to choose fr
 - macOS: `.app`, `.dmg`
 - Linux: `.appimage`, `.rpm`, `.deb`
 - Windows: `.msi`, `.exe`
-- iOS: `.app`
+- iOS: `.ipa`
 - Android: `.apk`
 
 You can specify package types like so:

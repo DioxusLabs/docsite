@@ -3,6 +3,12 @@ resolver = "2"
 members = [
     # Docs
     "packages/docsite",
+    "packages/docs-03",
+    "packages/docs-04",
+    "packages/docs-05",
+    "packages/docs-06",
+    "packages/docs-07",
+    "packages/docs-blog",
     "packages/docs-router",
 
     # Playground
@@ -28,7 +34,13 @@ members = [
 exclude = ["packages/playground/server/template"]
 
 [workspace.dependencies]
-dioxus_docs_router = { path = "packages/docs-router" }
+dioxus-docs-03 = { path = "packages/docs-03" }
+dioxus-docs-04 = { path = "packages/docs-04" }
+dioxus-docs-05 = { path = "packages/docs-05" }
+dioxus-docs-06 = { path = "packages/docs-06" }
+dioxus-docs-07 = { path = "packages/docs-07" }
+dioxus-docs-blog = { path = "packages/docs-blog" }
+dioxus-docs-examples = { path = "packages/docs-router" }
 stork-lib = { git = "https://github.com/dioxuslabs/stork", default-features = false }
 
 # mdbook
@@ -98,7 +110,7 @@ codegen-units = 1
 [profile.web-dev]
 inherits = "dev"
 debug = 0
-opt-level = 1
+panic = "abort"
 
 [profile.release.build-override]
 opt-level = 3

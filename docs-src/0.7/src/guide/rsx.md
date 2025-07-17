@@ -3,7 +3,7 @@
 Dioxus is a _declarative_ framework. This means that instead of telling Dioxus what to do (e.g. to "create an element" or "set the color to red") we simply _declare_ what we want the UI to look like using RSX.
 
 ```rust, no_run
-{{#include src/doc_examples/hello_world_desktop.rs:component}}
+{{#include ../docs-router/src/doc_examples/hello_world_desktop.rs:component}}
 ```
 
 Here, we use the `rsx!` macro to _declare_ that we want a `div` element, containing the text `"Hello, world!"`. Dioxus takes the RSX and constructs a user interface from it.
@@ -29,37 +29,37 @@ This means you can reuse your knowledge of the web and build your app using `div
 The RSX syntax is a "strict" form of Rust that uses Rust's `Struct` syntax for assembling elements:
 
 ```rust
-{{#include src/doc_examples/guide_rsx.rs:rsx_is_html}}
+{{#include ../docs-router/src/doc_examples/guide_rsx.rs:rsx_is_html}}
 ```
 
 Elements in RSX differ slightly from Rust struct syntax: they can also contain child structs placed immediately after the final attribute.
 
 ```rust
-{{#include src/doc_examples/guide_rsx.rs:child_rsx}}
+{{#include ../docs-router/src/doc_examples/guide_rsx.rs:child_rsx}}
 ```
 
 Additionally, all quoted strings in RSX imply `format!()` automatically, so you can define a variable outside your markup and use it in your strings without an explicit format call:
 
 ```rust
-{{#include src/doc_examples/guide_rsx.rs:rsx_format}}
+{{#include ../docs-router/src/doc_examples/guide_rsx.rs:rsx_format}}
 ```
 
 Any expression that can be rendered to a String can be included directly in RSX. RSX also accepts `Option<Element>` and iterators of Elements:
 
 ```rust
-{{#include src/doc_examples/guide_rsx.rs:rsx_expression}}
+{{#include ../docs-router/src/doc_examples/guide_rsx.rs:rsx_expression}}
 ```
 
 Dioxus provides two items of syntax sugar for these common cases: `for` loops and `if` chains. These blocks return the contained RSX directly.
 
 ```rust
-{{#include src/doc_examples/guide_rsx.rs:rsx_loop}}
+{{#include ../docs-router/src/doc_examples/guide_rsx.rs:rsx_loop}}
 ```
 
 For lists, Dioxus uses the `key` attribute to ensure it's comparing the right elements between renders. If you forget to add a `key` attribute to your list item, you might run into performance and state management issues. Usually you can find a unique key to differentiate your list items:
 
 ```rust
-{{#include src/doc_examples/guide_rsx.rs:rsx_keyed}}
+{{#include ../docs-router/src/doc_examples/guide_rsx.rs:rsx_keyed}}
 ```
 
 ## Adding UI to our *HotDog* App
@@ -68,7 +68,7 @@ Let's add a basic UI to our app. We'll add a header, a body image for the dog ph
 
 
 ```rust
-{{#include src/doc_examples/guide_rsx.rs:adding_ui}}
+{{#include ../docs-router/src/doc_examples/guide_rsx.rs:adding_ui}}
 ```
 
 Our app is coming together!

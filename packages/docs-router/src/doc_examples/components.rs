@@ -1,5 +1,5 @@
 #![allow(non_snake_case)]
-use crate::doc_examples::ComponentWithLogs;
+use crate::doc_examples::{ComponentWithLogs, log};
 use dioxus::prelude::*;
 
 // ANCHOR: App
@@ -52,10 +52,7 @@ pub fn MyStatefulComponent() -> Element {
     rsx! {
         div {
             h1 { "Count: {count}" }
-            button {
-                onclick: move |_| count += 1,
-                "Increment"
-            }
+            button { onclick: move |_| count += 1, "Increment" }
         }
     }
 }

@@ -1,14 +1,14 @@
 #![allow(non_snake_case)]
 use dioxus::prelude::*;
 
-use super::{log, ComponentWithLogs};
+use super::{ComponentWithLogs, log};
 pub use drop::DropDemo;
 pub use effect::EffectDemo;
 pub use rerenders::RerenderDemo;
 pub use use_hook::UseHookDemo;
 
 mod use_hook {
-    use crate::doc_examples::FakePage;
+    use crate::FakePage;
     use std::sync::atomic::AtomicUsize;
 
     use super::*;

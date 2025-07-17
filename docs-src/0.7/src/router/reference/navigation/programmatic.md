@@ -16,7 +16,7 @@ We can use the [`Navigator`] to trigger four different kinds of navigation:
 - `Go forward` works like the browser's forward button.
 
 ```rust
-{{#include src/doc_examples/navigator.rs:nav}}
+{{#include ../docs-router/src/doc_examples/navigator.rs:nav}}
 ```
 
 You might have noticed that, like [`Link`], the [`Navigator`]s `push` and

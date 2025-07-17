@@ -5,7 +5,7 @@ Dioxus is a _declarative_ framework. This means that instead of telling Dioxus w
 You have already seen a simple example of RSX syntax in the "hello world" application:
 
 ```rust, no_run
-{{#include src/doc_examples/hello_world_desktop.rs:component}}
+{{#include ../docs-router/src/doc_examples/hello_world_desktop.rs:component}}
 ```
 
 Here, we use the `rsx!` macro to _declare_ that we want a `div` element, containing the text `"Hello, world!"`. Dioxus takes the RSX and constructs a UI from it.
@@ -15,7 +15,7 @@ Here, we use the `rsx!` macro to _declare_ that we want a `div` element, contain
 RSX is very similar to HTML in that it describes elements with attributes and children. Here's an empty `button` element in RSX, as well as the resulting HTML:
 
 ```rust, no_run
-{{#include src/doc_examples/rsx_overview.rs:button}}
+{{#include ../docs-router/src/doc_examples/rsx_overview.rs:button}}
 ```
 
 ```inject-dioxus
@@ -29,7 +29,7 @@ DemoFrame {
 Attributes (and [event handlers](event_handlers.md)) modify the behavior or appearance of the element they are attached to. They are specified inside the `{}` brackets, using the `name: value` syntax. You can provide the value as a literal in the RSX:
 
 ```rust, no_run
-{{#include src/doc_examples/rsx_overview.rs:attributes}}
+{{#include ../docs-router/src/doc_examples/rsx_overview.rs:attributes}}
 ```
 
 ```inject-dioxus
@@ -40,7 +40,7 @@ DemoFrame {
 
 Some attributes, such as the ``type`` attribute for ``input`` elements won't work on their own in Rust. This is because ``type`` is a reserved Rust keyword. To get around this, Dioxus uses the ``r#`` specifier:
 ```rust, no_run
-{{#include src/doc_examples/rsx_overview.rs:attributes_type}}
+{{#include ../docs-router/src/doc_examples/rsx_overview.rs:attributes_type}}
 ```
 
 > Note: All attributes defined in `dioxus-html` follow the snake_case naming convention. They transform their `snake_case` names to HTML's `camelCase` attributes.
@@ -52,7 +52,7 @@ Some attributes, such as the ``type`` attribute for ``input`` elements won't wor
 You can also conditionally include attributes by using an if statement without an else branch. This is useful for adding an attribute only if a certain condition is met:
 
 ```rust, no_run
-{{#include src/doc_examples/rsx_overview.rs:conditional_attributes}}
+{{#include ../docs-router/src/doc_examples/rsx_overview.rs:conditional_attributes}}
 ```
 
 ```inject-dioxus
@@ -64,7 +64,7 @@ DemoFrame {
 Repeating an attribute joins the values with a space. This makes it easy to add values like classes conditionally:
 
 ```rust, no_run
-{{#include src/doc_examples/rsx_overview.rs:conditional_attributes_concatenation}}
+{{#include ../docs-router/src/doc_examples/rsx_overview.rs:conditional_attributes_concatenation}}
 ```
 
 #### Custom Attributes
@@ -72,7 +72,7 @@ Repeating an attribute joins the values with a space. This makes it easy to add 
 Dioxus has a pre-configured set of attributes that you can use. RSX is validated at compile time to make sure you didn't specify an invalid attribute. If you want to override this behavior with a custom attribute name, specify the attribute in quotes:
 
 ```rust, no_run
-{{#include src/doc_examples/rsx_overview.rs:custom_attributes}}
+{{#include ../docs-router/src/doc_examples/rsx_overview.rs:custom_attributes}}
 ```
 
 ```inject-dioxus
@@ -92,7 +92,7 @@ If you're working with pre-rendered assets, output from templates, or output fro
 For example, shipping a markdown-to-Dioxus converter might significantly bloat your final application size. Instead, you'll want to pre-render your markdown to HTML and then include the HTML directly in your output. We use this approach for the [Dioxus homepage](https://dioxuslabs.com):
 
 ```rust, no_run
-{{#include src/doc_examples/dangerous_inner_html.rs:dangerous_inner_html}}
+{{#include ../docs-router/src/doc_examples/dangerous_inner_html.rs:dangerous_inner_html}}
 ```
 
 ```inject-dioxus
@@ -111,7 +111,7 @@ Most attributes, when rendered, will be rendered exactly as the input you provid
 So this RSX wouldn't actually render the `hidden` attribute:
 
 ```rust, no_run
-{{#include src/doc_examples/boolean_attribute.rs:boolean_attribute}}
+{{#include ../docs-router/src/doc_examples/boolean_attribute.rs:boolean_attribute}}
 ```
 
 ```inject-dioxus
@@ -156,7 +156,7 @@ For any other attributes, a value of `"false"` will be sent directly to the DOM.
 Similarly to how you can [format](https://doc.rust-lang.org/rust-by-example/hello/print/fmt.html) Rust strings, you can also interpolate in RSX text. Use `{variable}` to Display the value of a variable in a string, or `{variable:?}` to use the Debug representation:
 
 ```rust, no_run
-{{#include src/doc_examples/rsx_overview.rs:formatting}}
+{{#include ../docs-router/src/doc_examples/rsx_overview.rs:formatting}}
 ```
 
 ```inject-dioxus
@@ -170,7 +170,7 @@ DemoFrame {
 To add children to an element, put them inside the `{}` brackets after all attributes and listeners in the element. They can be other elements, text, or [components](components.md). For example, you could have an `ol` (ordered list) element, containing 3 `li` (list item) elements, each of which contains some text:
 
 ```rust, no_run
-{{#include src/doc_examples/rsx_overview.rs:children}}
+{{#include ../docs-router/src/doc_examples/rsx_overview.rs:children}}
 ```
 
 ```inject-dioxus
@@ -184,7 +184,7 @@ DemoFrame {
 You can render multiple elements at the top level of `rsx!` and they will be automatically grouped.
 
 ```rust, no_run
-{{#include src/doc_examples/rsx_overview.rs:manyroots}}
+{{#include ../docs-router/src/doc_examples/rsx_overview.rs:manyroots}}
 ```
 
 ```inject-dioxus
@@ -198,7 +198,7 @@ DemoFrame {
 You can include arbitrary Rust expressions as children within RSX by surrounding your expression with `{}`s. Any expression that implements [IntoDynNode](https://docs.rs/dioxus-core/0.3/dioxus_core/trait.IntoDynNode.html) can be used within rsx. This is useful for displaying data from an [iterator](https://doc.rust-lang.org/stable/book/ch13-02-iterators.html#processing-a-series-of-items-with-iterators):
 
 ```rust, no_run
-{{#include src/doc_examples/rsx_overview.rs:expression}}
+{{#include ../docs-router/src/doc_examples/rsx_overview.rs:expression}}
 ```
 
 ```inject-dioxus
@@ -212,7 +212,7 @@ DemoFrame {
 In addition to iterators you can also use for loops directly within RSX:
 
 ```rust, no_run
-{{#include src/doc_examples/rsx_overview.rs:loops}}
+{{#include ../docs-router/src/doc_examples/rsx_overview.rs:loops}}
 ```
 
 ```inject-dioxus
@@ -226,7 +226,7 @@ DemoFrame {
 You can also use if statements without an else branch within RSX:
 
 ```rust, no_run
-{{#include src/doc_examples/rsx_overview.rs:ifstatements}}
+{{#include ../docs-router/src/doc_examples/rsx_overview.rs:ifstatements}}
 ```
 
 ```inject-dioxus

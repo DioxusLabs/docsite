@@ -5,7 +5,7 @@ Welcome to the Dioxus documentation! Dioxus is a framework for building cross-pl
 Dioxus is designed to be familiar for developers who already know tools like React and Flutter.
 
 ```rust
-{{#include src/doc_examples/untested_06/readme.rs}}
+{{#include ../docs-router/src/doc_examples/untested_06/readme.rs}}
 ```
 
 ```inject-dioxus

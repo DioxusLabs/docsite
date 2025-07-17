@@ -35,5 +35,5 @@ If you define a dynamic segment in a nest, it will be available to all child rou
 To finish a nest, we use the `#[end_nest]` attribute or the end of the enum.
 
 \```rust
-{{#include src/doc_examples/nest.rs:route}}
+{{#include ../docs-router/src/doc_examples/nest.rs:route}}
 \```

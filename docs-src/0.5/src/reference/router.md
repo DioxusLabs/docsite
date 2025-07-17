@@ -26,7 +26,7 @@ cargo add dioxus@0.5.0 --features router
 Unlike other routers in the Rust ecosystem, our router is built declaratively at compile time. This makes it possible to compose our app layout simply by defining an enum.
 
 ```rust
-{{#include src/doc_examples/router_reference.rs:router_definition}}
+{{#include ../docs-router/src/doc_examples/router_reference.rs:router_definition}}
 ```
 
 Whenever we visit this app, we will get either the Home component or the Blog component rendered depending on which route we enter at. If neither of these routes match the current location, then nothing will render.
@@ -36,13 +36,13 @@ We can fix this one of two ways:
 - A fallback 404 page
 
 ```rust
-{{#include src/doc_examples/router_reference.rs:router_definition_404}}
+{{#include ../docs-router/src/doc_examples/router_reference.rs:router_definition_404}}
 ```
 
 - Redirect 404 to home
 
 ```rust
-{{#include src/doc_examples/router_reference.rs:router_404_redirect}}
+{{#include ../docs-router/src/doc_examples/router_reference.rs:router_404_redirect}}
 ```
 
 ## Links
@@ -50,7 +50,7 @@ We can fix this one of two ways:
 For our app to navigate these routes, we can provide clickable elements called Links. These simply wrap `<a>` elements that, when clicked, navigate the app to the given location. Because our route is an enum of valid routes, if you try to link to a page that doesn't exist, you will get a compiler error.
 
 ```rust
-{{#include src/doc_examples/router_reference.rs:links}}
+{{#include ../docs-router/src/doc_examples/router_reference.rs:links}}
 ```
 
 ## More reading

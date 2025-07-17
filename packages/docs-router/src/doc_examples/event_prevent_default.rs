@@ -1,5 +1,5 @@
 #![allow(non_snake_case)]
-use crate::doc_examples::ComponentWithLogs;
+use crate::doc_examples::{ComponentWithLogs, log};
 use dioxus::prelude::*;
 
 pub fn App() -> Element {
@@ -20,8 +20,6 @@ pub fn App() -> Element {
 #[component]
 pub fn AppDemo() -> Element {
     rsx! {
-        ComponentWithLogs {
-            App {}
-        }
+        ComponentWithLogs { App {} }
     }
 }

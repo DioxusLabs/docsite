@@ -1216,6 +1216,120 @@ dependencies = [
 ]
 
 [[package]]
+name = "dioxus-docs-03"
+version = "0.0.0"
+dependencies = [
+ "dioxus",
+ "dioxus-docs-examples",
+ "mdbook-gen",
+ "mdbook-shared",
+ "serde",
+ "use-mdbook",
+]
+
+[[package]]
+name = "dioxus-docs-04"
+version = "0.0.0"
+dependencies = [
+ "dioxus",
+ "dioxus-docs-examples",
+ "mdbook-gen",
+ "mdbook-shared",
+ "serde",
+ "use-mdbook",
+]
+
+[[package]]
+name = "dioxus-docs-05"
+version = "0.0.0"
+dependencies = [
+ "dioxus",
+ "dioxus-docs-examples",
+ "mdbook-gen",
+ "mdbook-shared",
+ "serde",
+ "use-mdbook",
+]
+
+[[package]]
+name = "dioxus-docs-06"
+version = "0.0.0"
+dependencies = [
+ "dioxus",
+ "dioxus-docs-examples",
+ "mdbook-gen",
+ "mdbook-shared",
+ "serde",
+ "use-mdbook",
+]
+
+[[package]]
+name = "dioxus-docs-07"
+version = "0.0.0"
+dependencies = [
+ "dioxus",
+ "dioxus-docs-examples",
+ "mdbook-gen",
+ "mdbook-shared",
+ "serde",
+ "use-mdbook",
+]
+
+[[package]]
+name = "dioxus-docs-blog"
+version = "0.0.0"
+dependencies = [
+ "dioxus",
+ "dioxus-docs-examples",
+ "mdbook-gen",
+ "mdbook-shared",
+ "serde",
+ "syntect-html",
+ "use-mdbook",
+]
+
+[[package]]
+name = "dioxus-docs-examples"
+version = "0.1.0"
+dependencies = [
+ "askama_escape 0.10.3",
+ "async-recursion",
+ "automod",
+ "axum",
+ "chrono",
+ "dioxus",
+ "dioxus-cli-config",
+ "dioxus-desktop",
+ "dioxus-liveview",
+ "dioxus-ssr",
+ "dioxus-web",
+ "form_urlencoded",
+ "futures",
+ "futures-util",
+ "gloo-storage",
+ "gloo-timers",
+ "http",
+ "js-sys",
+ "mdbook-shared",
+ "once_cell",
+ "pretty_assertions",
+ "rand 0.8.5",
+ "reqwest",
+ "rusqlite",
+ "serde",
+ "serde_json",
+ "slab",
+ "stork-lib",
+ "syntect-html",
+ "tokio",
+ "tower-http 0.5.2",
+ "tracing",
+ "use-mdbook",
+ "wasm-bindgen",
+ "web-sys",
+]
+
+[[package]]
 name = "dioxus-document"
 version = "0.7.0-alpha.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1718,48 +1832,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "dioxus_docs_router"
-version = "0.0.0"
-dependencies = [
- "askama_escape 0.10.3",
- "async-recursion",
- "automod",
- "axum",
- "chrono",
- "dioxus",
- "dioxus-cli-config",
- "dioxus-desktop",
- "dioxus-liveview",
- "dioxus-ssr",
- "dioxus-web",
- "form_urlencoded",
- "futures",
- "futures-util",
- "gloo-storage",
- "gloo-timers",
- "http",
- "js-sys",
- "mdbook-gen",
- "mdbook-shared",
- "once_cell",
- "pretty_assertions",
- "rand 0.8.5",
- "reqwest",
- "rusqlite",
- "serde",
- "serde_json",
- "slab",
- "stork-lib",
- "syntect-html",
- "tokio",
- "tower-http 0.5.2",
- "tracing",
- "use-mdbook",
- "wasm-bindgen",
- "web-sys",
-]
-
-[[package]]
 name = "dioxus_docs_site"
 version = "0.0.0"
 dependencies = [
@@ -1769,9 +1841,15 @@ dependencies = [
  "axum",
  "chrono",
  "dioxus",
+ "dioxus-docs-03",
+ "dioxus-docs-04",
+ "dioxus-docs-05",
+ "dioxus-docs-06",
+ "dioxus-docs-07",
+ "dioxus-docs-blog",
+ "dioxus-docs-examples",
  "dioxus-search",
  "dioxus-web",
- "dioxus_docs_router",
  "futures",
  "futures-util",
  "getrandom 0.2.16",

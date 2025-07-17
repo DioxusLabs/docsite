@@ -23,9 +23,14 @@ pub fn write_book_with_routes(book: &mdbook_shared::MdBook<PathBuf>) -> TokenStr
             }
         };
         let page = write_page_with_routes(v);
+        let fn_token = quote::format_ident!("__push_page_{}", id);
+
         quote! {
-            pages.push((#id, #page));
-            page_id_mapping.insert(#name, ::use_mdbook::mdbook_shared::PageId(#id));
+            let #fn_token: fn(_, _) = |_pages: &mut Vec<_>, _page_id_mapping: &mut std::collections::HashMap<_, _>| {
+                _pages.push((#id, #page));
+                _page_id_mapping.insert(#name, ::use_mdbook::mdbook_shared::PageId(#id));
+            };
+            #fn_token(&mut pages, &mut page_id_mapping);
         }
     });
 

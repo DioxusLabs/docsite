@@ -15,7 +15,7 @@ We call the arguments a component takes its **properties**. Properties are used 
 For example, we can define a simple component that takes a `name` property and renders a greeting:
 
 ```rust, no_run
-{{#include src/doc_examples/components.rs:MyComponent}}
+{{#include ../docs-router/src/doc_examples/components.rs:MyComponent}}
 ```
 ```inject-dioxus
 DemoFrame {
@@ -24,7 +24,7 @@ DemoFrame {
 ```
 
 > Properties can be modified to accept a wider variety of inputs than a normal function argument. We don't cover all of the details here, but you can find information in the [component macro](https://docs.rs/dioxus/latest/dioxus/prelude/attr.component.html) documentation.
-> 
+>
 > You can use the `#[props()]` attribute on each function argument to modify properties your component accepts:
 >
 > - [`#[props(default)]`](https://docs.rs/dioxus/latest/dioxus/prelude/attr.component.html#default-props) - Makes the field optional in the component and uses the default value if it is not set when creating the component.
@@ -44,7 +44,7 @@ DemoFrame {
 Once you have defined a component, you can use it in your RSX markup just like any other element:
 
 ```rust, no_run
-{{#include src/doc_examples/components.rs:MyComponentCall}}
+{{#include ../docs-router/src/doc_examples/components.rs:MyComponentCall}}
 ```
 ```inject-dioxus
 DemoFrame {
@@ -63,7 +63,7 @@ Components are a pure function of your current application state in the form `fn
 We have already seen how components map the props state into UI, but state can also come from the component itself in the form of hooks. For example, we can use a signal to keep track of a count in our component. The component defines the mapping from the current state of the signal to the UI that should be rendered:
 
 ```rust, no_run
-{{#include src/doc_examples/components.rs:MyStatefulComponent}}
+{{#include ../docs-router/src/doc_examples/components.rs:MyStatefulComponent}}
 ```
 
 ```inject-dioxus
@@ -77,7 +77,7 @@ DemoFrame {
 The body of a component must be pure. Pure functions always return the same output for the same input and do not have side effects. For example, this double function is pure:
 
 ```rust, no_run
-{{#include src/doc_examples/components.rs:double}}
+{{#include ../docs-router/src/doc_examples/components.rs:double}}
 ```
 
 If you call `double(2)`, it will always return `4`.
@@ -85,7 +85,7 @@ If you call `double(2)`, it will always return `4`.
 However, this function is not pure because it modifies external state:
 
 ```rust, no_run
-{{#include src/doc_examples/components.rs:increment_global_count}}
+{{#include ../docs-router/src/doc_examples/components.rs:increment_global_count}}
 ```
 
 When you call `increment_global_count()` the first time, it will return `0`, but the next time you call it, it will return `1`. This function has side effects because it modifies the global state.
@@ -93,13 +93,13 @@ When you call `increment_global_count()` the first time, it will return `0`, but
 In addition to global variables, context and hooks are also external state in components. Components shouldn't modify state from context or hooks while rendering:
 
 ```rust, no_run
-{{#include src/doc_examples/components.rs:MyImpureComponent}}
+{{#include ../docs-router/src/doc_examples/components.rs:MyImpureComponent}}
 ```
 
 Side effects that modify state should be placed in event handlers or [effects](../breaking/index.md#synchronizing-dom-updates-with-use_effect) which run after the component has rendered. This ensures that the component's output is stable and predictable.
 
 ```rust, no_run
-{{#include src/doc_examples/components.rs:MyPureComponent}}
+{{#include ../docs-router/src/doc_examples/components.rs:MyPureComponent}}
 ```
 
 ## Components Rerender
@@ -110,7 +110,7 @@ Components will be rerun when the state they depend on changes. This can happen 
 - Internal [state](../state/index.md) the component depends on changes (e.g. `signal.write()`)
 
 ```rust, no_run
-{{#include src/doc_examples/components.rs:Button}}
+{{#include ../docs-router/src/doc_examples/components.rs:Button}}
 ```
 
 ```inject-dioxus

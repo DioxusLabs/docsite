@@ -1,0 +1,18 @@
+[package]
+name = "dioxus-docs-04"
+version = "0.0.0"
+authors = ["Jonathan Kelley <jkelleyrtp@gmail.com>"]
+edition = "2018"
+resolver = "2"
+publish = false
+
+[dependencies]
+dioxus = { workspace = true, features = ["router"] }
+mdbook-shared = { workspace = true }
+use-mdbook = { workspace = true }
+dioxus-docs-examples = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+
+[build-dependencies]
+mdbook-gen = { workspace = true, features = ["manganis"]}
+mdbook-shared = { workspace = true }

@@ -13,11 +13,11 @@ way, we can ensure that we have access to all its functionality everywhere.
 First, we define the router with the router macro:
 
 ```rust
-{{#include src/doc_examples/untested_04/first_route.rs:router}}
+{{#include ../docs-router/src/doc_examples/untested_04/first_route.rs:router}}
 ```
 
 Then we render the router with the [`Router`] component.
 
 ```rust
-{{#include src/doc_examples/untested_04/first_route.rs:app}}
+{{#include ../docs-router/src/doc_examples/untested_04/first_route.rs:app}}
 ```

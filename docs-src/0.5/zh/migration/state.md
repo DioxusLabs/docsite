@@ -25,7 +25,7 @@ fn Child(cx: Scope, state: UseState<i32>) -> Element {
 Parent would re-render every time the state changed even though only the child component was using the state. With the new `use_signal` hook, the parent would only re-render if the state was changed within the parent component:
 
 \```rust
-{{#include src/doc_examples/migration_state.rs:use_signal}}
+{{#include ../docs-router/src/doc_examples/migration_state.rs:use_signal}}
 \```
 Only the child component will re-render when the state changes because only the child component is reading the state.
 
@@ -34,7 +34,7 @@ Only the child component will re-render when the state changes because only the 
 The `use_shared_state_provider` and `use_shared_state` hooks have been replaced with using the `use_context_provider` and `use_context` hooks with a `Signal`:
 
 \```rust
-{{#include src/doc_examples/migration_state.rs:context_signals}}
+{{#include ../docs-router/src/doc_examples/migration_state.rs:context_signals}}
 \```
 
 Signals are smart enough to handle subscribing to the right scopes without a special shared state hook.
@@ -47,7 +47,7 @@ Some state hooks including `use_shared_state` and `use_ref` hooks had a function
 Instead, you can use the `peek` function to read the current value of a signal without subscribing to it. This inverts the subscription model so that you can opt out of subscribing to a signal instead of opting all subscribers out of updates:
 
 \```rust
-{{#include src/doc_examples/migration_state.rs:peek}}
+{{#include ../docs-router/src/doc_examples/migration_state.rs:peek}}
 \```
 
 `peek` gives you more fine-grained control over when you want to subscribe to a signal. This can be useful for performance optimizations and for updating state without re-rendering components.
@@ -57,7 +57,7 @@ Instead, you can use the `peek` function to read the current value of a signal w
 In `0.4`, the fermi crate provided a separate global state API called atoms. In `0.5`, the `Signal` type has been extended to provide a global state API. You can use the `Signal::global` function to create a global signal:
 
 \```rust
-{{#include src/doc_examples/migration_state.rs:global_signals}}
+{{#include ../docs-router/src/doc_examples/migration_state.rs:global_signals}}
 \```
 
 You can read more about global signals in the [Fermi migration guide](fermi.md).

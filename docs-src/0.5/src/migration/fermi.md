@@ -30,7 +30,7 @@ fn app(cx: Scope) -> Element {
 
 Dioxus 0.5:
 ```rust
-{{#include src/doc_examples/untested_05/migration_fermi.rs:intro}}
+{{#include ../docs-router/src/doc_examples/untested_05/migration_fermi.rs:intro}}
 ```
 
 ## Memos
@@ -38,5 +38,5 @@ Dioxus 0.5:
 Dioxus 0.5 introduces global memos which can be used to store computed values globally.
 
 ```rust
-{{#include src/doc_examples/untested_05/migration_fermi.rs:memos}}
+{{#include ../docs-router/src/doc_examples/untested_05/migration_fermi.rs:memos}}
 ```

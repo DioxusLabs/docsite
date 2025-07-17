@@ -1,7 +1,7 @@
 #![allow(non_snake_case)]
 use dioxus::prelude::*;
 
-use crate::doc_examples::ComponentWithLogs;
+use crate::doc_examples::{ComponentWithLogs, log};
 
 pub fn App() -> Element {
     // ANCHOR: rsx
@@ -14,8 +14,6 @@ pub fn App() -> Element {
 #[component]
 pub fn AppDemo() -> Element {
     rsx! {
-        ComponentWithLogs {
-            App {}
-        }
+        ComponentWithLogs { App {} }
     }
 }

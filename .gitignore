@@ -1,10 +1,10 @@
 # ignore changes to the generated docs files
-/packages/docs-03/src/gen.rs
-/packages/docs-04/src/gen.rs
-/packages/docs-05/src/gen.rs
-/packages/docs-06/src/gen.rs
-/packages/docs-07/src/gen.rs
-/packages/docs-blog/src/gen.rs
+/packages/docs-03/src/docsgen.rs
+/packages/docs-04/src/docsgen.rs
+/packages/docs-05/src/docsgen.rs
+/packages/docs-06/src/docsgen.rs
+/packages/docs-07/src/docsgen.rs
+/packages/docs-blog/src/docsgen.rs
 
 /.dioxus
 /target

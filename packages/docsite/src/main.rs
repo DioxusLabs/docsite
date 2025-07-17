@@ -32,7 +32,7 @@ fn main() {
             let mut cfg = ServeConfig::builder();
 
             cfg = cfg.incremental(
-                IncrementalRendererConfig::new()
+                dioxus::fullstack::IncrementalRendererConfig::new()
                     .static_dir(static_dir())
                     .clear_cache(false)
             );

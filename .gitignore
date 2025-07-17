@@ -1,3 +1,11 @@
+# ignore changes to the generated docs files
+/packages/docs-03/src/lib.rs
+/packages/docs-04/src/lib.rs
+/packages/docs-05/src/lib.rs
+/packages/docs-06/src/lib.rs
+/packages/docs-07/src/lib.rs
+/packages/docs-blog/src/lib.rs
+
 /.dioxus
 /target
 .DS_Store

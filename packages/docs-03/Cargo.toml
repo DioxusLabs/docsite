@@ -8,10 +8,9 @@ publish = false
 
 [dependencies]
 dioxus = { workspace = true, features = ["router"] }
-syntect-html = { workspace = true }
+dioxus-docs-examples = { workspace = true }
 mdbook-shared = { workspace = true }
 use-mdbook = { workspace = true }
-dioxus-docs-examples = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
 
 [build-dependencies]

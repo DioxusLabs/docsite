@@ -1224,7 +1224,6 @@ dependencies = [
  "mdbook-gen",
  "mdbook-shared",
  "serde",
- "syntect-html",
  "use-mdbook",
 ]
 
@@ -1237,7 +1236,6 @@ dependencies = [
  "mdbook-gen",
  "mdbook-shared",
  "serde",
- "syntect-html",
  "use-mdbook",
 ]
 
@@ -1250,7 +1248,6 @@ dependencies = [
  "mdbook-gen",
  "mdbook-shared",
  "serde",
- "syntect-html",
  "use-mdbook",
 ]
 
@@ -1263,7 +1260,6 @@ dependencies = [
  "mdbook-gen",
  "mdbook-shared",
  "serde",
- "syntect-html",
  "use-mdbook",
 ]
 
@@ -1276,7 +1272,6 @@ dependencies = [
  "mdbook-gen",
  "mdbook-shared",
  "serde",
- "syntect-html",
  "use-mdbook",
 ]
 

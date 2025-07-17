@@ -6,14 +6,14 @@ edition = "2018"
 resolver = "2"
 
 [dependencies]
-dioxus = { version = "0.6.0", features = ["router"] }
-dioxus-web = { version = "0.6.0", features = ["hydrate"], optional = true }
-dioxus-ssr = { version = "0.6.0", optional = true }
-dioxus-desktop = { version = "0.6.0", optional = true }
-dioxus-cli-config = { version = "0.6.0", optional = true }
-dioxus-liveview = { version = "0.6.0", features = ["axum"], optional = true }
+dioxus = { workspace = true, features = ["router"] }
+dioxus-web = { workspace = true, features = ["hydrate"], optional = true }
+dioxus-ssr = { workspace = true, optional = true }
+dioxus-desktop = { workspace = true, optional = true }
+dioxus-cli-config = { workspace = true, optional = true }
+dioxus-liveview = { workspace = true, features = ["axum"], optional = true }
 
-dioxus-material-icons = { version = "3.0.0" }
+# dioxus-material-icons = { version = "3.0.0" }
 syntect-html = { workspace = true }
 mdbook-shared = { workspace = true }
 use-mdbook = { workspace = true }
@@ -50,7 +50,7 @@ stork-lib = { workspace = true, features = [
     "build-v3",
 ], default-features = false }
 
-dioxus-sdk = { version = "0.6.0", optional = true, default-features = false }
+# dioxus-sdk = { workspace = true, optional = true, default-features = false }
 tower-http = { version = "0.5.0", optional = true, features = ["timeout"] }
 tracing = "0.1.40"
 rand = { version = "0.8.5", optional = true }
@@ -63,6 +63,7 @@ fullstack = ["dioxus/fullstack"]
 web = ["dioxus/web"]
 server = [
     "dioxus/server",
+    "dioxus/fullstack",
     "dioxus/ssr",
     "dep:dioxus-ssr",
     "dep:tokio",
@@ -79,7 +80,7 @@ doc_test = [
     "gloo-storage",
     "dep:pretty_assertions",
     "dep:tower-http",
-    "dep:dioxus-sdk",
+    # "dep:dioxus-sdk",
     "dep:http",
     "dep:rand",
     "dep:dioxus-cli-config",

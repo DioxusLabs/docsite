@@ -1,6 +1,6 @@
 #![allow(non_snake_case, unused)]
 use dioxus::prelude::*;
-use dioxus_router::prelude::*;
+use dioxus::router::RouterConfig;
 
 // ANCHOR: router
 #[derive(Routable, Clone, PartialEq)]
@@ -13,12 +13,16 @@ enum Route {
 
 #[component]
 fn Home() -> Element {
-    rsx! { p { "Home" } }
+    rsx! {
+        p { "Home" }
+    }
 }
 
 #[component]
 fn Index() -> Element {
-    rsx! { p { "Index" } }
+    rsx! {
+        p { "Index" }
+    }
 }
 
 fn app() -> Element {
@@ -30,7 +34,7 @@ fn app() -> Element {
                         (state.current() == Route::Index {})
                             .then_some(NavigationTarget::Internal(Route::Home {}))
                     })
-            }
+            },
         }
     }
 }

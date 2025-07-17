@@ -1,7 +1,7 @@
 use crate::docs::AnyBookRoute;
 use crate::*;
 use dioxus::html::input_data::keyboard_types::Key;
-use dioxus_material_icons::{MaterialIcon, MaterialIconColor};
+// use dioxus_material_icons::{MaterialIcon, MaterialIconColor};
 use std::ops::Deref;
 
 pub(crate) static SHOW_SEARCH: GlobalSignal<bool> = Signal::global(|| false);
@@ -12,8 +12,8 @@ pub(crate) fn Nav() -> Element {
     rsx! {
         SearchModal {}
         header { class: "sticky top-0 z-30 bg-opacity-80 dark:text-gray-200 dark:bg-opacity-80 border-b border-stone-300 dark:border-stone-700 h-16 backdrop-blur-sm",
-            div { class: "py-2 px-2 max-w-screen-2xl mx-auto flex items-center justify-between text-sm leading-6 h-16",
-                div { class: "flex z-50 md:px-2 flex-1", LinkList {} }
+            div { class: "py-2 px-4 sm:px-6 md:px-8 max-w-screen-2xl mx-auto flex items-center justify-between text-sm leading-6 h-16",
+                div { class: "flex z-50 flex-1", LinkList {} }
                 div { class: "flex h-full justify-end ml-2 items-center gap-3 py-2",
                     button {
                         class: "
@@ -29,20 +29,20 @@ pub(crate) fn Nav() -> Element {
                         onclick: move |_| {
                             *SHOW_SEARCH.write() = true;
                         },
-                        span { class: "h-4 px-1 dark:hidden",
-                            MaterialIcon {
-                                name: "search",
-                                size: 16,
-                                color: MaterialIconColor::Dark,
-                            }
-                        }
-                        span { class: "h-4 px-1 hidden dark:block",
-                            MaterialIcon {
-                                name: "search",
-                                size: 16,
-                                color: MaterialIconColor::Light,
-                            }
-                        }
+                        // span { class: "h-4 px-1 dark:hidden",
+                        //     MaterialIcon {
+                        //         name: "search",
+                        //         size: 16,
+                        //         color: MaterialIconColor::Dark,
+                        //     }
+                        // }
+                        // span { class: "h-4 px-1 hidden dark:block",
+                        //     MaterialIcon {
+                        //         name: "search",
+                        //         size: 16,
+                        //         color: MaterialIconColor::Light,
+                        //     }
+                        // }
                         span { class: "hidden content-center text-sm sm:flex flex-row w-60 justify-between",
                             span { "Search..." }
                             span { class: "px-1 min-w-6
@@ -63,19 +63,17 @@ pub(crate) fn Nav() -> Element {
                         },
                         class: "bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-500 md:hidden rounded-lg p-1 mr-2 my-3 h-8 flex items-center text-lg z-50",
                         class: if !route.is_docs() { "hidden" },
-                        MaterialIcon {
-                            name: "menu",
-                            size: 24,
-                            color: MaterialIconColor::Dark,
-                        }
+                                        // MaterialIcon {
+                    //     name: "menu",
+                    //     size: 24,
+                    //     color: MaterialIconColor::Dark,
+                    // }
                     }
 
                     div { class: "h-full  gap-3 hidden lg:flex",
                         div { class: "border-l border-gray-200 dark:border-gray-800 h-full" }
                         div { class: "hidden lg:flex items-center gap-3",
-                            DarkModeToggle {
-                                class: "block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
-                            }
+                            DarkModeToggle { class: "block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300" }
                             Link {
                                 to: "https://crates.io/crates/dioxus",
                                 new_tab: true,
@@ -191,6 +189,7 @@ fn SearchModal() -> Element {
         // Only show search results from the version of the docs the user is currently on (or the latest if they
         // are not on a doc page)
         let docs_index_version = match &current_route {
+            Route::Docs07 { .. } => "0_7",
             Route::Docs06 { .. } => "0_6",
             Route::Docs05 { .. } => "0_5",
             Route::Docs04 { .. } => "0_4",
@@ -264,17 +263,11 @@ fn SearchModal() -> Element {
                 div { class: "h-40" }
 
                 // The actual modal
-                div { class: "bg-white dark:bg-ideblack rounded-xl max-h-[calc(100%-8rem)] overflow-y-auto text-gray-800 dark:text-gray-100 border dark:border-[#a4a9ac7d]",
+                div { class: "bg-white dark:bg-ideblack rounded-xl max-h-[calc(100%-8rem)] overflow-y-auto text-gray-800 dark:text-gray-100 border border-gray-300 dark:border-[#a4a9ac7d]",
                     // Search input
                     div { class: "flex flex-col flex-grow border-b p-2 gap-2 border-inherit",
                         div { class: "my-auto flex flex-row items-center pl-2",
-                            div { class: "dark:invert h-5",
-                                MaterialIcon {
-                                    name: "search",
-                                    size: 20,
-                                    color: MaterialIconColor::Dark,
-                                }
-                            }
+                            div { class: "dark:invert h-5" }
 
                             // hide the input until show search so the onmounted fires
                             if SHOW_SEARCH() {
@@ -291,7 +284,7 @@ fn SearchModal() -> Element {
                                     onmounted: move |evt| async move {
                                         _ = evt.set_focus(true).await;
                                     },
-                                    class: "flex-grow bg-transparent border-none outline-none pl-2 text-gray-800 dark:text-gray-100 py-2 placeholder-gray-200",
+                                    class: "flex-grow bg-transparent border-none outline-none pl-2 text-gray-500 dark:text-gray-100 py-2 placeholder-gray-400",
                                     placeholder: "Search the docs...",
                                     value: "{search_text}",
                                 }

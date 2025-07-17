@@ -48,11 +48,11 @@
   flex-direction: column; */
 }
 
-.full-chapter {
+/* .full-chapter {
   padding-top: 12px;
   padding-bottom: 12px;
-}
-.full-chapter:not(:last-child) {
+} */
+/* .full-chapter:not(:last-child) {
   &:where([data-theme="light"], [data-theme="light"] *) {
     border-bottom: 1px solid #3b3d3e29;
   }
@@ -62,12 +62,25 @@
   &:where([data-theme="dark"], [data-theme="dark"] *) {
     border-bottom: 1px solid #a4a9ac7d;
   }
-}
+} */
 
 html {
   &:where([data-theme="dark"], [data-theme="dark"] *) {
     background-color: black;
   }
+}
+
+.markdown-body > div + p {
+  margin-top: 2rem;
+}
+
+.markdown-body > video, .markdown-body > img {
+  margin-bottom: 2rem;
+}
+
+
+.codeblock {
+  font-weight: 400;
 }
 
 .codeblock > pre {
@@ -85,9 +98,6 @@ html {
   box-sizing: border-box;
   min-width: 200px;
   list-style: disc;
-}
-
-.markdown-body button {
 }
 
 /*
@@ -120,11 +130,11 @@ It's so unliklely anyone is copying text on mobile that we can just hide it
   }
 }
 
-.dioxus-demo div input form {
+.dioxus-demo div, input, form {
   all: revert;
 }
 
-.dioxus-demo input button {
+.dioxus-demo input {
   border: 1px solid #ced4da;
   border-radius: 5px;
   background-color: white;
@@ -134,7 +144,14 @@ It's so unliklely anyone is copying text on mobile that we can just hide it
 }
 
 .dioxus-demo {
-  border-width: 2px;
+  border-width: 1px;
+  border-color: #ced4da;
+
+  /* text-align: center; */
+}
+
+.dioxus-demo h1 {
+  margin-top: 16px;
 }
 
 .dioxus-show {
@@ -220,7 +237,7 @@ It's so unliklely anyone is copying text on mobile that we can just hide it
   background-color: rgba(209, 213, 219, 0.3);
   border-radius: 0.25rem;
   padding: 0.25rem 0.5rem;
-  border: 1px solid;
+  border: 1px solid #ced4da;
   margin: 0.25rem;
 }
 .markdown-body .header {

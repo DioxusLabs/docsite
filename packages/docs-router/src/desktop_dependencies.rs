@@ -1,5 +1,5 @@
 use dioxus::prelude::*;
-use dioxus_material_icons::MaterialIconColor;
+// use dioxus_material_icons::MaterialIconColor;
 
 #[derive(Clone, Copy, PartialEq)]
 enum Platform {
@@ -35,10 +35,10 @@ pub fn DesktopDependencies() -> Element {
 
     #[cfg(feature = "web")]
     {
-        if generation() == 0 {
-            needs_update();
+        if dioxus::core::generation() == 0 {
+            dioxus::core::needs_update();
         }
-        if generation() == 1 {
+        if dioxus::core::generation() == 1 {
             use web_sys::window;
             let platform = window().unwrap().navigator().platform();
             if let Ok(platform) = platform {
@@ -76,17 +76,17 @@ pub fn DesktopDependencies() -> Element {
             onclick: move |_| {
                 active.toggle();
             },
-            if active() {
-                dioxus_material_icons::MaterialIcon {
-                    name: "expand_more",
-                    color: MaterialIconColor::Custom("gray".to_string()),
-                }
-            } else {
-                dioxus_material_icons::MaterialIcon {
-                    name: "chevron_right",
-                    color: MaterialIconColor::Custom("gray".to_string()),
-                }
-            }
+            // if active() {
+            //     dioxus_material_icons::MaterialIcon {
+            //         name: "expand_more",
+            //         color: MaterialIconColor::Custom("gray".to_string()),
+            //     }
+            // } else {
+            //     dioxus_material_icons::MaterialIcon {
+            //         name: "chevron_right",
+            //         color: MaterialIconColor::Custom("gray".to_string()),
+            //     }
+            // }
             "Desktop Specific Dependencies"
         }
         if active() {

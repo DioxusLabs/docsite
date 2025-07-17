@@ -93,6 +93,11 @@ pub fn generate_llms_txt() {
                     let content = dioxus_docs_router::docs::router_06::BookRoute::page_markdown(id);
                     write_content_to_llm_txt(route, &content)?;
                 }
+                Route::Docs07 { child } => {
+                    let id = child.page_id();
+                    let content = dioxus_docs_router::docs::router_07::BookRoute::page_markdown(id);
+                    write_content_to_llm_txt(route, &content)?;
+                }
                 _ => {}
             }
 

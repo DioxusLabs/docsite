@@ -8,7 +8,6 @@
 #![allow(non_snake_case, unused)]
 use dioxus::prelude::*;
 use dioxus_fullstack::{launch, prelude::*};
-use dioxus_router::prelude::*;
 use serde::{Deserialize, Serialize};
 
 // Generate all routes and output them to the docs path

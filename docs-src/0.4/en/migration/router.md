@@ -20,7 +20,6 @@ rsx! {
 Now you must define your routes as an enum of possible routes:
 
 ```rust
-use dioxus_router::prelude::*;
 use dioxus::prelude::*;
 
 #[derive(Routable, PartialEq, Debug, Clone)]
@@ -62,7 +61,6 @@ Now that routes are enums, you should use the enum as the route in Links. If you
 
 ```rust
 use dioxus::prelude::*;
-use dioxus_router::prelude::*;
 
 fn Component(cx: Scope) -> Element {
     render! {
@@ -80,7 +78,6 @@ To link to external routes, you can use a string:
 
 ```rust
 use dioxus::prelude::*;
-use dioxus_router::prelude::*;
 
 fn Component(cx: Scope) -> Element {
     render! {
@@ -102,7 +99,6 @@ The new use_route hook lets you read the current route:
 
 ```rust
 use dioxus::prelude::*;
-use dioxus_router::prelude::*;
 
 #[derive(Clone, Routable)]
 enum Route {

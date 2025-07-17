@@ -1,7 +1,7 @@
 // ANCHOR: router
 #![allow(non_snake_case)]
 use dioxus::prelude::*;
-use dioxus_router::prelude::*;
+use dioxus::router::RouterConfig;
 
 /// An enum of all of the possible routes in the app.
 #[derive(Routable, Clone)]

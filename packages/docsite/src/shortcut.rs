@@ -56,6 +56,8 @@ pub(crate) fn use_shortcut(
 ) {
     #[cfg(all(feature = "web", target_arch = "wasm32"))]
     {
+        use dioxus::core::use_drop;
+
         let id = use_hook(move || {
             LISTENERS.with(|l| {
                 l.callbacks

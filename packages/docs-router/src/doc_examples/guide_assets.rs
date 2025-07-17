@@ -53,7 +53,7 @@ mod asset_optimization {
         // ANCHOR_END: asset_optimization
         // ANCHOR: image_asset_expansion
         // outputs icon-j1238jd2.avif
-        asset!("/assets/icon.png", ImageAssetOptions::new().with_avif());
+        asset!("/assets/icon.png", AssetOptions::image().with_avif());
         // ANCHOR_END: image_asset_expansion
     }
 }

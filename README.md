@@ -7,19 +7,15 @@ rehydrated with interactivity provided by `dioxus_web`.
 
 ## Development
 
-The docsite uses the newest Tailwind (v4) so you need to install it first and then run it using:
-
-```sh
-npx @tailwindcss/cli -i ./tailwind.css -o ./assets/tailwind.css --watch
-```
-
 The documentation can be edited using any text editor. Most commonly used
 editors support syntax highlighting for the `markdown` format. To view your
 changes you can install the [`dx`][dx] tool locally, assuming you already have a
 working `Rust` setup:
 
+<!-- todo: switch to the installer -->
+<!-- # curl -fsSL https://raw.githubusercontent.com/DioxusLabs/dioxus/refs/heads/main/.github/install.sh | bash -->
 ```sh
-cargo install dioxus-cli
+cargo binstall dioxus-cli@0.7.0-alpha.3 --force
 ```
 
 With [`dx`][dx] installed, you can use it to build and serve the documentation
@@ -32,6 +28,8 @@ dx serve --package dioxus_docs_site
 This will start a local server that will be available on
 [localhost:8080](localhost:8080) and will automatically build and re-build the
 documentation when it changes.
+
+We use TailwindCSS which is included automatically with dx 0.7.
 
 ## Contributing
 

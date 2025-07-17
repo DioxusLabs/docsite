@@ -8,17 +8,17 @@ resolver = "2"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-dioxus = { version = "0.6.0", features = ["router", "launch"] }
-dioxus-web = { version = "0.6.0", features = ["hydrate"], optional = true }
+dioxus = { workspace = true, features = ["router", "launch"] }
+dioxus-web = { workspace = true, features = ["hydrate"], optional = true }
 
 dioxus_docs_router = { workspace = true }
 
-dioxus-material-icons = { version = "3.0.0" }
+# dioxus-material-icons = { version = "3.0.0" }
 syntect-html = { workspace = true }
 mdbook-shared = { workspace = true }
 use-mdbook = { workspace = true }
 dioxus-search = { workspace = true }
-dioxus-playground = { workspace = true }
+# dioxus-playground = { workspace = true }
 
 askama_escape = { version = "0.10.3", optional = true }
 getrandom = { workspace = true, features = ["js"] }
@@ -39,7 +39,11 @@ web-sys = { version = "0.3.64", features = [
     "Event",
     "AddEventListenerOptions",
     "Navigator",
-    "HtmlIFrameElement"
+    "HtmlIFrameElement",
+    "console",
+    "History",
+    "Window",
+    "Location"
 ] }
 slab = "0.4.8"
 chrono = { workspace = true, features = ["serde"] }

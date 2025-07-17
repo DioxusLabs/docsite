@@ -9,7 +9,7 @@ members = [
     "packages/docs-06",
     "packages/docs-07",
     "packages/docs-blog",
-    "packages/docs-examples",
+    "packages/docs-router",
 
     # Playground
     "packages/playground/model",
@@ -29,7 +29,7 @@ members = [
     # search
     "packages/search/search",
     "packages/search/search-macro",
-    "packages/search/search-shared", "packages/docs-examples",
+    "packages/search/search-shared",
 ]
 exclude = ["packages/playground/server/template"]
 
@@ -40,7 +40,7 @@ dioxus-docs-05 = { path = "packages/docs-05" }
 dioxus-docs-06 = { path = "packages/docs-06" }
 dioxus-docs-07 = { path = "packages/docs-07" }
 dioxus-docs-blog = { path = "packages/docs-blog" }
-dioxus-docs-examples = { path = "packages/docs-examples" }
+dioxus-docs-examples = { path = "packages/docs-router" }
 stork-lib = { git = "https://github.com/dioxuslabs/stork", default-features = false }
 
 # mdbook

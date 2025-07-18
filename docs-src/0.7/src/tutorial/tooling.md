@@ -23,7 +23,7 @@ dx --version
 
 You can also run `dx help` which will give you a list of useful commands and some information on how to use `dx`.
 
-```sh
+```txt
 Build, Bundle & Ship Dioxus Apps
 
 Usage: dx [OPTIONS] <COMMAND>

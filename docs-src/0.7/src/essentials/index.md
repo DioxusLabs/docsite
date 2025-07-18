@@ -1,8 +1,30 @@
 # Core Topics
 
-This section will guide you through key concepts in Dioxus:
+Dioxus is a Rust framework for building cross-platform apps with a single codebase. Every app leverages a user interface (UI) to display content and allow the user to take action. UI is built from small units like buttons, text, and images and then organized into components that encapsulate functionality. Dioxus apps are built by combining components into a larger interactive tree. Using conditional rendering, you write busienss logic that simply controls the component tree while Dioxus itself ensures your widget tree renders properly across web, desktop, and mobile.
 
-- [Building User Interfaces](ui/index.md) will teach you how to define html inside your Dioxus app with rsx.
+## A high-level overview
+
+Dioxus builds on entire generation of UI research. Building interactive, beautiful, and efficient user interfaces can actually be quite challenging. We designed Dioxus to address the complexity of frontend development with a simple mental model:
+
+- User Interfaces are constructed *declaratively* using `rsx!` to describe the layout and styling of widgets
+- Elements can handle user interaction with event handlers
+- The state of application is stored in functions called "hooks"
+
+
+## Declaring UI
+
+
+## Thinking Reactively
+
+
+## Managing State
+
+
+## Working with Asynchronicity
+
+<!-- This section will guide you through key concepts in Dioxus: -->
+
+<!-- - [Building User Interfaces](ui/index.md) will teach you how to define html inside your Dioxus app with rsx. -->
 
 <!-- - [Event Handlers](ui/e) will teach you how to handle events in Dioxus, including how to prevent default behavior and stop event propagation.
 

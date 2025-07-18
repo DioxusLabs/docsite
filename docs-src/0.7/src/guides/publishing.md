@@ -55,7 +55,7 @@ And then your `main.rs`:
 
 ## Adding assets to your application
 
-If you want to bundle assets with your application, you can either use them with the `manganis` crate (covered more in the [assets](../guides/assets.md) page), or you can include them in your `Dioxus.toml` file:
+If you want to bundle assets with your application, you can either use them with the `manganis` crate (covered more in the [assets](../essentials/ui/assets.md) page), or you can include them in your `Dioxus.toml` file:
 
 ```toml
 [bundle]

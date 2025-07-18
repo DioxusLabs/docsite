@@ -139,4 +139,4 @@ Obviously, not all of them are just about performance, but some of them are.
 
 ## Optimizing the size of assets
 
-Assets can be a significant part of your app's size. Dioxus includes alpha support for first party [assets](../guides/assets.md). Any assets you include with the `asset!` macro will be optimized for production in release builds.
+Assets can be a significant part of your app's size. Dioxus includes alpha support for first party [assets](../essentials/ui/assets.md). Any assets you include with the `asset!` macro will be optimized for production in release builds.

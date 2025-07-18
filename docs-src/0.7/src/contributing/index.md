@@ -101,4 +101,4 @@ This above example is for dioxus-web, with dioxus-router. To know about the depe
 dx serve
 ```
 
-If this is your first time with dioxus, please read [the guide](../guide/index.md) to get familiar with dioxus.
+If this is your first time with dioxus, please read [the tutorial](../tutorial/index.md) to get familiar with dioxus.

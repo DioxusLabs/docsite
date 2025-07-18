@@ -10,9 +10,9 @@ We strongly recommend moving on to the [Essential Topics](../essentials/index.md
 
 The essentials section will guide you through key concepts in Dioxus:
 
-- [Building UIs with RSX](../essentials/rsx/index.md) will teach you how to define html inside your Dioxus app with rsx.
+- [Building UIs with RSX](../essentials/ui/index.md) will teach you how to define html inside your Dioxus app with rsx.
 
-- [Component Lifecycle](../essentials/lifecycle/index.md) teaches you about the lifecycle of components along with the hooks you need to run code when the component is first created, mounted, and removed.
+- [Component Lifecycle](../essentials/reactivity/lifecycle.md) teaches you about the lifecycle of components along with the hooks you need to run code when the component is first created, mounted, and removed.
 
 - [Managing State](../essentials/state/index.md) guides you through how state works in Dioxus. It will teach you how to create state with `use_signal`, derive state with `use_memo`, and integrate state with asynchronous tasks with `use_resource`. Along the way, you will learn about how you can use reactivity to declaratively describe your UI.
 
@@ -48,7 +48,7 @@ All-in-all, the productivity you gain by building once and deploying everywhere 
 
 ### Does Dioxus support "xyz"?
 
-- TailwindCSS: Yes, but it requires an additional step, see the [docs for more info](../cookbook/tailwind.md).
+- TailwindCSS: Yes, but it requires an additional step, see the [docs for more info](../guides/tailwind.md).
 - Native Widgets: Yes, but you might need to write this code yourself. The Rust ecosystem is young.
 - Shadcn-ui: Not yet, a radix-ui port to Dioxus is underway but we're not done yet.
 - Actix/Rocket: Yes, kind-of. In Dioxus, Server-Functions are built on axum, but you can use server-side-rendering with any framework.

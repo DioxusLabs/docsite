@@ -2,7 +2,7 @@
 
 Dioxus is a _fullstack_ framework, enabling you to seamlessly build your frontend alongside your backend.
 
-We provide a number of utilities like _Server Functions_, _Server Futures_, and _Server State_ for you to integrate into your apps. In this chapter, we'll cover loading and saving state to our backend with _Server Functions_. For an in-depth guide on fullstack, check out the dedicated [Fullstack Guide](../guides/fullstack/index.md).
+We provide a number of utilities like _Server Functions_, _Server Futures_, and _Server State_ for you to integrate into your apps. In this chapter, we'll cover loading and saving state to our backend with _Server Functions_. For an in-depth guide on fullstack, check out the dedicated [Fullstack Guide](../essentials/fullstack/index.md).
 
 ## Enabling Fullstack
 
@@ -127,7 +127,7 @@ And then we'd import the server functions in our app, disabling their `"server"`
 server = { workspace = true, default-features = false }
 ```
 
-We provide a longer guide about the details of managing dependencies across the server and the client [here](../guides/fullstack/managing_dependencies.md).
+We provide a longer guide about the details of managing dependencies across the server and the client [here](../essentials/fullstack/managing_dependencies.md).
 
 ## Our HotDog Server Function
 
@@ -149,4 +149,4 @@ Wow, our app is really coming together!
 
 ![Working Server Functions](/assets/06_docs/dog-save-serverfn.mp4)
 
-Server functions are extremely capable and can even be used during server-side-rendering. Check out the complete [fullstack guide](../guides/fullstack/index.md) for more information.
+Server functions are extremely capable and can even be used during server-side-rendering. Check out the complete [fullstack guide](../essentials/fullstack/index.md) for more information.

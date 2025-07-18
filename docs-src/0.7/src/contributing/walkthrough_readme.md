@@ -37,7 +37,7 @@ The dynamic_nodes and dynamic_attributes are the parts of the rsx that can chang
 
 ## Launching the App
 
-The app is launched by calling the `launch` function with the root component. Internally, this function will create a new web view using [wry](https://docs.rs/wry/latest/wry/) and create a virtual dom with the root component (`fn app()` in the readme example). This guide will not explain the renderer in-depth, but you can read more about it in the [custom renderer](/guide/custom-renderer) section.
+The app is launched by calling the `launch` function with the root component. Internally, this function will create a new web view using [wry](https://docs.rs/wry/latest/wry/) and create a virtual dom with the root component (`fn app()` in the readme example). This guide will not explain the renderer in-depth, but you can read more about it in the [custom renderer](/guides/custom-renderer) section.
 
 ## The Virtual DOM
 

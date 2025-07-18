@@ -76,7 +76,7 @@ You can optimize assets even further, with an optional `Options` struct. For exa
 ```
 For many apps, asset optimization is the most effective way of improving load times. As developers, we frequently overlook the size of images and accidentally make our sites load slower.
 
-Check out the [assets guide](../guides/assets.md) for a more in-depth explanation of how the Dioxus asset system works.
+Check out the [assets guide](../essentials/ui/assets.md) for a more in-depth explanation of how the Dioxus asset system works.
 
 ## The Final CSS
 

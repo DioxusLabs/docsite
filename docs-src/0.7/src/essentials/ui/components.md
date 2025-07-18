@@ -58,7 +58,7 @@ DemoFrame {
 
 ## Components as a function of state
 
-Components are a pure function of your current application state in the form `fn(State) -> Element`. They read state from various sources like props, [hooks](../hooks/index.md), or [context](../state/index.md#passing-context) and return a view of the current UI as an `Element`.
+Components are a pure function of your current application state in the form `fn(State) -> Element`. They read state from various sources like props, [hooks](../state/hooks.md), or [context](../state/context.md) and return a view of the current UI as an `Element`.
 
 We have already seen how components map the props state into UI, but state can also come from the component itself in the form of hooks. For example, we can use a signal to keep track of a count in our component. The component defines the mapping from the current state of the signal to the UI that should be rendered:
 

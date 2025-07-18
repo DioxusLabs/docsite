@@ -171,7 +171,7 @@ DemoFrame {
 }
 ```
 
-More information about event listeners including how events bubble and how to prevent default behavior can be found in the [Event Handlers](../event_handlers/index.md) section.
+More information about event listeners including how events bubble and how to prevent default behavior can be found in the [Event Handlers](../reactivity/event_handlers.md) section.
 
 ## Children
 

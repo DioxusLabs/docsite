@@ -89,7 +89,7 @@ When the `Router {}` component renders, it will parse the document's current URL
 {{#include ../docs-router/src/doc_examples/guide_router.rs:catch_all}}
 ```
 
-Note here that the `PageNotFound` route takes the "segments" parameter. Dioxus routes are not only type-safe as variants, but also type-safe with URL parameters. For more information on how this works, [check the router guide](../router/index.md).
+Note here that the `PageNotFound` route takes the "segments" parameter. Dioxus routes are not only type-safe as variants, but also type-safe with URL parameters. For more information on how this works, [check the router guide](../essentials/router/index.md).
 
 At this point, we should see our app, but this time without its Title.
 

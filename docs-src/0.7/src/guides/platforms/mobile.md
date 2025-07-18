@@ -87,7 +87,7 @@ dx new my-app
 
 Make sure to launch the relevant mobile simulator. For Android, you can use the Android Studio emulator, or the Android Emulator in the terminal. Make sure to adjust the device name depending on which emulator you installed.
 
-```shell
+```sh
 emulator -avd Pixel_6_API_34  -netdelay none -netspeed full
 ```
 

@@ -44,7 +44,7 @@ tokio = { version = "1", features = ["full"] }
 
 If we try to compile with tokio as a required dependency, we will get a compilation error like this:
 
-```shell
+```sh
 error[E0432]: unresolved import `crate::sys::IoSourceState`
   --> /Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/mio-1.0.2/src   |source.rs:14:5
 14 | use crate::sys::IoSourceState;

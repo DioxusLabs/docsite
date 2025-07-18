@@ -14,7 +14,7 @@ Let's continue building on the app we made in the [getting started](../../gettin
 
 First, add serde as a dependency:
 
-```shell
+```sh
 cargo add serde
 ```
 

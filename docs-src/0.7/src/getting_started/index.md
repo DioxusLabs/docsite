@@ -10,7 +10,7 @@ Most editors support the [Rust-Analyzer LSP plugin](https://rust-analyzer.github
 
 Head over to [https://rust-lang.org](http://rust-lang.org) and install the Rust compiler (preferably using `rustup`). Once installed, make sure you add the `stable` toolchain and any relevant toolchains (ie wasm32-unknown-unknown for web apps):
 
-```shell
+```sh
 rustup toolchain install stable
 rustup target add wasm32-unknown-unknown
 ```
@@ -40,7 +40,7 @@ If you want to build the CLI from source, you can install it with the following 
 cargo install dioxus-cli
 ```
 
-> 📣 Installing from source can take up to 10 minutes and requires multiple dependencies. We strongly recommend downloading the prebuilt binaries.
+> 📣 Installing from source can take up to 10 minutes and requires several dependencies. We *strongly* recommend downloading the prebuilt binaries.
 
 If you get an OpenSSL error on installation, ensure the dependencies listed [here](https://docs.rs/openssl/latest/openssl/#automatic) are installed.
 
@@ -74,7 +74,7 @@ If you run into issues, make sure you have all the basics installed.
 
 For Ubuntu, make sure everything is installed:
 
-```shell
+```sh
 sudo apt update
 sudo apt install libwebkit2gtk-4.1-dev \
   build-essential \
@@ -88,7 +88,7 @@ sudo apt install libwebkit2gtk-4.1-dev \
 ```
 
 For arch:
-```shell
+```sh
 sudo pacman -Syu
 sudo pacman -S --needed \
   webkit2gtk-4.1 \
@@ -106,7 +106,7 @@ sudo pacman -S --needed \
 For all other Linux targets, [check the Tauri docs which cover the same dependencies](https://tauri.app/start/prerequisites/#linux).
 
 In addition to the Tauri docs, for Fedora:
-```shell
+```sh
 sudo dnf install libxdo-devel
 ```
 

@@ -274,7 +274,7 @@ impl AnyBookRoute for router_06::BookRoute {
         "0.6"
     }
     fn full_version() -> &'static str {
-        "0.6.1"
+        "0.6.3"
     }
     fn index() -> Self {
         Self::Index {

@@ -126,3 +126,56 @@ pub fn IfStatement() -> Element {
     }
     // ANCHOR_END: if_statement
 }
+
+pub fn Expression() -> Element {
+    // ANCHOR: expression
+    let text = "Dioxus";
+    rsx! {
+        span {
+            {text.to_uppercase()}
+            // create a list of text from 0 to 9
+            {(0..10).map(|i| rsx! {
+            "{i}"
+            })}
+        }
+    }
+    // ANCHOR_END: expression
+}
+
+pub fn CustomAttributes() -> Element {
+    // ANCHOR: custom_attributes
+    rsx! {
+        div { "style": "width: 20px; height: 20px; background-color: red;" }
+    }
+    // ANCHOR_END: custom_attributes
+}
+
+pub fn StyleAttributes() -> Element {
+    // ANCHOR: style_attributes
+    rsx! {
+        div {
+            style: "width: 20px; height: 20px; background-color: red; margin: 10px;",
+        }
+        div {
+            width: "20px",
+            height: "20px",
+            background_color: "red",
+            margin: "10px",
+        }
+    }
+    // ANCHOR_END: style_attributes
+}
+
+pub fn ClassAttribute() -> Element {
+    let red = true;
+    let blue_border = false;
+    // ANCHOR: class_attribute
+    rsx! {
+        span {
+            class: if red { "bg-red-500" },
+            class: if blue_border { "border border-blue-500" },
+            class: "w-4 h-4 block"
+        }
+    }
+    // ANCHOR_END: class_attribute
+}

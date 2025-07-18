@@ -3,6 +3,7 @@
     scrollbar-width: thin;
     scrollbar-color: #21252900 transparent;
     scrollbar-gutter: stable;
+    overflow: auto;
   }
 
   .styled-scrollbar::-webkit-scrollbar {
@@ -116,7 +117,7 @@ This way clicking on headers snaps to the height of the navbar + some padding
 
 .main-side-nav {
   max-height: calc(100vh - 4rem);
-  overflow: scroll;
+  overflow: auto;
 }
 
 /* on small screens we want to hide the copy div
@@ -171,6 +172,10 @@ It's so unliklely anyone is copying text on mobile that we can just hide it
 
 .markdown-body ul {
   list-style: disc;
+}
+
+.markdown-body img {
+  max-height: 600px;
 }
 
 .markdown-body li {

@@ -197,7 +197,7 @@ Controls the bundling process for your application. Dioxus uses tauri-bundler un
       "icons/icon.ico"
    ]
    ```
-* **resources** - Additional files to include in the bundle. Each asset is copied from the path and is accessible from the bundle at the same path. Any [assets](../essentials/ui/assets.md) are automatically bundled with the installer.
+* **resources** - Additional files to include in the bundle. Each asset is copied from the path and is accessible from the bundle at the same path. Any [assets](../../essentials/ui/assets.md) are automatically bundled with the installer.
    ```toml
    resources = ["path/to/resource"]
    ```

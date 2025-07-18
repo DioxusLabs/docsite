@@ -27,7 +27,7 @@ Fantastic - our app works seamlessly with no changes.
 
 ### Testing on Android
 
-Setting up your environment for Android development takes time, so make sure to read the [mobile tooling guide](../guides/mobile/index.md).
+Setting up your environment for Android development takes time, so make sure to read the [mobile tooling guide](../guides/platforms/mobile.md).
 
 - Install the Android NDK and SDK
 - Set JAVA_HOME, ANDROID_HOME, NDK_HOME, and fix PATH issues to use the `emulator` tool

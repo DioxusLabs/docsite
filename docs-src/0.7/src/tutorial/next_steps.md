@@ -48,7 +48,7 @@ All-in-all, the productivity you gain by building once and deploying everywhere 
 
 ### Does Dioxus support "xyz"?
 
-- TailwindCSS: Yes, but it requires an additional step, see the [docs for more info](../guides/tailwind.md).
+- TailwindCSS: Yes, but it requires an additional step, see the [docs for more info](../guides/utilities/tailwind.md).
 - Native Widgets: Yes, but you might need to write this code yourself. The Rust ecosystem is young.
 - Shadcn-ui: Not yet, a radix-ui port to Dioxus is underway but we're not done yet.
 - Actix/Rocket: Yes, kind-of. In Dioxus, Server-Functions are built on axum, but you can use server-side-rendering with any framework.

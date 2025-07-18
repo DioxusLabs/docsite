@@ -133,8 +133,8 @@ Download and install XCode from one of the following places:
 
 You will need to download the iOS SDK and install some simulators.
 
-For more details, we recommend reading the [dedicated guide for iOS development](../guides/mobile/index.md).
+For more details, we recommend reading the [dedicated guide for iOS development](../guides/platforms/mobile.md).
 
 ### Android
 
-Android apps require the Android SDK and NDK to be installed. This can be a substantial amount of setup, so we recommend reading the [dedicated guide for Android development](../guides/mobile/index.md).
+Android apps require the Android SDK and NDK to be installed. This can be a substantial amount of setup, so we recommend reading the [dedicated guide for Android development](../guides/platforms/mobile.md).

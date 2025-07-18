@@ -36,7 +36,7 @@ You can link to local assets in dioxus desktop instead of using a url:
 {{#include ../docs-router/src/doc_examples/custom_assets.rs}}
 ```
 
-You can read more about assets in the [assets](../assets.md) reference.
+You can read more about assets in the [assets](../../guides/depth/assets.md) reference.
 
 ## Integrating with Wry
 

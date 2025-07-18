@@ -12,7 +12,7 @@ You can use a combination of [pretty-assertions](https://docs.rs/pretty_assertio
 
 ## Hook Testing
 
-When creating libraries around Dioxus, it can be helpful to make tests for your [custom hooks](../essentials/state/custom_hooks.md).
+When creating libraries around Dioxus, it can be helpful to make tests for your [custom hooks](../../essentials/state/custom_hooks.md).
 
 
 Dioxus does not currently have a full hook testing library, but you can build a bespoke testing framework by manually driving the virtual dom.

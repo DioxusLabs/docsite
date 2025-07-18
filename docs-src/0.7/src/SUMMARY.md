@@ -74,21 +74,25 @@
     - [Streaming](essentials/fullstack/streaming.md)
     - [Static Site Generation](essentials/fullstack/static_site_generation.md)
     - [Axum Integration](essentials/fullstack/axum.md)
-  - [Tools](essentials/tools/index.md)
-    - [Serve](essentials/tools/serve.md)
-    - [Bundle](essentials/tools/bundle.md)
-    - [Android](essentials/tools/android.md)
-    - [iOS](essentials/tools/ios.md)
-    - [Logging](essentials/tools/logging.md)
   - [Breaking Out](essentials/breaking/index.md)
 
 ---
 
 - [Guides](guides/index.md)
+  - [Tools](guides/tools/index.md)
+    - [Create a Project](guides/tools/creating.md)
+    - [Configure Project](guides/tools/configure.md)
+    - [Serve](guides/tools/serve.md)
+    - [Bundle](guides/tools/bundle.md)
+    - [Android](guides/tools/android.md)
+    - [iOS](guides/tools/ios.md)
+    - [Logging](guides/tools/logging.md)
+    - [Translate HTML](guides/tools/translate.md)
+    - [Extension](guides/tools/vscode.md)
   - [Platform Support](guides/platforms/index.md)
-    - [Web](guides/web/index.md)
-    - [Desktop](guides/desktop/index.md)
-    - [Mobile](guides/mobile/index.md)
+    - [Web](guides/platforms/web.md)
+    - [Desktop](guides/platforms/desktop.md)
+    - [Mobile](guides/platforms/mobile.md)
   - [Publishing](guides/deploy/index.md)
     - [Web Apps](guides/deploy/web.md)
     - [SSG](guides/deploy/ssg.md)
@@ -98,12 +102,24 @@
     - [Windows Apps](guides/deploy/windows.md)
     - [Android Apps](guides/deploy/android.md)
     - [Bundle Config](guides/deploy/config.md)
-  - [Anti-patterns](guides/antipatterns.md)
-  - [Internationalization](guides/internationalization.md)
-  - [Assets](guides/assets.md)
-  - [Testing](guides/testing.md)
-  - [Tailwind](guides/tailwind.md)
-  - [Optimizing](guides/optimizing.md)
+  - [Organizing your Project](guides/organization/index.md)
+    - [Single Files](guides/organization/single.md)
+    - [Workspaces](guides/organization/workspaces.md)
+    - [Shared Code](guides/organization/shared.md)
+  - [Testing and Debugging](guides/testing/index.md)
+    - [Web](guides/testing/web.md)
+    - [Desktop](guides/testing/desktop.md)
+    - [Debugging](guides/testing/debugging.md)
+    - [Continuous Integration](guides/testing/ci.md)
+    - [Docker](guides/testing/docker.md)
+    - [Optimizing](guides/tips/optimizing.md)
+    - [Anti-patterns](guides/tips/antipatterns.md)
+  - [Utilities](guides/utilities/index.md)
+    - [Internationalization](guides/utilities/internationalization.md)
+    - [Tailwind](guides/utilities/tailwind.md)
+  - [In-Depth](guides/depth/index.md)
+    - [Asset Pipeline](guides/depth/assets.md)
+    - [Custom Renderer](guides/depth/custom_renderer.md)
   - [Migration](migration/index.md)
     - [To 0.7](migration/to_07.md)
     - [To 0.6](migration/to_06.md)
@@ -113,28 +129,20 @@
       - [Fermi](migration/to_05/fermi.md)
       - [Props](migration/to_05/props.md)
 
+---
+- [Beyond](beyond/index.md)
+  - [Contributing](beyond/contributing.md)
+  - [Project Structure](beyond/project_structure.md)
 
-  <!-- - [SSR](guides/ssr.md) -->
+<!-- - [Guiding Principles](contributing/guiding_principles.md) -->
+<!-- - [SSR](guides/ssr.md) -->
 <!--
-  - [Example Router Project](router-example/index.md)
-  - [Creating Our First Route](router-example/first-route.md)
-  - [Building a Nest](router-example/building-a-nest.md)
-  - [Navigation Targets](router-example/navigation-targets.md)
-  - [Redirection Perfection](router-example/redirection-perfection.md)
-  - [Full Code](router-example/full-code.md) -->
-
-
-
----
-- [Contributing](contributing/index.md)
-  - [Project Structure](contributing/project_structure.md)
-  - [Guiding Principles](contributing/guiding_principles.md)
-
----
-- [CLI](CLI/index.md)
-	- [Create a Project](CLI/creating.md)
-	- [Configure Project](CLI/configure.md)
-  - [Translate HTML](CLI/translate.md)
+- [Example Router Project](router-example/index.md)
+- [Creating Our First Route](router-example/first-route.md)
+- [Building a Nest](router-example/building-a-nest.md)
+- [Navigation Targets](router-example/navigation-targets.md)
+- [Redirection Perfection](router-example/redirection-perfection.md)
+- [Full Code](router-example/full-code.md) -->
 
 <!-- - [Static Generation](router/reference/static-generation.md) -->
 <!-- - [CLI in Depth](router/reference/cli-in-depth.md)
@@ -172,6 +180,5 @@
 
 
 <!-- - [Reference](reference/index.md)
-
-  - [Managing State](reference/managing_state.md)
-  - [Component Lifecycle](reference/component_lifecycle.md) -->
+- [Managing State](reference/managing_state.md)
+- [Component Lifecycle](reference/component_lifecycle.md) -->

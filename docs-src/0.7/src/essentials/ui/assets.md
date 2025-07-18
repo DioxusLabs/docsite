@@ -36,7 +36,7 @@ You can include stylesheets in your application using the `asset!` macro. Styles
 {{#include ../docs-router/src/doc_examples/assets.rs:style_sheets}}
 ```
 
-> The [tailwind guide](../../guides/tailwind.md) has more information on how to use tailwind with dioxus.
+> The [tailwind guide](../../guides/utilities/tailwind.md) has more information on how to use tailwind with dioxus.
 
 #### SCSS Support
 SCSS is also supported through the `asset!` macro. Include it the same way as a regular CSS file.

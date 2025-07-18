@@ -2,19 +2,9 @@
 
 This example shows what not to do and provides a reason why a given pattern is considered an "AntiPattern". Most anti-patterns are considered wrong for performance or code re-usability reasons.
 
-## Unnecessarily Nested Fragments
-
-Fragments don't mount a physical element to the DOM immediately, so Dioxus must recurse into its children to find a physical DOM node. This process is called "normalization". This means that deeply nested fragments make Dioxus perform unnecessary work. Prefer one or two levels of fragments / nested components until presenting a true DOM element.
-
-Only Component and Fragment nodes are susceptible to this issue. Dioxus mitigates this with components by providing an API for registering shared state without the Context Provider pattern.
-
-```rust
-{{#include ../docs-router/src/doc_examples/anti_patterns.rs:nested_fragments}}
-```
-
 ## Incorrect Iterator Keys
 
-As described in the [rsx chapter](../essentials/ui/index.md#loops), list items must have unique keys that are associated with the same items across renders. This helps Dioxus associate state with the contained components and ensures good diffing performance. Do not omit keys, unless you know that the list will never change.
+As described in the [rsx chapter](../../essentials/ui/iteration.md), list items must have unique keys that are associated with the same items across renders. This helps Dioxus associate state with the contained components and ensures good diffing performance. Do not omit keys, unless you know that the list will never change.
 
 ```rust
 {{#include ../docs-router/src/doc_examples/anti_patterns.rs:iter_keys}}

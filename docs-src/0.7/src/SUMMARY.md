@@ -85,23 +85,22 @@
 ---
 
 - [Guides](guides/index.md)
-  - [Web](guides/web/index.md)
-  - [Desktop](guides/desktop/index.md)
-  - [Mobile](guides/mobile/index.md)
-    - [APIs](guides/mobile/apis.md)
-  - [SSR](guides/ssr.md)
-  - [Publishing](guides/publishing.md)
+  - [Platform Support](guides/platforms/index.md)
+    - [Web](guides/web/index.md)
+    - [Desktop](guides/desktop/index.md)
+    - [Mobile](guides/mobile/index.md)
+  - [Publishing](guides/deploy/index.md)
+    - [Web Apps](guides/deploy/web.md)
+    - [SSG](guides/deploy/ssg.md)
+    - [iOS Apps](guides/deploy/ios.md)
+    - [macOS Apps](guides/deploy/macos.md)
+    - [Linux Apps](guides/deploy/linux.md)
+    - [Windows Apps](guides/deploy/windows.md)
+    - [Android Apps](guides/deploy/android.md)
+    - [Bundle Config](guides/deploy/config.md)
   - [Anti-patterns](guides/antipatterns.md)
-  - [Integrations](guides/integrations/index.md)
-    - [Internationalization](guides/integrations/internationalization.md)
-  - [Bundle Config](guides/bundling.md)
+  - [Internationalization](guides/internationalization.md)
   - [Assets](guides/assets.md)
-  - [Example Router Project](router-example/index.md)
-    - [Creating Our First Route](router-example/first-route.md)
-    - [Building a Nest](router-example/building-a-nest.md)
-    - [Navigation Targets](router-example/navigation-targets.md)
-    - [Redirection Perfection](router-example/redirection-perfection.md)
-    - [Full Code](router-example/full-code.md)
   - [Testing](guides/testing.md)
   - [Tailwind](guides/tailwind.md)
   - [Optimizing](guides/optimizing.md)
@@ -113,6 +112,17 @@
         - [State](migration/to_05/state.md)
       - [Fermi](migration/to_05/fermi.md)
       - [Props](migration/to_05/props.md)
+
+
+  <!-- - [SSR](guides/ssr.md) -->
+<!--
+  - [Example Router Project](router-example/index.md)
+  - [Creating Our First Route](router-example/first-route.md)
+  - [Building a Nest](router-example/building-a-nest.md)
+  - [Navigation Targets](router-example/navigation-targets.md)
+  - [Redirection Perfection](router-example/redirection-perfection.md)
+  - [Full Code](router-example/full-code.md) -->
+
 
 
 ---

@@ -148,7 +148,7 @@ publisher = "DioxusLabs"
 icon = ["assets/icon.png"]
 ```
 
-For a full list of options, see the [reference page on the `bundle` section](../guides/bundling.md).
+For a full list of options, see the [reference page on the `bundle` section](../guides/deploy/config.md).
 
 ## Automating dx bundle with JSON mode
 

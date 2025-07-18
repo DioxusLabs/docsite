@@ -30,6 +30,9 @@ members = [
     "packages/search/search",
     "packages/search/search-macro",
     "packages/search/search-shared",
+
+    # Utilities
+    "packages/notion-to-blog",
 ]
 exclude = ["packages/playground/server/template"]
 

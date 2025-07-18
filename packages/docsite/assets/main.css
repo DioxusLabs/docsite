@@ -173,6 +173,10 @@ It's so unliklely anyone is copying text on mobile that we can just hide it
   list-style: disc;
 }
 
+.markdown-body img {
+  max-height: 600px;
+}
+
 .markdown-body li {
   display: list-item;
 }

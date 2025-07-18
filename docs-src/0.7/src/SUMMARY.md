@@ -81,7 +81,15 @@
   - [Testing](cookbook/testing.md)
   - [Tailwind](cookbook/tailwind.md)
   - [Optimizing](cookbook/optimizing.md)
-  - [Migrating to v0.6](migration/index.md)
+  - [Migration](migration/index.md)
+    - [To 0.7](migration/to_07.md)
+    - [To 0.6](migration/to_06.md)
+    - [To 0.5](migration/to_05/index.md)
+      - [Hooks](migration/to_05/hooks.md)
+        - [State](migration/to_05/state.md)
+      - [Fermi](migration/to_05/fermi.md)
+      - [Props](migration/to_05/props.md)
+
 
 ---
 - [Contributing](contributing/index.md)

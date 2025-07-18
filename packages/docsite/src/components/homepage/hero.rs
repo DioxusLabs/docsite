@@ -72,39 +72,39 @@ pub(crate) fn Hero() -> Element {
                     }
                 }
                 div { class: "flex max-w-screen-2xl flex-col justify-end md:flex gap-4 pb-8",
-                h1 { class: "lg:text-left text-center font-extralight text-sm",
-                    "Trusted by top companies"
-                }
-                div { class: "flex flex-row flex-wrap lg:justify-start justify-center invert dark:invert-0  gap-8  min-h-0",
-                    img {
-                        class: "h-6",
-                        src: asset!("/assets/static/airbuslogo.svg"),
+                    h1 { class: "lg:text-left text-center font-extralight text-sm",
+                        "Trusted by top companies"
                     }
-                    img {
-                        class: "h-6 ",
-                        src: asset!("/assets/static/ESA_logo.svg"),
-                    }
-                    // img {
-                    //     class: "h-6 ",
-                    //     src: asset!("/assets/static/xailogo.svg"),
-                    // }
-                    img {
-                        class: "h-6 ",
-                        src: asset!("/assets/static/yclogo.svg"),
-                    }
-                    img {
-                        class: "h-6 ",
-                        src: asset!("/assets/static/futurewei_bw.png"),
-                    }
-                    img {
-                        class: "h-6 ",
-                        src: asset!("/assets/static/satellite.webp"),
+                    div { class: "flex flex-row flex-wrap lg:justify-start justify-center invert dark:invert-0  gap-8  min-h-0",
+                        img {
+                            class: "h-6",
+                            src: asset!("/assets/static/airbuslogo.svg"),
+                        }
+                        img {
+                            class: "h-6 ",
+                            src: asset!("/assets/static/ESA_logo.svg"),
+                        }
+                        // img {
+                        //     class: "h-6 ",
+                        //     src: asset!("/assets/static/xailogo.svg"),
+                        // }
+                        img {
+                            class: "h-6 ",
+                            src: asset!("/assets/static/yclogo.svg"),
+                        }
+                        img {
+                            class: "h-6 ",
+                            src: asset!("/assets/static/futurewei_bw.png"),
+                        }
+                        img {
+                            class: "h-6 ",
+                            src: asset!("/assets/static/satellite.webp"),
+                        }
                     }
                 }
             }
         }
     }
-}
 }
 
 // pub(crate) fn Hero() -> Element {

@@ -6,11 +6,12 @@ Before we get started, make sure you've followed the [Getting Started](../gettin
 
 We covered the setup instructions in [Getting Started](../getting_started/index.md), but first verify your setup:
 
-- Rust is installed
-- You have a code editor installed
+- Rust and Cargo are installed
 - The wasm32-unknown-unknown Rust target is installed
 - The `dioxus-cli` is installed and up-to-date
 - System-specific dependencies are installed
+
+Refer to the `dx doctor` command to see what `dx` uses to build your app.
 
 ## All the Commands
 

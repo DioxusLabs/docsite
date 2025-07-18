@@ -48,6 +48,8 @@ If you get an OpenSSL error on installation, ensure the dependencies listed [her
 
 Most platforms don't require any additional dependencies, but if you are targeting desktop, you might need to install additional dependencies.
 
+You can use the `dx doctor` command to see if `dx` can properly understand your install. This command helps provide insight into missing toolchains and tools required for cross-platform development.
+
 ### macOS
 
 There are no extra dependencies for macOS! However, if you want to build iOS apps, read the [iOS section](#ios) below.

@@ -6,7 +6,7 @@ This guide will show you how to use out-of-order streaming in Dioxus Fullstack t
 
 The default rendering mode in dioxus fullstack waits for all [suspense boundaries](../../essentials/async/index.md#suspense-with-fullstack) to resolve before sending the entire page as HTML to the client. If you have a page with multiple chunks of async data, the server will wait for all of them to complete before rendering the page.
 
-When streaming is enabled, the server can send chunks of HTML to the client as soon as each suspense boundary resolves. You can start interacting with a page as soon as the first part of the HTML is sent, instead of tha waiting for the entire page to be ready. This can lead to a much faster initial load time.
+When streaming is enabled, the server can send chunks of HTML to the client as soon as each suspense boundary resolves. You can start interacting with a page as soon as the first part of the HTML is sent, instead of waiting for the entire page to be ready. This can lead to a much faster initial load time.
 
 Bellow is the same [hackernews example](https://github.com/DioxusLabs/dioxus/tree/main/example-projects/fullstack-hackernews) rendered with and without streaming enabled. While both pages take the same amount of time to load all the data, the page with streaming enabled on the left shows you the data streaming in as it becomes available.
 

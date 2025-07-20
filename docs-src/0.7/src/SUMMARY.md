@@ -23,6 +23,7 @@
 
 - [Core Concepts](essentials/index.md)
   - [Building User Interfaces](essentials/ui/index.md)
+    - [Introducing RSX](essentials/ui/rsx.md)
     - [Elements and Text](essentials/ui/elements.md)
     - [Dynamic Attributes](essentials/ui/attributes.md)
     - [Components](essentials/ui/components.md)
@@ -42,6 +43,7 @@
     - [Maintaing Purity](essentials/reactivity/purity.md)
     - [Reactive Collections](essentials/reactivity/collections.md)
   - [Managing State](essentials/state/index.md)
+    - [State is Essential](essentials/state/essential.md)
     - [Local State](essentials/state/state.md)
     - [Hooks](essentials/state/hooks.md)
     - [Custom Hooks](essentials/state/custom_hooks.md)

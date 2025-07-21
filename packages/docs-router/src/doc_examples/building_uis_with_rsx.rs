@@ -190,6 +190,17 @@ pub fn CustomAttributes() -> Element {
     // ANCHOR_END: custom_attributes
 }
 
+pub fn CustomAttributesEvents() -> Element {
+    // ANCHOR: custom_attributes_events
+    rsx! {
+        button {
+            "onclick": "navigator.clipboard.writeText(window.document.title);",
+            "Copy to clipboard"
+        }
+    }
+    // ANCHOR_END: custom_attributes_events
+}
+
 pub fn StyleAttributes() -> Element {
     // ANCHOR: style_attributes
     rsx! {

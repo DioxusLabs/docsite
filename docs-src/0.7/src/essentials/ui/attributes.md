@@ -113,9 +113,30 @@ More information about event listeners including how events bubble and how to pr
 
 There are a wide range of event listeners available - see the full [HTML list](https://developer.mozilla.org/en-US/docs/Web/Events) for more details.
 
+## Spreading Attributes
+
+Occasionally, the set of attributes you want to pass to an element might either be dynamic or defined elsewhere in your application. In these cases, you can spread attribute lists into elements with the `..` syntax. Typically, lists of attributes will be passed into a component via its Properties, which we cover in a later chapter.
+
+```rust
+let attributes = vec![
+    Attribute {
+        name: "id",
+        namespace: "cool-button".into_value(),
+        volatile: None,
+        value: true,
+    }
+];
+
+rsx! {
+    button { ..attributes, "button" }
+}
+```
+
+Attributes lists awill be merged in the order they appear, so later attributes in the list take precedence over earlier attributes. Attribute spreading becomes very useful when refactor your UI into reusable components and build component libraries.
+
 ## Special Attributes
 
-Most attributes in RSX are rendered verbatim, but there are a few exceptions.
+Most attributes in RSX are rendered verbatim, but there are a few exceptions. In some cases, RSX deviates from traditional HTML to simplify development or work better with the ecosystem tools.
 
 ### Style attributes
 
@@ -145,7 +166,7 @@ DemoFrame {
 }
 ```
 
-This feature is especially important when using TailwindCSS since the class compiler does not understand formatted Rust strings when collecting classes. By placing the dynamic class in a sibling attribute, the Tailwind compiler sees *both* classes at compile time.
+This feature is especially important when using TailwindCSS since the class compiler does not understand formatted Rust strings when collecting classes. By placing the dynamic class in a sibling attribute, the Tailwind compiler sees *both* class lists at compile time.
 
 ### Custom Attributes
 
@@ -166,9 +187,15 @@ Note that this works even with event listeners. We occasionally use this to inse
 ```rust
 rsx! {
     button {
-        "onclick": "navigator.clipboard.writeText(this.parentNode.parentNode.lastChild.innerText);",
+        "onclick": "navigator.clipboard.writeText(window.document.title);",
         "Copy to clipboard"
     }
+}
+```
+
+```inject-dioxus
+DemoFrame {
+	building_uis_with_rsx::CustomAttributesEvents {}
 }
 ```
 

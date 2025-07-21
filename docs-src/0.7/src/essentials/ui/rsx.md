@@ -52,7 +52,7 @@ We want to ensure Dioxus is easy to learn and extremely portable. Instead of inv
 
 Our hybrid HTML approach combines the best parts of frameworks like Flutter and React Native. Teams get maximum code-reuse, get to work with a familiar markup language, and AI tools are immediately helpful. Instead of building bespoke native apps for each platform, teams can simply write their components once and render them everywhere.
 
-Our rendering engine [Blitz](https://github.com/dioxuslabs/blitz) is open source and produces often indistinguishable from browser-grade engines:
+Our rendering engine [Blitz](https://github.com/dioxuslabs/blitz) is open source and is often indistinguishable from browser-grade engines:
 
 ![Blitz vs Safari](/assets/07/blitz-vs-safari.png)
 
@@ -62,7 +62,7 @@ If you are not familiar with HTML, this guide will help you get started with the
 
 Dioxus is extremely modular. Because the RSX representation is generic, you can even swap out the elements, choosing to render UI that is *not* made of HTML and CSS. While the Dioxus team intends to only maintain HTML/CSS-based renderers, third-party renderers exist that unlock extended functionality.
 
-For example, the Freya project renders the Dioxus tree using Google's Skia renderer. Skia has a CPU-only architecture, works across a wide range of devices, and enables deeper control over UI effects:
+For example, the [Freya](https://freyaui.dev) project renders the Dioxus tree using Google's Skia renderer. Skia has a CPU-only architecture, works across a wide range of devices, and enables deeper control over UI effects:
 
 ![Example Freya App](/assets/07/freya-todo.webm)
 

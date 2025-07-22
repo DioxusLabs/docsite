@@ -1,7 +1,17 @@
+# Escaping the Dioxus Runtime
+
 - native widgets
 - dangerous inner html
 - web-components
 
+
+## Dangerous Inner HTML
+
+
+## Direct DOM Access
+
+- get element by ID
+- `eval`
 
 ## Web Components
 

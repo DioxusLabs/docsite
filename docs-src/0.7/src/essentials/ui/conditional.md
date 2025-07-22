@@ -1,31 +1,6 @@
+# Conditional Rendering
 
-### Conditional Attributes
 
-You can conditionally set an attribute by setting the attribute value to an unterminated if statement. If the if statement evaluates to true, the attribute will be set:
-
-```rust, no_run
-{{#include ../docs-router/src/doc_examples/building_uis_with_rsx.rs:input_disabled}}
-```
-
-```inject-dioxus
-DemoFrame {
-    building_uis_with_rsx::InputDisabled {}
-}
-```
-
-## If Statements
-
-You can also use if/else statements in rsx. Each branch of the if statement accepts child nodes that will be rendered if the condition is true. We can use the `if` statement to conditionally render a login screen:
-
-```rust, no_run
-{{#include ../docs-router/src/doc_examples/building_uis_with_rsx.rs:if_statement}}
-```
-
-```inject-dioxus
-DemoFrame {
-    building_uis_with_rsx::IfStatement {}
-}
-```
 
 ## Expressions
 
@@ -38,5 +13,20 @@ Finally, you can use arbitrary Rust expressions inside of rsx by surrounding the
 ```inject-dioxus
 DemoFrame {
     building_uis_with_rsx::Expression {}
+}
+```
+
+
+## If Statements
+
+You can also use if/else statements in rsx. Each branch of the if statement accepts child nodes that will be rendered if the condition is true. We can use the `if` statement to conditionally render a login screen:
+
+```rust, no_run
+{{#include ../docs-router/src/doc_examples/building_uis_with_rsx.rs:if_statement}}
+```
+
+```inject-dioxus
+DemoFrame {
+    building_uis_with_rsx::IfStatement {}
 }
 ```

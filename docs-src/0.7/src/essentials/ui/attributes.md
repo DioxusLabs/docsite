@@ -109,7 +109,7 @@ DemoFrame {
 }
 ```
 
-More information about event listeners including how events bubble and how to prevent default behavior can be found later in the [Event Handlers](../reactivity/event_handlers.md) section.
+More information about event listeners including how events bubble and how to prevent default behavior can be found later in the [Event Handlers](../reactivity/event_handlers.md) Reactivity section.
 
 There are a wide range of event listeners available - see the full [HTML list](https://developer.mozilla.org/en-US/docs/Web/Events) for more details.
 
@@ -167,6 +167,20 @@ DemoFrame {
 ```
 
 This feature is especially important when using TailwindCSS since the class compiler does not understand formatted Rust strings when collecting classes. By placing the dynamic class in a sibling attribute, the Tailwind compiler sees *both* class lists at compile time.
+
+### Conditional Attributes
+
+You can conditionally set an attribute by setting the attribute value to an unterminated if statement. If the if statement evaluates to true, the attribute will be set:
+
+```rust, no_run
+{{#include ../docs-router/src/doc_examples/building_uis_with_rsx.rs:input_disabled}}
+```
+
+```inject-dioxus
+DemoFrame {
+    building_uis_with_rsx::InputDisabled {}
+}
+```
 
 ### Custom Attributes
 

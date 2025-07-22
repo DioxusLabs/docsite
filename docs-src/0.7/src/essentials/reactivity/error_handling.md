@@ -1,6 +1,6 @@
 # Error handling
 
-A selling point of Rust for web development is the reliability of always knowing where errors can occur and being forced to handle them. Dioxus provides ErrorBoundarys to help you handle errors in a declarative way. This guide will teach you how to use ErrorBoundaries and other error handling strategies in Dioxus.
+A selling point of Rust for web development is the reliability of always knowing where errors can occur and being forced to handle them. Dioxus provides ErrorBoundaries to help you handle errors in a declarative way. This guide will teach you how to use ErrorBoundaries and other error handling strategies in Dioxus.
 
 ## Returning Errors from Components
 

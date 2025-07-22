@@ -561,7 +561,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                     quote::quote!(#dest)
                 };
 
-                if dest.ends_with(".mp4") || dest.ends_with(".mov") {
+                if dest.ends_with(".mp4") || dest.ends_with(".mov") || dest.ends_with(".webm") {
                     self.start_node(parse_quote! {
                         video {
                             src: #url,

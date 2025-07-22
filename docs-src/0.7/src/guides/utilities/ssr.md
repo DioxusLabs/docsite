@@ -8,14 +8,14 @@ For this guide, we're going to show how to use Dioxus SSR with [Axum](https://do
 
 Make sure you have Rust and Cargo installed, and then create a new project:
 
-```shell
+```sh
 cargo new --bin demo
 cd demo
 ```
 
 Add Dioxus and the ssr renderer as dependencies:
 
-```shell
+```sh
 cargo add dioxus
 cargo add dioxus-ssr
 ```

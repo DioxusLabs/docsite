@@ -63,6 +63,7 @@ automod = "1.0.13"
 stork-lib = { workspace = true, features = [
     "build-v3",
 ], default-features = false }
+docsrs-search = { version = "0.1.0", path = "../docsrs-search", optional = true }
 
 [features]
 default = []
@@ -79,6 +80,7 @@ server = [
     "dioxus/ssr",
     "dioxus-docs-examples/server",
     "dep:askama_escape",
+    "dep:docsrs-search"
 ]
 production = [
     "dioxus-docs-examples/production",

@@ -1,4 +1,4 @@
-pub use crate::{DemoFrame, SandBoxFrame, ComponentWithLogs, FakePage, CodeBlock, log, LogState, TwoPanelComponent};
+pub use crate::{DemoFrame, SandBoxFrame, ComponentWithLogs, FakePage, CodeBlock, log, LogState, TwoPanelComponent, MermaidBlock};
 
 // Include any examples we compile into the docsite
 #[cfg(not(feature = "doc_test"))]

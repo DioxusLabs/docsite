@@ -125,6 +125,7 @@
   - [In-Depth](guides/depth/index.md)
     - [Asset Pipeline](guides/depth/assets.md)
     - [Custom Renderer](guides/depth/custom_renderer.md)
+  - [Cheat Sheet](guides/cheat_sheet.md)
   - [Migration](migration/index.md)
     - [To 0.7](migration/to_07.md)
     - [To 0.6](migration/to_06.md)

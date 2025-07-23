@@ -5,7 +5,7 @@ You can use Dioxus fullstack to pre-render your application and then hydrate it 
 You can set up your application to statically generate all static pages:
 
 ```rust
-{{#include src/doc_examples/fullstack_static.rs}}
+{{#include ../docs-router/src/doc_examples/untested_06/fullstack_static.rs}}
 ```
 
 Next, edit your `Dioxus.toml` to point your `out_dir` to the `docs` folder and the `base_path` to the name of your repo:

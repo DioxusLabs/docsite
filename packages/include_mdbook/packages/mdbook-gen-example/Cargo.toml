@@ -6,11 +6,11 @@ edition = "2021"
 [dependencies]
 serde = {version = "1.0.163", features = ["derive"]}
 use-mdbook = { workspace = true }
-dioxus = { version = "0.6.2", features = ["router"] }
+dioxus = { workspace = true, features = ["router"] }
 
 [build-dependencies]
 mdbook-gen = { path = "../mdbook-gen", features = ["manganis"] }
 mdbook-shared = { path = "../mdbook-shared" }
-dioxus-autofmt = { version = "0.6.0" }
+dioxus-autofmt = { workspace = true }
 prettyplease = "0.2.20"
 syn = { workspace = true }

@@ -15,11 +15,11 @@ pub fn App() -> Element {
 
             match resp {
                 Ok(_data) => {
-                    log::info!("dioxuslabs.com responded!");
+                    tracing::info!("dioxuslabs.com responded!");
                     response.set("dioxuslabs.com responded!".into());
                 }
                 Err(err) => {
-                    log::info!("Request failed with error: {err:?}")
+                    tracing::info!("Request failed with error: {err:?}")
                 }
             }
         });

@@ -1,11 +1,29 @@
 use dioxus::prelude::*;
 
+pub fn Basic() -> Element {
+    // ANCHOR: basic
+    let author = "Dioxus Labs";
+    let content = "Build cool things ✌️";
+
+    rsx! {
+        h1 { "Welcome to Dioxus!" }
+        h3 { "Brought to you by {author}" }
+        p { class: "main-content", {content} }
+    }
+    // ANCHOR_END: basic
+}
+
 pub fn Text() -> Element {
     // ANCHOR: text
-    rsx! {
-        "Hello world"
-    }
+    rsx! { "Hello world" }
     // ANCHOR_END: text
+}
+
+pub fn SimpleFormattedText() -> Element {
+    // ANCHOR: simple_formatted_text
+    let world = "earth";
+    rsx! { "Hello {world}!" }
+    // ANCHOR_END: simple_formatted_text
 }
 
 pub fn FormattedText() -> Element {
@@ -16,10 +34,7 @@ pub fn FormattedText() -> Element {
     let user = use_signal(|| User {
         name: "Dioxus".to_string(),
     });
-    rsx! {
-        // Unlike the format macro, you can include many expressions inline in the formatted text
-        "Hello {user.read().name}"
-    }
+    rsx! { "Hello {user.read().name}" }
     // ANCHOR_END: formatted_text
 }
 
@@ -37,6 +52,14 @@ pub fn WebComponent() -> Element {
         my-web-component {}
     }
     // ANCHOR_END: web_component
+}
+
+pub fn InputPlaceholder() -> Element {
+    // ANCHOR: input_placeholder
+    rsx! {
+        input { placeholder: "type something cool!" }
+    }
+    // ANCHOR_END: input_placeholder
 }
 
 pub fn InputType() -> Element {
@@ -65,14 +88,23 @@ pub fn InputDisabled() -> Element {
     // ANCHOR_END: input_disabled
 }
 
+pub fn OnInputSimple() -> Element {
+    // ANCHOR: on_input_simple
+    rsx! {
+        input {
+            oninput: move |event| {
+                println!("Input changed to: {}", event.value());
+            },
+        }
+    }
+    // ANCHOR_END: on_input_simple
+}
+
 pub fn OnInput() -> Element {
     // ANCHOR: on_input
     let mut value = use_signal(|| "Hello world".to_string());
     rsx! {
-        input {
-            oninput: move |event| value.set(event.value()),
-            value: "{value}"
-        }
+        input { oninput: move |event| value.set(event.value()), value: "{value}" }
     }
     // ANCHOR_END: on_input
 }
@@ -85,9 +117,7 @@ pub fn InputChildren() -> Element {
             display: "flex",
             // justify-content centers the element horizontally
             justify_content: "center",
-            input {
-                type: "number"
-            }
+            input { type: "number" }
         }
     }
     // ANCHOR_END: input_children
@@ -135,4 +165,66 @@ pub fn IfStatement() -> Element {
         }
     }
     // ANCHOR_END: if_statement
+}
+
+pub fn Expression() -> Element {
+    // ANCHOR: expression
+    let text = "Dioxus";
+    rsx! {
+        span {
+            {text.to_uppercase()}
+            // create a list of text from 0 to 9
+            {(0..10).map(|i| rsx! {
+            "{i}"
+            })}
+        }
+    }
+    // ANCHOR_END: expression
+}
+
+pub fn CustomAttributes() -> Element {
+    // ANCHOR: custom_attributes
+    rsx! {
+        div { "style": "width: 20px; height: 20px; background-color: red;" }
+    }
+    // ANCHOR_END: custom_attributes
+}
+
+pub fn CustomAttributesEvents() -> Element {
+    // ANCHOR: custom_attributes_events
+    rsx! {
+        button {
+            "onclick": "navigator.clipboard.writeText(window.document.title);",
+            "Copy to clipboard"
+        }
+    }
+    // ANCHOR_END: custom_attributes_events
+}
+
+pub fn StyleAttributes() -> Element {
+    // ANCHOR: style_attributes
+    rsx! {
+        div { style: "width: 20px; height: 20px; background-color: red; margin: 10px;" }
+        div {
+            width: "20px",
+            height: "20px",
+            background_color: "red",
+            margin: "10px",
+        }
+    }
+    // ANCHOR_END: style_attributes
+}
+
+pub fn ClassAttribute() -> Element {
+    let red = true;
+    let blue_border = false;
+    // ANCHOR: class_attribute
+    rsx! {
+        span {
+            class: if red { "bg-red-500" },
+            class: if blue_border { "border border-blue-500" },
+            class: "w-4 h-4 block",
+        }
+    }
+    // ANCHOR_END: class_attribute
 }

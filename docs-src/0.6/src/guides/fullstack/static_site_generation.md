@@ -7,7 +7,7 @@ Static site generation (SSG) lets you pre-generate all static pages of your appl
 SSG builds on top of the incremental rendering feature of Dioxus fullstack. We need to set up the `ServeConfig` to enable incremental rendering. The incremental config needs to render to the `public` directory where Dioxus places all other public files like the wasm binary and static assets. The `public` directory in the web folder will always be placed alongside the server binary.
 
 ```rust
-{{#include src/doc_examples/static_site_generation.rs:main}}
+{{#include ../docs-router/src/doc_examples/untested_06/static_site_generation.rs:main}}
 ```
 
 ## Configuring static routes
@@ -15,7 +15,7 @@ SSG builds on top of the incremental rendering feature of Dioxus fullstack. We n
 Once you have incremental rendering enabled, you need to tell the CLI about the static routes in your app. The CLI looks for a server function at the endpoint `"static_routes"` that returns a list of all static urls. It will call this server function at build time and pre-render all of the routes in the list.
 
 ```rust
-{{#include src/doc_examples/static_site_generation.rs:static_routes}}
+{{#include ../docs-router/src/doc_examples/untested_06/static_site_generation.rs:static_routes}}
 ```
 
 ## Publishing static sites

@@ -8,17 +8,23 @@ resolver = "2"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-dioxus = { version = "0.6.0", features = ["router", "launch"] }
-dioxus-web = { version = "0.6.0", features = ["hydrate"], optional = true }
+dioxus = { workspace = true, features = ["router", "launch"] }
+dioxus-web = { workspace = true, features = ["hydrate"], optional = true }
 
-dioxus_docs_router = { workspace = true }
+dioxus-docs-03 = { workspace = true }
+dioxus-docs-04 = { workspace = true }
+dioxus-docs-05 = { workspace = true }
+dioxus-docs-06 = { workspace = true }
+dioxus-docs-07 = { workspace = true }
+dioxus-docs-blog = { workspace = true }
+dioxus-docs-examples = { workspace = true }
 
-dioxus-material-icons = { version = "3.0.0" }
+# dioxus-material-icons = { version = "3.0.0" }
 syntect-html = { workspace = true }
 mdbook-shared = { workspace = true }
 use-mdbook = { workspace = true }
 dioxus-search = { workspace = true }
-dioxus-playground = { workspace = true }
+# dioxus-playground = { workspace = true }
 
 askama_escape = { version = "0.10.3", optional = true }
 getrandom = { workspace = true, features = ["js"] }
@@ -39,7 +45,11 @@ web-sys = { version = "0.3.64", features = [
     "Event",
     "AddEventListenerOptions",
     "Navigator",
-    "HtmlIFrameElement"
+    "HtmlIFrameElement",
+    "console",
+    "History",
+    "Window",
+    "Location"
 ] }
 slab = "0.4.8"
 chrono = { workspace = true, features = ["serde"] }
@@ -59,20 +69,20 @@ docsrs-search = { version = "0.1.0", path = "../docsrs-search", optional = true 
 default = []
 fullstack = [
     "dioxus/fullstack",
-    "dioxus_docs_router/fullstack",
+    "dioxus-docs-examples/fullstack",
 ]
 web = [
     "dioxus/web",
-    "dioxus_docs_router/web",
+    "dioxus-docs-examples/web",
 ]
 server = [
     "dioxus/server",
     "dioxus/ssr",
-    "dioxus_docs_router/server",
+    "dioxus-docs-examples/server",
     "dep:askama_escape",
     "dep:docsrs-search"
 ]
 production = [
-    "dioxus_docs_router/production",
+    "dioxus-docs-examples/production",
 ]
 doc_test = []

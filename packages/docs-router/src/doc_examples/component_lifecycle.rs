@@ -1,13 +1,14 @@
 #![allow(non_snake_case)]
 use dioxus::prelude::*;
 
-use super::{log, ComponentWithLogs};
+use super::{ComponentWithLogs, log};
 pub use drop::DropDemo;
 pub use effect::EffectDemo;
 pub use rerenders::RerenderDemo;
 pub use use_hook::UseHookDemo;
 
 mod use_hook {
+    use crate::FakePage;
     use std::sync::atomic::AtomicUsize;
 
     use super::*;
@@ -36,19 +37,11 @@ mod use_hook {
         RANDOM[COUNT.fetch_add(1, std::sync::atomic::Ordering::SeqCst) % RANDOM.len()]
     }
 
-    fn FakePage() -> Element {
-        let mut uuid = use_signal(|| 0);
-        rsx! {
-            button { onclick: move |_| uuid += 1, "🔄" }
-            {std::iter::once(rsx! {
-                UseHook { key: "{uuid}" }
-            })}
-        }
-    }
-
     pub fn UseHookDemo() -> Element {
         rsx! {
-            ComponentWithLogs { FakePage {} }
+            ComponentWithLogs {
+                FakePage { UseHook {} }
+            }
         }
     }
 }
@@ -143,7 +136,7 @@ mod drop {
 
     fn Child() -> Element {
         // You can use the use_drop hook to clean up any resources
-        use_drop(|| {
+        dioxus::core::use_drop(|| {
             log!("Child dropped");
         });
 

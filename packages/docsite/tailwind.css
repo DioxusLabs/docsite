@@ -1,0 +1,33 @@
+@import "tailwindcss";
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+@source "./src/**/*.{rs,html,css}";
+
+@theme {
+    --color-dxorange: #E96020;
+    --color-dxblue: #00A8D6;
+    --color-ghmetal: #24292f;
+    --color-ghdarkmetal: #161b22;
+    --color-ideblack: #0e1116;
+
+    /* --font-sans: "Space Grotesk", sans-serif;
+    --font-mono: "Space Mono", monospace; */
+    --font-sans: "Inter var",sans-serif;
+
+    --bodx-shadow-3xl: 0 35px 60px -15px rgb(0 0 0 / 0.5);
+    --bodx-shadow-cutesy: 0px 0px 40px -5px rgb(255 255 255 / 0.2);
+    --bodx-shadow-pop: 0px 0px 10px -2px rgb(0 0 0 / 0.1);
+
+    --key-frames-fadein: {
+        from: {
+            opacity: 0;
+        }
+
+        to: {
+            opacity: 1;
+        }
+    }
+
+    --animation-fadein-medium: fadein 500ms ease-in-out forwards;
+    --my-grid-cols: auto 1fr auto;
+}
+

@@ -9,7 +9,7 @@ The `#[redirect]` attribute accepts a route and a closure with all of the parame
 In the following example, we will redirect everybody from `/myblog` and `/myblog/:id` to `/blog` and `/blog/:id` respectively
 
 ```rust
-{{#include src/doc_examples/full_example.rs:router}}
+{{#include ../docs-router/src/doc_examples/untested_06/full_example.rs:router}}
 ```
 
 [`NavigationTarget`]: https://docs.rs/dioxus-router/latest/dioxus_router/navigation/enum.NavigationTarget.html

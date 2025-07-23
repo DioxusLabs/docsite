@@ -16,6 +16,6 @@ By default, the router uses the [`MemoryHistory`]. It might be changed to use
 You can override the default history:
 
 ```rust
-{{#include src/doc_examples/history_provider.rs:app}}
+{{#include ../docs-router/src/doc_examples/untested_06/history_provider.rs:app}}
 ```
 

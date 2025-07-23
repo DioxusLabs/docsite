@@ -12,6 +12,10 @@ pub mod snippets;
 pub use components::*;
 
 fn main() {
+    let _class = rsx! {
+        div { class: "mx-2 mx-4" }
+    };
+
     // If we are just building the search index, we don't need to launch the app
     #[cfg(feature = "server")]
     if std::env::args().any(|arg| arg == "--generate-search-index") {
@@ -28,7 +32,7 @@ fn main() {
             let mut cfg = ServeConfig::builder();
 
             cfg = cfg.incremental(
-                IncrementalRendererConfig::new()
+                dioxus::fullstack::IncrementalRendererConfig::new()
                     .static_dir(static_dir())
                     .clear_cache(false)
             );
@@ -53,9 +57,7 @@ fn HeaderLayout() -> Element {
     rsx! {
         div { class: "bg-white dark:bg-black min-h-screen",
             Nav {}
-            div {
-                Outlet::<Route> {}
-            }
+            div { Outlet::<Route> {} }
         }
     }
 }
@@ -72,6 +74,26 @@ fn HeadLayout() -> Element {
     rsx! {
         Head {}
         Outlet::<Route> {}
+    }
+}
+
+#[component]
+fn HeaderFooter() -> Element {
+    let cb = use_callback(|_| *SHOW_SEARCH.write() = true);
+
+    shortcut::use_shortcut(Key::Character("/".to_string()), Modifiers::CONTROL, {
+        move || cb.call(())
+    });
+
+    rsx! {
+        Head {}
+        div { class: "bg-white dark:bg-black min-h-screen",
+            Nav {}
+            div {
+                Outlet::<Route> {}
+                Footer {}
+            }
+        }
     }
 }
 
@@ -97,7 +119,19 @@ fn Head() -> Element {
         Stylesheet { href: asset!("/assets/tailwind.css", CssAssetOptions::new().with_minify(false)) }
         Stylesheet { href: asset!("/assets/main.css") }
         Stylesheet { href: asset!("/assets/material.css") }
-        Stylesheet { href: "https://rsms.me/inter/inter.css" }
+        // Stylesheet { href: "https://rsms.me/inter/inter.css" }
+
+        // link { href: "https://fonts.googleapis.com", rel: "preconnect" }
+        // link {
+        //     crossorigin: "false",
+        //     href: "https://fonts.gstatic.com",
+        //     rel: "preconnect",
+        // }
+        // link {
+        //     href: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap",
+        //     rel: "stylesheet",
+        // }
+
         Link { rel: "preconnect", href: "https://fonts.googleapis.com" }
         Link {
             href: "https://fonts.gstatic.com",
@@ -161,59 +195,72 @@ fn Head() -> Element {
 #[derive(Clone, Routable, PartialEq, Eq, Serialize, Deserialize, Debug)]
 #[rustfmt::skip]
 pub enum Route {
-    #[layout(HeadLayout)]
-    #[layout(HeaderLayout)]
-    #[layout(FooterLayout)]
-    #[route("/")]
-    Homepage {},
-
-    #[route("/playground")]
-    Playground {},
-
-    #[route("/playground/shared/:share_code")]
-    SharePlayground { share_code: String },
-
-    #[route("/components/:..segments?:..query")]
-    #[layout(!FooterLayout)]
-    Components { segments: Vec<String>, query: String },
-
-    #[route("/awesome")]
-    Awesome {},
-
-    #[route("/deploy")]
-    Deploy {},
-
-    #[nest("/blog")]
+    // #[layout(HeadLayout)]
+    // #[layout(HeaderLayout)]
+    // #[layout(FooterLayout)]
+    #[layout(HeaderFooter)]
         #[route("/")]
-        BlogList {},
-        #[layout(BlogPost)]
-            #[child("")]
-            BlogPost { child: crate::docs::router_blog::BookRoute },
+        Homepage {},
+
+        // #[route("/playground")]
+        // Playground {},
+
+        // #[route("/playground/shared/:share_code")]
+        // SharePlayground { share_code: String },
+
+
+
+        #[route("/awesome")]
+        Awesome {},
+
+        #[route("/deploy")]
+        Deploy {},
+
+        #[nest("/blog")]
+            #[route("/")]
+            BlogList {},
+            #[layout(BlogPost)]
+                #[child("")]
+                BlogPost { child: crate::docs::router_blog::BookRoute },
+            #[end_layout]
+        #[end_nest]
+
+        #[layout(Learn)]
+            #[nest("/learn")]
+                #[redirect("/", || Route::Docs06 { child: crate::docs::router_06::BookRoute::Index { section: Default::default() } })]
+                #[child("/0.6")]
+                Docs06 { child: crate::docs::router_06::BookRoute },
+
+                #[child("/0.5")]
+                Docs05 { child: crate::docs::router_05::BookRoute },
+
+                #[child("/0.4")]
+                Docs04 { child: crate::docs::router_04::BookRoute },
+
+                #[child("/0.3")]
+                Docs03 { child: crate::docs::router_03::BookRoute },
+
+                #[child("/0.7")]
+                Docs07 { child: crate::docs::router_07::BookRoute },
+            #[end_nest]
         #[end_layout]
     #[end_nest]
 
-    #[layout(Learn)]
-        #[nest("/learn")]
-            #[redirect("/", || Route::Docs06 { child: crate::docs::router_06::BookRoute::Index { section: Default::default() } })]
-            #[child("/0.6")]
-            Docs06 { child: crate::docs::router_06::BookRoute },
+        // #[layout(!FooterLayout)]
+    #[route("/components")]
+    Components { },
 
-            #[child("/0.5")]
-            Docs05 { child: crate::docs::router_05::BookRoute },
-
-            #[child("/0.4")]
-            Docs04 { child: crate::docs::router_04::BookRoute },
-
-            #[child("/0.3")]
-            Docs03 { child: crate::docs::router_03::BookRoute },
-        #[end_nest]
-    #[end_layout]
-
-    #[redirect("/docs/:..segments", |segments: Vec<String>| {
-        let joined = segments.join("/");
-        let child = crate::docs::router_06::BookRoute::from_str(&joined).unwrap_or_else(|_| crate::docs::router_06::BookRoute::Index { section: Default::default() });
-        Route::Docs06 { child }
-    })]
+    // #[redirect("/docs/:..segments", |segments: Vec<String>| {
+    //     let joined = segments.join("/");
+    //     let child = crate::docs::router_06::BookRoute::from_str(&joined).unwrap_or_else(|_| crate::docs::router_06::BookRoute::Index { section: Default::default() });
+    //     Route::Docs06 { child }
+    // })]
+    // #[redirect("/docs/:..segments", |segments: Vec<String>| {
+    //     let joined = segments.join("/");
+    //     let docs_route = format!("/{}", joined.trim_matches('/'));
+    //     let child = crate::docs::router_06::BookRoute::from_str(&docs_route).unwrap_or_else(|_| crate::docs::router_06::BookRoute::Index { section: Default::default() });
+    //     Route::Docs06 { child }
+    // })]
     #[route("/:..segments")]
     Err404 { segments: Vec<String> },
 }
@@ -222,7 +269,8 @@ impl Route {
     fn is_docs(&self) -> bool {
         matches!(
             self,
-            Route::Docs06 { .. }
+            Route::Docs07 { .. }
+                | Route::Docs06 { .. }
                 | Route::Docs05 { .. }
                 | Route::Docs04 { .. }
                 | Route::Docs03 { .. }

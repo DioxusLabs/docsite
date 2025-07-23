@@ -13,13 +13,13 @@ We want our navbar component to be rendered on several different pages on our si
 Let's create a new `NavBar` component:
 
 ```rust
-{{#include src/doc_examples/nested_routes.rs:nav}}
+{{#include ../docs-router/src/doc_examples/untested_06/nested_routes.rs:nav}}
 ```
 
 Next, let's add our `NavBar` component as a layout to our Route enum:
 
 ```rust
-{{#include src/doc_examples/nested_routes.rs:router}}
+{{#include ../docs-router/src/doc_examples/untested_06/nested_routes.rs:router}}
 ```
 
 To add links to our `NavBar`, we could always use an HTML anchor element but that has two issues:
@@ -36,7 +36,7 @@ Unlike a regular `<a>` tag, we can pass in our Route enum as the target. Because
 Let's add our links:
 
 ```rust
-{{#include src/doc_examples/links.rs:nav}}
+{{#include ../docs-router/src/doc_examples/untested_06/links.rs:nav}}
 ```
 
 > Using this method, the [`Link`] component only works for links within our
@@ -65,26 +65,26 @@ URL parameter.
 First, let's create a layout component (similar to the navbar) that wraps the blog content. This allows us to add a heading that tells the user they are on the blog.
 
 ```rust
-{{#include src/doc_examples/dynamic_route.rs:blog}}
+{{#include ../docs-router/src/doc_examples/untested_06/dynamic_route.rs:blog}}
 ```
 
 Now we'll create another index component, that'll be displayed when no blog post
 is selected:
 
 ```rust
-{{#include src/doc_examples/dynamic_route.rs:blog_list}}
+{{#include ../docs-router/src/doc_examples/untested_06/dynamic_route.rs:blog_list}}
 ```
 
 We also need to create a component that displays an actual blog post. This component will accept the URL parameters as props:
 
 ```rust
-{{#include src/doc_examples/dynamic_route.rs:blog_post}}
+{{#include ../docs-router/src/doc_examples/untested_06/dynamic_route.rs:blog_post}}
 ```
 
 Finally, let's tell our router about those components:
 
 ```rust
-{{#include src/doc_examples/dynamic_route.rs:router}}
+{{#include ../docs-router/src/doc_examples/untested_06/dynamic_route.rs:router}}
 ```
 
 That's it! If you head to `/blog/1` you should see our sample post.

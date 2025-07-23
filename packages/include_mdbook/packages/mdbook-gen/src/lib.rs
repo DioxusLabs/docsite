@@ -18,16 +18,22 @@ use crate::transform_book::write_book_with_routes;
 mod rsx;
 mod transform_book;
 
+pub fn make_docs_from_ws(version: &str) {
+    let mdbook_dir = PathBuf::from("../../docs-src").join(version);
+    let out_dir = std::env::current_dir().unwrap().join("src");
+    let mut out = generate_router_build_script(mdbook_dir);
+    out.push_str("use dioxus_docs_examples::*;\n");
+    out.push_str("use dioxus::prelude::*;\n");
+    let version_flattened = version.replace(".", "");
+    let filename = format!("docsgen.rs");
+    std::fs::write(out_dir.join(filename), out).unwrap();
+}
+
+
 /// Generate the contents of the mdbook from a router
 pub fn generate_router_build_script(mdbook_dir: PathBuf) -> String {
     let file_src = generate_router_as_file(mdbook_dir.clone(), MdBook::new(mdbook_dir).unwrap());
-
-    let stringified = prettyplease::unparse(&file_src);
-    let prettifed = rustfmt_via_cli(&stringified);
-
-    let as_file = syn::parse_file(&prettifed).unwrap();
-    let fmts = dioxus_autofmt::try_fmt_file(&prettifed, &as_file, Default::default()).unwrap();
-    dioxus_autofmt::apply_formats(&prettifed, fmts)
+    prettyplease::unparse(&file_src)
 }
 
 /// Load an mdbook from the filesystem using the target tokens
@@ -81,7 +87,6 @@ pub fn generate_router(mdbook_dir: PathBuf, book: mdbook_shared::MdBook<PathBuf>
 
                 // Create the fragment enum for the section
                 let section_enum = path_to_route_section(&page.url).unwrap();
-                let section_parse_error = format_ident!("{}ParseError", section_enum);
                 let mut error_message = format!("Invalid section name. Expected one of {}", section_enum);
                 for (i, section) in parsed.sections.iter().enumerate() {
                     if i > 0 {
@@ -108,7 +113,7 @@ pub fn generate_router(mdbook_dir: PathBuf, book: mdbook_shared::MdBook<PathBuf>
                     }
 
                     impl std::str::FromStr for #section_enum {
-                        type Err = #section_parse_error;
+                        type Err = &'static str;
 
                         fn from_str(s: &str) -> Result<Self, Self::Err> {
                             match s {
@@ -116,7 +121,7 @@ pub fn generate_router(mdbook_dir: PathBuf, book: mdbook_shared::MdBook<PathBuf>
                                 #(
                                     #section_names => Ok(Self::#section_idents),
                                 )*
-                                _ => Err(#section_parse_error)
+                                _ => Err(#error_message)
                             }
                         }
                     }
@@ -131,26 +136,13 @@ pub fn generate_router(mdbook_dir: PathBuf, book: mdbook_shared::MdBook<PathBuf>
                             }
                         }
                     }
-
-                    #[derive(Debug)]
-                    pub struct #section_parse_error;
-
-                    impl std::fmt::Display for #section_parse_error {
-                        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-                            f.write_str(#error_message)?;
-                            Ok(())
-                        }
-                    }
-
-                    impl std::error::Error for #section_parse_error {}
                 };
 
                 quote! {
                     #fragment
 
                     #[component(no_case_check)]
-                    pub fn #name(section: #section_enum) -> dioxus::prelude::Element {
-                        use dioxus::prelude::*;
+                    pub fn #name(section: #section_enum) -> Element {
                         rsx! {
                             #rsx
                         }
@@ -231,9 +223,7 @@ pub fn generate_router(mdbook_dir: PathBuf, book: mdbook_shared::MdBook<PathBuf>
     };
 
     quote! {
-        use dioxus::prelude::*;
-
-        #[derive(Clone, Copy, dioxus_router::prelude::Routable, PartialEq, Eq, Hash, Debug, serde::Serialize, serde::Deserialize)]
+        #[derive(Clone, Copy, dioxus_router::Routable, PartialEq, Eq, Hash, Debug, serde::Serialize, serde::Deserialize)]
         pub enum BookRoute {
             #(#book_routes)*
         }

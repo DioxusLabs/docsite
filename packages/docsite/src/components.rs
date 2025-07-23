@@ -14,8 +14,8 @@ pub mod nav;
 pub use nav::*;
 pub mod notfound;
 pub use notfound::*;
-pub mod playground;
-pub use playground::*;
+// pub mod playground;
+// pub use playground::*;
 #[cfg(feature = "server")]
 pub mod search;
 #[cfg(feature = "server")]

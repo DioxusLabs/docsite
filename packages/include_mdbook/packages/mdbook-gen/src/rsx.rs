@@ -343,7 +343,16 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                 if lang.as_deref() == Some("inject-dioxus") {
                     self.start_node(parse_str::<BodyNode>(&raw_code).unwrap());
                 } else {
-                    let html = build_codeblock(raw_code);
+                    // syntect doesn't seem to detect by name properly, so we transform some common names
+                    // to their extension
+                    let lang = match lang.as_deref() {
+                        Some("shell") => "sh",
+                        Some("javascript") => "js",
+                        Some(res) => res,
+                        None => "rs",
+                    };
+
+                    let html = build_codeblock(raw_code, lang);
                     let fname = if let Some(fname) = fname {
                         quote! { name: #fname.to_string() }
                     } else {
@@ -552,7 +561,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                     quote::quote!(#dest)
                 };
 
-                if dest.ends_with(".mp4") || dest.ends_with(".mov") {
+                if dest.ends_with(".mp4") || dest.ends_with(".mov") || dest.ends_with(".webm") {
                     self.start_node(parse_quote! {
                         video {
                             src: #url,
@@ -614,22 +623,22 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
         if let (Some(BodyNode::Text(last_text)), BodyNode::Text(new_text)) =
             (element_list.last_mut(), &node)
         {
-            if !last_text
+            if last_text
                 .input
                 .source
                 .value()
                 .chars()
                 .last()
                 .filter(|c| c.is_whitespace())
-                .is_some()
-                && !new_text
+                .is_none()
+                && new_text
                     .input
                     .source
                     .value()
                     .chars()
                     .next()
                     .filter(|c| c.is_whitespace())
-                    .is_some()
+                    .is_none()
             {
                 element_list.push(parse_quote! { " " });
             }
@@ -718,7 +727,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> Iterator for ResolveCodeBlock<'a, I> {
     }
 }
 
-fn build_codeblock(code: String) -> String {
+fn build_codeblock(code: String, lang: &str) -> String {
     static THEME: once_cell::sync::Lazy<syntect::highlighting::Theme> =
         once_cell::sync::Lazy::new(|| {
             let raw = include_str!("../themes/MonokaiDark.thTheme").to_string();
@@ -727,13 +736,14 @@ fn build_codeblock(code: String) -> String {
         });
 
     let ss = SyntaxSet::load_defaults_newlines();
-    let syntax = ss.find_syntax_by_extension("rs").unwrap();
+    let syntax = ss.find_syntax_by_name(lang).unwrap_or_else(|| {
+        ss.find_syntax_by_extension(lang)
+            .unwrap_or_else(|| ss.find_syntax_by_extension("rs").unwrap())
+    });
     let html =
         syntect::html::highlighted_html_for_string(code.trim_end(), &ss, syntax, &THEME).unwrap();
 
-    let html = escape_text(&html);
-
-    html
+    escape_text(&html)
 }
 
 fn transform_code_block(
@@ -742,7 +752,6 @@ fn transform_code_block(
     fname: &mut Option<String>,
 ) -> syn::Result<String> {
     let segments = code_contents.split("{{#include");
-    let segments = segments;
     let mut output = String::new();
     for (i, segment) in segments.enumerate() {
         // Skip the first segment which is before the first include
@@ -874,8 +883,7 @@ Some assets:
 
     let out: syn::File = parse_quote! {
         #[component(no_case_check)]
-        pub fn Hmm() -> dioxus::prelude::Element {
-            use dioxus::prelude::*;
+        pub fn Hmm() -> Element {
             rsx! {
                 #tokens_out
             }

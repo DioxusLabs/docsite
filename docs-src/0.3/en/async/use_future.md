@@ -5,7 +5,7 @@
 For example, we can make an API request (using [reqwest](https://docs.rs/reqwest/latest/reqwest/index.html)) inside `use_future`:
 
 ```rust
-{{#include src/doc_examples/untested_03/use_future.rs:use_future}}
+{{#include ../docs-router/src/doc_examples/untested_03/use_future.rs:use_future}}
 ```
 
 The code inside `use_future` will be submitted to the Dioxus scheduler once the component has rendered.
@@ -15,7 +15,7 @@ We can use `.value()` to get the result of the future. On the first run, since t
 We can then render that result:
 
 ```rust
-{{#include src/doc_examples/untested_03/use_future.rs:render}}
+{{#include ../docs-router/src/doc_examples/untested_03/use_future.rs:render}}
 ```
 
 
@@ -29,5 +29,5 @@ Often, you will need to run the future again every time some value (e.g. a prop)
 
 
 ```rust
-{{#include src/doc_examples/untested_03/use_future.rs:dependency}}
+{{#include ../docs-router/src/doc_examples/untested_03/use_future.rs:dependency}}
 ```

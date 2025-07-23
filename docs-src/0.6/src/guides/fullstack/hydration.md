@@ -3,7 +3,7 @@
 In dioxus fullstack, the server renders the initial HTML for improved loading times. This initial version of the page is what most web crawlers and search engines see. After the initial HTML is rendered, the client makes the page interactive and takes over rendering in a process called **hydration**. Most of the time, you shouldn't need to think about hydration, but there are a few things you need to keep in mind to avoid [hydration errors](#hydration-errors). To better understand hydration, let's walk through a simple example:
 
 ```rust
-{{#include src/doc_examples/hydration.rs:hydration_intro}}
+{{#include ../docs-router/src/doc_examples/untested_06/hydration.rs:hydration_intro}}
 ```
 
 ## Rendering the initial HTML
@@ -55,7 +55,7 @@ This type was serialized on the server at src/main.rs:11:5 with the type name f6
 You must put any non-deterministic data in `use_server_future`, `use_server_cached` or `use_effect` to avoid hydration errors. For example, if you need to render a random number on your page, you can use `use_server_cached` to cache the random number on the server and then use it on the client:
 
 ```rust
-{{#include src/doc_examples/hydration.rs:server_cached}}
+{{#include ../docs-router/src/doc_examples/untested_06/hydration.rs:server_cached}}
 ```
 
 ### Async loading with server futures
@@ -63,7 +63,7 @@ You must put any non-deterministic data in `use_server_future`, `use_server_cach
 If you need render some data from a server future, you need to use `use_server_future` to serialize the data instead of waiting for the (non-deterministic) amount of time `use_resource(...).suspend()?` takes:
 
 ```rust
-{{#include src/doc_examples/hydration.rs:server_future}}
+{{#include ../docs-router/src/doc_examples/untested_06/hydration.rs:server_future}}
 ```
 
 ### Client only data with effects
@@ -71,13 +71,13 @@ If you need render some data from a server future, you need to use `use_server_f
 If you need to grab some data that is only available on the client, make sure you get it inside of a `use_effect` hook which runs after the component has been hydrated:
 
 ```rust
-{{#include src/doc_examples/hydration.rs:effects}}
+{{#include ../docs-router/src/doc_examples/untested_06/hydration.rs:effects}}
 ```
 
 ### Avoid side effects in server cached hooks
 
-The dioxus fullstack specific hooks `use_server_cached` and `use_server_future` don't run the same on the server and the client. The server will always run the closure, but the client may not run the closure if the server serialized the result. Because of this, the code you run inside these hooks **cannot have side effects**. If it does, the side effects will not be serialized and it can cause a hydration mismatch error: 
+The dioxus fullstack specific hooks `use_server_cached` and `use_server_future` don't run the same on the server and the client. The server will always run the closure, but the client may not run the closure if the server serialized the result. Because of this, the code you run inside these hooks **cannot have side effects**. If it does, the side effects will not be serialized and it can cause a hydration mismatch error:
 
 ```rust
-{{#include src/doc_examples/hydration.rs:server_hook_side_effects}}
+{{#include ../docs-router/src/doc_examples/untested_06/hydration.rs:server_hook_side_effects}}
 ```

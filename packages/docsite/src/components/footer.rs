@@ -1,6 +1,14 @@
 use dioxus::prelude::*;
 
+use crate::Route;
+
 pub fn Footer() -> Element {
+    // it's annoying to overscroll on the docs, so we just hide the footer
+    let url: Route = use_route();
+    if url.is_docs() {
+        return VNode::empty();
+    }
+
     let categories = [
         (
             "Community",

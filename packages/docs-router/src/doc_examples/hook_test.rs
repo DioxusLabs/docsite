@@ -58,7 +58,9 @@ fn test_hook<V: 'static>(
 
         props.check.borrow_mut()(value, MockProxy::new());
 
-        rsx! { div {} }
+        rsx! {
+            div {}
+        }
     }
 
     let mut vdom = VirtualDom::new_with_props(
@@ -89,8 +91,8 @@ struct MockProxy {
 
 impl MockProxy {
     fn new() -> Self {
-        let generation = generation();
-        let rerender = schedule_update();
+        let generation = dioxus::core::generation();
+        let rerender = dioxus::core::schedule_update();
 
         Self {
             rerender,

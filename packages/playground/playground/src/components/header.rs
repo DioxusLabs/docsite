@@ -3,7 +3,7 @@ use crate::components::icons::LoadingSpinner;
 use crate::share_code::copy_share_link;
 use crate::{Errors, PlaygroundUrls};
 use dioxus::prelude::*;
-use dioxus_sdk::utils::timing::use_debounce;
+// use dioxus_sdk::utils::timing::use_debounce;
 use model::api::ApiClient;
 use model::Project;
 use std::time::Duration;
@@ -23,9 +23,10 @@ pub fn Header(
     let mut errors = use_context::<Errors>();
 
     let mut share_btn_text = use_signal(|| "Share");
-    let mut reset_share_btn = use_debounce(Duration::from_secs(1), move |()| {
-        share_btn_text.set("Share")
-    });
+    // let mut reset_share_btn = use_debounce(Duration::from_secs(1), move |()| {
+    //     share_btn_text.set("Share")
+    // });
+    // reset_share_btn.action(());
 
     rsx! {
         div { id: "dxp-header",
@@ -56,16 +57,19 @@ pub fn Header(
                     class: "dxp-ctrl-btn",
                     onclick: move |_| async move {
                         share_btn_text.set("Sharing...");
-
                         match copy_share_link(&api_client(), project, urls.location).await {
                             Ok(()) => share_btn_text.set("Link Copied!"),
                             Err(error) => {
                                 share_btn_text.set("Error!");
-                                errors.push_error(("Share Failed", format!("An error occured while generating a share link: {error:?}")));
+                                errors
+                                    .push_error((
+                                        "Share Failed",
+                                        format!(
+                                            "An error occured while generating a share link: {error:?}",
+                                        ),
+                                    ));
                             }
                         }
-
-                        reset_share_btn.action(());
                     },
                     "{share_btn_text}"
                 }

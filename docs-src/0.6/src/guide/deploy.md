@@ -178,7 +178,7 @@ jobs:
 Now that our backend is live, we can wire up the API to our native apps. By default, Dioxus doesn't know where to find your API, so you'll need to specify the URL manually by calling `server_fn::client::set_server_url`.
 
 ```rust
-{{#include src/doc_examples/guide_deploy.rs:set_server_url}}
+{{#include ../docs-router/src/doc_examples/untested_06/guide_deploy.rs:set_server_url}}
 ```
 
 Note that as our app changes, the "true" endpoint of our server functions might change. The `#[server]` macro generates an API endpoint with the form of `/api/fetch_dogs-jkhj12` where the trailing data is a unique hash. As we update our server functions, the hash will change.
@@ -186,7 +186,7 @@ Note that as our app changes, the "true" endpoint of our server functions might 
 To make server functions maintain a stable endpoint, we can manually name them with the `endpoint = "xyz"` attribute.
 
 ```rust
-{{#include src/doc_examples/guide_deploy.rs:stable_server_endpoints}}
+{{#include ../docs-router/src/doc_examples/untested_06/guide_deploy.rs:stable_server_endpoints}}
 ```
 
 Let's re-deploy our web app with `fly deploy`. This deploy should complete faster thanks to `cargo chef` caching our build.

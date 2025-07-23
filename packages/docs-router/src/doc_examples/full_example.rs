@@ -1,7 +1,6 @@
 #![allow(non_snake_case)]
 
 use dioxus::prelude::*;
-use dioxus_router::prelude::*;
 
 // ANCHOR: router
 #[derive(Routable, Clone)]
@@ -31,7 +30,9 @@ enum Route {
 // ANCHOR_END: router
 
 pub fn App() -> Element {
-    rsx! { Router::<Route> {} }
+    rsx! {
+        Router::<Route> {}
+    }
 }
 
 #[component]
@@ -53,7 +54,9 @@ fn NavBar() -> Element {
 
 #[component]
 fn Home() -> Element {
-    rsx! { h1 { "Welcome to the Dioxus Blog!" } }
+    rsx! {
+        h1 { "Welcome to the Dioxus Blog!" }
+    }
 }
 
 #[component]
@@ -91,7 +94,9 @@ fn BlogList() -> Element {
 
 #[component]
 fn BlogPost(name: String) -> Element {
-    rsx! { h2 { "Blog Post: {name}" } }
+    rsx! {
+        h2 { "Blog Post: {name}" }
+    }
 }
 
 #[component]

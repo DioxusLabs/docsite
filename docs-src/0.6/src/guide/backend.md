@@ -39,7 +39,7 @@ Dioxus integrates with the [server_fn](https://crates.io/crates/server_fn) crate
 A typical server function looks like this:
 
 ```rust
-{{#include src/doc_examples/guide_backend.rs:save_dog_v1}}
+{{#include ../docs-router/src/doc_examples/untested_06/guide_backend.rs:save_dog_v1}}
 ```
 
 Every server function is an async function that takes some parameters and returns a `Result<(), ServerFnError>`. Whenever the client calls the server function, it sends an HTTP request to a corresponding endpoint on the server. The parameters of the server function are serialized as the body of the HTTP request. As a result, each argument must be serializable.
@@ -47,19 +47,19 @@ Every server function is an async function that takes some parameters and return
 On the client, the server function expands to a `reqwest` call:
 
 ```rust
-{{#include src/doc_examples/guide_backend.rs:save_dog_client}}
+{{#include ../docs-router/src/doc_examples/untested_06/guide_backend.rs:save_dog_client}}
 ```
 
 On the server, the server function expands to an [axum](https://github.com/tokio-rs/axum) handler:
 
 ```rust
-{{#include src/doc_examples/guide_backend.rs:save_dog_server}}
+{{#include ../docs-router/src/doc_examples/untested_06/guide_backend.rs:save_dog_server}}
 ```
 
 When `dioxus::launch` is called, the server functions are automatically registered for you and set up as an Axum router.
 
 ```rust
-{{#include src/doc_examples/guide_backend.rs:save_dog_launch}}
+{{#include ../docs-router/src/doc_examples/untested_06/guide_backend.rs:save_dog_launch}}
 ```
 
 As of Dioxus 0.6, we only support the `axum` server framework. We plan to build additional server features in the future and only support `axum` to ship faster.
@@ -67,7 +67,7 @@ As of Dioxus 0.6, we only support the `axum` server framework. We plan to build 
 In some cases, the `dioxus::launch` function might be too limiting for your use-case on the server. You can easily drop down to axum by changing your main.rs. The `dioxus::launch` function also handles setting up logging and reading environment variables, which you will have to handle yourself.
 
 ```rust
-{{#include src/doc_examples/guide_backend.rs:separate_server_launch}}
+{{#include ../docs-router/src/doc_examples/untested_06/guide_backend.rs:separate_server_launch}}
 ```
 
 ## The Client/Server split
@@ -82,19 +82,19 @@ When Dioxus builds your fullstack apps, it actually creates two separate applica
 When embedding server code in our apps, we need to be careful about which code gets compiled. The body of the server function is designed to only be _executed on the server_ - not the client. Any code configured by the `"server"` feature will not be present in the final app. Conversely, any code not configured by the `"server"` feature _will_ make it into the final app.
 
 ```rust
-{{#include src/doc_examples/guide_backend.rs:server_client_split_broken}}
+{{#include ../docs-router/src/doc_examples/untested_06/guide_backend.rs:server_client_split_broken}}
 ```
 
 Instead, we recommend placing server-only code within modules configured for the `"server"` feature.
 
 ```rust
-{{#include src/doc_examples/guide_backend.rs:server_client_split_fixed}}
+{{#include ../docs-router/src/doc_examples/untested_06/guide_backend.rs:server_client_split_fixed}}
 ```
 
 In addition to the "server" feature, Dioxus expects a client side rendering feature like "web" or "desktop". Some libraries like web-sys only work when running in the browser, so make sure to not run specific client code in your server functions or before your `launch`. You can place client only code under a config for a client target feature like "web".
 
 ```rust
-{{#include src/doc_examples/guide_backend.rs:server_client_split_broken_client_broken}}
+{{#include ../docs-router/src/doc_examples/untested_06/guide_backend.rs:server_client_split_broken_client_broken}}
 ```
 
 ## Managing Dependencies
@@ -134,7 +134,7 @@ We provide a longer guide about the details of managing dependencies across the 
 Revisiting our HotDog app, let's create a new server function that saves our favorite dog to a file called `dogs.txt`. In production, you'd want to use a proper database as covered in [the next chapter](databases.md), but for now we'll use a simple file to test things out.
 
 ```rust
-{{#include src/doc_examples/guide_backend.rs:save_dog_v2}}
+{{#include ../docs-router/src/doc_examples/untested_06/guide_backend.rs:save_dog_v2}}
 ```
 
 ### Calling the server function
@@ -142,7 +142,7 @@ Revisiting our HotDog app, let's create a new server function that saves our fav
 Now, in our client code, we can actually call the server function.
 
 ```rust
-{{#include src/doc_examples/guide_backend.rs:save_dog_call}}
+{{#include ../docs-router/src/doc_examples/untested_06/guide_backend.rs:save_dog_call}}
 ```
 
 Wow, our app is really coming together!

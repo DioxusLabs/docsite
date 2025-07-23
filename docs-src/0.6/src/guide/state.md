@@ -7,7 +7,7 @@ Now that our *HotDog* app is scaffolded and styled, we can finally add some inte
 Before we get too far, let's split our app into two parts: the `Title` and the `DogView`. This will help us organize our app and keep the `DogView` state separated from `Title` state.
 
 ```rust
-{{#include src/doc_examples/guide_state.rs:split_app}}
+{{#include ../docs-router/src/doc_examples/untested_06/guide_state.rs:split_app}}
 ```
 
 ## Event Handlers
@@ -19,7 +19,7 @@ Event handlers are similar to regular attributes, but their name usually starts 
 We'll add some closures inline and then pass them to the `onclick` attribute for both the *skip* and *save* buttons:
 
 ```rust
-{{#include src/doc_examples/guide_state.rs:event_handler}}
+{{#include ../docs-router/src/doc_examples/untested_06/guide_state.rs:event_handler}}
 ```
 
 > You can read more about Event Handlers in the [Event Handler reference](../reference/event_handlers.md)
@@ -33,7 +33,7 @@ To store state in components, Dioxus provides the `use_hook` function. This make
 When called in a component, the `use_hook` function will return a `.clone()` of the originally stored value:
 
 ```rust
-{{#include src/doc_examples/guide_state.rs:use_hook}}
+{{#include ../docs-router/src/doc_examples/untested_06/guide_state.rs:use_hook}}
 ```
 
 Dioxus hooks are very similar to React's hooks and need to follow some [simple rules](../guides/rules_of_hooks.md#the-rules-of-hooks) to function properly.
@@ -63,19 +63,19 @@ The `Context` API makes it possible for parent components to share state with ch
 To "provide" context, simply call `use_context_provider()` with a struct that implements `Clone`. To read the context in a child, call `use_context()`.
 
 ```rust
-{{#include src/doc_examples/guide_state.rs:context}}
+{{#include ../docs-router/src/doc_examples/untested_06/guide_state.rs:context}}
 ```
 
 You can combine `use_signal` and `Context` to provide reactive state to your app:
 
 ```rust
-{{#include src/doc_examples/guide_state.rs:signal_context}}
+{{#include ../docs-router/src/doc_examples/untested_06/guide_state.rs:signal_context}}
 ```
 
 With `use_context` and `consume_context`, you can easily reach up to modify that state:
 
 ```rust
-{{#include src/doc_examples/guide_state.rs:signal_context_usage}}
+{{#include ../docs-router/src/doc_examples/untested_06/guide_state.rs:signal_context_usage}}
 ```
 
 Any components that read the song signal will automatically re-render when the value changes.
@@ -87,13 +87,13 @@ Occasionally you'll want a simple global value. This is where `GlobalSignal` hel
 Simply declare a GlobalSignal somewhere in your app:
 
 ```rust
-{{#include src/doc_examples/guide_state.rs:initialize_global_signal}}
+{{#include ../docs-router/src/doc_examples/untested_06/guide_state.rs:initialize_global_signal}}
 ```
 
 And then read and write to it from anywhere:
 
 ```rust
-{{#include src/doc_examples/guide_state.rs:use_global_signal}}
+{{#include ../docs-router/src/doc_examples/untested_06/guide_state.rs:use_global_signal}}
 ```
 
 > 📣 GlobalSignals are only global to one app - not the entire program. On the server, every app gets its own GlobalSignal.

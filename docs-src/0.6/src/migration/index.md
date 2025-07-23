@@ -41,7 +41,7 @@ fn app() -> Element {
 Dioxus 0.6:
 
 ```rust
-{{#include src/doc_examples/migration.rs:element_fixed}}
+{{#include ../docs-router/src/doc_examples/untested_06/migration.rs:element_fixed}}
 ```
 
 ## Prevent Default
@@ -51,13 +51,13 @@ Dioxus 0.1-0.5 used the `prevent_default` attribute to prevent default behavior 
 Dioxus 0.5:
 
 ```rust
-{{#include src/doc_examples/migration.rs:prevent_default_old}}
+{{#include ../docs-router/src/doc_examples/untested_06/migration.rs:prevent_default_old}}
 ```
 
 Dioxus 0.6:
 
 ```rust
-{{#include src/doc_examples/migration.rs:prevent_default_new}}
+{{#include ../docs-router/src/doc_examples/untested_06/migration.rs:prevent_default_new}}
 ```
 
 > Note: Since event handlers run on the server in Liveview, events cannot be prevented quickly inside the event handler. Because of this, the new `prevent_default` method does not prevent default behavior in Liveview.
@@ -65,7 +65,7 @@ Dioxus 0.6:
 > Instead you can use javascript inside the `onclick` handler to prevent default behavior.
 >
 > ```rust
-> {{#include src/doc_examples/migration.rs:prevent_default_new_liveview}}
+> {{#include ../docs-router/src/doc_examples/untested_06/migration.rs:prevent_default_new_liveview}}
 > ```
 
 ## Assets
@@ -91,7 +91,7 @@ fn app() -> Element {
 Dioxus 0.6:
 
 ```rust
-{{#include src/doc_examples/migration.rs:assets_new}}
+{{#include ../docs-router/src/doc_examples/untested_06/migration.rs:assets_new}}
 ```
 
 ## Logging

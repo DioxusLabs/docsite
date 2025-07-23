@@ -11,6 +11,7 @@ pub fn generate_search_index() {
         ("0_4", |route| matches!(route, Route::Docs04 { .. })),
         ("0_5", |route| matches!(route, Route::Docs05 { .. })),
         ("0_6", |route| matches!(route, Route::Docs06 { .. })),
+        ("0_7", |route| matches!(route, Route::Docs07 { .. })),
     ];
     for (version, filter) in version_filter {
         dioxus_search::SearchIndex::<Route>::create(

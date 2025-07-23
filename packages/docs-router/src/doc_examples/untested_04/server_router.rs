@@ -2,7 +2,6 @@
 
 use dioxus::prelude::*;
 use dioxus_fullstack::prelude::*;
-use dioxus_router::prelude::*;
 use serde::{Deserialize, Serialize};
 
 fn main() {

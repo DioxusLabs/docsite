@@ -6,14 +6,14 @@ pub fn generate_search_index() {
     docsrs_search::build_into(&out_dir);
 
     std::env::set_var("CARGO_MANIFEST_DIR", &out_dir);
-    let version_filter: [(&str, fn(&Route) -> bool); 4] = [
+    let version_filter: &[(&str, fn(&Route) -> bool)] = &[
         ("0_3", |route| matches!(route, Route::Docs03 { .. })),
         ("0_4", |route| matches!(route, Route::Docs04 { .. })),
         ("0_5", |route| matches!(route, Route::Docs05 { .. })),
         ("0_6", |route| matches!(route, Route::Docs06 { .. })),
         ("0_7", |route| matches!(route, Route::Docs07 { .. })),
     ];
-    for (version, filter) in version_filter {
+    for (version, filter) in version_filter.iter().copied() {
         dioxus_search::SearchIndex::<Route>::create(
             format!("searchable_{version}"),
             dioxus_search::BaseDirectoryMapping::new(static_dir()).map(|route| {

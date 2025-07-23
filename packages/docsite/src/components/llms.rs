@@ -48,7 +48,7 @@ pub fn generate_llms_txt() {
             writeln!(file, "<SYSTEM>This is the developer documentation for Dioxus from {route}.</SYSTEM>\n{content}")?;
             file.write_all(content.as_bytes())?;
 
-            // Move up the tree of routes and add the content to each paren route's llms-full.txt
+            // Move up the tree of routes and add the content to each parent route's llms-full.txt
             let mut current_doc_route = doc_route;
             while let Some(doc_route) = current_doc_route.parent() {
                 // Only write the latest docs to the root llms-full.txt

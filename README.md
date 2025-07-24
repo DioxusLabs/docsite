@@ -7,6 +7,12 @@ rehydrated with interactivity provided by `dioxus_web`.
 
 ## Development
 
+The docsite uses the newest Tailwind (v4) so you need to install it first and then run it using:
+
+```sh
+npx @tailwindcss/cli -i ./tailwind.css -o ./packages/docsite/assets/tailwind.css --watch
+```
+
 The documentation can be edited using any text editor. Most commonly used
 editors support syntax highlighting for the `markdown` format. To view your
 changes you can install the [`dx`][dx] tool locally, assuming you already have a

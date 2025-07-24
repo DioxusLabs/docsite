@@ -7,7 +7,6 @@
 
 ## Dangerous Inner HTML
 
-
 ## Direct DOM Access
 
 - get element by ID

@@ -4,8 +4,6 @@ Assets are files that are included in the final build of the application. They c
 
 Assets in dioxus are also compatible with libraries! If you are building a library, you can include assets in your library and they will be automatically included in the final build of any application that uses your library.
 
-
-
 ## Including images
 
 To include an image in your application, you can simply wrap the path to the asset in the `asset!` macro:
@@ -32,6 +30,39 @@ rsx! {
 }
 ```
 
+## Customizing Image Processing Options
+
+You can also optimize, resize, and preload images using the `asset!` macro. Choosing an optimized file type (like Avif) and a reasonable quality setting can significantly reduce the size of your images which helps your application load faster. For example, you can use the following code to include an optimized image in your application:
+
+```rust
+{{#include ../docs-router/src/doc_examples/assets.rs:optimized_images}}
+```
+
+## Including stylesheets
+
+You can include stylesheets in your application using the `asset!` macro. Stylesheets will automatically be minified as they are bundled to speed up load times. For example, you can use the following code to include a stylesheet in your application:
+
+```rust
+{{#include ../docs-router/src/doc_examples/assets.rs:style_sheets}}
+```
+
+> The [tailwind guide](../../guides/utilities/tailwind.md) has more information on how to use tailwind with dioxus.
+
+## SCSS Support
+SCSS is also supported through the `asset!` macro. Include it the same way as a regular CSS file.
+
+You can read more about assets and all the options available to optimize your assets in the [manganis documentation](https://docs.rs/manganis/0.6.0/manganis).
+
+## Including arbitrary files
+
+In dioxus desktop, you may want to include a file with data for your application. If you don't set any options for your asset and the file extension is not recognized, the asset will be copied without any changes. For example, you can use the following code to include a binary file in your application:
+
+```rust
+{{#include ../docs-router/src/doc_examples/assets.rs:arbitrary_files}}
+```
+
+These files will be automatically included in the final build of your application, and you can use them in your application as you would any other file.
+
 ## Asset Hashes
 
 The asset macro automatically attaches a hash to the name of the asset after it's bundled. This makes your app's bundled assets unique across time, allowing you to infinitely cache the asset in your webserver or on a [CDN](https://en.wikipedia.org/wiki/Content_delivery_network).
@@ -48,47 +79,72 @@ However, you occasionally might want to disable them. We can customize the asset
 let ferrous = asset!("/assets/static/ferrous_wave.png", AssetOptions::builder().with_hash_suffix(false));
 ```
 
-## Asset Bundling and Loading
+## Linker-based Asset Bundling
 
 Unlike Rust's `include_bytes!` macro, the `asset!` macro *does not* copy the contents of the asset into your final application binary. Instead, it adds the asset path and options into the final binary's metadata. When you run `dx serve` or `dx build`, we automatically read that metadata and process the asset.
 
-![Asset Bundling](/assets/07/asset-pipeline.png)
+![Asset Bundling](/assets/07/asset-pipeline-full.png)
 
-On the web, you
-
-## Customizing Image Processing Options
-
-You can also optimize, resize, and preload images using the `asset!` macro. Choosing an optimized file type (like Avif) and a reasonable quality setting can significantly reduce the size of your images which helps your application load faster. For example, you can use the following code to include an optimized image in your application:
+The metadata for each asset is automatically embedded in the final executable by serializing its path and properties using the [const-serialize](https://crates.io/crates/const-serialize) crate. When DX builds the executable, it then searches the output binary for asset metadata. After the build is complete, DX computes asset hashes and writes them back into the binary.
 
 ```rust
-{{#include ../docs-router/src/doc_examples/assets.rs:optimized_images}}
+#[link_section = "dx-assets"]
+static SERIALIZED_ASSET_OPTIONS: &[u8] = r#"{"path": "/assets/main.css","minify":"true","hash":"dxh0000"}"#;
 ```
 
-## Including arbitrary files
+This means that assets are not permanently baked into your final executable. The final executable is smaller, loads faster, and asset loading is much more flexible. This is important on platforms like the  browser where assets are fetched in parallel over the network.
 
-In dioxus desktop, you may want to include a file with data for your application. If you don't set any options for your asset and the file extension is not recognized, the asset will be copied without any changes. For example, you can use the following code to include a binary file in your application:
+To dynamically load the asset's contents, you can use the [dioxus-asset-resolver](https://crates.io/crates/dioxus-asset-resolver) crate which properly understands the app's bundle format and loads an asset given its `Display` impl.
 
 ```rust
-{{#include ../docs-router/src/doc_examples/assets.rs:arbitrary_files}}
+let contents = dioxus_asset_resolver::serve_asset(&asset!("/assets/main.css").to_string());
 ```
 
-These files will be automatically included in the final build of your application, and you can use them in your application as you would any other file.
+## Assets Must Be Used, Assets in Libraries
 
-## Including stylesheets
-
-You can include stylesheets in your application using the `asset!` macro. Stylesheets will automatically be minified as they are bundled to speed up load times. For example, you can use the following code to include a stylesheet in your application:
+Because Dioxus uses the program's linker to save asset metadata, the resulting asset must be used somewhere in your application. If you forget to use the returned Asset, the Rust compiler is free to optimize away the call, and the asset metadata won't end up in the final output:
 
 ```rust
-{{#include ../docs-router/src/doc_examples/assets.rs:style_sheets}}
+let ferrous = asset!("/assets/static/ferrous_wave.png");
+rsx! {
+    // our ferrous png won't be included since we forgot to use it!
+    img { src: "..." }
+}
 ```
 
-> The [tailwind guide](../../guides/utilities/tailwind.md) has more information on how to use tailwind with dioxus.
+This is expected behavior. We designed the asset system to automatically prune unused assets, making it possible for 3rd party libraries to export their own assets as part of their public API. For example, we could write a library that includes multiple stylesheets:
 
-#### SCSS Support
-SCSS is also supported through the `asset!` macro. Include it the same way as a regular CSS file.
+```rust
+// crate: cool_dioxus_library
+pub static GREEN_STYLES: Asset = asset!("/assets/red.css");
+pub static RED_STYLES: Asset = asset!("/assets/green.css");
+```
 
-## Conclusion
+When a user builds an application using our library, they just need to import the stylesheet the want to use:
 
-Dioxus provides first class support for assets, and makes it easy to include them in your application. You can include images, arbitrary files, and stylesheets in your application, and dioxus will automatically optimize them for production. This makes it easy to include assets in your application and ensure that they are optimized for production.
+```rust
+fn main() {
+    dioxus::launch(|| rsx!{
+        link { href: cool_dioxus_library::GREEN_STYLES, rel: "stylesheet" }
+    })
+}
+```
 
-You can read more about assets and all the options available to optimize your assets in the [manganis documentation](https://docs.rs/manganis/0.6.0/manganis).
+Because the RED_STYLES asset is never referenced by the user's application, it won't be bundled in the final output.
+
+However, you might want to include an asset even if you never reference it directly. Rust's `#[used]` attribute is useful here, annotating to the compiler that asset *is* used, even if we can't prove so at compile time.
+
+```rust
+#[used]
+static CERTS: Asset = asset!("/assets/keys.cert");
+```
+
+## Including Folders
+
+The asset macro also supports importing entire folders of content! The folder itself won't be copied into the final bundle. Instead, you join the name of the files in the folder against the folder's path. For example, you might need to include a folder of 3rd-party JavaScript into your app and don't want to use an `asset!` call for every file in the folder.
+
+```rust
+let logging_js_path = format!("{}/logging.js", asset!("/assets/posthog-js"));
+```
+
+Note that we need to format the `Asset` returned by the `asset!()` macro here because the actual folder name will receive an asset hash.

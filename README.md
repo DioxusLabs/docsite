@@ -46,7 +46,7 @@ We are overhauling the docs for Dioxus 0.7. Here is the current progress:
 ✅     - [How Components Render](essentials/ui/render.md)
 ✅     - [Conditional Rendering](essentials/ui/conditional.md)
 ✅     - [Rendering Lists](essentials/ui/iteration.md)
-❌     - [Assets](essentials/ui/assets.md)
+✅     - [Assets](essentials/ui/assets.md)
 ❌     - [Styling](essentials/ui/styling.md)
 ❌     - [Hot-Reload](essentials/ui/hotreload.md)
 ❌     - [Escape Hatches](essentials/ui/escape.md)

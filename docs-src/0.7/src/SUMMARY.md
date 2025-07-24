@@ -1,10 +1,12 @@
 # Summary
 
-- [Introduction](index.md)
+- [Introduction](getting_started/welcome.md)
+  - [Welcome](index.md)
   - [Getting Started](getting_started/index.md)
 ---
 
-- [Tutorial](tutorial/index.md)
+- [Tutorial](tutorial/overview.md)
+  - [Overview](tutorial/index.md)
   - [Tooling Setup](tutorial/tooling.md)
   - [Creating a new app](tutorial/new_app.md)
   - [Your First Component](tutorial/component.md)
@@ -21,19 +23,20 @@
 
 ---
 
-- [Core Concepts](essentials/index.md)
+- [Core Concepts](essentials/overview.md)
+  - [Overview](essentials/index.md)
   - [Building User Interfaces](essentials/ui/index.md)
     - [Introducing RSX](essentials/ui/rsx.md)
     - [Elements and Text](essentials/ui/elements.md)
     - [Dynamic Attributes](essentials/ui/attributes.md)
     - [Conditional Rendering](essentials/ui/conditional.md)
     - [Rendering Lists](essentials/ui/iteration.md)
-    - [Components and Properties](essentials/ui/components.md)
-    - [How Components Render](essentials/ui/render.md)
-    - [Escape Hatches](essentials/ui/escape.md)
+    - [Components](essentials/ui/components.md)
+    - [Reconciliation](essentials/ui/render.md)
     - [Assets](essentials/ui/assets.md)
     - [Styling](essentials/ui/styling.md)
     - [Hot-Reload](essentials/ui/hotreload.md)
+    - [Escape Hatches](essentials/ui/escape.md)
   - [Reactivity](essentials/reactivity/index.md)
     - [Thinking Reactively](essentials/reactivity/reactivity.md)
     - [Handling Events](essentials/reactivity/event_handlers.md)

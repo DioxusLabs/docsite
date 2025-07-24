@@ -5,7 +5,7 @@
   - [Getting Started](getting_started/index.md)
 ---
 
-- [Tutorial](tutorial/overview.md)
+- [Take a Tour](tutorial/overview.md)
   - [Overview](tutorial/index.md)
   - [Tooling Setup](tutorial/tooling.md)
   - [Creating a new app](tutorial/new_app.md)
@@ -40,6 +40,7 @@
   - [Reactivity](essentials/reactivity/index.md)
     - [Thinking Reactively](essentials/reactivity/reactivity.md)
     - [Handling Events](essentials/reactivity/event_handlers.md)
+    - [Foundations](essentials/reactivity/foundations.md)
     - [Using Signals](essentials/reactivity/signals.md)
     - [Component Lifecycle](essentials/reactivity/lifecycle.md)
     - [Using Effects](essentials/reactivity/effects.md)
@@ -47,9 +48,9 @@
     - [Reactive Collections](essentials/reactivity/collections.md)
   - [Managing State](essentials/state/index.md)
     - [State is Essential](essentials/state/essential.md)
-    - [Local State](essentials/state/state.md)
     - [Hooks](essentials/state/hooks.md)
     - [Custom Hooks](essentials/state/custom_hooks.md)
+    - [Local State](essentials/state/state.md)
     - [Passing State](essentials/state/passing.md)
     - [Context](essentials/state/context.md)
     - [Global State](essentials/state/global_state.md)

@@ -132,7 +132,7 @@ fn main() {
 
 Because the `RED_STYLES` asset is never referenced by the user's application, it won't be bundled in the final output.
 
-However, you might want to include an asset even if you never reference it directly. Rust's `#[used]` attribute is useful here, annotating to the compiler that asset *is* used, even if we can't prove so at compile time.
+However, you might want to include an asset even if you never reference it directly. Rust's [`#[used]`](https://doc.rust-lang.org/reference/abi.html#the-used-attribute) attribute is useful here, annotating to the compiler that asset *is* used, even if we can't prove so at compile time.
 
 ```rust
 #[used]

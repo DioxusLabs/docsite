@@ -1,0 +1,2 @@
+- requests are one of the most common async operations
+- use reqwest for async requests on web or desktop

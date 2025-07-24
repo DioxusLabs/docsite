@@ -10,6 +10,7 @@
 
 ### Basic State
 
+* ⭐ [`use_hook`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_hook.html) — Non-reactive, runs on the first use of the hook, which is typically the initial render
 * ⭐ [`use_signal`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_signal.html) — Basic local state, triggers re-renders on write, does not subscribe to other signals
 * [`use_signal_sync`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_signal_sync.html) — Thread-safe signal - Send + Sync
 
@@ -55,7 +56,7 @@
 
 #### Sync
 
-* ⭐ [`use_hook`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_hook.html) — Run on the first use of the hook, which is typically the initial render
+* ⭐ [`use_hook`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_hook.html) — *(already listed)*
 * [`use_hook_with_cleanup`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_hook_with_cleanup.html) — Use a hook with a cleanup function that runs when component is dropped
 * ⭐ [`use_debounce`](https://docs.rs/dioxus-sdk/latest/dioxus_sdk/utils/timing/fn.use_debounce.html) — Calls a function only after provided duration has passed (dioxus\_sdk)
 * [`use_interval`](https://docs.rs/dioxus-sdk/latest/dioxus_sdk/utils/timing/fn.use_interval.html) — Repeatedly calls a function every certain period (dioxus\_sdk)
@@ -65,7 +66,7 @@
 
 * [`use_channel`](https://docs.rs/dioxus-sdk/latest/dioxus_sdk/utils/channel/fn.use_channel.html), [`use_listen_channel`](https://docs.rs/dioxus-sdk/latest/dioxus_sdk/utils/channel/fn.use_listen_channel.html) — Create and listen to channels for communication between components (dioxus\_sdk)
 
-### Before Every Render
+### Before Every Subsequent Render
 
 * [`use_before_render`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_before_render.html) — Register a function to run before every subsequent render
 
@@ -73,7 +74,7 @@
 
 #### Sync
 
-* [`use_callback`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_callback.html) — Keeps a callback up to date for all references to the handle
+* [`use_callback`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_callback.html) — *(already listed)*
 * [`use_signal`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_signal.html) — *(already listed)*
 * [`use_signal_sync`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_signal_sync.html) — *(already listed)*
 * [`use_memo`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_memo.html) — *(already listed)*

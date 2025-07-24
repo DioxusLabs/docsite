@@ -57,6 +57,7 @@
     - [Optimization](essentials/state/optimization.md)
     - [Error Handling](essentials/state/error_handling.md)
   - [Async](essentials/async/index.md)
+    - [Crash Course](essentials/async/crash_course.md)
     - [Spawning Futures](essentials/async/futures.md)
     - [Async Resources](essentials/async/resources.md)
     - [Making network requests](essentials/async/network_requests.md)

@@ -1,23 +1,23 @@
 # Handling Asynchronous Tasks
 
-Asynchronous tasks are a core part of any modern application. They let you define code waits for network requests, timers, or OS events without blocking the thread. 
+Asynchronous tasks are a core part of any modern application. They let you define code waits for network requests, timers, or OS events without blocking the thread. Dioxus provides three core apis for handling asynchronous tasks:
 - [`spawn`](./futures.md) starts an asynchronous task in the background.
 - [`use_resource`](./resources.md) derives async state from a future.
 - [`SuspenseBoundary`](./suspense.md) provides a unified way to handle loading states for async tasks.
 
 ## Futures
 
-The `Future` trait is the core of async Rust. A future represents a value that may not be available yet. In other languages, this may be called a promise or task. You can read more about them in the [rust book](https://doc.rust-lang.org/book/ch17-00-async-await.html).
+The `Future` trait is the core of async Rust. A future represents a value that may not be available yet. In other languages, this is sometimes called a promise or task. You can read more about them in the [rust book](https://doc.rust-lang.org/book/ch17-00-async-await.html).
 
 
-While we won't cover all of the details of futures here there are a few key points to understand about futures when using them in Dioxus:
+We won't cover all of the details of futures here, but there are a few important things to know before using them in Dioxus:
 - Futures are lazy. They do not do anything until you call `.await` on them or spawn them with [`spawn`](./futures.md).
 - Futures are concurrent, but not always parallel. In dioxus, all futures run on the main thread, so you should not block inside a future.
-- Futures will pause at await points which means you shouldn't hold any locks across await points.
+- Futures will pause at await points. You should not hold any locks across those await points.
 
 ## Lazy futures
 
-Unlike javascript, Rust futures are lazy. This means that they do not start executing until you call `.await` on them or run them in the background with [`spawn`](./futures.md).
+Unlike javascript, Rust futures are lazy. This means that they do not start executing until you call `.await` on them or start them in the background with [`spawn`](./futures.md).
 
 
 This future will never log "Ran" because it is never awaited:
@@ -28,6 +28,7 @@ let future = async {
 ```
 
 To run this future, you can either await it or spawn it:
+
 ```rust
 let future = async {
     println!("Ran");
@@ -41,11 +42,11 @@ spawn(other_future);
 
 ## Concurrency vs Parallelism
 
-Concurrency and parallelism are often confused, but the difference has important implications for how you write your applications. Multiple concurrent tasks can be started and not yet finished at the same time, but they do not necessarily run at the same time. In Rust, this is achieved through the use of futures and the async/await syntax.
+Concurrency and parallelism are often confused, but the difference has important implications for how you write your applications. Multiple concurrent tasks may be in between the start and finished states at the same time, but they don't necessarily run at the same time. In Rust, this is achieved through the use of futures and the async/await syntax.
 
 ![concurrent](/assets/07/concurrent.png)
 
-On the other hand, multiple parallel can run at exactly the same time on different threads. In rust, you can spawn parallel tasks using the `std::thread` module or libraries like `rayon`.
+On the other hand, multiple parallel tasks can run at exactly the same time on different threads. In rust, you can spawn parallel tasks using the `std::thread` module or libraries like `rayon`.
 
 ![parallel](/assets/07/parallel.png)
 
@@ -78,12 +79,3 @@ std::thread::spawn(|| {
 Futures will pause execution at `.await` points, allowing other tasks to run until the future is ready to continue. You should avoid holding locks across `.await` points because another async task could try to use the lock while the future is paused. Instead, you need to ensure that locks are only held for the duration of the critical section and released before awaiting.
 
 ![async locks](/assets/07/lock_await.png)
-
-This guide has covered the basics of asynchronous tasks in Dioxus. More detailed documentation about specific hooks are available in docs.rs:
-- [use_resource](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_resource.html)
-- [use_server_future](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_server_future.html)
-- [SuspenseBoundary](https://docs.rs/dioxus/latest/dioxus/prelude/fn.SuspenseBoundary.html)
-- [spawn](https://docs.rs/dioxus/latest/dioxus/prelude/fn.spawn.html)
-- [spawn_forever](https://docs.rs/dioxus/latest/dioxus/prelude/fn.spawn_forever.html)
-
-More examples of futures and asynchronous tasks are available in the [example folder](https://github.com/DioxusLabs/dioxus/tree/main/examples) in the dioxus repo.

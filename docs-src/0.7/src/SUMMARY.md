@@ -61,7 +61,7 @@
     - [Crash Course](essentials/async/crash_course.md)
     - [Spawning Futures](essentials/async/futures.md)
     - [Async Resources](essentials/async/resources.md)
-    - [Making network requests](essentials/async/network_requests.md)
+    - [Data Fetching](essentials/async/data_fetching.md)
     - [Suspense](essentials/async/suspense.md)
     - [Parallelism](essentials/async/parallel.md)
   - [Routing](essentials/router/index.md)

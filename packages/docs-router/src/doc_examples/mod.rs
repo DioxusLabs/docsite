@@ -65,6 +65,8 @@ pub mod rsx_overview;
 pub mod spawn;
 #[cfg(not(feature = "doc_test"))]
 pub mod use_resource;
+#[cfg(not(feature = "doc_test"))]
+pub mod data_fetching;
 
 // Check any examples we don't compile into the docs
 #[cfg(feature = "doc_test")]

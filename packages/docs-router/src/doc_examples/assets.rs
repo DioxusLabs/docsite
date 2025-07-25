@@ -4,10 +4,10 @@ use dioxus::prelude::*;
 fn App() -> Element {
     // You can link to assets that are relative to the package root or even link to an asset from a url
     // These assets will automatically be picked up by the dioxus cli, optimized, and bundled with your final applications
-    const ASSET: Asset = asset!("/assets/static/ferrous_wave.png");
+    let ferrous = asset!("/assets/static/ferrous_wave.png");
 
     rsx! {
-        img { src: "{ASSET}" }
+        img { src: "{ferrous}" }
     }
 }
 /// ANCHOR_END: images

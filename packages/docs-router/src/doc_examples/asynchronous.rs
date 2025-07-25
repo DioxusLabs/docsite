@@ -1,6 +1,6 @@
 #![allow(non_snake_case, unused)]
 
-use super::{log, ComponentWithLogs};
+use super::{ComponentWithLogs, log};
 use dioxus::prelude::*;
 use std::collections::HashSet;
 
@@ -69,6 +69,77 @@ pub fn SpawnButtonSimplified() -> Element {
         }
     }
     // ANCHOR_END: spawn_simplified
+}
+
+pub fn CancelButton() -> Element {
+    // ANCHOR: cancel_button
+    let mut response = use_signal(|| "Click to start a request".to_string());
+    let mut task = use_signal(|| None);
+
+    rsx! {
+        button {
+            onclick: move |_| {
+                response.set("...".into());
+                // Spawn will start a task running in the background
+                let new_task = spawn(async move {
+                    let resp = reqwest::Client::new()
+                        .get("https://httpbin.org/delay/1")
+                        .send()
+                        .await;
+
+                    if resp.is_ok() {
+                        response.set("httpbin.org responded!".into());
+                    } else  {
+                        response.set("failed to fetch response!".into());
+                    }
+                });
+                task.set(Some(new_task));
+            },
+            "{response}"
+        }
+        button {
+            onclick: move |_| {
+                // If the task is running, cancel it
+                if let Some(t) = task.take() {
+                    t.cancel();
+                    response.set("Request cancelled".into());
+                } else {
+                    response.set("No request to cancel".into());
+                }
+            },
+            "Cancel Request"
+        }
+    }
+    // ANCHOR_END: cancel_button
+}
+
+pub fn SpawnForeverButton() -> Element {
+    let mut response = use_signal(|| "Click to start a request".to_string());
+
+    rsx! {
+        button {
+            onclick: move |_| {
+                response.set("...".into());
+                 // ANCHOR: spawn_forever
+                // Spawn will start a task running in the background which will not be
+                // cancelled when the component is unmounted
+                dioxus::dioxus_core::spawn_forever(async move {
+                    let resp = reqwest::Client::new()
+                        .get("https://dioxuslabs.com")
+                        .send()
+                        .await;
+
+                    if resp.is_ok() {
+                        response.set("dioxuslabs.com responded!".into());
+                    } else  {
+                        response.set("failed to fetch response!".into());
+                    }
+                });
+                 // ANCHOR_END: spawn_forever
+            },
+            "{response}"
+        }
+    }
 }
 
 pub fn UseResource() -> Element {

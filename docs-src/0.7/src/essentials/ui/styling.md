@@ -140,18 +140,18 @@ rsx! {
 
 CSS provides several selectors that you can leverage in your stylesheets:
 
-• [**Element selectors**](https://developer.mozilla.org/en-US/docs/Web/CSS/Type_selectors) (`div`, `p`, `h1`) - Target HTML elements by their tag name
-• [**Class selectors**](https://developer.mozilla.org/en-US/docs/Web/CSS/Class_selectors) (`.my-class`) - Target elements with a specific class attribute
-• [**ID selectors**](https://developer.mozilla.org/en-US/docs/Web/CSS/ID_selectors) (`#my-id`) - Target a single element with a specific ID attribute
-• [**Attribute selectors**](https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors) (`[type="text"]`) - Target elements based on their attributes
-• [**Descendant selectors**](https://developer.mozilla.org/en-US/docs/Web/CSS/Descendant_combinator) (`div p`) - Target elements that are descendants of another element
-• [**Child selectors**](https://developer.mozilla.org/en-US/docs/Web/CSS/Child_combinator) (`div > p`) - Target direct children of an element
-• [**Adjacent sibling selectors**](https://developer.mozilla.org/en-US/docs/Web/CSS/Next-sibling_combinator) (`h1 + p`) - Target elements immediately following another
-• [**General sibling selectors**](https://developer.mozilla.org/en-US/docs/Web/CSS/Subsequent-sibling_combinator) (`h1 ~ p`) - Target elements that are siblings of another
-• [**Pseudo-class selectors**](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes) (`:hover`, `:focus`, `:nth-child()`) - Target elements in specific states
-• [**Pseudo-element selectors**](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-elements) (`::before`, `::after`) - Target virtual elements or parts of elements
-• [**Universal selector**](https://developer.mozilla.org/en-US/docs/Web/CSS/Universal_selectors) (`*`) - Target all elements
-• **Grouping selectors** (`h1, h2, h3`) - Apply styles to multiple selectors at once
+- [**Element selectors**](https://developer.mozilla.org/en-US/docs/Web/CSS/Type_selectors) (`div`, `p`, `h1`): Target HTML elements by their tag name
+- [**Class selectors**](https://developer.mozilla.org/en-US/docs/Web/CSS/Class_selectors) (`.my-class`): Target elements with a specific class attribute
+- [**ID selectors**](https://developer.mozilla.org/en-US/docs/Web/CSS/ID_selectors) (`#my-id`): Target a single element with a specific ID attribute
+- [**Attribute selectors**](https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors) (`[type="text"]`): Target elements based on their attributes
+- [**Descendant selectors**](https://developer.mozilla.org/en-US/docs/Web/CSS/Descendant_combinator) (`div p`): Target elements that are descendants of another element
+- [**Child selectors**](https://developer.mozilla.org/en-US/docs/Web/CSS/Child_combinator) (`div > p`): Target direct children of an element
+- [**Adjacent sibling selectors**](https://developer.mozilla.org/en-US/docs/Web/CSS/Next-sibling_combinator) (`h1 + p`): Target elements immediately following another
+- [**General sibling selectors**](https://developer.mozilla.org/en-US/docs/Web/CSS/Subsequent-sibling_combinator) (`h1 ~ p`): Target elements that are siblings of another
+- [**Pseudo-class selectors**](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes) (`:hover`, `:focus`, `:nth-child()`): Target elements in specific states
+- [**Pseudo-element selectors**](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-elements) (`::before`, `::after`): Target virtual elements or parts of elements
+- [**Universal selector**](https://developer.mozilla.org/en-US/docs/Web/CSS/Universal_selectors) (`*`): Target all elements
+- [**Grouping selectors**](https://developer.mozilla.org/en-US/docs/Web/CSS/Selector_list) (`h1, h2, h3`): Apply styles to multiple selectors at once
 
 ### Conditional Styles with Classes
 
@@ -371,13 +371,13 @@ For better Tailwind development experience, install the Tailwind CSS IntelliSens
 
 If you're familiar with HTML and CSS, then you likely already know how to arrange the HTML elements to craft your desired UI. However, if HTML and CSS are new to you, then it's worth understanding the many ways you can lay out elements on the page. CSS supports several layout systems simultaneously:
 
-• **Normal Flow** - The default layout where elements stack vertically (block elements) or flow horizontally (inline elements)
-• **Flexbox** - One-dimensional layout system for arranging items in rows or columns with flexible sizing and alignment
-• **CSS Grid** - Two-dimensional layout system for creating complex grid-based layouts with rows and columns
-• **Float** - Legacy layout method that moves elements to the left or right, allowing text to wrap around them
-• **Positioning** - Allows precise control over element placement using `static`, `relative`, `absolute`, `fixed`, or `sticky` positioning
-• **Table Layout** - Displays elements as table cells, rows, and columns (can be used with non-table elements via `display: table`)
-• **Multi-column** - Splits content into multiple columns, similar to newspaper layouts
+- **Normal Flow**: The default layout where elements stack vertically (block elements) or flow horizontally (inline elements)
+- **Flexbox**: One-dimensional layout system for arranging items in rows or columns with flexible sizing and alignment
+- **CSS Grid**: Two-dimensional layout system for creating complex grid-based layouts with rows and columns
+- **Float**: Legacy layout method that moves elements to the left or right, allowing text to wrap around them
+- **Positioning**: Allows precise control over element placement using `static`, `relative`, `absolute`, `fixed`, or `sticky` positioning
+- **Table Layout**: Displays elements as table cells, rows, and columns (can be used with non-table elements via `display: table`)
+- **Multi-column**: Splits content into multiple columns, similar to newspaper layouts
 
 Generally, you'll use either Flexbox or CSS Grid.
 

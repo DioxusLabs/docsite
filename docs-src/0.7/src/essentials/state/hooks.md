@@ -1,6 +1,3 @@
-#
-
-
 ## use_hook
 
 ## use_signal

@@ -16,22 +16,13 @@ Unlike javascript, Rust futures are lazy. This means that they do not start exec
 
 This future will never log "Ran" because it is never awaited:
 ```rust
-let future = async {
-    println!("Ran");
-};
+{{#include ../docs-router/src/doc_examples/async_crash_course.rs:async_block}}
 ```
 
 To run this future, you can either await it or spawn it:
 
 ```rust
-let future = async {
-    println!("Ran");
-};
-let other_future = async {
-    future.await;
-    println!("Ran Other");
-};
-spawn(other_future);
+{{#include ../docs-router/src/doc_examples/async_crash_course.rs:await}}
 ```
 
 ## Concurrency vs Parallelism
@@ -50,22 +41,13 @@ Rust has multiple different async runtimes like `tokio` or `wasm-bindgen-futures
 The dioxus runtime is single threaded which means futures can use `!Send` types, but they need to be careful to never block the thread.
 
 ```rust
-spawn(async {
-    // This will block the main thread and make the UI unresponsive.
-    // Do not do this!
-    solve_for_the_answer_to_life_and_everything();
-    println!("Ran");
-});
+{{#include ../docs-router/src/doc_examples/async_crash_course.rs:blocking}}
 ```
 
 If you have an expensive task you need to run, you should spawn it on a separate thread using `std::thread::spawn` on desktop or use a [web worker](https://docs.rs/gloo-worker/latest/gloo_worker/) on the web. This will allow the main thread to continue running and keep the UI responsive.
 
 ```rust
-std::thread::spawn(|| {
-    // This will run on a separate thread and not block the main thread.
-    solve_for_the_answer_to_life_and_everything();
-    println!("Ran");
-});
+{{#include ../docs-router/src/doc_examples/async_crash_course.rs:thread}}
 ```
 
 ## Handling locks

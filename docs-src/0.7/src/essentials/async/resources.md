@@ -1,5 +1,4 @@
-
-## Asynchronous State with `use_resource`
+# Asynchronous State with `use_resource`
 
 The [`use_resource`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_resource.html) can be used to derive asynchronous state. It takes an async closure to calculate the state and returns a tracked value with the current state of the future. Any time a dependency of the resource changes, the resource will rerun:
 

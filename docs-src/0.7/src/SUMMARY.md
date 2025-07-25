@@ -63,7 +63,6 @@
     - [Async Resources](essentials/async/resources.md)
     - [Data Fetching](essentials/async/data_fetching.md)
     - [Suspense](essentials/async/suspense.md)
-    - [Parallelism](essentials/async/parallel.md)
   - [Routing](essentials/router/index.md)
     - [Defining Routes](essentials/router/routes.md)
     - [Nested Routes](essentials/router/nested-routes.md)

@@ -1,8 +1,8 @@
 # Suspense
 
-[Resources](./resources.md) lets you load data asynchronously in Dioxus, but it can be cumbersome to handle the loading state of each resource individually. Dioxus provides a `SuspenseBoundary` component that allows you to group multiple asynchronous tasks and show a loading view while any of them are suspended.
+[Resources](./resources.md) let you load data asynchronously in Dioxus, but it can be cumbersome to handle the loading state of each resource individually. Dioxus provides a `SuspenseBoundary` component to group multiple asynchronous tasks and show a loading view while any of them are suspended.
 
-You can create a `SuspenseBoundary` with a loading closure and children. You can call `.suspend()?` on any resource inside the children to pause rendering of that child until the future is finished. The suspense boundary will show the loading view while any of its children are suspended. Once that suspense is resolved, it will show the children again.
+You can create a `SuspenseBoundary` with a loading closure and children. Then you can call `.suspend()?` on any resource inside the children to pause rendering of that component until the future is finished. The suspense boundary will show the loading view while any of its children are suspended. Once that suspense is resolved, it will show the children again.
 
 We can use a suspense boundary to show a grid of different breeds of dogs without handling each loading state individually:
 
@@ -32,9 +32,9 @@ DemoFrame {
 
 ## Suspense with Fullstack
 
-Dioxus fullstack will wait for suspended futures during server-side rendering. This means your async data loading starts sooner and search engines can see the resolved version of your page after the async data is resolved. However, using suspense in fullstack does require some changes for hydration.
+Dioxus fullstack will wait for suspended futures during server-side rendering. This means your async data loading starts sooner and search engines can see the resolved version of your page. However, using suspense in fullstack does require some changes for hydration compatibility.
 
-To use suspense in your fullstack application, you need to switch to the `use_server_future` hook. `use_server_future` handles serializing the result of the future on the server and deserializing that result on the client. It will also suspend automatically, so you don't need to call `.suspend()` on the resource.
+To use suspense in your fullstack application, you need to switch every suspended resource to the `use_server_future` hook. `use_server_future` handles serializing the result of the future on the server and deserializing that result on the client. It will also suspend automatically, so you don't need to call `.suspend()` on the resource.
 
 ```rust
 {{#include ../docs-router/src/doc_examples/asynchronous.rs:use_server_future}}

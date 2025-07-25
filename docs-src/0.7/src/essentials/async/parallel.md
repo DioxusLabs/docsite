@@ -1,3 +1,0 @@
-- sync signals
-- on native platforms, can use threads
-- on the web, need to use gloo webworkers

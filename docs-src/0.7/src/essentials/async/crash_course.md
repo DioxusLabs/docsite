@@ -4,10 +4,10 @@ The `Future` trait is the core of async Rust. A future represents a value that m
 
 
 We won't cover all of the details of futures here, but there are a few important things to know before using them in Dioxus:
-- Futures are lazy. They do not do anything until you call `.await` on them or spawn them with [`spawn`](./futures.md).
+- Futures are lazy. They do not do anything until you `await` them or [`spawn`](./futures.md) them.
 - Futures are concurrent, but not always parallel. In dioxus, all futures run on the main thread, so you should not block inside a future.
 - Futures will pause at await points. You should not hold any locks across those await points.
-- Futures can be cancelled before they complete. Your futures need to be cancel safe, meaning they should be able to handle being cancelled at any time without panicking or leaving the application in an inconsistent state.
+- Futures can be cancelled before they complete. Your futures need to be cancel safe. They should be able to handle stopping at any time without panicking or leaving the application in an inconsistent state.
 
 ## Lazy futures
 
@@ -15,11 +15,12 @@ Unlike javascript, Rust futures are lazy. This means that they do not start exec
 
 
 This future will never log "Ran" because it is never awaited:
+
 ```rust
 {{#include ../docs-router/src/doc_examples/async_crash_course.rs:async_block}}
 ```
 
-To run this future, you can either await it or spawn it:
+To run this future, you can either await it in another future or spawn it:
 
 ```rust
 {{#include ../docs-router/src/doc_examples/async_crash_course.rs:await}}
@@ -27,7 +28,7 @@ To run this future, you can either await it or spawn it:
 
 ## Concurrency vs Parallelism
 
-Concurrency and parallelism are often confused, but the difference has important implications for how you write your applications. Multiple concurrent tasks may be in between the start and finished states at the same time, but they don't necessarily run at the same time. In Rust, this is achieved through the use of futures and the async/await syntax.
+Concurrency and parallelism are often confused, but the difference has important implications for how you write your applications. Multiple concurrent tasks may be in progress at the same time, but they don't necessarily run at the same time. In Rust, futures are concurrent. They can yield control to other tasks at await points, allowing other tasks to run while they wait for a value to become available.
 
 ![concurrent](/assets/07/async_concurrent.png)
 
@@ -44,7 +45,7 @@ The dioxus runtime is single threaded which means futures can use `!Send` types,
 {{#include ../docs-router/src/doc_examples/async_crash_course.rs:blocking}}
 ```
 
-If you have an expensive task you need to run, you should spawn it on a separate thread using `std::thread::spawn` on desktop or use a [web worker](https://docs.rs/gloo-worker/latest/gloo_worker/) on the web. This will allow the main thread to continue running and keep the UI responsive.
+If you have an expensive task you need to run, you should spawn it on a separate thread using [`std::thread::spawn`](https://doc.rust-lang.org/std/thread/fn.spawn.html) on desktop or use a [web worker](https://docs.rs/gloo-worker/latest/gloo_worker/) on the web. This will allow the main thread to continue running and keep the UI responsive.
 
 ```rust
 {{#include ../docs-router/src/doc_examples/async_crash_course.rs:thread}}
@@ -52,18 +53,18 @@ If you have an expensive task you need to run, you should spawn it on a separate
 
 ## Handling locks
 
-Futures will pause execution at `.await` points, allowing other tasks to run until the future is ready to continue. You should avoid holding locks across `.await` points because another async task could try to use the lock while the future is paused. Instead, you need to ensure that locks are only held for the duration of the critical section and released before awaiting.
+Futures will pause execution at `.await` points, allowing other tasks to run until the future is ready to continue. You should never hold `read`/`write` locks across `.await` points because another async task could try to use the value while the future is paused and the lock is still open. Instead, you need to ensure that locks are only held for the duration of the critical section and released before awaiting.
 
 ![async locks](/assets/07/async_lock_await.png)
 
 ## Cancel Safety
 
 Async tasks can be cancelled at any time. The futures you spawn in dioxus may be canceled:
-1. When the component they are spawned in is unmounted.
-2. When the task is cancelled using the `cancel` method on the `Task` returned by `spawn` or `spawn_forever`.
+1. When the component they were spawned in is unmounted.
+2. When the task is cancelled manually using the `cancel` method on the `Task` returned by `spawn` or `spawn_forever`.
 3. When a resource restarts
 
-This means that your futures need to be cancel safe. A cancel safe future is one that can be stopped at any await point without causing issues. For example, if you are using a global state, you need to ensure that the state is restored when the future is dropped.
+This means that your futures need to be cancel safe. A cancel safe future is one that can be stopped at any await point without causing issues. For example, if you are using a global state, you need to ensure that the state is restored when the future is dropped:
 
 
 ```rust

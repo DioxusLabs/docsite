@@ -1,6 +1,6 @@
 # Running Futures with `spawn`
 
-The [`spawn`](https://docs.rs/dioxus/0.7/dioxus/prelude/fn.spawn.html) method spawns a future in the background and returns a `Task` that you can use to control the future. It is the basis of all other async hooks in dioxus. You can use spawn to 
+The [`spawn`](https://docs.rs/dioxus/0.7/dioxus/prelude/fn.spawn.html) method starts running a future in the background and returns a `Task` that you can use to control the future. It is the basis of all other async hooks in dioxus. You can use spawn to execute one off tasks in event handlers, hooks or other futures:
 
 ```rust
 {{#include ../docs-router/src/doc_examples/asynchronous.rs:spawn}}
@@ -12,7 +12,7 @@ DemoFrame {
 }
 ```
 
-Since spawning in event handlers is very common, Dioxus provides a more concise syntax for async event handlers. If you return a future from an event handler, Dioxus will automatically `spawn` it:
+Since spawning in event handlers is very common, Dioxus provides a more concise syntax. If you return a future from an event handler, Dioxus will automatically `spawn` it:
 
 ```rust
 {{#include ../docs-router/src/doc_examples/asynchronous.rs:spawn_simplified}}

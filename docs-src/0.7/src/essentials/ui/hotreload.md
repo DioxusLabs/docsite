@@ -261,8 +261,8 @@ fn Button() -> Element {
 dx serve --hotpatch
 
 # For specific platforms
-dx serve --platform desktop --hotpatch
-dx serve --platform web --hotpatch
+dx serve --webview --hotpatch
+dx serve --web --hotpatch
 ```
 
 ### What Can Be Hot-Patched

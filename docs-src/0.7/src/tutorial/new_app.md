@@ -78,7 +78,7 @@ All Dioxus apps will include `dioxus` as a dependency:
 dioxus = { version = "0.7.0" }
 ```
 
-The prebuilt Dioxus templates initialize different cargo features for your app. `dx` will use these to decide which cargo features to enable when you specify the `--platform` feature. For example, if you use `dx serve --platform desktop` to build your app for desktop, `dx` will call `cargo build --no-default-features --features desktop`.
+The prebuilt Dioxus templates initialize different cargo features for your app. `dx` will use these to decide which cargo features to enable when you specify the `--web`, or `--webview` flags. For example, if you use `dx serve --webview` to build your app for desktop, `dx` will call `cargo build --no-default-features --features desktop`.
 
 ```toml
 [features]

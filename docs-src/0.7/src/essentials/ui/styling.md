@@ -387,7 +387,7 @@ Flexbox is incredibly handy for building responsive user interfaces. As you adju
 
 ![Flexbox Guide](/assets/07/flexbox-diagram.webp)
 
-### Flexbox Layout
+### CSS Grid
 
 CSS Grid is another powerful layout system. You can leverage CSS stylesheets to declare named regions of your document, dividing them along fixed or flexible grid lines. Several online tools exist that provide a [graphical interface](https://grid.layoutit.com) for building grid layouts.
 

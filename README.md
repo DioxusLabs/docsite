@@ -35,9 +35,12 @@ We use TailwindCSS which is included automatically with dx 0.7.
 ## Dioxus 0.7 Overhaul Progress
 We are overhauling the docs for Dioxus 0.7. Here is the current progress:
 
-
 ```
 ✅ - [Core Concepts](essentials/index.md)
+❌   - [Setup]()
+❌     - [Tools]
+❌     - [Feature Flags]
+❌     - [Folder Structure]
 ✅   - [Building User Interfaces](essentials/ui/index.md)
 ✅     - [Introducing RSX](essentials/ui/rsx.md)
 ✅     - [Elements and Text](essentials/ui/elements.md)
@@ -50,32 +53,29 @@ We are overhauling the docs for Dioxus 0.7. Here is the current progress:
 ✅     - [Styling](essentials/ui/styling.md)
 ❌     - [Hot-Reload](essentials/ui/hotreload.md)
 ❌     - [Escape Hatches](essentials/ui/escape.md)
-❌   - [Reactivity](essentials/reactivity/index.md)
+
+❌   - [The Basics](essentials/state/index.md)
+❌     - [Storing State in Hooks](essentials/state/hooks.md)
+❌     - Reactive Signals and reactivity simplified (use_signal + use_memo + use_effect)
+❌     - User Input and Events (preventDefault, propagation, EventHandler on components, controlled vs uncontrolled)
+❌     - Futures (crash-course (lite), loop/spawn, onclick: move |_| async {})
+❌     - Fetching? (use_resource, network requests)
+❌     - Hoisting State and EventHandler?
+❌     - Context (provide/consume, global_signal)
+❌     - [Stores, Collections, External State](essentials/reactivity/collections.md)
+❌     - [Error Handling (+boundaries)](essentials/state/error_handling.md)
+❌     - The outside world? (sync signals, external callbacks, layout effects, onmounted)
+
+❌   - [Advanced Topics](essentials/reactivity/index.md)
 ❌     - [Thinking Reactively](essentials/reactivity/reactivity.md)
-❌     - [Handling Events](essentials/reactivity/event_handlers.md)
-❌     - [Using Signals](essentials/reactivity/signals.md)
+❌     - [Custom Hooks (schedule_update, use_hook, Reactive Context)](essentials/state/custom_hooks.md)
 ❌     - [Component Lifecycle](essentials/reactivity/lifecycle.md)
-❌     - [Using Effects](essentials/reactivity/effects.md)
+❌     - [Side Effects](essentials/reactivity/effects.md)
 ❌     - [Maintaing Purity](essentials/reactivity/purity.md)
-❌     - [Reactive Collections](essentials/reactivity/collections.md)
-❌   - [Managing State](essentials/state/index.md)
-❌     - [State is Essential](essentials/state/essential.md)
-❌     - [Local State](essentials/state/state.md)
-❌     - [Hooks](essentials/state/hooks.md)
-❌     - [Custom Hooks](essentials/state/custom_hooks.md)
-❌     - [Passing State](essentials/state/passing.md)
-❌     - [Context](essentials/state/context.md)
-❌     - [Global State](essentials/state/global_state.md)
-❌     - [Memoization](essentials/state/memoization.md)
-❌     - [Optimization](essentials/state/optimization.md)
-❌     - [Error Handling](essentials/state/error_handling.md)
-✅   - [Async](essentials/async/index.md)
-✅     - [Futures Crash Course](essentials/async/crash_course.md)
-✅     - [Spawning Futures](essentials/async/futures.md)
-✅     - [Async Resources](essentials/async/resources.md)
-✅     - [Making network requests](essentials/async/network_requests.md)
 ✅     - [Suspense](essentials/async/suspense.md)
-❌     - [Parallelism](essentials/async/parallel.md)
+✅     - [Futures in Depth (+threads/workers)](essentials/async/crash_course.md)
+❌     - [Optimization](essentials/state/optimization.md)
+
 ❌   - [Routing](essentials/router/index.md)
 ❌     - [Defining Routes](essentials/router/routes.md)
 ✅     - [Nested Routes](essentials/router/nested-routes.md)
@@ -85,7 +85,9 @@ We are overhauling the docs for Dioxus 0.7. Here is the current progress:
 ✅     - [History Providers](essentials/router/history-providers.md)
 ✅     - [History Buttons](essentials/router/history-buttons.md)
 ✅     - [Routing Update Callback](essentials/router/routing-update-callback.md)
-✅   - [Fullstack](essentials/fullstack/index.md)
+
+❌   - [Fullstack](essentials/fullstack/index.md)
+❌     - [Overview](essentials/fullstack/overview.md)
 ✅     - [Hydration](essentials/fullstack/hydration.md)
 ✅     - [Managing Dependencies](essentials/fullstack/managing_dependencies.md)
 ✅   	- [Server Functions](essentials/fullstack/server_functions.md)
@@ -96,24 +98,32 @@ We are overhauling the docs for Dioxus 0.7. Here is the current progress:
 ✅     - [Streaming](essentials/fullstack/streaming.md)
 ✅     - [Static Site Generation](essentials/fullstack/static_site_generation.md)
 ✅     - [Axum Integration](essentials/fullstack/axum.md)
-❌   - [Breaking Out](essentials/breaking/index.md)
 
 ---
 
-❌ - [Guides](guides/index.md)
+❌ - [Guides (digging deeper)](guides/index.md)
 ❌   - [Tools](guides/tools/index.md)
 ❌     - [Serve](guides/tools/serve.md)
 ❌     - [Bundle](guides/tools/bundle.md)
 ❌     - [Create a Project](guides/tools/creating.md)
 ❌     - [Configure Project](guides/tools/configure.md)
-❌     - [Android](guides/tools/android.md)
-❌     - [iOS](guides/tools/ios.md)
 ❌     - [Translate HTML](guides/tools/translate.md)
 ❌     - [VSCode Extension](guides/tools/vscode.md)
+❌   - [APIs?](guides/platforms/index.md)
+❌     - feature overview
+❌     - window
+❌     - document
+❌     - history
+❌     - desktop/webview
+❌     - native
+❌     - components
+❌     - sdk
 ❌   - [Platform Support](guides/platforms/index.md)
 ❌     - [Web](guides/platforms/web.md)
 ❌     - [Desktop](guides/platforms/desktop.md)
 ❌     - [Mobile](guides/platforms/mobile.md)
+❌     - [Android](guides/tools/android.md)
+❌     - [iOS](guides/tools/ios.md)
 ❌   - [Publishing](guides/deploy/index.md)
 ❌     - [Web Apps](guides/deploy/web.md)
 ❌     - [SSG](guides/deploy/ssg.md)
@@ -150,6 +160,33 @@ We are overhauling the docs for Dioxus 0.7. Here is the current progress:
 ✅         - [State](migration/to_05/state.md)
 ✅       - [Fermi](migration/to_05/fermi.md)
 ✅       - [Props](migration/to_05/props.md)
+
+
+
+
+-- refactored:
+❌   - [Breaking Out](essentials/breaking/index.md)
+❌     - Queuing Side Effects (prefer onMount in most cases?)
+❌     - [Memoization](essentials/state/memoization.md)
+❌     - [Handling Events](essentials/reactivity/event_handlers.md)
+❌     - [Using Signals](essentials/reactivity/signals.md)
+❌     - [State is Essential](essentials/state/essential.md)
+❌     - [Context](essentials/state/context.md)
+❌     - [Local State](essentials/state/state.md)
+❌     - [Passing State](essentials/state/passing.md)
+❌     - [Global State](essentials/state/global_state.md)
+❌     - [Stores and Network](essentials/state/global_state.md)
+❌     - [External State](essentials/state/external.md)
+
+
+✅   - [Async](essentials/async/index.md)
+✅     - [Futures Crash Course](essentials/async/crash_course.md)
+✅     - [Spawning Futures](essentials/async/futures.md)
+✅     - [Async Resources](essentials/async/resources.md)
+✅     - [Making network requests](essentials/async/network_requests.md)
+✅     - [Suspense](essentials/async/suspense.md)
+❌     - [Parallelism](essentials/async/parallel.md)
+
 ```
 
 

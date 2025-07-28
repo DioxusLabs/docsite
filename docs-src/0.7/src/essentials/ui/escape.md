@@ -10,6 +10,7 @@
 ## Direct DOM Access
 
 - get element by ID
+- mounted
 - `eval`
 
 ## Web Components

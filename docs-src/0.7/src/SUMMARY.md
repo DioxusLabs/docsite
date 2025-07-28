@@ -74,7 +74,7 @@
     - [History Buttons](essentials/router/history-buttons.md)
     - [Routing Update Callback](essentials/router/routing-update-callback.md)
   - [Fullstack](essentials/fullstack/index.md)
-    - [Overview](essentials/fullstack/routes.md)
+    - [Overview](essentials/fullstack/overview.md)
   	- [Server Functions](essentials/fullstack/server_functions.md)
     - [Hydration](essentials/fullstack/hydration.md)
     - [Managing Dependencies](essentials/fullstack/managing_dependencies.md)

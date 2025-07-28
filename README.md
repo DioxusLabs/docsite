@@ -75,8 +75,6 @@ We are overhauling the docs for Dioxus 0.7. Here is the current progress:
 ✅     - [Async Resources](essentials/async/resources.md)
 ✅     - [Making network requests](essentials/async/network_requests.md)
 ✅     - [Suspense](essentials/async/suspense.md)
-❌     - [Making network requests](essentials/async/network_requests.md)
-❌     - [Suspense](essentials/async/suspense.md)
 ❌     - [Parallelism](essentials/async/parallel.md)
 ❌   - [Routing](essentials/router/index.md)
 ❌     - [Defining Routes](essentials/router/routes.md)

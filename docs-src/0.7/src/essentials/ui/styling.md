@@ -381,14 +381,19 @@ If you're familiar with HTML and CSS, then you likely already know how to arrang
 
 Generally, you'll use either Flexbox or CSS Grid.
 
+### Flexbox Layout
+
 Flexbox is incredibly handy for building responsive user interfaces. As you adjust the document viewport, elements will automatically adjust their size and placement to fit their flex constraints. The [CSS-Tricks guide](https://css-tricks.com/snippets/css/a-guide-to-flexbox/) provides a very helpful tutorial on all the flex contraints you can use.
 
 ![Flexbox Guide](/assets/07/flexbox-diagram.webp)
 
+### Flexbox Layout
 
 CSS Grid is another powerful layout system. You can leverage CSS stylesheets to declare named regions of your document, dividing them along fixed or flexible grid lines. Several online tools exist that provide a [graphical interface](https://grid.layoutit.com) for building grid layouts.
 
-![Flexbox Guide](/assets/07/css-grid.svg)
+### Fixed Position Layout
+
+![CSS Grid Guide](/assets/07/css-grid.svg)
 
 Occasionally you'll need to reach for [fixed-position layouts](https://developer.mozilla.org/en-US/docs/Web/CSS/position). These tend to be less flexible than CSS Grid and Flexbox, but make it possible to implement features like sticky headers and dynamically-positioned content.
 
@@ -425,21 +430,15 @@ fn IconButton() -> Element {
 
 ### SVG Assets
 
-For larger or reusable SVG files, store them as assets:
+For larger or reusable SVG files, you can store them in a separate file and import them with the `asset!()` macro.
 
 ```rust
-static LOGO_SVG: Asset = asset!("/assets/logo.svg");
-
-fn Header() -> Element {
+fn Icon() -> Element {
     rsx! {
-        header {
-            class: "flex items-center gap-4 p-4",
-            img {
-                src: LOGO_SVG,
-                alt: "Logo",
-                class: "h-8 w-8"
-            }
-            h1 { "My App" }
+        img {
+            src: asset!("/assets/logo.svg"),
+            alt: "Logo",
+            class: "h-8 w-8"
         }
     }
 }

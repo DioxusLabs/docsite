@@ -1,24 +1,24 @@
 # Dioxus Hot-Reloading Reference
 
-The Dioxus Hot-Reload engine is incredibly powerful and fast. When used properly, it provides the fastest development experience for building apps with Rust.
+The Dioxus Hot-Reload engine is incredibly powerful. When used properly, it provides the fastest development experience for building apps with Rust.
 
 Dioxus 0.5 featured a limited form of hot-reloading, while Dioxus 0.6 drastically improved it. **Dioxus 0.7 introduces experimental Rust hot-reloading**, making it the first Rust framework to support hot-reloading of actual Rust code.
 
 Dioxus provides three forms of hotreloading.
 
-Element hot-reloading:
+*Element hot-reloading:*
 
 ![Element Hot-reloading](/assets/07/dog_app_hotreload.mp4)
 
-Asset hot-reloading:
+*Asset hot-reloading:*
 
 ![Element Hot-reloading](/assets/07/css-hotreload.mp4)
 
-Rust hot-reloading:
+*Rust hot-reloading:*
 
 ![Element Hot-reloading](/assets/07/subsecond-tui.mp4)
 
-We provide this text guide as a resource for the details of hot-reloading. This guide also has an accompanying video as well:
+We provide this text guide as a resource for the details of hot-reloading. This guide has an accompanying video as well:
 
 <iframe style="width: 100%" height="500px" class="centered-overflow" src="https://www.youtube.com/embed/Q4Xzz8OJEoc" title="Dioxus 0.6" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -26,9 +26,8 @@ We provide this text guide as a resource for the details of hot-reloading. This 
 
 RSX hot-reloading is fundamental to the Dioxus development experience. It allows you to modify the structure, styling, and content of your user interface without recompiling your entire application.
 
-### What Can Be Hot-Reloaded
+RSX hot-reload enables you to instantly add, remove, or modify an elements in an `rsx!` block. The RSX parser works both at compile time, and in our devtools, letting DX sidestep recompiling your Rust code entirely.
 
-**Elements and Structure:**
 ```rust
 fn App() -> Element {
     rsx! {
@@ -40,7 +39,6 @@ fn App() -> Element {
 }
 ```
 
-**String Attributes:**
 All string-based attributes support instant hot-reloading:
 ```rust
 fn Button() -> Element {
@@ -58,23 +56,19 @@ fn Button() -> Element {
 }
 ```
 
-**Formatted Strings:**
-Hot-reload supports complex formatted strings anywhere in your RSX:
+Hot-reload supports modifying complex formatted strings anywhere in your RSX. While you cannot instantly hot-reload the interior Rust expressions, you *can* move existing expressions between formatted strings.
+
 ```rust
 fn Counter() -> Element {
     let count = use_signal(|| 0);
 
     rsx! {
         div {
-            // Formatted strings in text content
+            // We can move this `count` variable from here
             "Count: {count}"
 
             button {
-                // Formatted strings in attributes
-                class: "btn-{if count() > 5 { "large" } else { "small" }}",
-                onclick: move |_| count += 1,
-
-                // Formatted strings in button text
+                // ... to here, without a recompile!
                 "Increment ({count})"
             }
         }
@@ -82,37 +76,36 @@ fn Counter() -> Element {
 }
 ```
 
-**Component Properties:**
-You can hot-reload simple Rust expressions passed as component props:
+You can hot-reload simple Rust expressions passed as component props. If the attribute value is a [Rust "literal"](https://doc.rust-lang.org/reference/expressions/literal-expr.html) - a single "token" like a number, boolean, or string - DX will hot-reload it by re-parsing the new attribute and modifying the props.
+
 ```rust
 fn App() -> Element {
     rsx! {
         MyButton {
-            // These simple props can be hot-reloaded
-            text: "Click me",
-            enabled: true,
-            color: "blue"
+            text: "Click me", // try changing the text
+            enabled: true, // try changing true to false!
+            count: 123, // or changing the number value!
         }
     }
 }
 
 #[component]
-fn MyButton(text: String, enabled: bool, color: String) -> Element {
+fn MyButton(text: String, enabled: bool, count: i32, color: String) -> Element {
     rsx! {
-        button { class: "btn-{color}", disabled: !enabled, "{text}" }
+        button { disabled: !enabled, "{text} - {count}" }
     }
 }
 ```
 
-**Nested RSX Blocks:**
-Hot-reloading works inside conditional blocks, loops, and component children:
+Hot-reloading works inside conditional blocks, loops, and component children. Note that the interior *expressions* don't support instant RSX hot-reload, but the interior elements and markup do.
+
 ```rust
 fn TodoList() -> Element {
     let todos = use_signal(|| vec!["Learn Dioxus", "Build an app"]);
 
     rsx! {
         ul {
-            // This entire loop body can be hot-reloaded
+            // We can modify the *body*
             for (i, todo) in todos().iter().enumerate() {
                 li {
                     key: "{i}",
@@ -122,15 +115,15 @@ fn TodoList() -> Element {
             }
         }
 
+        // Conditional blocks bodies are hot-reloadable too
         if todos().len() > 5 {
-            // Conditional blocks are hot-reloadable too
             div { class: "warning", "You have many todos!" }
         }
     }
 }
 ```
 
-### What Requires a Full Rebuild
+## What Requires a Full Rebuild (or a hot-patch!)
 
 While RSX hot-reloading is very capable, some changes still require a full application rebuild:
 
@@ -140,13 +133,7 @@ While RSX hot-reloading is very capable, some changes still require a full appli
 - **Import statements** and module structure
 - **Complex Rust expressions** in attributes that involve function calls
 
-### Performance
-
-RSX hot-reloading is extremely fast:
-- **Sub-second updates** for most changes
-- **Preserves application state** (signals, context, etc.)
-- **Works across all platforms** (web, desktop, mobile)
-- **Batches multiple changes** for efficient updates
+When Rust hotpatching is enabled with the `--hotpatch` flag, DX will modify your app's assembly *in place* and not require a full rebuild. With hotpatching enabled, DX rarely issues full rebuilds. You can manually force a full rebuild of your app at any time by pressing the `r` key with the DX TUI open.
 
 ## Asset Hot-Reload
 
@@ -157,13 +144,10 @@ Asset hot-reloading allows you to modify CSS, images, and other static files wit
 CSS files are automatically watched and hot-reloaded when changed:
 
 ```rust
-// In your Rust code
-static STYLES: Asset = asset!("/assets/main.css");
-
 fn App() -> Element {
     rsx! {
-        document::Stylesheet { href: STYLES }
-
+        // Editing this stylesheet will cause instant updates in the running app
+        Stylesheet { href: asset!("/assets/main.css") }
         div { class: "my-component", "Hello World!" }
     }
 }
@@ -179,82 +163,36 @@ fn App() -> Element {
 }
 ```
 
-### SCSS/Sass Support
-
-SCSS files are automatically compiled and hot-reloaded:
-
-```rust
-static STYLES: Asset = asset!("/assets/styles.scss");
-```
-
-```scss
-// In assets/styles.scss
-$primary-color: #3b82f6;
-
-.button {
-    background: $primary-color;
-
-    &:hover {
-        background: darken($primary-color, 10%);
-    }
-}
-```
+SCSS files are automatically re-compiled on changes and the generated CSS will be hot-reloaded.
 
 ### Image and Static Asset Hot-Reloading
 
 Static assets like images also support hot-reloading:
 
 ```rust
-static LOGO: Asset = asset!("/assets/logo.png");
-
 fn Header() -> Element {
     rsx! {
-        img {
-            src: LOGO,
-            alt: "Logo",
-            class: "logo"
-        }
+        img { src: asset!("/assets/logo.png") }
     }
 }
 ```
 
-When you replace `/assets/logo.png` with a new image, the change appears instantly in your running application.
-
-### Asset Processing
-
-The hot-reload system automatically handles:
-- **CSS minification** and optimization
-- **SCSS compilation** with source maps
-- **Asset hashing** for cache busting
-- **Image optimization** when configured
-- **Cross-platform bundling** for desktop and mobile
+When you edit `/assets/logo.png`, the change appears instantly in your running application.
 
 ### Tailwind CSS Integration
 
-Tailwind CSS works perfectly with hot-reloading:
+When you `serve` your app, DX automatically downloads and starts the Tailwind CLI in the background. If a `tailwind.css` file is detected in the project root, the Tailwind watcher will watch updates to your Rust code and recompile the output `/assets/tailwind.css` file.
 
-1. **Set up Tailwind** with the `@import "tailwindcss"` directive
-2. **Run the Tailwind compiler** with `--watch`
-3. **Use Tailwind classes** in your RSX
-4. **See instant updates** when you modify classes
+![Inline Tailwind](/assets/07/tailwind-inline.mp4)
 
-```rust
-fn Button() -> Element {
-    rsx! {
-        button {
-            // Add/remove/modify these classes for instant updates
-            class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded",
-            "Click me"
-        }
-    }
-}
-```
 
-## Experimental: Rust Hot-Reload
+You can manually customize the Tailwind input and output file locations using the `tailwind_input` and `tailwind_output` configuration fields in your project's Dioxus.toml.
 
-**New in Dioxus 0.7**, you can enable experimental Rust code hot-reloading using the `--hotpatch` flag. This feature is revolutionary - allowing you to modify Rust logic and see changes instantly without rebuilding.
+## Experimental: Rust Hot-patching
 
-### Enabling Rust Hot-Reload
+**New in Dioxus 0.7**, you can enable experimental Rust code hot-reloading using the `--hotpatch` flag. This feature is revolutionary - allowing you to modify Rust logic and see changes without rebuilding.
+
+To use Rust hot-reloading, run `dx serve --hotpatch`. The extra flag is required while hot-patching is still experimental, though we plan to make it default in the future.
 
 ```bash
 # Enable experimental Rust hot-reloading
@@ -265,150 +203,12 @@ dx serve --webview --hotpatch
 dx serve --web --hotpatch
 ```
 
-### What Can Be Hot-Patched
+This system, named **Subsecond**, can reload many most changes to Rust code. However, there are a few limitations:
 
-The "subsecond" hot-patching system can reload many types of Rust code changes:
+- You may add new globals at runtime, but their destructors will never be called.
+- Globals are tracked across patches, but will renames are considered to be new globals.
+- Changes to static initializers will not be observed.
 
-**Function Bodies:**
-```rust
-fn calculate_total(items: &[Item]) -> f64 {
-    // You can modify this logic and see instant updates
-    items.iter()
-        .map(|item| item.price * item.quantity)
-        .sum()
-}
-```
+Also, most importantly, Rust hot-patching currently only tracks the "tip" crate in your project. If you edit code in any of your dependencies - which might be *your* crate in a workspace - DX does •not* register that change. While RSX hot-reloading works across a workspace, Subsecond currently does not.
 
-**Component Logic:**
-```rust
-#[component]
-fn Counter() -> Element {
-    let mut count = use_signal(|| 0);
-
-    // Modify this event handler logic instantly
-    let increment = move |_| {
-        count += 1;
-        // Add logging, validation, etc. without rebuilding
-        println!("Count is now: {}", count());
-    };
-
-    rsx! {
-        button { onclick: increment, "Count: {count}" }
-    }
-}
-```
-
-**Hook Implementations:**
-```rust
-fn use_local_storage(key: &str, default: String) -> Signal<String> {
-    let mut value = use_signal(|| default);
-
-    // Modify hook logic with hot-patching
-    use_effect(move || {
-        // Change storage logic instantly
-        if let Ok(stored) = web_sys::window()
-            .unwrap()
-            .local_storage()
-            .unwrap()
-            .unwrap()
-            .get_item(key)
-        {
-            if let Some(stored) = stored {
-                value.set(stored);
-            }
-        }
-    });
-
-    value
-}
-```
-
-### Platform Support
-
-Rust hot-reloading works on:
-- ✅ **Web** (all browsers)
-- ✅ **Desktop** (Windows, macOS, Linux)
-- ✅ **Mobile Android**
-- ❌ **iOS** (not supported due to platform limitations)
-
-### Performance: "Subsecond" Hot-Reloading
-
-The hot-patching system is incredibly fast:
-- **Under 100ms** for most code changes
-- **Preserves all application state**
-- **No compilation artifacts** to manage
-- **Incremental patching** of only changed functions
-
-### Limitations
-
-While experimental Rust hot-reloading is powerful, it has some current limitations:
-
-**Not Supported:**
-- Changing function signatures
-- Adding/removing struct fields
-- Modifying type definitions
-- Changing macro expansions
-- Adding new dependencies
-
-**Experimental Status:**
-- May not work with all code patterns
-- Could have edge cases or stability issues
-- API may change in future releases
-- Best effort compatibility with different Rust features
-
-### How It Works
-
-The hot-patching system uses advanced techniques:
-
-1. **Binary Analysis** - Analyzes your compiled binary
-2. **Function Isolation** - Identifies hot-patchable functions
-3. **Runtime Patching** - Patches running code in memory
-4. **State Preservation** - Maintains all application state during patches
-
-This makes Dioxus the first major Rust framework to support true hot-reloading of Rust code!
-
-### Tips for Best Results
-
-**Structure for Hot-Reloading:**
-```rust
-// Good: Logic isolated in functions
-fn business_logic(input: &str) -> String {
-    // This entire function can be hot-patched
-    input.to_uppercase()
-}
-
-#[component]
-fn MyComponent(text: String) -> Element {
-    let processed = business_logic(&text);
-
-    rsx! {
-        div { "{processed}" }
-    }
-}
-```
-
-**Avoid Hot-Patch Barriers:**
-```rust
-// Avoid: Complex generic constraints
-fn complex_generic<T: Clone + Debug + Send + 'static>(value: T) -> T {
-    // May not hot-patch reliably
-    value
-}
-
-// Better: Simple, concrete functions
-fn process_string(value: String) -> String {
-    // Hot-patches reliably
-    value.trim().to_string()
-}
-```
-
-### Future Development
-
-The experimental Rust hot-reloading will continue to improve:
-- **Broader compatibility** with Rust language features
-- **Better error handling** and diagnostics
-- **Performance optimizations**
-- **iOS support** when platform allows
-- **Production debugging** capabilities
-
-Try it out with `dx serve --hotpatch` and experience the future of Rust development!
+Subsecond also works outside Dioxus. Many projects have already adopted the Subsecond library for th

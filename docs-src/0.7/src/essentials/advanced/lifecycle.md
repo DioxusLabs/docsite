@@ -15,7 +15,7 @@ DemoFrame {
 
 ## Rerendering
 
-You can use [tracked values](../state/index.md) to re-render your component whenever a value changes.
+You can use tracked values to re-render your component whenever a value changes.
 
 ```rust, no_run
 {{#include ../docs-router/src/doc_examples/component_lifecycle.rs:rerenders}}

@@ -37,33 +37,30 @@
     - [Styling](essentials/ui/styling.md)
     - [Hot-Reload](essentials/ui/hotreload.md)
     - [Escape Hatches](essentials/ui/escape.md)
-  - [Reactivity](essentials/reactivity/index.md)
-    - [Thinking Reactively](essentials/reactivity/reactivity.md)
-    - [Handling Events](essentials/reactivity/event_handlers.md)
-    - [Foundations](essentials/reactivity/foundations.md)
-    - [Using Signals](essentials/reactivity/signals.md)
-    - [Component Lifecycle](essentials/reactivity/lifecycle.md)
-    - [Using Effects](essentials/reactivity/effects.md)
-    - [Maintaing Purity](essentials/reactivity/purity.md)
-    - [Reactive Collections](essentials/reactivity/collections.md)
-  - [Managing State](essentials/state/index.md)
-    - [State is Essential](essentials/state/essential.md)
-    - [Hooks](essentials/state/hooks.md)
-    - [Custom Hooks](essentials/state/custom_hooks.md)
-    - [Local State](essentials/state/state.md)
-    - [Passing State](essentials/state/passing.md)
-    - [Context](essentials/state/context.md)
-    - [Global State](essentials/state/global_state.md)
-    - [Memoization](essentials/state/memoization.md)
-    - [Optimization](essentials/state/optimization.md)
-    - [Error Handling](essentials/state/error_handling.md)
-  - [Async](essentials/async/index.md)
-    - [Crash Course](essentials/async/crash_course.md)
-    - [Spawning Futures](essentials/async/futures.md)
-    - [Async Resources](essentials/async/resources.md)
-    - [Data Fetching](essentials/async/data_fetching.md)
-    - [Suspense](essentials/async/suspense.md)
+  - [The Basics](essentials/basics/index.md)
+    - [Thinking Reactively](essentials/basics/reactivity.md)
+    - [Storing State in Hooks](essentials/basics/hooks.md)
+    - [Reactive Signals](essentials/basics/signals.md)
+    - [User Input](essentials/basics/event_handlers.md)
+    - [Async and Futures](essentials/basics/async.md)
+    - [Data Fetching](essentials/basics/resources.md)
+    - [Hoisting State](essentials/basics/hoisting.md)
+    - [Global Context](essentials/basics/context.md)
+    - [Stores and Collections](essentials/basics/collections.md)
+    - [External State](essentials/basics/external.md)
+    - [Error Handling](essentials/basics/error_handling.md)
+    - [Breaking Out](essentials/basics/breaking_out.md)
+  - [Advanced Reactivity](essentials/advanced/index.md)
+    - [Reactive Context](essentials/advanced/reactivity.md)
+    - [Custom Hooks](essentials/advanced/custom_hooks.md)
+    - [Component Lifecycle](essentials/advanced/lifecycle.md)
+    - [Side Effects](essentials/advanced/effects.md)
+    - [Maintaing Purity](essentials/advanced/purity.md)
+    - [Memoization](essentials/advanced/memoization.md)
+    - [Optimization](essentials/advanced/optimization.md)
+    - [Suspense](essentials/advanced/suspense.md)
   - [Routing](essentials/router/index.md)
+    - [Overview](essentials/router/overview.md)
     - [Defining Routes](essentials/router/routes.md)
     - [Nested Routes](essentials/router/nested-routes.md)
     - [Layouts](essentials/router/layouts.md)
@@ -73,9 +70,10 @@
     - [History Buttons](essentials/router/history-buttons.md)
     - [Routing Update Callback](essentials/router/routing-update-callback.md)
   - [Fullstack](essentials/fullstack/index.md)
+    - [Overview](essentials/fullstack/routes.md)
+  	- [Server Functions](essentials/fullstack/server_functions.md)
     - [Hydration](essentials/fullstack/hydration.md)
     - [Managing Dependencies](essentials/fullstack/managing_dependencies.md)
-  	- [Server Functions](essentials/fullstack/server_functions.md)
   	- [Extractors](essentials/fullstack/extractors.md)
   	- [Middleware](essentials/fullstack/middleware.md)
   	- [Authentication](essentials/fullstack/authentication.md)
@@ -83,7 +81,6 @@
     - [Streaming](essentials/fullstack/streaming.md)
     - [Static Site Generation](essentials/fullstack/static_site_generation.md)
     - [Axum Integration](essentials/fullstack/axum.md)
-  - [Breaking Out](essentials/breaking/index.md)
 
 ---
 
@@ -142,52 +139,3 @@
 - [Beyond](beyond/index.md)
   - [Contributing](beyond/contributing.md)
   - [Project Structure](beyond/project_structure.md)
-
-<!-- - [Guiding Principles](contributing/guiding_principles.md) -->
-<!-- - [SSR](guides/ssr.md) -->
-<!--
-- [Example Router Project](router-example/index.md)
-- [Creating Our First Route](router-example/first-route.md)
-- [Building a Nest](router-example/building-a-nest.md)
-- [Navigation Targets](router-example/navigation-targets.md)
-- [Redirection Perfection](router-example/redirection-perfection.md)
-- [Full Code](router-example/full-code.md) -->
-
-<!-- - [Static Generation](router/reference/static-generation.md) -->
-<!-- - [CLI in Depth](router/reference/cli-in-depth.md)
-	- [SDK](router/reference/sdk.md)
-	- [Fullstack and the server](router/reference/fullstack-and-the-server.md) -->
-
-<!-- - [Walkthrough of Internals](contributing/walkthrough_readme.md) -->
-<!-- Empty file. TODO: Uncomment when the file is finished. - [Governance](contributing/governance.md) -->
-
-<!--
-  - [Liveview](reference/liveview.md)
-  - [Choosing A Web Renderer](reference/choosing_a_web_renderer.md) -->
-
-
-<!-- # Overview / what these guides are for -->
-
-<!-- [Important Hooks - Overview]()
-[Router and managing “pages”]()
-[The “Document” abstraction]()
-[Understanding Hot-Reloading]()
-[CLI in Depth]()
-[SDK]()
-[Fullstack/The server]()
-[WASM]()
-[Desktop]()
-[Mobile]()
-[SDK]()
-[Hosting Options]()
-[Reactivity in way too much depth]()
-[rsx! in way too much depth?]()
-[Building Libraries for Dioxus]()
-[Custom Renderer]()
-[Crates and Compatibility]()
-[Accessibility]() -->
-
-
-<!-- - [Reference](reference/index.md)
-- [Managing State](reference/managing_state.md)
-- [Component Lifecycle](reference/component_lifecycle.md) -->

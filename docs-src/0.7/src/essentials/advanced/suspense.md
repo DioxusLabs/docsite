@@ -1,6 +1,6 @@
 # Suspense
 
-[Resources](./resources.md) let you load data asynchronously in Dioxus, but it can be cumbersome to handle the loading state of each resource individually. Dioxus provides a `SuspenseBoundary` component to group multiple asynchronous tasks and show a loading view while any of them are suspended.
+[Resources](../basics/resources.md) let you load data asynchronously in Dioxus, but it can be cumbersome to handle the loading state of each resource individually. Dioxus provides a `SuspenseBoundary` component to group multiple asynchronous tasks and show a loading view while any of them are suspended.
 
 You can create a `SuspenseBoundary` with a loading closure and children. Then you can call `.suspend()?` on any resource inside the children to pause rendering of that component until the future is finished. The suspense boundary will show the loading view while any of its children are suspended. Once that suspense is resolved, it will show the children again.
 

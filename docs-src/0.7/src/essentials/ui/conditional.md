@@ -4,7 +4,7 @@
 
 Our user interfaces have been quite static so far. However, most apps we build with Dioxus usually contain lots of dynamic content. Our UIs will react to changes in buttons, form inputs, sliders, or external data sources like the network. Dioxus apps generally store this dynamic state in Hooks or Context.
 
-In this chapter, we're not going to dive too deep in how we store this state - future chapters like [Reactivity](../reactivity/index.md) and [Managing State](../state/index.md) cover state in depth.
+In this chapter, we're not going to dive too deep in how we store this state - future chapters cover state in depth.
 
 ## Expressions
 

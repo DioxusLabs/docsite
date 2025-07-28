@@ -18,15 +18,14 @@ Manually creating and modifying UI elements can be tedious and error prone. The 
 
 ## Table of Contents
 
-In the Core Concepts, we cover the four major pillars of UI development:
+In the Core Concepts, we cover three important:
 
 - [Building User Interfaces](./ui/index.md): Constructing UI by assembling text, elements, and components.
-- [Adding Reactivity](./reactivity/index.md): Making our UI interactive, responsive, and efficient.
-- [Managing State](./state/index.md): Structuring our apps to be modular, maintainable, and performant.
-- [Working with Asynchronicity](./async/index.md): Handling long-running tasks, concurrency, and parallelism.
+- [The Basics](./basics/index.md): Making our UI interactive, responsive, and efficient.
+- [Advanced Reactivity](./advanced/index.md): Understanding Reactivity, Component Life-cycle, side effects, and more.
 
 We also cover three major topics which aren't necessarily essential to UI development, but are still essential to building great apps:
 
 - [App Routing](./router/index.md): Adding multiple screens and routes for the users to visit.
 - [Fullstack](./fullstack/index.md): Integrating backend services, server-side-rendering, remote-procedure-calls, and more.
-- [Breaking Out](./breaking/index.md): Tips on how to "escape" the Dioxus framework for advanced functionality.
+- [Breaking Out](./basics/breaking_out.md): Tips on how to "escape" the Dioxus framework for advanced functionality.

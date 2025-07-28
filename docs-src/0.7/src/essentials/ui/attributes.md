@@ -109,7 +109,7 @@ DemoFrame {
 }
 ```
 
-More information about event listeners including how events bubble and how to prevent default behavior can be found later in the [Event Handlers](../reactivity/event_handlers.md) Reactivity section.
+More information about event listeners including how events bubble and how to prevent default behavior can be found later in the [Event Handlers](../basics/event_handlers.md) Reactivity section.
 
 There are a wide range of event listeners available - see the full [HTML list](https://developer.mozilla.org/en-US/docs/Web/Events) for more details.
 

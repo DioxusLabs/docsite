@@ -25,6 +25,10 @@
 
 - [Core Concepts](essentials/overview.md)
   - [Overview](essentials/index.md)
+  - [Setup](essentials/setup/index.md)
+    - [Tooling](essentials/setup/tooling.md)
+    - [Project Structure](essentials/setup/structure.md)
+    - [Cross-platform Configuration](essentials/setup/configuration.md)
   - [Building User Interfaces](essentials/ui/index.md)
     - [Introducing RSX](essentials/ui/rsx.md)
     - [Elements and Text](essentials/ui/elements.md)

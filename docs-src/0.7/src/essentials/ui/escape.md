@@ -27,7 +27,7 @@ rsx! {
 }
 ```
 
-In some cases, an attribute declaration might be missing, or you need to use a custom name. RSX enables this with quote-wrapped attribute names. Simply wrap the name of the custom attribute and pass in any expression that evalutes to `IntoAttributeValue`:
+In some cases, an attribute declaration might be missing, or you need to use a custom name. RSX enables this with quote-wrapped attribute names. Simply wrap the name of the custom attribute with quotes and pass in any expression that evalutes to `IntoAttributeValue`:
 
 ```rust
 rsx! {
@@ -41,9 +41,7 @@ Custom attributes can be extremely handy when using data attributes and custom C
 
 ## Dangerous Inner HTML
 
-If you're working with pre-rendered assets, output from templates, or output from a JS library, then you might want to pass HTML directly instead of going through Dioxus. In these instances, reach for `dangerous_inner_html`.
-
-`dangerous_inner_html` sets the text content of the element to the provided value. This will overwrite any other attributes or children of the element.
+If you're working with pre-rendered assets, output from templates, or output from a JS library, then you might want to pass HTML directly instead of going through Dioxus. In these instances, reach for `dangerous_inner_html`. This attribute sets the HTML `textContent` field of the element to the provided value. This will overwrite any other attributes or children of the element.
 
 For example, shipping a markdown-to-Dioxus converter might significantly bloat your final application size. Instead, you'll want to pre-render your markdown to HTML and then include the HTML directly in your output. We use this approach for the [Dioxus homepage](https://dioxuslabs.com):
 
@@ -63,12 +61,26 @@ DemoFrame {
 
 ## Web Components
 
-While we generally suggest creating new components in Dioxus, some components might be distributed as a [*Web Component*](https://www.webcomponents.org). Web components provide a framework-agnostic way of building and distributing custom HTML elements.
+While we generally suggest creating new components directly in Dioxus, a 3rd-party component might be distributed as a [*Web Component*](https://www.webcomponents.org). Web components provide a framework-agnostic way of building and distributing custom HTML elements.
 
 Any element with a dash in the name is a web component. Web components are rendered directly in dioxus without type checking. Generally, you'll be importing a web component *into* Dioxus. We therefore recommend wrapping web components in a type safe component to make them easier to use.
 
 ```rust, no_run
 {{#include ../docs-router/src/doc_examples/building_uis_with_rsx.rs:web_component}}
+```
+
+Because web components are untyped, they have no default attributes. Each attribute name must be wrapped in quotes, hence why we suggest wrapping the web component in a Dioxus component:
+```rust
+// our dioxus component provides a strongly-typed wrapper around our stringly-typed web component
+#[component]
+fn MyWebComponent(name: String, age: i32) -> Element {
+    rsx! {
+        my-web-component {
+            "name": "hello, {name}",
+            "age": age + 10
+        }
+    }
+}
 ```
 
 ## Direct DOM Access
@@ -164,23 +176,23 @@ For more information, see the [accompanying example](https://github.com/DioxusLa
 
 ## Using Dioxus in Tauri
 
-If you *need* to use the [`web-sys`] crate, even on on desktop and mobile platforms, then [Tauri](https://tauri.app) might be useful for you. Tauri is a framework that lets you combine a custom frontend across an IPC boundary with Rust code running natively. This is somewhat similar to Dioxus, but instead of your UI code running natively, it insteads runs as WebAssembly *inside* the webview. This can be slower and harder to setup, but does enable direct DOM access across all platforms.
+If you *need* to use the `web-sys` crate on desktop and mobile platforms, then [Tauri](https://tauri.app) might be useful for you. Tauri is a framework that lets you combine a custom frontend across an IPC boundary with Rust code running natively. This is somewhat similar to Dioxus, but instead of your UI code running natively, it insteads runs as WebAssembly *inside* the webview. This can be slower and harder to setup, but does enable direct DOM access across all platforms.
 
-Dioxus is supported as a configuration option when creating a new Tauri app, so make sure to check out [their docs as well](https://tauri.app/start/).
+Dioxus-Web is supported as a frontend option when creating a new Tauri app, so make sure to check out [their docs](https://tauri.app/start/).
 
 ## Native Widgets
 
-The first-party Dioxus renderers currently only render HTML and CSS. This is either done via HTMLDomElement with web_sys or through an eval-equivalent for the webview renderers. Sometimes, you want to render a platform-native widgets. Internally, Dioxus uses this to open file dialogs, color pickers, and provide functionality where platform-consistency matters.
+The first-party Dioxus renderers currently only render HTML and CSS. This is either done via `HTMLDomElement` with `web-sys` or through a eval for the webview renderers. Sometimes, you want to render a platform-native widget. Internally, Dioxus uses this to open file dialogs, color pickers, and provide functionality where platform-consistency matters.
 
 ![File Upload Dialog](/assets/07/file-upload.png)
 
-This is somewhat advanced and requires using FFI into Objective-C and Kotlin to use system libraries.
+This is somewhat advanced and requires using FFI into Objective-C and Kotlin to use system libraries. See the [dioxus-desktop docs](https://crates.io/crates/dioxus-desktop) for more info.
 
 ## Dioxus Native
 
 For *complete* control over the DOM, we've built the *Dioxus Native* renderer. This renderer combines platform-native widgets along with a stripped-down HTML/CSS renderer to paint the Dioxus widget tree directly to the screen. Currently, Dioxus Native supports a variety of backends based on the [Vello](https://github.com/linebender/vello) crate.
 
-Dioxus Native is nascent. We specifically built Dioxus-Native to unlock the ability to paint arbitrary GPU textures into canvas elements. Instead of using child windows and overlays, you can directly pump WGPU textures in HTML elements.
+Dioxus Native is nascent. We specifically built Dioxus Native to paint arbitrary GPU textures into canvas elements. Instead of using child windows and overlays, you can directly pump WGPU textures in HTML elements. Likewise, you can embed Dioxus into any existing WGPU application, like a Bevy game.
 
 ![WGPU Native](/assets/07/wgpu-native-overlay.mp4)
 

@@ -52,7 +52,7 @@ We are overhauling the docs for Dioxus 0.7. Here is the current progress:
 ✅     - [Assets](essentials/ui/assets.md)
 ✅     - [Styling](essentials/ui/styling.md)
 ✅     - [Hot-Reload](essentials/ui/hotreload.md)
-❌     - [Escape Hatches](essentials/ui/escape.md)
+✅     - [Escape Hatches](essentials/ui/escape.md)
 
 ❌   - [The Basics](essentials/state/index.md)
 ❌     - [Intro to Reactivity]

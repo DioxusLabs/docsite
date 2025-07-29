@@ -51,10 +51,11 @@ We are overhauling the docs for Dioxus 0.7. Here is the current progress:
 ✅     - [Rendering Lists](essentials/ui/iteration.md)
 ✅     - [Assets](essentials/ui/assets.md)
 ✅     - [Styling](essentials/ui/styling.md)
-❌     - [Hot-Reload](essentials/ui/hotreload.md)
+✅     - [Hot-Reload](essentials/ui/hotreload.md)
 ❌     - [Escape Hatches](essentials/ui/escape.md)
 
 ❌   - [The Basics](essentials/state/index.md)
+❌     - [Intro to Reactivity]
 ❌     - [Storing State in Hooks](essentials/state/hooks.md)
 ❌     - Reactive Signals and reactivity simplified (use_signal + use_memo + use_effect)
 ❌     - User Input and Events (preventDefault, propagation, EventHandler on components, controlled vs uncontrolled)
@@ -62,19 +63,21 @@ We are overhauling the docs for Dioxus 0.7. Here is the current progress:
 ❌     - Fetching? (use_resource, network requests)
 ❌     - Hoisting State and EventHandler?
 ❌     - Context (provide/consume, global_signal)
-❌     - [Stores, Collections, External State](essentials/reactivity/collections.md)
+❌     - [Stores, Collections](essentials/reactivity/collections.md)
+❌     - External State
 ❌     - [Error Handling (+boundaries)](essentials/state/error_handling.md)
 ❌     - The outside world? (sync signals, external callbacks, layout effects, onmounted)
 
-❌   - [Advanced Topics](essentials/reactivity/index.md)
-❌     - [Thinking Reactively](essentials/reactivity/reactivity.md)
-❌     - [Custom Hooks (schedule_update, use_hook, Reactive Context)](essentials/state/custom_hooks.md)
+❌   - [Advanced Reactivity](essentials/reactivity/index.md)
+❌     - [Reactive Context](essentials/reactivity/reactivity.md)
+❌     - [Custom Hooks (schedule_update, use_hook)](essentials/state/custom_hooks.md)
 ❌     - [Component Lifecycle](essentials/reactivity/lifecycle.md)
 ❌     - [Side Effects](essentials/reactivity/effects.md)
 ❌     - [Maintaing Purity](essentials/reactivity/purity.md)
-✅     - [Suspense](essentials/async/suspense.md)
-✅     - [Futures in Depth (+threads/workers)](essentials/async/crash_course.md)
+❌     - [Memoization](essentials/state/memoization.md)
 ❌     - [Optimization](essentials/state/optimization.md)
+❌     - [Suspense](essentials/async/suspense.md)
+❌     - [Futures in Depth (+threads/workers)](essentials/async/crash_course.md)
 
 ❌   - [Routing](essentials/router/index.md)
 ❌     - [Defining Routes](essentials/router/routes.md)
@@ -87,7 +90,6 @@ We are overhauling the docs for Dioxus 0.7. Here is the current progress:
 ✅     - [Routing Update Callback](essentials/router/routing-update-callback.md)
 
 ❌   - [Fullstack](essentials/fullstack/index.md)
-❌     - [Overview](essentials/fullstack/overview.md)
 ✅     - [Hydration](essentials/fullstack/hydration.md)
 ✅     - [Managing Dependencies](essentials/fullstack/managing_dependencies.md)
 ✅   	- [Server Functions](essentials/fullstack/server_functions.md)

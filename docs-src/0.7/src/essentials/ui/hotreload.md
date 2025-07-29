@@ -76,7 +76,7 @@ fn Counter() -> Element {
 }
 ```
 
-You can hot-reload simple Rust expressions passed as component props. If the attribute value is a [Rust "literal"](https://doc.rust-lang.org/reference/expressions/literal-expr.html) - a single "token" like a number, boolean, or string - DX will hot-reload it by re-parsing the new attribute and modifying the props.
+You can hot-reload simple Rust expressions passed as component props. If the attribute value is a [Rust "literal"](https://doc.rust-lang.org/reference/expressions/literal-expr.html) - a single "token" like a number, boolean, or string - DX will hot-reload it by re-parsing the new attribute and modifying the component's props in place.
 
 ```rust
 fn App() -> Element {
@@ -97,7 +97,7 @@ fn MyButton(text: String, enabled: bool, count: i32, color: String) -> Element {
 }
 ```
 
-Hot-reloading works inside conditional blocks, loops, and component children. Note that the interior *expressions* don't support instant RSX hot-reload, but the interior elements and markup do.
+Hot-reloading works inside conditional blocks, loops, and component children. Note that the interior *expressions* don't support instant RSX hot-reload, but the interior *elements* and *markup* do.
 
 ```rust
 fn TodoList() -> Element {
@@ -127,13 +127,36 @@ fn TodoList() -> Element {
 
 While RSX hot-reloading is very capable, some changes still require a full application rebuild:
 
-- **New variables or expressions** not present in the last compilation
-- **Logic changes** outside of RSX (function bodies, hooks, etc.)
-- **Component signatures** (adding/removing props)
-- **Import statements** and module structure
-- **Complex Rust expressions** in attributes that involve function calls
+- **New variables or expressions** not present in the last compilation.
+- **Logic changes** outside of RSX (function bodies, hooks, etc.).
+- **Component signatures** (adding/removing props).
+- **Import statements** and module structure.
+- **Complex Rust expressions** in attributes that involve function calls.
 
 When Rust hotpatching is enabled with the `--hotpatch` flag, DX will modify your app's assembly *in place* and not require a full rebuild. With hotpatching enabled, DX rarely issues full rebuilds. You can manually force a full rebuild of your app at any time by pressing the `r` key with the DX TUI open.
+
+
+## Experimental: Rust Hot-patching
+
+**New in Dioxus 0.7**, you can enable experimental Rust code hot-reloading using the `--hotpatch` flag. This feature is revolutionary - allowing you to modify Rust logic and see changes without rebuilding.
+
+To use Rust hot-reloading, run `dx serve --hotpatch`. The extra flag is required while hot-patching is still experimental, though we plan to make it default in the future.
+
+```bash
+dx serve --hotpatch
+```
+
+This system, named **Subsecond**, can reload most changes to Rust code. However, there are a few limitations:
+
+- You may add new globals at runtime, but their destructors will never be called.
+- Globals are tracked across patches, but will renames are observed as introducing a new global.
+- Changes to static initializers will not be observed.
+
+Also, most importantly, Rust hot-patching currently only tracks the "tip" crate in your project. If you edit code in any of your dependencies - which might be *your* crate in a workspace - DX does *not* register that change. While RSX hot-reloading works across a workspace, Subsecond currently does not.
+
+Subsecond also works outside Dioxus. Many projects have already adopted the Subsecond library for Rust hot-reloading. For example, Bevy and Iced already have Subsecond integrations:
+
+![Bevy Hot-patching](/assets/07/bevy-hotpatch.mp4)
 
 ## Asset Hot-Reload
 
@@ -181,34 +204,8 @@ When you edit `/assets/logo.png`, the change appears instantly in your running a
 
 ### Tailwind CSS Integration
 
-When you `serve` your app, DX automatically downloads and starts the Tailwind CLI in the background. If a `tailwind.css` file is detected in the project root, the Tailwind watcher will watch updates to your Rust code and recompile the output `/assets/tailwind.css` file.
+When you `serve` your app, DX automatically downloads and starts the Tailwind CLI in the background. If a `tailwind.css` file is detected in the project root, the Tailwind watcher will watch your Rust code for changes and then recompile the output `/assets/tailwind.css` file.
 
 ![Inline Tailwind](/assets/07/tailwind-inline.mp4)
 
-
 You can manually customize the Tailwind input and output file locations using the `tailwind_input` and `tailwind_output` configuration fields in your project's Dioxus.toml.
-
-## Experimental: Rust Hot-patching
-
-**New in Dioxus 0.7**, you can enable experimental Rust code hot-reloading using the `--hotpatch` flag. This feature is revolutionary - allowing you to modify Rust logic and see changes without rebuilding.
-
-To use Rust hot-reloading, run `dx serve --hotpatch`. The extra flag is required while hot-patching is still experimental, though we plan to make it default in the future.
-
-```bash
-# Enable experimental Rust hot-reloading
-dx serve --hotpatch
-
-# For specific platforms
-dx serve --webview --hotpatch
-dx serve --web --hotpatch
-```
-
-This system, named **Subsecond**, can reload many most changes to Rust code. However, there are a few limitations:
-
-- You may add new globals at runtime, but their destructors will never be called.
-- Globals are tracked across patches, but will renames are considered to be new globals.
-- Changes to static initializers will not be observed.
-
-Also, most importantly, Rust hot-patching currently only tracks the "tip" crate in your project. If you edit code in any of your dependencies - which might be *your* crate in a workspace - DX does •not* register that change. While RSX hot-reloading works across a workspace, Subsecond currently does not.
-
-Subsecond also works outside Dioxus. Many projects have already adopted the Subsecond library for th

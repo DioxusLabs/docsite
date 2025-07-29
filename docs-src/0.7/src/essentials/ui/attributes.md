@@ -182,6 +182,56 @@ DemoFrame {
 }
 ```
 
+### onresize and onvisible
+
+Dioxus provides two custom HTML attributes *not* found in the HTML specification.
+
+- onresize
+- onvisible
+
+Dioxus automatically constructs a cross-platform `IntersectionObserver` that emits the respective events for you.
+
+With onresize, you can watch for changes to an element's size and position:
+
+```rust
+fn app() -> Element {
+    let mut items = use_signal(|| 100);
+
+    rsx! {
+        // Adding a value will cause the `div` to be re-rendered with an extra div
+        button { onclick: move |_| items += 1, "Add one" }
+
+        div {
+            // This will be called when the `div` is resized
+            onresize: move |data| {
+                info!("resized to {:#?}", data.get_border_box_size().unwrap());
+            },
+
+            for x in 0..items() {
+                div { "{x}" }
+            }
+        }
+    }
+}
+```
+
+With `onvisible`, you can handle the cases when an element enters and exits the viewport. This is useful for implementing things like lazy loading, infinite scrolls, and virtual lists:
+
+```rust
+fn app() -> Element {
+    rsx! {
+        div {
+            onvisible: move |data| info!("visibility changed"),
+            "Hello world!"
+        }
+    }
+}
+```
+
+You can add rich scroll-aware animations to your app without needing to write custom JavaScript.
+
+![gif_of_visible_working.mp4](/assets/06assets/onvisible.mp4)
+
 ### Custom Attributes
 
 Dioxus has a pre-configured set of attributes that you can use that are validated at compile time. You can use a custom attribute name surrounded in quotes to add an attribute outside of the pre-defined set:

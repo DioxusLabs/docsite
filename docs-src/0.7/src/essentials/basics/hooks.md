@@ -176,6 +176,6 @@ rsx! {
 }
 ```
 
-In practice, you should never need to build state management primitives yourself. We provide this examples to help you understand how they work.
+In practice, you should never need to build state management primitives yourself. We provide these examples to help you understand how they work.
 
 When building your own apps, you should prefer Signals which are covered next.

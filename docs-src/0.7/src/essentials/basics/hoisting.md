@@ -37,7 +37,7 @@ As you create signals and derived state in your app, you will need to move aroun
 
 ### Passing props
 
-You can pass your values through component [props](../../reference/component_props.md). This should be your default when passing around state. It is the most explicit and local to your component. Use this until it gets annoying to pass around the value:
+You can pass your values through component [props](../ui/components.md). This should be your default when passing around state. It is the most explicit and local to your component. Use this until it gets annoying to pass around the value:
 
 ```rust
 {{#include ../docs-router/src/doc_examples/untested_06/moving_state_around.rs:PassingProps}}

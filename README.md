@@ -57,7 +57,8 @@ We are overhauling the docs for Dioxus 0.7. Here is the current progress:
 ❌   - [The Basics](essentials/state/index.md)
 ✅     - [Intro to Reactivity]
 ✅     - [Storing State in Hooks](essentials/state/hooks.md)
-❌     - Reactive Signals (use_signal + use_memo + use_effect)
+✅     - Reactive Signals use_signal
+❌     - Effects and Memos (use_memo + use_effect)
 ❌     - User Input and Events
 ✅     - Futures (crash-course (lite), loop/spawn, onclick: move |_| async {})
 ✅     - Fetching? (use_resource, network requests)

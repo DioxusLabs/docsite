@@ -12,6 +12,8 @@ The first fundamental pillar of reactivity: data flows down. As our apps grow in
 
 To make our apps interactive, we follow a similar pattern. Components provide two items: *values* and *functions* to modify those values. These items are passed *down* the tree as properties. Dioxus does not provide a way for child components to "reach up" and modify the state of a parent.
 
+The functions we pass down tree are free to mutate state in the *current* component. However, children cannot modify their parent's state directly. This ensures all mutations happen to state are defined in the same scope as the state itself, making it easier to reason about our app's state at scale.
+
 ![Reactivity Tree](/assets/07/reactivity-tree.png)
 
 ## Values are Tracked

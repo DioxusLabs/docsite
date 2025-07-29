@@ -115,7 +115,7 @@ The simplest reactive scope is a component. During a component render, component
 let mut name = use_signal(|| "abc".to_string());
 
 rsx! {
-    // An obvious call to `.read()`
+    // An explicit call to `.read()`
     {name.read().to_string()}
 
     // An implicit call via `Display`
@@ -143,6 +143,10 @@ rsx! {
 }
 ```
 
+Calls to `.read()` access the current reactive scope, adding this scope to the list of subscribers to the Signal. By default, components attach a re-render effect to all signals accessed from witin their reactive scope.
+
+![Component effects](/assets/07/component-effect.png)
+
 There are other uses of reactive scopes beyond component re-renders. Hooks like `use_effect`, `use_memo`, and `use_resource` all implement functionality by leveraging a reactive scope that exists *outside* the rendering lifecycle.
 
 ## Automatic Batching
@@ -150,8 +154,8 @@ There are other uses of reactive scopes beyond component re-renders. Hooks like 
 By default, all `.write()` calls are batched in one "step" of your app. Dioxus does not synchronously run side-effects when you call `.write()`. Instead, it waits for all events to be handled first before determining what side-effects need to be run. This provides automatic batching of `.write()` calls which is important both for performance and consistency in the UI.
 
 For example, by batching `.write()` calls, we ensure that our UI always display one of two states:
-- "loading?: false -> Complete"
-- "loading?: true -> Loading"
+- **"loading?: false -> Complete"**
+- **"loading?: true -> Loading"**
 
 ```rust
 let mut loading = use_signal(|| false);
@@ -174,60 +178,6 @@ rsx! {
 ```
 
 Dioxus uses `await` boundaries as barriers between steps. If state is modified during a step, Dioxus prefers to paint the new UI first before polling additional futures. This ensures changes are flushed as fast as possible and pending states aren't missed.
-
-## Opting Out of Subscriptions
-
-In some situations, you may need to read a reactive value without subscribing to it. You can use the `peek` method to get a reference to the inner value without registering the value as a dependency of the current reactive context:
-
-```rust
-{{#include ../docs-router/src/doc_examples/untested_06/reactivity.rs:peek}}
-```
-
-```inject-dioxus
-DemoFrame {
-    reactivity::PeekDemo {}
-}
-```
-
-## Working with Untracked State
-
-Most of the state in your app will be tracked values. All built in hooks return tracked values, and we encourage custom hooks to do the same. However, there are times when you need to work with untracked state. For example, you may receive a raw untracked value in props. When you read an untracked value inside a reactive context, it will not subscribe to the value:
-
-```rust
-{{#include ../docs-router/src/doc_examples/untested_06/reactivity.rs:non_reactive}}
-```
-
-```inject-dioxus
-DemoFrame {
-    reactivity::NonReactiveDemo {}
-}
-```
-
-You can start tracking raw state with the `use_reactive` hook. This hook takes a tuple of dependencies and returns a reactive closure. When the closure is called in a reactive context, it will track subscribe to the dependencies and rerun the closure when the dependencies change.
-
-```rust
-{{#include ../docs-router/src/doc_examples/untested_06/reactivity.rs:use_reactive}}
-```
-
-```inject-dioxus
-DemoFrame {
-    reactivity::UseReactiveDemo {}
-}
-```
-
-## Making Props Reactive
-
-To avoid losing reactivity with props, we recommend you wrap any props you want to track in a `ReadOnlySignal`. Dioxus will automatically convert `T` into `ReadOnlySignal<T>` when you pass props to the component. This will ensure your props are tracked and rerun any state you derive in the component:
-
-```rust
-{{#include ../docs-router/src/doc_examples/untested_06/reactivity.rs:making_props_reactive}}
-```
-
-```inject-dioxus
-DemoFrame {
-    reactivity::MakingPropsReactiveDemo {}
-}
-```
 
 ## Signals are Borrowed at Runtime
 
@@ -374,11 +324,11 @@ The Signal type is built on `GenerationalBox`. Whenever you call `use_signal`, w
 - Call `Signal::new()`
 - Register `signal.dispose()` on the component's `on_drop`
 
-Whenever a component is unmounted, its hooks are *dropped*. When you create Signals in a component, each Signal is registered with a Signal "owner" on that component. When the component is unmounted, the owner drops, and in its Drop implementation, it calls `.dispose()` on all Signals that were created in its scope.
+Whenever a component is unmounted, its hooks are dropped. When you create Signals in a component, each Signal is registered with a Signal "owner" on that component. When the component is unmounted, the owner drops, and in its `Drop` implementation, it calls `.dispose()` on all Signals that were created in its scope.
 
 Effectively, we connected the `.dispose()` method of the Signals to the unmount of the component.
 
-Because the Signal is disposed when the component unmounts, reading it will cause a runtime panic. This very rarely happens in practice, but *is* possible if you "save" the signal in a component higher up the tree. Doing so would violate the one-way-data flow pillar of reactivity, but is technically possible.
+Because the Signal is disposed when the component unmounts, reading it after will cause a runtime panic. This very rarely happens in practice, but *is* possible if you "save" the signal in a component higher up the tree. Doing so would violate the one-way-data flow pillar of reactivity, but is technically possible.
 
 ![Concurrent Access](/assets/07/use-after-free.png)
 
@@ -402,3 +352,9 @@ rsx! {
 
 When mapping Signals or creating them on-the-fly, it's best to prefer the built-in methods and reactive collections.
 
+
+## Effects, Memos, and More
+
+Signals are just one piece of the Dioxus reactivity system. Hooks like `use_effect` and `use_memo` are able to isolate their reactive scopes to just callbacks and futures. This means `.read()` and `.write()` in these scopes won't queue re-render side-effects in their containing component.
+
+We cover these hooks in more depth in the [next chapter](./effects.md).

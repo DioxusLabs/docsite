@@ -1,6 +1,85 @@
-# Asynchronous State with `use_resource`
+# Data Fetching
 
-The [`use_resource`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_resource.html) can be used to derive asynchronous state. It takes an async closure to calculate the state and returns a tracked value with the current state of the future. Any time a dependency of the resource changes, the resource will rerun:
+One of the most common asynchronous operations in applications is making network requests. This guide will cover how to fetch data in Dioxus, how to avoid waterfalls, and using libraries to manage caching and invalidating requests.
+
+The hooks and techniques we cover here are built on top of the Future and Signal primitives.
+
+## Library Dependencies
+
+While Dioxus does not provide a built-in HTTP client, you can use the popular [reqwest](https://docs.rs/reqwest/latest/reqwest/) library to make asynchronous network requests. We will be using the reqwest library throughout the examples in this page. Before we start, make sure to add the `reqwest` and `serde` libraries to your `Cargo.toml`:
+
+```sh
+cargo add reqwest --features json
+cargo add serde --features derive
+```
+
+Your Cargo.toml should have the reqwest and serde libraries:
+```toml
+[dependencies]
+# .... dioxus and other dependencies
+reqwest = { version = "*", features = ["json"] }
+serde = { version = "1", features = ["derive"] }
+```
+
+We are planning on eventually integrating a library like [dioxus-query](https://crates.io/crates/dioxus-query) directly into Dioxus for better integration with the app router.
+
+## Requests from Event Handlers
+
+The simplest way to request data is simply by attaching an async closure to an EventHandler.
+
+```rust
+let mut img_src = use_signal(|| "image.png".to_string());
+
+let mut fetch_new = move |_| async move {
+    let response = reqwest::get("https://dog.ceo/api/breeds/image/random")
+        .await
+        .unwrap()
+        .json::<DogApi>()
+        .await
+        .unwrap();
+
+    img_src.set(response.message);
+};
+
+rsx! {
+    img { src: img_src }
+    button { onclick: fetch_neq, "Fetch a new dog!" }
+}
+```
+
+Whenever the user clicks the button, the `fetch_new` closure is fired, a new Future is spawned, and the network request is made. When the response is complete, we set `img_src` to the return value.
+
+Unfortunately, data fetching is not always quite this simple. If the user rapidly presses the fetch button, multiple requests will be made simultaneously, and the image source will overwritten multiple times. To mitigate this, we can add a "loading" Signal to prevent multiple requests:
+
+```rust
+let mut img_src = use_signal(|| "image.png".to_string());
+let mut loading = use_signal(|| false);
+
+let mut fetch_new = move |_| async move {
+    if loading() {
+        return;
+    }
+
+    loading.set(true);
+    let response = reqwest::get("https://dog.ceo/api/breeds/image/random")
+        .await
+        .unwrap()
+        .json::<DogApi>()
+        .await
+        .unwrap();
+
+    img_src.set(response.message);
+    loading.set(false);
+};
+
+// ...
+```
+
+Manually handling edge cases of data loading can be tedious, so we've built a more general solution for futures with `use_resource`.
+
+## Asynchronous State with `use_resource`
+
+The [`use_resource`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_resource.html) hook can be used to *derive* asynchronous state. This function accepts an async closure that returns a Future. As the future is polled, `use_resource` tracks `.read()` calls of any contained Signals. If another action calls `.write()` on the tracked signals, the `use_resource` immediately restarts.
 
 ```rust
 {{#include ../docs-router/src/doc_examples/asynchronous.rs:use_resource}}
@@ -12,7 +91,7 @@ DemoFrame {
 }
 ```
 
-The `use_resource` hook might look similar to the `use_memo` hook, but unlike `use_memo`, the resource's output is not memoized with `PartialEq`. That means any components/reactive hooks that read the output will rerun if the future reruns even if the value it returns is the same:
+The `use_resource` hook might look similar to the `use_memo` hook. Unlike `use_memo`, the resource's output is not memoized with `PartialEq`. That means any components/reactive hooks that read the output will rerun if the future reruns even if the value it returns is the same:
 
 ```rust
 {{#include ../docs-router/src/doc_examples/asynchronous.rs:use_resource_memo}}
@@ -50,23 +129,9 @@ DemoFrame {
 >
 > Async methods will often mention if they are cancel safe in their documentation.
 
+## Network Requests with `use_resource`
 
-# Data Fetching
-
-One of the most common asynchronous operations in applications is making network requests. This guide will cover how fetch data in dioxus, how to avoid waterfalls, and using libraries to manage caching and invalidating requests.
-
-## Dependencies
-
-While dioxus does not provide a built-in HTTP client, you can use the popular [reqwest](https://docs.rs/reqwest/latest/reqwest/) library to make asynchronous network requests. We will be using the reqwest library throughout the examples in this page. Before we start, make sure to add the `reqwest` and `serde` libraries to your `Cargo.toml`:
-
-```sh
-cargo add reqwest --features json
-cargo add serde --features derive
-```
-
-## Requests with `use_resource`
-
-The easiest way to fetch data in dioxus is inside a [`use_resource`](./resources.md) hook. The async closure you pass to `use_resource` will be called when the component is created, and will automatically rerun when the dependencies change. For example, we can fetch a dog from the Dog API like this:
+The `use_resource` hook is extremely useful for making a network request. For example, we can fetch a dog from the Dog API:
 
 ```rust
 {{#include ../docs-router/src/doc_examples/data_fetching.rs:fetch_resource}}
@@ -78,7 +143,7 @@ DemoFrame {
 }
 ```
 
-Most requests will depend on state in your application. `use_resource` is reactive so it will automatically rerun when the dependencies change. For example, if we read the breed signal inside of the resource, the resource will rerun whenever the breed changes:
+Most requests will depend on state in your application. Because `use_resource` is reactive, it will automatically rerun when the dependencies change. For example, if we read the breed signal inside of the resource, the resource will rerun whenever the breed changes:
 
 ```rust
 {{#include ../docs-router/src/doc_examples/data_fetching.rs:fetch_resource_reactive}}
@@ -112,6 +177,12 @@ We can avoid this issue by moving all of the early returns after the data fetchi
 
 ![no waterfall effect](/assets/07/no_waterfall_effect.png)
 
+## Organizing Data Fetching
+
+While it might be tempting to place `use_resource` calls *everywhere* in your app, we strongly recommend limiting yourself to just a few sources of data fetching. It is generally easier to reason about centralized loading states rather than many fragmented sources.
+
+As we add more sources of data fetching, we also add a larger combination of loading states. If possible, it's better to load a users's "name" and "id" in *one* request, rather than two.
+
 ## Libraries for Data Fetching
 
-`use_resource` is a great way to fetch data in dioxus, but it can be cumbersome to manage complex data fetching scenarios. Libraries like [dioxus query](https://docs.rs/dioxus-query/latest/dioxus_query/) provide more advanced features for data fetching, such as caching, invalidation, and polling. We won't cover the api of these libraries in detail here, but you can check out the [dioxus awesome](https://dioxuslabs.com/awesome/) list for more libraries that can help you with data fetching.
+`use_resource` is a great way to fetch data in dioxus, but it can be cumbersome to manage complex data fetching scenarios. Libraries like [Dioxus query](https://docs.rs/dioxus-query/latest/dioxus_query/) provide more advanced features for data fetching, such as caching, invalidation, and polling. We won't cover the api of these libraries in detail here, but you can check out the [dioxus awesome](https://dioxuslabs.com/awesome/) list for more libraries that can help you with data fetching.

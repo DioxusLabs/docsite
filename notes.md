@@ -11,6 +11,7 @@ things we don't talk about but we should
 - maybe: "phases" of the virtualdom (spawn vs effect)
 - preventDefault async vs sync
 - reducer pattern?
+- document listeners
 
 things we should build/do
 - stores

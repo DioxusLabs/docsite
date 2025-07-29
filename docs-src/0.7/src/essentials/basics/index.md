@@ -4,7 +4,5 @@
 - when the state changes, dioxus re-renders your component
 
 
-## Getting Reactivity Right
-
 
 ## Table of Contents

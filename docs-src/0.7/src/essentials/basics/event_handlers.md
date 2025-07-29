@@ -1,8 +1,8 @@
-# Event Handlers
+# User Input and Event Handlers
 
 Event handlers are used to respond to user actions. For example, an event handler could be triggered when the user clicks, scrolls, moves the mouse, or types a character.
 
-Event handlers are attached to elements. For example, we usually don't care about all the clicks that happen within an app, only those on a particular button.
+Event handlers are attached to specific elements. Usually, we don't care about *all* the clicks that happen within an app, only those on a particular button.
 
 Event handlers are similar to regular attributes, but their name usually starts with `on`- and they accept closures as values. The closure will be called whenever the event it listens for is triggered and will be passed that event.
 
@@ -17,6 +17,16 @@ DemoFrame {
 }
 ```
 
+## Setting State
+
+
+
+## Handling Common Events
+
+- onclick
+- oninput
+
+
 ## The Event object
 
 Event handlers receive an [`Event`](https://docs.rs/dioxus-core/latest/dioxus_core/struct.Event.html) object containing information about the event. Different types of events contain different types of data. For example, mouse-related events contain [`MouseData`](https://docs.rs/dioxus/latest/dioxus/events/struct.MouseData.html), which tells you things like where the mouse was clicked and what mouse buttons were used.
@@ -30,7 +40,7 @@ Clicked! Event: UiEvent { bubble_state: Cell { value: true }, data: MouseData { 
 
 To learn what the different event types for HTML provide, read the [events module docs](https://docs.rs/dioxus-html/latest/dioxus_html/events/index.html).
 
-### Event propagation
+## Event propagation
 
 Some events will trigger first on the element the event originated at upward. For example, a click event on a `button` inside a `div` would first trigger the button's event listener and then the div's event listener.
 

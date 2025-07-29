@@ -2,11 +2,11 @@
 
 In Dioxus, your app's UI is defined as a function of its current state. As the state changes, the components and effects that depend on that state will automatically re-run. Reactivity automatically *tracks* state and *derives* new state, making it easy to build large applications that are efficient and simple to reason about.
 
-Dioxus combines the various primitives we've covered into a single source of mutable state: the Signal.
+Dioxus provides a single source of mutable state: the **Signal**.
 
 ## State with Signals
 
-In Dioxus, mutable state is stored in Signals. Signals are *tracked* values that automatically update *reactive contexts* that watch them. They are the source of state from which all other state is derived from. Signals are often modified directly by event handlers in response to user input or asynchronously in futures.
+In Dioxus, mutable state is stored in Signals. Signals are *tracked* values that automatically update *reactive contexts* that watch them. They are the source of state from which all other state is derived from. Signals are modified directly by event handlers in response to user input or asynchronously in futures.
 
 You can create a signal with the `use_signal` hook:
 
@@ -30,6 +30,9 @@ let name = use_signal(|| "Bob".to_string());
 
 // Call the signal like a function
 let inner = name();
+
+// Or use `.cloned()`
+let inner = name.cloned();
 ```
 
 Finally, you can set the value of the signal with the `.set()` method or get a mutable reference to the inner value with the `.write()` method:
@@ -38,7 +41,7 @@ Finally, you can set the value of the signal with the `.set()` method or get a m
 {{#include ../docs-router/src/doc_examples/untested_06/reactivity.rs:signal_write}}
 ```
 
-A simple component that uses `.read()` and `.write()` to update its own state with signals:
+A simple component that uses `.read()` and `.write()` to update its own state with signals may look like:
 
 ```rust
 fn Demo() -> Element {
@@ -49,12 +52,14 @@ fn Demo() -> Element {
 
     rsx! {
         button {
-            onclick: move |_| count.set(current + 1),
+            onclick: move |_| *count.write() = current,
             "Increment ({current})"
         }
     }
 }
 ```
+
+When assigning values to a `.write()` call, note that we use the [*dereference operator*](https://doc.rust-lang.org/std/ops/trait.DerefMut.html) which let's us write a value directly into the mutable reference.
 
 ## Ergonomic Methods on Signals
 
@@ -98,7 +103,7 @@ fn app() -> Element {
 }
 ```
 
-You'll generally want to use the extension methods unless the inner state does *not* implement the required traits. There are several methods available *not* listed here, so peruse the docs reference for more information.
+You'll generally want to use the extension methods unless the inner state does *not* implement the required traits. There are several methods available not listed here, so peruse the docs reference for more information.
 
 ## Reactive Scopes
 
@@ -142,11 +147,11 @@ There are other uses of reactive scopes beyond component re-renders. Hooks like 
 
 ## Automatic Batching
 
-By default, all `.write()` calls are batched in one "step" of your app. Dioxus does not synchronously run side-effects when you call `.write()`. Instead, it waits for all events to be handled before first determining what side-effects need to be run. This provides automatic batching of `.write()` calls which is important both for performance and consistency in the UI.
+By default, all `.write()` calls are batched in one "step" of your app. Dioxus does not synchronously run side-effects when you call `.write()`. Instead, it waits for all events to be handled first before determining what side-effects need to be run. This provides automatic batching of `.write()` calls which is important both for performance and consistency in the UI.
 
 For example, by batching `.write()` calls, we ensure that our UI always display one of two states:
-- "false -> Complete"
-- "true -> Loading"
+- "loading?: false -> Complete"
+- "loading?: true -> Loading"
 
 ```rust
 let mut loading = use_signal(|| false);
@@ -163,85 +168,24 @@ rsx! {
             text.set("Complete!");
             loading.set(false);
         },
-        "{loading:?} -> {text}"
+        "loading?: {loading:?} -> {text}"
     }
 }
 ```
 
-Dioxus uses `await` boundaries as barriers between steps. If state is modified during a step, Dioxus prefers to paint the new UI first before polling additional more futures. This ensures changes are flushed as fast as possible and pending states aren't missed.
+Dioxus uses `await` boundaries as barriers between steps. If state is modified during a step, Dioxus prefers to paint the new UI first before polling additional futures. This ensures changes are flushed as fast as possible and pending states aren't missed.
 
-## Derived State with Memo
+## Opting Out of Subscriptions
 
-`use_memo` is a reactive primitive that lets you derive state from any tracked value. It takes a closure that computes the new state and returns a tracked value with the current state of the memo. Any time a dependency of the memo changes, the memo will rerun.
-
-The value you return from the closure will only change when the output of the closure changes (`PartialEq` between the old and new value returns false).
+In some situations, you may need to read a reactive value without subscribing to it. You can use the `peek` method to get a reference to the inner value without registering the value as a dependency of the current reactive context:
 
 ```rust
-{{#include ../docs-router/src/doc_examples/untested_06/reactivity.rs:memo}}
+{{#include ../docs-router/src/doc_examples/untested_06/reactivity.rs:peek}}
 ```
 
 ```inject-dioxus
 DemoFrame {
-    reactivity::MemoDemo {}
-}
-```
-
-This can be useful to perform expensive computations outside the component's reactive scope, preventing re-renders when the inputs change. By performing our computation *inside* the memo, we prevent the component from re-rendering when either `loading` or `loading_text` changes. Instead, the component will only re-render when the computed memo value changes.
-
-```rust
-let mut loading = use_signal(|| false);
-let mut loading_text = use_signal(|| "loading".to_string());
-
-let subheading = use_memo(move || {
-    if load() && load_text() == "loading" {
-        return "The state is loading"
-    };
-
-    "The state is not loading"
-});
-
-
-rsx! {
-    h1 { "{subheading}" }
-}
-```
-
-## Derived Elements
-
-The `use_memo` hook is particularly powerful. In addition to primitive values, it can even memoize `Element` objects! We can break up large components into a series of smaller memos for a performance boost.
-
-In practice, you won't need to frequently use Element memoization, but it can be useful in some cases. Most commonly, we can transform the result of some expensive computation directly into an Element without needing to store the intermediate vlaue
-
-```rust
-let mut loading_text = use_signal(|| "loading".to_string());
-
-let loading_ui = use_memo(move || {
-    let num_chars = loading_text.read().chars().count();
-    rsx! { "there are {num_chars} characters!" }
-});
-
-rsx! {
-    h1 { "Demo" }
-    {loading_ui}
-}
-```
-
-Astute readers will recognize that memoized UI and components are essentially the same concept - components are simply functions of memoized state that return an Element.
-
-## Running Side-effects
-
-The simplest reactive primitive in Dioxus is the `use_effect` hook. It creates a closure that is run any time a tracked value that is run inside the closure changes.
-
-
-Any value you read inside the closure will become a dependency of the effect. If the value changes, the effect will rerun.
-
-```rust
-{{#include ../docs-router/src/doc_examples/untested_06/reactivity.rs:effect}}
-```
-
-```inject-dioxus
-DemoFrame {
-    reactivity::EffectDemo {}
+    reactivity::PeekDemo {}
 }
 ```
 
@@ -271,20 +215,6 @@ DemoFrame {
 }
 ```
 
-## Opting Out of Subscriptions
-
-In some situations, you may need to read a reactive value without subscribing to it. You can use the `peek` method to get a reference to the inner value without registering the value as a dependency of the current reactive context:
-
-```rust
-{{#include ../docs-router/src/doc_examples/untested_06/reactivity.rs:peek}}
-```
-
-```inject-dioxus
-DemoFrame {
-    reactivity::PeekDemo {}
-}
-```
-
 ## Making Props Reactive
 
 To avoid losing reactivity with props, we recommend you wrap any props you want to track in a `ReadOnlySignal`. Dioxus will automatically convert `T` into `ReadOnlySignal<T>` when you pass props to the component. This will ensure your props are tracked and rerun any state you derive in the component:
@@ -298,4 +228,177 @@ DemoFrame {
     reactivity::MakingPropsReactiveDemo {}
 }
 ```
+
+## Signals are Borrowed at Runtime
+
+In Rust, the `&T` and `&mut T` reference types statically assert that the underlying value is either immutable or mutable *at compile time*. This assertion brings a number of guarantees, enabling Rust to generate fast and correct code.
+
+Unfortunately, these static assertions do not mix well with asynchronous background tasks. If our `onclick` handler spawns a long-running Future that captures an `&mut T`, we can not safely handle any *other* events until that Future completes:
+
+![Mutability Over Time](/assets/07/mutable-diagram.png)
+
+At times, our UIs can be very concurrent. There *are* ways to re-orient how we concurrently access state that are compatible with Rust's static mutablity assertions - unfortunately, they are not easy to program.
+
+Instead, Signals provide a `.write()` method that checks *at runtime* if the value is safe to access. If you're not careful, you can combine a `.read()` and a `.write()` in the same scope, leading to a runtime borrow failure (panic).
+
+This is most frequently encountered when holding `.read()` or `.write()` refs across await points:
+
+```rust
+let mut state = use_signal(|| 0);
+
+rsx! {
+    button {
+        // Clicking this buttom quickly will cause multiple `.write()` calls to be active
+        onclick: move |_| async move {
+            let mut writer = state.write();
+            sleep(Duration::from_millis(1000)).await;
+            *writer = 10;
+        }
+    }
+}
+```
+
+With the right clippy lints, this code fails linting because the `writer` type should not be held across an await point.
+
+Thankfully, Signals guard against the "trivial" case because the `.write()` method takes an `&mut Signal`. While the `.write()` guard is active in a scope (block), no other `.read()` or `.write()` guards can be held:
+
+```rust, no_run
+let mut state = use_signal(|| 0);
+
+rsx! {
+    button {
+        // rust prevents this code from compiling since `.write()` takes `&mut T`
+        onclick: move |_| {
+            let cur = state.read();
+            *state.write() = *cur + 1;
+        }
+    }
+}
+```
+
+We get a very nice error from the Rust compiler explaining why this code does not compile:
+
+```text
+error[E0502]: cannot borrow `state` as mutable because it is also borrowed as immutable
+  --> examples/readme.rs:22:18
+   |
+21 |                 let cur = state.read();
+   |                           ----- immutable borrow occurs here
+22 |                 *state.write() = *cur + 1;
+   |                  ^^^^^^^^^^^^^ mutable borrow occurs here
+23 |             }
+   |             - immutable borrow might be used here, when `cur` is dropped and runs the destructor for type `GenerationalRef<Ref<'_, i32>>`
+```
+
+If we *do* want to read and write in the same scope, we need to stage our operations in the correct order such that the `.read()` and `.write()` guards do not overlap. Usually, this is done by deriving an owned value from the `.read()` operation to be used in the `.write()` operation.
+
+```rust
+let cur = state.read().clone(); // calling `.clone()` releases the `.read()` guard immediately.
+*state.write() = *cur + 1;
+```
+
+Note that Rust automatically drops items *at the end* of a scope, unless they are manually dropped sooner. We can use the `.read()` guard provided it's dropped before `.write()` is called.
+
+This is done either by creating a new, smaller scope to access the `.read()` guard -
+```rust
+// The .read() guard is only alive for a shorter scope
+let next = {
+    let cur = state.read();
+    println!("{cur}");
+    cur.clone() + 1
+};
+
+// we can assign `state` to `next` since `next` is not referencing `.read()`.
+*state.write() = next;
+```
+
+or, simply by calling `drop()` on the guard
+```rust
+let cur1 = state.read();
+let cur2 = *cur1 + 1;
+drop(cur1); // dropping early asserts we can `.write()` the signal safely
+*state.write() = cur2 + 1;
+```
+
+While this might seem scary or error prone, you will *very rarely* run into these issues when building apps. The `.read()` and `.write()` guards respect Rust's ownership rules within a given scope and concurrent scopes are protected by the [Clippy `await_holding_refcell_ref` lint](https://rust-lang.github.io/rust-clippy/master/index.html#await_holding_refcell_ref).
+
+
+## Signals implement `Copy`
+
+If you've used Rust to build other projects - like a webserver or a command line tool - you might have encountered situations with closures, threads, and async tasks that required an `Arc` or `Rc` to satisfy the borrow checker.
+
+![Concurrent Access](/assets/07/concurrent-arc.png)
+
+If our data is used in parallel across several threads, or even just held in a callback for future use, we might need to wrap it in an `Arc` or `Rc` smart pointer and `.clone()` it. This can lead to cumbersome code where we constantly need to call `.clone()` to share data into callbacks and async tasks.
+
+```rust
+let state = Arc::new(123);
+
+// thread 1
+std::thread::spawn({
+    let state = state.clone();
+    move |_| println!("{state:?}"),
+})
+
+// thread 2
+std::thread::spawn({
+    let state = state.clone();
+    move |_| println!("{state:?}"),
+})
+```
+
+Unfortunately, UI code constantly encounters this problem - **this is why Rust does not have a great reputation for building GUI apps**!
+
+To solve this, we built the [generational-box crate](https://crates.io/crates/generational-box) that provides a [`GenerationalBox`] type that implements [Rust's `Copy` trait](https://doc.rust-lang.org/std/marker/trait.Copy.html). The `Copy` trait is very important: Rust automatically copies `Copy` types (when needed) on boundaries of scopes.
+
+```rust
+let state = GenerationalBox::new(123);
+
+// the `move` keyword automatically copies the GenerationalBox!
+std::thread::spawn(move |_| println!("{state:?}"));
+
+// we can easily share across threads with no `.clone()` noise
+std::thread::spawn(move |_| println!("{state:?}"));
+```
+
+Instead of copying the underlying value, the `GenerationalBox` simply copies a *handle* to the value. This handle is essentially a smart pointer verified at runtime. Accessing the contents of a signal is not as efficient as reading a pointer directly - there is an extra pointer indirection and lock check - but we don't expect most code to be bottlenecked by reading `GenerationalBox` contents.
+
+Dioxus Signals are built directly on top of `GenerationalBox`. They share the same `Copy` semantics and ergonomics, but with the same tradeoffs.
+
+## Signals are Disposed
+
+Signals implementing `Copy` is a huge win for ergonomics. However, there is a tradeoff. The `GenerationalBox` type does not have automatic [RAII](https://doc.rust-lang.org/rust-by-example/scope/raii.html) support. This means when a `GenerationalBox` is dropped, its resources are **not immediately cleaned up**. It can be tricky to correctly use `GenerationalBox` directly. Dioxus handles the *resource* lifecycle cleaning up resources using the *component* lifecycle.
+
+The Signal type is built on `GenerationalBox`. Whenever you call `use_signal`, we automatically:
+
+- Call `Signal::new()`
+- Register `signal.dispose()` on the component's `on_drop`
+
+Whenever a component is unmounted, its hooks are *dropped*. When you create Signals in a component, each Signal is registered with a Signal "owner" on that component. When the component is unmounted, the owner drops, and in its Drop implementation, it calls `.dispose()` on all Signals that were created in its scope.
+
+Effectively, we connected the `.dispose()` method of the Signals to the unmount of the component.
+
+Because the Signal is disposed when the component unmounts, reading it will cause a runtime panic. This very rarely happens in practice, but *is* possible if you "save" the signal in a component higher up the tree. Doing so would violate the one-way-data flow pillar of reactivity, but is technically possible.
+
+![Concurrent Access](/assets/07/use-after-free.png)
+
+Reading a Signal after it's been disposed is similar to the "use-after-free" bug with pointers, but reading a Signal *is not* undefined behavior. In debug mode, the Signal will be hoisted to its reader and you'll receive a warning in the logs that a Signal is being read after it's been disposed.
+
+A similar issue can arise when you call `Signal::new()` directly. Dioxus creates an implicit Signal owner that is owned by the current component. The contents of this Signal will only be dropped when the current component is unmounted. Creating Signals manually in a loop can lead to unbounded memory usage until the component is dropped. It's rare to do this in normal application code but can crop up in library development.
+
+```rust
+let mut users = use_signal(|| vec![]);
+
+rsx! {
+    button {
+        // the underlying strings won't be dropped until the component is unmounted, or you call `.dispose()` manually
+        onclick: move |_| {
+            users.write().push(Signal::new("bob".to_string()));
+        },
+        "Add a new user"
+    }
+}
+```
+
+When mapping Signals or creating them on-the-fly, it's best to prefer the built-in methods and reactive collections.
 

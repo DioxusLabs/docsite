@@ -46,6 +46,7 @@
     - [Intro to Reactivity](essentials/basics/reactivity.md)
     - [Storing State in Hooks](essentials/basics/hooks.md)
     - [Reactive Signals](essentials/basics/signals.md)
+    - [Effects and Memos](essentials/basics/effects.md)
     - [User Input](essentials/basics/event_handlers.md)
     - [Async and Futures](essentials/basics/async.md)
     - [Data Fetching](essentials/basics/resources.md)

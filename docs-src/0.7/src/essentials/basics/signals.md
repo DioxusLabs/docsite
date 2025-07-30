@@ -63,7 +63,7 @@ When assigning values to a `.write()` call, note that we use the [*dereference o
 
 ## Ergonomic Methods on Signals
 
-In some cases, wrapping your data in Signals can make accessing the inner state awkward. Mutable Signals implement two fundamental traits: `Readable` and `Writeable`. These traits provide a number of automatic ergonomic improvements.
+In some cases, wrapping your data in Signals can make accessing the inner state awkward. Mutable Signals implement two fundamental traits: `Readable` and `Writable`. These traits provide a number of automatic ergonomic improvements.
 
 - `Signal<T>` implements `Display` if `T` implements `Display`
 - `Signal<bool>` implements `fn toggle()`
@@ -120,6 +120,49 @@ fn app() -> Element {
 ```
 
 You'll generally want to use the extension methods unless the inner state does *not* implement the required traits. There are several methods available not listed here, so peruse the docs reference for more information.
+
+## ReadSignal and WriteSignal
+
+Dioxus provides two variations of the base Signal type: `ReadSignal` and `WriteSignal`.
+
+- **`ReadSignal`**: a read-only version of the base Signal type
+- **`WriteSignal`**: a read-write version of the base Signal type, equivalent to `Signal` itself
+
+ReadSignals are reactive values that are implement the `Readable` trait. `WriteSignals` are reactive values that implement the `Writable` trait.
+
+These two variations are useful when writing functions that need to be generic over their input types. If a function only needs the `.read()` method and its extensions, then it can specify a `ReadSignal` as an argument.
+
+
+```rust
+fn app() -> Element {
+    let mut name: Signal<String> = use_signal(|| "abc".to_string());
+
+    // `.into()` converts the Signal into a ReadSignal
+    do_read_only_things(name.into());
+
+    // ...
+}
+
+// we can accept anything that implements `Into<ReadSignal>`
+fn do_read_only_things(sig: ReadSignal<String>) {
+    println!("{}", sig.read());
+}
+```
+
+In Dioxus, `Signal` is not the only reactive type. The entire ecosystem is full of custom reactive types. Dioxus itself also provides additional reactive types like `Memo` and `Resource`. To integrate well with the broader ecosystem, it's best to prefer using `ReadSignal` and `WriteSignal` in your interfaces rather than specific reactive types.
+
+This ensures we can pass both `Signal` and `Memo` to the same function:
+
+```rust
+let name: Signal<String> = use_signal(|| "abc".to_string());
+let memo: Memo<String> = use_memo(move || name.to_string());
+
+// `.into()` converts the Signal into a ReadSignal
+do_read_only_things(name.into());
+
+// `.into()` converts the Memo into a ReadSignal
+do_read_only_things(name.into());
+```
 
 ## Reactive Scopes
 

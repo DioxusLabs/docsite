@@ -78,7 +78,7 @@ In addition to global variables, context and hooks are also external state in co
 {{#include ../docs-router/src/doc_examples/components.rs:MyImpureComponent}}
 ```
 
-Side effects that modify state should be placed in event handlers or [effects](../basics/breaking_out.md#synchronizing-dom-updates-with-use_effect) which run after the component has rendered. This ensures that the component's output is stable and predictable.
+Side effects that modify state should be placed in event handlers or [effects](../advanced/breaking_out.md#synchronizing-dom-updates-with-use_effect) which run after the component has rendered. This ensures that the component's output is stable and predictable.
 
 ```rust, no_run
 {{#include ../docs-router/src/doc_examples/components.rs:MyPureComponent}}

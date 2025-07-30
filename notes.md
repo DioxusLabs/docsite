@@ -27,6 +27,7 @@ things we should build/do
 - move coroutine out to sdk
 - examples folder reorganize / cleanup
 - dx new with template search (ie search for twitter clone, etc in tui)
+- ban mutable props
 
 fundamentals of state:
 - lifecycle of components (reactivity?)

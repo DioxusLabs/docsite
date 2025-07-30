@@ -28,4 +28,4 @@ We also cover three major topics which aren't necessarily essential to UI develo
 
 - [App Routing](./router/index.md): Adding multiple screens and routes for the users to visit.
 - [Fullstack](./fullstack/index.md): Integrating backend services, server-side-rendering, remote-procedure-calls, and more.
-- [Breaking Out](./basics/breaking_out.md): Tips on how to "escape" the Dioxus framework for advanced functionality.
+- [Breaking Out](./advanced/breaking_out.md): Tips on how to "escape" the Dioxus framework for advanced functionality.

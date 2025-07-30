@@ -53,3 +53,5 @@ DemoFrame {
     error_handling::PhoneNumberValidation {}
 }
 ```
+
+## Catching Panics

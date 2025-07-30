@@ -1,7 +1,7 @@
 
 # Attributes
 
-While we could build a UI by assembling plain elements and text together, we typically want to customize their appearance and behavior. This is where we use Element Attributes. Attributes provide extra information to the renderer on how to display the UI.
+While we could build a UI by assembling unstyled elements and text, we typically want to customize their appearance and behavior. This is where we use *element attributes*. Attributes provide extra information to the renderer on how to display the UI.
 
 You can specify attributes by adding the name of the attribute, a colon, and then the value to the body of an element. For example, we might want to style a div with a particular [class](https://www.w3schools.com/html/html_classes.asp) and [ID](https://www.w3schools.com/html/html_id.asp), which we add as attributes:
 
@@ -132,7 +132,7 @@ rsx! {
 }
 ```
 
-Attributes lists awill be merged in the order they appear, so later attributes in the list take precedence over earlier attributes. Attribute spreading becomes very useful when refactor your UI into reusable components and build component libraries.
+Attributes lists awill be merged in the order they appear, so later attributes in the list take precedence over earlier attributes. Attribute spreading becomes very useful when refactoring your UI into a reusable component libraries.
 
 ## Special Attributes
 

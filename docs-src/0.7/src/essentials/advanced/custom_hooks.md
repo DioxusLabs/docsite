@@ -45,3 +45,58 @@ Here is an implementation of the `use_context` and `use_context_provider` hooks:
 ```rust
 {{#include ../docs-router/src/doc_examples/hooks_custom_logic.rs:use_context}}
 ```
+
+
+## Building Reactive Hooks
+
+The `use_hook` primitive only provides a way to *store* a value. It does not directly integrate with the Dioxus runtime to allow *modifying* state or queueing effects.
+
+To queue a component to re-render, you can use the `dioxus::core::needs_update` primitive. This sends a message to the internal Dioxus scheduler to queue the current component to be re-rendered.
+
+```rust
+log!("Re-rendering!");
+
+rsx! {
+    // Clicking this button will force a re-render
+    button {
+        onclick: move |_| dioxus::core::needs_update(),
+        "Queue for re-rendering"
+    }
+}
+```
+
+We can combine `needs_update`, `use_hook`, and [interior mutability](https://doc.rust-lang.org/book/ch15-05-interior-mutability.html) to build hooks that work with the Dioxus reactivity system.
+
+```rust
+// We declare a new "ReactiveString" type that calls `needs_update` when modified
+#[derive(Default)]
+struct ReactiveString { inner: Rc<RefCell<String>> }
+impl ReactiveString {
+    fn get(&self) -> String {
+        self.inner.borrow().to_string()
+    }
+    fn set(&mut self, new: String) {
+        *self.inner.write() = new;
+        dioxus::core::needs_update();
+    }
+}
+
+// We store the ReactiveString in a hook
+fn use_reactive_string(init: impl FnOnce() -> String) -> ReactiveString {
+    let inner = use_hook(|| Rc::new(RefCell::new(init())));
+    ReactiveString { inner }
+}
+
+// And then when can use it in our component
+let mut name = use_reactive_string(|| "Jane".to_string());
+
+rsx! {
+    // Clicking the button will cause `needs_update` to be queue a re-render
+    button {
+        onclick: move |_| name.set("Bob".to_string()),
+        "Name: {name.get()}"
+    }
+}
+```
+
+In practice, you should never need to build state management primitives yourself. We provide these examples to help you understand how they work.

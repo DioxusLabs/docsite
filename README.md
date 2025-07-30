@@ -54,26 +54,24 @@ We are overhauling the docs for Dioxus 0.7. Here is the current progress:
 ✅     - [Hot-Reload](essentials/ui/hotreload.md)
 ✅     - [Escape Hatches](essentials/ui/escape.md)
 
-❌   - [The Basics](essentials/state/index.md)
+❌   - [User Interaction](essentials/state/index.md)
 ✅     - [Intro to Reactivity]
 ✅     - [Storing State in Hooks](essentials/state/hooks.md)
 ✅     - Reactive Signals use_signal
-❌     - Effects and Memos (use_memo + use_effect)
-❌     - User Input and Events
+✅     - User Input and Events
 ✅     - Futures (crash-course (lite), loop/spawn, onclick: move |_| async {})
 ✅     - Fetching? (use_resource, network requests)
-❌     - Hoisting State and EventHandler?
-❌     - Context (provide/consume, global_signal)
-❌     - [Stores, Collections](essentials/reactivity/collections.md)
-❌     - External State
-❌     - [Error Handling (+boundaries)](essentials/state/error_handling.md)
-❌     - The outside world? (sync signals, external callbacks, layout effects, onmounted)
+✅     - Effects and Memos (use_memo + use_effect)
+❌     - Sharing State (context, hosting, global signals)
+❌     - Stores and Collections
+❌     - Working with External State (sync signals, external callbacks, layout effects, onmounted)
 
 ❌   - [Advanced Reactivity](essentials/reactivity/index.md)
 ❌     - [Reactive Context](essentials/reactivity/reactivity.md)
 ❌     - [Custom Hooks (schedule_update, use_hook)](essentials/state/custom_hooks.md)
 ❌     - [Component Lifecycle](essentials/reactivity/lifecycle.md)
 ❌     - [Side Effects](essentials/reactivity/effects.md)
+❌     - [Error Handling (+boundaries)](essentials/state/error_handling.md)
 ❌     - [Maintaing Purity](essentials/reactivity/purity.md)
 ❌     - [Memoization](essentials/state/memoization.md)
 ❌     - [Optimization](essentials/state/optimization.md)
@@ -81,7 +79,7 @@ We are overhauling the docs for Dioxus 0.7. Here is the current progress:
 ❌     - [Futures in Depth (+threads/workers)](essentials/async/crash_course.md)
 
 ❌   - [Routing](essentials/router/index.md)
-❌     - [Defining Routes](essentials/router/routes.md)
+✅     - [Defining Routes](essentials/router/routes.md)
 ✅     - [Nested Routes](essentials/router/nested-routes.md)
 ✅     - [Layouts](essentials/router/layouts.md)
 ✅     - [Navigation](essentials/router/navigation/index.md)
@@ -163,35 +161,7 @@ We are overhauling the docs for Dioxus 0.7. Here is the current progress:
 ✅         - [State](migration/to_05/state.md)
 ✅       - [Fermi](migration/to_05/fermi.md)
 ✅       - [Props](migration/to_05/props.md)
-
-
-
-
--- refactored:
-❌   - [Breaking Out](essentials/breaking/index.md)
-❌     - Queuing Side Effects (prefer onMount in most cases?)
-❌     - [Memoization](essentials/state/memoization.md)
-❌     - [Handling Events](essentials/reactivity/event_handlers.md)
-❌     - [Using Signals](essentials/reactivity/signals.md)
-❌     - [State is Essential](essentials/state/essential.md)
-❌     - [Context](essentials/state/context.md)
-❌     - [Local State](essentials/state/state.md)
-❌     - [Passing State](essentials/state/passing.md)
-❌     - [Global State](essentials/state/global_state.md)
-❌     - [Stores and Network](essentials/state/global_state.md)
-❌     - [External State](essentials/state/external.md)
-
-
-✅   - [Async](essentials/async/index.md)
-✅     - [Futures Crash Course](essentials/async/crash_course.md)
-✅     - [Spawning Futures](essentials/async/futures.md)
-✅     - [Async Resources](essentials/async/resources.md)
-✅     - [Making network requests](essentials/async/network_requests.md)
-✅     - [Suspense](essentials/async/suspense.md)
-❌     - [Parallelism](essentials/async/parallel.md)
-
 ```
-
 
 
 ## Contributing

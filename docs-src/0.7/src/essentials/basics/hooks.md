@@ -32,29 +32,65 @@ Hooks use their call order to keep track of what state belongs to which hook. Yo
 These rules mean that there are certain things you can't do with hooks:
 
 ### No Hooks in Conditionals
+
+You should not call a hook function conditionally. When the component re-renders, this might lead to the hook list skipping an entry, causing the next hook to retrieve the wrong value.
+
 ```rust
 {{#include ../docs-router/src/doc_examples/hooks_bad.rs:conditional}}
 ```
 
 ### No Hooks in Closures
+
+Similar to conditionals, closures provide a way for hook functions to be called in an inconsistent order between renders. Instead of placing the hook in a closure, prefer to only use the result of the hook function in a closure.
+
 ```rust
 {{#include ../docs-router/src/doc_examples/hooks_bad.rs:closure}}
 ```
 
 ### No Hooks in Loops
+
+Just like conditionals and closures, calling hook functions in loops can lead to inconsistent retrieval of hook values between renders, causing hooks to potentiall retrieve the wrong value.
 ```rust
 {{#include ../docs-router/src/doc_examples/hooks_bad.rs:loop}}
 ```
 
-### Prefix hook names with `use_`
+### Early Returns
 
-By convention, hooks are rust functions that have the `use_` prefix. When you see a function with the `use_` prefix, you should be aware that it internally walks the component's hook list and must follow the Rules of Hooks.
+Unlike in React, in Dioxus, you *can* early return between hook calls. However, we generally discourage this pattern since it can lead to similar consistency issues as conditionals. Dioxus supports early returns because error boundaries and suspense boundaries use the question-mark syntax for ergonomics.
+
+```rust
+let name = use_signal(|| "bob".to_string());
+
+// ❌ dont early return between hooks!
+if name() == "jack" {
+    return Err("wrong name".into())
+}
+
+let age = use_signal(|| 123);
+
+rsx! { "{name}, {age}" }
+
+
+// ✅ instead, prefer to early return *after* all hook functions are run
+let name = use_signal(|| "bob".to_string());
+let age = use_signal(|| 123);
+
+if name() == "jack" {
+    return Err("wrong name".into())
+}
+
+rsx! { "{name}, {age}" }
+```
+
+### Prefix hook names with "`use_`"
+
+By convention, hooks are Rust functions that have the `use_` prefix. When you see a function with the `use_` prefix, you should be aware that it internally walks the component's hook list and therefore must follow the Rules of Hooks.
 
 ## Why Hooks?
 
 You might be wondering - why use hooks? Aren't structs and traits enough?
 
-Hooks are useful because they compose exceptionally well. We can extract a set of hook primitives together to build complex yet modular interactions with a consistent interface. With one interface, we can encapsulate state *and* effects in just a simple function.
+Hooks are useful because they compose exceptionally well. We can combine hook primitives to build complex yet modular interactions with a consistent interface. With a single function, we can encapsulate both state *and* effects.
 
 ```rust
 // This hook is *derived* from an initializer
@@ -123,59 +159,3 @@ impl Component for Card {
 ```
 
 With a single function, we are able to express a value initializer, establish automatic value tracking, and handle changes to component properties. We can easily encapsulate shared behavior, queue side-effects, and compose modular primitives.
-
-## Building Reactive Hooks
-
-The `use_hook` primitive only provides a way to *store* a value. It does not directly integrate with the Dioxus runtime to allow *modifying* state or queueing effects.
-
-To queue a component to re-render, you can use the `dioxus::core::needs_update` primitive. This sends a message to the internal Dioxus scheduler to queue the current component to be re-rendered.
-
-```rust
-log!("Re-rendering!");
-
-rsx! {
-    // Clicking this button will force a re-render
-    button {
-        onclick: move |_| dioxus::core::needs_update(),
-        "Queue for re-rendering"
-    }
-}
-```
-
-We can combine `needs_update`, `use_hook`, and [interior mutability](https://doc.rust-lang.org/book/ch15-05-interior-mutability.html) to build hooks that work with the Dioxus reactivity system.
-
-```rust
-// We declare a new "ReactiveString" type that calls `needs_update` when modified
-#[derive(Default)]
-struct ReactiveString { inner: Rc<RefCell<String>> }
-impl ReactiveString {
-    fn get(&self) -> String {
-        self.inner.borrow().to_string()
-    }
-    fn set(&mut self, new: String) {
-        *self.inner.write() = new;
-        dioxus::core::needs_update();
-    }
-}
-
-// We store the ReactiveString in a hook
-fn use_reactive_string(init: impl FnOnce() -> String) -> ReactiveString {
-    let inner = use_hook(|| Rc::new(RefCell::new(init())));
-    ReactiveString { inner }
-}
-
-// And then when can use it in our component
-let mut name = use_reactive_string(|| "Jane".to_string());
-
-rsx! {
-    // Clicking the button will cause `needs_update` to be queue a re-render
-    button {
-        onclick: move |_| name.set("Bob".to_string()),
-        "Name: {name.get()}"
-    }
-}
-```
-
-In practice, you should never need to build state management primitives yourself. We provide these examples to help you understand how they work.
-
-When building your own apps, you should prefer Signals which are covered next.

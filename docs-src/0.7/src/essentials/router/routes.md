@@ -1,4 +1,3 @@
-
 # Defining Routes
 
 When creating a [`Routable`] enum, we can define routes for our application using the `route("path")` attribute.

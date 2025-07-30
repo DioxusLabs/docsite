@@ -103,11 +103,27 @@ fn app() -> Element {
 }
 ```
 
+The iterator extension makes iterating through collections easier:
+
+```rust
+fn app() -> Element {
+    let names = use_signal(|| vec!["bob", "bill", "jane", "doe"]);
+
+    rsx! {
+        ul {
+            for name in names.iter() {
+                li { "hello {name}" }
+            }
+        }
+    }
+}
+```
+
 You'll generally want to use the extension methods unless the inner state does *not* implement the required traits. There are several methods available not listed here, so peruse the docs reference for more information.
 
 ## Reactive Scopes
 
-Whenever `.write()` or `.set()` is called on a Signal, any active *reactive scopes* tracking that run a callback as a side-efect.
+A **Reactive Scope** is a block of Rust code that observes reads and writes of reactive values. Whenever `.write()` or `.set()` is called on a Signal, any active reactive scopes tracking that Signal run a callback as a side-efect.
 
 The simplest reactive scope is a component. During a component render, components automatically subscribe to signals where `.read()` is called. The `.read()` method can be called *implicitly* in many circumstances - notably, the extension methods provided by `Readable` use the underlying `.read()` method and thus *also* contribute to the current reactive scope. When a signal's value changes, components queue a side-effect to re-render the component using `dioxus::core::needs_update`.
 
@@ -151,9 +167,9 @@ There are other uses of reactive scopes beyond component re-renders. Hooks like 
 
 ## Automatic Batching
 
-By default, all `.write()` calls are batched in one "step" of your app. Dioxus does not synchronously run side-effects when you call `.write()`. Instead, it waits for all events to be handled first before determining what side-effects need to be run. This provides automatic batching of `.write()` calls which is important both for performance and consistency in the UI.
+By default, all `.write()` calls are batched in one "step" of your app. Dioxus does not synchronously run side-effects when you call `.write()`. Instead, the runtime waits for all events to be handled *first* before determining what side-effects need to be run. This provides automatic batching of `.write()` calls which is important both for performance and consistency in the UI.
 
-For example, by batching `.write()` calls, we ensure that our UI always display one of two states:
+By batching `.write()` calls, Dioxus ensures that our example UI always displays one of two states:
 - **"loading?: false -> Complete"**
 - **"loading?: true -> Loading"**
 
@@ -164,11 +180,14 @@ let mut text = use_signal(|| "Complete!");
 rsx! {
     button {
         onclick: move |_| async move {
+            // these writes are batched and side-effects are de-duplicated
             text.set("Loading");
             loading.set(true);
 
+            // awaiting a future allows the runtime to continue
             do_async_work().await
 
+            // these writes are also batched - only one re-render is queued
             text.set("Complete!");
             loading.set(false);
         },
@@ -208,7 +227,7 @@ rsx! {
 }
 ```
 
-With the right clippy lints, this code fails linting because the `writer` type should not be held across an await point.
+Fortunately, this code fails `cargo clippy` because the `writer` type should not be held across an await point.
 
 Thankfully, Signals guard against the "trivial" case because the `.write()` method takes an `&mut Signal`. While the `.write()` guard is active in a scope (block), no other `.read()` or `.write()` guards can be held:
 
@@ -249,7 +268,7 @@ let cur = state.read().clone(); // calling `.clone()` releases the `.read()` gua
 
 Note that Rust automatically drops items *at the end* of a scope, unless they are manually dropped sooner. We can use the `.read()` guard provided it's dropped before `.write()` is called.
 
-This is done either by creating a new, smaller scope to access the `.read()` guard -
+This is done either by creating a new, shorter scope to access the `.read()` guard -
 ```rust
 // The .read() guard is only alive for a shorter scope
 let next = {
@@ -270,6 +289,17 @@ drop(cur1); // dropping early asserts we can `.write()` the signal safely
 *state.write() = cur2 + 1;
 ```
 
+In very advanced usecases, you can make a copy of the signal or use the `read_unchecked` method to relax the borrowing rules:
+
+```rust
+match result.read_unchecked().as_ref() {
+    Ok(resp) => rsx! { "success! {resp}" }
+    Err(err) => rsx! { "err: {err:?}" },
+}
+```
+
+> Rust 2021 had issues with `.read()` in match statements, whereas Rust 2024 fixes this issue, meaning you no longer need to use `read_unchecked`
+
 While this might seem scary or error prone, you will *very rarely* run into these issues when building apps. The `.read()` and `.write()` guards respect Rust's ownership rules within a given scope and concurrent scopes are protected by the [Clippy `await_holding_refcell_ref` lint](https://rust-lang.github.io/rust-clippy/master/index.html#await_holding_refcell_ref).
 
 
@@ -279,7 +309,7 @@ If you've used Rust to build other projects - like a webserver or a command line
 
 ![Concurrent Access](/assets/07/concurrent-arc.png)
 
-If our data is used in parallel across several threads, or even just held in a callback for future use, we might need to wrap it in an `Arc` or `Rc` smart pointer and `.clone()` it. This can lead to cumbersome code where we constantly need to call `.clone()` to share data into callbacks and async tasks.
+If our data is used across several parallel threads, or even just held in a callback, we might need to wrap it in an `Arc` or `Rc` smart pointer and `.clone()` it. This can lead to cumbersome code where we constantly call `.clone()` to share data into callbacks and async tasks.
 
 ```rust
 let state = Arc::new(123);
@@ -299,7 +329,7 @@ std::thread::spawn({
 
 Unfortunately, UI code constantly encounters this problem - **this is why Rust does not have a great reputation for building GUI apps**!
 
-To solve this, we built the [generational-box crate](https://crates.io/crates/generational-box) that provides a [`GenerationalBox`] type that implements [Rust's `Copy` trait](https://doc.rust-lang.org/std/marker/trait.Copy.html). The `Copy` trait is very important: Rust automatically copies `Copy` types (when needed) on boundaries of scopes.
+To solve this, we built the [generational-box crate](https://crates.io/crates/generational-box) that provides a `GenerationalBox` type that implements [Rust's `Copy` trait](https://doc.rust-lang.org/std/marker/trait.Copy.html). The `Copy` trait is very important: Rust automatically copies `Copy` types (when needed) on boundaries of scopes.
 
 ```rust
 let state = GenerationalBox::new(123);
@@ -311,13 +341,13 @@ std::thread::spawn(move |_| println!("{state:?}"));
 std::thread::spawn(move |_| println!("{state:?}"));
 ```
 
-Instead of copying the underlying value, the `GenerationalBox` simply copies a *handle* to the value. This handle is essentially a smart pointer verified at runtime. Accessing the contents of a signal is not as efficient as reading a pointer directly - there is an extra pointer indirection and lock check - but we don't expect most code to be bottlenecked by reading `GenerationalBox` contents.
+Instead of copying the underlying value, the `GenerationalBox` simply copies a *handle* to the value. This handle is essentially a runtime-verified smart pointer. Accessing the contents of a signal is not as efficient as reading a pointer directly - there is an extra pointer indirection and lock - but we expect most code to not be bottlenecked by reading the contents of a `GenerationalBox`.
 
 Dioxus Signals are built directly on top of `GenerationalBox`. They share the same `Copy` semantics and ergonomics, but with the same tradeoffs.
 
 ## Signals are Disposed
 
-Signals implementing `Copy` is a huge win for ergonomics. However, there is a tradeoff. The `GenerationalBox` type does not have automatic [RAII](https://doc.rust-lang.org/rust-by-example/scope/raii.html) support. This means when a `GenerationalBox` is dropped, its resources are **not immediately cleaned up**. It can be tricky to correctly use `GenerationalBox` directly. Dioxus handles the *resource* lifecycle cleaning up resources using the *component* lifecycle.
+Signals implementing `Copy` is a huge win for ergonomics. However, there is a tradeoff. The `GenerationalBox` type does not have automatic [RAII](https://doc.rust-lang.org/rust-by-example/scope/raii.html) support. This means when a `GenerationalBox` is dropped, its resources are **not immediately cleaned up**. It can be tricky to correctly use `GenerationalBox` directly. Dioxus manages the *resource* lifecycle by cleaning up resources using the *component* lifecycle.
 
 The Signal type is built on `GenerationalBox`. Whenever you call `use_signal`, we automatically:
 
@@ -334,7 +364,7 @@ Because the Signal is disposed when the component unmounts, reading it after wil
 
 Reading a Signal after it's been disposed is similar to the "use-after-free" bug with pointers, but reading a Signal *is not* undefined behavior. In debug mode, the Signal will be hoisted to its reader and you'll receive a warning in the logs that a Signal is being read after it's been disposed.
 
-A similar issue can arise when you call `Signal::new()` directly. Dioxus creates an implicit Signal owner that is owned by the current component. The contents of this Signal will only be dropped when the current component is unmounted. Creating Signals manually in a loop can lead to unbounded memory usage until the component is dropped. It's rare to do this in normal application code but can crop up in library development.
+A similar issue can arise when you call `Signal::new()` directly. Dioxus creates an implicit Signal owner that is owned by the current component. The contents of this Signal will only be dropped when the current component is unmounted. Calling `Signal::new()` can lead to unbounded memory usage until the component is dropped. It's rare to do this in normal application code but can crop up in library development.
 
 ```rust
 let mut users = use_signal(|| vec![]);
@@ -357,4 +387,4 @@ When mapping Signals or creating them on-the-fly, it's best to prefer the built-
 
 Signals are just one piece of the Dioxus reactivity system. Hooks like `use_effect` and `use_memo` are able to isolate their reactive scopes to just callbacks and futures. This means `.read()` and `.write()` in these scopes won't queue re-render side-effects in their containing component.
 
-We cover these hooks in more depth in the [next chapter](./effects.md).
+We cover these hooks in more depth in a [later chapter](./effects.md).

@@ -1,4 +1,3 @@
-
 # Effects and Memos
 
 Signals provide a foundation for mutable state in Dioxus apps. Calls to `.read()` subscribe reactive scopes and calls to `.write()` queue side-effects.

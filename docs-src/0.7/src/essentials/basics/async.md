@@ -1,51 +1,53 @@
 # Async and Futures
 
-Not all actions a user takes can complete immediately. Some actions like a network request require waiting for system input/output (IO). While the action is waiting for the network response, we want to avoid blocking the UI thread. Code that blocks the UI thread will prevent further user input, making the UI feel janky and unintuitive.
+Not all actions complete immediately. Some actions, like a network request, require waiting for system input/output (IO). While waiting for network response, we want to provide status updates, add a loading spinner, and most importantly: avoid blocking the UI thread. Code that blocks the UI thread will prevent further user input, making the UI feel janky and unintuitive.
 
 Rust provides a built-in way of handling asynchronous work with its built-in async/await system. Dioxus provides a first-class integration with Rust's async/await system.
 
-## Futures: Rust's async primitive
+## Future: Rust's Async Primitive
 
-The `Future` trait is the core of async Rust. A future represents a value that may not be available yet. In other languages, this is sometimes called a promise or task. You can read more about them in the [rust book](https://doc.rust-lang.org/book/ch17-00-async-await.html).
+The `Future` trait is the core of async Rust. A future represents a value that may not yet be ready. In other languages, this is sometimes called a *Promise* or *Task*. You can read more about Futures in the [Rust book](https://doc.rust-lang.org/book/ch17-00-async-await.html).
 
-We won't cover all of the details of futures here, but there are a few important things to know before using them in Dioxus:
+We won't cover all the details of futures here, but there are a few important things to know before using them in Dioxus:
 
-- Futures are lazy. They do not do anything until you `await` them or `spawn` them.
-- Futures are concurrent, but not always parallel. In dioxus, all futures run on the main thread, so you should not block inside a future.
-- Futures will pause at await points. You should not hold any locks across those await points.
-- Futures can be cancelled before they complete. Your futures need to be cancel safe. They should be able to handle stopping at any time without panicking or leaving the application in an inconsistent state.
+- **Futures are lazy**: They do not do anything until you `await` them or `spawn` them.
+- **Futures are concurrent but not always parallel**: In Dioxus, all futures run on the main thread.
+- **Futures pause at await points**: You should not hold any locks across those await points.
+- **Futures can be cancelled before they complete**: Your futures need to be "cancel safe."
+
+Futures should be able to handle stopping at any time without panicking or leaving the application in an inconsistent state. They should also be careful not to run blocking operations that lock the main thread.
 
 The lifecycle of a future follows a consistent structure:
 
 - A callback calls an `async fn` or an async closure
 - The async function returns a Future
-- A `dioxus::spawn()` call submits the future to the Dioxus runtime, returning a Task
-- The future is polled in the background until it returns a `Ready` value
-- If the future is cancelled, Rust calls its `Drop` implementation
+- A `dioxus::spawn()` call submits the future to the Dioxus runtime, returning a `Task`
+- The Future is polled in the background until it returns a `Ready` value
+- If the Future is cancelled, Rust calls its `Drop` implementation
 
 [Future Diagram](/assets/07/future-diagram.png)
 
 ## Lazy futures
 
-Unlike JavaScript's Promises, Rust futures are *lazy*. This means that they do not start executing until you call `.await` on them or start them in the background with `spawn`.
+Unlike JavaScript's Promises, Rust futures are *lazy*. This means that they do not start executing until you call `.await` or start them in the background with `spawn`.
 
-This future will never log "Ran" because it is never awaited:
+This Future will never log "Ran" because it is never awaited:
 
 ```rust
 {{#include ../docs-router/src/doc_examples/async_crash_course.rs:async_block}}
 ```
 
-To run this future, you can either await it in another future or spawn it:
+To run this Future, you can either await it in another Future or spawn it:
 
 ```rust
 {{#include ../docs-router/src/doc_examples/async_crash_course.rs:await}}
 ```
 
-You can stop polling a future any time or customize how a future is polled using the [futures](https://crates.io/crates/futures) crate.
+You can stop polling a Future any time or customize how a Future is polled using the [futures](https://crates.io/crates/futures) crate.
 
 ## Running Futures with `spawn`
 
-The Dioxus [`spawn`](https://docs.rs/dioxus/0.7/dioxus/prelude/fn.spawn.html) function starts running a future in the background and returns a `Task` that you can use to control the future. It is the basis of all other async hooks in dioxus. You can use spawn to execute one-off tasks in event handlers, hooks or other futures:
+The Dioxus [`spawn`](https://docs.rs/dioxus/0.7/dioxus/prelude/fn.spawn.html) function starts running a Future in the background and returns a `Task` that you can use to control the Future. It is the basis of all other async hooks in dioxus. You can use spawn to execute one-off tasks in event handlers, hooks or other Futures:
 
 ```rust
 {{#include ../docs-router/src/doc_examples/asynchronous.rs:spawn}}
@@ -57,7 +59,7 @@ DemoFrame {
 }
 ```
 
-Since spawning in event handlers is very common, Dioxus provides a more concise syntax. If you return a future from an event handler, Dioxus will automatically `spawn` it:
+Since spawning in event handlers is very common, Dioxus provides a more concise syntax. If you return a Future from an event handler, Dioxus will automatically `spawn` it:
 
 ```rust
 {{#include ../docs-router/src/doc_examples/asynchronous.rs:spawn_simplified}}
@@ -65,7 +67,7 @@ Since spawning in event handlers is very common, Dioxus provides a more concise 
 
 ## Automatic Cancellation
 
-The future you pass to the `spawn` will automatically be cancelled when the component is unmounted. If you need to keep the future running until it is finished, you can use [`spawn_forever`](https://docs.rs/dioxus/0.7/dioxus/prelude/fn.spawn_forever.html) instead:
+The Future you pass to the `spawn` will automatically be cancelled when the component is unmounted. If you need to keep the Future running until it is finished, you can use [`spawn_forever`](https://docs.rs/dioxus/0.7/dioxus/prelude/fn.spawn_forever.html) instead:
 
 ```rust
 {{#include ../docs-router/src/doc_examples/asynchronous.rs:spawn_forever}}

@@ -639,7 +639,7 @@ mod use_server_future_streaming {
     // ANCHOR: use_server_future_streaming
     fn main() {
         dioxus::LaunchBuilder::new()
-            .with_context(server_only! {
+            .with_cfg(server_only! {
                 // Enable out of order streaming during SSR
                 dioxus::fullstack::ServeConfig::builder().enable_out_of_order_streaming()
             })

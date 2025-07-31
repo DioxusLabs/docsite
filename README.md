@@ -63,7 +63,7 @@ We are overhauling the docs for Dioxus 0.7. Here is the current progress:
 ✅     - Fetching? (use_resource, network requests)
 ✅     - Effects and Memos (use_memo + use_effect)
 ✅     - Hoisting State (lifting state and refactoring)
-❌     - Global Context (context, global signals)
+✅     - Global Context (context, global signals)
 ❌     - Stores and Collections
 ❌     - Working with External State (sync signals, external callbacks, layout effects, onmounted)
 

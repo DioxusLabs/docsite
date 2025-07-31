@@ -6,9 +6,9 @@ However, sometimes we want to run *our own* side-effects when a Signal's value c
 
 ## Multiple Reactive Readers
 
-To understand Effects and Memos, we need to first understand that a single Signal (or other Tracked value) can be read in multiple reactive scopes simultaneously. For instance, a signal may be shared among several components via props. Each component that calls `.read()` on the signal value is automatically subscribed to any changes in the signal's value. When the signal value changes, they run the re-render side-effect.
+To understand Effects and Memos, we need to first understand that a single Signal (or other reactive value) can be read in multiple reactive scopes simultaneously. For instance, a signal may be shared among several components via props. Each component that calls `.read()` on the signal value is automatically subscribed to any changes of the signal's value. When the signal value changes, it runs the re-render side-effect.
 
-Effects and Memos enable multiple readers of a single tracked value without needing to use a separate component. We can isolate smaller units of reactivity with memos and queue our own side-effects with effects.
+Effects and Memos allow us to observe changes in reactive values without re-rendering components. We can isolate smaller units of reactivity with memos and then queue our own side-effects with effects.
 
 ![Multiple Readers](/assets/07/multiple-scopes.png)
 

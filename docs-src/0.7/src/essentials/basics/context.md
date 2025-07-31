@@ -1,98 +1,296 @@
 # Global Context
 
-## Using Shared State
-
-Sometimes, some state needs to be shared between multiple components far down the tree, and passing it down through props is very inconvenient.
-
-Suppose now that we want to implement a dark mode toggle for our app. To achieve this, we will make every component select styling depending on whether dark mode is enabled or not.
-
-> Note: we're choosing this approach for the sake of an example. There are better ways to implement dark mode (e.g. using CSS variables). Let's pretend CSS variables don't exist – welcome to 2013!
-
-Now, we could write another `use_signal` in the top component, and pass `is_dark_mode` down to every component through props. But think about what will happen as the app grows in complexity – almost every component that renders any CSS is going to need to know if dark mode is enabled or not – so they'll all need the same dark mode prop. And every parent component will need to pass it down to them. Imagine how messy and verbose that would get, especially if we had components several levels deep!
-
-Dioxus offers a better solution than this "prop drilling" – providing context. The [`use_context_provider`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context_provider.html) hook provides any Clone context (including Signals!) to any child components. Child components can use the [`use_context`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context.html) hook to get that context and if it is a Signal, they can read and write to it.
-
-First, we have to create a struct for our dark mode configuration:
-
-```rust, no_run
-{{#include ../docs-router/src/doc_examples/untested_06/meme_editor_dark_mode.rs:DarkMode_struct}}
-```
-
-Now, in a top-level component (like `App`), we can provide the `DarkMode` context to all children components:
-
-```rust, no_run
-{{#include ../docs-router/src/doc_examples/untested_06/meme_editor_dark_mode.rs:context_provider}}
-```
-
-As a result, any child component of `App` (direct or not), can access the `DarkMode` context.
-
-```rust, no_run
-{{#include ../docs-router/src/doc_examples/untested_06/meme_editor_dark_mode.rs:use_context}}
-```
-
-> `use_context` returns `Signal<DarkMode>` here, because the Signal was provided by the parent. If the context hadn't been provided `use_context` would have panicked.
-
-If you have a component where the context might or not be provided, you might want to use `try_consume_context`instead, so you can handle the `None` case. The drawback of this method is that it will not memoize the value between renders, so it won't be as as efficient as `use_context`, you could do it yourself with `use_hook` though.
-
-For example, here's how we would implement the dark mode toggle, which both reads the context (to determine what color it should render) and writes to it (to toggle dark mode):
-
-```rust, no_run
-{{#include ../docs-router/src/doc_examples/untested_06/meme_editor_dark_mode.rs:toggle}}
-```
-
-
-
-## Moving Around State
-
-As you create signals and derived state in your app, you will need to move around that state between components. Dioxus provides three different ways to pass around state:
-
-### Passing props
-
-You can pass your values through component [props](../ui/components.md). This should be your default when passing around state. It is the most explicit and local to your component. Use this until it gets annoying to pass around the value:
+By now, you have the requisite knowledge to build large Dioxus apps! When your component tree grows to several layers deep, passing state through component props can be become tedious and repetitive.
 
 ```rust
-{{#include ../docs-router/src/doc_examples/untested_06/moving_state_around.rs:PassingProps}}
-```
+fn app() -> Element {
+    let name = use_signal(|| "bob".to_string());
+    rsx! { Container { name } }
+}
 
-```inject-dioxus
-DemoFrame {
-    moving_state_around::PassingProps {}
+#[name]
+fn Container(name: Signal<String>) -> Element {
+    rsx! { Content { name } }
+}
+
+#[name]
+fn Content(name: Signal<String>) -> Element {
+    rsx! { Title { name } }
+}
+
+#[name]
+fn Title(name: Signal<String>) -> Element {
+    rsx! { h1 { "{name}" } }
 }
 ```
 
+Passing state through several layers of component properties is called "prop drilling." Wouldn't it be great if we could pass the `name` signal from the app root *directly* to the Title component?
 
-### Passing context
+This is where *global context* becomes useful. Components can insert values into the global context, allowing and any child components to "reach up" and read those values.
 
-If you need a slightly more powerful way to pass around state, you can use the context API.
+![Context Tree](/assets/07/context-tree.png)
 
-The context API lets you pass state from a parent component to all children. This is useful if you want to share state between many components. You can insert a unique type into the context with the [`use_context_provider`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context_provider.html) hook in the parent component. Then you can access the context in any child component with the [`use_context`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context.html) hook.
+Note that context is only available by "reaching up" the tree. Recall a fundamental pillar of reactivity: data flows down. In the one-way data-flow model, child components can freely read the state of their parent components. You can think of context as an invisible extra argument passed through the properties of each component from the root to every child.
 
 ```rust
-{{#include ../docs-router/src/doc_examples/untested_06/moving_state_around.rs:PassingContext}}
+fn Child(context: Context, ..props) -> Element { /* */ }
 ```
 
-```inject-dioxus
-DemoFrame {
-    moving_state_around::PassingContext {}
+Context is roughly defined as a recursive definition of itself:
+
+```rust
+struct Context {
+    contexts: Vec<Rc<dyn Any>>
+    parent: Option<Context>,
 }
 ```
 
-This is slightly less explicit than passing it as a prop, but it is still local to the component. This is really great if you want state that is global to part of your app. It lets you create multiple global-ish states while still making state different when you reuse components. If I create a new `ParentComponent`, it will have a new `MyState`.
+When we "reach up" through the tree, we first walk the current component's context list, and then check each parent recursively until the target context is found.
 
-### Using globals
+## Providing and Consuming Context
 
-Finally, if you have truly global state, you can put your state in a `Global<T>` static. This is useful if you want to share state with your whole app:
+Before we can start reaching up the component tree, we first need to *provide* context to child components. Dioxus exposes the `provide_context` and `use_context_provider` functions. You typically place your state initializer in the `use_context_provider` hook like so:
 
 ```rust
-{{#include ../docs-router/src/doc_examples/untested_06/moving_state_around.rs:UsingGlobals}}
-```
+fn app() -> Element {
+    // use_context_provider takes an initializer closure
+    use_context_provider(|| "Hello world!".to_string());
 
-```inject-dioxus
-DemoFrame {
-    moving_state_around::UsingGlobals {}
+    rsx! { Child {} }
 }
 ```
 
-Global state can be very ergonomic if your state is truly global, but you shouldn't use it if you need state to be different for different instances of your component. If I create another `IncrementButton` it will use the same `COUNT`. Libraries should generally avoid this to make components more reusable.
+Now, to read the context, we pair the provider with a consumer. To do so, we call `use_context` and set the return type to be the same type as the context we provided. In the example above, we provided a `String` type object; therefore, we consume it with the `String` generic:
 
-> Note: Even though it is in a static, `COUNT` will be different for each app instance so you don't need to worry about state mangling when multiple instances of your app are running on the server
+```rust
+fn Child() -> Element {
+    let title = use_context::<String>();
+    rsx! { "{title}" }
+}
+```
+
+The `::<String>` syntax declares the return type of this use of `use_context`. In Dioxus, context objects are indexed by their [TypeId](https://doc.rust-lang.org/std/any/struct.TypeId.html). A type's TypeId is a  compile-time hash that uniquely identifies every Rust type. No two types will share the same TypeId unless the refer to the same underlying type declaration - ie, [type aliases](https://doc.rust-lang.org/reference/items/type-aliases.html) will share the same TypeId.
+
+When providing context objects, we should wrap the data we want to store in a custom type or [new type](https://doc.rust-lang.org/rust-by-example/generics/new_types.html). This ensures that we can store multiple `String` objects in the context tree and retrieve them by their wrapper type.
+
+Declaring a new type requires a new struct declaration:
+
+```rust
+#[derive(Clone)]
+struct Title(String);
+
+#[derive(Clone)]
+struct Subtitle(String);
+```
+
+The, we can provide the context using our wrapper types:
+
+```rust
+use_context_provider(|| Title("Hello world!".to_string()));
+use_context_provider(|| Subtitle("Hello world!".to_string()));
+```
+
+To consume the context, we pass in the appropriate struct type:
+```rust
+let title = use_context::<Title>();
+let title = use_context::<Subtitle>();
+```
+
+In practice, you don't need to wrap *every* field of your state in a newtype, usually just one struct to encapsulate a set of data is enough.
+
+```rust
+#[derive(Clone)]
+struct HeaderContext {
+    title: String,
+    subtitle: String
+}
+```
+
+## Context Provider Components
+
+Sometimes you don't want context to apply to *every* component in your tree - just a subset is fine. If you want to provide state to a scoped portion of the elements in your `rsx!` macro, you can create a new component that provides context to its children called a **Context Provider**.
+
+For example, we may write a `ThemeProvider` component that wraps its children and provides context:
+
+```rust
+#[component]
+fn ThemeProvider(children: Element, color: ThemeColor) -> Element {
+    use_context_provider(|| ThemeState::new(color));
+    children
+}
+```
+
+Then, we can use the context provider in our RSX multiple times, but with different parameters:
+
+```rust
+fn app() -> Element {
+    rsx! {
+        ThemeProvider {
+            color: ThemeColor::Red,
+            h1 { "Red theme!" }
+        }
+        ThemeProvider {
+            color: ThemeColor::Blue,
+            h1 { "Blue theme!" }
+        }
+    }
+}
+```
+
+## Dynamically Providing and Consuming Context
+
+Dioxus provides several different functions to provide and consume context. You do not necessarily need to use the `use_context` and `use_context_provider` hooks. Instead, you can dynamically provide and consume context *at runtime* with `provide_context` and `consume_context`.
+
+Being able to dynamically consume context is powerful. We can directly access context in event handlers and async tasks without an additional hook.
+
+```rust
+fn ToggleTheme() -> Element {
+    // no hooks required!
+    rsx! {
+        button {
+            onclick: move |_| consume_context::<ThemeProvider>().set_theme(ThemeColor::Red),
+            "Make Red"
+        }
+        button {
+            onclick: move |_| consume_context::<ThemeProvider>().set_theme(ThemeColor::Blue),
+            "Make Blue"
+        }
+    }
+}
+```
+
+Because the Dioxus runtime always sets the theme context when running handlers and polling futures, this even works in async tasks:
+
+```rust
+rsx! {
+    button {
+        onclick: move |_| async move {
+            let color = fetch_random_color().await;
+            consume_context::<ThemeProvider>().set_theme(color);
+        },
+        "Make Random Color"
+    }
+}
+```
+
+Note that we can also dynamically provide context too, though this is less useful. Whenever we dynamically provide context, the current component's context entry is replaced (if it existed).
+
+```rust
+use_context_provider(|| ThemeProvider::new());
+rsx! {
+    button {
+        onclick: move |_| dioxus::core::provide_context(ThemeProvider::reset()),
+        "Reset Theme Provider"
+    }
+}
+```
+
+Replacing context is *not* a reactive operation which inherently limits its usefulness.
+
+## Providing Signals
+
+So far, we've only demonstrated how to provide simple values like Strings. As mentioned above, dynamically replacing context is not a reactive operation, so we shouldn't use it to update state in our application.
+
+To make our context fully reactive, we should provide signals. Typically, you'll bundle a collection of signals together into a larger state object:
+
+```rust
+#[derive(Clone, Copy)]
+struct HeaderContext {
+    title: Signal<String>,
+    subtitle: Signal<String>
+}
+```
+
+Notice how our `HeaderContext` derives both `Clone` and `Copy`. For context to be shared throughout the component tree, each context entry must implement `Clone`. Dioxus signals are extremely ergonomic because the implement `Copy` too, which makes them easier to work with in async contexts. Similarly, our custom context structs can also implement `Copy` and gain the same ergonomic benefits.
+
+To construct our HeaderContext, we use one of two approaches. The first is to build a Provider component:
+
+```rust
+#[component]
+fn HeaderProvider(children: Element) -> Element {
+    // create signals with `use_signal`
+    let title = use_signal(|| "Title".to_string());
+    let subtitle = use_signal(|| "Subtitle".to_string());
+
+    // And then use them to build the HeaderContext directly
+    use_context_provider(|| HeaderContext { title, subtitle });
+
+    children
+}
+```
+
+The second approach is to use `Signal::new()` directly, either in a `HeaderContext::new()` method or a `use_header_provider` function. The advantage here is that users can provide `HeaderContext` without needing to wrap their RSX elements.
+
+```rust
+fn app() -> Element {
+    use_context_provider(|| HeaderContext::new());
+
+    // ...
+}
+
+impl HeaderContext {
+    fn new() -> HeaderContext {
+        HeaderContext {
+            title: Signal::new("Title")
+            subtitle: Signal::new("Subtitle")
+        }
+    }
+}
+```
+
+Using `new` methods is idiomatic Rust and lets us customize the initial parameters used to build the context.
+
+When we bundle signals in a struct, we can make working with state a bit easier by adding accessor and mutation methods.
+
+```rust
+impl HeaderContext {
+    pub fn reset(&mut self) {
+        self.title.set("".to_string());
+        self.subtitle.set("".to_string());
+    }
+
+    pub async fn fetch(&mut self) {
+        let data = api::fetch_header_info().await;
+        self.title.set(data.title);
+        self.subtitle.set(data.subtitle);
+    }
+
+    pub fn uppercase_title(&self) -> String {
+        self.title.cloned().to_ascii_uppercase()
+    }
+}
+```
+
+Now, when we want to interact with the header context, we use its methods:
+
+```rust
+let mut header = use_context::<HeaderContext>();
+
+rsx! {
+    h1 { "{header.uppercase_title()}" }
+    button { onclick: move |_| header.reset(), "Reset" }
+    button { onclick: move |_| header.fetch(), "Fetch New" }
+}
+```
+
+With context and signals, you should have all the tools required to architect large reactive Dioxus apps. These simple primitives compose into a complete first-party state solution. You can say goodbye to libraries like [Redux](https://redux.js.org) and [Mobx](https://mobx.js.org/README.html)!
+
+## Global Signals
+
+We're not done with global state *just* yet! Dioxus provides an enhancement to the "signals in context" pattern with **global signals**. Global signals are signals available to *every* component in your application. Global signals are automatically mounted to the root component of your app.
+
+Because the `GlobalSignalProvider` is automatically mounted to your app, you don't need to call `use_context_provider`. To create a new global signal, you use the `Signal::global` initializer in a `static`.
+
+```rust
+{{#include ../docs-router/src/doc_examples/guide_state.rs:initialize_global_signal}}
+```
+
+And then read and write to it from anywhere:
+
+```rust
+{{#include ../docs-router/src/doc_examples/guide_state.rs:use_global_signal}}
+```
+
+GlobalSignals are only global to one app - not the entire program.
+
+On the server, every app gets its own GlobalSignal.

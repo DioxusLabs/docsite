@@ -123,7 +123,7 @@ fn Validator(is_valid: ReadSignal<bool>) -> Element {
 }
 ```
 
-Now, parent components that use this child component can use any Readable reactive primitive as the value, making our original example work properly.
+Now, parent components that use this child component can use any Readable reactive primitive as the value, allowing our original example to work properly.
 
 ```rust
 // ✅ is_valid can be passed from a memo or a signal

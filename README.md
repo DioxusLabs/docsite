@@ -62,7 +62,7 @@ We are overhauling the docs for Dioxus 0.7. Here is the current progress:
 ✅     - Futures (crash-course (lite), loop/spawn, onclick: move |_| async {})
 ✅     - Fetching? (use_resource, network requests)
 ✅     - Effects and Memos (use_memo + use_effect)
-❌     - Hoisting State (lifting state and refactoring)
+✅     - Hoisting State (lifting state and refactoring)
 ❌     - Global Context (context, global signals)
 ❌     - Stores and Collections
 ❌     - Working with External State (sync signals, external callbacks, layout effects, onmounted)
@@ -74,7 +74,7 @@ We are overhauling the docs for Dioxus 0.7. Here is the current progress:
 ❌     - [Side Effects](essentials/reactivity/effects.md)
 ❌     - [Error Handling (+boundaries)](essentials/state/error_handling.md)
 ❌     - [Maintaing Purity](essentials/reactivity/purity.md)
-  ❌     - [Memoization](essentials/state/memoization.md)
+❌     - [Memoization](essentials/state/memoization.md)
 ❌     - [Optimization](essentials/state/optimization.md)
 ❌     - [Suspense](essentials/async/suspense.md)
 ❌     - [Futures in Depth (+threads/workers)](essentials/async/crash_course.md)

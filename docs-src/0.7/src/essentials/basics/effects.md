@@ -37,13 +37,12 @@ let mut loading = use_signal(|| false);
 let mut loading_text = use_signal(|| "loading".to_string());
 
 let subheading = use_memo(move || {
-    if load() && load_text() == "loading" {
-        return "The state is loading"
+    if loading() && loading_text() == "loading" {
+        return "The state is loading";
     };
 
     "The state is not loading"
 });
-
 
 rsx! {
     h1 { "{subheading}" }

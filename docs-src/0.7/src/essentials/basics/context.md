@@ -291,6 +291,35 @@ And then read and write to it from anywhere:
 {{#include ../docs-router/src/doc_examples/guide_state.rs:use_global_signal}}
 ```
 
-GlobalSignals are only global to one app - not the entire program.
+GlobalSignals are only global to one app - not the entire program. This means that in "multitenant" environments like server-side-rendering and multi-window desktop, every app gets its own *independent* global signal value.
 
-On the server, every app gets its own GlobalSignal.
+```rust
+// every separate instance of the app receive its own "COUNT" GlobalSignal
+static COUNT: GlobalSignal<i32> = Signal::global(|| 0);
+
+fn app() -> Element {
+    rsx! {
+        div { "{COUNT}" }
+        button { onclick: move |_| *COUNT.write() += 1 }
+    }
+}
+```
+
+While it may seem like `COUNT` is synchronized across *every* runnig app, it actually is just local to one app at a time. Global signals are roughly implemented as a HashMap of global signal key to value where the key is a unique compile-time identifier per instance.
+
+In addition to global signals, you can also have global memos with GlobalMemo. These are similar to regular memos, allowing you to incrementally compute new values as the inner reactive values are updated.
+
+```rust
+static COUNT: GlobalSignal<i32> = Signal::global(|| 0);
+static DOUBLE_COUNT: GlobalMemo<i32> = Memo::global(|| COUNT.cloned() * 2);
+
+fn app() -> Element {
+    rsx! {
+        div { "count: {COUNT}" }
+        div { "double: {DOUBLE_COUNT}" }
+        button { onclick: move |_| *COUNT.write() += 1 }
+    }
+}
+```
+
+Note that the types for GlobalSignal and GlobalMemo are actually `Global<Signal<T>>` and `Global<Memo<T>>` - if you implemented the required traits, you can make any custom reactive type globally available!

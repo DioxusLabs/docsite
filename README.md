@@ -64,15 +64,16 @@ We are overhauling the docs for Dioxus 0.7. Here is the current progress:
 ✅     - Effects and Memos (use_memo + use_effect)
 ✅     - Hoisting State (lifting state and refactoring)
 ✅     - Global Context (context, global signals)
-❌     - Stores and Collections
-❌     - Working with External State (sync signals, external callbacks, layout effects, onmounted)
+✅     - Stores and Collections
+✅     - [Error Handling (+boundaries)](essentials/state/error_handling.md)
+❌     - The Outside World (sync signals, external callbacks, layout effects, onmounted)
+
 
 ❌   - [Advanced Reactivity](essentials/reactivity/index.md)
 ❌     - [Reactive Context](essentials/reactivity/reactivity.md)
 ❌     - [Custom Hooks (schedule_update, use_hook)](essentials/state/custom_hooks.md)
 ❌     - [Component Lifecycle](essentials/reactivity/lifecycle.md)
 ❌     - [Side Effects](essentials/reactivity/effects.md)
-❌     - [Error Handling (+boundaries)](essentials/state/error_handling.md)
 ❌     - [Maintaing Purity](essentials/reactivity/purity.md)
 ❌     - [Memoization](essentials/state/memoization.md)
 ❌     - [Optimization](essentials/state/optimization.md)

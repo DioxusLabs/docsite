@@ -1,6 +1,6 @@
 # Defining Routes
 
-When creating a [`Routable`] enum, we can define routes for our application using the `route("path")` attribute.
+When creating a `Routable` enum, we can define routes for our application using the `route("path")` attribute.
 
 ## Route Segments
 

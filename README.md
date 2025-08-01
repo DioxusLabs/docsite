@@ -41,6 +41,13 @@ We are overhauling the docs for Dioxus 0.7. Here is the current progress:
 ❌     - [Tools]
 ❌     - [Feature Flags]
 ❌     - [Folder Structure]
+
+- [Project Setup](essentials/setup/index.md)
+  - [Create a New App](essentials/setup/tooling.md)
+  - [Integrated Devserver](essentials/setup/devserver.md)
+  - [File-system Layout](essentials/setup/structure.md)
+  - [Cross-platform Configuration](essentials/setup/configuration.md)
+
 ✅   - [Building User Interfaces](essentials/ui/index.md)
 ✅     - [Introducing RSX](essentials/ui/rsx.md)
 ✅     - [Elements and Text](essentials/ui/elements.md)
@@ -79,6 +86,13 @@ We are overhauling the docs for Dioxus 0.7. Here is the current progress:
 ❌     - [Optimization](essentials/state/optimization.md)
 ❌     - [Suspense](essentials/async/suspense.md)
 ❌     - [Futures in Depth (+threads/workers)](essentials/async/crash_course.md)
+
+  <!-- - [Reactive Context](essentials/advanced/reactivity.md) -->
+  <!-- - [Side Effects](essentials/advanced/effects.md) -->
+  <!-- - [Maintaing Purity](essentials/advanced/purity.md) -->
+  <!-- - [Memoization](essentials/advanced/memoization.md) -->
+  <!-- - [Optimization](essentials/advanced/optimization.md) -->
+  <!-- - [Futures in Depth](essentials/advanced/futures.md) -->
 
 ❌   - [Routing](essentials/router/index.md)
 ✅     - [Defining Routes](essentials/router/routes.md)

@@ -25,11 +25,6 @@
 
 - [Core Concepts](essentials/overview.md)
   - [Overview](essentials/index.md)
-  - [Project Setup](essentials/setup/index.md)
-    - [Create a New App](essentials/setup/tooling.md)
-    - [Integrated Devserver](essentials/setup/devserver.md)
-    - [File-system Layout](essentials/setup/structure.md)
-    - [Cross-platform Configuration](essentials/setup/configuration.md)
   - [Building User Interfaces](essentials/ui/index.md)
     - [Introducing RSX](essentials/ui/rsx.md)
     - [Elements and Text](essentials/ui/elements.md)
@@ -55,15 +50,9 @@
     - [Stores and Collections](essentials/basics/collections.md)
     - [Error Handling](essentials/basics/error_handling.md)
   - [Advanced Topics](essentials/advanced/index.md)
-    <!-- - [Reactive Context](essentials/advanced/reactivity.md) -->
     - [Custom Hooks](essentials/advanced/custom_hooks.md)
     - [Component Lifecycle](essentials/advanced/lifecycle.md)
-    <!-- - [Side Effects](essentials/advanced/effects.md) -->
-    <!-- - [Maintaing Purity](essentials/advanced/purity.md) -->
-    <!-- - [Memoization](essentials/advanced/memoization.md) -->
-    <!-- - [Optimization](essentials/advanced/optimization.md) -->
     - [Suspense](essentials/advanced/suspense.md)
-    <!-- - [Futures in Depth](essentials/advanced/futures.md) -->
     - [Breaking Out](essentials/advanced/breaking_out.md)
   - [Routing](essentials/router/index.md)
     - [Defining Routes](essentials/router/routes.md)

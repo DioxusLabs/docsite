@@ -25,7 +25,7 @@ We've put a lot of care into making Dioxus syntax familiar and easy to understan
 Dioxus ships with its own build tool that leverages `cargo` to provide integrated hot-reloading, bundling, and development servers for web and mobile. You can download the prebuilt binary with the following command:
 
 ```sh
-curl -fsSL https://dioxuslabs.com/install | bash
+curl -sSL http://dioxus.dev/install.sh | sh
 ```
 
 You can also download with `cargo-binstall`:

@@ -1,15 +1,15 @@
-# How Components Render
+# Reconciliation: How Components Render
 
 We've covered extensively how components and their properties are defined, but we haven't yet covered how they actually work. Dioxus components are *not* normal Rust functions. While technically possible to call them like regular Rust functions, components rely on an *active* Dioxus runtime to function properly.
 
-To use components properly, it's important to understand the fundamentals of how state flows, how elements are created, and how state is stored. We are going to outline how state works here, but state can be complex so we've given it its own [chapter](../state/index.md).
+To use components properly, it's important to understand the fundamentals of how state flows, how elements are created, and how state is stored. We are going to outline how state works here, but state can be complex so we've given it its own [chapter](../basics/index.md).
 
 
 ## Components Render
 
 In Dioxus, the term "rendering" refers to the process that Dioxus uses to call your component functions and draw elements to the screen. When you call `dioxus::launch`, Dioxus sets up the app's runtime and then calls the provided initial component to create the initial `Element`. This element declares styles, layouts, children, and event listeners. Dioxus converts your elements into draw calls and converts your event listeners into native event handlers.
 
-[Component Loop](/assets/07/render-calls.png)
+![Component Loop](/assets/07/render-calls.png)
 
 Because Dioxus uses a "virtual" tree, the elements in your RSX tree are not actual handles to "real" nodes in the renderer. For example, the Dioxus `Element` type is not a full [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement) object. When Dioxus receives your initial Element, it converts your virtual elements into real elements and draw calls using a platform-specific renderer.
 
@@ -17,12 +17,12 @@ Because Dioxus uses a "virtual" tree, the elements in your RSX tree are not actu
 
 Components will be rerun when the state they depend on changes. After the initial Element has been drawn with the platform-specific renderer, Dioxus listens for events on your elements. When an event is received, the corresponding event listeners are called, and your code has an opportunity to mutate state. Mutating state is the primary mechanism by which Dioxus knows to run your component functions again and look for changes in the tree.
 
-[Component Loop](/assets/07/render-loop.png)
+![Component Loop](/assets/07/render-loop.png)
 
 Dioxus considers state to have been changed in two secnarious:
 
 - The component's properties change, as determined its `PartialEq` implementation
-- Internal [state](../state/index.md) the component depends on changes (e.g. `signal.write()`) and an "update" has been scheduled
+- Internal [state](../basics/index.md) the component depends on changes (e.g. `signal.write()`) and an "update" has been scheduled
 
 ```rust, no_run
 {{#include ../docs-router/src/doc_examples/components.rs:Button}}
@@ -38,7 +38,7 @@ After a component runs again, Dioxus will compare the old `Element` and the new 
 
 ## Components as a function of state
 
-Components are a pure function of your current application state in the form `fn(State) -> Element`. They read state from various sources like props, [hooks](../state/hooks.md), or [context](../state/context.md) and return a view of the current UI as an `Element`.
+Components are a pure function of your current application state in the form `fn(State) -> Element`. They read state from various sources like props, [hooks](../basics/hooks.md), or [context](../basics/context.md) and return a view of the current UI as an `Element`.
 
 We have already seen how components map the props state into UI, but state can also come from the component itself in the form of hooks. For example, we can use a signal to keep track of a count in our component. The component defines the mapping from the current state of the signal to the UI that should be rendered:
 
@@ -78,13 +78,13 @@ In addition to global variables, context and hooks are also external state in co
 {{#include ../docs-router/src/doc_examples/components.rs:MyImpureComponent}}
 ```
 
-Side effects that modify state should be placed in event handlers or [effects](../breaking/index.md#synchronizing-dom-updates-with-use_effect) which run after the component has rendered. This ensures that the component's output is stable and predictable.
+Side effects that modify state should be placed in event handlers or [effects](../advanced/breaking_out.md#synchronizing-dom-updates-with-use_effect) which run after the component has rendered. This ensures that the component's output is stable and predictable.
 
 ```rust, no_run
 {{#include ../docs-router/src/doc_examples/components.rs:MyPureComponent}}
 ```
 
-If you find yourself writing components that *are not* pure, then you are likely misusing or misunderstanding the reactive paradigm. Mutations should be placed in event handlers as a response to user input or in long running async tasks as a response to background processing.
+If you find yourself writing components that *are not* pure, then you are likely misusing or misunderstanding the reactive paradigm. Mutations should be placed either in event handlers as a response to user input, or in long running async tasks as a response to background processing.
 
 ## Similar to React
 

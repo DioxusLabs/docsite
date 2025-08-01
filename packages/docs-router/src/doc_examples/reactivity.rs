@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-use super::{log, ComponentWithLogs, LogState, TwoPanelComponent};
+use super::{ComponentWithLogs, LogState, TwoPanelComponent, log};
 pub use component::ComponentDemo;
 pub use effect::EffectDemo;
 pub use memo::MemoDemo;
@@ -33,6 +33,7 @@ mod signal {
             // ANCHOR: signal_write
             // Set the value from the signal
             signal.set(1);
+
             // get a mutable reference to the inner value with the .write() method
             let mut value: &mut i32 = &mut signal.write();
             *value += 1;

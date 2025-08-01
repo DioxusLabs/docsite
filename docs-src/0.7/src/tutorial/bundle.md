@@ -19,7 +19,7 @@ To test iOS, your development environment needs to be setup to build iOS apps. T
 
 This is a multi-step process and requires creating an Apple Developer account. You shouldn't need to pay any fees until you want to sign your app. Signing your app is required for deploying to the Apple App Store and testing on your iOS device.
 
-Simply run run `dx serve --platform ios` and your app should load in the iOS Simulator.
+Simply run run `dx serve --ios` and your app should load in the iOS Simulator.
 
 ![DogApp](/assets/06_docs/dog-app-ios.mp4)
 
@@ -39,14 +39,14 @@ Getting your Android install correct might be somewhat tricky, so try enabling "
 If all goes well, we can simply serve and our app should show up in our Android simulator.
 
 ```
-dx serve --platform android
+dx serve --android
 ```
 
 ![Android DogApp](/assets/06_docs/android-dogapp.mp4)
 
 ## Testing on Desktop
 
-HotDog also works on macOS, Windows, and Linux! We can use `dx serve --platform desktop` to serve our app as a desktop app.
+HotDog also works on macOS, Windows, and Linux! We can use `dx serve --webview` to serve our app as a desktop app.
 
 ![HotDogDesktop](/assets/06_docs/hotdog-desktop.png)
 
@@ -57,7 +57,7 @@ After we're done making changes to our server and client apps, we can build bund
 We're going to follow the same pattern as `dx serve` but with `dx bundle`. To start, let's build the web version of our app.
 
 ```sh
-dx bundle --platform web
+dx bundle --web
 ```
 
 We should receive a series of INFO traces from the CLI as it builds, and then finally a path to the `public` folder it generates. Let's `cd` into its public directory and then check out its parent directory (cd ..) (the "web" folder).
@@ -105,12 +105,12 @@ When bundling installable apps, there are many distribution formats to choose fr
 You can specify package types like so:
 
 ```sh
-dx bundle --platform desktop \
+dx bundle --webview \
     --package-types "macos" \
     --package-types "dmg"
 ```
 
-Note that not all package-types are compatible with each platform - eg. only `.exe` can be built when specifying `--platform desktop`.
+Note that not all package-types are compatible with each platform - eg. only `.exe` can be built when specifying `--webview`.
 
 We should see the outputs in our terminal:
 
@@ -168,7 +168,7 @@ This mode is not particular friendly to humans, but does contain more informatio
 JSON mode works with all `dx` commands. However, it is most useful with `dx build` and `dx bundle`. The CLI always guarantees that the last emitted line is the result of the command. To collect the list of bundles from the `dx bundle` command, we can use `tail -1` and simple jq.
 
 ```sh
-dx bundle --platform desktop \
+dx bundle --webview \
     --json-output \
     --verbose \
     | tail -1 \

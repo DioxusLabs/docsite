@@ -12,12 +12,9 @@ The essentials section will guide you through key concepts in Dioxus:
 
 - [Building UIs with RSX](../essentials/ui/index.md) will teach you how to define html inside your Dioxus app with rsx.
 
-- [Component Lifecycle](../essentials/reactivity/lifecycle.md) teaches you about the lifecycle of components along with the hooks you need to run code when the component is first created, mounted, and removed.
+- [Managing State](../essentials/basics/index.md) guides you through how state works in Dioxus. It will teach you how to create state with `use_signal`, derive state with `use_memo`, and integrate state with asynchronous tasks with `use_resource`. Along the way, you will learn about how you can use reactivity to declaratively describe your UI.
 
-- [Managing State](../essentials/state/index.md) guides you through how state works in Dioxus. It will teach you how to create state with `use_signal`, derive state with `use_memo`, and integrate state with asynchronous tasks with `use_resource`. Along the way, you will learn about how you can use reactivity to declaratively describe your UI.
-
-- [Breaking Out](../essentials/breaking/index.md) will teach you how to break out of Dioxus' rendering model to run JavaScript or interact with the DOM directly with `web-sys`.
-
+- [Advanced Reacitivty](../essentials/advanced/index.md) teaches you deeper concepts about Dioxus like building custom hooks, optimizing your app, and breaking out of the Dioxus framework.
 
 ## Ideas for New Features
 

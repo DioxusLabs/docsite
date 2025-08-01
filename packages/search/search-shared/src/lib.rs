@@ -1,8 +1,5 @@
 use std::{
-    collections::HashMap,
-    fmt::{Debug, Display},
-    path::PathBuf,
-    str::FromStr,
+    collections::HashMap, ffi::OsStr, fmt::{Debug, Display}, path::PathBuf, str::FromStr
 };
 
 use bytes::Bytes;
@@ -36,6 +33,24 @@ impl<R> Debug for SearchIndex<R> {
     }
 }
 
+pub fn write_index(asset_format: &Config, name: String, output_path: &impl AsRef<OsStr>) -> Bytes {
+    let toml = toml::to_string(&asset_format).unwrap();
+    let bytes = build_index(&stork_lib::Config::try_from(&*toml).unwrap())
+        .unwrap()
+        .bytes;
+
+    stork_lib::register_index(&format!("index_{name}"), bytes.clone()).unwrap();
+
+    let output_dir = std::path::Path::new(output_path).join("dioxus_search");
+    let output_path = output_dir.join(format!("index_{name}.bin"));
+    std::fs::create_dir_all(&output_dir).unwrap();
+    let compressed =
+        yazi::compress(&bytes, yazi::Format::Zlib, yazi::CompressionLevel::Default).unwrap();
+    std::fs::write(&output_path, compressed).unwrap();
+
+    bytes
+}
+
 impl<R: Routable> SearchIndex<R>
 where
     <R as FromStr>::Err: Display,
@@ -44,12 +59,8 @@ where
         let name = name.as_ref().to_string();
         let asset_format = Config::from_route(mapping);
 
-        let toml = toml::to_string(&asset_format).unwrap();
-        let bytes = build_index(&stork_lib::Config::try_from(&*toml).unwrap())
-            .unwrap()
-            .bytes;
-
-        stork_lib::register_index(&format!("index_{name}"), bytes.clone()).unwrap();
+        let target_dir = std::env::var("CARGO_MANIFEST_DIR").unwrap_or_else(|_| ".".into());
+        let bytes = write_index(&asset_format, name.clone(), &target_dir);
 
         let myself = Self {
             index: bytes,
@@ -58,21 +69,14 @@ where
             _marker: std::marker::PhantomData,
         };
 
-        let target_dir = std::env::var("CARGO_MANIFEST_DIR").unwrap_or_else(|_| ".".into());
-
-        let path = format!("{}/dioxus_search/index_{}.bin", target_dir, myself.name);
-        std::fs::create_dir_all(std::path::Path::new(&path).parent().unwrap()).unwrap();
-        let compressed = yazi::compress(
-            &myself.index,
-            yazi::Format::Zlib,
-            yazi::CompressionLevel::Default,
-        )
-        .unwrap();
-        std::fs::write(path, compressed).unwrap();
-
         myself
     }
+}
 
+impl<R: Display + FromStr> SearchIndex<R>
+where
+    <R as FromStr>::Err: Display,
+{
     pub fn from_bytes<T: Into<Bytes>>(name: impl AsRef<str>, bytes: T) -> Self {
         let name = name.as_ref().to_string();
         let bytes = bytes.into();
@@ -164,11 +168,25 @@ where
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
-pub struct SearchResult<R: Routable> {
+pub struct SearchResult<R> {
     pub route: R,
     pub title: String,
     pub excerpts: Vec<Excerpt>,
     pub score: usize,
+}
+
+impl<R> SearchResult<R> {
+    pub fn map<F, T>(self, f: F) -> SearchResult<T>
+    where
+        F: Fn(R) -> T,
+    {
+        SearchResult {
+            route: f(self.route),
+            title: self.title,
+            excerpts: self.excerpts,
+            score: self.score,
+        }
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -246,7 +264,7 @@ impl Config {
             input: InputConfig {
                 base_directory: base_directory.to_string_lossy().into(),
                 url_prefix: "".into(),
-                html_selector: Some("#main".into()),
+                html_selector: Some(".markdown-body".into()),
                 files,
                 break_on_file_error: false,
                 minimum_indexed_substring_length: 3,
@@ -259,21 +277,21 @@ impl Config {
 #[derive(Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct InputConfig {
-    base_directory: String,
-    url_prefix: String,
-    html_selector: Option<String>,
-    files: Vec<File>,
-    break_on_file_error: bool,
-    minimum_indexed_substring_length: u8,
-    minimum_index_ideographic_substring_length: u8,
+    pub base_directory: String,
+    pub url_prefix: String,
+    pub html_selector: Option<String>,
+    pub files: Vec<File>,
+    pub break_on_file_error: bool,
+    pub minimum_indexed_substring_length: u8,
+    pub minimum_index_ideographic_substring_length: u8,
 }
 
 #[derive(Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
-struct File {
-    path: String,
-    url: String,
-    title: String,
+pub struct File {
+    pub path: String,
+    pub url: String,
+    pub title: String,
     #[serde(flatten, default)]
     pub fields: HashMap<String, String>,
     #[serde(flatten)]

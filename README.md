@@ -66,10 +66,10 @@ We are overhauling the docs for Dioxus 0.7. Here is the current progress:
 ✅     - Global Context (context, global signals)
 ✅     - Stores and Collections
 ✅     - [Error Handling (+boundaries)](essentials/state/error_handling.md)
-❌     - The Outside World (sync signals, external callbacks, layout effects, onmounted)
 
 
 ❌   - [Advanced Reactivity](essentials/reactivity/index.md)
+❌     - The Outside World (sync signals, external callbacks, layout effects, onmounted)
 ❌     - [Reactive Context](essentials/reactivity/reactivity.md)
 ❌     - [Custom Hooks (schedule_update, use_hook)](essentials/state/custom_hooks.md)
 ❌     - [Component Lifecycle](essentials/reactivity/lifecycle.md)

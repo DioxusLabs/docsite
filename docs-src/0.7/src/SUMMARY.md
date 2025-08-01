@@ -53,18 +53,17 @@
     - [Hoisting State](essentials/basics/hoisting.md)
     - [Global Context](essentials/basics/context.md)
     - [Stores and Collections](essentials/basics/collections.md)
-    - [External State](essentials/basics/external.md)
     - [Error Handling](essentials/basics/error_handling.md)
-  - [Advanced Reactivity](essentials/advanced/index.md)
-    - [Reactive Context](essentials/advanced/reactivity.md)
+  - [Advanced Topics](essentials/advanced/index.md)
+    <!-- - [Reactive Context](essentials/advanced/reactivity.md) -->
     - [Custom Hooks](essentials/advanced/custom_hooks.md)
     - [Component Lifecycle](essentials/advanced/lifecycle.md)
-    - [Side Effects](essentials/advanced/effects.md)
-    - [Maintaing Purity](essentials/advanced/purity.md)
-    - [Memoization](essentials/advanced/memoization.md)
-    - [Optimization](essentials/advanced/optimization.md)
+    <!-- - [Side Effects](essentials/advanced/effects.md) -->
+    <!-- - [Maintaing Purity](essentials/advanced/purity.md) -->
+    <!-- - [Memoization](essentials/advanced/memoization.md) -->
+    <!-- - [Optimization](essentials/advanced/optimization.md) -->
     - [Suspense](essentials/advanced/suspense.md)
-    - [Futures in Depth](essentials/advanced/futures.md)
+    <!-- - [Futures in Depth](essentials/advanced/futures.md) -->
     - [Breaking Out](essentials/advanced/breaking_out.md)
   - [Routing](essentials/router/index.md)
     - [Defining Routes](essentials/router/routes.md)

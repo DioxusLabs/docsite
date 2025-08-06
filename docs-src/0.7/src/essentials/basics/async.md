@@ -25,7 +25,7 @@ The lifecycle of a future follows a consistent structure:
 - The Future is polled in the background until it returns a `Ready` value
 - If the Future is cancelled, Rust calls its `Drop` implementation
 
-[Future Diagram](/assets/07/future-diagram.png)
+![Future Diagram](/assets/07/future-diagram.png)
 
 ## Lazy futures
 
@@ -106,7 +106,7 @@ DemoFrame {
 }
 ```
 
-You can mitigate issues with cancelation by cleaning up resources manually. For example, by making sure global state is restored when the future is dropped:
+You can mitigate issues with cancellation by cleaning up resources manually. For example, by making sure global state is restored when the future is dropped:
 ```rust
 {{#include ../docs-router/src/doc_examples/asynchronous.rs:cancel_safe}}
 ```
@@ -151,7 +151,7 @@ Futures will pause execution at `.await` points, allowing other tasks to run unt
 
 ## Long-lived Futures
 
-In some apps, you might want to include long-lived tasks that exist for the lifetime of the app. This might be a background sync engine or a thread listening to some system IO. For these usecases, we provide the `spawn_forever` function. This works exactly the same as `spawn`, but instead of spawning the future under the *current* component, the future is attached to the *root* component. Because the root component is never unmounted, the task continues until the app is closed.
+In some apps, you might want to include long-lived tasks that exist for the lifetime of the app. This might be a background sync engine or a thread listening to some system IO. For these use cases, we provide the `spawn_forever` function. This works exactly the same as `spawn`, but instead of spawning the future under the *current* component, the future is attached to the *root* component. Because the root component is never unmounted, the task continues until the app is closed.
 
 ```rust
 use_hook(|| spawn_forever(async move {
@@ -159,4 +159,4 @@ use_hook(|| spawn_forever(async move {
 }));
 ```
 
-This function does have its drawbacks and is meant for advanced usecases. If any resources like a Signal are used in this future, they must *also* be valid for the lifetime of the app. Using Signals after they have been dropped will lead to a panic and crash your app!
+This function does have its drawbacks and is meant for advanced use cases. If any resources like a Signal are used in this future, they must *also* be valid for the lifetime of the app. Using Signals after they have been dropped will lead to a panic and crash your app!

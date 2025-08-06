@@ -1,6 +1,6 @@
 # Error handling
 
-A major selling point of using Rust for web development its renown reliability. A common sentiment by developers deploying Rust services:
+A major selling point of using Rust for web development its renowned reliability. A common sentiment by developers deploying Rust services:
 
 > "We deployed our Rust service and then forgot about it because it just kept running without any issues"
 
@@ -74,7 +74,7 @@ When handling errors in Error Boundaries, we can match on specific types of erro
 
 By default, errors are caught by the nearest Error Boundary. In some scenarios, we might not want to catch a specific type of error, like a NetworkError.
 
-In our handler code, we can iterate through the list of captured errors with `.errors()` and then re-throw the E:
+In our handler code, we can iterate through the list of captured errors with `.errors()` and then re-throw the Error if necessary:
 
 ```rust
 rsx! {

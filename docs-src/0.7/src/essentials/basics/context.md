@@ -305,7 +305,7 @@ fn app() -> Element {
 }
 ```
 
-While it may seem like `COUNT` is synchronized across *every* runnig app, it actually is just local to one app at a time. Global signals are roughly implemented as a HashMap of global signal key to value where the key is a unique compile-time identifier per instance.
+While it may seem like `COUNT` is synchronized across *every* running app, it actually is just local to one app at a time. Global signals are roughly implemented as a HashMap of global signal key to value where the key is a unique compile-time identifier per instance.
 
 In addition to global signals, you can also have global memos with GlobalMemo. These are similar to regular memos, allowing you to incrementally compute new values as the inner reactive values are updated.
 

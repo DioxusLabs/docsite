@@ -1,8 +1,8 @@
 # Hooks
 
-In Dioxus, state that is local to a component is stored in *hooks*. Hooks provide a simple way for components to store and retrieve state while rendering.
+In Dioxus, state that is local to a component is stored in *hooks*.
 
-Dioxus hooks work similarly to React's hooks. If you haven't done much web development, hooks might seem particularly unusual. Hooks provide a way of storing state, attaching effects, and enabling composability that integrates well with the full Dioxus reactivity system. Even better - they're less verbose than declaring structs and implementing "render" traits!
+Dioxus hooks work similarly to React's hooks. If you haven't done much web development, hooks might seem particularly unusual. Hooks provide a way of storing state, and attaching effects composability in components. Even better - they're less verbose than declaring structs and implementing "render" traits!
 
 ## The `use_hook` primitive
 

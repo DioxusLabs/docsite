@@ -4,7 +4,7 @@ This guide will cover concepts specific to the Dioxus desktop renderer.
 
 Apps built with Dioxus desktop use the system WebView to render the page. This makes the final size of application much smaller than other WebView renderers (typically under 5MB).
 
-Although desktop apps are rendered in a WebView, your Rust code runs natively. This means that browser APIs are _not_ available, so rendering WebGL, Canvas, etc is not as easy as the Web. However, native system APIs _are_ accessible, so streaming, WebSockets, filesystem, etc are all easily accessible though system APIs.
+Although desktop apps are rendered in a WebView, your Rust code runs natively. This means that browser APIs are _not_ available, so rendering WebGL, Canvas, etc is not as easy as the Web. However, native system APIs _are_ accessible, so streaming, WebSockets, the filesystem, etc are all easily accessible though system APIs.
 
 Dioxus desktop is built on top of [wry](https://github.com/tauri-apps/wry), a Rust library for creating desktop applications with a WebView.
 

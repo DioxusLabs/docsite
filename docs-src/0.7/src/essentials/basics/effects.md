@@ -103,7 +103,7 @@ fn Title() -> Element {
 
     // attach an effect to modify the document title whenever title changes
     use_effect(move || {
-        window().docment().set_title(text());
+        window().document().set_title(text());
     });
 
     rsx! {

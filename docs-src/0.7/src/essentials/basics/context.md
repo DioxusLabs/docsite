@@ -83,7 +83,7 @@ struct Title(String);
 struct Subtitle(String);
 ```
 
-The, we can provide the context using our wrapper types:
+Then, we can provide the context using our wrapper types:
 
 ```rust
 use_context_provider(|| Title("Hello world!".to_string()));

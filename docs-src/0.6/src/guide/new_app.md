@@ -13,7 +13,7 @@ dx new hot_dog
 
 You'll need to select a template to use to get started.
 
-- Bare-bones: a very simple setup with just a `main.rs` an and `assets` folder.
+- Bare-bones: a very simple setup with just a `main.rs` and an `assets` folder.
 - Jumpstart: a scaffolded app with components, views, and suggested structure.
 - Workspace: a full cargo workspace setup with different crates per platform.
 

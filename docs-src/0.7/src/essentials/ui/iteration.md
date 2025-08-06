@@ -1,4 +1,4 @@
-'#' Rendering Lists
+# Rendering Lists
 
 ## Iterators and inline `for`
 

@@ -21,7 +21,7 @@ DemoFrame {
 
 ## Event Handlers
 
-Event handlers are callbacks used to respond to user actions. Event handlers cab capture dozens of different interactions: button clicks, page scrolls, mouse movements, text input, and more.
+Event handlers are callbacks used to respond to user actions. Event handlers can capture dozens of different interactions: button clicks, page scrolls, mouse movements, text input, and more.
 
 Adding an event handler to an element is similar to adding an attribute with the `key: value` syntax. The handler name usually starts with `on` - and accepts a closure as the value. For example, to handle clicks on a button, we can add an `onclick` handler:
 
@@ -327,7 +327,7 @@ Sometimes, you might want to make a component that accepts an event handler. A s
 {{#include ../docs-router/src/doc_examples/event_handler_prop.rs:component_with_handler}}
 ```
 
-To add the handler as a property to our compnent, we simply add a field of `EventHandler` type with a name that starts with `on`.
+To add the handler as a property to our component, we simply add a field of `EventHandler` type with a name that starts with `on`.
 
 To actually call the event handler, you call it with the `.call()` method:
 

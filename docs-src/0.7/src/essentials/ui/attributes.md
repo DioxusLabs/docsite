@@ -132,7 +132,7 @@ rsx! {
 }
 ```
 
-Attributes lists awill be merged in the order they appear, so later attributes in the list take precedence over earlier attributes. Attribute spreading becomes very useful when refactoring your UI into a reusable component libraries.
+Attributes lists will be merged in the order they appear, so later attributes in the list take precedence over earlier attributes. Attribute spreading becomes very useful when refactoring your UI into a reusable component libraries.
 
 ## Special Attributes
 

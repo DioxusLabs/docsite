@@ -19,7 +19,7 @@ Components will be rerun when the state they depend on changes. After the initia
 
 ![Component Loop](/assets/07/render-loop.png)
 
-Dioxus considers state to have been changed in two secnarious:
+Dioxus considers state to have been changed in two situations:
 
 - The component's properties change, as determined its `PartialEq` implementation
 - Internal [state](../basics/index.md) the component depends on changes (e.g. `signal.write()`) and an "update" has been scheduled

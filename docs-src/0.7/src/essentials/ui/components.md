@@ -99,7 +99,7 @@ Many Dioxus utilities use comparison-by-pointer instead of comparison-by-content
 
 ### Clone
 
-The `Clone` bound is a particularly interesting requirement for component properties. The Dioxus component tree architecture is designed around an idea called "unidirectional data flow." This is a design pattern that prevents components down the component tree from modifying their input properties. By preventing these accidental mutations, user interfaces generally have fewer bugs. Rust itself generally solves this problem its borrow checker system, but the borrow checker does not work well with asynchronous work which is quite prevelant in app development.
+The `Clone` bound is a particularly interesting requirement for component properties. The Dioxus component tree architecture is designed around an idea called "unidirectional data flow." This is a design pattern that prevents components down the component tree from modifying their input properties. By preventing these accidental mutations, user interfaces generally have fewer bugs. Rust itself generally solves this problem its borrow checker system, but the borrow checker does not work well with asynchronous work which is quite prevalent in app development.
 
 Generally, it's fine to `.clone()` most component properties, but some objects might be too expensive to clone and negatively impact performance. In most cases, you can simply wrap the value in the [`ReadSignal`] wrapper type and the object will be automatically wrapped in a smart pointer:
 

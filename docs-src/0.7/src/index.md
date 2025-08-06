@@ -28,7 +28,7 @@ Dioxus is a developer-friendly framework that empowers developers to ship cross-
 
 In many ways, Dioxus is similar to Flutter: we integrate our own build tools, foster an ecosystem, and provide a GUI framework. In key areas, Dioxus takes a different approach:
 
-- Apps are declared with HTML and CSS instead of custom styling solution
+- Apps are declared with HTML and CSS instead of a custom styling solution
 - Reactivity is inspired by web frameworks like React and SolidJS
 - Dioxus code runs natively with no virtual machine, enabling zero-overhead calls to system APIs
 

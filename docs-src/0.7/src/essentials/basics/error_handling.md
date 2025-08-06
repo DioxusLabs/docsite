@@ -74,7 +74,7 @@ When handling errors in Error Boundaries, we can match on specific types of erro
 
 By default, errors are caught by the nearest Error Boundary. In some scenarios, we might not want to catch a specific type of error, like a NetworkError.
 
-In our handler code, we can iterate through the list of captured errors with `.errors()` and then re-throw the Error if necessary:
+In our handler code, we can iterate through the list of captured errors with `.errors()` and then re-throw the error if necessary:
 
 ```rust
 rsx! {

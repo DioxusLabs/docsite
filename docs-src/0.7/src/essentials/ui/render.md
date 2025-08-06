@@ -22,7 +22,7 @@ Components will be rerun when the state they depend on changes. After the initia
 Dioxus considers state to have been changed in two situations:
 
 - The component's properties change, as determined its `PartialEq` implementation
-- Internal [state](../basics/index.md) the component depends on changes (e.g. `signal.write()`) and an "update" has been scheduled
+- Internal [state](../basics/index.md) the component depends on changes (e.g. `signal.write()`) and an "update" is scheduled
 
 ```rust, no_run
 {{#include ../docs-router/src/doc_examples/components.rs:Button}}
@@ -36,7 +36,7 @@ DemoFrame {
 
 After a component runs again, Dioxus will compare the old `Element` and the new `Element` to look for changes. The Dioxus runtime will identify the least amount of draw calls required to change the old UI to match your desired UI. This comparison process is called "diffing". Dioxus optimizes diffing by only comparing dynamic parts of the RSX, so static elements are not checked for changes (see this [blog post](https://dioxuslabs.com/blog/templates-diffing) for details). This entire loop - Render, Display, Listen, Mutate - is called "reconciliation" and Dioxus has one of the most performant implementations of any UI framework.
 
-## Components as a function of state
+## Components are Functions of State
 
 Components are a pure function of your current application state in the form `fn(State) -> Element`. They read state from various sources like props, [hooks](../basics/hooks.md), or [context](../basics/context.md) and return a view of the current UI as an `Element`.
 

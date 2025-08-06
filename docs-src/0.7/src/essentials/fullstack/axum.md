@@ -8,7 +8,7 @@ First, we need to add axum and tokio as dependencies. Since we only need these d
 
 ```toml
 [dependencies]
-dioxus = { version = "0.6.0", features = ["fullstack"] }
+dioxus = { version = "0.7.0", features = ["fullstack"] }
 # Axum is optional because we only use it on the server
 axum = { version = "0.7", optional = true }
 tokio = { version = "1.0", features = ["full"], optional = true }

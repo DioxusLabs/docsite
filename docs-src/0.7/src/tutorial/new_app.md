@@ -1,5 +1,5 @@
 
-## Create a new project
+# Creating a new project
 
 You can create a new Dioxus project by running the following command and following the prompts:
 

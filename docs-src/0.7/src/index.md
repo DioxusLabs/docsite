@@ -76,11 +76,11 @@ fn PromptModal() {
     jni_sys::call_android_function();
 
     #[cfg(ios)]
-    obcj2::call_ios_function();
+    objc2::call_ios_function();
 }
 ```
 
-The core Dioxus framework covers a number of utilities that are either challenging to design or need support our devtools:
+The core Dioxus framework covers a number of utilities that are either challenging to design or need to support our devtools:
 
 - [App Routing](essentials/router/index.md)
 - [Backend integration via server functions](essentials/fullstack/index.md)

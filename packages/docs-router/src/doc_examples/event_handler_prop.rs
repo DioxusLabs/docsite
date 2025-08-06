@@ -27,7 +27,7 @@ pub fn FancyButton(props: FancyButtonProps) -> Element {
         button {
             class: "fancy-button",
             onclick: move |evt| props.onclick.call(evt),
-            "click me pls."
+            "Click me!"
         }
     }
 }

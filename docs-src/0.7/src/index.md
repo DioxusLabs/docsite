@@ -85,7 +85,7 @@ The core Dioxus framework covers a number of utilities that are either challengi
 - [App Routing](essentials/router/index.md)
 - [Backend integration via server functions](essentials/fullstack/index.md)
 - [Including and optimizing](essentials/ui/assets.md) assets
-- [State management](essentials/state/index.md) (signals-based reactivity)
+- [State management](essentials/basics/index.md) (signals-based reactivity)
 - [SDK](http://github.com/dioxusLabs/sdk): 1st-party System integrations
 
 ## Who's funding Dioxus?

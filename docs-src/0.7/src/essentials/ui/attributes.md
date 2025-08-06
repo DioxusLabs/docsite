@@ -1,7 +1,7 @@
 
 # Attributes
 
-While we could build a UI by assembling plain elements and text together, we typically want to customize their appearance and behavior. This is where we use Element Attributes. Attributes provide extra information to the renderer on how to display the UI.
+While we could build a UI by assembling unstyled elements and text, we typically want to customize their appearance and behavior. This is where we use *element attributes*. Attributes provide extra information to the renderer on how to display the UI.
 
 You can specify attributes by adding the name of the attribute, a colon, and then the value to the body of an element. For example, we might want to style a div with a particular [class](https://www.w3schools.com/html/html_classes.asp) and [ID](https://www.w3schools.com/html/html_id.asp), which we add as attributes:
 
@@ -109,7 +109,7 @@ DemoFrame {
 }
 ```
 
-More information about event listeners including how events bubble and how to prevent default behavior can be found later in the [Event Handlers](../reactivity/event_handlers.md) Reactivity section.
+More information about event listeners including how events bubble and how to prevent default behavior can be found later in the [Event Handlers](../basics/event_handlers.md) Reactivity section.
 
 There are a wide range of event listeners available - see the full [HTML list](https://developer.mozilla.org/en-US/docs/Web/Events) for more details.
 
@@ -132,7 +132,7 @@ rsx! {
 }
 ```
 
-Attributes lists awill be merged in the order they appear, so later attributes in the list take precedence over earlier attributes. Attribute spreading becomes very useful when refactor your UI into reusable components and build component libraries.
+Attributes lists awill be merged in the order they appear, so later attributes in the list take precedence over earlier attributes. Attribute spreading becomes very useful when refactoring your UI into a reusable component libraries.
 
 ## Special Attributes
 
@@ -181,6 +181,56 @@ DemoFrame {
     building_uis_with_rsx::InputDisabled {}
 }
 ```
+
+### onresize and onvisible
+
+Dioxus provides two custom HTML attributes *not* found in the HTML specification.
+
+- onresize
+- onvisible
+
+Dioxus automatically constructs a cross-platform `IntersectionObserver` that emits the respective events for you.
+
+With onresize, you can watch for changes to an element's size and position:
+
+```rust
+fn app() -> Element {
+    let mut items = use_signal(|| 100);
+
+    rsx! {
+        // Adding a value will cause the `div` to be re-rendered with an extra div
+        button { onclick: move |_| items += 1, "Add one" }
+
+        div {
+            // This will be called when the `div` is resized
+            onresize: move |data| {
+                info!("resized to {:#?}", data.get_border_box_size().unwrap());
+            },
+
+            for x in 0..items() {
+                div { "{x}" }
+            }
+        }
+    }
+}
+```
+
+With `onvisible`, you can handle the cases when an element enters and exits the viewport. This is useful for implementing things like lazy loading, infinite scrolls, and virtual lists:
+
+```rust
+fn app() -> Element {
+    rsx! {
+        div {
+            onvisible: move |data| info!("visibility changed"),
+            "Hello world!"
+        }
+    }
+}
+```
+
+You can add rich scroll-aware animations to your app without needing to write custom JavaScript.
+
+![gif_of_visible_working.mp4](/assets/06assets/onvisible.mp4)
 
 ### Custom Attributes
 

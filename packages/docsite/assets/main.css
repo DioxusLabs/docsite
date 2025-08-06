@@ -131,10 +131,6 @@ It's so unliklely anyone is copying text on mobile that we can just hide it
   }
 }
 
-.dioxus-demo div, input, form {
-  all: revert;
-}
-
 .dioxus-demo input {
   border: 1px solid #ced4da;
   border-radius: 5px;
@@ -175,6 +171,10 @@ It's so unliklely anyone is copying text on mobile that we can just hide it
 }
 
 .markdown-body img {
+  max-height: 600px;
+}
+
+.markdown-body video {
   max-height: 600px;
 }
 

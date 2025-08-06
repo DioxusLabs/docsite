@@ -8,7 +8,7 @@ pub fn App() -> Element {
     rsx! {
         input {
             // we tell the component what to render
-            value: "{name}",
+            value: "{name().to_ascii_uppercase()}",
             // and what to do when the value changes
             oninput: move |event| name.set(event.value())
         }

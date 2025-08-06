@@ -14,7 +14,7 @@ You can create a signal with the `use_signal` hook:
 let mut signal = use_signal(|| 0);
 ```
 
-Once you have your signal, you can gain an inner reference to the signal value by calling the `.read()`:
+Once you have your signal, you can gain a reference to the signal's inner value by calling the `.read()`:
 
 ```rust
 let mut signal = use_signal(|| 0);
@@ -128,24 +128,25 @@ Dioxus provides two variations of the base Signal type: `ReadSignal` and `WriteS
 - **`ReadSignal`**: a read-only version of the base Signal type
 - **`WriteSignal`**: a read-write version of the base Signal type, equivalent to `Signal` itself
 
-ReadSignals are reactive values that are implement the `Readable` trait. `WriteSignals` are reactive values that implement the `Writable` trait.
+`ReadSignals` are reactive values that are implement the `Readable` trait. `WriteSignals` are reactive values that implement the `Writable` trait.
 
-These two variations are useful when writing functions that need to be generic over their input types. If a function only needs the `.read()` method and its extensions, then it can specify a `ReadSignal` as an argument.
+These two variations are useful when writing components that need to be generic over their input types. If a component only needs the `.read()` method and its extensions, then it can specify a `ReadSignal` as an argument.
 
 
 ```rust
 fn app() -> Element {
     let mut name: Signal<String> = use_signal(|| "abc".to_string());
 
-    // `.into()` converts the Signal into a ReadSignal
-    do_read_only_things(name.into());
-
-    // ...
+    rsx! {
+        // The rsx macro automatically converts the Signal into a ReadSignal
+        Name { name }
+    }
 }
 
-// we can accept anything that implements `Into<ReadSignal>`
-fn do_read_only_things(sig: ReadSignal<String>) {
-    println!("{}", sig.read());
+// We can accept anything that implements `Into<ReadSignal>`
+#[component]
+fn Name(name: ReadSignal<String>) {
+    rsx! { "{name}" }
 }
 ```
 
@@ -155,18 +156,24 @@ This ensures we can pass both `Signal` and `Memo` to the same function:
 
 ```rust
 let name: Signal<String> = use_signal(|| "abc".to_string());
-let memo: Memo<String> = use_memo(move || name.to_string());
+let uppercase: Memo<String> = use_memo(move || name.to_uppercase());
 
-// `.into()` converts the Signal into a ReadSignal
-do_read_only_things(name.into());
+rsx! {
+    // The rsx macro automatically converts the Signal into ReadSignal
+    Name { name, uppercase }
+    // The rsx macro automatically converts the Memo into ReadSignal
+    Name { uppercase }
+}
 
-// `.into()` converts the Memo into a ReadSignal
-do_read_only_things(name.into());
+#[component]
+fn Name(name: ReadSignal<String>) {
+    rsx! { "{name}" }
+}
 ```
 
 ## Reactive Scopes
 
-A **Reactive Scope** is a block of Rust code that observes reads and writes of reactive values. Whenever `.write()` or `.set()` is called on a Signal, any active reactive scopes tracking that Signal run a callback as a side-efect.
+A **Reactive Scope** is a block of Rust code that observes reads and writes of reactive values. Whenever `.write()` or `.set()` is called on a Signal, any active reactive scopes tracking that Signal run a callback as a side-effect.
 
 The simplest reactive scope is a component. During a component render, components automatically subscribe to signals where `.read()` is called. The `.read()` method can be called *implicitly* in many circumstances - notably, the extension methods provided by `Readable` use the underlying `.read()` method and thus *also* contribute to the current reactive scope. When a signal's value changes, components queue a side-effect to re-render the component using `dioxus::core::needs_update`.
 
@@ -202,7 +209,7 @@ rsx! {
 }
 ```
 
-Calls to `.read()` access the current reactive scope, adding this scope to the list of subscribers to the Signal. By default, components attach a re-render effect to all signals accessed from witin their reactive scope.
+Calls to `.read()` access the current reactive scope, adding this scope to the list of subscribers to the Signal with a side effect that runs when that signal is changed. For components, the logic causes the component to queue a re-render side effect.
 
 ![Component effects](/assets/07/component-effect.png)
 
@@ -210,7 +217,7 @@ There are other uses of reactive scopes beyond component re-renders. Hooks like 
 
 ## Automatic Batching
 
-By default, all `.write()` calls are batched in one "step" of your app. Dioxus does not synchronously run side-effects when you call `.write()`. Instead, the runtime waits for all events to be handled *first* before determining what side-effects need to be run. This provides automatic batching of `.write()` calls which is important both for performance and consistency in the UI.
+All built in hooks batch updates if possible. Instead of running effects immediately, `.write()` calls queue an effect before the next "step" of your app. The runtime will try to wait until all writes in the current step are complete before running any effects. This provides automatic batching of `.write()` calls which is important both for performance and consistency in the UI.
 
 By batching `.write()` calls, Dioxus ensures that our example UI always displays one of two states:
 - **"loading?: false -> Complete"**
@@ -241,6 +248,25 @@ rsx! {
 
 Dioxus uses `await` boundaries as barriers between steps. If state is modified during a step, Dioxus prefers to paint the new UI first before polling additional futures. This ensures changes are flushed as fast as possible and pending states aren't missed.
 
+While dioxus tries to batch writes, it prefers consistent state over batching when the two are in conflict. If you read the result of a memo directly after writing to a signal it depends on, the memo will be re-evaluated immediately to ensure you get the most up-to-date value. This ensures the memo is always equivalent to running the memo's function directly.
+
+```rust
+let mut count = use_signal(|| 0);
+let double = use_memo(|| *count() * 2);
+
+rsx! {
+    button {
+        onclick: move |_| async move {
+            // This queues a rerun of the memo and marks it as dirty
+            count += 1;
+            // This forces the memo to re-evaluate immediately
+            println!("double is now: {}", double());
+        },
+        "doubled: {double}"
+    }
+}
+```
+
 ## Signals are Borrowed at Runtime
 
 In Rust, the `&T` and `&mut T` reference types statically assert that the underlying value is either immutable or mutable *at compile time*. This assertion brings a number of guarantees, enabling Rust to generate fast and correct code.
@@ -249,7 +275,7 @@ Unfortunately, these static assertions do not mix well with asynchronous backgro
 
 ![Mutability Over Time](/assets/07/mutable-diagram.png)
 
-At times, our UIs can be very concurrent. There *are* ways to re-orient how we concurrently access state that are compatible with Rust's static mutablity assertions - unfortunately, they are not easy to program.
+At times, our UIs can be very concurrent. There *are* ways to re-orient how we concurrently access state that are compatible with Rust's static mutability assertions - unfortunately, they are not easy to program.
 
 Instead, Signals provide a `.write()` method that checks *at runtime* if the value is safe to access. If you're not careful, you can combine a `.read()` and a `.write()` in the same scope, leading to a runtime borrow failure (panic).
 
@@ -260,7 +286,7 @@ let mut state = use_signal(|| 0);
 
 rsx! {
     button {
-        // Clicking this buttom quickly will cause multiple `.write()` calls to be active
+        // Clicking this button quickly will cause multiple `.write()` calls to be active
         onclick: move |_| async move {
             let mut writer = state.write();
             sleep(Duration::from_millis(1000)).await;
@@ -332,7 +358,7 @@ drop(cur1); // dropping early asserts we can `.write()` the signal safely
 *state.write() = cur2 + 1;
 ```
 
-In very advanced usecases, you can make a copy of the signal or use the `read_unchecked` method to relax the borrowing rules:
+In very advanced use cases, you can make a copy of the signal or use the `read_unchecked` method to relax the borrowing rules:
 
 ```rust
 match result.read_unchecked().as_ref() {

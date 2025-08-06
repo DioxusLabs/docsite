@@ -125,7 +125,7 @@ To use the style declarations from our stylesheet, we can use [class selectors](
     background-color: #f0f9ff;
 }
 #root-component {
-    font-weight: 500px;
+    font-weight: 500;
 }
 ```
 

@@ -8,7 +8,7 @@ pub fn App() -> Element {
     rsx! {
         input {
             // tell the input to pick a file
-            r#type: "file",
+            type: "file",
             // list the accepted extensions
             accept: ".txt,.rs",
             // pick multiple files

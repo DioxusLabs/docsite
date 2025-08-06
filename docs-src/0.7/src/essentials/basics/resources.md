@@ -16,7 +16,7 @@ cargo add serde --features derive
 Your Cargo.toml should have the reqwest and serde libraries:
 ```toml
 [dependencies]
-# .... dioxus and other dependencies
+# ... dioxus and other dependencies
 reqwest = { version = "*", features = ["json"] }
 serde = { version = "1", features = ["derive"] }
 ```
@@ -128,32 +128,6 @@ DemoFrame {
 > ```
 >
 > Async methods will often mention if they are cancel safe in their documentation.
-
-## Network Requests with `use_resource`
-
-The `use_resource` hook is extremely useful for making a network request. For example, we can fetch a dog from the Dog API:
-
-```rust
-{{#include ../docs-router/src/doc_examples/data_fetching.rs:fetch_resource}}
-```
-
-```inject-dioxus
-DemoFrame {
-    data_fetching::DogViewResource {}
-}
-```
-
-Most requests will depend on state in your application. Because `use_resource` is reactive, it will automatically rerun when the dependencies change. For example, if we read the breed signal inside of the resource, the resource will rerun whenever the breed changes:
-
-```rust
-{{#include ../docs-router/src/doc_examples/data_fetching.rs:fetch_resource_reactive}}
-```
-
-```inject-dioxus
-DemoFrame {
-    data_fetching::DogViewResourceReactive {}
-}
-```
 
 ## Avoiding Waterfalls
 

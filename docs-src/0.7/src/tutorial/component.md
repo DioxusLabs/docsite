@@ -42,7 +42,7 @@ Dioxus provides types that make `.clone()` cheaper to call, so don't worry about
 
 Just like React, Dioxus will call your component function multiple times throughout its lifecycle. This is called *re-rendering*. In Dioxus, re-renders are extremely cheap (much cheaper than React!). In most cases you shouldn't worry about re-rendering too frequently.
 
-When Dioxus re-renders your component, it compares the `Element` returned from the *last* render against the `Element` returned in the *current* render.
+When Dioxus re-renders your component, it compares the `Element` from the last render with the `Element` from the current render.
 
 For example, when the `breed` property changes on the DogApp component, Dioxus will call the DogApp function a second time and compare the previous Element against the new Element.
 

@@ -14,7 +14,7 @@ There are many packages in the Dioxus organization. This document will help you 
 Renderers are the entry point for Dioxus applications. They handle rendering the application, polling async tasks, and handling events. Each renderer depends on `dioxus-core` for the core virtual dom and implements both the history trait from `dioxus-history` and the event conversion trait from `dioxus-html`. Dioxus has four renderers in the main repository:
 
 - [desktop](https://github.com/DioxusLabs/dioxus/tree/main/packages/desktop): A Render that Runs Dioxus applications natively, but renders them with the system webview
-- [mobile](https://github.com/DioxusLabs/dioxus/tree/main/packages/mobile): A Render that Runs Dioxus applications natively, but renders them with the system webview. This is currently a think wrapper on top of the desktop renderer since both renderers use the webview
+- [mobile](https://github.com/DioxusLabs/dioxus/tree/main/packages/mobile): A Render that Runs Dioxus applications natively, but renders them with the system webview. This is currently a thin wrapper on top of the desktop renderer since both renderers use the webview
 - [web](https://github.com/DioxusLabs/dioxus/tree/main/packages/web): Renders Dioxus applications in the browser by compiling to WASM and manipulating the DOM. The web renderer has a hydration feature to take over rendering from the server if [fullstack](#fullstack) is enabled
 - [liveview](https://github.com/DioxusLabs/dioxus/tree/main/packages/liveview): A Render that Runs on the server, and renders using a websocket proxy in the browser. The liveview renderer is currently supported, but development has been deprioritized in favor of fullstack and it may be removed in the future
 

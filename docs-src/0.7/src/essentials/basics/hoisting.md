@@ -195,7 +195,7 @@ In Dioxus, the `Signal` object is both a reader *and* a writer. We designed sign
 If you're not careful with hoisting state, you might eventually try to build a component that takes a mutable signal as an argument:
 
 ```rust
-// ❌ Mutable props is bad!
+// ❌ Mutable props are bad!
 #[component]
 fn Incrementer(mut sig: Signal<i32>) -> Element {
     rsx! {

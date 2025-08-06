@@ -7,7 +7,7 @@ pub fn App() -> Element {
 
     rsx! {
         input {
-            r#type: "file",
+            type: "file",
             accept: ".txt,.rs",
             multiple: true,
             // ANCHOR: onchange_event

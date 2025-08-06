@@ -109,7 +109,7 @@ DemoFrame {
 }
 ```
 
-More information about event listeners including how events bubble and how to prevent default behavior can be found later in the [Event Handlers](../basics/event_handlers.md) Reactivity section.
+More information about event listeners including how events bubble and how to prevent default behavior can be found later in the [Event Handlers](../basics/event_handlers.md) of the Reactivity section.
 
 There are a wide range of event listeners available - see the full [HTML list](https://developer.mozilla.org/en-US/docs/Web/Events) for more details.
 
@@ -121,9 +121,9 @@ Occasionally, the set of attributes you want to pass to an element might either 
 let attributes = vec![
     Attribute {
         name: "id",
-        namespace: "cool-button".into_value(),
-        volatile: None,
-        value: true,
+        namespace: None,
+        volatile: false,
+        value: "cool-button".into_value(),
     }
 ];
 
@@ -132,11 +132,25 @@ rsx! {
 }
 ```
 
-Attributes lists awill be merged in the order they appear, so later attributes in the list take precedence over earlier attributes. Attribute spreading becomes very useful when refactoring your UI into a reusable component libraries.
+Attributes lists will be merged in the order they appear, so later attributes in the list take precedence over earlier attributes. Attribute spreading becomes very useful when refactoring your UI into a reusable component libraries.
 
 ## Special Attributes
 
 Most attributes in RSX are rendered verbatim, but there are a few exceptions. In some cases, RSX deviates from traditional HTML to simplify development or work better with the ecosystem tools.
+
+### Conditional Attributes
+
+You can conditionally set an attribute by setting the attribute value to an unterminated if statement. If the if statement evaluates to true, the attribute will be set:
+
+```rust, no_run
+{{#include ../docs-router/src/doc_examples/building_uis_with_rsx.rs:input_disabled}}
+```
+
+```inject-dioxus
+DemoFrame {
+    building_uis_with_rsx::InputDisabled {}
+}
+```
 
 ### Style attributes
 
@@ -167,20 +181,6 @@ DemoFrame {
 ```
 
 This feature is especially important when using TailwindCSS since the class compiler does not understand formatted Rust strings when collecting classes. By placing the dynamic class in a sibling attribute, the Tailwind compiler sees *both* class lists at compile time.
-
-### Conditional Attributes
-
-You can conditionally set an attribute by setting the attribute value to an unterminated if statement. If the if statement evaluates to true, the attribute will be set:
-
-```rust, no_run
-{{#include ../docs-router/src/doc_examples/building_uis_with_rsx.rs:input_disabled}}
-```
-
-```inject-dioxus
-DemoFrame {
-    building_uis_with_rsx::InputDisabled {}
-}
-```
 
 ### onresize and onvisible
 
@@ -234,7 +234,7 @@ You can add rich scroll-aware animations to your app without needing to write cu
 
 ### Custom Attributes
 
-Dioxus has a pre-configured set of attributes that you can use that are validated at compile time. You can use a custom attribute name surrounded in quotes to add an attribute outside of the pre-defined set:
+Dioxus has a pre-configured set of attributes that are validated at compile time. If you surround the attribute name in quotes, you can use a custom attribute outside of the pre-defined set:
 
 ```rust, no_run
 {{#include ../docs-router/src/doc_examples/building_uis_with_rsx.rs:custom_attributes}}

@@ -1,5 +1,5 @@
 
-## Create a new project
+# Creating a new project
 
 You can create a new Dioxus project by running the following command and following the prompts:
 
@@ -11,7 +11,7 @@ dx new hot_dog
 
 You'll need to select a template to use to get started.
 
-- Bare-bones: a very simple setup with just a `main.rs` an and `assets` folder.
+- Bare-bones: a very simple setup with just a `main.rs` and an `assets` folder.
 - Jumpstart: a scaffolded app with components, views, and suggested structure.
 - Workspace: a full cargo workspace setup with different crates per platform.
 
@@ -90,7 +90,7 @@ mobile = ["dioxus/mobile"]
 
 ### Dioxus.toml
 
-The `Dioxus.toml` file contains Dioxus-specific configuration for used by bundling and deploying. We won't need to configure the `Dioxus.toml` for our app just yet.
+The `Dioxus.toml` file contains Dioxus-specific configuration for bundling and deploying your app. We won't need to configure the `Dioxus.toml` for our app just yet.
 
 ### Assets Folder
 

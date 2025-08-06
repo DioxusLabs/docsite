@@ -1,8 +1,8 @@
 # Hooks
 
-In Dioxus, state that is local to a component is stored in *hooks*. Hooks provide a simple way for components to store and retrieve state while rendering.
+In Dioxus, state that is local to a component is stored in *hooks*.
 
-Dioxus hooks work similarly to React's hooks. If you haven't done much web development, hooks might seem particularly unusual. Hooks provide a way of storing state, attaching effects, and enabling composability that integrates well with the full Dioxus reactivity system. Even better - they're less verbose than declaring structs and implementing "render" traits!
+Dioxus hooks work similarly to React's hooks. If you haven't done much web development, hooks might seem particularly unusual. Hooks provide a way of storing state, and attaching effects composability in components. Even better - they're less verbose than declaring structs and implementing "render" traits!
 
 ## The `use_hook` primitive
 
@@ -49,7 +49,7 @@ Similar to conditionals, closures provide a way for hook functions to be called 
 
 ### No Hooks in Loops
 
-Just like conditionals and closures, calling hook functions in loops can lead to inconsistent retrieval of hook values between renders, causing hooks to potentiall retrieve the wrong value.
+Just like conditionals and closures, calling hook functions in loops can lead to inconsistent retrieval of hook values between renders, causing hooks to return the wrong value.
 ```rust
 {{#include ../docs-router/src/doc_examples/hooks_bad.rs:loop}}
 ```
@@ -122,7 +122,7 @@ fn Card(default_name: String) -> Element {
 }
 ```
 
-whereas struct compnents might be quite verbose:
+whereas struct components might be quite verbose:
 
 ```rust
 struct Card {
@@ -145,7 +145,7 @@ impl Component for Card {
     }
 
     fn change(&mut self, props: Self::Props) {
-        self.default_name = props.defalt_name;
+        self.default_name = props.default_name;
     }
 
     fn render(mut state: Handle<Self>) -> Element {

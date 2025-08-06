@@ -1,6 +1,6 @@
 # How to Upgrade to Dioxus 0.6
 
-This guide will outline the API changes between the `0.5` and `0.6` releases. The `0.6` release contains a breaking changes to:
+This guide will outline the API changes between the `0.5` and `0.6` releases. The `0.6` release contains breaking changes to:
 
 - The `Element` type
 - Prevent default

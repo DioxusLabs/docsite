@@ -1,6 +1,6 @@
 # Elements and Text
 
-Most user interfaces are assembled by combining text and UI elements together in a useful and visually appealing tree. An example of some text and elements with RSX may look like:
+User interfaces are assembled by combining text and UI elements together in a useful and visually appealing tree. An example of some text and elements with RSX may look like:
 
 ```rust, no_run
 {{#include ../docs-router/src/doc_examples/building_uis_with_rsx.rs:basic}}

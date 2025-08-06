@@ -139,7 +139,7 @@ rsx! {
 }
 ```
 
-Iterators are very interesting since IntoDynNode is implemented for anything that is an iterator. For exampe, we could build a custom iterator that returns an `Element`.
+Iterators are very interesting since IntoDynNode is implemented for anything that is an iterator. For example, we could build a custom iterator that returns an `Element`.
 
 ```rust
 let mut count = 0;
@@ -184,7 +184,7 @@ rsx! {
 }
 ```
 
-Inline `if` statements deviate from Rust in one way: they still evaluate to an `Element` even without an `else` branch. If RSX doesn't find an `else` branch on your `if` statement, it automatically returns a placeholder element instead.a
+Inline `if` statements deviate from Rust in one way: they still evaluate to an `Element` even without an `else` branch. If RSX doesn't find an `else` branch on your `if` statement, it automatically returns a placeholder element instead.
 
 ```rust
 rsx! {
@@ -196,54 +196,9 @@ rsx! {
 }
 ```
 
-## Inline `for` loops
-
-Just like inline `if` chains, RSX supports some slight syntax sugar for iterators. In JSX you might be used to calling `map` on an iterable object. In RSX, we can do something similar with `.map` and `.iter()`
-
-```rust
-rsx! {
-    // mapping existing iterators
-    {(0..10).map(|idx| rsx! { "item {idx}" })}
-
-    // or calling .iter()
-    {users.iter().map(|user| rsx!{ User { id: user.id } })}
-}
-```
-
-Since iterators are so prevelant in UI code, Dioxus provides a small amount of syntax sugar to make using iterators a bit nicer. Instead of wrapping your iterator in an expression, you can instead move it to an inline `for` block:
-
-```rust
-rsx! {
-    for idx in 0..10 {
-        "Item {idx}"
-    }
-
-    for user in users.iter() {
-        User { id: user.id }
-    }
-}
-```
-
-Just like inline `if` blocks, the bodies of `for` loops are RSX - not Rust expressions. If you need to create temporary variables or do some extra computation while iterating, you can use an inline expression:
-
-```rust
-rsx! {
-    for user in users.iter() {
-        {
-            let id = user.id();
-            rsx! {
-                User { id }
-            }
-        }
-    }
-}
-```
-
-The transformation RSX applies is very straightforward with no special "magic" - it expands to the same iterator you would've written otherwise.
-
 ## More syntax sugar?
 
-Syntax can be very subjective and syntax sugar like inline `if` and `for` blocks can open the door to inconsistent behavior. We don't plan to introduce any further syntax sugar to RSX. Our goal is to maintain similiarity to React's JSX while slightly massaging ergonomics for Rust developers.
+Syntax can be very subjective and syntax sugar like inline `if` and `for` blocks can open the door to inconsistent behavior. We don't plan to introduce any further syntax sugar to RSX. Our goal is to maintain similarity to React's JSX while slightly massaging ergonomics for Rust developers.
 
 The RSX syntax was carefully designed to work well with your normal development flow:
 

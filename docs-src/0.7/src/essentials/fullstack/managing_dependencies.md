@@ -77,10 +77,9 @@ Now when we build with `dx serve`, the project compiles successfully.
 Many dependencies like [`wasm-bindgen`](https://docs.rs/wasm-bindgen/latest/wasm_bindgen/index.html) and [`web-sys`](https://docs.rs/web-sys/latest/web_sys/index.html) are only compatible with the client. Unlike server-only dependencies, these dependencies can generally compile on native targets, but they will panic when used outside of the browser.
 
 
-You can cut down on build times for your server and native binaries by only including web dependencies in the browser client binary.
+You can reduce build times for your server and native binaries by including web dependencies only in the browser client binary.
 
-
-Instead of adding web only dependencies every binary in your project like this:
+Instead of adding web only dependencies to every binary in your project like this:
 ```toml
 [dependencies]
 # ...

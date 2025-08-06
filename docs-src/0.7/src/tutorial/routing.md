@@ -59,7 +59,7 @@ Dioxus provides a first-party router that natively integrates with web, desktop,
 
 ```toml
 [dependencies]
-dioxus = { version = "0.6.0", features = ["fullstack", "router"] } # <----- add "router"
+dioxus = { version = "0.7.0", features = ["fullstack", "router"] } # <----- add "router"
 ```
 
 Next, the Dioxus router is defined as an enum with the `Routable` derive attribute:

@@ -7,6 +7,8 @@ use std::fs;
 use std::path::{Path, PathBuf};
 use walkdir::WalkDir;
 
+/// Example:
+/// notion-to-blog --input <input_folder> --output <output_folder> --output-name release-070
 #[derive(Parser)]
 #[command(author, version, about, long_about = None)]
 struct Args {
@@ -17,6 +19,10 @@ struct Args {
     /// Output folder for transformed markdown
     #[arg(short, long)]
     output: PathBuf,
+
+    /// The name of the markdown file to output
+    #[arg(short, long, default_value = "blog")]
+    output_name: String,
 }
 
 #[tokio::main]
@@ -25,6 +31,13 @@ async fn main() -> Result<()> {
 
     if !args.input.exists() {
         anyhow::bail!("Input folder does not exist: {}", args.input.display());
+    }
+
+    if args.input.is_file() {
+        anyhow::bail!(
+            "Input path must be a directory, not a file: {}",
+            args.input.display()
+        );
     }
 
     // Create output directory if it doesn't exist
@@ -42,7 +55,7 @@ async fn main() -> Result<()> {
 
         if path.extension().and_then(|s| s.to_str()) == Some("md") {
             println!("Processing: {}", path.display());
-            process_markdown_file(&args.input, &args.output, path).await?;
+            process_markdown_file(&args.input, &args.output, &args.output_name, path).await?;
         }
     }
 
@@ -53,6 +66,7 @@ async fn main() -> Result<()> {
 async fn process_markdown_file(
     input_base: &Path,
     output_base: &Path,
+    output_name: &str,
     md_path: &Path,
 ) -> Result<()> {
     // Read the markdown file
@@ -61,7 +75,7 @@ async fn process_markdown_file(
 
     // Get the relative path from input base to maintain directory structure
     let relative_path = md_path.strip_prefix(input_base)?;
-    let output_md_path = output_base.join(relative_path);
+    let output_md_path = output_base.join(output_name).with_extension("md");
 
     // Create parent directories if needed
     if let Some(parent) = output_md_path.parent() {
@@ -74,7 +88,7 @@ async fn process_markdown_file(
         .and_then(|s| s.to_str())
         .unwrap_or("assets");
     let input_assets_folder = md_path.parent().unwrap().join(assets_folder_name);
-    let output_assets_folder = output_md_path.parent().unwrap().join("assets");
+    let output_assets_folder = output_md_path.parent().unwrap().join("assets").join(output_name);
 
     // Process images if assets folder exists
     let mut image_mapping = HashMap::new();
@@ -82,9 +96,10 @@ async fn process_markdown_file(
         fs::create_dir_all(&output_assets_folder)?;
         image_mapping = process_images(&input_assets_folder, &output_assets_folder).await?;
     }
+    println!("{:#?}", image_mapping);
 
     // Transform the markdown content
-    let transformed_content = transform_markdown(&content, &image_mapping)?;
+    let transformed_content = transform_markdown(&content, output_name, &image_mapping)?;
 
     // Write the transformed markdown
     fs::write(&output_md_path, transformed_content)
@@ -100,6 +115,7 @@ async fn process_images(
 ) -> Result<HashMap<String, String>> {
     let mut image_mapping = HashMap::new();
     let mut screenshot_counter = 1;
+    let mut screen_recording_counter = 1;
 
     for entry in WalkDir::new(input_folder) {
         let entry = entry?;
@@ -111,14 +127,19 @@ async fn process_images(
         }
 
         if let Some(extension) = path.extension().and_then(|s| s.to_str()) {
-            let file_name = path.file_name().unwrap().to_str().unwrap();
+            let file_name = path.file_name().and_then(|s| s.to_str()).unwrap();
+            let file_stem = path.file_stem().unwrap().to_str().unwrap();
 
             if matches!(
                 extension.to_lowercase().as_str(),
                 "png" | "jpg" | "jpeg" | "gif" | "webp"
             ) {
                 // Convert images to AVIF
-                let new_name = generate_new_image_name(file_name, &mut screenshot_counter);
+                let new_name = generate_new_image_name(
+                    file_stem,
+                    &mut screenshot_counter,
+                    &mut screen_recording_counter,
+                );
                 let new_name_avif = format!(
                     "{}.avif",
                     new_name.trim_end_matches(&format!(".{}", extension))
@@ -134,11 +155,16 @@ async fn process_images(
 
                 // Store mapping from original to new name (without ./assets/ prefix)
                 image_mapping.insert(file_name.to_string(), new_name_avif.clone());
-                println!("    ✓ Converted: {} -> {}", file_name, new_name_avif);
+                println!("    ✓ Converted: {file_name} -> {new_name_avif}");
             } else {
                 // Copy all other assets (videos, documents, etc.) as-is
-                let cleaned_name = clean_asset_name(file_name);
-                let output_path = output_folder.join(&cleaned_name);
+                let cleaned_name = clean_asset_name(
+                    file_stem,
+                    &mut screenshot_counter,
+                    &mut screen_recording_counter,
+                );
+                let cleaned_file = format!("{}.{}", cleaned_name, extension);
+                let output_path = output_folder.join(&cleaned_file);
 
                 fs::copy(path, &output_path).with_context(|| {
                     format!(
@@ -149,8 +175,8 @@ async fn process_images(
                 })?;
 
                 // Store mapping from original to cleaned name (without ./assets/ prefix)
-                image_mapping.insert(file_name.to_string(), cleaned_name.clone());
-                println!("    ✓ Copied: {} -> {}", file_name, cleaned_name);
+                image_mapping.insert(file_name.to_string(), cleaned_file.clone());
+                println!("    ✓ Copied: {file_name} -> {cleaned_file}");
             }
         }
     }
@@ -158,15 +184,11 @@ async fn process_images(
     Ok(image_mapping)
 }
 
-fn clean_asset_name(original_name: &str) -> String {
-    // Clean up asset names by removing spaces and URL encoding
-    original_name
-        .replace(" ", "-")
-        .replace("%20", "-")
-        .to_lowercase()
-}
-
-fn generate_new_image_name(original_name: &str, screenshot_counter: &mut i32) -> String {
+fn clean_asset_name(
+    original_name: &str,
+    screenshot_counter: &mut i32,
+    screen_recording_counter: &mut i32,
+) -> String {
     let lower_name = original_name.to_lowercase();
 
     // Check if it's a screenshot
@@ -177,11 +199,29 @@ fn generate_new_image_name(original_name: &str, screenshot_counter: &mut i32) ->
         return name;
     }
 
-    // For other images, just clean up the name
-    let cleaned = original_name
+    // Check if it's a screen recording
+    let screen_recording_regex =
+        Regex::new(r"screen[_\s]*recording[_\s]*\d{4}[-_]\d{2}[-_]\d{2}").unwrap();
+    if screen_recording_regex.is_match(&lower_name) {
+        let name = format!("screen-recording-{}", screen_recording_counter);
+        *screen_recording_counter += 1;
+        return name;
+    }
+
+    // Clean up asset names by removing spaces and URL encoding
+    original_name
         .replace(" ", "-")
         .replace("%20", "-")
-        .to_lowercase();
+        .to_lowercase()
+}
+
+fn generate_new_image_name(
+    original_name: &str,
+    screenshot_counter: &mut i32,
+    screen_recording_counter: &mut i32,
+) -> String {
+    // For other images, just clean up the name
+    let cleaned = clean_asset_name(original_name, screenshot_counter, screen_recording_counter);
 
     // Remove file extension to add it back later
     if let Some(dot_pos) = cleaned.rfind('.') {
@@ -191,7 +231,11 @@ fn generate_new_image_name(original_name: &str, screenshot_counter: &mut i32) ->
     }
 }
 
-fn transform_markdown(content: &str, image_mapping: &HashMap<String, String>) -> Result<String> {
+fn transform_markdown(
+    content: &str,
+    asset_sub_directory: &str,
+    image_mapping: &HashMap<String, String>,
+) -> Result<String> {
     let parser = pulldown_cmark::Parser::new(content);
     let mut events = Vec::new();
     let mut skip_until_after_heading = false;
@@ -217,7 +261,8 @@ fn transform_markdown(content: &str, image_mapping: &HashMap<String, String>) ->
                 title,
                 id,
             }) => {
-                let processed_url = process_image_url(&dest_url, image_mapping);
+                let processed_url =
+                    process_image_url(&dest_url, asset_sub_directory, image_mapping);
 
                 // Check if this is a video file - if so, convert to image syntax
                 let url_decoded = dest_url.replace("%20", " ");
@@ -239,7 +284,7 @@ fn transform_markdown(content: &str, image_mapping: &HashMap<String, String>) ->
                 in_link = true;
                 events.push(Event::Start(Tag::Link {
                     link_type,
-                    dest_url: processed_url.into(),
+                    dest_url,
                     title,
                     id,
                 }));
@@ -260,7 +305,8 @@ fn transform_markdown(content: &str, image_mapping: &HashMap<String, String>) ->
                     events.push(Event::Text(text));
                 } else {
                     // Process image references in text only if not inside a link
-                    let processed_text = process_image_references(&text, image_mapping);
+                    let processed_text =
+                        process_image_references(&text, asset_sub_directory, image_mapping);
                     events.push(Event::Text(processed_text.into()));
                 }
             }
@@ -270,7 +316,8 @@ fn transform_markdown(content: &str, image_mapping: &HashMap<String, String>) ->
                 title,
                 id,
             }) => {
-                let processed_url = process_image_url(&dest_url, image_mapping);
+                let processed_url =
+                    process_image_url(&dest_url, asset_sub_directory, image_mapping);
                 events.push(Event::Start(Tag::Image {
                     link_type,
                     dest_url: processed_url.into(),
@@ -414,7 +461,11 @@ fn transform_markdown(content: &str, image_mapping: &HashMap<String, String>) ->
     Ok(output)
 }
 
-fn process_image_references(text: &str, image_mapping: &HashMap<String, String>) -> String {
+fn process_image_references(
+    text: &str,
+    asset_sub_directory: &str,
+    image_mapping: &HashMap<String, String>,
+) -> String {
     let mut result = text.to_string();
 
     // Only process if this text doesn't look like it's already part of a processed link
@@ -426,7 +477,7 @@ fn process_image_references(text: &str, image_mapping: &HashMap<String, String>)
     for (original, new) in image_mapping {
         // Handle URL-encoded spaces and direct references
         let encoded_original = original.replace(" ", "%20");
-        let new_with_prefix = format!("./assets/{}", new);
+        let new_with_prefix = format!("./assets/{asset_sub_directory}/{new}");
 
         // Check if this is a video file that should be treated as an image
         let is_video = is_media_file(original);
@@ -452,18 +503,25 @@ fn process_image_references(text: &str, image_mapping: &HashMap<String, String>)
     result
 }
 
-fn process_image_url(url: &str, image_mapping: &HashMap<String, String>) -> String {
+fn process_image_url(
+    url: &str,
+    asset_sub_directory: &str,
+    image_mapping: &HashMap<String, String>,
+) -> String {
     // Extract filename from URL
     let url_decoded = url.replace("%20", " ");
 
     if let Some(filename) = Path::new(&url_decoded).file_name().and_then(|s| s.to_str()) {
         if let Some(new_name) = image_mapping.get(filename) {
-            return format!("./assets/{}", new_name);
+            return format!("./assets/{asset_sub_directory}/{new_name}");
         }
     }
 
     // Fallback: clean up the URL by removing URL encoding
-    format!("./assets/{}", url.replace("%20", "-").to_lowercase())
+    format!(
+        "./assets/{asset_sub_directory}/{}",
+        url.replace("%20", "-").to_lowercase()
+    )
 }
 
 fn is_media_file(filename: &str) -> bool {

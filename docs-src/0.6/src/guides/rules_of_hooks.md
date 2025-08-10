@@ -1,6 +1,6 @@
 # The Rules of Hooks
 
-Hooks are a powerful way to manage state in Dioxus, but there are some rules you need to follow to insure they work as expected. Dioxus uses the order you call hooks to differentiate between hooks. Because the order you call hooks matters, you must follow these rules:
+Hooks are a powerful way to manage state in Dioxus, but there are some rules you need to follow to ensure they work as expected. Dioxus uses the order you call hooks to differentiate between hooks. Because the order you call hooks matters, you must follow these rules:
 
 1. Hooks may be only used in components or other hooks (we'll get to that later)
 2. On every call to the component function

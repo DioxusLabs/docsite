@@ -44,7 +44,7 @@ Our vision for Dioxus is a framework that is fast, flexible, and has a minimal l
 
 ## Stellar Developer Experience
 
-With Dioxus, we try to maintain a very high bar for developer experience. We believe that building apps should be fun and straightforward. We've worked to push forward the Rust itself, developing technologies like [Subsecond](https://crates.io/crates/subsecond) Rust hot-reloading, [WASM bundle-splitting](https://crates.io/crates/wasm-splitter), [linker-based asset bundling](https://crates.io/crates/manganis), and a modular [WGPU-based HTML/CSS renderer](https://crates.io/crates/blitz).
+With Dioxus, we try to maintain a very high bar for developer experience. We believe that building apps should be fun and straightforward. We've worked to push forward Rust itself, developing technologies like [Subsecond](https://crates.io/crates/subsecond) Rust hot-reloading, [WASM bundle-splitting](https://crates.io/crates/wasm-splitter), [linker-based asset bundling](https://crates.io/crates/manganis), and a modular [WGPU-based HTML/CSS renderer](https://crates.io/crates/blitz).
 
 ![dog_app.mp4](/assets/06assets/dogapphr2.mp4)
 

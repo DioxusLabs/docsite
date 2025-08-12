@@ -60,7 +60,7 @@ fn BlogPostItem(route: BlogRoute) -> Element {
                     "{description}"
                 }
             }
-        
+
         }
     }
 }

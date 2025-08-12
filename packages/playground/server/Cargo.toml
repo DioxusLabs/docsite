@@ -28,3 +28,4 @@ thiserror = { workspace = true }
 
 dioxus = { workspace = true, features = ["web"] }
 example-projects = { workspace = true }
+tempdir = "0.3.7"

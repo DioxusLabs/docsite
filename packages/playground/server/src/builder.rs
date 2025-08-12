@@ -1,19 +1,55 @@
-use super::{BuildError, BuildRequest};
 use crate::app::EnvVars;
-use crate::build::{BuildMessage, CliMessage};
+use anyhow::{bail, Context, Result};
 use dioxus_dx_wire_format::StructuredOutput;
 use dioxus_logger::tracing;
 use dioxus_logger::tracing::debug;
 use fs_extra::dir::CopyOptions;
+use model::Project;
 use model::{BuildStage, CargoDiagnostic};
-use std::path::{Path, PathBuf};
 use std::process::Stdio;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
+use std::{
+    collections::VecDeque,
+    path::{Path, PathBuf},
+};
 use tokio::io::{AsyncBufReadExt as _, BufReader};
 use tokio::process::Command;
+use tokio::sync::mpsc;
+use tokio::sync::mpsc::UnboundedSender;
 use tokio::task::JoinHandle;
 use tokio::{fs, select};
+use uuid::Uuid;
+
+/// A build command which allows consumers of the builder api to submit and stop builds.
+#[derive(Debug, Clone)]
+pub enum BuildCommand {
+    Start { request: BuildRequest },
+    Stop { id: Uuid },
+}
+
+/// A build request which contains the id of the build, the code to be built, and a socket to send build updates.
+#[derive(Debug, Clone)]
+pub struct BuildRequest {
+    pub id: Uuid,
+    pub project: Project,
+    pub ws_msg_tx: UnboundedSender<BuildMessage>,
+}
+
+/// A message from the playground build process.
+#[derive(Debug, Clone, PartialEq)]
+pub enum BuildMessage {
+    Building(model::BuildStage),
+    CargoDiagnostic(CargoDiagnostic),
+    Finished(Result<Uuid, String>),
+    QueuePosition(usize),
+}
+
+/// The DX CLI serves parseable JSON output with the regular tracing message and a parseable "json" field.
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
+pub struct CliMessage {
+    json: Option<String>,
+}
 
 const BUILD_ID_ID: &str = "{BUILD_ID}";
 
@@ -24,7 +60,7 @@ pub struct Builder {
     built_path: PathBuf,
     is_building: Arc<AtomicBool>,
     current_build: Option<BuildRequest>,
-    task: JoinHandle<Result<(), BuildError>>,
+    task: JoinHandle<Result<()>>,
 }
 
 impl Builder {
@@ -61,7 +97,7 @@ impl Builder {
     }
 
     /// Wait for the current build to finish.
-    pub async fn finished(&mut self) -> Result<BuildRequest, BuildError> {
+    pub async fn finished(&mut self) -> Result<BuildRequest> {
         // Ensure we don't poll a completed task.
         if self.task.is_finished() {
             self.stop_current();
@@ -71,7 +107,7 @@ impl Builder {
         let task = &mut self.task;
         task.await??;
 
-        self.current_build.take().ok_or(BuildError::NotStarted)
+        self.current_build.take().context("no current build")
     }
 
     /// Check if the builder has an ongoing build.
@@ -86,11 +122,7 @@ impl Builder {
 }
 
 /// Run the steps to produce a build for a [`BuildRequest`]
-async fn build(
-    template_path: PathBuf,
-    built_path: PathBuf,
-    request: BuildRequest,
-) -> Result<(), BuildError> {
+async fn build(template_path: PathBuf, built_path: PathBuf, request: BuildRequest) -> Result<()> {
     // If the project already exists, don't build it again.
     if std::fs::exists(built_path.join(request.id.to_string())).unwrap_or_default() {
         tracing::trace!("Skipping build for {request:?} since it already exists");
@@ -106,7 +138,7 @@ async fn build(
 }
 
 /// Resets the template with values for the next build.
-async fn setup_template(template_path: &Path, request: &BuildRequest) -> Result<(), BuildError> {
+async fn setup_template(template_path: &Path, request: &BuildRequest) -> Result<()> {
     let snippets_from_copy = [
         template_path.join("snippets/Cargo.toml"),
         template_path.join("snippets/Dioxus.toml"),
@@ -138,7 +170,7 @@ async fn setup_template(template_path: &Path, request: &BuildRequest) -> Result<
 
 /// Run the build command provided by the DX CLI.
 /// Returns if DX built the project successfully.
-async fn dx_build(template_path: &PathBuf, request: &BuildRequest) -> Result<(), BuildError> {
+async fn dx_build(template_path: &PathBuf, request: &BuildRequest) -> Result<()> {
     let mut child = Command::new("dx")
         .arg("build")
         .arg("--platform")
@@ -180,10 +212,10 @@ async fn dx_build(template_path: &PathBuf, request: &BuildRequest) -> Result<(),
                             debug!("{log}");
                         }
 
-                        return Err(BuildError::DxFailed(Some(code)));
+                        bail!("DX build failed: {code}");
                     }
                 }
-                return Err(BuildError::DxFailed(None));
+                bail!("DX build failed");
             }
         }
     }
@@ -233,7 +265,7 @@ async fn move_to_built(
     template_path: &Path,
     built_path: &Path,
     request: &BuildRequest,
-) -> Result<(), BuildError> {
+) -> Result<()> {
     let id_string = request.id.to_string();
 
     // The path to the built project from DX
@@ -250,7 +282,7 @@ async fn move_to_built(
     // Move the built project to the built projects folder to be served.
     // Delete the built project in the target directory to prevent a storage leak.
     // We use `spawn_blocking` to batch call `std::fs` as recommended by Tokio.
-    tokio::task::spawn_blocking::<_, Result<(), BuildError>>(move || {
+    tokio::task::spawn_blocking::<_, Result<()>>(move || {
         // Rename to be the build id
         let built_project = debug_web.join(&id_string);
         std::fs::rename(&public_folder, &built_project)?;
@@ -264,4 +296,146 @@ async fn move_to_built(
     .await??;
 
     Ok(())
+}
+
+/// Start the build watcher.
+///
+/// The build watcher receives [`BuildCommand`]s through a channel and handles
+/// the build queue, providing queue positions, and stopping/cancelling builds.
+pub fn start_build_watcher(
+    env: EnvVars,
+    is_building: Arc<AtomicBool>,
+) -> UnboundedSender<BuildCommand> {
+    let (tx, mut rx) = mpsc::unbounded_channel();
+
+    tokio::spawn(async move {
+        let mut builder = Builder::new(env, is_building);
+        let mut pending_builds = VecDeque::new();
+
+        loop {
+            select! {
+                // Handle incoming build commands.
+                Some(command) = rx.recv() => {
+                    match command {
+                        BuildCommand::Start { request } => start_build(&mut builder, &mut pending_builds, request),
+                        BuildCommand::Stop { id } => stop_build(&mut builder, &mut pending_builds, id),
+                    }
+                }
+                // Handle finished build or make progress on current build.
+                build_result = builder.finished() => handle_finished_build(&mut builder, &mut pending_builds, build_result),
+            }
+        }
+    });
+
+    tx
+}
+
+/// Start a build or add it to the queue.
+fn start_build(
+    builder: &mut Builder,
+    pending_builds: &mut VecDeque<BuildRequest>,
+    request: BuildRequest,
+) {
+    // If the builder has a build, add to queue, otherwise start the build.
+    match builder.has_build() {
+        false => builder.start(request),
+        true => {
+            let _ = request
+                .ws_msg_tx
+                .send(BuildMessage::QueuePosition(pending_builds.len() + 1));
+
+            pending_builds.push_back(request);
+        }
+    };
+}
+
+/// Stop the current build by:
+/// - Checking if it's the current build and if so, stop it, update queue positions, and return early.
+/// - Iterate through queue looking for a matching id.
+///   If matching id found, update queue positions *behind* matching queue and remove matched item.
+fn stop_build(builder: &mut Builder, pending_builds: &mut VecDeque<BuildRequest>, id: Uuid) {
+    // Check if the ongoing build is the cancelled build.
+    let current_build_id = builder.current_build().map(|b| b.id);
+    if let Some(current_build_id) = current_build_id {
+        if id == current_build_id {
+            builder.stop_current();
+
+            // Start the next build request.
+            let next_request = pending_builds.pop_front();
+            if let Some(request) = next_request {
+                builder.start(request);
+            }
+
+            update_queue_positions(pending_builds);
+            return;
+        }
+    }
+
+    // Try finding the build in the queue
+    let mut matching_id = None;
+
+    for (i, build_request) in pending_builds.iter_mut().enumerate() {
+        if build_request.id == id {
+            matching_id = Some(i);
+            continue;
+        }
+
+        // Tell any other requests behind the removed that they're moving up.
+        if matching_id.is_some() {
+            let _ = build_request
+                .ws_msg_tx
+                .send(BuildMessage::QueuePosition(i - 1));
+        }
+    }
+
+    // Remove the stopped build.
+    if let Some(id) = matching_id {
+        pending_builds.remove(id);
+    }
+}
+
+/// Handle a finished build by:
+/// - Finishing the current build, sending the BuildMessage::Finnished to the socket.
+/// - Start the next build.
+/// - Update queue positions.
+fn handle_finished_build(
+    builder: &mut Builder,
+    pending_builds: &mut VecDeque<BuildRequest>,
+    build_result: Result<BuildRequest>,
+) {
+    // Tell the socket the result of their build.
+    let _ = match build_result {
+        Ok(request) => {
+            dioxus::logger::tracing::trace!(request = ?request, "build finished");
+            request
+                .ws_msg_tx
+                .send(BuildMessage::Finished(Ok(request.id)))
+        }
+        Err(e) => {
+            dioxus::logger::tracing::warn!(err = ?e, src = ?e.source(), "build failed");
+            match builder.current_build() {
+                Some(request) => request
+                    .ws_msg_tx
+                    .send(BuildMessage::Finished(Err(e.to_string()))),
+                None => Ok(()),
+            }
+        }
+    };
+
+    // Start the next build.
+    let next_request = pending_builds.pop_front();
+    if let Some(request) = next_request {
+        builder.start(request);
+    }
+
+    update_queue_positions(pending_builds);
+}
+
+/// Iterate through the queue and alert each request with their current queue position.
+fn update_queue_positions(pending_builds: &mut VecDeque<BuildRequest>) {
+    for (i, build_request) in pending_builds.iter_mut().enumerate() {
+        let _ = build_request
+            .ws_msg_tx
+            .send(BuildMessage::QueuePosition(i + 1));
+    }
 }

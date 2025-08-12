@@ -21,5 +21,6 @@ gloo-utils = { workspace = true, optional = true }
 dioxus-document = { workspace = true, optional = true }
 
 [features]
+default = ["web", "server"]
 server = ["dep:dioxus-dx-wire-format", "dep:axum"]
 web = ["dep:gloo-net", "dep:gloo-utils", "dep:dioxus-document"]

@@ -39,6 +39,7 @@ pub fn use_try_current_docs_version() -> Option<CurrentDocsVersion> {
         Route::Docs05 { child } => Some(CurrentDocsVersion::V05(child)),
         Route::Docs04 { child } => Some(CurrentDocsVersion::V04(child)),
         Route::Docs03 { child } => Some(CurrentDocsVersion::V03(child)),
+        Route::Playground {} => None,
         Route::Homepage {} => None,
         Route::Components { .. } => None,
         Route::Awesome {} => None,

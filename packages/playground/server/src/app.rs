@@ -1,7 +1,7 @@
 //! Initialization of the server application and environment configurations.
 
 use crate::{
-    build::{watcher::start_build_watcher, BuildCommand, BuildRequest},
+    builder::{start_build_watcher, BuildCommand, BuildRequest},
     start_cleanup_services,
 };
 use dioxus_logger::tracing::{info, warn};
@@ -23,6 +23,79 @@ const DEFAULT_BUILD_TEMPLATE_PATH: &str = "./template";
 
 // Duration after built projects are created to be removed.
 const DEFAULT_BUILT_CLEANUP_DELAY: Duration = Duration::from_secs(20);
+
+/// The state of the server application.
+#[derive(Clone)]
+pub struct AppState {
+    /// The environment configuration.
+    pub env: EnvVars,
+
+    /// The time instante since the last request.
+    pub last_request_time: Arc<Mutex<Instant>>,
+
+    /// The build command channel.
+    pub build_queue_tx: UnboundedSender<BuildCommand>,
+
+    /// Prevents the server from shutting down during an active build.
+    pub is_building: Arc<AtomicBool>,
+
+    /// A list of connected sockets by ip. Used to disallow extra socket connections.
+    pub _connected_sockets: Arc<Mutex<Vec<String>>>,
+
+    pub reqwest_client: reqwest::Client,
+}
+
+impl AppState {
+    /// Build the app state and initialize app services.
+    pub async fn new() -> Self {
+        let mut env = EnvVars::new().await;
+
+        // Build the app state
+        let is_building = Arc::new(AtomicBool::new(false));
+        let build_queue_tx = start_build_watcher(env.clone(), is_building.clone());
+
+        // Get prebuild arg
+        let prebuild = std::env::args()
+            .collect::<Vec<String>>()
+            .get(1)
+            .map(|x| x == "--prebuild")
+            .unwrap_or(false);
+
+        if prebuild {
+            info!("server is prebuilding");
+            env.shutdown_delay = Some(Duration::from_secs(1));
+        }
+
+        let state = Self {
+            env,
+            build_queue_tx,
+            last_request_time: Arc::new(Mutex::new(Instant::now())),
+            is_building,
+            _connected_sockets: Arc::new(Mutex::new(Vec::new())),
+            reqwest_client: reqwest::Client::new(),
+        };
+
+        // Queue the examples to be built on startup.
+        // This ensures the cache is hot before users try to use it, meaning the examples will be ready to go.
+        let (tx, rx) = tokio::sync::mpsc::unbounded_channel();
+        std::mem::forget(rx);
+        for project in example_projects::get_example_projects() {
+            dioxus::logger::tracing::trace!(example = ?project, "queueing example project");
+            let _ = state.build_queue_tx.send(BuildCommand::Start {
+                request: BuildRequest {
+                    id: project.id(),
+                    project: project.clone(),
+                    ws_msg_tx: tx.clone(),
+                },
+            });
+        }
+
+        // Start the app services
+        start_cleanup_services(state.clone());
+
+        state
+    }
+}
 
 /// A group of environment configurations for the application.
 #[derive(Clone)]
@@ -139,78 +212,5 @@ impl EnvVars {
         }
 
         gist_auth_token
-    }
-}
-
-/// The state of the server application.
-#[derive(Clone)]
-pub struct AppState {
-    /// The environment configuration.
-    pub env: EnvVars,
-
-    /// The time instante since the last request.
-    pub last_request_time: Arc<Mutex<Instant>>,
-
-    /// The build command channel.
-    pub build_queue_tx: UnboundedSender<BuildCommand>,
-
-    /// Prevents the server from shutting down during an active build.
-    pub is_building: Arc<AtomicBool>,
-
-    /// A list of connected sockets by ip. Used to disallow extra socket connections.
-    pub _connected_sockets: Arc<Mutex<Vec<String>>>,
-
-    pub reqwest_client: reqwest::Client,
-}
-
-impl AppState {
-    /// Build the app state and initialize app services.
-    pub async fn new() -> Self {
-        let mut env = EnvVars::new().await;
-
-        // Build the app state
-        let is_building = Arc::new(AtomicBool::new(false));
-        let build_queue_tx = start_build_watcher(env.clone(), is_building.clone());
-
-        // Get prebuild arg
-        let prebuild = std::env::args()
-            .collect::<Vec<String>>()
-            .get(1)
-            .map(|x| x == "--prebuild")
-            .unwrap_or(false);
-
-        if prebuild {
-            info!("server is prebuilding");
-            env.shutdown_delay = Some(Duration::from_secs(1));
-        }
-
-        let state = Self {
-            env,
-            build_queue_tx,
-            last_request_time: Arc::new(Mutex::new(Instant::now())),
-            is_building,
-            _connected_sockets: Arc::new(Mutex::new(Vec::new())),
-            reqwest_client: reqwest::Client::new(),
-        };
-
-        // Queue the examples to be built on startup.
-        // This ensures the cache is hot before users try to use it, meaning the examples will be ready to go.
-        let (tx, rx) = tokio::sync::mpsc::unbounded_channel();
-        std::mem::forget(rx);
-        for project in example_projects::get_example_projects() {
-            dioxus::logger::tracing::trace!(example = ?project, "queueing example project");
-            let _ = state.build_queue_tx.send(BuildCommand::Start {
-                request: BuildRequest {
-                    id: project.id(),
-                    project: project.clone(),
-                    ws_msg_tx: tx.clone(),
-                },
-            });
-        }
-
-        // Start the app services
-        start_cleanup_services(state.clone());
-
-        state
     }
 }

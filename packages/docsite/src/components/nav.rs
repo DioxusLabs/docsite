@@ -136,9 +136,16 @@ fn CurrentStarCount() -> Element {
 
 static LINKS: &[(&str, &str)] = &[
     // while developing, the `learn` link should point to the latest version of the docs. makes our lives a bit easier
-    ("Learn", if cfg!(debug_assertions) { "/learn/0.7/" } else { "/learn/0.6/" }),
+    (
+        "Learn",
+        if cfg!(debug_assertions) {
+            "/learn/0.7/"
+        } else {
+            "/learn/0.6/"
+        },
+    ),
     // ("SDK", "/sdk"),
-    // ("Playground", "/playground"),
+    ("Playground", "/playground"),
     ("Components", "/components"),
     ("Awesome", "/awesome"),
     ("Blog", "/blog"),

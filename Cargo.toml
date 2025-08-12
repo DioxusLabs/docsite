@@ -53,7 +53,7 @@ mdbook-shared = { path = "packages/include_mdbook/packages/mdbook-shared" }
 syntect-html = { path = "packages/include_mdbook/packages/syntect-html" }
 
 # playground
-model = { path = "packages/playground/model" }
+model = { path = "packages/playground/model", default-features = false}
 dioxus-playground = { path = "packages/playground/playground" }
 example-projects = { path = "packages/playground/example-projects" }
 

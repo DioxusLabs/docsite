@@ -20,9 +20,9 @@ To make working with structs and collections easier, Dioxus provides the **Store
 
 ## Reactive Stores
 
-In Dioxus, reactive stores are types that isolate reactivity to just a single field or entry in a collection. Stores allow us to "zoom in" on a smaller portion of our data, ignoring all other reads and writes.
+In Dioxus, reactive stores are types that isolate reactivity to just a path in a data structure. Stores allow us to "zoom in" on a smaller portion of our data, ignoring all other reads and writes.
 
-The simplest stores are structs that derive the `Store` trait:
+The simplest stores are structs that derive a `Store` trait:
 
 ```rust
 #[derive(Store)]
@@ -41,7 +41,7 @@ let header = use_store(|| HeaderState {
 });
 ```
 
-The `Store` drive macro generates additional methods on `HeaderState` that allow us to "zoom in" to fields of the struct. We access the fields by calling the field name like a method:
+The `Store` drive macro generates additional methods on `Store<HeaderState>` that allow us to "zoom in" to fields of the struct. We access the fields by calling the field name like a method:
 
 ```rust
 fn app() -> Element {
@@ -74,13 +74,22 @@ Notice how the default `Store` we get from `use_store` has an elided default gen
 let title: Store<HeaderState> = use_store(|| HeaderState::new());
 ```
 
-Because the lens is "unnamable," we can't easily add it to structs or pass it as a function argument. In these cases, we can use the `boxed` and `boxed_mut` methods to convert the lens into a ReadSignal or WriteSignal at the cost of an allocation:
+Because the lens is "unnamable", we need to accept the lens as a generic in any functions that work with stores. If we only need to read the store, we can require the lens implements the `Readable` trait. If we need to write to the store, we can require the lens implements the `Writable` trait.
 
 ```rust
-let title: ReadSignal<HeaderState> = header.title().boxed();
+// This function works with any lens that can read the header state like ReadStore<HeaderState> or Store<HeaderState, _>
+fn get_title(state: Store<HeaderState, impl Readable<Target = HeaderState>>) -> String {
+    state.title().cloned()
+}
+
+// This function works with any lens that can write to the header state like Store<HeaderState> or Store<HeaderState, _>
+fn clear_title(state: Store<HeaderState, impl Writable<Target = HeaderState>>) {
+    state.title().take();
+}
 ```
 
-On the boundary of components, this is done automatically by "decaying" lenses into ReadSignals:
+On the component boundary, Stores are automatically boxed and converted to `ReadSignal` or `ReadStore` as needed so you don't need to worry about the lens type:
+
 
 ```rust
 fn app() -> Element {
@@ -92,11 +101,18 @@ fn app() -> Element {
     rsx! {
         // the lens returned by `.title()` decays into a `ReadSignal` automatically!
         Title { title: header.title() }
+        // the lens returned by `.subtitle()` decays into a `ReadStore` automatically!
+        Subtitle { subtitle: header.subtitle() }
     }
 }
 
 #[component]
 fn Title(title: ReadSignal<String>) -> Element {
+    // ..
+}
+
+#[component]
+fn Subtitle(subtitle: ReadStore<String>) -> Element {
     // ..
 }
 ```
@@ -213,7 +229,7 @@ let len = match header.subtitle().transpose() {
 };
 ```
 
-Alternatively, we can use `.ref()` the lens to gain access to the underlying value, but we lose the ability to reactively "zoom in" further:
+Alternatively, we can use `.as_ref()` the lens to gain access to the underlying value, but we lose the ability to reactively "zoom in" further:
 
 ```rust
 let len = match header.subtitle().as_ref() {
@@ -222,7 +238,7 @@ let len = match header.subtitle().as_ref() {
 };
 ```
 
-You can usually choose either approach - just know that using `.ref()` calls `.read()` internally, and the "reactivity zoom" might not be perfectly precise.
+You can usually choose either approach - just know that using `.as_ref()` calls `.read()` internally, and the "reactivity zoom" might not be perfectly precise.
 
 ## Reactive Collections
 
@@ -284,7 +300,7 @@ fn app() -> Element {
     let mut users = use_store(|| HashMap::<UserId, UserData>::new());
 
     rsx! {
-        for (id, user) in users.read() {
+        for (id, user) in users.iter() {
             ListItem { key: "{id}", user }
         }
     }
@@ -301,24 +317,55 @@ fn ListItem(user: ReadSignal<UserData>) -> Element {
 
 The `Store<HashMap<K, V>>` type is a special type that implements reactivity on a per-entry basis. When we insert or remove values from the `users` store, only *one* re-render is queued. If we edit an individual entry in the HashMap, only a single `ListItem` will re-render.
 
-Alternatively, we could pass the entire `Store` to the ListItem, along with the `UserId` key, allowing us to further lens into specific fields of our UserData entries:
+Alternatively, we could derive `Store` on our `UserData` type, and accept `ReadStore<UserData>` allowing us to further lens into specific fields of our UserData entry:
 
 ```rust
+#[derive(Store)]
+struct UserData {
+    name: String,
+    email: String,
+}
+
 fn app() -> Element {
-    // switch to using `use_store`
-    let mut users = use_store(|| HashMap::<UserId, UserData>::new());
+    let users = use_store(|| HashMap::<UserId, UserData>::new());
 
     rsx! {
-        for (id, user) in users.read() {
-            ListItem { key: "{id}", users, id }
+        for (id, user) in users.iter() {
+            ListItem { key: "{id}", user }
         }
     }
 }
 
 #[component]
-fn ListItem(users: Store<HashMap<UserId, UserData>>, id: UserId) -> Element {
+fn ListItem(user: ReadStore<UserData>) -> Element {
     rsx! {
-        li { "{users.get(id)).read()}" }
+        li { "{user.name()}" }
+    }
+}
+```
+
+## Extending Stores with Methods
+
+You can extend your store types with methods with the `#[store]` attribute macro. Methods inside the macro are converted into an extension trait that is automatically implemented for `Store<T, Lens>`. The macro will automatically add bounds to the `Lens` generic based on the self parameter of the method. If the method takes `&self`, the `Lens` will be bound by `Readable`. If the method takes `&mut self`, the `Lens` will be bound by `Writable`.
+
+```rust
+type MappedUserDataStore<Lens> = Store<String, MappedMutSignal<String, Lens, fn(&UserData) -> &String, fn(&mut UserData) -> &mut String>>;
+
+#[store]
+impl<Lens> Store<UserData, Lens> {
+    // This will automatically require `Readable` on the lens since it takes `&self`
+    fn user_email(&self) -> String {
+        self.email().cloned()
+    }
+
+    // This will automatically require `Writable` on the lens since it takes `&mut self`
+    fn clear_name(&mut self) {
+        self.name().take();
+    }
+
+    // This method does not require any bounds on the lens since it takes `self`
+    fn into_parts(self) -> (MappedUserDataStore<Lens>, MappedUserDataStore<Lens>) where Self: Copy {
+        (self.email(), self.name())
     }
 }
 ```

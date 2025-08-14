@@ -54,7 +54,7 @@
 
 ### First Render (Non-Reactive)
 
-#### Sync
+**Sync**
 
 * ⭐ [`use_hook`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_hook.html) — *(already listed)*
 * [`use_hook_with_cleanup`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_hook_with_cleanup.html) — Use a hook with a cleanup function that runs when component is dropped
@@ -62,7 +62,7 @@
 * [`use_interval`](https://docs.rs/dioxus-sdk/latest/dioxus_sdk/utils/timing/fn.use_interval.html) — Repeatedly calls a function every certain period (dioxus\_sdk)
 * [`use_server_cached`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_server_cached.html) — Runs a function on the server (or client if server is not enabled) and sends result to client. Caches the value on the client
 
-#### Async
+**Async**
 
 * [`use_channel`](https://docs.rs/dioxus-sdk/latest/dioxus_sdk/utils/channel/fn.use_channel.html), [`use_listen_channel`](https://docs.rs/dioxus-sdk/latest/dioxus_sdk/utils/channel/fn.use_listen_channel.html) — Create and listen to channels for communication between components (dioxus\_sdk)
 
@@ -72,7 +72,7 @@
 
 ### Render Phase (While Component Is Alive)
 
-#### Sync
+**Sync**
 
 * [`use_callback`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_callback.html) — *(already listed)*
 * [`use_signal`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_signal.html) — *(already listed)*
@@ -81,11 +81,11 @@
 * [`use_set_compare`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_set_compare.html) — *(already listed)*
 * [`use_set_compare_equal`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_set_compare_equal.html) — *(already listed)*
 
-#### Sync & Async
+**Sync & Async**
 
 * [`use_reactive`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_reactive.html) — *(already listed)*
 
-#### Async
+**Async**
 
 * ⭐ [`use_future`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_future.html) — Run an async task once
 * [`use_coroutine`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_coroutine.html) — Stream-based concurrency through channels

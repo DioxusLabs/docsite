@@ -20,7 +20,7 @@ Once you have incremental rendering enabled, you need to tell the CLI about the 
 
 ## Publishing static sites
 
-Finally, you can bundle your site with `dx bundle --platform web --ssg`. Once the CLI finishes bundling, you should see a `public` folder in the dx folder of your project:
+Finally, you can bundle your site with `dx bundle --web --ssg`. Once the CLI finishes bundling, you should see a `public` folder in the dx folder of your project:
 
 ![Dioxus SSG](/assets/06_docs/ssg_folder.png)
 

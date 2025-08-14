@@ -89,7 +89,7 @@ DemoFrame {
 
 ### Working with Untracked State
 
-Most of the state in your app will be tracked values. All built in hooks return tracked values, and we encourage custom hooks to do the same. However, there are times when you need to work with untracked state. For example, you may receive a raw untracked value in props. When you read an untracked value inside a reactive context, it will not subscribe to the value:
+Most of the state in your app will be tracked values. All built in hooks return tracked values, and we encourage custom hooks to do the same. However, there are times when you need to work with untracked state. For example, you may receive a raw untracked value in props. When you read an untracked value inside a reactive scope, it will not subscribe to the value:
 
 ```rust
 {{#include ../docs-router/src/doc_examples/untested_06/reactivity.rs:non_reactive}}
@@ -101,7 +101,7 @@ DemoFrame {
 }
 ```
 
-You can start tracking raw state with the `use_reactive` hook. This hook takes a tuple of dependencies and returns a reactive closure. When the closure is called in a reactive context, it will track subscribe to the dependencies and rerun the closure when the dependencies change.
+You can start tracking raw state with the `use_reactive` hook. This hook takes a tuple of dependencies and returns a reactive closure. When the closure is called in a reactive scope, it will track subscribe to the dependencies and rerun the closure when the dependencies change.
 
 ```rust
 {{#include ../docs-router/src/doc_examples/untested_06/reactivity.rs:use_reactive}}
@@ -115,7 +115,7 @@ DemoFrame {
 
 ### Opting Out of Subscriptions
 
-In some situations, you may need to read a reactive value without subscribing to it. You can use the `peek` method to get a reference to the inner value without registering the value as a dependency of the current reactive context:
+In some situations, you may need to read a reactive value without subscribing to it. You can use the `peek` method to get a reference to the inner value without registering the value as a dependency of the current reactive scope:
 
 ```rust
 {{#include ../docs-router/src/doc_examples/untested_06/reactivity.rs:peek}}

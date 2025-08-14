@@ -28,7 +28,7 @@ If you selected _yes_ to the "use fullstack?" prompt when creating your app, you
 
 > 📣 Unfortunately, `dx` doesn't know how to hot-reload this change, so we'll need to kill our currently running `dx serve` process and launch it again.
 
-Now instead of running `dx serve`, you need to run with a manual platform with `dx serve --platform web`. Give your app a moment to build again and make sure that the "fullstack" feature is enabled in the dashboard.
+Now instead of running `dx serve`, you need to run with a manual platform with `dx serve --web`. Give your app a moment to build again and make sure that the "fullstack" feature is enabled in the dashboard.
 
 ![Fullstack Enabled](/assets/06_docs/serve_with_fullstack.png)
 

@@ -63,5 +63,5 @@ dx serve
 - Launch the Dioxus desktop app:
 
 ```bash
-dx serve --platform desktop
+dx serve --webview
 ```

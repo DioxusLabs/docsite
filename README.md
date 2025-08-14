@@ -21,7 +21,7 @@ working `Rust` setup:
 <!-- todo: switch to the installer -->
 <!-- # curl -fsSL https://raw.githubusercontent.com/DioxusLabs/dioxus/refs/heads/main/.github/install.sh | bash -->
 ```sh
-cargo binstall dioxus-cli@0.7.0-alpha.3 --force
+cargo binstall dioxus-cli@0.7.0-rc.0 --force
 ```
 
 With [`dx`][dx] installed, you can use it to build and serve the documentation
@@ -41,48 +41,67 @@ We use TailwindCSS which is included automatically with dx 0.7.
 ## Dioxus 0.7 Overhaul Progress
 We are overhauling the docs for Dioxus 0.7. Here is the current progress:
 
-
 ```
 ✅ - [Core Concepts](essentials/index.md)
+❌   - [Setup]()
+❌     - [Tools]
+❌     - [Feature Flags]
+❌     - [Folder Structure]
+
+- [Project Setup](essentials/setup/index.md)
+  - [Create a New App](essentials/setup/tooling.md)
+  - [Integrated Devserver](essentials/setup/devserver.md)
+  - [File-system Layout](essentials/setup/structure.md)
+  - [Cross-platform Configuration](essentials/setup/configuration.md)
+
 ✅   - [Building User Interfaces](essentials/ui/index.md)
 ✅     - [Introducing RSX](essentials/ui/rsx.md)
 ✅     - [Elements and Text](essentials/ui/elements.md)
 ✅     - [Dynamic Attributes](essentials/ui/attributes.md)
 ✅     - [Components and Properties](essentials/ui/components.md)
 ✅     - [How Components Render](essentials/ui/render.md)
-❌     - [Conditional Rendering](essentials/ui/conditional.md)
-❌     - [Rendering Lists](essentials/ui/iteration.md)
-❌     - [Escape Hatches](essentials/ui/escape.md)
-❌     - [Assets](essentials/ui/assets.md)
-❌     - [Styling](essentials/ui/styling.md)
-❌     - [Hot-Reload](essentials/ui/hotreload.md)
-❌   - [Reactivity](essentials/reactivity/index.md)
-❌     - [Thinking Reactively](essentials/reactivity/reactivity.md)
-❌     - [Handling Events](essentials/reactivity/event_handlers.md)
-❌     - [Using Signals](essentials/reactivity/signals.md)
+✅     - [Conditional Rendering](essentials/ui/conditional.md)
+✅     - [Rendering Lists](essentials/ui/iteration.md)
+✅     - [Assets](essentials/ui/assets.md)
+✅     - [Styling](essentials/ui/styling.md)
+✅     - [Hot-Reload](essentials/ui/hotreload.md)
+✅     - [Escape Hatches](essentials/ui/escape.md)
+
+❌   - [User Interaction](essentials/state/index.md)
+✅     - [Intro to Reactivity]
+✅     - [Storing State in Hooks](essentials/state/hooks.md)
+✅     - Reactive Signals use_signal
+✅     - User Input and Events
+✅     - Futures (crash-course (lite), loop/spawn, onclick: move |_| async {})
+✅     - Fetching? (use_resource, network requests)
+✅     - Effects and Memos (use_memo + use_effect)
+✅     - Hoisting State (lifting state and refactoring)
+✅     - Global Context (context, global signals)
+✅     - Stores and Collections
+✅     - [Error Handling (+boundaries)](essentials/state/error_handling.md)
+
+
+❌   - [Advanced Reactivity](essentials/reactivity/index.md)
+❌     - The Outside World (sync signals, external callbacks, layout effects, onmounted)
+❌     - [Reactive Context](essentials/reactivity/reactivity.md)
+❌     - [Custom Hooks (schedule_update, use_hook)](essentials/state/custom_hooks.md)
 ❌     - [Component Lifecycle](essentials/reactivity/lifecycle.md)
-❌     - [Using Effects](essentials/reactivity/effects.md)
+❌     - [Side Effects](essentials/reactivity/effects.md)
 ❌     - [Maintaing Purity](essentials/reactivity/purity.md)
-❌     - [Reactive Collections](essentials/reactivity/collections.md)
-❌   - [Managing State](essentials/state/index.md)
-❌     - [State is Essential](essentials/state/essential.md)
-❌     - [Local State](essentials/state/state.md)
-❌     - [Hooks](essentials/state/hooks.md)
-❌     - [Custom Hooks](essentials/state/custom_hooks.md)
-❌     - [Passing State](essentials/state/passing.md)
-❌     - [Context](essentials/state/context.md)
-❌     - [Global State](essentials/state/global_state.md)
 ❌     - [Memoization](essentials/state/memoization.md)
 ❌     - [Optimization](essentials/state/optimization.md)
-❌     - [Error Handling](essentials/state/error_handling.md)
-❌   - [Async](essentials/async/index.md)
-❌     - [Spawning Futures](essentials/async/futures.md)
-❌     - [Async Resources](essentials/async/resources.md)
-❌     - [Making network requests](essentials/async/network_requests.md)
 ❌     - [Suspense](essentials/async/suspense.md)
-❌     - [Parallelism](essentials/async/parallel.md)
+❌     - [Futures in Depth (+threads/workers)](essentials/async/crash_course.md)
+
+  <!-- - [Reactive Context](essentials/advanced/reactivity.md) -->
+  <!-- - [Side Effects](essentials/advanced/effects.md) -->
+  <!-- - [Maintaing Purity](essentials/advanced/purity.md) -->
+  <!-- - [Memoization](essentials/advanced/memoization.md) -->
+  <!-- - [Optimization](essentials/advanced/optimization.md) -->
+  <!-- - [Futures in Depth](essentials/advanced/futures.md) -->
+
 ❌   - [Routing](essentials/router/index.md)
-❌     - [Defining Routes](essentials/router/routes.md)
+✅     - [Defining Routes](essentials/router/routes.md)
 ✅     - [Nested Routes](essentials/router/nested-routes.md)
 ✅     - [Layouts](essentials/router/layouts.md)
 ✅     - [Navigation](essentials/router/navigation/index.md)
@@ -90,7 +109,8 @@ We are overhauling the docs for Dioxus 0.7. Here is the current progress:
 ✅     - [History Providers](essentials/router/history-providers.md)
 ✅     - [History Buttons](essentials/router/history-buttons.md)
 ✅     - [Routing Update Callback](essentials/router/routing-update-callback.md)
-✅   - [Fullstack](essentials/fullstack/index.md)
+
+❌   - [Fullstack](essentials/fullstack/index.md)
 ✅     - [Hydration](essentials/fullstack/hydration.md)
 ✅     - [Managing Dependencies](essentials/fullstack/managing_dependencies.md)
 ✅   	- [Server Functions](essentials/fullstack/server_functions.md)
@@ -101,24 +121,32 @@ We are overhauling the docs for Dioxus 0.7. Here is the current progress:
 ✅     - [Streaming](essentials/fullstack/streaming.md)
 ✅     - [Static Site Generation](essentials/fullstack/static_site_generation.md)
 ✅     - [Axum Integration](essentials/fullstack/axum.md)
-❌   - [Breaking Out](essentials/breaking/index.md)
 
 ---
 
-❌ - [Guides](guides/index.md)
+❌ - [Guides (digging deeper)](guides/index.md)
 ❌   - [Tools](guides/tools/index.md)
 ❌     - [Serve](guides/tools/serve.md)
 ❌     - [Bundle](guides/tools/bundle.md)
 ❌     - [Create a Project](guides/tools/creating.md)
 ❌     - [Configure Project](guides/tools/configure.md)
-❌     - [Android](guides/tools/android.md)
-❌     - [iOS](guides/tools/ios.md)
 ❌     - [Translate HTML](guides/tools/translate.md)
 ❌     - [VSCode Extension](guides/tools/vscode.md)
+❌   - [APIs?](guides/platforms/index.md)
+❌     - feature overview
+❌     - window
+❌     - document
+❌     - history
+❌     - desktop/webview
+❌     - native
+❌     - components
+❌     - sdk
 ❌   - [Platform Support](guides/platforms/index.md)
 ❌     - [Web](guides/platforms/web.md)
 ❌     - [Desktop](guides/platforms/desktop.md)
 ❌     - [Mobile](guides/platforms/mobile.md)
+❌     - [Android](guides/tools/android.md)
+❌     - [iOS](guides/tools/ios.md)
 ❌   - [Publishing](guides/deploy/index.md)
 ❌     - [Web Apps](guides/deploy/web.md)
 ❌     - [SSG](guides/deploy/ssg.md)
@@ -147,7 +175,7 @@ We are overhauling the docs for Dioxus 0.7. Here is the current progress:
 ❌   - [In-Depth](guides/depth/index.md)
 ❌     - [Asset Pipeline](guides/depth/assets.md)
 ❌     - [Custom Renderer](guides/depth/custom_renderer.md)
-❌   - [Migration](migration/index.md)
+✅   - [Migration](migration/index.md)
 ✅     - [To 0.7](migration/to_07.md)
 ✅     - [To 0.6](migration/to_06.md)
 ✅     - [To 0.5](migration/to_05/index.md)
@@ -156,7 +184,6 @@ We are overhauling the docs for Dioxus 0.7. Here is the current progress:
 ✅       - [Fermi](migration/to_05/fermi.md)
 ✅       - [Props](migration/to_05/props.md)
 ```
-
 
 
 ## Contributing

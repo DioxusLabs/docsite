@@ -1,6 +1,6 @@
 # Hooks
 
-A **hook** is a special function that lets a component "hook into" certain capabilities or lifecycle of the framework. In Dioxus, state that is local to a component is stored in hooks. These hooks provide a simple way for components to store and retrieve state while rendering.
+A **hook** is a special function that lets a component "hook into" certain capabilities or lifecycle of the framework. Hooks are denoted with the `use_*` prefix. In Dioxus, state that is local to a component is stored in hooks. These hooks provide a simple way for components to store and retrieve state while rendering.
 
 Dioxus hooks work similarly to React's hooks - providing a way of storing state, attaching effects, and enabling composability that integrates well with the full Dioxus reactivity system.
 

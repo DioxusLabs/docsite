@@ -80,7 +80,7 @@ fn PromptModal() {
 }
 ```
 
-The core Dioxus framework covers a number of utilities that are either challenging to design or need support our devtools:
+The core Dioxus framework covers a number of utilities that are either challenging to design or need to support our devtools:
 
 - [App Routing](essentials/router/index.md)
 - [Backend integration via server functions](essentials/fullstack/index.md)

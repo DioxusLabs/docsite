@@ -184,7 +184,7 @@ rsx! {
 }
 ```
 
-Inline `if` statements deviate from Rust in one way: they still evaluate to an `Element` even without an `else` branch. If RSX doesn't find an `else` branch on your `if` statement, it automatically returns a placeholder element instead.a
+Inline `if` statements deviate from Rust in one way: they still evaluate to an `Element` even without an `else` branch. If RSX doesn't find an `else` branch on your `if` statement, it automatically returns a placeholder element instead.
 
 ```rust
 rsx! {

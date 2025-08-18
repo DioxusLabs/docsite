@@ -83,7 +83,7 @@ struct Title(String);
 struct Subtitle(String);
 ```
 
-The, we can provide the context using our wrapper types:
+Then, we can provide the context using our wrapper types:
 
 ```rust
 use_context_provider(|| Title("Hello world!".to_string()));
@@ -305,7 +305,7 @@ fn app() -> Element {
 }
 ```
 
-While it may seem like `COUNT` is synchronized across *every* runnig app, it actually is just local to one app at a time. Global signals are roughly implemented as a HashMap of global signal key to value where the key is a unique compile-time identifier per instance.
+While it may seem like `COUNT` is synchronized across *every* running app, it actually is just local to one app at a time. Global signals are roughly implemented as a HashMap of global signal key to value where the key is a unique compile-time identifier per instance.
 
 In addition to global signals, you can also have global memos with GlobalMemo. These are similar to regular memos, allowing you to incrementally compute new values as the inner reactive values are updated.
 

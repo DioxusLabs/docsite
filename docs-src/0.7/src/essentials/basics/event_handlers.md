@@ -21,7 +21,7 @@ DemoFrame {
 
 ## Event Handlers
 
-Event handlers are callbacks used to respond to user actions. Event handlers cab capture dozens of different interactions: button clicks, page scrolls, mouse movements, text input, and more.
+Event handlers are callbacks used to respond to user actions. Event handlers can capture dozens of different interactions: button clicks, page scrolls, mouse movements, text input, and more.
 
 Adding an event handler to an element is similar to adding an attribute with the `key: value` syntax. The handler name usually starts with `on` - and accepts a closure as the value. For example, to handle clicks on a button, we can add an `onclick` handler:
 
@@ -105,13 +105,13 @@ rsx! {
 }
 ```
 
-For text, we might use a the `input` element:
+For text, we might use the `input` element:
 
 ```rust
 let mut first_name = use_signal(|| "".to_string());
 rsx! {
     input {
-        r#type: "text",
+        type: "text",
         placeholder: "First Name…",
 
         // Update the first_name signal on text input
@@ -134,12 +134,12 @@ rsx! {
         },
 
         label { r#for: "username", "Username" }
-        input { r#type: "text", name: "username" }
+        input { type: "text", name: "username" }
     }
 }
 ```
 
-Dioxus bridges the Rust-JavaScript boundary by adding ergonomic acessor methods on the `Event` object to make reading values from the DOM easier. These include:
+Dioxus bridges the Rust-JavaScript boundary by adding ergonomic accessor methods on the `Event` object to make reading values from the DOM easier. These include:
 
 - A `.value()` method for input events to read the input contents
 - A `.values()` method for form events to read all the form values
@@ -297,42 +297,38 @@ Dioxus won't cancel previous Tasks spawned by the onclick handler, so multiple r
 ## Handling files
 You can insert a file picker by using an input element of type `file`. This element supports the `multiple` attribute, to let you pick more files at the same time. You can select a folder by adding the `directory` attribute: Dioxus will map this attribute to browser specific attributes, because there is no standardized way to allow a directory to be selected.
 
-`type` is a Rust keyword, so when specifying the type of the input field, you have to write it as `r#type:"file"`.
-
 Extracting the selected files is a bit different from what you may typically use in Javascript.
 
 The `FormData` event contains a `files` field with data about the uploaded files. This field contains a `FileEngine` struct which lets you fetch the filenames selected by the user. This example saves the filenames of the selected files to a `Vec`:
 
 ```rust, no_run
-{{#include ../docs-router/src/doc_examples/untested_06/input_fileengine.rs:component}}
+{{#include ../docs-router/src/doc_examples/input_fileengine.rs:component}}
 ```
 
 If you're planning to read the file content, you need to do it asynchronously, to keep the rest of the UI interactive. This example event handler loads the content of the selected files in an async closure:
 
 ```rust, no_run
-{{#include ../docs-router/src/doc_examples/untested_06/input_fileengine_async.rs:onchange_event}}
+{{#include ../docs-router/src/doc_examples/input_fileengine_async.rs:onchange_event}}
 ```
 
 Lastly, this example shows you how to select a folder, by setting the `directory` attribute to `true`.
 
 ```rust, no_run
-{{#include ../docs-router/src/doc_examples/untested_06/input_fileengine_folder.rs:rsx}}
+{{#include ../docs-router/src/doc_examples/input_fileengine_folder.rs:rsx}}
 ```
 
 ## Handler Props
 
-Sometimes, you might want to make a component that accepts an event handler. A simple example would be a `FancyButton` component, which accepts an `onclick` handler:
+Sometimes, you might want to make a component that accepts an event handler. A simple example would be a `FancyButton` component, which accepts an `onclick` handler with the `EventHandler` type:
 
 ```rust, no_run
 {{#include ../docs-router/src/doc_examples/event_handler_prop.rs:component_with_handler}}
 ```
 
-To add the handler as a property to our compnent, we simply add a field of `EventHandler` type with a name that starts with `on`.
-
 To actually call the event handler, you call it with the `.call()` method:
 
 ```rust, no_run
-{{#include ../docs-router/src/doc_examples/event_handler_prop.rs:usage}}
+{{#include ../docs-router/src/doc_examples/event_handler_prop.rs:call}}
 ```
 
 > Note: just like any other attribute, you can name the handlers anything you want! Any closure you pass in will automatically be turned into an `EventHandler`.

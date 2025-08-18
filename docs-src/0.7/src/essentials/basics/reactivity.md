@@ -2,7 +2,7 @@
 
 So far, we've covered how to declare static user interfaces with RSX. Now, it's time to make our UI interactive. When the user clicks a button, moves their cursor, or inputs text, we want to update our UI in response.
 
-The act of reacting to a user input is called *reactivity*. Reactivity sits at the very heart of Dioxus. Everything from data fetching to routing is centered around reacting to user input.
+The act of reacting to a state changes is called *reactivity*. Reactivity sits at the very heart of Dioxus. Everything from data fetching to routing is centered around reacting to state changes.
 
 Similar to libraries like ReactJS, Dioxus provides an built-in reactivity system, saving you from manually queuing re-renders of components. If you're coming from web development, this should feel familiar. If you're mostly experienced with immediate-mode GUIs, this might seem foreign.
 
@@ -26,7 +26,7 @@ The functions we pass down tree are free to mutate state in the *current* compon
 
 The second fundamental pillar of reactivity: data is tracked. When you use various state primitives in Dioxus, the Dioxus runtime *tracks* changes to underlying value. Whenever you call `.set()` or `.write()` on a *Reactive Value*, that operation is *observed* and *effects* are run.
 
-The core Reactive Value in Dioxus is the Signal. When Signals are used in *reactive contexts*, their associated *reads* and *writes* are tracked. By default, every component is a reactive context. Whenever a Signal's value is modified, a *side-effect* is queued that re-renders any components that read the signal's value.
+The core Reactive Value in Dioxus is the Signal. When Signals are used in *reactive contexts*, their associated *reads* and *writes* are tracked. Every component is a reactive context. Whenever a Signal's value is modified, a *side-effect* is queued that re-reruns any reactive contexts that read the signal's value.
 
 ```rust
 #[component]

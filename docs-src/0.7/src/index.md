@@ -28,7 +28,7 @@ Dioxus is a developer-friendly framework that empowers developers to ship cross-
 
 In many ways, Dioxus is similar to Flutter: we integrate our own build tools, foster an ecosystem, and provide a GUI framework. In key areas, Dioxus takes a different approach:
 
-- Apps are declared with HTML and CSS instead of custom styling solution
+- Apps are declared with HTML and CSS instead of a custom styling solution
 - Reactivity is inspired by web frameworks like React and SolidJS
 - Dioxus code runs natively with no virtual machine, enabling zero-overhead calls to system APIs
 
@@ -40,7 +40,7 @@ We built Dioxus because we believe the current standard of building apps is too 
 
 ![App stack](/assets/static/dioxus-app-stack.png)
 
-Our vision for Dioxus is a framework that is fast, flexible, and has a minimal learning curve. We want developers to confidently launch their app from idea to production as fast as possible. We believe that fewer tools and a simpler architecture makes it easier to develop apps. Apps that are easier to build ship faster and are more likely to succeed.
+Our vision for Dioxus is a framework that is fast, flexible, and has a minimal learning curve. We want developers to confidently launch their app from idea to production as fast as possible. We believe that fewer tools and a simpler architecture make it easier to develop apps. Apps that are easier to build ship faster and are more likely to succeed.
 
 ## Stellar Developer Experience
 
@@ -76,11 +76,11 @@ fn PromptModal() {
     jni_sys::call_android_function();
 
     #[cfg(ios)]
-    obcj2::call_ios_function();
+    objc2::call_ios_function();
 }
 ```
 
-The core Dioxus framework covers a number of utilities that are either challenging to design or need support our devtools:
+The core Dioxus framework covers a number of utilities that are either challenging to design or need to support our devtools:
 
 - [App Routing](essentials/router/index.md)
 - [Backend integration via server functions](essentials/fullstack/index.md)
@@ -90,7 +90,7 @@ The core Dioxus framework covers a number of utilities that are either challengi
 
 ## Who's funding Dioxus?
 
-Dioxus is funded by a mix of corporate sponsorships, enterprise support contracts, [crowd-sourced funding](https://github.com/sponsors/DioxusLabs#sponsors), and [venture capital](http://ycombinator.com/companies/dioxus-labs). We strive to maintain a healthy mix of funding to balance the various competing visions of the future. We want to provide a "Flutter but better" for everyone - not controlled by Apple, Meta, or Google - and we need to make sure Dioxus has a sustainable long-term financial future.
+Dioxus is funded by a mix of corporate sponsorships, enterprise support contracts, [crowd-sourced funding](https://github.com/sponsors/DioxusLabs#sponsors), and [venture capital](http://ycombinator.com/companies/dioxus-labs). We strive to maintain a healthy mix of funding to balance the various competing visions of the future. We want to provide "Flutter but better" for everyone - not controlled by Apple, Meta, or Google - and we need to make sure Dioxus has a sustainable long-term financial future.
 
 Ultimately, we'd like Dioxus to be self-sustaining. This means that you'll eventually have the option to deploy your production apps with [Dioxus Deploy](https://dioxuslabs.com/deploy). Revenue from *Dioxus Deploy* will in turn fund development on Dioxus itself.
 

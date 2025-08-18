@@ -11,12 +11,12 @@ struct video;
 impl video {
     const src: AttributeDefinition = AttributeDefinition {
         name: "src",
-        namepsace: None,
+        namespace: None,
         type: String
     };
     const autoplay: AttributeDefinition = AttributeDefinition {
         name: "controls",
-        namepsace: None,
+        namespace: None,
         type: Boolean
     };
 }

@@ -42,15 +42,15 @@
 }
 
 #dxp-playground-root {
-  border: 1px solid var(--dxp-border-light);
+  /* border: 1px solid var(--dxp-border-light); */
   overflow: hidden;
 }
 
 /* Header */
 #dxp-header {
-  border-bottom: 1px solid var(--dxp-border-light);
+  border-bottom: 1px solid var(--dxp-border-light-lighter);
   background-color: var(--dxp-bg-light-darker);
-  height: 36px;
+  height: 48px;
   display: flex;
   flex-direction: row;
   margin-left: auto;
@@ -64,6 +64,7 @@
   flex-direction: row;
   align-items: center;
   padding: 8px;
+  margin-left: 24px;
 }
 
 #dxp-header-left-divider {
@@ -78,6 +79,7 @@
   justify-content: end;
   align-items: center;
   padding: 8px;
+  margin-right: 24px;
 }
 
 
@@ -109,7 +111,8 @@
   background-color: var(--dxp-bg-light-lighter-alt);
 }
 
-#dxp-menu-btn.dxp-open {
+#dxp-menu-btn {
+/* #dxp-menu-btn.dxp-open { */
   border: 1px solid var(--dxp-border-light-lighter);
 }
 
@@ -181,9 +184,10 @@
 }
 
 #dxp-examples-list {
-  width: 200px;
+  width: 250px;
   display: none;
   background-color: var(--dxp-bg-light-darker);
+  border-right: 1px solid var(--dxp-border-light-lighter);
 }
 
 #dxp-examples-list.dxp-open {
@@ -192,12 +196,13 @@
 
 
 .dxp-example-project {
+  font-size: 14px;
   color: var(--dxp-text-light);
   background: inherit;
   text-align: left;
   cursor: pointer;
   width: 100%;
-  padding: 10px 10px;
+  padding: 10px 32px;
   margin: 0;
   transition: background-color 0.2s ease;
   border: none;
@@ -232,13 +237,24 @@
   margin-left: auto;
   margin-right: auto;
   display: flex;
-  border-left: 1px solid var(--dxp-border-light);
+  /* border-left: 1px solid var(--dxp-border-light); */
 }
 
 #dxp-panes-left {
   width: 50%;
   min-width: 100px;
   background-color: var(--dxp-bg-light);
+  padding-left: 8px;
+}
+
+#dxp-editor-pane {
+  height: 100%;
+  width: 100%;
+}
+#dxp-terminal-pane {
+  height: 300px;
+  width: 100%;
+  background-color: var(--dxp-bg-dark-darker);
 }
 
 #dxp-panes-draggable {
@@ -531,7 +547,8 @@
     background-color: var(--dxp-bg-dark-lighter-alt);
   }
 
-  #dxp-menu-btn.dxp-open {
+  #dxp-menu-btn {
+  /* #dxp-menu-btn.dxp-open { */
     border: 1px solid var(--dxp-border-dark-lighter);
   }
 

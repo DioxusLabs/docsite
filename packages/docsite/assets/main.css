@@ -40,7 +40,7 @@
 }
 
 .playground-container {
-  height: 900px;
+  /* height: 900px; */
   display: flex;
   flex-direction: column;
   /* width: 100vw;

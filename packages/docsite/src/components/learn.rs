@@ -23,7 +23,7 @@ pub(crate) fn Learn() -> Element {
 
     rsx! {
         div { class: "w-full text-sm border-b dark:border-[#a4a9ac7d] border-gray-300",
-            div { class: "flex flex-row justify-between dark:text-[#dee2e6] font-light max-w-screen-2xl gap-8 mx-auto px-4 sm:px-6 md:px-8",
+            div { class: "flex flex-row justify-between dark:text-[#dee2e6] font-light max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8",
                 match current_version {
                     CurrentDocsVersion::V07(_) => rsx! {
                         GenericDocs::<router_07::BookRoute> {}
@@ -66,7 +66,7 @@ fn LeftNav<R: AnyBookRoute>() -> Element {
     rsx! {
         div {
             class: if SHOW_SIDEBAR() { "w-full md:w-auto" } else { "hidden" },
-            class: "h-full md:block top-24 sticky md:h-[calc(100vh_-_calc(var(--spacing)_*_28))]",
+            class: "h-full md:block top-22 sticky md:h-[calc(100vh_-_calc(var(--spacing)_*_24))]",
             div { class: "md:flex md:flex-col md:h-full mb-2 md:text-sm leading-5 text-gray-700 dark:text-gray-400 space-y-2 py-2 md:py-0",
                 VersionSwitch {}
                 nav { class: "
@@ -287,7 +287,7 @@ pub fn RightNav<R: AnyBookRoute>() -> Element {
 
     // That might be a naive approach, but it's the easiest
     rsx! {
-        div { class: "overflow-y-auto hidden xl:block top-24 px-2 h-full md:text-sm leading-5 text-gray-600 max-h-[calc(100vh_-_calc(var(--spacing)_*_28))] w-72 sticky  dark:text-gray-400 pt-1",
+        div { class: "overflow-y-auto hidden xl:block top-24 px-2 h-full md:text-sm leading-5 text-gray-600 max-h-[calc(100vh_-_calc(var(--spacing)_*_24))] w-72 sticky  dark:text-gray-400 pt-1",
             div { class: "border-b border-gray-300 pb-2 dark:border-[#a4a9ac7d]",
                 h2 { class: "pb-2 font-semibold text-gray-800 dark:text-gray-100 uppercase tracking-wide text-xs",
                     "On this page"
@@ -336,15 +336,17 @@ pub fn RightNav<R: AnyBookRoute>() -> Element {
 fn Content<R: AnyBookRoute>() -> Element {
     rsx! {
         section {
-            class: "text-gray-600 dark:text-gray-300 body-font overflow-hidden container pb-12 md:mt-8 grow min-h-[100vh] max-w-screen-md",
+            class: "text-gray-600 dark:text-gray-300 body-font overflow-hidden container pb-12 grow min-h-[100vh] px-8",
             class: if SHOW_SIDEBAR() { "hidden md:block" },
-            div { class: "",
-                Breadcrumbs::<R> {}
-                VersionWarning {}
-                div { class: "flex w-full flex-wrap list-none",
-                    article { class: "markdown-body", Outlet::<Route> {} }
+            div { class: "mx-auto md:pt-6",
+                div { class: "mx-auto max-w-screen-md",
+                    Breadcrumbs::<R> {}
+                    VersionWarning {}
+                    div { class: "flex w-full flex-wrap list-none",
+                        article { class: "markdown-body", Outlet::<Route> {} }
+                    }
+                    NextPrev::<R> {}
                 }
-                NextPrev::<R> {}
             }
         }
     }

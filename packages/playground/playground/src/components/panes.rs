@@ -108,13 +108,21 @@ pub fn Panes(
             div {
                 id: "dxp-panes-left",
                 style: if let Some(val) = pane_left_width() { "width:{val}px;" },
+                div {
+                    id: "dxp-editor-pane",
+                }
+                div {
+                    id: "dxp-terminal-pane",
+                }
             }
+
             // Draggable
             div {
                 id: "dxp-panes-draggable",
                 onmousedown: draggable_mousedown,
                 onmouseup: stop_dragging,
             }
+
             // Right Pane
             div {
                 id: "dxp-panes-right",

@@ -12,7 +12,7 @@ pub(crate) fn Nav() -> Element {
     rsx! {
         SearchModal {}
         header { class: "sticky top-0 z-30 bg-opacity-80 dark:text-gray-200 dark:bg-opacity-80 border-b border-stone-300 dark:border-stone-700 h-16 backdrop-blur-sm",
-            div { class: "py-2 px-4 sm:px-6 md:px-8 max-w-screen-2xl mx-auto flex items-center justify-between text-sm leading-6 h-16",
+            div { class: "py-2 px-8 mx-auto flex items-center justify-between text-sm leading-6 h-16",
                 div { class: "flex z-50 flex-1", LinkList {} }
                 div { class: "flex h-full justify-end ml-2 items-center gap-3 py-2",
                     button {
@@ -154,7 +154,7 @@ static LINKS: &[(&str, &str)] = &[
 #[component]
 fn LinkList() -> Element {
     rsx! {
-        nav { class: "flex-grow md:flex-grow-0 flex flex-row items-center  text-md font-light leading-none text-slate-700 dark:text-white whitespace-nowrap md:gap-6",
+        nav { class: "flex-grow md:flex-grow-0 flex flex-row items-center  text-md font-light leading-none text-gray-950  dark:text-white whitespace-nowrap md:gap-6",
             Link {
                 to: Route::Homepage {},
                 class: "title-font font-medium items-center text-gray-900 flex flex-row gap-1",
@@ -166,7 +166,7 @@ fn LinkList() -> Element {
                     "DIOXUS"
                 }
             }
-            div { class: "flex-1 flex flex-row items-center md:space-x-6 justify-evenly",
+            div { class: "flex-1 flex flex-row items-center md:space-x-4 justify-evenly",
                 for (name , link) in LINKS.iter().cloned() {
                     Link {
                         to: link,

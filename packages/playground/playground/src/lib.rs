@@ -4,10 +4,12 @@ use dioxus::logger::tracing::error;
 use dioxus::prelude::*;
 use dioxus_document::Link;
 // use dioxus_sdk::utils::timing::use_debounce;
-use editor::monaco::{self, monaco_loader_src, set_monaco_markers};
+use editor::{monaco_loader_src, set_monaco_markers};
 use hotreload::{attempt_hot_reload, HotReload};
 use model::{api::ApiClient, AppError, Project, SocketError};
 use std::time::Duration;
+
+use crate::editor::SystemTheme;
 
 // #[cfg(target_arch = "wasm32")]
 // use dioxus_sdk::theme::{use_system_theme, SystemTheme};
@@ -42,10 +44,10 @@ pub fn Playground(
     let mut build = use_context_provider(BuildState::new);
     let mut hot_reload = use_context_provider(HotReload::new);
     let api_client = use_context_provider(|| Signal::new(ApiClient::new(urls.server)));
-    let mut errors = use_context_provider(Errors::new);
+    let errors = use_signal(|| vec![]);
+    let mut errors = use_context_provider(|| Errors { errors });
 
     let monaco_ready = use_signal(|| false);
-    let mut show_share_warning = use_signal(|| false);
 
     // Default to the welcome project.
     // Project dirty determines whether the Rust-project is synced with the project in the editor.
@@ -54,7 +56,7 @@ pub fn Playground(
     use_effect(move || {
         if project_dirty() && monaco_ready() {
             let project = project.read();
-            monaco::set_current_model_value(&project.contents());
+            editor::set_current_model_value(&project.contents());
             project_dirty.set(false);
         }
     });
@@ -66,7 +68,6 @@ pub fn Playground(
                 let api_client = api_client();
                 let shared_project = Project::from_share_code(&api_client, share_code).await;
                 if let Ok(shared_project) = shared_project {
-                    show_share_warning.set(true);
                     project_dirty.set(true);
                     project.set(shared_project);
                 }
@@ -87,15 +88,33 @@ pub fn Playground(
     //     });
     // });
 
+    // Handle events when code changes.
+    let on_model_changed = use_callback(move |new_code: String| {
+        // Update the project
+        project.write().set_contents(new_code.clone());
+        spawn(async move {
+            editor::set_markers(&[]);
+
+            if build.stage().is_finished() {
+                attempt_hot_reload(hot_reload, &new_code);
+            }
+        });
+    });
+
     // Handle setting diagnostics based on build state.
     use_effect(move || set_monaco_markers(build.diagnostics()));
 
     // Themes
-    #[cfg(target_arch = "wasm32")]
-    let system_theme = use_system_theme();
+    // #[cfg(target_arch = "wasm32")]
+    // let system_theme = use_system_theme();
+    fn system_theme() -> Option<SystemTheme> {
+        Some(SystemTheme::Dark)
+    }
+
     use_effect(move || {
-        #[cfg(target_arch = "wasm32")]
-        editor::monaco::set_theme(system_theme().unwrap_or(SystemTheme::Light));
+        // #[cfg(target_arch = "wasm32")]
+        editor::set_theme(system_theme().unwrap_or(SystemTheme::Light));
+        // editor::set_theme(system_theme().unwrap_or(SystemTheme::Light));
     });
 
     // Handle starting a build.
@@ -106,7 +125,7 @@ pub fn Playground(
         hot_reload.set_needs_rebuild(false);
 
         // Update hot reload
-        let code = editor::monaco::get_current_model_value();
+        let code = editor::get_current_model_value();
 
         let socket_url = urls.socket.to_string();
         match start_build(build, socket_url, code).await {
@@ -145,8 +164,8 @@ pub fn Playground(
             script {
                 src: monaco_loader_src(MONACO_FOLDER),
                 onload: move |_| {
-                    #[cfg(target_arch = "wasm32")]
-                    monaco::on_monaco_load(
+                    // #[cfg(target_arch = "wasm32")]
+                    editor::on_monaco_load(
                         MONACO_FOLDER,
                         system_theme().unwrap_or(SystemTheme::Light),
                         &project.read().contents(),
@@ -155,19 +174,6 @@ pub fn Playground(
                         on_model_changed,
                     );
                 },
-            }
-
-            // Share warning
-            if show_share_warning() {
-                components::Modal {
-                    icon: rsx! {
-                        Warning {}
-                    },
-                    title: "Do you trust this code?",
-                    text: "Anyone can share their project. Verify that nothing malicious has been included before running this project.",
-                    ok_text: "I understand",
-                    on_ok: move |_| show_share_warning.set(false),
-                }
             }
 
             // Show errors one at a time.
@@ -203,7 +209,7 @@ pub fn Playground(
                             onclick: move |_| {
                                 project.set(example.clone());
                                 build.set_stage(BuildStage::Finished(Ok(example.id())));
-                                monaco::set_current_model_value(&example.contents());
+                                editor::set_current_model_value(&example.contents());
                                 hot_reload.set_starting_code(&example.contents());
                             },
                             h3 { {example.path.clone()} }
@@ -229,12 +235,6 @@ pub struct Errors {
 }
 
 impl Errors {
-    pub fn new() -> Self {
-        Self {
-            errors: Signal::new(Vec::new()),
-        }
-    }
-
     pub fn push_error(&mut self, error: (impl ToString, impl ToString)) {
         let error = (error.0.to_string(), error.1.to_string());
         error!(?error, "an error occured and was handled gracefully");
@@ -271,11 +271,5 @@ impl Errors {
 
     pub fn pop(&mut self) -> Option<(String, String)> {
         self.errors.pop()
-    }
-}
-
-impl Default for Errors {
-    fn default() -> Self {
-        Self::new()
     }
 }

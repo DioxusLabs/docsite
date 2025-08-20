@@ -22,11 +22,11 @@ use dioxus_dx_wire_format::StructuredOutput;
 use dioxus_logger::tracing::{debug, error, info, trace, warn, Level};
 use fs_extra::dir::CopyOptions;
 use futures::{future::Either, pin_mut, SinkExt, StreamExt as _};
-use gists::{GistFile, NewGist};
 use model::api::{GetSharedProjectRes, ShareProjectReq, ShareProjectRes};
 use model::AppError;
 use model::{BuildStage, CargoDiagnostic};
 use model::{Project, SocketMessage};
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::collections::VecDeque;
 use std::net::IpAddr;
@@ -51,13 +51,14 @@ use tower::{buffer::BufferLayer, limit::RateLimitLayer, ServiceBuilder};
 use tower_http::{compression::CompressionLayer, cors::CorsLayer};
 use uuid::Uuid;
 
-// mod hmm;
-
 const REQUESTS_PER_INTERVAL: u64 = 30;
 const RATE_LIMIT_INTERVAL: Duration = Duration::from_secs(60);
 const DEFAULT_PORT: u16 = 3000;
 const DEFAULT_BUILD_TEMPLATE_PATH: &str = "./template";
 const PRIMARY_GIST_FILE_NAME: &str = "dxp.rs";
+
+const GISTS_URL_PREFIX: &str = "https://api.github.com/gists";
+const GITHUB_USER_AGENT: &str = "Dioxus Playground";
 
 #[tokio::main]
 async fn main() {
@@ -108,11 +109,9 @@ async fn main() {
 
     // Start the Axum server.
     let final_address = &format!("0.0.0.0:{port}", port = state.port);
-    let listener = TcpListener::bind(final_address).await.unwrap();
-
     info!("listening on `{}`", final_address);
     axum::serve(
-        listener,
+        TcpListener::bind(final_address).await.unwrap(),
         app.into_make_service_with_connect_info::<SocketAddr>(),
     )
     .await
@@ -121,36 +120,30 @@ async fn main() {
 
 /// The state of the server application.
 #[derive(Clone)]
-pub struct AppState {
+struct AppState {
     /// Is the server running in production?
-    pub production: bool,
+    production: bool,
 
     /// The port the server will listen on.
-    pub port: u16,
+    port: u16,
 
     /// The path to the build template.
-    pub build_template_path: PathBuf,
+    build_template_path: PathBuf,
 
     /// The path where built projects are temporarily stored.
-    pub built_path: PathBuf,
+    built_path: PathBuf,
 
-    pub gist_auth_token: String,
-
-    /// The time instante since the last request.
-    pub last_request_time: Arc<Mutex<Instant>>,
-
-    /// Prevents the server from shutting down during an active build.
-    pub is_building: Arc<AtomicBool>,
+    gist_auth_token: String,
 
     /// A list of connected sockets by ip. Used to disallow extra socket connections.
-    pub _connected_sockets: Arc<Mutex<Vec<String>>>,
+    _connected_sockets: Arc<Mutex<Vec<String>>>,
 
-    pub reqwest_client: reqwest::Client,
+    reqwest_client: reqwest::Client,
 }
 
 impl AppState {
     /// Build the app state and initialize app services.
-    pub async fn new() -> Self {
+    async fn new() -> Self {
         let production = env::var("PRODUCTION")
             .ok()
             .and_then(|v| v.parse::<bool>().ok())
@@ -173,29 +166,28 @@ impl AppState {
             false => PathBuf::from("./temp/"),
         };
 
-        let is_building = Arc::new(AtomicBool::new(false));
-
         Self {
             production,
             port,
             build_template_path,
             built_path,
             gist_auth_token,
-            last_request_time: Arc::new(Mutex::new(Instant::now())),
-            is_building,
             _connected_sockets: Arc::new(Mutex::new(Vec::new())),
             reqwest_client: reqwest::Client::new(),
         }
     }
 
     /// Handle any pre-websocket processing.
-    pub async fn ws_handler(
+    async fn ws_handler(
         State(state): State<AppState>,
         ClientIp(ip): ClientIp,
         ws: WebSocketUpgrade,
     ) -> impl IntoResponse {
         ws.on_upgrade(move |socket| async move {
             let (mut socket_tx, mut socket_rx) = socket.split();
+
+            // Copy the template project over to a new tempdir.
+            let users_project = tempdir::TempDir::new("user-project");
 
             // Ensure only one client per socket.
             // let mut connected_sockets = state.connected_sockets.lock().await;
@@ -221,67 +213,67 @@ impl AppState {
             // // Handle finished build or make progress on current build.
             // build_result = builder.finished() => builder.handle_finished_build(&mut pending_builds, build_result),
 
-            // Start our build loop.
-            let (build_tx, mut build_rx) = mpsc::unbounded_channel();
-            let mut current_build: Option<BuildRequest> = None;
+            // // Start our build loop.
+            // let (build_tx, mut build_rx) = mpsc::unbounded_channel();
+            // let mut current_build: Option<BuildRequest> = None;
 
-            loop {
-                let srx = socket_rx.next();
-                let brx = build_rx.recv();
-                pin_mut!(srx, brx);
-                let res = futures::future::select(srx, brx).await;
+            // loop {
+            //     let srx = socket_rx.next();
+            //     let brx = build_rx.recv();
+            //     pin_mut!(srx, brx);
+            //     let res = futures::future::select(srx, brx).await;
 
-                match res {
-                    Either::Left((Some(Ok(socket_msg)), _)) => {
-                        // Try decoding the socket messages into our own type. If invalid, just ignore it.
-                        let Ok(socket_msg) = SocketMessage::try_from(socket_msg) else {
-                            continue;
-                        };
+            //     match res {
+            //         Either::Left((Some(Ok(socket_msg)), _)) => {
+            //             // Try decoding the socket messages into our own type. If invalid, just ignore it.
+            //             let Ok(socket_msg) = SocketMessage::try_from(socket_msg) else {
+            //                 continue;
+            //             };
 
-                        // Start a new build, stopping any existing ones.
-                        if let SocketMessage::BuildRequest(code) = socket_msg {
-                            if let Some(ref request) = current_build {
-                                // if result.is_err() {
-                                //     error!(build_id = ?request.id, "failed to send build stop signal for new build request");
-                                //     continue;
-                                // }
-                            }
+            //             // Start a new build, stopping any existing ones.
+            //             if let SocketMessage::BuildRequest(code) = socket_msg {
+            //                 if let Some(ref request) = current_build {
+            //                     // if result.is_err() {
+            //                     //     error!(build_id = ?request.id, "failed to send build stop signal for new build request");
+            //                     //     continue;
+            //                     // }
+            //                 }
 
-                            let project = Project::new(code, None, None);
-                            let request = BuildRequest {
-                                id: project.id(),
-                                project,
-                                ws_msg_tx: build_tx.clone(),
-                            };
+            //                 let project = Project::new(code, None, None);
+            //                 let request = BuildRequest {
+            //                     id: project.id(),
+            //                     project,
+            //                     ws_msg_tx: build_tx.clone(),
+            //                 };
 
-                            current_build = Some(request);
-                        }
-                    }
-                    Either::Right((Some(build_msg), _)) => {
-                        // Send the build message.
-                        let socket_msg = match build_msg.clone() {
-                            BuildMessage::Building(stage) => SocketMessage::BuildStage(stage),
-                            BuildMessage::Finished(result) => SocketMessage::BuildFinished(result),
-                            BuildMessage::QueuePosition(i) => SocketMessage::QueuePosition(i),
-                            BuildMessage::CargoDiagnostic(diagnostic) => {
-                                SocketMessage::BuildDiagnostic(diagnostic)
-                            }
-                        };
-                        let socket_result = socket_tx.send(socket_msg.into_axum()).await;
-                        if socket_result.is_err() {
-                            break;
-                        }
+            //                 current_build = Some(request);
+            //             }
+            //         }
+            //         Either::Right((Some(build_msg), _)) => {
+            //             // Send the build message.
+            //             let socket_msg = match build_msg.clone() {
+            //                 BuildMessage::Building(stage) => SocketMessage::BuildStage(stage),
+            //                 BuildMessage::Finished(result) => SocketMessage::BuildFinished(result),
+            //                 BuildMessage::QueuePosition(i) => SocketMessage::QueuePosition(i),
+            //                 BuildMessage::CargoDiagnostic(diagnostic) => {
+            //                     SocketMessage::BuildDiagnostic(diagnostic)
+            //                 }
+            //             };
+            //             let socket_result = socket_tx.send(socket_msg.into_axum()).await;
+            //             if socket_result.is_err() {
+            //                 break;
+            //             }
 
-                        // If the build finished, let's close this socket.
-                        if let BuildMessage::Finished(_) = build_msg {
-                            current_build = None;
-                            let _ = socket_tx.close().await;
-                            break;
-                        }
-                    }
-                    _ => break,
-                }
-            }
+            //             // If the build finished, let's close this socket.
+            //             if let BuildMessage::Finished(_) = build_msg {
+            //                 current_build = None;
+            //                 let _ = socket_tx.close().await;
+            //                 break;
+            //             }
+            //         }
+            //         _ => break,
+            //     }
+            // }
 
             // // The socket has closed. Make sure we cancel any active builds.
             // if let Some(request) = current_build {
@@ -306,7 +298,7 @@ impl AppState {
 
     /// Handle providing temporary built wasm assets.
     /// This should delete temporary projects after 30 seconds.
-    pub async fn serve_built_index(
+    async fn serve_built_index(
         State(state): State<AppState>,
         Path(build_id): Path<Uuid>,
     ) -> impl IntoResponse {
@@ -327,7 +319,7 @@ impl AppState {
         ))
     }
 
-    pub async fn serve_other_built(
+    async fn serve_other_built(
         State(state): State<AppState>,
         Path((build_id, file_path)): Path<(Uuid, PathBuf)>,
     ) -> impl IntoResponse {
@@ -366,11 +358,24 @@ impl AppState {
     }
 
     #[tracing::instrument(skip_all, level = "trace")]
-    pub async fn get_shared_project(
+    async fn get_shared_project(
         State(state): State<AppState>,
         Path(id): Path<String>,
     ) -> Result<Json<GetSharedProjectRes>, AppError> {
-        let gist = gists::get(&state, id).await?;
+        let res = state
+            .reqwest_client
+            .get(format!("{GISTS_URL_PREFIX}/{id}"))
+            .bearer_auth(&state.gist_auth_token)
+            .header(header::ACCEPT, "application/vnd.github+json")
+            .header(header::USER_AGENT, GITHUB_USER_AGENT)
+            .send()
+            .await?;
+
+        if res.status() == StatusCode::NOT_FOUND {
+            return Err(AppError::ResourceNotFound);
+        }
+
+        let gist = res.json::<Gist>().await?;
 
         let Some(file) = gist.files.get(PRIMARY_GIST_FILE_NAME) else {
             return Err(AppError::ResourceNotFound);
@@ -382,12 +387,13 @@ impl AppState {
         }))
     }
 
-    pub async fn share_project(
+    #[tracing::instrument(skip_all, level = "trace")]
+    async fn share_project(
         State(state): State<AppState>,
         Json(payload): Json<ShareProjectReq>,
     ) -> Result<Json<ShareProjectRes>, AppError> {
-        trace!(payload = ?payload, "save_to_gist request");
         let mut files = HashMap::new();
+
         files.insert(
             PRIMARY_GIST_FILE_NAME.to_string(),
             GistFile {
@@ -401,18 +407,20 @@ impl AppState {
             files,
         };
 
-        let new_gist = gists::create(&state, new_gist).await?;
+        let new_gist = state
+            .reqwest_client
+            .post(GISTS_URL_PREFIX)
+            .bearer_auth(&state.gist_auth_token)
+            .header(header::ACCEPT, "application/vnd.github+json")
+            .header(header::USER_AGENT, GITHUB_USER_AGENT)
+            .json(&new_gist)
+            .send()
+            .await?
+            .json::<Gist>()
+            .await?;
+
         Ok(Json(ShareProjectRes { id: new_gist.id }))
     }
-}
-
-/// A message from the playground build process.
-#[derive(Debug, Clone, PartialEq)]
-pub enum BuildMessage {
-    Building(model::BuildStage),
-    CargoDiagnostic(CargoDiagnostic),
-    Finished(Result<Uuid, String>),
-    QueuePosition(usize),
 }
 
 // TODO: We need some way of cleaning up any stopped builds.
@@ -426,7 +434,7 @@ pub struct Builder {
 }
 
 impl Builder {
-    pub fn new(
+    fn new(
         build_template_path: PathBuf,
         built_path: PathBuf,
         is_building: Arc<AtomicBool>,
@@ -441,7 +449,7 @@ impl Builder {
     }
 
     /// Start a new build, cancelling any ongoing builds.
-    pub fn start(&mut self, request: BuildRequest) {
+    fn start(&mut self, request: BuildRequest) {
         let _ = request.ws_msg_tx.send(BuildMessage::QueuePosition(0));
 
         self.stop_current();
@@ -452,7 +460,7 @@ impl Builder {
     }
 
     /// Stop the current build.
-    pub fn stop_current(&mut self) {
+    fn stop_current(&mut self) {
         self.task.abort();
         self.task = tokio::spawn(std::future::pending());
         self.current_build = None;
@@ -460,7 +468,7 @@ impl Builder {
     }
 
     /// Wait for the current build to finish.
-    pub async fn finished(&mut self) -> Result<BuildRequest> {
+    async fn finished(&mut self) -> Result<BuildRequest> {
         // Ensure we don't poll a completed task.
         if self.task.is_finished() {
             self.stop_current();
@@ -474,12 +482,12 @@ impl Builder {
     }
 
     /// Check if the builder has an ongoing build.
-    pub fn has_build(&self) -> bool {
+    fn has_build(&self) -> bool {
         self.current_build.is_some()
     }
 
     /// Get the current ongoing build if it exists.
-    pub fn current_build(&self) -> Option<BuildRequest> {
+    fn current_build(&self) -> Option<BuildRequest> {
         self.current_build.clone()
     }
 
@@ -779,63 +787,29 @@ impl BuildRequest {
     }
 }
 
-pub mod gists {
-    use crate::AppState;
-    use model::AppError;
-    use reqwest::{header, StatusCode};
-    use serde::{Deserialize, Serialize};
-    use std::collections::HashMap;
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Gist {
+    pub id: String,
+    pub files: HashMap<String, GistFile>,
+}
 
-    const GISTS_URL_PREFIX: &str = "https://api.github.com/gists";
-    const GITHUB_USER_AGENT: &str = "Dioxus Playground";
+#[derive(Debug, Serialize, Deserialize)]
+pub struct GistFile {
+    pub content: String,
+}
 
-    pub async fn get(state: &AppState, id: String) -> Result<Gist, AppError> {
-        let res = state
-            .reqwest_client
-            .get(format!("{GISTS_URL_PREFIX}/{id}"))
-            .bearer_auth(&state.gist_auth_token)
-            .header(header::ACCEPT, "application/vnd.github+json")
-            .header(header::USER_AGENT, GITHUB_USER_AGENT)
-            .send()
-            .await?;
+#[derive(Debug, Serialize, Deserialize)]
+pub struct NewGist {
+    pub description: String,
+    pub public: bool,
+    pub files: HashMap<String, GistFile>,
+}
 
-        // Was the gist found?
-        if res.status() == StatusCode::NOT_FOUND {
-            return Err(AppError::ResourceNotFound);
-        }
-
-        Ok(res.json::<Gist>().await?)
-    }
-
-    pub async fn create(state: &AppState, gist: NewGist) -> Result<Gist, AppError> {
-        let res = state
-            .reqwest_client
-            .post(GISTS_URL_PREFIX)
-            .bearer_auth(&state.gist_auth_token)
-            .header(header::ACCEPT, "application/vnd.github+json")
-            .header(header::USER_AGENT, GITHUB_USER_AGENT)
-            .json(&gist)
-            .send()
-            .await?;
-
-        Ok(res.json::<Gist>().await?)
-    }
-
-    #[derive(Debug, Serialize, Deserialize)]
-    pub struct Gist {
-        pub id: String,
-        pub files: HashMap<String, GistFile>,
-    }
-
-    #[derive(Debug, Serialize, Deserialize)]
-    pub struct GistFile {
-        pub content: String,
-    }
-
-    #[derive(Debug, Serialize, Deserialize)]
-    pub struct NewGist {
-        pub description: String,
-        pub public: bool,
-        pub files: HashMap<String, GistFile>,
-    }
+/// A message from the playground build process.
+#[derive(Debug, Clone, PartialEq)]
+pub enum BuildMessage {
+    Building(model::BuildStage),
+    CargoDiagnostic(CargoDiagnostic),
+    Finished(Result<Uuid, String>),
+    QueuePosition(usize),
 }

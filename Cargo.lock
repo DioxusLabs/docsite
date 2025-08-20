@@ -6090,6 +6090,7 @@ dependencies = [
  "anyhow",
  "axum",
  "axum-client-ip",
+ "dashmap",
  "dioxus",
  "dioxus-dx-wire-format",
  "dioxus-logger",

@@ -30,3 +30,4 @@ dioxus = { workspace = true, features = ["web"] }
 example-projects = { workspace = true }
 tempdir = "0.3.7"
 tracing = "0.1.41"
+dashmap = "6.1.0"

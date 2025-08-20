@@ -50,7 +50,7 @@ pub fn Playground(share_code: Option<String>) -> Element {
                     }
                 },
                 dioxus_playground::Playground {
-                    class: "playground-container max-w-screen-2xl mx-auto mt-8",
+                    class: "playground-container mx-auto h-[calc(100vh-64px)]",
                     urls: URLS,
                     share_code,
                 }

@@ -58,11 +58,12 @@
   - [Fullstack](guides/fullstack/index.md)
     - [Hydration](guides/fullstack/hydration.md)
     - [Managing Dependencies](guides/fullstack/managing_dependencies.md)
-  	- [Server Functions](guides/fullstack/server_functions.md)
-  	- [Extractors](guides/fullstack/extractors.md)
-  	- [Middleware](guides/fullstack/middleware.md)
-  	- [Authentication](guides/fullstack/authentication.md)
-  	- [Routing](guides/fullstack/routing.md)
+    - [Server Functions](guides/fullstack/server_functions.md)
+    - [Extractors](guides/fullstack/extractors.md)
+    - [Middleware](guides/fullstack/middleware.md)
+    - [Authentication](guides/fullstack/authentication.md)
+    - [Routing](guides/fullstack/routing.md)
+    - [Secrets](guides/fullstack/secrets.md)
     - [Static Site Generation](guides/fullstack/static_site_generation.md)
     - [Axum Integration](guides/fullstack/axum.md)
   - [Publishing](cookbook/publishing.md)
@@ -102,14 +103,14 @@
 
 ---
 - [CLI](CLI/index.md)
-	- [Create a Project](CLI/creating.md)
-	- [Configure Project](CLI/configure.md)
+  - [Create a Project](CLI/creating.md)
+  - [Configure Project](CLI/configure.md)
   - [Translate HTML](CLI/translate.md)
 
 <!-- - [Static Generation](router/reference/static-generation.md) -->
 <!-- - [CLI in Depth](router/reference/cli-in-depth.md)
-	- [SDK](router/reference/sdk.md)
-	- [Fullstack and the server](router/reference/fullstack-and-the-server.md) -->
+  - [SDK](router/reference/sdk.md)
+  - [Fullstack and the server](router/reference/fullstack-and-the-server.md) -->
 
 <!-- - [Walkthrough of Internals](contributing/walkthrough_readme.md) -->
 <!-- Empty file. TODO: Uncomment when the file is finished. - [Governance](contributing/governance.md) -->

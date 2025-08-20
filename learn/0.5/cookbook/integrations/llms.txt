@@ -1,0 +1,9 @@
+<SYSTEM>This is the developer documentation for Dioxus from /learn/0.5/cookbook/integrations/.</SYSTEM>
+This section of the guide provides getting started guides for common tools used with Dioxus.
+
+* [Logging](./logging.md)
+* [Internationalization](./internationalization.md)
+This section of the guide provides getting started guides for common tools used with Dioxus.
+
+* [Logging](./logging.md)
+* [Internationalization](./internationalization.md)

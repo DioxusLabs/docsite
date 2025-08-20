@@ -114,7 +114,7 @@ pub struct StoryItem {
 }
 
 pub mod fetch {
-    use super::{get_comment, get_stories, get_story, PreviewState, StoryItem, StoryPageData};
+    use super::{PreviewState, StoryItem, StoryPageData, get_comment, get_stories, get_story};
     use dioxus::prelude::*;
 
     pub fn App() -> Element {

@@ -22,7 +22,7 @@ With [`dx`][dx] installed, you can use it to build and serve the documentation
 on your local system:
 
 ```sh
-dx serve --package dioxus_docs_site --hotpatch
+dx serve --package dioxus_docs_site --hotpatch --platform web
 ```
 
 This will start a local server that will be available on

@@ -127,13 +127,13 @@ let mut values = use_signal(HashMap::new);
 
 rsx! {
     form {
-        // We can capture `onsubmit` and `oninput` events
         onsubmit: move |evt| {
+            // Prevent the default form submission navigation
             evt.prevent_default();
-            submitted_values.set(ev.values());
+            values.set(evt.values());
         },
 
-        label { r#for: "username", "Username" }
+        label { for: "username", "Username" }
         input { type: "text", name: "username" }
     }
 }

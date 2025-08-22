@@ -324,7 +324,7 @@ mod non_reactive_state {
                     // We didn't subscribe to toggle, so this will not cause
                     // the effect to rerun forever
                     toggle.set(!current_toggle);
-                    log!("flipped toggle to {current_toggle}");
+                    log!("flipped toggle to {toggle}");
                 }
             });
 

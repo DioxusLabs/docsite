@@ -12,7 +12,7 @@ Dioxus desktop is built off [Tauri](https://tauri.app/). Right now there are lim
 
 ## Examples
 
-- [File Explorer](https://github.com/DioxusLabs/dioxus/blob/main/example-projects/file-explorer)
+- [File Explorer](https://github.com/DioxusLabs/dioxus/tree/main/examples/file-explorer)
 - [Tailwind App](https://github.com/DioxusLabs/dioxus/tree/v0.5/examples/tailwind)
 
 [![Tailwind App screenshot](/assets/static/tailwind_desktop_app.png)](https://github.com/DioxusLabs/dioxus/tree/v0.5/examples/tailwind)
@@ -20,7 +20,6 @@ Dioxus desktop is built off [Tauri](https://tauri.app/). Right now there are lim
 ## Running Javascript
 
 Dioxus provides some ergonomic wrappers over the browser API, but in some cases you may need to access parts of the browser API Dioxus does not expose.
-
 
 For these cases, Dioxus desktop exposes the use_eval hook that allows you to run raw Javascript in the webview:
 
@@ -41,3 +40,4 @@ You can read more about assets in the [assets](../assets.md) reference.
 ## Integrating with Wry
 
 In cases where you need more low level control over your window, you can use wry APIs exposed through the [Desktop Config](https://docs.rs/dioxus-desktop/0.5.0/dioxus_desktop/struct.Config.html) and the [use_window hook](https://docs.rs/dioxus-desktop/0.5.0/dioxus_desktop/fn.use_window.html)
+

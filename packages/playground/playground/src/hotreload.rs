@@ -24,7 +24,6 @@ pub fn attempt_hot_reload(mut hot_reload: HotReload, new_code: &str) {
                 jump_table: Default::default(),
                 for_build_id: Default::default(),
                 for_pid: Default::default(),
-                // unknown_files: Vec::new(),
             };
 
             let e = eval(

@@ -77,9 +77,7 @@ mod no_waterfall_effect {
         message: String,
     }
 
-    fn fetch_dog_image(
-        breed: impl Display,
-    ) -> impl Future<Output = dioxus::Result<String>> {
+    fn fetch_dog_image(breed: impl Display) -> impl Future<Output = dioxus::Result<String>> {
         async move {
             let response = reqwest::get(format!("https://dog.ceo/api/breed/{breed}/images/random"))
                 .await?

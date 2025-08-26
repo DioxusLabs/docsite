@@ -177,6 +177,6 @@ dx bundle --webview \
 
 This returns the list of bundles:
 ```
-/Users/jonkelley/Development/Tinkering/06-demos/hot_dog/target/dx/hot_dog/bundle/macos/bundle/macos/HotDog.app
-/Users/jonkelley/Development/Tinkering/06-demos/hot_dog/target/dx/hot_dog/bundle/macos/bundle/dmg/HotDog_0.1.0_aarch64.dmg
+./target/dx/hot_dog/bundle/macos/bundle/macos/HotDog.app
+./target/dx/hot_dog/bundle/macos/bundle/dmg/HotDog_0.1.0_aarch64.dmg
 ```

@@ -29,7 +29,6 @@ pub fn make_docs_from_ws(version: &str) {
     std::fs::write(out_dir.join(filename), out).unwrap();
 }
 
-
 /// Generate the contents of the mdbook from a router
 pub fn generate_router_build_script(mdbook_dir: PathBuf) -> String {
     let file_src = generate_router_as_file(mdbook_dir.clone(), MdBook::new(mdbook_dir).unwrap());

@@ -55,6 +55,7 @@
     - [Suspense](essentials/advanced/suspense.md)
     - [Breaking Out](essentials/advanced/breaking_out.md)
   - [Routing](essentials/router/index.md)
+    - [Intro](essentials/router/intro.md)
     - [Defining Routes](essentials/router/routes.md)
     - [Nested Routes](essentials/router/nested-routes.md)
     - [Layouts](essentials/router/layouts.md)

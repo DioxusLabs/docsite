@@ -33,7 +33,6 @@ pub fn MyComponent(name: String) -> Element {
 }
 // ANCHOR_END: MyComponent
 
-
 #[component]
 pub fn MyComponentCall() -> Element {
     // ANCHOR: MyComponentCall
@@ -42,7 +41,6 @@ pub fn MyComponentCall() -> Element {
     }
     // ANCHOR_END: MyComponentCall
 }
-
 
 // ANCHOR: MyStatefulComponent
 #[component]
@@ -73,7 +71,6 @@ fn increment_global_count() -> i32 {
     GLOBAL_COUNT.fetch_add(1, Ordering::SeqCst)
 }
 // ANCHOR_END: increment_global_count
-
 
 // ANCHOR: MyImpureComponent
 #[component]

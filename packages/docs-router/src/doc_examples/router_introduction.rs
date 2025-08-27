@@ -23,7 +23,7 @@ mod first_router {
     }
 
     #[component]
-    fn UserPage(id: u32) -> Element {
+    fn User(id: u32) -> Element {
         rsx!("User page for user with id: {id}")
     }
     // ANCHOR_END: first_router
@@ -35,6 +35,7 @@ mod first_router {
 
     mod first_link {
         use super::Route;
+        use dioxus::prelude::*;
         // ANCHOR: first_link
         #[component]
         fn Home() -> Element {

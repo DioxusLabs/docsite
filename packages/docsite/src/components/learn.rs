@@ -341,9 +341,7 @@ fn Content<R: AnyBookRoute>() -> Element {
             div { class: "",
                 Breadcrumbs::<R> {}
                 VersionWarning {}
-                div { class: "flex w-full flex-wrap list-none",
-                    article { class: "markdown-body", Outlet::<Route> {} }
-                }
+                article { class: "markdown-body w-full list-none", Outlet::<Route> {} }
                 NextPrev::<R> {}
             }
         }

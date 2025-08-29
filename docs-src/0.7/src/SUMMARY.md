@@ -59,7 +59,7 @@
     - [Nested Routes](essentials/router/nested-routes.md)
     - [Layouts](essentials/router/layouts.md)
     - [Navigation](essentials/router/navigation/index.md)
-    - [Programmatic Navigation](essentials/router/programmatic-navigation.md)
+      - [Programmatic Navigation](essentials/router/navigation/programmatic-navigation.md)
     - [History Providers](essentials/router/history-providers.md)
     - [History Buttons](essentials/router/history-buttons.md)
     - [Routing Update Callback](essentials/router/routing-update-callback.md)

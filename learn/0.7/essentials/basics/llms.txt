@@ -1,0 +1,13 @@
+<SYSTEM>This is the developer documentation for Dioxus from /learn/0.7/essentials/basics/.</SYSTEM>
+# Reactivity
+
+* the act of handling user input and updating state is called reactivity
+* when the state changes, dioxus re-renders your component
+
+## Table of Contents
+# Reactivity
+
+* the act of handling user input and updating state is called reactivity
+* when the state changes, dioxus re-renders your component
+
+## Table of Contents

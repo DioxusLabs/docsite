@@ -191,7 +191,7 @@ fn SidebarSection<R: AnyBookRoute>(chapter: &'static SummaryItem<R>) -> Element 
                     active_class: "text-sky-600 dark:text-sky-400",
                     h3 { class: "px-1 pt-1 w-full bg-white dark:bg-black", "{link.name}" }
                     h3 { class: "bg-gradient-to-b from-white dark:from-black to-transparent h-2 w-full" }
-                
+
 
                 }
             }

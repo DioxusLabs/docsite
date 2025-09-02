@@ -735,7 +735,7 @@ fn build_codeblock(code: String, lang: &str) -> String {
             ThemeSet::load_from_reader(&mut reader).unwrap()
         });
 
-    let ss = SyntaxSet::load_defaults_newlines();
+    let ss = modern_syntax_set();
     let syntax = ss.find_syntax_by_name(lang).unwrap_or_else(|| {
         ss.find_syntax_by_extension(lang)
             .unwrap_or_else(|| ss.find_syntax_by_extension("rs").unwrap())
@@ -744,6 +744,36 @@ fn build_codeblock(code: String, lang: &str) -> String {
         syntect::html::highlighted_html_for_string(code.trim_end(), &ss, syntax, &THEME).unwrap();
 
     escape_text(&html)
+}
+
+// This is an updated set of syntaxes with support for toml
+fn modern_syntax_set() -> SyntaxSet {
+    static SYNTAX_SET: once_cell::sync::Lazy<SyntaxSet> = once_cell::sync::Lazy::new(|| {
+        use syntect::parsing::SyntaxSetBuilder;
+        let mut builder = SyntaxSetBuilder::new();
+        builder
+            .add_from_folder(
+                PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("sublime_toml_highlighting"),
+                true,
+            )
+            .unwrap();
+        builder
+            .add_from_folder(
+                PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("Packages"),
+                true,
+            )
+            .unwrap();
+        builder
+            .add_from_folder(
+                PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("rust-enhanced"),
+                true,
+            )
+            .unwrap();
+        builder.add_plain_text_syntax();
+        builder.build()
+    });
+
+    SYNTAX_SET.clone()
 }
 
 fn transform_code_block(

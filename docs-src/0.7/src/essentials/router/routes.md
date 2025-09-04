@@ -6,16 +6,17 @@ When creating a `Routable` enum, we can define routes for our application using 
 
 Each route is made up of segments. Most segments are separated by `/` characters in the path.
 
-There are four fundamental types of segments:
+There are five fundamental types of segments:
 
 1. [Static segments](#static-segments) are fixed strings that must be present in the path.
 2. [Dynamic segments](#dynamic-segments) are types that can be parsed from a segment.
 3. [Catch-all segments](#catch-all-segments) are types that can be parsed from multiple segments.
 4. [Query segments](#query-segments) are types that can be parsed from the query string.
+4. [Hash fragments](#hash-segments) are types that can be parsed from the hash fragment.
 
 Routes are matched:
 
-- First, from most specific to least specific (Static then Dynamic then Catch All) (Query is always matched)
+- First, from most specific to least specific (Static then Dynamic then Catch All) (Query and hash are always matched)
 - Then, if multiple routes match the same path, the order in which they are defined in the enum is followed.
 
 ## Static segments
@@ -62,4 +63,18 @@ Query segments must be the _after all route segments_ and cannot be included in 
 
 ```rust
 {{#include ../docs-router/src/doc_examples/query_segments.rs:route}}
+```
+
+## Hash Segments
+
+Hash segments are in the form of `#:field` where `field` is a field in the route variant.
+
+Just like [Query Segments](#query-segments), parsing a Hash segment must not fail.
+
+The segment can be of any type that implements `FromHashFragment`.
+
+Hash fragments must be the _after all route segments and any query segments_ and cannot be included in nests.
+
+```rust
+{{#include ../docs-router/src/doc_examples/hash_fragments.rs:route}}
 ```

@@ -60,7 +60,7 @@ fn BlogPostItem(route: BlogRoute) -> Element {
                     "{description}"
                 }
             }
-        
+
         }
     }
 }
@@ -74,7 +74,7 @@ pub(crate) fn BlogPost() -> Element {
             div { class: "flex flex-row justify-center pt-4 md:pt-[3.125rem] lg:gap-12",
                 div { class: "hidden xl:block w-72" }
                 div { class: "text-gray-600 dark:text-gray-300 body-font overflow-hidden container pb-12 max-w-screen-md px-4 grow min-h-[100vh] md:block",
-                    div { class: "px-2 border-b border-gray-200 my-4 mb-8 pb-8  dark:text-white",
+                    div { class: "px-2 border-b border-gray-200 my-4 mb-8 pb-8 dark:text-white",
                         Link { to: Route::BlogList {},
                             p { class: "pb-12 text-sm flex flex-row gap-2 items-center",
                                 svg {

@@ -1,5 +1,7 @@
 //! Server-specific implementations
 
+use std::convert::Infallible;
+
 use crate::{
     AppError, BuildStage, CargoDiagnostic, CargoDiagnosticSpan, CargoLevel, SocketError,
     SocketMessage,
@@ -36,7 +38,7 @@ impl SocketMessage {
         let msg = self
             .as_json_string()
             .expect("socket message should be valid json");
-        ws::Message::Text(msg)
+        ws::Message::Text(msg.into())
     }
 }
 
@@ -44,8 +46,8 @@ impl TryFrom<ws::Message> for SocketMessage {
     type Error = SocketError;
 
     fn try_from(value: ws::Message) -> Result<Self, Self::Error> {
-        let text = value.into_text()?;
-        SocketMessage::try_from(text)
+        let text = value.into_data();
+        SocketMessage::from_bytes(text)
     }
 }
 

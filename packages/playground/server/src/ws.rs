@@ -6,7 +6,7 @@ use axum::{
     extract::{ws::WebSocket, State, WebSocketUpgrade},
     response::IntoResponse,
 };
-use axum_client_ip::SecureClientIp;
+use axum_client_ip::ClientIp;
 use dioxus_logger::tracing::error;
 use futures::{SinkExt, StreamExt as _};
 use model::{Project, SocketMessage};
@@ -18,7 +18,7 @@ use tokio::{
 /// Handle any pre-websocket processing.
 pub async fn ws_handler(
     State(state): State<AppState>,
-    SecureClientIp(ip): SecureClientIp,
+    ClientIp(ip): ClientIp,
     ws: WebSocketUpgrade,
 ) -> impl IntoResponse {
     let ip = ip.to_string();

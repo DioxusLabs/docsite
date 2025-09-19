@@ -10,7 +10,7 @@ WORKDIR /app
 FROM chef AS planner
 COPY . .
 
-RUN cargo binstall dioxus-cli --root /.cargo --no-confirm
+RUN cargo binstall dioxus-cli --root /.cargo --no-confirm --version 0.7.0-rc.0
 RUN cargo chef prepare --recipe-path recipe.json --bin server
 
 # Builder

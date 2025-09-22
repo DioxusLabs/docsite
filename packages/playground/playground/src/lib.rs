@@ -3,14 +3,14 @@ use components::icons::Warning;
 use dioxus::logger::tracing::error;
 use dioxus::prelude::*;
 use dioxus_document::Link;
-// use dioxus_sdk::utils::timing::use_debounce;
+use dioxus_sdk::time::use_debounce;
 use editor::monaco::{self, monaco_loader_src, set_monaco_markers};
 use hotreload::{attempt_hot_reload, HotReload};
 use model::{api::ApiClient, AppError, Project, SocketError};
 use std::time::Duration;
 
-// #[cfg(target_arch = "wasm32")]
-// use dioxus_sdk::theme::{use_system_theme, SystemTheme};
+#[cfg(target_arch = "wasm32")]
+use dioxus_sdk::window::theme::{use_system_theme, Theme};
 
 mod build;
 mod components;
@@ -75,17 +75,17 @@ pub fn Playground(
     });
 
     // // Handle events when code changes.
-    // let on_model_changed = use_debounce(Duration::from_millis(250), move |new_code: String| {
-    //     // Update the project
-    //     project.write().set_contents(new_code.clone());
-    //     spawn(async move {
-    //         editor::monaco::set_markers(&[]);
+    let on_model_changed = use_debounce(Duration::from_millis(250), move |new_code: String| {
+        // Update the project
+        project.write().set_contents(new_code.clone());
+        spawn(async move {
+            editor::monaco::set_markers(&[]);
 
-    //         if build.stage().is_finished() {
-    //             attempt_hot_reload(hot_reload, &new_code);
-    //         }
-    //     });
-    // });
+            if build.stage().is_finished() {
+                attempt_hot_reload(hot_reload, &new_code);
+            }
+        });
+    });
 
     // Handle setting diagnostics based on build state.
     use_effect(move || set_monaco_markers(build.diagnostics()));
@@ -95,7 +95,7 @@ pub fn Playground(
     let system_theme = use_system_theme();
     use_effect(move || {
         #[cfg(target_arch = "wasm32")]
-        editor::monaco::set_theme(system_theme().unwrap_or(SystemTheme::Light));
+        editor::monaco::set_theme(system_theme().unwrap_or(Theme::Light));
     });
 
     // Handle starting a build.
@@ -148,11 +148,11 @@ pub fn Playground(
                     #[cfg(target_arch = "wasm32")]
                     monaco::on_monaco_load(
                         MONACO_FOLDER,
-                        system_theme().unwrap_or(SystemTheme::Light),
+                        system_theme().unwrap_or(Theme::Light),
                         &project.read().contents(),
                         hot_reload,
                         monaco_ready,
-                        on_model_changed,
+                        on_model_changed.clone(),
                     );
                 },
             }

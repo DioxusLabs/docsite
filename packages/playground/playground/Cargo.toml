@@ -16,7 +16,7 @@ thiserror = { workspace = true }
 # Dioxus
 dioxus = { workspace = true, features = ["web"] }
 dioxus-document = { workspace = true }
-# dioxus-sdk = { workspace = true, features = [ "window_size", "timing", ] }
+dioxus-sdk = { workspace = true, features = ["util", "time", "window"] }
 
 # Hot reload / Paste as RSX
 dioxus-core = { workspace = true }

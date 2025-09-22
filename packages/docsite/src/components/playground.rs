@@ -4,14 +4,14 @@ use dioxus_playground::PlaygroundUrls;
 #[cfg(not(feature = "production"))]
 const URLS: PlaygroundUrls = PlaygroundUrls {
     socket: "ws://localhost:3000/ws",
-    built: "http://localhost:3000/built/",
+    server: "http://localhost:3000/built/",
     location: "http://localhost:8080",
 };
 
 #[cfg(feature = "production")]
 const URLS: PlaygroundUrls = PlaygroundUrls {
     socket: "wss://docsite-playground.fly.dev/ws",
-    built: "https://docsite-playground.fly.dev/built/",
+    server: "https://docsite-playground.fly.dev/built/",
     location: "https://dioxuslabs.com/playground",
 };
 
@@ -20,12 +20,6 @@ pub fn Playground(share_code: Option<String>) -> Element {
     // Only render playground on client.
     let mut on_client = use_signal(|| false);
     use_effect(move || on_client.set(true));
-
-    // dioxus_playground::Playground {
-    //     class: "playground-container max-w-screen-2xl mx-auto mt-8",
-    //     urls: URLS,
-    //     share_code,
-    // }
 
     if on_client() {
         rsx! {
@@ -48,6 +42,11 @@ pub fn Playground(share_code: Option<String>) -> Element {
                         }
                     }
                 },
+                dioxus_playground::Playground {
+                    class: "playground-container max-w-screen-2xl mx-auto mt-8",
+                    urls: URLS,
+                    share_code,
+                }
             }
         }
     } else {

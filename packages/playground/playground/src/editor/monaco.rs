@@ -1,12 +1,12 @@
 use crate::hotreload::HotReload;
 use dioxus::prelude::*;
-// use dioxus_sdk::utils::timing::UseDebounce;
+use dioxus_sdk::time::UseDebounce;
 use model::{CargoDiagnostic, CargoLevel};
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 
-// #[cfg(target_arch = "wasm32")]
-// use dioxus_sdk::theme::SystemTheme;
+#[cfg(target_arch = "wasm32")]
+use dioxus_sdk::window::theme::Theme;
 
 /// Get the path prefix for the `/vs` folder inside the Monaco folder.
 pub fn monaco_vs_prefix(folder: Asset) -> String {
@@ -52,35 +52,35 @@ pub fn set_monaco_markers(diagnostics: Signal<Vec<CargoDiagnostic>>) {
     set_markers(&markers);
 }
 
-// /// Initialize Monaco once the loader script loads.
-// #[cfg(target_arch = "wasm32")]
-// pub fn on_monaco_load(
-//     folder: Asset,
-//     system_theme: SystemTheme,
-//     contents: &str,
-//     mut hot_reload: HotReload,
-//     mut monaco_ready: Signal<bool>,
-//     mut on_model_changed: UseDebounce<String>,
-// ) {
-//     let on_ready_callback = Closure::new(move || monaco_ready.set(true));
-//     let monaco_prefix = monaco_vs_prefix(folder);
-//     init(
-//         &monaco_prefix,
-//         super::EDITOR_ELEMENT_ID,
-//         system_theme,
-//         contents,
-//         &on_ready_callback,
-//     );
+/// Initialize Monaco once the loader script loads.
+#[cfg(target_arch = "wasm32")]
+pub fn on_monaco_load(
+    folder: Asset,
+    system_theme: Theme,
+    contents: &str,
+    mut hot_reload: HotReload,
+    mut monaco_ready: Signal<bool>,
+    mut on_model_changed: UseDebounce<String>,
+) {
+    let on_ready_callback = Closure::new(move || monaco_ready.set(true));
+    let monaco_prefix = monaco_vs_prefix(folder);
+    init(
+        &monaco_prefix,
+        super::EDITOR_ELEMENT_ID,
+        system_theme,
+        contents,
+        &on_ready_callback,
+    );
 
-//     hot_reload.set_starting_code(contents);
+    hot_reload.set_starting_code(contents);
 
-//     let model_change_callback =
-//         Closure::new(move |new_code: String| on_model_changed.action(new_code));
-//     register_model_change_event(&model_change_callback);
+    let model_change_callback =
+        Closure::new(move |new_code: String| on_model_changed.action(new_code));
+    register_model_change_event(&model_change_callback);
 
-//     on_ready_callback.forget();
-//     model_change_callback.forget();
-// }
+    on_ready_callback.forget();
+    model_change_callback.forget();
+}
 
 #[derive(Serialize, Deserialize, Clone)]
 pub struct Marker {
@@ -151,7 +151,7 @@ extern "C" {
 pub fn init(
     vs_path_prefix: &str,
     element_id: &str,
-    initial_theme: SystemTheme,
+    initial_theme: Theme,
     initial_snippet: &str,
     on_ready_callback: &Closure<dyn FnMut()>,
 ) {
@@ -167,7 +167,7 @@ pub fn init(
 }
 
 #[cfg(target_arch = "wasm32")]
-pub fn set_theme(theme: SystemTheme) {
+pub fn set_theme(theme: Theme) {
     let theme = system_theme_to_string(theme);
     set_monaco_theme(&theme);
 }
@@ -184,10 +184,10 @@ fn register_paste_as_rsx_action() {
 }
 
 #[cfg(target_arch = "wasm32")]
-fn system_theme_to_string(theme: SystemTheme) -> String {
+fn system_theme_to_string(theme: Theme) -> String {
     match theme {
-        SystemTheme::Light => "dx-vs",
-        SystemTheme::Dark => "dx-vs-dark",
+        Theme::Light => "dx-vs",
+        Theme::Dark => "dx-vs-dark",
     }
     .to_string()
 }

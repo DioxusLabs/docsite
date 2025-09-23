@@ -75,7 +75,7 @@ pub fn Playground(
     });
 
     // // Handle events when code changes.
-    let on_model_changed = use_debounce(Duration::from_millis(250), move |new_code: String| {
+    let mut on_model_changed = use_debounce(Duration::from_millis(250), move |new_code: String| {
         // Update the project
         project.write().set_contents(new_code.clone());
         spawn(async move {
@@ -86,6 +86,8 @@ pub fn Playground(
             }
         });
     });
+
+    let mut on_model_changed = use_callback(move |args| on_model_changed.action(args));
 
     // Handle setting diagnostics based on build state.
     use_effect(move || set_monaco_markers(build.diagnostics()));
@@ -152,7 +154,7 @@ pub fn Playground(
                         &project.read().contents(),
                         hot_reload,
                         monaco_ready,
-                        on_model_changed.clone(),
+                        on_model_changed,
                     );
                 },
             }

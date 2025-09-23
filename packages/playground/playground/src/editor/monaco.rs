@@ -60,7 +60,7 @@ pub fn on_monaco_load(
     contents: &str,
     mut hot_reload: HotReload,
     mut monaco_ready: Signal<bool>,
-    mut on_model_changed: UseDebounce<String>,
+    mut on_model_changed: Callback<String>,
 ) {
     let on_ready_callback = Closure::new(move || monaco_ready.set(true));
     let monaco_prefix = monaco_vs_prefix(folder);
@@ -74,8 +74,7 @@ pub fn on_monaco_load(
 
     hot_reload.set_starting_code(contents);
 
-    let model_change_callback =
-        Closure::new(move |new_code: String| on_model_changed.action(new_code));
+    let model_change_callback = Closure::new(move |new_code: String| on_model_changed(new_code));
     register_model_change_event(&model_change_callback);
 
     on_ready_callback.forget();

@@ -27,3 +27,5 @@ thiserror = { workspace = true }
 
 dioxus = { workspace = true, features = ["web"] }
 example-projects = { workspace = true }
+tracing = "0.1.41"
+tower-util = "0.3.1"

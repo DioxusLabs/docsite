@@ -79,7 +79,7 @@ dioxus-rsx = "0.7.0-rc.0"
 dioxus-html = { version = "0.7.0-rc.0", default-features = false }
 dioxus-rsx-rosetta = "0.7.0-rc.0"
 dioxus-autofmt = "0.7.0-rc.0"
-dioxus-dx-wire-format = "0.7.0-rc.0"
+dioxus-dx-wire-format = { git = "https://github.com/DioxusLabs/dioxus" }
 dioxus-logger = "0.7.0-rc.0"
 
 # 3rd-party dioxus

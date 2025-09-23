@@ -35,7 +35,7 @@ pub enum BuildMessage {
 /// The DX CLI serves parseable JSON output with the regular tracing message and a parseable "json" field.
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub struct CliMessage {
-    json: Option<String>,
+    json: String,
 }
 
 /// Build failed to complete.

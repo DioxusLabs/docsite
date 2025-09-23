@@ -99,7 +99,6 @@ async fn build(
 
     setup_template(&template_path, &request).await?;
     dx_build(&template_path, &request).await?;
-    tracing::trace!("Noving build from {template_path:?} to {built_path:?}");
     move_to_built(&template_path, &built_path, &request).await?;
 
     Ok(())
@@ -197,11 +196,9 @@ async fn dx_build(template_path: &PathBuf, request: &BuildRequest) -> Result<(),
 fn process_dx_message(request: &BuildRequest, message: String) {
     // We parse the tracing json log and if it contains a json field, we parse that as StructuredOutput.
     let result = serde_json::from_str::<CliMessage>(&message)
-        .ok()
-        .and_then(|v| v.json)
-        .and_then(|json| serde_json::from_str::<StructuredOutput>(&json).ok());
+        .and_then(|m| serde_json::from_str::<StructuredOutput>(&m.json));
 
-    let Some(output) = result else {
+    let Ok(output) = result else {
         return;
     };
 
@@ -251,6 +248,7 @@ async fn move_to_built(
     // Delete the built project in the target directory to prevent a storage leak.
     // We use `spawn_blocking` to batch call `std::fs` as recommended by Tokio.
     tokio::task::spawn_blocking::<_, Result<(), BuildError>>(move || {
+        _ = std::fs::create_dir_all(&built_path);
         // Rename to be the build id
         let built_project = debug_web.join(&id_string);
         std::fs::rename(&public_folder, &built_project)?;

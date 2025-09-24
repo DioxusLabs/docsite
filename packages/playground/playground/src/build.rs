@@ -1,3 +1,5 @@
+use std::time::Duration;
+
 use crate::ws;
 use dioxus::prelude::*;
 use model::{AppError, CargoDiagnostic, Project, SocketMessage};
@@ -7,13 +9,17 @@ use uuid::Uuid;
 pub(crate) enum BuildStage {
     NotStarted,
     Starting,
+    Waiting(Duration),
     Building(model::BuildStage),
     Finished(Result<Uuid, String>),
 }
 
 impl BuildStage {
     pub fn is_running(&self) -> bool {
-        matches!(self, Self::Starting | Self::Building(..))
+        matches!(
+            self,
+            Self::Starting | Self::Building(..) | Self::Waiting(..)
+        )
     }
 
     pub fn is_finished(&self) -> bool {

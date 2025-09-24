@@ -47,6 +47,7 @@ pub fn handle_message(mut build: BuildState, message: SocketMessage) -> bool {
             return true;
         }
         SocketMessage::BuildDiagnostic(diagnostic) => build.push_diagnostic(diagnostic),
+        SocketMessage::RateLimited(time) => build.set_stage(BuildStage::Waiting(time)),
         _ => {}
     }
 

@@ -1,18 +1,26 @@
 //! Initialization of the server application and environment configurations.
 
 use crate::{
-    build::{watcher::start_build_watcher, BuildCommand, BuildRequest},
+    build::{BuildCommand, BuildRequest, watcher::start_build_watcher},
     start_cleanup_services,
 };
 use dioxus_logger::tracing::{info, warn};
+use governor::{
+    Quota, RateLimiter,
+    clock::{QuantaClock, QuantaInstant},
+    middleware::NoOpMiddleware,
+    state::keyed::DashMapStateStore,
+};
 use std::{
     env,
+    net::IpAddr,
+    num::NonZeroU32,
     path::PathBuf,
-    sync::{atomic::AtomicBool, Arc},
+    sync::{Arc, atomic::AtomicBool},
     time::Duration,
 };
 use tokio::{
-    sync::{mpsc::UnboundedSender, Mutex},
+    sync::{Mutex, mpsc::UnboundedSender},
     time::Instant,
 };
 
@@ -161,6 +169,10 @@ pub struct AppState {
     pub _connected_sockets: Arc<Mutex<Vec<String>>>,
 
     pub reqwest_client: reqwest::Client,
+
+    pub build_govener: Arc<
+        RateLimiter<IpAddr, DashMapStateStore<IpAddr>, QuantaClock, NoOpMiddleware<QuantaInstant>>,
+    >,
 }
 
 impl AppState {
@@ -184,6 +196,12 @@ impl AppState {
             env.shutdown_delay = Some(Duration::from_secs(1));
         }
 
+        let build_govener = Arc::new(RateLimiter::keyed(
+            Quota::with_period(Duration::from_secs(30))
+                .unwrap()
+                .allow_burst(NonZeroU32::new(2).unwrap()),
+        ));
+
         let state = Self {
             env,
             build_queue_tx,
@@ -191,6 +209,7 @@ impl AppState {
             is_building,
             _connected_sockets: Arc::new(Mutex::new(Vec::new())),
             reqwest_client: reqwest::Client::new(),
+            build_govener,
         };
 
         // Queue the examples to be built on startup.

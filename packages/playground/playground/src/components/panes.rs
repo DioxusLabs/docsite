@@ -155,16 +155,18 @@ fn Progress() -> Element {
         }
 
         match build.stage() {
-            BuildStage::NotStarted => "Build has not started.",
-            BuildStage::Starting => "Starting build...",
+            BuildStage::NotStarted => "Build has not started.".to_string(),
+            BuildStage::Starting => "Starting build...".to_string(),
+            BuildStage::Waiting(time) => {
+                format!("Rate limited, waiting {} seconds...", time.as_secs())
+            }
             BuildStage::Building(build_stage) => match build_stage {
-                model::BuildStage::RunningBindgen => "Running wasm-bindgen...",
-                model::BuildStage::Other => "Computing...",
+                model::BuildStage::RunningBindgen => "Running wasm-bindgen...".to_string(),
+                model::BuildStage::Other => "Computing...".to_string(),
                 model::BuildStage::Compiling { .. } => unreachable!(),
             },
-            BuildStage::Finished(_) => "Finished!",
+            BuildStage::Finished(_) => "Finished!".to_string(),
         }
-        .to_string()
     });
 
     // Determine the progress width.

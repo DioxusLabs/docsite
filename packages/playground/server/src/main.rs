@@ -14,6 +14,7 @@ use share::{get_shared_project, share_project};
 use std::{io, net::SocketAddr, sync::atomic::Ordering, time::Duration};
 use tokio::{net::TcpListener, select, time::Instant};
 use tower::{ServiceBuilder, buffer::BufferLayer, limit::RateLimitLayer};
+use tower_governor::{GovernorLayer, governor::GovernorConfigBuilder};
 use tower_http::{compression::CompressionLayer, cors::CorsLayer};
 
 mod app;
@@ -27,10 +28,6 @@ mod ws;
 const REQUESTS_PER_INTERVAL: u64 = 60;
 /// The period of time after the request limit resets.
 const RATE_LIMIT_INTERVAL: Duration = Duration::from_secs(60);
-/// How many websocket requests each user should get within a time period.
-const WS_REQUESTS_PER_INTERVAL: u64 = 6;
-/// The period of time after the request limit resets.
-const WS_RATE_LIMIT_INTERVAL: Duration = Duration::from_secs(60);
 
 #[tokio::main]
 async fn main() {
@@ -63,6 +60,14 @@ async fn main() {
         false => ClientIpSource::ConnectInfo,
     };
 
+    // Allow bursts with up to five requests per IP address
+    // and replenishes one element every 30 seconds
+    let governor_conf = GovernorConfigBuilder::default()
+        .per_second(60)
+        .burst_size(120)
+        .finish()
+        .unwrap();
+
     // Build the routers.
     let built_router = Router::new()
         .route("/", get(serve::serve_built_index))
@@ -73,21 +78,7 @@ async fn main() {
         .route("/{:id}", get(get_shared_project));
 
     let app = Router::new()
-        .nest(
-            "/ws",
-            Router::new().route("/", get(ws::ws_handler)).layer(
-                ServiceBuilder::new()
-                    .layer(HandleErrorLayer::new(|error: BoxError| async move {
-                        error!(?error, "unhandled server error");
-                        (StatusCode::INTERNAL_SERVER_ERROR, "Internal Server Error")
-                    }))
-                    .layer(BufferLayer::new(1024))
-                    .layer(RateLimitLayer::new(
-                        WS_REQUESTS_PER_INTERVAL,
-                        WS_RATE_LIMIT_INTERVAL,
-                    )),
-            ),
-        )
+        .nest("/ws", Router::new().route("/", get(ws::ws_handler)))
         .nest("/built/{:build_id}", built_router)
         .nest("/shared", shared_router)
         .route(
@@ -104,6 +95,7 @@ async fn main() {
                 .layer(CompressionLayer::new())
                 .layer(CorsLayer::very_permissive())
                 .layer(BufferLayer::new(1024))
+                .layer(GovernorLayer::new(governor_conf))
                 .layer(RateLimitLayer::new(
                     REQUESTS_PER_INTERVAL,
                     RATE_LIMIT_INTERVAL,

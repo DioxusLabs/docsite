@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 use std::error::Error;
 use std::string::FromUtf8Error;
+use std::time::Duration;
 use thiserror::Error;
 use uuid::Uuid;
 
@@ -22,6 +23,7 @@ pub enum SocketMessage {
     BuildStage(BuildStage),
     BuildDiagnostic(CargoDiagnostic),
     QueuePosition(usize),
+    RateLimited(Duration),
     AlreadyConnected,
 }
 

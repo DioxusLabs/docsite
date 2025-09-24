@@ -124,7 +124,9 @@ pub fn Panes(
                     Progress {}
                 } else {
                     // Viewport
-                    if let Some(url) = built_page_url() {
+                    if build_stage.is_err() {
+                        Logs {}
+                    } else if let Some(url) = built_page_url() {
                         div { id: "dxp-viewport",
                             iframe {
                                 id: "dxp-iframe",
@@ -132,8 +134,6 @@ pub fn Panes(
                                 pointer_events: if dragging() { "none" } else { "all" },
                             }
                         }
-                    } else if build_stage.is_err() {
-                        Logs {}
                     } else {
                         p { "Click `Rebuild` to start a build!" }
                     }

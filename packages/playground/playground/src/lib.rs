@@ -9,7 +9,6 @@ use hotreload::{attempt_hot_reload, HotReload};
 use model::{api::ApiClient, AppError, Project, SocketError};
 use std::time::Duration;
 
-#[cfg(target_arch = "wasm32")]
 use dioxus_sdk::window::theme::{use_system_theme, Theme};
 
 mod build;
@@ -87,35 +86,35 @@ pub fn Playground(
         });
     });
 
-    let mut on_model_changed = use_callback(move |args| on_model_changed.action(args));
+    let on_model_changed = use_callback(move |args| on_model_changed.action(args));
 
     // Handle setting diagnostics based on build state.
     use_effect(move || set_monaco_markers(build.diagnostics()));
 
     // Themes
-    #[cfg(target_arch = "wasm32")]
     let system_theme = use_system_theme();
     use_effect(move || {
-        #[cfg(target_arch = "wasm32")]
         editor::monaco::set_theme(system_theme().unwrap_or(Theme::Light));
     });
 
     // Handle starting a build.
-    let on_rebuild = move |_| async move {
-        if build.stage().is_running() || !monaco_ready() {
-            return;
-        }
-        hot_reload.set_needs_rebuild(false);
+    let on_rebuild = use_callback(move |_| {
+        spawn(async move {
+            if build.stage().is_running() || !monaco_ready() {
+                return;
+            }
+            hot_reload.set_needs_rebuild(false);
 
-        // Update hot reload
-        let code = editor::monaco::get_current_model_value();
+            // Update hot reload
+            let code = editor::monaco::get_current_model_value();
 
-        let socket_url = urls.socket.to_string();
-        match start_build(build, socket_url, code).await {
-            Ok(success) => hot_reload.set_needs_rebuild(!success),
-            Err(error) => errors.push_from_app_error(error),
-        }
-    };
+            let socket_url = urls.socket.to_string();
+            match start_build(build, socket_url, code).await {
+                Ok(success) => hot_reload.set_needs_rebuild(!success),
+                Err(error) => errors.push_from_app_error(error),
+            }
+        });
+    });
 
     // Construct the full URL to the built project.
     let built_page_url = use_memo(move || {
@@ -147,7 +146,6 @@ pub fn Playground(
             script {
                 src: monaco_loader_src(MONACO_FOLDER),
                 onload: move |_| {
-                    #[cfg(target_arch = "wasm32")]
                     monaco::on_monaco_load(
                         MONACO_FOLDER,
                         system_theme().unwrap_or(Theme::Light),
@@ -155,6 +153,7 @@ pub fn Playground(
                         hot_reload,
                         monaco_ready,
                         on_model_changed,
+                        on_rebuild
                     );
                 },
             }

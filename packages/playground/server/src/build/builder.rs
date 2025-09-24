@@ -6,10 +6,11 @@ use dioxus_logger::tracing;
 use dioxus_logger::tracing::debug;
 use fs_extra::dir::CopyOptions;
 use model::{BuildStage, CargoDiagnostic};
+use std::future::pending;
 use std::path::{Path, PathBuf};
 use std::process::Stdio;
-use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
+use std::sync::atomic::{AtomicBool, Ordering};
 use tokio::io::{AsyncBufReadExt as _, BufReader};
 use tokio::process::Command;
 use tokio::task::JoinHandle;
@@ -24,7 +25,7 @@ pub struct Builder {
     built_path: PathBuf,
     is_building: Arc<AtomicBool>,
     current_build: Option<BuildRequest>,
-    task: JoinHandle<Result<(), BuildError>>,
+    task: Option<JoinHandle<Result<(), BuildError>>>,
 }
 
 impl Builder {
@@ -34,7 +35,7 @@ impl Builder {
             built_path: env.built_path,
             is_building,
             current_build: None,
-            task: tokio::spawn(std::future::pending()),
+            task: None,
         }
     }
 
@@ -45,17 +46,18 @@ impl Builder {
         self.stop_current();
         self.is_building.store(true, Ordering::SeqCst);
         self.current_build = Some(request.clone());
-        self.task = tokio::spawn(build(
+        self.task = Some(tokio::spawn(build(
             self.template_path.clone(),
             self.built_path.clone(),
             request,
-        ));
+        )));
     }
 
     /// Stop the current build.
     pub fn stop_current(&mut self) {
-        self.task.abort();
-        self.task = tokio::spawn(std::future::pending());
+        if let Some(task) = self.task.take() {
+            task.abort();
+        }
         self.current_build = None;
         self.is_building.store(false, Ordering::SeqCst);
     }
@@ -63,15 +65,16 @@ impl Builder {
     /// Wait for the current build to finish.
     pub async fn finished(&mut self) -> Result<BuildRequest, BuildError> {
         // Ensure we don't poll a completed task.
-        if self.task.is_finished() {
-            self.stop_current();
+        if let Some(task) = &mut self.task {
+            if task.is_finished() {
+                self.stop_current();
+            } else {
+                // Make progress on the build task.
+                task.await??;
+                return self.current_build.take().ok_or(BuildError::NotStarted);
+            }
         }
-
-        // Make progress on the build task.
-        let task = &mut self.task;
-        task.await??;
-
-        self.current_build.take().ok_or(BuildError::NotStarted)
+        pending().await
     }
 
     /// Check if the builder has an ongoing build.
@@ -168,6 +171,10 @@ async fn dx_build(template_path: &PathBuf, request: &BuildRequest) -> Result<(),
             }
             // Wait for the DX process to exit.
             status = child.wait() => {
+                while let Ok(Some(line)) = stdout_reader.next_line().await {
+                    logs.push(line.clone());
+                    process_dx_message(request, line);
+                }
                 // Check if the build was successful.
                 let exit_code = status.map(|c| c.code());
                 if let Ok(Some(code)) = exit_code {

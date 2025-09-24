@@ -39,7 +39,6 @@ pub fn Playground(
     share_code: ReadOnlySignal<Option<String>>,
     class: Option<String>,
 ) -> Element {
-    let mut build = use_context_provider(BuildState::new);
     let mut hot_reload = use_context_provider(HotReload::new);
     let api_client = use_context_provider(|| Signal::new(ApiClient::new(urls.server)));
     let mut errors = use_context_provider(Errors::new);
@@ -50,6 +49,7 @@ pub fn Playground(
     // Default to the welcome project.
     // Project dirty determines whether the Rust-project is synced with the project in the editor.
     let mut project = use_context_provider(|| Signal::new(example_projects::get_welcome_project()));
+    let mut build = use_context_provider(|| BuildState::new(&project.read()));
     let mut project_dirty = use_signal(|| false);
     use_effect(move || {
         if project_dirty() && monaco_ready() {
@@ -74,7 +74,7 @@ pub fn Playground(
         }
     });
 
-    // // Handle events when code changes.
+    // Handle events when code changes.
     let mut on_model_changed = use_debounce(Duration::from_millis(250), move |new_code: String| {
         // Update the project
         project.write().set_contents(new_code.clone());

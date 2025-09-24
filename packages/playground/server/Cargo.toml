@@ -1,7 +1,7 @@
 [package]
 name = "server"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 [dependencies]
 model = { workspace = true, features = ["server"] }
@@ -21,6 +21,7 @@ tokio-util = { version = "0.7.11", features = ["futures-util"] }
 tower-http = { version = "0.5.2", features = ["compression-br", "cors", "fs"] }
 tower = { version = "0.4.13", features = ["buffer", "limit"] }
 reqwest = { workspace = true, features = ["json"] }
+console-subscriber = { version = "0.4.1", optional = true }
 
 thiserror = { workspace = true }
 
@@ -29,3 +30,7 @@ dioxus = { workspace = true, features = ["web"] }
 example-projects = { workspace = true }
 tracing = "0.1.41"
 tower-util = "0.3.1"
+tracing-subscriber = "0.3.20"
+
+[features]
+tracing = ["tokio/tracing", "dep:console-subscriber"]

@@ -1,19 +1,19 @@
 use app::AppState;
 use axum::{
+    BoxError, Router,
     error_handling::HandleErrorLayer,
     extract::{Request, State},
     http::StatusCode,
     middleware::{self, Next},
     response::{Redirect, Response},
     routing::{get, post},
-    BoxError, Router,
 };
 use axum_client_ip::ClientIpSource;
-use dioxus_logger::tracing::{error, info, warn, Level};
+use dioxus_logger::tracing::{Level, error, info, warn};
 use share::{get_shared_project, share_project};
 use std::{io, net::SocketAddr, sync::atomic::Ordering, time::Duration};
 use tokio::{net::TcpListener, select, time::Instant};
-use tower::{buffer::BufferLayer, limit::RateLimitLayer, ServiceBuilder};
+use tower::{ServiceBuilder, buffer::BufferLayer, limit::RateLimitLayer};
 use tower_http::{compression::CompressionLayer, cors::CorsLayer};
 
 mod app;
@@ -24,13 +24,36 @@ mod ws;
 
 /// Rate limiter configuration.
 /// How many requests each user should get within a time period.
-const REQUESTS_PER_INTERVAL: u64 = 30;
+const REQUESTS_PER_INTERVAL: u64 = 60;
 /// The period of time after the request limit resets.
 const RATE_LIMIT_INTERVAL: Duration = Duration::from_secs(60);
+/// How many websocket requests each user should get within a time period.
+const WS_REQUESTS_PER_INTERVAL: u64 = 3;
+/// The period of time after the request limit resets.
+const WS_RATE_LIMIT_INTERVAL: Duration = Duration::from_secs(60);
 
 #[tokio::main]
 async fn main() {
-    dioxus_logger::init(Level::INFO).expect("failed to init logger");
+    #[cfg(feature = "tracing")]
+    {
+        use tracing_subscriber::prelude::*;
+
+        let console_layer = console_subscriber::spawn();
+        use tracing_subscriber::prelude::*;
+        use tracing_subscriber::{EnvFilter, fmt};
+
+        let fmt_layer = fmt::layer();
+        let filter_layer = EnvFilter::try_from_default_env()
+            .or_else(|_| EnvFilter::try_new("info"))
+            .unwrap();
+
+        tracing_subscriber::registry()
+            .with(console_layer)
+            .with(filter_layer)
+            .with(fmt_layer)
+            .init();
+    }
+    _ = dioxus_logger::init(Level::INFO);
 
     let state = AppState::new().await;
     let port = state.env.port;
@@ -50,7 +73,21 @@ async fn main() {
         .route("/{:id}", get(get_shared_project));
 
     let app = Router::new()
-        .route("/ws", get(ws::ws_handler))
+        .nest(
+            "/ws",
+            Router::new().route("/", get(ws::ws_handler)).layer(
+                ServiceBuilder::new()
+                    .layer(HandleErrorLayer::new(|error: BoxError| async move {
+                        error!(?error, "unhandled server error");
+                        (StatusCode::INTERNAL_SERVER_ERROR, "Internal Server Error")
+                    }))
+                    .layer(BufferLayer::new(1024))
+                    .layer(RateLimitLayer::new(
+                        REQUESTS_PER_INTERVAL,
+                        RATE_LIMIT_INTERVAL,
+                    )),
+            ),
+        )
         .nest("/built/{:build_id}", built_router)
         .nest("/shared", shared_router)
         .route(

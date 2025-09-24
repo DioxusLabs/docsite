@@ -29,6 +29,7 @@ pub fn start_build_watcher(
             select! {
                 // Handle incoming build commands.
                 Some(command) = rx.recv() => {
+                    tracing::info!("got command: {command:?}");
                     match command {
                         BuildCommand::Start { request } => start_build(&mut builder, &mut pending_builds, request),
                         BuildCommand::Stop { id } => stop_build(&mut builder, &mut pending_builds, id),
@@ -67,6 +68,7 @@ fn start_build(
 /// - Iterate through queue looking for a matching id.
 ///   If matching id found, update queue positions *behind* matching queue and remove matched item.
 fn stop_build(builder: &mut Builder, pending_builds: &mut VecDeque<BuildRequest>, id: Uuid) {
+    tracing::info!("stopping build {id:?}");
     // Check if the ongoing build is the cancelled build.
     let current_build_id = builder.current_build().map(|b| b.id);
     if let Some(current_build_id) = current_build_id {

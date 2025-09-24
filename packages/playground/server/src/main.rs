@@ -83,8 +83,8 @@ async fn main() {
                     }))
                     .layer(BufferLayer::new(1024))
                     .layer(RateLimitLayer::new(
-                        REQUESTS_PER_INTERVAL,
-                        RATE_LIMIT_INTERVAL,
+                        WS_REQUESTS_PER_INTERVAL,
+                        WS_RATE_LIMIT_INTERVAL,
                     )),
             ),
         )

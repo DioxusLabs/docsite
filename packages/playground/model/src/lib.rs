@@ -60,7 +60,7 @@ impl SocketMessage {
 /// A cargo diagnostic
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct CargoDiagnostic {
-    pub target_crate: String,
+    pub target_crate: Option<String>,
     pub level: CargoLevel,
     pub message: String,
     pub spans: Vec<CargoDiagnosticSpan>,

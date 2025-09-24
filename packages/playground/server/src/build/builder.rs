@@ -220,9 +220,18 @@ fn process_dx_message(request: &BuildRequest, message: String) {
             };
 
             // Don't send any diagnostics for dependencies.
-            if diagnostic.target_crate != format!("play-{}", request.id) {
+            if diagnostic.target_crate != Some(format!("play-{}", request.id)) {
                 return;
             }
+
+            request
+                .ws_msg_tx
+                .send(BuildMessage::CargoDiagnostic(diagnostic))
+        }
+        StructuredOutput::RustcOutput { message } => {
+            let Ok(diagnostic) = CargoDiagnostic::try_from(message) else {
+                return;
+            };
 
             request
                 .ws_msg_tx

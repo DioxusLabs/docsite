@@ -1,9 +1,9 @@
 use crate::{
-    build::{BuildCommand, BuildMessage, BuildRequest},
     AppState,
+    build::{BuildCommand, BuildMessage, BuildRequest},
 };
 use axum::{
-    extract::{ws::WebSocket, State, WebSocketUpgrade},
+    extract::{State, WebSocketUpgrade, ws::WebSocket},
     response::IntoResponse,
 };
 use axum_client_ip::ClientIp;

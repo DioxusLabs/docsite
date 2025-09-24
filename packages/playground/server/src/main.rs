@@ -138,7 +138,7 @@ fn start_cleanup_services(state: AppState) {
             select! {
                 // Perform the next built project cleanup.
                 _ = tokio::time::sleep_until(next_cleanup_check) => {
-                    if let Err(e) = check_cleanup(state.clone()).await {
+                    if let Err(e) = check_cleanup(&state).await {
                         warn!("failed to clean built projects: {e}");
                     }
                 }
@@ -156,38 +156,91 @@ fn start_cleanup_services(state: AppState) {
     });
 }
 
-/// Check and cleanup any expired built projects.
-async fn check_cleanup(state: AppState) -> Result<(), io::Error> {
-    let task = tokio::task::spawn_blocking(move || {
-        let dir = std::fs::read_dir(state.env.built_path)?;
+/// Check and cleanup any expired built projects or the target dir
+async fn check_cleanup(state: &AppState) -> Result<(), io::Error> {
+    check_project_cleanup(state).await?;
+    check_target_cleanup(state).await?;
+    Ok(())
+}
 
-        for item in dir {
-            let item = item?;
-            let path = item.path();
-            let pathname = path.file_name().unwrap().to_string_lossy();
+/// Check and cleanup the target dir if it exceeds the max size.
+async fn check_target_cleanup(state: &AppState) -> Result<(), io::Error> {
+    let target_path = state.env.build_template_path.join("target");
+    let target_size = dir_size(&target_path).await?;
 
-            // Always cache the examples - don't remove those.
-            if example_projects::get_example_projects()
-                .iter()
-                .any(|p| p.id().to_string() == pathname)
-            {
-                continue;
-            }
+    if target_size > state.env.max_target_dir_size {
+        tokio::fs::remove_dir_all(&target_path).await?;
+    }
 
-            let time_elapsed = item
-                .metadata()
-                .and_then(|m| m.created())
-                .and_then(|c| c.elapsed().map_err(io::Error::other))?;
+    Ok(())
+}
 
-            if time_elapsed >= state.env.built_cleanup_delay {
-                std::fs::remove_dir_all(path)?;
-            }
+/// Check and cleanup any expired built projects
+async fn check_project_cleanup(state: &AppState) -> Result<(), io::Error> {
+    let mut dir = tokio::fs::read_dir(&state.env.built_path).await?;
+    let mut dirs_with_size = Vec::new();
+
+    while let Some(item) = dir.next_entry().await? {
+        let path = item.path();
+        let pathname = path.file_name().unwrap().to_string_lossy();
+
+        // Always cache the examples - don't remove those.
+        if example_projects::get_example_projects()
+            .iter()
+            .any(|p| p.id().to_string() == pathname)
+        {
+            continue;
         }
 
-        Ok(())
-    });
+        let time_elapsed = item
+            .metadata()
+            .await
+            .and_then(|m| m.created())
+            .and_then(|c| c.elapsed().map_err(io::Error::other))?;
+        let size = dir_size(&path).await?;
+        dirs_with_size.push((item, time_elapsed, size));
+    }
 
-    task.await.expect("task should not panic or abort")
+    // Find the total size of the built directory.
+    let total_size: u64 = dirs_with_size.iter().map(|(_, _, size)| *size).sum();
+    // If it exceeds the max, sort by oldest and remove until under the limit.
+    if total_size > state.env.max_built_dir_size {
+        dirs_with_size.sort_by_key(|(_, time_elapsed, _)| *time_elapsed);
+        let mut size = total_size;
+
+        for (item, _, dir_size) in dirs_with_size {
+            if size <= state.env.max_built_dir_size {
+                break;
+            }
+
+            let path = item.path();
+            tokio::fs::remove_dir_all(&path).await?;
+            size -= dir_size;
+        }
+    }
+
+    Ok(())
+}
+
+async fn dir_size(path: &std::path::Path) -> Result<u64, io::Error> {
+    let mut size = 0;
+    let mut dirs = vec![path.to_path_buf()];
+
+    while let Some(dir) = dirs.pop() {
+        let mut entries = tokio::fs::read_dir(&dir).await?;
+
+        while let Some(entry) = entries.next_entry().await? {
+            let metadata = entry.metadata().await?;
+
+            if metadata.is_dir() {
+                dirs.push(entry.path());
+            } else {
+                size += metadata.len();
+            }
+        }
+    }
+
+    Ok(size)
 }
 
 /// Check if the server should shutdown.

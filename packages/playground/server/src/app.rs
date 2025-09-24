@@ -31,6 +31,10 @@ const DEFAULT_BUILD_TEMPLATE_PATH: &str = "./template";
 
 // Duration after built projects are created to be removed.
 const DEFAULT_BUILT_CLEANUP_DELAY: Duration = Duration::from_secs(20);
+/// Max size of the built directory before old projects are removed.
+const DEFAULT_BUILT_DIR_SIZE: u64 = 1 * 1024 * 1024 * 1024; // 1 GB
+/// Max size of the target directory before it is cleaned.
+const DEFAULT_TARGET_DIR_SIZE: u64 = 3 * 1024 * 1024 * 1024; // 3 GB
 
 /// A group of environment configurations for the application.
 #[derive(Clone)]
@@ -49,6 +53,12 @@ pub struct EnvVars {
 
     /// The time after creation each built project should be removed.
     pub built_cleanup_delay: Duration,
+
+    /// The max size of the built project directory before old projects are removed.
+    pub max_built_dir_size: u64,
+
+    /// The max size of the target directory before it is cleaned.
+    pub max_target_dir_size: u64,
 
     /// The optional shutdown delay that specifies how many seconds after
     /// inactivity to shut down the server.
@@ -77,6 +87,8 @@ impl EnvVars {
             },
             shutdown_delay,
             built_cleanup_delay: DEFAULT_BUILT_CLEANUP_DELAY,
+            max_built_dir_size: DEFAULT_BUILT_DIR_SIZE,
+            max_target_dir_size: DEFAULT_TARGET_DIR_SIZE,
             gist_auth_token: gist_auth_token.unwrap_or_default(),
         }
     }

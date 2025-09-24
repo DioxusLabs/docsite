@@ -1,13 +1,10 @@
 use axum::{
-    body::Body,
     extract::{Path, State},
-    http::{header, StatusCode},
+    http::StatusCode,
     response::IntoResponse,
 };
 use dioxus_logger::tracing::warn;
 use std::path::PathBuf;
-use tokio_util::io::ReaderStream;
-use tower_http::services::{ServeDir, ServeFile};
 use tower_util::ServiceExt;
 use uuid::Uuid;
 

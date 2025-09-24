@@ -1,4 +1,4 @@
-use dioxus::signals::{Signal, Writable, WritableExt};
+use dioxus::signals::{Signal, WritableExt};
 use dioxus_document::eval;
 use model::{api::ApiClient, AppError, Project};
 

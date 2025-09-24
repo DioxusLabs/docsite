@@ -1,14 +1,12 @@
 //! Server-specific implementations
 
-use std::convert::Infallible;
-
 use crate::{
     AppError, BuildStage, CargoDiagnostic, CargoDiagnosticSpan, CargoLevel, SocketError,
     SocketMessage,
 };
 use axum::http::StatusCode;
 use axum::{extract::ws, response::IntoResponse};
-use dioxus_dx_wire_format::cargo_metadata::diagnostic::{Diagnostic, DiagnosticCode};
+use dioxus_dx_wire_format::cargo_metadata::diagnostic::Diagnostic;
 use dioxus_dx_wire_format::{
     cargo_metadata::{diagnostic::DiagnosticLevel, CompilerMessage},
     BuildStage as DxBuildStage,

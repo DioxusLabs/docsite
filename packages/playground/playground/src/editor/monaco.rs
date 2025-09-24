@@ -56,8 +56,8 @@ pub fn on_monaco_load(
     contents: &str,
     mut hot_reload: HotReload,
     mut monaco_ready: Signal<bool>,
-    mut on_model_changed: Callback<String>,
-    mut onbuild_callback: Callback<()>,
+    on_model_changed: Callback<String>,
+    onbuild_callback: Callback<()>,
 ) {
     let on_ready_callback = Closure::new(move || monaco_ready.set(true));
     let monaco_prefix = monaco_vs_prefix(folder);

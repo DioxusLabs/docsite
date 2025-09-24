@@ -28,7 +28,7 @@ const REQUESTS_PER_INTERVAL: u64 = 60;
 /// The period of time after the request limit resets.
 const RATE_LIMIT_INTERVAL: Duration = Duration::from_secs(60);
 /// How many websocket requests each user should get within a time period.
-const WS_REQUESTS_PER_INTERVAL: u64 = 3;
+const WS_REQUESTS_PER_INTERVAL: u64 = 6;
 /// The period of time after the request limit resets.
 const WS_RATE_LIMIT_INTERVAL: Duration = Duration::from_secs(60);
 

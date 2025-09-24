@@ -6,7 +6,6 @@ use dioxus::prelude::*;
 // use dioxus_sdk::utils::timing::use_debounce;
 use model::api::ApiClient;
 use model::Project;
-use std::time::Duration;
 
 #[component]
 pub fn Header(
@@ -23,10 +22,6 @@ pub fn Header(
     let mut errors = use_context::<Errors>();
 
     let mut share_btn_text = use_signal(|| "Share");
-    // let mut reset_share_btn = use_debounce(Duration::from_secs(1), move |()| {
-    //     share_btn_text.set("Share")
-    // });
-    // reset_share_btn.action(());
 
     rsx! {
         div { id: "dxp-header",

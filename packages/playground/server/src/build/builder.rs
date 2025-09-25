@@ -12,7 +12,7 @@ use std::process::Stdio;
 use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, Ordering};
 use tokio::io::{AsyncBufReadExt as _, BufReader};
-use tokio::process::Command;
+use tokio::process::{Child, Command};
 use tokio::task::JoinHandle;
 use tokio::{fs, select};
 use tracing::warn;
@@ -100,7 +100,7 @@ async fn build(env: EnvVars, request: BuildRequest) -> Result<(), BuildError> {
     }
 
     setup_template(&template_path, &request).await?;
-    dx_build(&template_path, &request).await?;
+    dx_build(&template_path, &request, &env).await?;
     move_to_built(&template_path, &built_path, &request).await?;
 
     Ok(())
@@ -139,7 +139,11 @@ async fn setup_template(template_path: &Path, request: &BuildRequest) -> Result<
 
 /// Run the build command provided by the DX CLI.
 /// Returns if DX built the project successfully.
-async fn dx_build(template_path: &PathBuf, request: &BuildRequest) -> Result<(), BuildError> {
+async fn dx_build(
+    template_path: &PathBuf,
+    request: &BuildRequest,
+    env: &EnvVars,
+) -> Result<(), BuildError> {
     let mut child = Command::new("dx")
         .arg("build")
         .arg("--platform")
@@ -151,6 +155,8 @@ async fn dx_build(template_path: &PathBuf, request: &BuildRequest) -> Result<(),
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
         .spawn()?;
+
+    set_dx_limits(&child, env);
 
     let stdout = child.stdout.take().expect("dx stdout should exist");
     let mut stdout_reader = BufReader::new(stdout).lines();
@@ -194,6 +200,22 @@ async fn dx_build(template_path: &PathBuf, request: &BuildRequest) -> Result<(),
     }
 
     Ok(())
+}
+
+#[allow(unused)]
+fn set_dx_limits(process: &Child, env: &EnvVars) {
+    #[cfg(any(target_os = "android", target_os = "linux"))]
+    {
+        let id = process.id();
+        let new = Rlimit {
+            current: None,
+            maximum: Some(env.dx_memory_limit),
+        };
+
+        if let Err(err) = rustix::process::prlimit(None, Resource::Core, new.clone()) {
+            warn!("failed to set core limit for dx process {id}: {err}");
+        }
+    }
 }
 
 /// Process a JSON-formatted message from the DX CLI, returning nothing on error.

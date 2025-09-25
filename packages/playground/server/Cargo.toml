@@ -33,6 +33,7 @@ tower-util = "0.3.1"
 tracing-subscriber = "0.3.20"
 tower_governor = "0.8.0"
 governor = "0.10.1"
+rustix = { version = "1.1.2", features = ["process"] }
 
 [features]
 tracing = ["tokio/tracing", "dep:console-subscriber"]

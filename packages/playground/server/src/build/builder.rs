@@ -207,13 +207,22 @@ fn set_dx_limits(process: &Child, env: &EnvVars) {
     #[cfg(any(target_os = "android", target_os = "linux"))]
     {
         let id = process.id();
-        let new = Rlimit {
+        let memory_limit = Rlimit {
             current: None,
             maximum: Some(env.dx_memory_limit),
         };
 
-        if let Err(err) = rustix::process::prlimit(None, Resource::Core, new.clone()) {
-            warn!("failed to set core limit for dx process {id}: {err}");
+        if let Err(err) = rustix::process::prlimit(None, Resource::As, memory_limit) {
+            warn!("failed to set memory limit for dx process {id}: {err}");
+        }
+
+        let cpu_limit = Rlimit {
+            current: None,
+            maximum: Some(env.dx_build_timeout),
+        };
+
+        if let Err(err) = rustix::process::prlimit(None, Resource::Cpu, cpu_limit) {
+            warn!("failed to set cpu time limit for dx process {id}: {err}");
         }
     }
 }

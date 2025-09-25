@@ -33,6 +33,8 @@ const DEFAULT_BUILD_TEMPLATE_PATH: &str = "./template";
 const DEFAULT_BUILT_DIR_SIZE: u64 = 1 * 1024 * 1024 * 1024; // 1 GB
 /// Max memory usage of dx during a build before it is killed.
 const DEFAULT_DX_MEMORY_LIMIT: u64 = 1 * 1024 * 1024 * 1024; // 1 GB
+/// Max seconds a dx build can take before it is killed.
+const DEFAULT_DX_BUILD_TIMEOUT: u64 = 300; // 5 minutes
 /// Max size of the target directory before it is cleaned.
 const DEFAULT_TARGET_DIR_SIZE: u64 = 3 * 1024 * 1024 * 1024; // 3 GB
 
@@ -60,6 +62,10 @@ pub struct EnvVars {
     /// The max memory limit for dx during a build.
     #[cfg_attr(not(target_os = "linux"), allow(unused))]
     pub dx_memory_limit: u64,
+
+    /// The max seconds a dx build can take before it is killed.
+    #[cfg_attr(not(target_os = "linux"), allow(unused))]
+    pub dx_build_timeout: u64,
 
     /// The optional shutdown delay that specifies how many seconds after
     /// inactivity to shut down the server.
@@ -90,6 +96,7 @@ impl EnvVars {
             max_built_dir_size: DEFAULT_BUILT_DIR_SIZE,
             max_target_dir_size: DEFAULT_TARGET_DIR_SIZE,
             dx_memory_limit: DEFAULT_DX_MEMORY_LIMIT,
+            dx_build_timeout: DEFAULT_DX_BUILD_TIMEOUT,
             gist_auth_token: gist_auth_token.unwrap_or_default(),
         }
     }

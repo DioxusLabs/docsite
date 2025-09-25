@@ -29,8 +29,6 @@ const DEFAULT_PORT: u16 = 3000;
 // Paths
 const DEFAULT_BUILD_TEMPLATE_PATH: &str = "./template";
 
-// Duration after built projects are created to be removed.
-const DEFAULT_BUILT_CLEANUP_DELAY: Duration = Duration::from_secs(20);
 /// Max size of the built directory before old projects are removed.
 const DEFAULT_BUILT_DIR_SIZE: u64 = 1 * 1024 * 1024 * 1024; // 1 GB
 /// Max size of the target directory before it is cleaned.
@@ -50,9 +48,6 @@ pub struct EnvVars {
 
     /// The path where built projects are temporarily stored.
     pub built_path: PathBuf,
-
-    /// The time after creation each built project should be removed.
-    pub built_cleanup_delay: Duration,
 
     /// The max size of the built project directory before old projects are removed.
     pub max_built_dir_size: u64,
@@ -86,7 +81,6 @@ impl EnvVars {
                 PathBuf::from("./temp/")
             },
             shutdown_delay,
-            built_cleanup_delay: DEFAULT_BUILT_CLEANUP_DELAY,
             max_built_dir_size: DEFAULT_BUILT_DIR_SIZE,
             max_target_dir_size: DEFAULT_TARGET_DIR_SIZE,
             gist_auth_token: gist_auth_token.unwrap_or_default(),

@@ -6,6 +6,7 @@ use tokio::{sync::mpsc::UnboundedSender, task::JoinError};
 use uuid::Uuid;
 
 pub mod builder;
+pub mod cleanup;
 pub mod watcher;
 
 /// A build command which allows consumers of the builder api to submit and stop builds.

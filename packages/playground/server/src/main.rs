@@ -9,10 +9,10 @@ use axum::{
     routing::{get, post},
 };
 use axum_client_ip::ClientIpSource;
-use dioxus_logger::tracing::{Level, error, info, warn};
+use dioxus_logger::tracing::{Level, error, info};
 use share::{get_shared_project, share_project};
-use std::{io, net::SocketAddr, sync::atomic::Ordering, time::Duration};
-use tokio::{net::TcpListener, select, time::Instant};
+use std::{net::SocketAddr, sync::atomic::Ordering, time::Duration};
+use tokio::{net::TcpListener, time::Instant};
 use tower::{ServiceBuilder, buffer::BufferLayer, limit::RateLimitLayer};
 use tower_governor::{GovernorLayer, governor::GovernorConfigBuilder};
 use tower_http::{compression::CompressionLayer, cors::CorsLayer};
@@ -123,124 +123,22 @@ async fn main() {
 
 /// Start misc services for maintaining the server's operation.
 fn start_cleanup_services(state: AppState) {
-    tokio::task::spawn(async move {
-        let cleanup_delay = state.env.built_cleanup_delay;
-        let shutdown_delay = state
-            .env
-            .shutdown_delay
-            .unwrap_or(Duration::from_secs(99999999));
-
-        loop {
-            let now = Instant::now();
-            let next_shutdown_check = now + shutdown_delay;
-            let next_cleanup_check = now + cleanup_delay;
-
-            select! {
-                // Perform the next built project cleanup.
-                _ = tokio::time::sleep_until(next_cleanup_check) => {
-                    if let Err(e) = check_cleanup(&state).await {
-                        warn!("failed to clean built projects: {e}");
-                    }
-                }
+    if let Some(shutdown_delay) = state.env.shutdown_delay {
+        tokio::task::spawn(async move {
+            loop {
+                let now = Instant::now();
+                let next_shutdown_check = now + shutdown_delay;
 
                 // Check if server should shut down.
-                _ = tokio::time::sleep_until(next_shutdown_check), if state.env.shutdown_delay.is_some() => {
-                    let should_shutdown = check_shutdown(&state, &shutdown_delay).await;
-                    if should_shutdown {
-                        // TODO: We could be more graceful here.
-                        std::process::exit(0);
-                    }
+                tokio::time::sleep_until(next_shutdown_check).await;
+                let should_shutdown = check_shutdown(&state, &shutdown_delay).await;
+                if should_shutdown {
+                    // TODO: We could be more graceful here.
+                    std::process::exit(0);
                 }
             }
-        }
-    });
-}
-
-/// Check and cleanup any expired built projects or the target dir
-async fn check_cleanup(state: &AppState) -> Result<(), io::Error> {
-    check_project_cleanup(state).await?;
-    check_target_cleanup(state).await?;
-    Ok(())
-}
-
-/// Check and cleanup the target dir if it exceeds the max size.
-async fn check_target_cleanup(state: &AppState) -> Result<(), io::Error> {
-    let target_path = state.env.build_template_path.join("target");
-    let target_size = dir_size(&target_path).await?;
-
-    if target_size > state.env.max_target_dir_size {
-        tokio::fs::remove_dir_all(&target_path).await?;
+        });
     }
-
-    Ok(())
-}
-
-/// Check and cleanup any expired built projects
-async fn check_project_cleanup(state: &AppState) -> Result<(), io::Error> {
-    let mut dir = tokio::fs::read_dir(&state.env.built_path).await?;
-    let mut dirs_with_size = Vec::new();
-
-    while let Some(item) = dir.next_entry().await? {
-        let path = item.path();
-        let pathname = path.file_name().unwrap().to_string_lossy();
-
-        // Always cache the examples - don't remove those.
-        if example_projects::get_example_projects()
-            .iter()
-            .any(|p| p.id().to_string() == pathname)
-        {
-            continue;
-        }
-
-        let time_elapsed = item
-            .metadata()
-            .await
-            .and_then(|m| m.created())
-            .and_then(|c| c.elapsed().map_err(io::Error::other))?;
-        let size = dir_size(&path).await?;
-        dirs_with_size.push((item, time_elapsed, size));
-    }
-
-    // Find the total size of the built directory.
-    let total_size: u64 = dirs_with_size.iter().map(|(_, _, size)| *size).sum();
-    // If it exceeds the max, sort by oldest and remove until under the limit.
-    if total_size > state.env.max_built_dir_size {
-        dirs_with_size.sort_by_key(|(_, time_elapsed, _)| *time_elapsed);
-        let mut size = total_size;
-
-        for (item, _, dir_size) in dirs_with_size {
-            if size <= state.env.max_built_dir_size {
-                break;
-            }
-
-            let path = item.path();
-            tokio::fs::remove_dir_all(&path).await?;
-            size -= dir_size;
-        }
-    }
-
-    Ok(())
-}
-
-async fn dir_size(path: &std::path::Path) -> Result<u64, io::Error> {
-    let mut size = 0;
-    let mut dirs = vec![path.to_path_buf()];
-
-    while let Some(dir) = dirs.pop() {
-        let mut entries = tokio::fs::read_dir(&dir).await?;
-
-        while let Some(entry) = entries.next_entry().await? {
-            let metadata = entry.metadata().await?;
-
-            if metadata.is_dir() {
-                dirs.push(entry.path());
-            } else {
-                size += metadata.len();
-            }
-        }
-    }
-
-    Ok(size)
 }
 
 /// Check if the server should shutdown.

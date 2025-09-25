@@ -15,14 +15,14 @@ use tokio::io::{AsyncBufReadExt as _, BufReader};
 use tokio::process::Command;
 use tokio::task::JoinHandle;
 use tokio::{fs, select};
+use tracing::warn;
 
 const BUILD_ID_ID: &str = "{BUILD_ID}";
 
 // TODO: We need some way of cleaning up any stopped builds.
 /// The builder provides a convenient interface for controlling builds running in another task.
 pub struct Builder {
-    template_path: PathBuf,
-    built_path: PathBuf,
+    env: EnvVars,
     is_building: Arc<AtomicBool>,
     current_build: Option<BuildRequest>,
     task: Option<JoinHandle<Result<(), BuildError>>>,
@@ -31,8 +31,7 @@ pub struct Builder {
 impl Builder {
     pub fn new(env: EnvVars, is_building: Arc<AtomicBool>) -> Self {
         Self {
-            template_path: env.build_template_path,
-            built_path: env.built_path,
+            env,
             is_building,
             current_build: None,
             task: None,
@@ -46,11 +45,7 @@ impl Builder {
         self.stop_current();
         self.is_building.store(true, Ordering::SeqCst);
         self.current_build = Some(request.clone());
-        self.task = Some(tokio::spawn(build(
-            self.template_path.clone(),
-            self.built_path.clone(),
-            request,
-        )));
+        self.task = Some(tokio::spawn(build(self.env.clone(), request)));
     }
 
     /// Stop the current build.
@@ -89,15 +84,19 @@ impl Builder {
 }
 
 /// Run the steps to produce a build for a [`BuildRequest`]
-async fn build(
-    template_path: PathBuf,
-    built_path: PathBuf,
-    request: BuildRequest,
-) -> Result<(), BuildError> {
+async fn build(env: EnvVars, request: BuildRequest) -> Result<(), BuildError> {
+    let built_path = &env.built_path;
+    let template_path = &env.build_template_path;
+
     // If the project already exists, don't build it again.
     if std::fs::exists(built_path.join(request.id.to_string())).unwrap_or_default() {
         tracing::trace!("Skipping build for {request:?} since it already exists");
         return Ok(());
+    }
+
+    // Check if we need to clean up old builds before starting a new one.
+    if let Err(e) = super::cleanup::check_cleanup(&env).await {
+        warn!("failed to clean built projects: {e}");
     }
 
     setup_template(&template_path, &request).await?;

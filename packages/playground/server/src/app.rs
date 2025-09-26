@@ -23,6 +23,7 @@ use tokio::{
     sync::{Mutex, mpsc::UnboundedSender},
     time::Instant,
 };
+use uuid::Uuid;
 
 const DEFAULT_PORT: u16 = 3000;
 
@@ -99,6 +100,18 @@ impl EnvVars {
             dx_build_timeout: DEFAULT_DX_BUILD_TIMEOUT,
             gist_auth_token: gist_auth_token.unwrap_or_default(),
         }
+    }
+
+    /// Get the path to the target dir
+    pub fn target_dir(&self) -> PathBuf {
+        self.build_template_path.join("target")
+    }
+
+    /// Get the path to the built template hot patch cache
+    pub fn built_template_hotpatch_cache(&self, id: &Uuid) -> PathBuf {
+        self.target_dir()
+            .join("hotpatch_cache")
+            .join(id.to_string())
     }
 
     /// Get the production environment variable.

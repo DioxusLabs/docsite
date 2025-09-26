@@ -11,7 +11,7 @@ pub async fn check_cleanup(env: &EnvVars) -> Result<(), io::Error> {
 
 /// Check and cleanup the target dir if it exceeds the max size.
 async fn check_target_cleanup(env: &EnvVars) -> Result<(), io::Error> {
-    let target_path = env.build_template_path.join("target");
+    let target_path = env.target_dir();
     let target_size = dir_size(&target_path).await?;
 
     if target_size > env.max_target_dir_size {

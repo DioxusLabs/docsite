@@ -12,6 +12,7 @@ serde_json = { workspace = true }
 
 dioxus-logger = { workspace = true }
 dioxus-dx-wire-format = { workspace = true }
+dioxus-devtools-types = { workspace = true }
 
 axum = { workspace = true, features = ["ws", "macros"] }
 axum-client-ip = "1.1"

@@ -104,7 +104,7 @@ async fn build(env: EnvVars, request: BuildRequest) -> Result<(), BuildError> {
         let template_path = template_path.to_path_buf();
         let request = request.clone();
         let env = env.clone();
-        move || dx_build(&template_path, &request, &env)
+        move || dx_build(&&request, &env)
     })
     .await??;
     move_to_built(&template_path, &built_path, &request).await?;
@@ -143,32 +143,69 @@ async fn setup_template(template_path: &Path, request: &BuildRequest) -> Result<
     Ok(())
 }
 
-/// Run the build command provided by the DX CLI.
-/// Returns if DX built the project successfully.
-fn dx_build(
-    template_path: &PathBuf,
-    request: &BuildRequest,
-    env: &EnvVars,
-) -> Result<(), BuildError> {
+/// Start a process with limited access to the environment and resources
+fn start_limited_process(mut command: Command, env: &EnvVars) -> Result<Child, BuildError> {
     let filtered_vars = std::env::vars().filter(|(k, _)| {
         let allowed = ["RUST_VERSION", "RUSTUP_HOME", "CARGO_HOME", "PATH", "HOME"];
         allowed.contains(&k.as_str())
     });
-    let mut child = Command::new("dx")
-        .arg("build")
-        .arg("--platform")
-        .arg("web")
-        .arg("--json-output")
-        .arg("--verbose")
-        .arg("--trace")
+
+    let child = command
         .env_clear()
         .envs(filtered_vars)
-        .current_dir(template_path)
+        .current_dir(&env.build_template_path)
+        .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
         .spawn()?;
 
     set_dx_limits(&child, env);
+
+    Ok(child)
+}
+
+/// Run the build command provided by the DX CLI.
+/// Returns if DX built the project successfully.
+fn dx_build(request: &BuildRequest, env: &EnvVars) -> Result<(), BuildError> {
+    let cache_dir = env.built_template_hotpatch_cache(&request.id);
+
+    let mut command = Command::new("dx");
+    if cache_dir.exists() {
+        let cache_dir = cache_dir.canonicalize()?;
+        command
+            .arg("hotpatch")
+            .arg("--web")
+            .arg("--session-cache-dir")
+            .arg(cache_dir)
+            .arg("-aslr-reference")
+            .arg("0")
+            .arg("--json-output");
+    } else {
+        if let Err(err) = std::fs::create_dir_all(&cache_dir) {
+            warn!("failed to create hotpatch cache dir {cache_dir:?}: {err}");
+        }
+        let cache_dir = cache_dir.canonicalize()?;
+        command
+            .arg("build")
+            .arg("--web")
+            .arg("--fat-binary")
+            .arg("--session-cache-dir")
+            .arg(cache_dir)
+            .arg("--json-output");
+    }
+
+    let mut child = start_limited_process(command, env)?;
+
+    // If there is a artifacts cache, we can pipe it to dx for hot patching.
+    let artifacts_cache = cache_dir.join("artifacts.json");
+    if artifacts_cache.exists() {
+        let artifacts_cache = std::fs::read_to_string(artifacts_cache)?;
+        if let Some(mut stdin) = child.stdin.take() {
+            use std::io::Write;
+            stdin.write_all(artifacts_cache.as_bytes())?;
+            stdin.flush()?;
+        }
+    }
 
     let stderr = child.stderr.take().expect("dx stdout should exist");
     let stdout = child.stdout.take().expect("dx stdout should exist");
@@ -179,7 +216,7 @@ fn dx_build(
 
     while let Some(Ok(line)) = stdout_reader.next() {
         logs.push(line.clone());
-        process_dx_message(request, line);
+        process_dx_message(env, request, line);
     }
     let status = child.wait();
     // Check if the build was successful.
@@ -232,7 +269,7 @@ fn set_dx_limits(process: &Child, env: &EnvVars) {
 /// Process a JSON-formatted message from the DX CLI, returning nothing on error.
 ///
 /// We don't care if this errors as it is human-readable output which the playground doesn't depend on for build status.
-fn process_dx_message(request: &BuildRequest, message: String) {
+fn process_dx_message(env: &EnvVars, request: &BuildRequest, message: String) {
     // We parse the tracing json log and if it contains a json field, we parse that as StructuredOutput.
     let result = serde_json::from_str::<CliMessage>(&message)
         .and_then(|m| serde_json::from_str::<StructuredOutput>(&m.json));
@@ -268,6 +305,17 @@ fn process_dx_message(request: &BuildRequest, message: String) {
             request
                 .ws_msg_tx
                 .send(BuildMessage::CargoDiagnostic(diagnostic))
+        }
+        StructuredOutput::BuildsFinished { client, .. } => {
+            let cache_dir = env.built_template_hotpatch_cache(&request.id);
+            let artifacts_cache = cache_dir.join("artifacts.json");
+            if let Err(err) = std::fs::write(
+                &artifacts_cache,
+                serde_json::to_string(&client).unwrap_or_default(),
+            ) {
+                warn!("failed to write artifacts cache {artifacts_cache:?}: {err}");
+            }
+            Ok(())
         }
         _ => Ok(()),
     };

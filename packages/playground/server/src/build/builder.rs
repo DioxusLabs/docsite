@@ -150,6 +150,10 @@ fn dx_build(
     request: &BuildRequest,
     env: &EnvVars,
 ) -> Result<(), BuildError> {
+    let filtered_vars = std::env::vars().filter(|(k, _)| {
+        let allowed = ["RUST_VERSION", "RUSTUP_HOME", "CARGO_HOME", "PATH", "HOME"];
+        allowed.contains(&k.as_str())
+    });
     let mut child = Command::new("dx")
         .arg("build")
         .arg("--platform")
@@ -157,6 +161,8 @@ fn dx_build(
         .arg("--json-output")
         .arg("--verbose")
         .arg("--trace")
+        .env_clear()
+        .envs(filtered_vars)
         .current_dir(template_path)
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
@@ -171,16 +177,11 @@ fn dx_build(
 
     let mut logs = Vec::new();
 
-    tracing::info!("Starting build for request id {}", request.id);
     while let Some(Ok(line)) = stdout_reader.next() {
         logs.push(line.clone());
         process_dx_message(request, line);
     }
     let status = child.wait();
-    tracing::info!(
-        "got status from dx build for request id {}: {status:?}",
-        request.id
-    );
     // Check if the build was successful.
     let exit_code = status.map(|c| c.code());
     if let Ok(Some(code)) = exit_code {

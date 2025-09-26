@@ -7,14 +7,14 @@ use dioxus_logger::tracing::debug;
 use fs_extra::dir::CopyOptions;
 use model::{BuildStage, CargoDiagnostic};
 use std::future::pending;
+use std::io::{BufRead, BufReader};
 use std::path::{Path, PathBuf};
 use std::process::Stdio;
+use std::process::{Child, Command};
 use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, Ordering};
-use tokio::io::{AsyncBufReadExt as _, BufReader};
-use tokio::process::{Child, Command};
+use tokio::fs;
 use tokio::task::JoinHandle;
-use tokio::{fs, select};
 use tracing::warn;
 
 const BUILD_ID_ID: &str = "{BUILD_ID}";
@@ -100,7 +100,13 @@ async fn build(env: EnvVars, request: BuildRequest) -> Result<(), BuildError> {
     }
 
     setup_template(&template_path, &request).await?;
-    dx_build(&template_path, &request, &env).await?;
+    tokio::task::spawn_blocking({
+        let template_path = template_path.to_path_buf();
+        let request = request.clone();
+        let env = env.clone();
+        move || dx_build(&template_path, &request, &env)
+    })
+    .await??;
     move_to_built(&template_path, &built_path, &request).await?;
 
     Ok(())
@@ -139,7 +145,7 @@ async fn setup_template(template_path: &Path, request: &BuildRequest) -> Result<
 
 /// Run the build command provided by the DX CLI.
 /// Returns if DX built the project successfully.
-async fn dx_build(
+fn dx_build(
     template_path: &PathBuf,
     request: &BuildRequest,
     env: &EnvVars,
@@ -158,70 +164,65 @@ async fn dx_build(
 
     set_dx_limits(&child, env);
 
+    let stderr = child.stderr.take().expect("dx stdout should exist");
     let stdout = child.stdout.take().expect("dx stdout should exist");
     let mut stdout_reader = BufReader::new(stdout).lines();
+    let mut stderr_reader = BufReader::new(stderr).lines();
 
     let mut logs = Vec::new();
 
-    loop {
-        select! {
-            // Read stdout lines from DX.
-            result = stdout_reader.next_line() => {
-                let Ok(Some(line)) = result else {
-                    continue;
-                };
-
-                logs.push(line.clone());
-                process_dx_message(request, line);
+    tracing::info!("Starting build for request id {}", request.id);
+    while let Some(Ok(line)) = stdout_reader.next() {
+        logs.push(line.clone());
+        process_dx_message(request, line);
+    }
+    let status = child.wait();
+    tracing::info!(
+        "got status from dx build for request id {}: {status:?}",
+        request.id
+    );
+    // Check if the build was successful.
+    let exit_code = status.map(|c| c.code());
+    if let Ok(Some(code)) = exit_code {
+        if code == 0 {
+            return Ok(());
+        } else {
+            // Dump logs in debug.
+            for log in logs {
+                debug!("{log}");
             }
-            // Wait for the DX process to exit.
-            status = child.wait() => {
-                while let Ok(Some(line)) = stdout_reader.next_line().await {
-                    logs.push(line.clone());
-                    process_dx_message(request, line);
-                }
-                // Check if the build was successful.
-                let exit_code = status.map(|c| c.code());
-                if let Ok(Some(code)) = exit_code {
-                    if code == 0 {
-                        break;
-                    } else {
-                        // Dump logs in debug.
-                        for log in logs {
-                            debug!("{log}");
-                        }
-
-                        return Err(BuildError::DxFailed(Some(code)));
-                    }
-                }
-                return Err(BuildError::DxFailed(None));
+            while let Some(Ok(line)) = stderr_reader.next() {
+                warn!("dx stderr: {line}");
             }
+
+            return Err(BuildError::DxFailed(Some(code)));
         }
     }
-
-    Ok(())
+    Err(BuildError::DxFailed(None))
 }
 
 #[allow(unused)]
 fn set_dx_limits(process: &Child, env: &EnvVars) {
+    // TODO this isn't working, not sure why
     #[cfg(any(target_os = "android", target_os = "linux"))]
     {
-        let id = process.id();
+        use rustix::process::{Resource, Rlimit};
+        let id = rustix::process::Pid::from_child(process);
         let memory_limit = Rlimit {
-            current: None,
+            current: Some(env.dx_memory_limit),
             maximum: Some(env.dx_memory_limit),
         };
 
-        if let Err(err) = rustix::process::prlimit(None, Resource::As, memory_limit) {
+        if let Err(err) = rustix::process::prlimit(Some(id), Resource::As, memory_limit) {
             warn!("failed to set memory limit for dx process {id}: {err}");
         }
 
         let cpu_limit = Rlimit {
-            current: None,
+            current: Some(env.dx_build_timeout),
             maximum: Some(env.dx_build_timeout),
         };
 
-        if let Err(err) = rustix::process::prlimit(None, Resource::Cpu, cpu_limit) {
+        if let Err(err) = rustix::process::prlimit(Some(id), Resource::Cpu, cpu_limit) {
             warn!("failed to set cpu time limit for dx process {id}: {err}");
         }
     }

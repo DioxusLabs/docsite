@@ -1,4 +1,4 @@
-FROM rust:1-bookworm AS chef
+FROM rust:1-trixie AS chef
 
 RUN curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
 RUN cargo binstall cargo-chef --no-confirm
@@ -22,7 +22,7 @@ COPY . .
 RUN cargo build --release --bin server
 
 # Pre-slim runtime
-FROM rust:1-slim-bookworm AS pre-runtime
+FROM rust:1-slim-trixie AS pre-runtime
 
 # Install openssl
 RUN set -ex; \

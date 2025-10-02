@@ -17,6 +17,7 @@ use tokio::{
     select,
     sync::mpsc::{self, UnboundedSender},
 };
+use uuid::Uuid;
 
 /// Handle any pre-websocket processing.
 pub async fn ws_handler(
@@ -50,7 +51,7 @@ async fn handle_socket(state: AppState, ip: IpAddr, socket: WebSocket) {
                 };
 
                 // Start a new build, stopping any existing ones.
-                if let SocketMessage::BuildRequest(code) = socket_msg {
+                if let SocketMessage::BuildRequest { code, previous_build_id } = socket_msg {
                     if let Some(ref request) = current_build {
                         let result = state.build_queue_tx.send(BuildCommand::Stop { id: request.id });
                         if result.is_err() {
@@ -70,7 +71,7 @@ async fn handle_socket(state: AppState, ip: IpAddr, socket: WebSocket) {
                         tokio::time::sleep(wait_time).await;
                     }
 
-                    let request = start_build(&state, build_tx.clone(), code);
+                    let request = start_build(&state, build_tx.clone(), code, previous_build_id);
                     current_build = Some(request);
                 }
             }
@@ -84,7 +85,7 @@ async fn handle_socket(state: AppState, ip: IpAddr, socket: WebSocket) {
                 }
 
                 // If the build finished, let's close this socket.
-                if let BuildMessage::Finished(_) = build_msg {
+                if   build_msg.is_done() {
                     current_build = None;
                     let _ = socket_tx.close().await;
                     break;
@@ -104,14 +105,6 @@ async fn handle_socket(state: AppState, ip: IpAddr, socket: WebSocket) {
             error!(build_id = ?request.id, "failed to send build stop signal for closed websocket");
         }
     }
-
-    // Drop the socket from our connected list.
-    // TODO: Convert this to a drop guard.
-    // let mut connected_sockets = state.connected_sockets.lock().await;
-    // let index = connected_sockets.iter().position(|x| **x == ip);
-    // if let Some(index) = index {
-    //     connected_sockets.remove(index);
-    // }
 }
 
 /// Assembles the build request and sends it to the queue.
@@ -119,10 +112,12 @@ fn start_build(
     state: &AppState,
     build_tx: UnboundedSender<BuildMessage>,
     code: String,
+    previous_build_id: Option<Uuid>,
 ) -> BuildRequest {
     let project = Project::new(code, None, None);
     let request = BuildRequest {
         id: project.id(),
+        previous_build_id,
         project,
         ws_msg_tx: build_tx,
     };

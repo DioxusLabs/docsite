@@ -1,9 +1,9 @@
 //! Simplified hot reloading for a single main.rs file.
+use ::dioxus_devtools::HotReloadMsg;
 use dioxus::{logger::tracing::error, prelude::*};
 use dioxus_core::internal::{
     HotReloadTemplateWithLocation, HotReloadedTemplate, TemplateGlobalKey,
 };
-use dioxus_devtools::HotReloadMsg;
 use dioxus_document::eval;
 use dioxus_html::HtmlCtx;
 use dioxus_rsx::CallBody;
@@ -24,21 +24,8 @@ pub fn attempt_hot_reload(mut hot_reload: HotReload, new_code: &str) {
                 jump_table: Default::default(),
                 for_build_id: Default::default(),
                 for_pid: Default::default(),
-                // unknown_files: Vec::new(),
             };
-
-            let e = eval(
-                r#"
-                const hrMsg = await dioxus.recv();
-                const iframeElem = document.getElementById("dxp-iframe");
-                const hrMsgJson = JSON.stringify(hrMsg);
-
-                if (iframeElem) {
-                    iframeElem.contentWindow.postMessage(hrMsgJson, "*");
-                }
-                "#,
-            );
-            _ = e.send(hr_msg);
+            send_hot_reload(hr_msg);
         }
         Err(HotReloadError::NeedsRebuild) => hot_reload.set_needs_rebuild(true),
         Err(e) => {
@@ -46,6 +33,21 @@ pub fn attempt_hot_reload(mut hot_reload: HotReload, new_code: &str) {
             error!("hot reload error occured: {:?}", e);
         }
     }
+}
+
+pub fn send_hot_reload(hr_msg: HotReloadMsg) {
+    let e = eval(
+        r#"
+        const hrMsg = await dioxus.recv();
+        const iframeElem = document.getElementById("dxp-iframe");
+        const hrMsgJson = JSON.stringify(hrMsg);
+
+        if (iframeElem) {
+            iframeElem.contentWindow.postMessage(hrMsgJson, "*");
+        }
+        "#,
+    );
+    _ = e.send(hr_msg);
 }
 
 #[derive(Clone, Copy)]

@@ -79,7 +79,7 @@ dioxus-rsx = "0.7.0-rc.0"
 dioxus-html = { version = "0.7.0-rc.0", default-features = false }
 dioxus-rsx-rosetta = "0.7.0-rc.0"
 dioxus-autofmt = "0.7.0-rc.0"
-dioxus-dx-wire-format = { git = "https://github.com/DioxusLabs/dioxus" }
+dioxus-dx-wire-format = "0.7.0-rc.0"
 dioxus-devtools-types = { git = "https://github.com/DioxusLabs/dioxus" }
 dioxus-logger = "0.7.0-rc.0"
 
@@ -130,3 +130,13 @@ dioxus-sync = { git = "https://github.com/ealmloff/dioxus-std", branch = "0.7" }
 dioxus-time = { git = "https://github.com/ealmloff/dioxus-std", branch = "0.7" }
 dioxus-util = { git = "https://github.com/ealmloff/dioxus-std", branch = "0.7" }
 dioxus-window = { git = "https://github.com/ealmloff/dioxus-std", branch = "0.7" }
+dioxus-dx-wire-format = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-core = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-logger = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-cli-config = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-signals = { git = "https://github.com/dioxuslabs/dioxus" }
+subsecond = { git = "https://github.com/dioxuslabs/dioxus" }
+subsecond-types = { git = "https://github.com/dioxuslabs/dioxus" }
+generational-box = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-document = { git = "https://github.com/dioxuslabs/dioxus" }

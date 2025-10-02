@@ -35,6 +35,7 @@ tracing-subscriber = "0.3.20"
 tower_governor = "0.8.0"
 governor = "0.10.1"
 rustix = { version = "1.1.2", features = ["process"] }
+dashmap = "6.1.0"
 
 [features]
 tracing = ["tokio/tracing", "dep:console-subscriber"]

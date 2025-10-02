@@ -2,12 +2,12 @@
 [workspace]
 
 [package]
-name = "play-{BUILD_ID}"
+name = "play-57d2f289-ba45-3195-ae0a-ea089d2f9bf8"
 version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-dioxus = { version= "0.7.0-rc.0", features = ["web", "router", "launch", "logger", "lib"], default-features = false }
+dioxus = { path = "../../../../../dioxus/packages/dioxus", features = ["web", "router", "launch", "logger", "lib"], default-features = false }
 wasm-bindgen = "=0.2.100"
 
 [profile.dev.package."*"]

@@ -1,4 +1,6 @@
-use crate::{build::BuildStage, BuildState};
+use crate::{build::BuildStage, hotreload::send_hot_reload, BuildState};
+use dioxus::signals::ReadableExt;
+use dioxus_devtools::HotReloadMsg;
 use futures::{SinkExt as _, StreamExt};
 use gloo_net::websocket::futures::WebSocket;
 use model::*;
@@ -42,8 +44,27 @@ pub fn handle_message(mut build: BuildState, message: SocketMessage) -> bool {
     match message {
         SocketMessage::BuildStage(stage) => build.set_stage(BuildStage::Building(stage)),
         SocketMessage::QueuePosition(position) => build.set_queue_position(Some(position)),
-        SocketMessage::BuildFinished(result) => {
-            build.set_stage(BuildStage::Finished(result));
+        SocketMessage::BuildFinished(BuildResult::Failed(failure)) => {
+            build.set_stage(BuildStage::Finished(Err(failure)));
+            return true;
+        }
+        SocketMessage::BuildFinished(BuildResult::Built(id)) => {
+            build.set_stage(BuildStage::Finished(Ok(id)));
+            return true;
+        }
+        SocketMessage::BuildFinished(BuildResult::HotPatched(patch)) => {
+            // Get the iframe to apply the patch to.
+            send_hot_reload(HotReloadMsg {
+                templates: Default::default(),
+                assets: Default::default(),
+                ms_elapsed: Default::default(),
+                for_pid: Default::default(),
+                for_build_id: Some(0),
+                jump_table: Some(patch),
+            });
+            if let Some(id) = build.previous_build_id().cloned() {
+                build.set_stage(BuildStage::Finished(Ok(id)));
+            }
             return true;
         }
         SocketMessage::BuildDiagnostic(diagnostic) => build.push_diagnostic(diagnostic),

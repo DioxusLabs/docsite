@@ -66,6 +66,7 @@ pub(crate) struct BuildState {
     stage: Signal<BuildStage>,
     queue_position: Signal<Option<usize>>,
     diagnostics: Signal<Vec<CargoDiagnostic>>,
+    previous_build_id: Signal<Option<Uuid>>,
 }
 
 impl BuildState {
@@ -78,6 +79,7 @@ impl BuildState {
             }),
             queue_position: Signal::new(None),
             diagnostics: Signal::new(Vec::new()),
+            previous_build_id: Signal::new(None),
         }
     }
 
@@ -86,6 +88,7 @@ impl BuildState {
         self.stage.set(BuildStage::NotStarted);
         self.queue_position.set(None);
         self.diagnostics.clear();
+        self.previous_build_id.set(None);
     }
 
     /// Get the current stage.
@@ -117,6 +120,11 @@ impl BuildState {
     pub fn push_diagnostic(&mut self, diagnostic: CargoDiagnostic) {
         self.diagnostics.push(diagnostic);
     }
+
+    /// Get the previous build ID signal.
+    pub fn previous_build_id(&self) -> Signal<Option<Uuid>> {
+        self.previous_build_id
+    }
 }
 
 /// Start a build and handle updating the build signals according to socket messages.
@@ -125,16 +133,25 @@ pub async fn start_build(
     socket_url: String,
     code: String,
 ) -> Result<bool, AppError> {
+    let stage = build.stage();
     // Reset build state
-    if build.stage().is_running() {
+    if stage.is_running() {
         return Err(AppError::BuildIsAlreadyRunning);
     }
     build.reset();
+    if let Some(build_id) = stage.finished_id() {
+        build.previous_build_id().set(Some(build_id));
+    }
     build.set_stage(BuildStage::Starting);
 
     // Send socket compile request
     let mut socket = ws::Socket::new(&socket_url)?;
-    socket.send(SocketMessage::BuildRequest(code)).await?;
+    socket
+        .send(SocketMessage::BuildRequest {
+            code,
+            previous_build_id: stage.finished_id(),
+        })
+        .await?;
 
     // Handle socket messages
     loop {

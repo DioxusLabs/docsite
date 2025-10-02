@@ -25,7 +25,7 @@ mod ws;
 
 /// Rate limiter configuration.
 /// How many requests each user should get within a time period.
-const REQUESTS_PER_INTERVAL: u64 = 60;
+const REQUESTS_PER_INTERVAL: u64 = 600;
 /// The period of time after the request limit resets.
 const RATE_LIMIT_INTERVAL: Duration = Duration::from_secs(60);
 
@@ -78,7 +78,7 @@ async fn main() {
         .route("/{:id}", get(get_shared_project));
 
     let app = Router::new()
-        .nest("/ws", Router::new().route("/", get(ws::ws_handler)))
+        .route("/ws", get(ws::ws_handler))
         .nest("/built/{:build_id}", built_router)
         .nest("/shared", shared_router)
         .route(

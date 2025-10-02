@@ -198,9 +198,6 @@ pub struct AppState {
     /// Prevents the server from shutting down during an active build.
     pub is_building: Arc<AtomicBool>,
 
-    /// A list of connected sockets by ip. Used to disallow extra socket connections.
-    pub _connected_sockets: Arc<Mutex<Vec<String>>>,
-
     pub reqwest_client: reqwest::Client,
 
     pub build_govener: Arc<
@@ -230,7 +227,7 @@ impl AppState {
         }
 
         let build_govener = Arc::new(RateLimiter::keyed(
-            Quota::with_period(Duration::from_secs(30))
+            Quota::with_period(Duration::from_secs(5))
                 .unwrap()
                 .allow_burst(NonZeroU32::new(2).unwrap()),
         ));
@@ -240,7 +237,6 @@ impl AppState {
             build_queue_tx,
             last_request_time: Arc::new(Mutex::new(Instant::now())),
             is_building,
-            _connected_sockets: Arc::new(Mutex::new(Vec::new())),
             reqwest_client: reqwest::Client::new(),
             build_govener,
         };
@@ -254,6 +250,7 @@ impl AppState {
             let _ = state.build_queue_tx.send(BuildCommand::Start {
                 request: BuildRequest {
                     id: project.id(),
+                    previous_build_id: None,
                     project: project.clone(),
                     ws_msg_tx: tx.clone(),
                 },

@@ -1,9 +1,10 @@
-use super::{builder::Builder, BuildCommand, BuildError, BuildMessage, BuildRequest};
+use super::{BuildCommand, BuildError, BuildMessage, BuildRequest, builder::Builder};
 use crate::app::EnvVars;
+use dioxus::subsecond::JumpTable;
 use std::{
     collections::VecDeque,
     error::Error as _,
-    sync::{atomic::AtomicBool, Arc},
+    sync::{Arc, atomic::AtomicBool},
 };
 use tokio::{
     select,
@@ -116,26 +117,33 @@ fn stop_build(builder: &mut Builder, pending_builds: &mut VecDeque<BuildRequest>
 fn handle_finished_build(
     builder: &mut Builder,
     pending_builds: &mut VecDeque<BuildRequest>,
-    build_result: Result<BuildRequest, BuildError>,
+    build_result: Result<(BuildRequest, Option<JumpTable>), BuildError>,
 ) {
     // Tell the socket the result of their build.
-    let _ = match build_result {
-        Ok(request) => {
-            dioxus::logger::tracing::trace!(request = ?request, "build finished");
-            request
-                .ws_msg_tx
-                .send(BuildMessage::Finished(Ok(request.id)))
-        }
-        Err(e) => {
-            dioxus::logger::tracing::warn!(err = ?e, src = ?e.source(), "build failed");
-            match builder.current_build() {
-                Some(request) => request
-                    .ws_msg_tx
-                    .send(BuildMessage::Finished(Err(e.to_string()))),
-                None => Ok(()),
+    let _ =
+        match build_result {
+            Ok((request, response)) => {
+                dioxus::logger::tracing::trace!(request = ?request, "build finished");
+                if let Some(patch) = response {
+                    request.ws_msg_tx.send(BuildMessage::Finished(
+                        crate::build::BuildResult::HotPatched(patch),
+                    ))
+                } else {
+                    request.ws_msg_tx.send(BuildMessage::Finished(
+                        crate::build::BuildResult::Built(request.id),
+                    ))
+                }
             }
-        }
-    };
+            Err(e) => {
+                dioxus::logger::tracing::warn!(err = ?e, src = ?e.source(), "build failed");
+                match builder.current_build() {
+                    Some(request) => request.ws_msg_tx.send(BuildMessage::Finished(
+                        crate::build::BuildResult::Failed(e.to_string()),
+                    )),
+                    None => Ok(()),
+                }
+            }
+        };
 
     // Start the next build.
     let next_request = pending_builds.pop_front();

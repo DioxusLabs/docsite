@@ -1,0 +1,23 @@
+[application]
+name = "57d2f289-ba45-3195-ae0a-ea089d2f9bf8"
+default_platform = "web"
+out_dir = "dist"
+asset_dir = "public"
+hot_reload = false
+
+[web.app]
+base_path = "built/57d2f289-ba45-3195-ae0a-ea089d2f9bf8"
+
+title = "Dioxus Playground"
+[web.watcher]
+index_on_404 = true
+watch_path = ["src", "examples"]
+[web.resource]
+style = []
+script = []
+[web.resource.dev]
+script = []
+[application.plugins]
+available = true
+required = []
+

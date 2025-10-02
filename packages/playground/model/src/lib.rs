@@ -1,3 +1,4 @@
+use dioxus_devtools::subsecond::JumpTable;
 use serde::{Deserialize, Serialize};
 use std::error::Error;
 use std::string::FromUtf8Error;
@@ -16,10 +17,21 @@ mod server;
 #[cfg(feature = "web")]
 mod web;
 
+/// The result of a build
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub enum BuildResult {
+    Built(Uuid),
+    HotPatched(JumpTable),
+    Failed(String),
+}
+
 #[derive(Debug, Serialize, Deserialize)]
 pub enum SocketMessage {
-    BuildRequest(String),
-    BuildFinished(Result<Uuid, String>),
+    BuildRequest {
+        code: String,
+        previous_build_id: Option<Uuid>,
+    },
+    BuildFinished(BuildResult),
     BuildStage(BuildStage),
     BuildDiagnostic(CargoDiagnostic),
     QueuePosition(usize),

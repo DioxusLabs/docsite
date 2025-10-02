@@ -120,7 +120,7 @@ pub fn Panes(
                 id: "dxp-panes-right",
                 style: if let Some(val) = pane_right_width() { "width:{val}px;" },
 
-                if build_stage.is_running() {
+                if build_stage.is_running() && false {
                     Progress {}
                 } else {
                     // Viewport

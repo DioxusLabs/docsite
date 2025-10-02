@@ -12,6 +12,10 @@ pub async fn check_cleanup(env: &EnvVars) -> Result<(), io::Error> {
 /// Check and cleanup the target dir if it exceeds the max size.
 async fn check_target_cleanup(env: &EnvVars) -> Result<(), io::Error> {
     let target_path = env.target_dir();
+    if !target_path.exists() {
+        return Ok(());
+    }
+
     let target_size = dir_size(&target_path).await?;
 
     if target_size > env.max_target_dir_size {
@@ -23,6 +27,10 @@ async fn check_target_cleanup(env: &EnvVars) -> Result<(), io::Error> {
 
 /// Check and cleanup any expired built projects
 async fn check_project_cleanup(env: &EnvVars) -> Result<(), io::Error> {
+    if !env.built_path.exists() {
+        return Ok(());
+    }
+
     let mut dir = tokio::fs::read_dir(&env.built_path).await?;
     let mut dirs_with_size = Vec::new();
 

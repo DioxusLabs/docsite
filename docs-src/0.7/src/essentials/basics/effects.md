@@ -93,7 +93,7 @@ DemoFrame {
 
 ## Prefer Actions over Side-Effects
 
-You might be wondering: "why should I ever run side-effects?" And, indeed, they should not be a frequently used tool in your toolbox. Side-effects can be difficult to reason about and are frequently misused when an should be preferred.
+You might be wondering: "why should I ever run side-effects?" And, indeed, they should not be a frequently used tool in your toolbox. Side-effects can be difficult to reason about and are frequently misused when an action should be preferred.
 
 The classic example of a side-effect is to synchronize UI state with some external state. For example, we might have a `Title {}` component that sets the window's title whenever the title changes:
 

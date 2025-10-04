@@ -8,7 +8,7 @@ First, we need to add axum and tokio as dependencies. Since we only need these d
 
 ```toml
 [dependencies]
-dioxus = { version = "0.6.0", features = ["fullstack"] }
+dioxus = { version = "0.7.0", features = ["fullstack"] }
 # Axum is optional because we only use it on the server
 axum = { version = "0.7", optional = true }
 tokio = { version = "1.0", features = ["full"], optional = true }
@@ -22,7 +22,7 @@ server = ["dioxus/server", "dep:axum", "dep:tokio"]
 
 ## Splitting up the main function
 
-Next we to split up our main function into two parts: one that will start dioxus on the client with the launch function, and one that will serve our Axum router. We can use `#[cfg]` attribute to control what code compiles when the web feature or server feature is enabled:
+Next we need to split up our main function into two parts: one that will start dioxus on the client with the launch function, and one that will serve our Axum router. We can use `#[cfg]` attribute to control what code compiles when the web feature or server feature is enabled:
 
 ```rust
 {{#include ../docs-router/src/doc_examples/axum_integration.rs:main}}

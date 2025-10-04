@@ -12,7 +12,7 @@ forward buttons:
 - [`GoForwardButton`]
 
 > If you want to navigate through the history programmatically, take a look at
-> [`programmatic navigation`](./programmatic-navigation.md).
+> [`programmatic navigation`](./navigation/programmatic-navigation.md).
 
 ```rust
 {{#include ../docs-router/src/doc_examples/history_buttons.rs:history_buttons}}

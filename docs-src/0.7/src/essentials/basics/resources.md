@@ -16,7 +16,7 @@ cargo add serde --features derive
 Your Cargo.toml should have the reqwest and serde libraries:
 ```toml
 [dependencies]
-# .... dioxus and other dependencies
+# ... dioxus and other dependencies
 reqwest = { version = "*", features = ["json"] }
 serde = { version = "1", features = ["derive"] }
 ```
@@ -28,9 +28,14 @@ We are planning on eventually integrating a library like [dioxus-query](https://
 The simplest way to request data is simply by attaching an async closure to an EventHandler.
 
 ```rust
+#[derive(serde::Deserialize)]
+struct DogApi {
+    message: String,
+}
+
 let mut img_src = use_signal(|| "image.png".to_string());
 
-let mut fetch_new = move |_| async move {
+let fetch_new = move |_| async move {
     let response = reqwest::get("https://dog.ceo/api/breeds/image/random")
         .await
         .unwrap()
@@ -43,7 +48,7 @@ let mut fetch_new = move |_| async move {
 
 rsx! {
     img { src: img_src }
-    button { onclick: fetch_neq, "Fetch a new dog!" }
+    button { onclick: fetch_new, "Fetch a new dog!" }
 }
 ```
 
@@ -55,7 +60,7 @@ Unfortunately, data fetching is not always quite this simple. If the user rapidl
 let mut img_src = use_signal(|| "image.png".to_string());
 let mut loading = use_signal(|| false);
 
-let mut fetch_new = move |_| async move {
+let fetch_new = move |_| async move {
     if loading() {
         return;
     }
@@ -128,32 +133,6 @@ DemoFrame {
 > ```
 >
 > Async methods will often mention if they are cancel safe in their documentation.
-
-## Network Requests with `use_resource`
-
-The `use_resource` hook is extremely useful for making a network request. For example, we can fetch a dog from the Dog API:
-
-```rust
-{{#include ../docs-router/src/doc_examples/data_fetching.rs:fetch_resource}}
-```
-
-```inject-dioxus
-DemoFrame {
-    data_fetching::DogViewResource {}
-}
-```
-
-Most requests will depend on state in your application. Because `use_resource` is reactive, it will automatically rerun when the dependencies change. For example, if we read the breed signal inside of the resource, the resource will rerun whenever the breed changes:
-
-```rust
-{{#include ../docs-router/src/doc_examples/data_fetching.rs:fetch_resource_reactive}}
-```
-
-```inject-dioxus
-DemoFrame {
-    data_fetching::DogViewResourceReactive {}
-}
-```
 
 ## Avoiding Waterfalls
 

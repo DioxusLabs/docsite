@@ -28,7 +28,7 @@ You can use [`use_hook`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_hoo
 
 > Note: You can use the `use_on_destroy` hook to clean up any resources the hook uses when the component is destroyed.
 
-Inside the initialization closure, you will typically make calls to other `cx` methods. For example:
+Inside the initialization closure, you will typically make calls to other dioxus runtime methods. For example:
 
 - The `use_signal` hook tracks state in the hook value, and uses [`ReactiveContext`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.ReactiveContext.html) to make Dioxus re-render any component that has observed it whenever the signal's value changes.
 

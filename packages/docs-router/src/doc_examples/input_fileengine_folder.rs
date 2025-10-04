@@ -7,7 +7,7 @@ pub fn App() -> Element {
     rsx! {
         // ANCHOR: rsx
         input {
-            r#type: "file",
+            type: "file",
             // Select a folder by setting the directory attribute
             directory: true,
             onchange: move |evt| {

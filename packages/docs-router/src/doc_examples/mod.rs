@@ -1,4 +1,7 @@
-pub use crate::{DemoFrame, SandBoxFrame, ComponentWithLogs, FakePage, CodeBlock, log, LogState, TwoPanelComponent};
+pub use crate::{
+    CodeBlock, ComponentWithLogs, DemoFrame, FakePage, LogState, SandBoxFrame, TwoPanelComponent,
+    log,
+};
 
 // Include any examples we compile into the docsite
 #[cfg(not(feature = "doc_test"))]
@@ -23,6 +26,8 @@ pub mod components;
 pub mod conditional_rendering;
 #[cfg(not(feature = "doc_test"))]
 pub mod dangerous_inner_html;
+#[cfg(not(feature = "doc_test"))]
+pub mod data_fetching;
 #[cfg(not(feature = "doc_test"))]
 pub mod error_handling;
 #[cfg(not(feature = "doc_test"))]
@@ -65,8 +70,6 @@ pub mod rsx_overview;
 pub mod spawn;
 #[cfg(not(feature = "doc_test"))]
 pub mod use_resource;
-#[cfg(not(feature = "doc_test"))]
-pub mod data_fetching;
 
 // Check any examples we don't compile into the docs
 #[cfg(feature = "doc_test")]

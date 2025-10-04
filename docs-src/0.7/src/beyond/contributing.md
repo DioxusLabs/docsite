@@ -22,7 +22,7 @@ Larger, more nuanced decisions about design, architecture, breaking changes, tra
 ## Before you contribute
 
 You might be surprised that a lot of checks fail when making your first PR.
-That's why you should first run these commands before contributing, and it will save you *lots* of time, because the
+That's why you should first run these commands before contributing to save time, because the
 GitHub CI is much slower at executing all of these than your PC.
 
 - Format code with [rustfmt](https://github.com/rust-lang/rustfmt):

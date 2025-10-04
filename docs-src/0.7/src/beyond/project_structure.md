@@ -14,6 +14,7 @@ Renderers are the entry point for Dioxus applications. They handle rendering the
 
 - [web](https://github.com/DioxusLabs/dioxus/tree/main/packages/web): Renders Dioxus applications in the browser by compiling to WASM and manipulating the DOM. The web renderer has a hydration feature to take over rendering from the server if [fullstack](#fullstack) is enabled
 - [desktop](https://github.com/DioxusLabs/dioxus/tree/main/packages/desktop): A renderer that runs on desktop and mobile platforms. The Dioxus application code is compiled natively, and the UI is rendered using a system webview.
+- [mobile](https://github.com/DioxusLabs/dioxus/tree/main/packages/mobile): A Render that Runs Dioxus applications natively, but renders them with the system webview. This is currently a thin wrapper on top of the desktop renderer since both renderers use the webview
 - [native](https://github.com/DioxusLabs/dioxus/tree/main/packages/native): An (experimental) renderer that runs on desktop and mobile platforms. The Dioxus application is compiled natively and the UI is rendered using a custom WGPU HTML/CSS renderer ([blitz](https://github.com/DioxusLabs/blitz))
 - [liveview](https://github.com/DioxusLabs/dioxus/tree/main/packages/liveview): A renderer that runs on the server, and renders using a websocket proxy in the browser. The liveview renderer is currently supported, but development has been deprioritized in favor of fullstack and it may be removed in the future
 

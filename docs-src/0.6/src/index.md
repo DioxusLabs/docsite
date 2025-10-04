@@ -102,7 +102,7 @@ We highly recommend a few first-party sources:
 
 ## Who's funding Dioxus?
 
-Dioxus is funded by a mix of corporate sponsorships, enterprise support contracts, [crowd-sourced funding](https://github.com/sponsors/DioxusLabs#sponsors), and [venture capital](http://ycombinator.com/companies/dioxus-labs). We strive to maintain a healthy mix of funding to balance the various competing visions of the future. We want to provide a "Flutter but better" for everyone - not controlled by Apple, Meta, or Google - and we need to make sure Dioxus has a sustainable long-term financial future.
+Dioxus is funded by a mix of corporate sponsorships, enterprise support contracts, [crowd-sourced funding](https://github.com/sponsors/DioxusLabs#sponsors), and [venture capital](http://ycombinator.com/companies/dioxus-labs). We strive to maintain a healthy mix of funding to balance the various competing visions of the future. We want to provide "Flutter but better" for everyone - not controlled by Apple, Meta, or Google - and we need to make sure Dioxus has a sustainable long-term financial future.
 
 Ultimately, we'd like Dioxus to be self-sustaining. This means that you'll eventually have the option to deploy your production apps with [Dioxus Deploy](https://dioxuslabs.com/deploy). Revenue from *Dioxus Deploy* will in turn fund development on Dioxus itself.
 

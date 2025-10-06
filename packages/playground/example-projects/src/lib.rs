@@ -2,7 +2,8 @@ use include_dir::DirEntry;
 use model::Project;
 use once_cell::sync::Lazy;
 
-static EXAMPLES: include_dir::Dir = include_dir::include_dir!("$CARGO_MANIFEST_DIR/examples");
+static EXAMPLES: include_dir::Dir =
+    include_dir::include_dir!("$CARGO_MANIFEST_DIR/playground-examples");
 
 pub fn get_welcome_project() -> Project {
     get_example_projects()

@@ -129,20 +129,18 @@ async fn build(env: EnvVars, request: BuildRequest) -> Result<Option<JumpTable>,
         warn!("failed to clean built projects: {e}");
     }
 
-    setup_template(&template_path, &request).await?;
-    let patch = tokio::task::spawn_blocking({
-        let mut request = request.clone();
-        let env = env.clone();
-        move || dx_build(&mut request, &env)
-    })
-    .await??;
-    move_to_built(&template_path, &built_path, &request).await?;
+    let patch = dx_build(&request, &env).await?;
+    move_to_built(&template_path, &built_path, &request, patch.is_some()).await?;
 
     Ok(patch)
 }
 
 /// Resets the template with values for the next build.
-async fn setup_template(template_path: &Path, request: &BuildRequest) -> Result<(), BuildError> {
+async fn setup_template(
+    template_path: &Path,
+    request: &BuildRequest,
+    patch: bool,
+) -> Result<(), BuildError> {
     let snippets_from_copy = [
         template_path.join("snippets/Cargo.toml"),
         template_path.join("snippets/Dioxus.toml"),
@@ -160,7 +158,11 @@ async fn setup_template(template_path: &Path, request: &BuildRequest) -> Result<
         let contents = fs::read_to_string(path).await?;
         let contents = contents.replace(
             BUILD_ID_ID,
-            &request.previous_build_id.unwrap_or(request.id).to_string(),
+            &request
+                .previous_build_id
+                .filter(|_| patch)
+                .unwrap_or(request.id)
+                .to_string(),
         );
         fs::write(new_path, contents).await?;
     }
@@ -198,8 +200,7 @@ fn start_limited_process(mut command: Command, env: &EnvVars) -> Result<Child, B
 
 /// Run the build command provided by the DX CLI.
 /// Returns if DX built the project successfully.
-fn dx_build(request: &mut BuildRequest, env: &EnvVars) -> Result<Option<JumpTable>, BuildError> {
-    let cache_dir = env.built_template_hotpatch_cache(&request.id);
+async fn dx_build(request: &BuildRequest, env: &EnvVars) -> Result<Option<JumpTable>, BuildError> {
     let previous_build_cache_dir = request
         .previous_build_id
         .map(|id| env.built_template_hotpatch_cache(&id))
@@ -208,7 +209,7 @@ fn dx_build(request: &mut BuildRequest, env: &EnvVars) -> Result<Option<JumpTabl
     // if there is a previous cache, try to use that to hot patch the build
     if let Some(cache_dir) = previous_build_cache_dir {
         let cache_dir = cache_dir.canonicalize()?;
-        let result = dx_patch_build(request, env, &cache_dir);
+        let result = dx_patch_build(&request, &env, &cache_dir).await;
         if let Ok(Some(patch)) = result {
             return Ok(Some(patch));
         } else {
@@ -216,23 +217,23 @@ fn dx_build(request: &mut BuildRequest, env: &EnvVars) -> Result<Option<JumpTabl
         }
     }
 
-    // If the hot patch failed, remove the previous build id
-    request.previous_build_id.take();
+    let cache_dir = env.built_template_hotpatch_cache(&request.id);
 
     // fallback to a full build
     if let Err(err) = std::fs::create_dir_all(&cache_dir) {
         warn!("failed to create hotpatch cache dir {cache_dir:?}: {err}");
     }
     let cache_dir = cache_dir.canonicalize()?;
-    dx_full_build(request, env, &cache_dir).map(|_| None)
+    dx_full_build(request, env, &cache_dir).await.map(|_| None)
 }
 
-fn dx_patch_build(
-    request: &mut BuildRequest,
+async fn dx_patch_build(
+    request: &BuildRequest,
     env: &EnvVars,
     cache_dir: &Path,
 ) -> Result<Option<JumpTable>, BuildError> {
     tracing::info!("patching {:?}", request.previous_build_id);
+    setup_template(&env.build_template_path, &request, true).await?;
     let mut command = Command::new("dx");
     command
         .arg("tools")
@@ -258,11 +259,11 @@ fn dx_patch_build(
 
     let (logs, patch) = process_build_messages(&mut child, env, request);
 
-    let status = child.wait();
+    let status = tokio::task::spawn_blocking(move || child.wait()).await;
 
     // Check if the build was successful.
-    let exit_code = status.map(|c| c.code());
-    if let Ok(Some(code)) = exit_code {
+    let exit_code = status.map(|r| r.map(|c| c.code()));
+    if let Ok(Ok(Some(code))) = exit_code {
         if code == 0 {
             return Ok(patch);
         } else {
@@ -277,11 +278,13 @@ fn dx_patch_build(
     Err(BuildError::DxFailed(None))
 }
 
-fn dx_full_build(
-    request: &mut BuildRequest,
+async fn dx_full_build(
+    request: &BuildRequest,
     env: &EnvVars,
     cache_dir: &Path,
 ) -> Result<(), BuildError> {
+    setup_template(&env.build_template_path, &request, false).await?;
+
     let mut command = Command::new("dx");
     command
         .arg("build")
@@ -290,15 +293,16 @@ fn dx_full_build(
         .arg("--session-cache-dir")
         .arg(cache_dir)
         .arg("--json-output");
+    tracing::info!("running dx command: {:?}", command);
     let mut child = start_limited_process(command, env)?;
 
     let (logs, _patch) = process_build_messages(&mut child, env, request);
 
-    let status = child.wait();
+    let status = tokio::task::spawn_blocking(move || child.wait()).await;
 
     // Check if the build was successful.
-    let exit_code = status.map(|c| c.code());
-    if let Ok(Some(code)) = exit_code {
+    let exit_code = status.map(|r| r.map(|c| c.code()));
+    if let Ok(Ok(Some(code))) = exit_code {
         if code == 0 {
             return Ok(());
         } else {
@@ -315,7 +319,7 @@ fn dx_full_build(
 fn process_build_messages(
     child: &mut Child,
     env: &EnvVars,
-    request: &mut BuildRequest,
+    request: &BuildRequest,
 ) -> (Vec<String>, Option<JumpTable>) {
     let stderr = child.stderr.take().expect("dx stdout should exist");
     let stdout = child.stdout.take().expect("dx stdout should exist");
@@ -368,11 +372,7 @@ fn set_dx_limits(process: &Child, env: &EnvVars) {
 /// Process a JSON-formatted message from the DX CLI, returning nothing on error.
 ///
 /// We don't care if this errors as it is human-readable output which the playground doesn't depend on for build status.
-fn process_dx_message(
-    env: &EnvVars,
-    request: &mut BuildRequest,
-    message: String,
-) -> Option<JumpTable> {
+fn process_dx_message(env: &EnvVars, request: &BuildRequest, message: String) -> Option<JumpTable> {
     // We parse the tracing json log and if it contains a json field, we parse that as StructuredOutput.
     let result = serde_json::from_str::<CliMessage>(&message)
         .and_then(|m| serde_json::from_str::<StructuredOutput>(&m.json));
@@ -434,8 +434,13 @@ async fn move_to_built(
     template_path: &Path,
     built_path: &Path,
     request: &BuildRequest,
+    patched: bool,
 ) -> Result<(), BuildError> {
-    let id_string = request.previous_build_id.unwrap_or(request.id).to_string();
+    let id_string = request
+        .previous_build_id
+        .filter(|_| patched)
+        .unwrap_or(request.id)
+        .to_string();
 
     // The path to the built project from DX
     let play_build_id = format!("play-{}", &id_string);

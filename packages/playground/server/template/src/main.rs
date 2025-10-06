@@ -9,6 +9,6 @@ fn main() {
 #[component]
 fn App() -> Element {
     rsx! {
-        div { "Build stuff!" }
+        div { "Build" }
     }
 }

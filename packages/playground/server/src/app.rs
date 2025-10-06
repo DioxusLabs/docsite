@@ -215,11 +215,7 @@ impl AppState {
         let build_queue_tx = start_build_watcher(env.clone(), is_building.clone());
 
         // Get prebuild arg
-        let prebuild = std::env::args()
-            .collect::<Vec<String>>()
-            .get(1)
-            .map(|x| x == "--prebuild")
-            .unwrap_or(false);
+        let prebuild = std::env::args().any(|x| x == "--prebuild");
 
         if prebuild {
             info!("server is prebuilding");

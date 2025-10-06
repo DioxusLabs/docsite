@@ -1,4 +1,4 @@
-use crate::build::BuildState;
+use crate::build::{BuildStage, BuildState};
 use crate::components::icons::LoadingSpinner;
 use crate::share_code::copy_share_link;
 use crate::{Errors, PlaygroundUrls};
@@ -80,16 +80,7 @@ pub fn Header(
                     },
 
                     if build.stage().is_running() {
-                        LoadingSpinner {}
-                        if let Some(pos) = build.queue_position() {
-                            if pos == 0 {
-                                "Building"
-                            } else {
-                                "#{pos}"
-                            }
-                        } else {
-                            "Starting"
-                        }
+                        Progress {}
                     } else {
                         "Rebuild"
                     }
@@ -97,5 +88,37 @@ pub fn Header(
                 }
             }
         }
+    }
+}
+
+#[component]
+fn Progress() -> Element {
+    let build = use_context::<BuildState>();
+
+    // Generate the loading message.
+    let message = use_memo(move || {
+        let compiling = build.stage().get_compiling_stage();
+        if let Some((crates_compiled, total_crates, current_crate)) = compiling {
+            return format!("{crates_compiled}/{total_crates}");
+        }
+
+        match build.stage() {
+            BuildStage::NotStarted => "Waiting".to_string(),
+            BuildStage::Starting => "Starting".to_string(),
+            BuildStage::Waiting(time) => {
+                format!("Waiting {}s", time.as_secs())
+            }
+            BuildStage::Building(build_stage) => match build_stage {
+                model::BuildStage::RunningBindgen => "Binding".to_string(),
+                model::BuildStage::Other => "Computing".to_string(),
+                model::BuildStage::Compiling { .. } => unreachable!(),
+            },
+            BuildStage::Finished(_) => "Finished!".to_string(),
+        }
+    });
+
+    rsx! {
+        LoadingSpinner {}
+        "{message}"
     }
 }

@@ -1,5 +1,4 @@
-//! A basic counter example demonstrating signals,
-//! event handlers, and basic rendering.
+//! The simplest Dioxus app
 
 use dioxus::prelude::*;
 
@@ -9,13 +8,7 @@ fn main() {
 
 #[component]
 fn App() -> Element {
-    let mut count = use_signal(|| 0);
-
     rsx! {
-        p { "Count: {count*30}" }
-        div { style: "display: flex;",
-            button { onclick: move |_| count -= 1, "-" }
-            button { onclick: move |_| count += 1, "+" }
-        }
+        div { "Build stuff!" }
     }
 }

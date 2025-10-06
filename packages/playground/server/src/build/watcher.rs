@@ -24,6 +24,9 @@ pub fn start_build_watcher(
 
     tokio::spawn(async move {
         let mut builder = Builder::new(env, is_building);
+        if let Err(err) = builder.update_component_library() {
+            tracing::error!("failed to update component library: {err}");
+        }
         let mut pending_builds = VecDeque::new();
 
         loop {

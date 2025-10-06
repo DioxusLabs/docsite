@@ -39,6 +39,34 @@ impl Builder {
         }
     }
 
+    /// Make sure the components are initilized
+    pub fn update_component_library(&mut self) -> Result<(), BuildError> {
+        let update_status = Command::new("dx")
+            .arg("component")
+            .arg("update")
+            .current_dir(&self.env.build_template_path)
+            .stdout(Stdio::null())
+            .stderr(Stdio::null())
+            .status()?;
+        if !update_status.success() {
+            return Err(BuildError::DxFailed(update_status.code()));
+        }
+        let status = Command::new("dx")
+            .arg("component")
+            .arg("add")
+            .arg("--all")
+            .arg("--force")
+            .current_dir(&self.env.build_template_path)
+            .stdout(Stdio::null())
+            .stderr(Stdio::null())
+            .status()?;
+        if !status.success() {
+            return Err(BuildError::DxFailed(status.code()));
+        }
+
+        Ok(())
+    }
+
     /// Start a new build, cancelling any ongoing builds.
     pub fn start(&mut self, request: BuildRequest) {
         let _ = request.ws_msg_tx.send(BuildMessage::QueuePosition(0));

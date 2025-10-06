@@ -69,6 +69,7 @@ impl TryFrom<CompilerMessage> for CargoDiagnostic {
         let spans = diagnostic
             .spans
             .iter()
+            .filter(|s| s.file_name == "src/main.rs")
             .map(|s| CargoDiagnosticSpan {
                 is_primary: s.is_primary,
                 line_start: s.line_start,
@@ -101,6 +102,7 @@ impl TryFrom<Diagnostic> for CargoDiagnostic {
         let spans = value
             .spans
             .iter()
+            .filter(|s| s.file_name == "src/main.rs")
             .map(|s| CargoDiagnosticSpan {
                 is_primary: s.is_primary,
                 line_start: s.line_start,

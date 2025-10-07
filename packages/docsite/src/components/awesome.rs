@@ -193,7 +193,7 @@ pub(crate) fn Awesome() -> Element {
 }
 
 #[component]
-fn AwesomeItem(item: ReadOnlySignal<Item>) -> Element {
+fn AwesomeItem(item: ReadSignal<Item>) -> Element {
     let stars = use_resource(move || async move {
         let item = item.read();
         let is_github = item.github.is_some();

@@ -3,8 +3,8 @@ use dioxus::prelude::*;
 
 #[component]
 pub(crate) fn Components() -> Element {
-    let segments: ReadOnlySignal<Vec<String>> = Default::default();
-    let query: ReadOnlySignal<String> = Default::default();
+    let segments: ReadSignal<Vec<String>> = Default::default();
+    let query: ReadSignal<String> = Default::default();
 
     fn format_segments(segments: &[String], query: &str) -> String {
         let segments = segments.join("/");

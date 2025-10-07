@@ -51,7 +51,7 @@ fn DefaultPlayground() -> Element {
 }
 
 #[component]
-fn SharePlayground(share_code: ReadOnlySignal<Option<String>>) -> Element {
+fn SharePlayground(share_code: ReadSignal<Option<String>>) -> Element {
     rsx! {
         Playground { urls: URLS, share_code, class: "playground-container" }
     }

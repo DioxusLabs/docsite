@@ -1,9 +1,10 @@
 use crate::build::{BuildStage, BuildState};
 use crate::components::icons::LoadingSpinner;
+use crate::dx_components::select::*;
 use crate::share_code::copy_share_link;
+use crate::HotReload;
 use crate::{Errors, PlaygroundUrls};
 use dioxus::prelude::*;
-// use dioxus_sdk::utils::timing::use_debounce;
 use model::api::ApiClient;
 use model::Project;
 
@@ -14,12 +15,13 @@ pub fn Header(
     pane_left_width: Signal<Option<i32>>,
     pane_right_width: Signal<Option<i32>>,
     mut show_examples: Signal<bool>,
-    file_name: ReadOnlySignal<String>,
+    file_name: ReadSignal<String>,
 ) -> Element {
-    let build = use_context::<BuildState>();
-    let api_client = use_context::<Signal<ApiClient>>();
-    let project = use_context::<Signal<Project>>();
-    let mut errors = use_context::<Errors>();
+    let api_client: Signal<ApiClient> = use_context();
+    let mut build: BuildState = use_context();
+    let mut project: Signal<Project> = use_context();
+    let mut errors: Errors = use_context();
+    let mut hot_reload: HotReload = use_context();
 
     let mut share_btn_text = use_signal(|| "Share");
 
@@ -31,14 +33,34 @@ pub fn Header(
                 style: if let Some(val) = pane_left_width() { "width:{val}px;" },
 
                 // Examples button/menu
-                button {
-                    id: "dxp-menu-btn",
-                    class: "dxp-ctrl-btn",
-                    class: if show_examples() { "dxp-open" },
-                    onclick: move |_| show_examples.toggle(),
-                    crate::components::icons::MenuIcon {}
+                Select::<Project> {
+                    value: Some(project()),
+                    on_value_change: move |example: Option<Project>| {
+                        use crate::monaco;
+                        let Some(example) = example else {
+                            return;
+                        };
+
+                        project.set(example.clone());
+                        build.set_stage(BuildStage::Finished(Ok(example.id())));
+                        monaco::set_current_model_value(&example.contents());
+                        hot_reload.set_starting_code(&example.contents());
+                    },
+                    SelectTrigger {
+                        {file_name}
+                    }
+                    SelectList {
+                        for (index, example) in example_projects::get_example_projects().iter().enumerate() {
+                            SelectOption::<Project> {
+                                index,
+                                value: example.clone(),
+                                text_value: example.path.clone(),
+                                h3 { {example.path.clone()} }
+                                p { {example.description.clone()} }
+                            }
+                        }
+                    }
                 }
-                button { class: "dxp-ctrl-btn dxp-file-btn dxp-selected-file", {file_name} }
             }
 
             // Right pane header

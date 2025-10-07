@@ -37,7 +37,7 @@ pub struct PlaygroundUrls {
 #[component]
 pub fn Playground(
     urls: PlaygroundUrls,
-    share_code: ReadOnlySignal<Option<String>>,
+    share_code: ReadSignal<Option<String>>,
     class: Option<String>,
 ) -> Element {
     let mut hot_reload = use_context_provider(HotReload::new);
@@ -198,23 +198,6 @@ pub fn Playground(
                 file_name: project.read().path.clone(),
             }
             div { id: "dxp-lower-half",
-                div {
-                    id: "dxp-examples-list",
-                    class: if show_examples() { "dxp-open" } else { "" },
-                    for example in example_projects::get_example_projects().iter() {
-                        button {
-                            class: "dxp-example-project",
-                            onclick: move |_| {
-                                project.set(example.clone());
-                                build.set_stage(BuildStage::Finished(Ok(example.id())));
-                                monaco::set_current_model_value(&example.contents());
-                                hot_reload.set_starting_code(&example.contents());
-                            },
-                            h3 { {example.path.clone()} }
-                            p { {example.description.clone()} }
-                        }
-                    }
-                }
                 components::Panes {
                     pane_left_width,
                     pane_right_width,

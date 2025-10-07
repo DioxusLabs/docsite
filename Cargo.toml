@@ -124,7 +124,7 @@ codegen-units = 1
 [patch.crates-io]
 dioxus-geolocation = { git = "https://github.com/ealmloff/dioxus-std", branch = "0.7" }
 dioxus-notification = { git = "https://github.com/ealmloff/dioxus-std", branch = "0.7" }
-dioxus-sdk = { git = "https://github.com/ealmloff/dioxus-std", branch = "0.7" }
+dioxus-sdk = { git = "https://github.com/ealmloff/dioxus-std", branch = "git" }
 dioxus_storage = { git = "https://github.com/ealmloff/dioxus-std", branch = "0.7" }
 dioxus-sync = { git = "https://github.com/ealmloff/dioxus-std", branch = "0.7" }
 dioxus-time = { git = "https://github.com/ealmloff/dioxus-std", branch = "0.7" }
@@ -133,6 +133,7 @@ dioxus-window = { git = "https://github.com/ealmloff/dioxus-std", branch = "0.7"
 dioxus-dx-wire-format = { git = "https://github.com/dioxuslabs/dioxus" }
 dioxus = { git = "https://github.com/dioxuslabs/dioxus" }
 dioxus-core = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-core-types = { git = "https://github.com/dioxuslabs/dioxus" }
 dioxus-logger = { git = "https://github.com/dioxuslabs/dioxus" }
 dioxus-cli-config = { git = "https://github.com/dioxuslabs/dioxus" }
 dioxus-signals = { git = "https://github.com/dioxuslabs/dioxus" }
@@ -140,3 +141,10 @@ subsecond = { git = "https://github.com/dioxuslabs/dioxus" }
 subsecond-types = { git = "https://github.com/dioxuslabs/dioxus" }
 generational-box = { git = "https://github.com/dioxuslabs/dioxus" }
 dioxus-document = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-devtools = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-rsx = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-desktop = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-web = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-html = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-interpreter-js = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-rsx-rosetta = { git = "https://github.com/dioxuslabs/dioxus" }

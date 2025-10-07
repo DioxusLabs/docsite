@@ -13,6 +13,7 @@ use dioxus_sdk::window::theme::{use_system_theme, Theme};
 
 mod build;
 mod components;
+mod dx_components;
 mod editor;
 mod hotreload;
 mod share_code;
@@ -20,6 +21,7 @@ mod ws;
 
 const DXP_CSS: Asset = asset!("/assets/dxp.css");
 const MONACO_FOLDER: Asset = asset!("/assets/monaco-editor-0.52.2");
+const DX_COMPONENTS_CSS: Asset = asset!("/assets/dx-components-theme.css");
 
 /// The URLS that the playground should use for locating resources and services.
 #[derive(Debug, Clone, PartialEq)]
@@ -141,6 +143,7 @@ pub fn Playground(
         div { class, id: "dxp-playground-root",
             // Head elements
             Link { rel: "stylesheet", href: DXP_CSS }
+            Link { rel: "stylesheet", href: DX_COMPONENTS_CSS }
 
             // Monaco script
             script {

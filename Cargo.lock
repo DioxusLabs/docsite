@@ -2084,6 +2084,7 @@ dependencies = [
  "dioxus-devtools 0.7.0-rc.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "dioxus-document",
  "dioxus-html 0.7.0-rc.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "dioxus-primitives",
  "dioxus-rsx 0.7.0-rc.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "dioxus-rsx-hotreload",
  "dioxus-rsx-rosetta",
@@ -2102,6 +2103,18 @@ dependencies = [
  "thiserror 2.0.17",
  "uuid",
  "wasm-bindgen",
+]
+
+[[package]]
+name = "dioxus-primitives"
+version = "0.0.1"
+source = "git+https://github.com/DioxusLabs/components#b46aa465ae683004e21326f1fe80df812b188613"
+dependencies = [
+ "dioxus",
+ "dioxus-time",
+ "lazy-js-bundle 0.6.2",
+ "time",
+ "tracing",
 ]
 
 [[package]]
@@ -4309,6 +4322,12 @@ dependencies = [
  "indexmap 2.11.4",
  "selectors 0.24.0",
 ]
+
+[[package]]
+name = "lazy-js-bundle"
+version = "0.6.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e49596223b9d9d4947a14a25c142a6e7d8ab3f27eb3ade269d238bb8b5c267e2"
 
 [[package]]
 name = "lazy-js-bundle"

@@ -1,12 +1,12 @@
 [application]
-name = "e05e67a4-8c15-35c2-bfba-94314ad0190e"
+name = "57d2f289-ba45-3195-ae0a-ea089d2f9bf8"
 default_platform = "web"
 out_dir = "dist"
 asset_dir = "assets"
 hot_reload = false
 
 [web.app]
-base_path = "built/e05e67a4-8c15-35c2-bfba-94314ad0190e"
+base_path = "built/57d2f289-ba45-3195-ae0a-ea089d2f9bf8"
 
 title = "Dioxus Playground"
 [web.watcher]

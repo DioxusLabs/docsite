@@ -824,7 +824,7 @@ dependencies = [
 [[package]]
 name = "dioxus-primitives"
 version = "0.0.1"
-source = "git+https://github.com/DioxusLabs/components#b46aa465ae683004e21326f1fe80df812b188613"
+source = "git+https://github.com/ealmloff/components?branch=bump-dioxus-git#72dac8db64acc02bd5dd702aafc97c892f41dd7a"
 dependencies = [
  "dioxus",
  "dioxus-time",
@@ -1967,7 +1967,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8b870d8c151b6f2fb93e84a13146138f05d02ed11c7e7c54f8826aaaf7c9f184"
 
 [[package]]
-name = "play-e05e67a4-8c15-35c2-bfba-94314ad0190e"
+name = "play-57d2f289-ba45-3195-ae0a-ea089d2f9bf8"
 version = "0.1.0"
 dependencies = [
  "dioxus",

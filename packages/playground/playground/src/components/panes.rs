@@ -114,6 +114,20 @@ pub fn Panes(
                 id: "dxp-panes-draggable",
                 onmousedown: draggable_mousedown,
                 onmouseup: stop_dragging,
+                // Two vertical lines to indicate draggable
+                svg {
+                    width: "12",
+                    height: "48",
+                    xmlns: "http://www.w3.org/2000/svg",
+                    view_box: "0 0 34 48",
+                    fill: "none",
+                    stroke: "currentColor",
+                    stroke_width: "6",
+                    stroke_linecap: "round",
+                    stroke_linejoin: "round",
+                    path { d: "M10 8v48" }
+                    path { d: "M24 8v48" }
+                }
             }
             // Right Pane
             div {

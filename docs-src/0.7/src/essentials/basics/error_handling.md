@@ -62,12 +62,6 @@ You can add additional context to your errors with the [`Context`](https://docs.
 {{#include ../docs-router/src/doc_examples/error_handling.rs:add_context}}
 ```
 
-If you need some custom UI for the error message, you can call `show` on a result to attach an Element to the error variant. The parent error boundary can choose to render this element instead of the default error message:
-
-```rust, no_run
-{{#include ../docs-router/src/doc_examples/error_handling.rs:show}}
-```
-
 ## Downcasting Specific Errors
 
 When handling errors in Error Boundaries, we can match on specific types of errors, optionally choosing to capture the error and prevent it from bubbling.

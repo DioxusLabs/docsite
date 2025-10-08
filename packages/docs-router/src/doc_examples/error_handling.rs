@@ -76,50 +76,6 @@ mod add_context {
     // ANCHOR_END: add_context
 }
 
-mod show {
-    use super::*;
-    // ANCHOR: show
-    #[component]
-    fn Parent() -> Element {
-        rsx! {
-            ErrorBoundary {
-                // The error boundary accepts a closure that will be rendered when an error is thrown in any
-                // of the children
-                handle_error: |error: ErrorContext| {
-                    if let Some(error_ui) = error.show() {
-                        rsx! {
-                            {error_ui}
-                        }
-                    } else {
-                        rsx! {
-                            div {
-                                "Oops, we encountered an error. Please report this to the developer of this application"
-                            }
-                        }
-                    }
-                },
-                ThrowsError {}
-            }
-        }
-    }
-    // ANCHOR_END: show
-
-    #[component]
-    fn ThrowsError() -> Element {
-        let number: i32 = use_hook(|| "1...234").parse().show(|error| {
-            rsx! {
-                div {
-                    background_color: "red",
-                    color: "white",
-                    "Error parsing number: {error}"
-                }
-            }
-        })?;
-
-        todo!()
-    }
-}
-
 pub use phone_number_validation::PhoneNumberValidation;
 
 mod phone_number_validation {

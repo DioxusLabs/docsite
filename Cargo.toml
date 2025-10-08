@@ -133,6 +133,7 @@ dioxus-window = { git = "https://github.com/ealmloff/dioxus-std", branch = "0.7"
 dioxus-dx-wire-format = { git = "https://github.com/dioxuslabs/dioxus" }
 dioxus = { git = "https://github.com/dioxuslabs/dioxus" }
 dioxus-core = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-router = { git = "https://github.com/dioxuslabs/dioxus" }
 dioxus-core-types = { git = "https://github.com/dioxuslabs/dioxus" }
 dioxus-logger = { git = "https://github.com/dioxuslabs/dioxus" }
 dioxus-cli-config = { git = "https://github.com/dioxuslabs/dioxus" }

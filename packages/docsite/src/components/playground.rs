@@ -25,7 +25,7 @@ pub fn Playground(share_code: Option<String>) -> Element {
         rsx! {
             ErrorBoundary {
                 handle_error: move |err: ErrorContext| {
-                    let errors = err.errors();
+                    let error = err.error().unwrap();
                     rsx! {
                         div { class: "mx-auto mt-8 max-w-3/4",
 
@@ -35,10 +35,7 @@ pub fn Playground(share_code: Option<String>) -> Element {
 
                             br {}
 
-                            for error in errors {
-                                p { class: "dark:text-white font-light text-ghdarkmetal", "{error:?}" }
-                                br {}
-                            }
+                            p { class: "dark:text-white font-light text-ghdarkmetal", "{error:?}" }
                         }
                     }
                 },
@@ -51,12 +48,5 @@ pub fn Playground(share_code: Option<String>) -> Element {
         }
     } else {
         rsx! {}
-    }
-}
-
-#[component]
-pub fn SharePlayground(share_code: String) -> Element {
-    rsx! {
-        Playground { share_code }
     }
 }

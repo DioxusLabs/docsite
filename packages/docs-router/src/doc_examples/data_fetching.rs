@@ -23,7 +23,8 @@ mod waterfall_effect {
     fn DogView() -> Element {
         let poodle_img = use_resource(|| fetch_dog_image("poodle"));
 
-        let poodle_img = match poodle_img() {
+        let read = poodle_img.read();
+        let poodle_img = match read.as_ref() {
             Some(Ok(src)) => src,
             _ => {
                 return rsx! {
@@ -34,7 +35,8 @@ mod waterfall_effect {
 
         let golden_retriever_img = use_resource(|| fetch_dog_image("golden retriever"));
 
-        let golden_retriever_img = match golden_retriever_img() {
+        let read = golden_retriever_img.read();
+        let golden_retriever_img = match read.as_ref() {
             Some(Ok(src)) => src,
             _ => {
                 return rsx! {
@@ -45,7 +47,8 @@ mod waterfall_effect {
 
         let pug_img = use_resource(|| fetch_dog_image("pug"));
 
-        let pug_img = match pug_img() {
+        let read = pug_img.read();
+        let pug_img = match read.as_ref() {
             Some(Ok(src)) => src,
             _ => {
                 return rsx! {
@@ -93,7 +96,8 @@ mod no_waterfall_effect {
         let golden_retriever_img = use_resource(|| fetch_dog_image("golden retriever"));
         let pug_img = use_resource(|| fetch_dog_image("pug"));
 
-        let poodle_img = match poodle_img() {
+        let read = poodle_img.read();
+        let poodle_img = match read.as_ref() {
             Some(Ok(src)) => src,
             _ => {
                 return rsx! {
@@ -101,7 +105,8 @@ mod no_waterfall_effect {
                 };
             }
         };
-        let golden_retriever_img = match golden_retriever_img() {
+        let read = golden_retriever_img.read();
+        let golden_retriever_img = match read.as_ref() {
             Some(Ok(src)) => src,
             _ => {
                 return rsx! {
@@ -109,7 +114,8 @@ mod no_waterfall_effect {
                 };
             }
         };
-        let pug_img = match pug_img() {
+        let read = pug_img.read();
+        let pug_img = match read.as_ref() {
             Some(Ok(src)) => src,
             _ => {
                 return rsx! {

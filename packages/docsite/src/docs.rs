@@ -39,13 +39,15 @@ pub fn use_try_current_docs_version() -> Option<CurrentDocsVersion> {
         Route::Docs05 { child } => Some(CurrentDocsVersion::V05(child)),
         Route::Docs04 { child } => Some(CurrentDocsVersion::V04(child)),
         Route::Docs03 { child } => Some(CurrentDocsVersion::V03(child)),
-        Route::Homepage {} => None,
-        Route::Components { .. } => None,
-        Route::Awesome {} => None,
-        Route::Deploy {} => None,
-        Route::BlogList {} => None,
-        Route::BlogPost { .. } => None,
-        Route::Err404 { .. } => None,
+        Route::Homepage {}
+        | Route::Components { .. }
+        | Route::Awesome {}
+        | Route::Deploy {}
+        | Route::BlogList {}
+        | Route::BlogPost { .. }
+        | Route::Playground { .. }
+        | Route::SharePlayground { .. }
+        | Route::Err404 { .. } => None,
     }
 }
 

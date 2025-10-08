@@ -23,10 +23,10 @@ const MAIN_CSS: Asset = asset!("/src/main.css");
 
 #[derive(Routable, PartialEq, Clone)]
 enum Route {
-    #[route("/")]
+    #[route("/", PlaygroundRoute)]
     DefaultPlayground {},
 
-    #[route("/shared/:share_code")]
+    #[route("/shared/:share_code", PlaygroundRoute)]
     SharePlayground { share_code: String },
 }
 
@@ -44,14 +44,7 @@ fn App() -> Element {
 }
 
 #[component]
-fn DefaultPlayground() -> Element {
-    rsx! {
-        Playground { urls: URLS, class: "playground-container" }
-    }
-}
-
-#[component]
-fn SharePlayground(share_code: ReadSignal<Option<String>>) -> Element {
+fn PlaygroundRoute(share_code: ReadSignal<Option<String>>) -> Element {
     rsx! {
         Playground { urls: URLS, share_code, class: "playground-container" }
     }

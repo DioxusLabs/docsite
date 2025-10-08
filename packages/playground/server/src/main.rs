@@ -25,9 +25,9 @@ mod ws;
 
 /// Rate limiter configuration.
 /// How many requests each user should get within a time period.
-const REQUESTS_PER_INTERVAL: u64 = 600;
+const REQUESTS_PER_INTERVAL: u64 = 60;
 /// The period of time after the request limit resets.
-const RATE_LIMIT_INTERVAL: Duration = Duration::from_secs(60);
+const RATE_LIMIT_INTERVAL: Duration = Duration::from_secs(1);
 
 #[tokio::main]
 async fn main() {

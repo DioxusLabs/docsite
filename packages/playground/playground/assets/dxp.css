@@ -142,7 +142,7 @@
 
 #dxp-panes-right > #dxp-viewport {
     width: 100%;
-    background-color: var(--primary-color);
+    background-color: white;
 }
 
 #dxp-iframe {

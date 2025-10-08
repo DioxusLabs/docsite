@@ -1,4 +1,4 @@
-use dioxus::signals::{ReadableExt, Signal, WritableExt};
+use dioxus::prelude::*;
 use dioxus_document::eval;
 use model::{api::ApiClient, AppError, Project};
 
@@ -25,7 +25,8 @@ pub async fn copy_share_link(
         "#,
     );
 
-    e.send(formatted)?;
+    e.send(&formatted)?;
+    router().push(formatted);
 
     Ok(())
 }

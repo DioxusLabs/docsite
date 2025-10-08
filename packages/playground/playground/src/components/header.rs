@@ -88,7 +88,9 @@ pub fn Header(
                     onclick: move |_| async move {
                         share_btn_text.set("Sharing...");
                         match copy_share_link(&api_client(), project, urls.location).await {
-                            Ok(()) => share_btn_text.set("Link Copied!"),
+                            Ok(()) => {
+                                share_btn_text.set("Link Copied!");
+                            },
                             Err(error) => {
                                 share_btn_text.set("Error!");
                                 errors

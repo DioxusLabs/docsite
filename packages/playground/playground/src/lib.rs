@@ -50,7 +50,7 @@ pub fn Playground(
     // Default to the welcome project.
     // Project dirty determines whether the Rust-project is synced with the project in the editor.
     let mut project = use_context_provider(|| Signal::new(example_projects::get_welcome_project()));
-    let build = use_context_provider(|| BuildState::new(&project.read()));
+    let mut build = use_context_provider(|| BuildState::new(&project.read()));
     let mut project_dirty = use_signal(|| false);
     use_effect(move || {
         if project_dirty() && monaco_ready() {
@@ -70,6 +70,7 @@ pub fn Playground(
                     show_share_warning.set(true);
                     project_dirty.set(true);
                     project.set(shared_project);
+                    build.reset();
                 }
             });
         }
@@ -120,7 +121,8 @@ pub fn Playground(
 
     // Construct the full URL to the built project.
     let built_page_url = use_memo(move || {
-        let prebuilt_id = project.read().prebuilt.then_some(project.read().id());
+        let project = project.read();
+        let prebuilt_id = project.prebuilt.then_some(project.id());
         let local_id = build.stage().finished_id();
         let id = local_id.or(prebuilt_id)?;
         Some(format!("{}/built/{}", urls.server, id))
@@ -162,17 +164,20 @@ pub fn Playground(
             }
 
             // Share warning
-            // if show_share_warning() {
-            //     components::Modal {
-            //         icon: rsx! {
-            //             Warning {}
-            //         },
-            //         title: "Do you trust this code?",
-            //         text: "Anyone can share their project. Verify that nothing malicious has been included before running this project.",
-            //         ok_text: "I understand",
-            //         on_ok: move |_| show_share_warning.set(false),
-            //     }
-            // }
+            components::Modal {
+                on_ok: move |_| show_share_warning.set(false),
+                open: show_share_warning(),
+                if show_share_warning() {
+                    components::ModalContent {
+                        icon: rsx! {
+                            Warning {}
+                        },
+                        title: "Do you trust this code?",
+                        text: "Anyone can share their project. Verify that nothing malicious has been included before running this project.",
+                        ok_text: "I understand",
+                    }
+                }
+            }
 
             // Show errors one at a time.
             components::Modal {

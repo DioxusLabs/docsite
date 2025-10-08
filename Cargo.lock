@@ -2101,6 +2101,7 @@ dependencies = [
  "serde_json",
  "syn 2.0.106",
  "thiserror 2.0.17",
+ "tracing",
  "uuid",
  "wasm-bindgen",
 ]

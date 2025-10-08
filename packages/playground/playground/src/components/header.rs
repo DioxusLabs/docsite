@@ -1,5 +1,6 @@
 use crate::build::{BuildStage, BuildState};
 use crate::components::icons::LoadingSpinner;
+use crate::dx_components::button::*;
 use crate::dx_components::select::*;
 use crate::share_code::copy_share_link;
 use crate::HotReload;
@@ -55,8 +56,21 @@ pub fn Header(
                                 index,
                                 value: example.clone(),
                                 text_value: example.path.clone(),
-                                h3 { {example.path.clone()} }
-                                p { {example.description.clone()} }
+                                div {
+                                    display: "flex",
+                                    flex_direction: "column",
+                                    align_items: "left",
+                                    padding: "0.25rem",
+                                    h3 {
+                                        margin: "0",
+                                        margin_bottom: ".25rem",
+                                        {example.path.clone()}
+                                    }
+                                    p {
+                                        margin: "0",
+                                        {example.description.clone()}
+                                    }
+                                }
                             }
                         }
                     }
@@ -69,9 +83,8 @@ pub fn Header(
                 style: if let Some(val) = pane_right_width() { "width:{val}px;" } else { "".to_string() },
 
                 // Share button
-                button {
-                    id: "dxp-share-btn",
-                    class: "dxp-ctrl-btn",
+                Button {
+                    variant: ButtonVariant::Secondary,
                     onclick: move |_| async move {
                         share_btn_text.set("Sharing...");
                         match copy_share_link(&api_client(), project, urls.location).await {
@@ -93,10 +106,13 @@ pub fn Header(
 
 
                 // Run button
-                button {
-                    id: "dxp-run-btn",
-                    class: "dxp-ctrl-btn",
-                    class: if build.stage().is_running() { "disabled" },
+                Button {
+                    variant: ButtonVariant::Outline,
+                    "data-disabled": build.stage().is_running(),
+                    display: "flex",
+                    flex_direction: "row",
+                    align_items: "center",
+                    gap: "0.5rem",
                     onclick: move |_| {
                         on_rebuild.call(());
                     },

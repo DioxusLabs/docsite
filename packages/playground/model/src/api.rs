@@ -11,13 +11,13 @@ pub struct ShareProjectReq {
 /// API response for sharing a project.
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ShareProjectRes {
-    pub id: String,
+    pub id: uuid::Uuid,
 }
 
 /// API response for requesting a shared project.
 #[derive(Debug, Serialize, Deserialize)]
 pub struct GetSharedProjectRes {
-    pub id: String,
+    pub id: uuid::Uuid,
     pub code: String,
 }
 

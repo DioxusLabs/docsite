@@ -1,4 +1,4 @@
-use build::{start_build, BuildStage, BuildState};
+use build::{start_build, BuildState};
 use components::icons::Warning;
 use dioxus::logger::tracing::error;
 use dioxus::prelude::*;
@@ -50,7 +50,7 @@ pub fn Playground(
     // Default to the welcome project.
     // Project dirty determines whether the Rust-project is synced with the project in the editor.
     let mut project = use_context_provider(|| Signal::new(example_projects::get_welcome_project()));
-    let mut build = use_context_provider(|| BuildState::new(&project.read()));
+    let build = use_context_provider(|| BuildState::new(&project.read()));
     let mut project_dirty = use_signal(|| false);
     use_effect(move || {
         if project_dirty() && monaco_ready() {
@@ -162,30 +162,33 @@ pub fn Playground(
             }
 
             // Share warning
-            if show_share_warning() {
-                components::Modal {
-                    icon: rsx! {
-                        Warning {}
-                    },
-                    title: "Do you trust this code?",
-                    text: "Anyone can share their project. Verify that nothing malicious has been included before running this project.",
-                    ok_text: "I understand",
-                    on_ok: move |_| show_share_warning.set(false),
-                }
-            }
+            // if show_share_warning() {
+            //     components::Modal {
+            //         icon: rsx! {
+            //             Warning {}
+            //         },
+            //         title: "Do you trust this code?",
+            //         text: "Anyone can share their project. Verify that nothing malicious has been included before running this project.",
+            //         ok_text: "I understand",
+            //         on_ok: move |_| show_share_warning.set(false),
+            //     }
+            // }
 
             // Show errors one at a time.
-            if let Some(error) = errors.first() {
-                components::Modal {
-                    icon: rsx! {
-                        Warning {}
-                    },
-                    title: "{error.0}",
-                    text: "{error.1}",
-                    on_ok: move |_| {
-                        errors.pop();
-                    },
-                }
+            components::Modal {
+                on_ok: move |_| {
+                    errors.pop();
+                },
+                open: !errors.errors.is_empty(),
+                if let Some((title, text)) = errors.last() {
+                    components::ModalContent {
+                        icon: rsx! {
+                            Warning {}
+                        },
+                        title,
+                        text,
+                    }
+                },
             }
 
             // Playground UI
@@ -254,6 +257,10 @@ impl Errors {
 
     pub fn first(&self) -> Option<(String, String)> {
         self.errors.first().map(|x| x.clone())
+    }
+
+    pub fn last(&self) -> Option<(String, String)> {
+        self.errors.last().map(|x| x.clone())
     }
 
     pub fn pop(&mut self) -> Option<(String, String)> {

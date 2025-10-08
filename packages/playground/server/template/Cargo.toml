@@ -8,7 +8,7 @@ edition = "2024"
 
 [dependencies]
 dioxus = { git = "https://github.com/DioxusLabs/dioxus", features = ["web", "router"] }
-dioxus-primitives = { git = "https://github.com/ealmloff/components", branch = "bump-dioxus-git", version = "0.0.1", default-features = false, features = ["router"] }
+dioxus-primitives = { git = "https://github.com/DioxusLabs/components", version = "0.0.1", default-features = false, features = ["router"] }
 time = { version = "0.3.44", features = ["std", "macros", "wasm-bindgen"] }
 tracing = "0.1.41"
 wasm-bindgen = "=0.2.100"

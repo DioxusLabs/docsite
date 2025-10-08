@@ -57,6 +57,7 @@ pub mod gists {
     use reqwest::{StatusCode, header};
     use serde::{Deserialize, Serialize};
     use std::collections::HashMap;
+    use uuid::Uuid;
 
     const GISTS_URL_PREFIX: &str = "https://api.github.com/gists";
     const GITHUB_USER_AGENT: &str = "Dioxus Playground";
@@ -95,7 +96,7 @@ pub mod gists {
 
     #[derive(Debug, Serialize, Deserialize)]
     pub struct Gist {
-        pub id: String,
+        pub id: Uuid,
         pub files: HashMap<String, GistFile>,
     }
 

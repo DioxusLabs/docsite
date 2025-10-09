@@ -29,6 +29,7 @@ pub fn Button(
     #[props(extends=GlobalAttributes)]
     #[props(extends=button)]
     attributes: Vec<Attribute>,
+    class: Option<String>,
     onclick: Option<EventHandler<MouseEvent>>,
     onmousedown: Option<EventHandler<MouseEvent>>,
     onmouseup: Option<EventHandler<MouseEvent>>,
@@ -38,7 +39,7 @@ pub fn Button(
         document::Link { rel: "stylesheet", href: asset!("./style.css") }
 
         button {
-            class: "button",
+            class: "button ".to_string() + class.as_deref().unwrap_or_default(),
             "data-style": variant.class(),
             onclick: move |event| {
                 if let Some(f) = &onclick {

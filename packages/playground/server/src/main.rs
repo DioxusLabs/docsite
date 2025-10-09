@@ -23,12 +23,6 @@ mod serve;
 mod share;
 mod ws;
 
-/// Rate limiter configuration.
-/// How many requests each user should get within a time period.
-const REQUESTS_PER_INTERVAL: u64 = 60;
-/// The period of time after the request limit resets.
-const RATE_LIMIT_INTERVAL: Duration = Duration::from_secs(1);
-
 #[tokio::main]
 async fn main() {
     #[cfg(feature = "tracing")]
@@ -63,8 +57,8 @@ async fn main() {
     // Allow bursts with up to five requests per IP address
     // and replenishes one element every 30 seconds
     let governor_conf = GovernorConfigBuilder::default()
-        .per_second(60)
-        .burst_size(120)
+        .per_second(120)
+        .burst_size(240)
         .finish()
         .unwrap();
 
@@ -96,10 +90,6 @@ async fn main() {
                 .layer(CorsLayer::very_permissive())
                 .layer(BufferLayer::new(1024))
                 .layer(GovernorLayer::new(governor_conf))
-                .layer(RateLimitLayer::new(
-                    REQUESTS_PER_INTERVAL,
-                    RATE_LIMIT_INTERVAL,
-                ))
                 .layer(secure_ip_src.into_extension())
                 .layer(middleware::from_fn_with_state(
                     state.clone(),

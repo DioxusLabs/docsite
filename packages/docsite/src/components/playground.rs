@@ -4,8 +4,8 @@ use dioxus_playground::PlaygroundUrls;
 #[cfg(not(feature = "production"))]
 const URLS: PlaygroundUrls = PlaygroundUrls {
     socket: "ws://localhost:3000/ws",
-    server: "http://localhost:3000/built/",
-    location: "http://localhost:8080",
+    server: "http://localhost:3000",
+    location: "http://localhost:8080/playground",
 };
 
 #[cfg(feature = "production")]
@@ -40,7 +40,7 @@ pub fn Playground(share_code: Option<String>) -> Element {
                     }
                 },
                 dioxus_playground::Playground {
-                    class: "playground-container max-w-screen-2xl mx-auto mt-8",
+                    class: "playground-container max-w-screen-2xl mx-auto",
                     urls: URLS,
                     share_code,
                 }

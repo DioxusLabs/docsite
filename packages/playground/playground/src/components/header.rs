@@ -35,6 +35,7 @@ pub fn Header(
 
                 // Examples button/menu
                 Select::<Project> {
+                    width: "75%",
                     value: Some(project()),
                     on_value_change: move |example: Option<Project>| {
                         use crate::monaco;
@@ -85,6 +86,7 @@ pub fn Header(
                 // Share button
                 Button {
                     variant: ButtonVariant::Secondary,
+                    id: "dxp-header-share-btn",
                     onclick: move |_| async move {
                         share_btn_text.set("Sharing...");
                         match copy_share_link(&api_client(), project, urls.location).await {
@@ -113,8 +115,10 @@ pub fn Header(
                     "data-disabled": build.stage().is_running(),
                     display: "flex",
                     flex_direction: "row",
-                    align_items: "center",
+                    align_items: "between",
+                    justify_content: "center",
                     gap: "0.5rem",
+                    width: "10rem",
                     onclick: move |_| {
                         on_rebuild.call(());
                     },

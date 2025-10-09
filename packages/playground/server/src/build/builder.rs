@@ -232,7 +232,6 @@ async fn dx_patch_build(
     env: &EnvVars,
     cache_dir: &Path,
 ) -> Result<Option<JumpTable>, BuildError> {
-    tracing::info!("patching {:?}", request.previous_build_id);
     setup_template(&env.build_template_path, &request, true).await?;
     let mut command = Command::new("dx");
     command
@@ -273,6 +272,11 @@ async fn dx_patch_build(
             }
             return Err(BuildError::DxFailed(Some(code)));
         }
+    }
+
+    // Dump logs in debug.
+    for log in logs {
+        debug!("{log}");
     }
 
     Err(BuildError::DxFailed(None))

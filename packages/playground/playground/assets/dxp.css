@@ -6,7 +6,6 @@
 /* Header */
 #dxp-header {
     background-color: var(--dxp-bg-light-darker);
-    height: 36px;
     display: flex;
     flex-direction: row;
     padding: 0.5rem;
@@ -52,25 +51,16 @@
     transition: background-color 0.2s ease;
 }
 
-#dxp-menu-btn {
-    background-color: var(--dxp-bg-light-lighter);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 5px;
+#dxp-header-share-btn {
+    margin-left: 8px;
+    width: 8rem;
 }
-
-#dxp-menu-btn:hover {
-    cursor: pointer;
-    background-color: var(--dxp-bg-light-lighter-alt);
-}
-
-#dxp-menu-btn.dxp-open {
-    border: 1px solid var(--dxp-border-light-lighter);
-}
-
-#dxp-menu-btn > svg {
-    color: var(--dxp-text-light);
+@media (max-width: 600px) {
+    #dxp-header-share-btn {
+        width: 6rem;
+        padding-left: 0.25rem;
+        padding-right: 0.25rem;
+    }
 }
 
 .dxp-ctrl-btn:hover {

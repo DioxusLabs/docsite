@@ -31,7 +31,6 @@ pub fn Header(
             // Left pane header
             div {
                 id: "dxp-header-left",
-                style: if let Some(val) = pane_left_width() { "width:{val}px;" },
 
                 // Examples button/menu
                 Select::<Project> {
@@ -81,7 +80,6 @@ pub fn Header(
             // Right pane header
             div {
                 id: "dxp-header-right",
-                style: if let Some(val) = pane_right_width() { "width:{val}px;" } else { "".to_string() },
 
                 // Share button
                 Button {
@@ -140,25 +138,23 @@ fn Progress() -> Element {
     let build = use_context::<BuildState>();
 
     // Generate the loading message.
-    let message = use_memo(move || {
-        let compiling = build.stage().get_compiling_stage();
-        if let Some((crates_compiled, total_crates, current_crate)) = compiling {
-            return format!("{crates_compiled}/{total_crates}");
+    let message = use_memo(move || match build.stage() {
+        BuildStage::NotStarted => "Waiting".to_string(),
+        BuildStage::Queued(position) => format!("Queued ({position})"),
+        BuildStage::Starting => "Starting".to_string(),
+        BuildStage::Waiting(time) => {
+            format!("Waiting {}s", time.as_secs())
         }
-
-        match build.stage() {
-            BuildStage::NotStarted => "Waiting".to_string(),
-            BuildStage::Starting => "Starting".to_string(),
-            BuildStage::Waiting(time) => {
-                format!("Waiting {}s", time.as_secs())
-            }
-            BuildStage::Building(build_stage) => match build_stage {
-                model::BuildStage::RunningBindgen => "Binding".to_string(),
-                model::BuildStage::Other => "Computing".to_string(),
-                model::BuildStage::Compiling { .. } => unreachable!(),
-            },
-            BuildStage::Finished(_) => "Finished!".to_string(),
-        }
+        BuildStage::Building(build_stage) => match build_stage {
+            model::BuildStage::RunningBindgen => "Binding".to_string(),
+            model::BuildStage::Other => "Computing".to_string(),
+            model::BuildStage::Compiling {
+                crates_compiled,
+                total_crates,
+                ..
+            } => format!("{crates_compiled}/{total_crates}"),
+        },
+        BuildStage::Finished(_) => "Finished!".to_string(),
     });
 
     rsx! {

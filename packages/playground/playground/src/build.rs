@@ -10,6 +10,7 @@ pub(crate) enum BuildStage {
     NotStarted,
     Starting,
     Waiting(Duration),
+    Queued(usize),
     Building(model::BuildStage),
     Finished(Result<Uuid, String>),
 }
@@ -18,7 +19,7 @@ impl BuildStage {
     pub fn is_running(&self) -> bool {
         matches!(
             self,
-            Self::Starting | Self::Building(..) | Self::Waiting(..)
+            Self::Starting | Self::Building(..) | Self::Waiting(..) | Self::Queued(..)
         )
     }
 
@@ -64,7 +65,6 @@ impl BuildStage {
 #[derive(Debug, Clone, Copy)]
 pub(crate) struct BuildState {
     stage: Signal<BuildStage>,
-    queue_position: Signal<Option<usize>>,
     diagnostics: Signal<Vec<CargoDiagnostic>>,
     previous_build_id: Signal<Option<Uuid>>,
 }
@@ -77,7 +77,6 @@ impl BuildState {
             } else {
                 BuildStage::NotStarted
             }),
-            queue_position: Signal::new(None),
             diagnostics: Signal::new(Vec::new()),
             previous_build_id: Signal::new(None),
         }
@@ -86,7 +85,6 @@ impl BuildState {
     /// Reset the build state to it's default.
     pub fn reset(&mut self) {
         self.stage.set(BuildStage::NotStarted);
-        self.queue_position.set(None);
         self.diagnostics.clear();
         self.previous_build_id.set(None);
     }
@@ -99,16 +97,6 @@ impl BuildState {
     /// Set the build stage.
     pub fn set_stage(&mut self, stage: BuildStage) {
         self.stage.set(stage);
-    }
-
-    /// Get the current queue position.
-    pub fn queue_position(&self) -> Option<usize> {
-        (self.queue_position)()
-    }
-
-    /// Set the queue position.
-    pub fn set_queue_position(&mut self, position: Option<usize>) {
-        self.queue_position.set(position);
     }
 
     /// Get the diagnostics signal.

@@ -50,16 +50,8 @@ async fn handle_socket(state: AppState, ip: IpAddr, socket: WebSocket) {
                     continue;
                 };
 
-                // Start a new build, stopping any existing ones.
+                // Start a new build
                 if let SocketMessage::BuildRequest { code, previous_build_id } = socket_msg {
-                    if let Some(ref request) = current_build {
-                        let result = state.build_queue_tx.send(BuildCommand::Stop { id: request.id });
-                        if result.is_err() {
-                            error!(build_id = ?request.id, "failed to send build stop signal for new build request");
-                            continue;
-                        }
-                    }
-
                     // Rate limit the build requests by ip
                     if let Err(n) = state.build_govener.check_key(&ip) {
                         let wait_time = n.wait_time_from(QuantaClock::default().now());

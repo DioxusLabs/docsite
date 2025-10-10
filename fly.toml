@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for docsite-playground on 2025-02-04T15:44:00-08:00
+# fly.toml app configuration file generated for docsite-playground-thrumming-sun-6870 on 2025-09-25T12:53:35-05:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -6,7 +6,7 @@
 app = 'docsite-playground'
 primary_region = 'lax'
 kill_signal = 'SIGINT'
-kill_timeout = '5s'
+kill_timeout = '300s'
 
 [build]
 
@@ -38,6 +38,6 @@ kill_timeout = '5s'
     soft_limit = 20
 
 [[vm]]
-  memory = '3gb'
+  memory = '2gb'
   cpu_kind = 'shared'
-  cpus = 2
+  cpus = 8

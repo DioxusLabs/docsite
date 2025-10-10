@@ -13,7 +13,7 @@ use dioxus_logger::tracing::{Level, error, info};
 use share::{get_shared_project, share_project};
 use std::{net::SocketAddr, sync::atomic::Ordering, time::Duration};
 use tokio::{net::TcpListener, time::Instant};
-use tower::{ServiceBuilder, buffer::BufferLayer, limit::RateLimitLayer};
+use tower::{ServiceBuilder, buffer::BufferLayer};
 use tower_governor::{GovernorLayer, governor::GovernorConfigBuilder};
 use tower_http::{compression::CompressionLayer, cors::CorsLayer};
 

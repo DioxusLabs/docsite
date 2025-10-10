@@ -43,7 +43,7 @@ impl Socket {
 pub fn handle_message(mut build: BuildState, message: SocketMessage) -> bool {
     match message {
         SocketMessage::BuildStage(stage) => build.set_stage(BuildStage::Building(stage)),
-        SocketMessage::QueuePosition(position) => build.set_queue_position(Some(position)),
+        SocketMessage::QueuePosition(position) => build.set_stage(BuildStage::Queued(position)),
         SocketMessage::BuildFinished(BuildResult::Failed(failure)) => {
             build.set_stage(BuildStage::Finished(Err(failure)));
             return true;

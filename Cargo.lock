@@ -2054,7 +2054,7 @@ dependencies = [
  "dioxus-devtools",
  "dioxus-document",
  "dioxus-html",
- "dioxus-primitives",
+ "dioxus-primitives 0.0.1 (git+https://github.com/ealmloff/components?branch=bump-dioxus-git)",
  "dioxus-rsx",
  "dioxus-rsx-hotreload",
  "dioxus-rsx-rosetta",
@@ -2080,6 +2080,18 @@ dependencies = [
 name = "dioxus-primitives"
 version = "0.0.1"
 source = "git+https://github.com/ealmloff/components?branch=bump-dioxus-git#72dac8db64acc02bd5dd702aafc97c892f41dd7a"
+dependencies = [
+ "dioxus",
+ "dioxus-time 0.7.0-rc.0 (git+https://github.com/ealmloff/dioxus-std?branch=0.7)",
+ "lazy-js-bundle 0.6.2",
+ "time",
+ "tracing",
+]
+
+[[package]]
+name = "dioxus-primitives"
+version = "0.0.1"
+source = "git+https://github.com/DioxusLabs/components#3571d90aa55773c59b05119d9fff8879da6b8a3d"
 dependencies = [
  "dioxus",
  "dioxus-time 0.7.0-rc.0 (git+https://github.com/ealmloff/dioxus-std?branch=0.7)",
@@ -6753,6 +6765,7 @@ dependencies = [
  "dioxus-devtools-types",
  "dioxus-dx-wire-format",
  "dioxus-logger",
+ "dioxus-primitives 0.0.1 (git+https://github.com/DioxusLabs/components)",
  "example-projects",
  "fs_extra",
  "futures",

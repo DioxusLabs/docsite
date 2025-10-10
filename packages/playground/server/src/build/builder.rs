@@ -335,6 +335,7 @@ fn process_build_messages(
 
     while let Some(Ok(line)) = stdout_reader.next() {
         logs.push(line.clone());
+        tracing::info!("{line}");
         patch = patch.or(process_dx_message(env, request, line));
     }
 

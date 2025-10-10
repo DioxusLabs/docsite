@@ -202,13 +202,11 @@ pub enum Route {
         #[route("/")]
         Homepage {},
 
-        // #[route("/playground")]
-        // Playground {},
+        #[route("/playground")]
+        Playground {},
 
-        // #[route("/playground/shared/:share_code")]
-        // SharePlayground { share_code: String },
-
-
+        #[route("/playground/shared/:share_code", Playground)]
+        SharePlayground { share_code: String },
 
         #[route("/awesome")]
         Awesome {},

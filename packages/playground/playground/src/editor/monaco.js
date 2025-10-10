@@ -5,8 +5,9 @@ export function initMonaco(
   vsPathPrefix,
   elementId,
   initialTheme,
-  initialSnippet, 
+  initialSnippet,
   onReadyCallback,
+  onBuildCallback,
 ) {
   require.config({ paths: { vs: vsPathPrefix } });
 
@@ -85,6 +86,11 @@ export function initMonaco(
       theme: initialTheme, //dx-vs-dark
       minimap: { enabled: false },
       "semanticHighlighting.enabled": true,
+    });
+
+    // Super+Enter for Mac, Ctrl+Enter for others.
+    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
+      onBuildCallback();
     });
 
     monacoEditor = editor;

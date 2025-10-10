@@ -145,7 +145,7 @@ static LINKS: &[(&str, &str)] = &[
         },
     ),
     // ("SDK", "/sdk"),
-    // ("Playground", "/playground"),
+    ("Playground", "/playground"),
     ("Components", "/components"),
     // ("Awesome", "/awesome"),
     ("Blog", "/blog"),

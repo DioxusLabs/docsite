@@ -16,20 +16,6 @@ DemoFrame {
 }
 ```
 
-## Customizing the loading view from children
-
-If you need to change the loading view while a specific task is loading, you can provide a different loading view with the `with_loading_placeholder` method. The loading placeholder you return from the method will be passed to the suspense boundary and may choose to render it instead of the default loading view:
-
-```rust
-{{#include ../docs-router/src/doc_examples/asynchronous.rs:suspense_boundary_with_loading_placeholder}}
-```
-
-```inject-dioxus
-DemoFrame {
-    asynchronous::DogGridViewWithLoadingPlaceholder {}
-}
-```
-
 ## Suspense with Fullstack
 
 Dioxus fullstack will wait for suspended futures during server-side rendering. This means your async data loading starts sooner and search engines can see the resolved version of your page. However, using suspense in fullstack does require some changes for hydration compatibility.

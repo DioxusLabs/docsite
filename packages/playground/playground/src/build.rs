@@ -1,19 +1,26 @@
+use std::time::Duration;
+
 use crate::ws;
 use dioxus::prelude::*;
-use model::{AppError, CargoDiagnostic, SocketMessage};
+use model::{AppError, CargoDiagnostic, Project, SocketMessage};
 use uuid::Uuid;
 
 #[derive(Debug, Clone, PartialEq)]
 pub(crate) enum BuildStage {
     NotStarted,
     Starting,
+    Waiting(Duration),
+    Queued(usize),
     Building(model::BuildStage),
     Finished(Result<Uuid, String>),
 }
 
 impl BuildStage {
     pub fn is_running(&self) -> bool {
-        matches!(self, Self::Starting | Self::Building(..))
+        matches!(
+            self,
+            Self::Starting | Self::Building(..) | Self::Waiting(..) | Self::Queued(..)
+        )
     }
 
     pub fn is_finished(&self) -> bool {
@@ -58,24 +65,28 @@ impl BuildStage {
 #[derive(Debug, Clone, Copy)]
 pub(crate) struct BuildState {
     stage: Signal<BuildStage>,
-    queue_position: Signal<Option<usize>>,
     diagnostics: Signal<Vec<CargoDiagnostic>>,
+    previous_build_id: Signal<Option<Uuid>>,
 }
 
 impl BuildState {
-    pub fn new() -> Self {
+    pub fn new(project: &Project) -> Self {
         Self {
-            stage: Signal::new(BuildStage::NotStarted),
-            queue_position: Signal::new(None),
+            stage: Signal::new(if project.prebuilt {
+                BuildStage::Finished(Ok(project.id()))
+            } else {
+                BuildStage::NotStarted
+            }),
             diagnostics: Signal::new(Vec::new()),
+            previous_build_id: Signal::new(None),
         }
     }
 
     /// Reset the build state to it's default.
     pub fn reset(&mut self) {
         self.stage.set(BuildStage::NotStarted);
-        self.queue_position.set(None);
         self.diagnostics.clear();
+        self.previous_build_id.set(None);
     }
 
     /// Get the current stage.
@@ -88,16 +99,6 @@ impl BuildState {
         self.stage.set(stage);
     }
 
-    /// Get the current queue position.
-    pub fn queue_position(&self) -> Option<usize> {
-        (self.queue_position)()
-    }
-
-    /// Set the queue position.
-    pub fn set_queue_position(&mut self, position: Option<usize>) {
-        self.queue_position.set(position);
-    }
-
     /// Get the diagnostics signal.
     pub fn diagnostics(&self) -> Signal<Vec<CargoDiagnostic>> {
         self.diagnostics
@@ -107,6 +108,11 @@ impl BuildState {
     pub fn push_diagnostic(&mut self, diagnostic: CargoDiagnostic) {
         self.diagnostics.push(diagnostic);
     }
+
+    /// Get the previous build ID signal.
+    pub fn previous_build_id(&self) -> Signal<Option<Uuid>> {
+        self.previous_build_id
+    }
 }
 
 /// Start a build and handle updating the build signals according to socket messages.
@@ -115,16 +121,25 @@ pub async fn start_build(
     socket_url: String,
     code: String,
 ) -> Result<bool, AppError> {
+    let stage = build.stage();
     // Reset build state
-    if build.stage().is_running() {
+    if stage.is_running() {
         return Err(AppError::BuildIsAlreadyRunning);
     }
     build.reset();
+    if let Some(build_id) = stage.finished_id() {
+        build.previous_build_id().set(Some(build_id));
+    }
     build.set_stage(BuildStage::Starting);
 
     // Send socket compile request
     let mut socket = ws::Socket::new(&socket_url)?;
-    socket.send(SocketMessage::BuildRequest(code)).await?;
+    socket
+        .send(SocketMessage::BuildRequest {
+            code,
+            previous_build_id: stage.finished_id(),
+        })
+        .await?;
 
     // Handle socket messages
     loop {

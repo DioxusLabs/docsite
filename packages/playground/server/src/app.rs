@@ -1,28 +1,43 @@
 //! Initialization of the server application and environment configurations.
 
 use crate::{
-    build::{watcher::start_build_watcher, BuildCommand, BuildRequest},
+    build::{BuildCommand, BuildRequest, watcher::start_build_watcher},
     start_cleanup_services,
 };
 use dioxus_logger::tracing::{info, warn};
+use governor::{
+    Quota, RateLimiter,
+    clock::{QuantaClock, QuantaInstant},
+    middleware::NoOpMiddleware,
+    state::keyed::DashMapStateStore,
+};
 use std::{
     env,
+    net::IpAddr,
+    num::NonZeroU32,
     path::PathBuf,
-    sync::{atomic::AtomicBool, Arc},
+    sync::{Arc, atomic::AtomicBool},
     time::Duration,
 };
 use tokio::{
-    sync::{mpsc::UnboundedSender, Mutex},
+    sync::{Mutex, mpsc::UnboundedSender},
     time::Instant,
 };
+use uuid::Uuid;
 
 const DEFAULT_PORT: u16 = 3000;
 
 // Paths
 const DEFAULT_BUILD_TEMPLATE_PATH: &str = "./template";
 
-// Duration after built projects are created to be removed.
-const DEFAULT_BUILT_CLEANUP_DELAY: Duration = Duration::from_secs(20);
+/// Max size of the built directory before old projects are removed.
+const DEFAULT_BUILT_DIR_SIZE: u64 = 1 * 1024 * 1024 * 1024; // 1 GB
+/// Max memory usage of dx during a build before it is killed.
+const DEFAULT_DX_MEMORY_LIMIT: u64 = 5 * 1024 * 1024 * 1024; // 5 GB
+/// Max seconds a dx build can take before it is killed.
+const DEFAULT_DX_BUILD_TIMEOUT: u64 = 5 * 60; // 5 minutes
+/// Max size of the target directory before it is cleaned.
+const DEFAULT_TARGET_DIR_SIZE: u64 = 3 * 1024 * 1024 * 1024; // 3 GB
 
 /// A group of environment configurations for the application.
 #[derive(Clone)]
@@ -39,8 +54,19 @@ pub struct EnvVars {
     /// The path where built projects are temporarily stored.
     pub built_path: PathBuf,
 
-    /// The time after creation each built project should be removed.
-    pub built_cleanup_delay: Duration,
+    /// The max size of the built project directory before old projects are removed.
+    pub max_built_dir_size: u64,
+
+    /// The max size of the target directory before it is cleaned.
+    pub max_target_dir_size: u64,
+
+    /// The max memory limit for dx during a build.
+    #[cfg_attr(not(target_os = "linux"), allow(unused))]
+    pub dx_memory_limit: u64,
+
+    /// The max seconds a dx build can take before it is killed.
+    #[cfg_attr(not(target_os = "linux"), allow(unused))]
+    pub dx_build_timeout: u64,
 
     /// The optional shutdown delay that specifies how many seconds after
     /// inactivity to shut down the server.
@@ -68,9 +94,24 @@ impl EnvVars {
                 PathBuf::from("./temp/")
             },
             shutdown_delay,
-            built_cleanup_delay: DEFAULT_BUILT_CLEANUP_DELAY,
+            max_built_dir_size: DEFAULT_BUILT_DIR_SIZE,
+            max_target_dir_size: DEFAULT_TARGET_DIR_SIZE,
+            dx_memory_limit: DEFAULT_DX_MEMORY_LIMIT,
+            dx_build_timeout: DEFAULT_DX_BUILD_TIMEOUT,
             gist_auth_token: gist_auth_token.unwrap_or_default(),
         }
+    }
+
+    /// Get the path to the target dir
+    pub fn target_dir(&self) -> PathBuf {
+        self.build_template_path.join("target")
+    }
+
+    /// Get the path to the built template hot patch cache
+    pub fn built_template_hotpatch_cache(&self, id: &Uuid) -> PathBuf {
+        self.target_dir()
+            .join("hotpatch_cache")
+            .join(id.to_string())
     }
 
     /// Get the production environment variable.
@@ -157,10 +198,11 @@ pub struct AppState {
     /// Prevents the server from shutting down during an active build.
     pub is_building: Arc<AtomicBool>,
 
-    /// A list of connected sockets by ip. Used to disallow extra socket connections.
-    pub _connected_sockets: Arc<Mutex<Vec<String>>>,
-
     pub reqwest_client: reqwest::Client,
+
+    pub build_govener: Arc<
+        RateLimiter<IpAddr, DashMapStateStore<IpAddr>, QuantaClock, NoOpMiddleware<QuantaInstant>>,
+    >,
 }
 
 impl AppState {
@@ -173,24 +215,26 @@ impl AppState {
         let build_queue_tx = start_build_watcher(env.clone(), is_building.clone());
 
         // Get prebuild arg
-        let prebuild = std::env::args()
-            .collect::<Vec<String>>()
-            .get(1)
-            .map(|x| x == "--prebuild")
-            .unwrap_or(false);
+        let prebuild = std::env::args().any(|x| x == "--prebuild");
 
         if prebuild {
             info!("server is prebuilding");
             env.shutdown_delay = Some(Duration::from_secs(1));
         }
 
+        let build_govener = Arc::new(RateLimiter::keyed(
+            Quota::with_period(Duration::from_secs(5))
+                .unwrap()
+                .allow_burst(NonZeroU32::new(2).unwrap()),
+        ));
+
         let state = Self {
             env,
             build_queue_tx,
             last_request_time: Arc::new(Mutex::new(Instant::now())),
             is_building,
-            _connected_sockets: Arc::new(Mutex::new(Vec::new())),
             reqwest_client: reqwest::Client::new(),
+            build_govener,
         };
 
         // Queue the examples to be built on startup.
@@ -202,6 +246,7 @@ impl AppState {
             let _ = state.build_queue_tx.send(BuildCommand::Start {
                 request: BuildRequest {
                     id: project.id(),
+                    previous_build_id: None,
                     project: project.clone(),
                     ws_msg_tx: tx.clone(),
                 },

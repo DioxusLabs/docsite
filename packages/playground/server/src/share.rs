@@ -1,12 +1,12 @@
 use crate::app::AppState;
 use axum::{
-    extract::{Path, State},
     Json,
+    extract::{Path, State},
 };
 use dioxus_logger::tracing::trace;
 use gists::{GistFile, NewGist};
-use model::api::{GetSharedProjectRes, ShareProjectReq, ShareProjectRes};
 use model::AppError;
+use model::api::{GetSharedProjectRes, ShareProjectReq, ShareProjectRes};
 use std::collections::HashMap;
 
 const PRIMARY_GIST_FILE_NAME: &str = "dxp.rs";
@@ -54,9 +54,10 @@ pub async fn share_project(
 pub mod gists {
     use crate::app::AppState;
     use model::AppError;
-    use reqwest::{header, StatusCode};
+    use reqwest::{StatusCode, header};
     use serde::{Deserialize, Serialize};
     use std::collections::HashMap;
+    use uuid::Uuid;
 
     const GISTS_URL_PREFIX: &str = "https://api.github.com/gists";
     const GITHUB_USER_AGENT: &str = "Dioxus Playground";
@@ -95,7 +96,7 @@ pub mod gists {
 
     #[derive(Debug, Serialize, Deserialize)]
     pub struct Gist {
-        pub id: String,
+        pub id: Uuid,
         pub files: HashMap<String, GistFile>,
     }
 

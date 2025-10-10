@@ -13,7 +13,7 @@ pub struct Project {
     contents: String,
     pub prebuilt: bool,
     id: Uuid,
-    shared_id: Option<String>,
+    shared_id: Option<uuid::Uuid>,
 }
 
 impl Project {
@@ -34,6 +34,14 @@ impl Project {
 
     pub fn id(&self) -> Uuid {
         self.id
+    }
+
+    pub fn shared_id(&self) -> Option<Uuid> {
+        self.shared_id
+    }
+
+    pub fn set_shared_id(&mut self, new_shared_id: Uuid) {
+        self.shared_id = Some(new_shared_id);
     }
 
     pub fn contents(&self) -> String {
@@ -68,24 +76,25 @@ impl Project {
         })
     }
 
-    pub async fn share_project(&mut self, client: &ApiClient) -> Result<String, AppError> {
+    pub async fn share_project(
+        shared_id: Option<Uuid>,
+        code: String,
+        client: &ApiClient,
+    ) -> Result<Uuid, AppError> {
         // If the project has already been shared, return the share code.
         // We remove the shared id if the content changes.
-        if let Some(share_code) = &self.shared_id {
+        if let Some(share_code) = &shared_id {
             return Ok(share_code.clone());
         }
 
         let url = format!("{}/shared", client.server_url);
         let res = client
             .post(url)
-            .json(&ShareProjectReq {
-                code: self.contents.clone(),
-            })
+            .json(&ShareProjectReq { code })
             .send()
             .await?;
 
         let res = res.json::<ShareProjectRes>().await?;
-        self.shared_id = Some(res.id.clone());
 
         Ok(res.id)
     }

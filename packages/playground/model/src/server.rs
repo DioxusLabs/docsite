@@ -6,6 +6,7 @@ use crate::{
 };
 use axum::http::StatusCode;
 use axum::{extract::ws, response::IntoResponse};
+use dioxus_dx_wire_format::cargo_metadata::diagnostic::Diagnostic;
 use dioxus_dx_wire_format::{
     cargo_metadata::{diagnostic::DiagnosticLevel, CompilerMessage},
     BuildStage as DxBuildStage,
@@ -36,7 +37,7 @@ impl SocketMessage {
         let msg = self
             .as_json_string()
             .expect("socket message should be valid json");
-        ws::Message::Text(msg)
+        ws::Message::Text(msg.into())
     }
 }
 
@@ -44,8 +45,8 @@ impl TryFrom<ws::Message> for SocketMessage {
     type Error = SocketError;
 
     fn try_from(value: ws::Message) -> Result<Self, Self::Error> {
-        let text = value.into_text()?;
-        SocketMessage::try_from(text)
+        let text = value.into_data();
+        SocketMessage::from_bytes(text)
     }
 }
 
@@ -68,6 +69,7 @@ impl TryFrom<CompilerMessage> for CargoDiagnostic {
         let spans = diagnostic
             .spans
             .iter()
+            .filter(|s| s.file_name == "src/main.rs")
             .map(|s| CargoDiagnosticSpan {
                 is_primary: s.is_primary,
                 line_start: s.line_start,
@@ -79,7 +81,40 @@ impl TryFrom<CompilerMessage> for CargoDiagnostic {
             .collect();
 
         Ok(Self {
-            target_crate: value.target.name,
+            target_crate: Some(value.target.name),
+            level,
+            message,
+            spans,
+        })
+    }
+}
+
+/// TryFrom that fails for data we don't care about from cargo.
+impl TryFrom<Diagnostic> for CargoDiagnostic {
+    type Error = ();
+
+    fn try_from(value: Diagnostic) -> Result<Self, Self::Error> {
+        let level = CargoLevel::Error;
+
+        let message = value.message;
+
+        // Collect spans
+        let spans = value
+            .spans
+            .iter()
+            .filter(|s| s.file_name == "src/main.rs")
+            .map(|s| CargoDiagnosticSpan {
+                is_primary: s.is_primary,
+                line_start: s.line_start,
+                line_end: s.line_end,
+                column_start: s.column_start,
+                column_end: s.column_end,
+                label: s.label.clone(),
+            })
+            .collect();
+
+        Ok(Self {
+            target_crate: None,
             level,
             message,
             spans,

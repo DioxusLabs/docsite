@@ -46,20 +46,6 @@ impl BuildStage {
 
         None
     }
-
-    /// Extract the compiling stage info if available.
-    pub fn get_compiling_stage(&self) -> Option<(usize, usize, String)> {
-        if let Self::Building(model::BuildStage::Compiling {
-            crates_compiled,
-            total_crates,
-            current_crate,
-        }) = self
-        {
-            return Some((*crates_compiled, *total_crates, current_crate.to_string()));
-        }
-
-        None
-    }
 }
 
 #[derive(Debug, Clone, Copy)]

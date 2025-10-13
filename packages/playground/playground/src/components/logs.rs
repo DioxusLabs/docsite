@@ -10,8 +10,6 @@ pub fn Logs() -> Element {
 
     rsx! {
         div {
-            id: "logs",
-
             // Main failure reason.
             if let Some(message) = err_message {
                 Log {

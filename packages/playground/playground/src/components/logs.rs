@@ -67,6 +67,7 @@ fn Log(
                 justify_content: "space-between",
                 align_items: "center",
                 padding: "0.5rem 1rem",
+                color: "black",
                 "{message}"
                 span {
                     "{level.0}"

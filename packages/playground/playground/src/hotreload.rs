@@ -85,14 +85,6 @@ impl HotReload {
         };
     }
 
-    fn full_rebuild(&mut self, code: String) -> HotReloadError {
-        *self.cached_parse.write() = CachedParse {
-            raw: code,
-            templates: HashMap::new(),
-        };
-        HotReloadError::NeedsRebuild
-    }
-
     pub fn process_file_change(
         &mut self,
         new_code: String,
@@ -106,7 +98,7 @@ impl HotReload {
 
         let changes = match diff_rsx(&new_file, &cached_file) {
             Some(rsx_calls) => rsx_calls,
-            None => return Err(self.full_rebuild(new_code)),
+            None => return Err(HotReloadError::NeedsRebuild),
         };
 
         let mut out_templates = Vec::new();
@@ -131,7 +123,7 @@ impl HotReload {
 
             // if the template is not hotreloadable, we need to do a full rebuild
             let Some(results) = hotreload_result else {
-                return Err(self.full_rebuild(new_code));
+                return Err(HotReloadError::NeedsRebuild);
             };
 
             let mut cached = self.cached_parse.write();

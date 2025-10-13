@@ -106,14 +106,18 @@ pub fn Playground(
             if build.stage().is_running() || !monaco_ready() {
                 return;
             }
-            hot_reload.set_needs_rebuild(false);
 
             // Update hot reload
             let code = editor::monaco::get_current_model_value();
 
             let socket_url = urls.socket.to_string();
-            match start_build(build, socket_url, code).await {
-                Ok(success) => hot_reload.set_needs_rebuild(!success),
+            match start_build(build, socket_url, code.clone()).await {
+                Ok(success) => {
+                    if success {
+                        hot_reload.set_starting_code(&code);
+                    }
+                    hot_reload.set_needs_rebuild(!success)
+                }
                 Err(error) => errors.push_from_app_error(error),
             }
         });

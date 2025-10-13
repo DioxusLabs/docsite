@@ -43,7 +43,7 @@ async fn check_project_cleanup(env: &EnvVars) -> Result<(), io::Error> {
 
         let metadata = item.metadata().await;
         let time_elapsed = metadata
-            .and_then(|m| m.created().or_else(|_| m.modified()))
+            .and_then(|m| m.modified())
             .and_then(|c| c.elapsed().map_err(io::Error::other));
         let size = dir_size(&path).await;
         if let (Ok(time_elapsed), Ok(size)) = (time_elapsed, size) {

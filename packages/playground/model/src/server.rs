@@ -85,6 +85,7 @@ impl TryFrom<CompilerMessage> for CargoDiagnostic {
             level,
             message,
             spans,
+            rendered: diagnostic.rendered,
         })
     }
 }
@@ -118,6 +119,7 @@ impl TryFrom<Diagnostic> for CargoDiagnostic {
             level,
             message,
             spans,
+            rendered: value.rendered,
         })
     }
 }

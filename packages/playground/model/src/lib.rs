@@ -72,21 +72,22 @@ impl SocketMessage {
 }
 
 /// A cargo diagnostic
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Hash, Eq)]
 pub struct CargoDiagnostic {
     pub target_crate: Option<String>,
     pub level: CargoLevel,
     pub message: String,
     pub spans: Vec<CargoDiagnosticSpan>,
+    pub rendered: Option<String>,
 }
 
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Hash, Eq)]
 pub enum CargoLevel {
     Error,
     Warning,
 }
 
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Hash, Eq)]
 pub struct CargoDiagnosticSpan {
     pub is_primary: bool,
     pub line_start: usize,

@@ -119,18 +119,18 @@ pub fn Panes(
                 width: if let Some(val) = pane_right_width() { "{val}px;" },
 
                 // Viewport
-                if build_stage.is_err() {
-                    Logs {}
-                } else if let Some(url) = built_page_url() {
-                    div { id: "dxp-viewport",
+                div { id: "dxp-viewport",
+                    if build_stage.is_err() {
+                        Logs {}
+                    } else if let Some(url) = built_page_url() {
                         iframe {
                             id: "dxp-iframe",
                             src: "{url}",
                             pointer_events: if dragging() { "none" } else { "all" },
                         }
+                    } else {
+                        p { "Click `Rebuild` to start a build!" }
                     }
-                } else {
-                    p { "Click `Rebuild` to start a build!" }
                 }
             }
         }

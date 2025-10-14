@@ -20,8 +20,11 @@ mod web;
 /// The result of a build
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum BuildResult {
+    /// The project was built and is now available under the uuid
     Built(Uuid),
+    /// The project was hotpatched
     HotPatched(JumpTable),
+    /// The build failed with an error message
     Failed(String),
 }
 
@@ -40,6 +43,7 @@ pub enum SocketMessage {
 }
 
 impl SocketMessage {
+    /// Check if the socket message is the finished variant
     pub fn is_finished(&self) -> bool {
         matches!(self, SocketMessage::BuildFinished(_))
     }

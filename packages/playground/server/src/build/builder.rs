@@ -416,9 +416,7 @@ fn process_dx_message(env: &EnvVars, request: &BuildRequest, message: String) ->
                 .send(BuildMessage::CargoDiagnostic(diagnostic))
         }
         StructuredOutput::RustcOutput { message } => {
-            let Ok(diagnostic) = CargoDiagnostic::try_from(message) else {
-                return None;
-            };
+            let diagnostic = CargoDiagnostic::from(message);
 
             if !from_main_crate(&diagnostic) {
                 return None;

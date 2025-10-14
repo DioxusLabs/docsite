@@ -78,11 +78,8 @@ impl TryFrom<CompilerMessage> for CargoDiagnostic {
     }
 }
 
-/// TryFrom that fails for data we don't care about from cargo.
-impl TryFrom<Diagnostic> for CargoDiagnostic {
-    type Error = ();
-
-    fn try_from(value: Diagnostic) -> Result<Self, Self::Error> {
+impl From<Diagnostic> for CargoDiagnostic {
+    fn from(value: Diagnostic) -> Self {
         let level = CargoLevel::Error;
 
         let message = value.message;
@@ -90,13 +87,13 @@ impl TryFrom<Diagnostic> for CargoDiagnostic {
         // Collect spans
         let spans = value.spans.iter().map(|s| s.clone().into()).collect();
 
-        Ok(Self {
+        Self {
             target_crate: None,
             level,
             message,
             spans,
             rendered: value.rendered,
-        })
+        }
     }
 }
 

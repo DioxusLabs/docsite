@@ -46,21 +46,6 @@
     flex-direction: column;
 }
 
-/* .full-chapter {
-  padding-top: 12px;
-  padding-bottom: 12px;
-} */
-/* .full-chapter:not(:last-child) {
-  &:where([data-theme="light"], [data-theme="light"] *) {
-    border-bottom: 1px solid #3b3d3e29;
-  }
-}
-
-.full-chapter:not(:last-child) {
-  &:where([data-theme="dark"], [data-theme="dark"] *) {
-    border-bottom: 1px solid #a4a9ac7d;
-  }
-} */
 
 html {
     &:where([data-theme="dark"], [data-theme="dark"] *) {
@@ -208,9 +193,6 @@ It's so unliklely anyone is copying text on mobile that we can just hide it
     background-color: #1e1e1e;
 }
 
-.dioxus-blog-post h1 {
-    /* text-align: center; */
-}
 
 .dioxus-blog-post
     :where(h2:not(:is(h1 + h2))):not(

@@ -195,9 +195,6 @@ fn Head() -> Element {
 #[derive(Clone, Routable, PartialEq, Eq, Serialize, Deserialize, Debug)]
 #[rustfmt::skip]
 pub enum Route {
-    // #[layout(HeadLayout)]
-    // #[layout(HeaderLayout)]
-    // #[layout(FooterLayout)]
     #[layout(HeaderFooter)]
         #[route("/")]
         Homepage {},

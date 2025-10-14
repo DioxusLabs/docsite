@@ -52,7 +52,8 @@ async fn handle_socket(state: AppState, ip: IpAddr, socket: WebSocket) {
 
                 // Start a new build
                 if let SocketMessage::BuildRequest { code, previous_build_id } = socket_msg {
-                    // Rate limit the build requests by ip
+                    // Rate limit the build requests by ip. If we are being rate limited, send a message
+                    // to the client with the wait time and then wait before continuing.
                     if let Err(n) = state.build_govener.check_key(&ip) {
                         let wait_time = n.wait_time_from(QuantaClock::default().now());
                         let socket_msg = SocketMessage::RateLimited(wait_time);
@@ -76,8 +77,8 @@ async fn handle_socket(state: AppState, ip: IpAddr, socket: WebSocket) {
                     break;
                 }
 
-                // If the build finished, let's close this socket.
-                if   build_msg.is_done() {
+                // If the build finished, close this socket.
+                if build_msg.is_done() {
                     current_build = None;
                     let _ = socket_tx.close().await;
                     break;

@@ -10,27 +10,27 @@ use model::{BuildStage, CargoDiagnostic};
 use std::future::pending;
 use std::io::{BufRead, BufReader};
 use std::path::Path;
-use std::process::Stdio;
 use std::process::{Child, Command};
+use std::process::{ExitStatus, Stdio};
 use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, Ordering};
 use tokio::fs;
 use tokio::task::JoinHandle;
 use tracing::{trace, warn};
 
-const BUILD_ID_ID: &str = "{BUILD_ID}";
+const BUILD_ID_TEMPLATE: &str = "{BUILD_ID}";
 
-// TODO: We need some way of cleaning up any stopped builds.
 /// The builder provides a convenient interface for controlling builds running in another task.
 pub struct Builder {
-    env: EnvVars,
+    env: Arc<EnvVars>,
     is_building: Arc<AtomicBool>,
     current_build: Option<BuildRequest>,
     task: Option<JoinHandle<Result<Option<JumpTable>, BuildError>>>,
 }
 
 impl Builder {
-    pub fn new(env: EnvVars, is_building: Arc<AtomicBool>) -> Self {
+    /// Create a new builder
+    pub fn new(env: Arc<EnvVars>, is_building: Arc<AtomicBool>) -> Self {
         Self {
             env,
             is_building,
@@ -39,8 +39,9 @@ impl Builder {
         }
     }
 
-    /// Make sure the components are initilized
+    /// Make sure the components are initialized
     pub fn update_component_library(&mut self) -> Result<(), BuildError> {
+        // Update the component library cache
         let update_status = Command::new("dx")
             .arg("component")
             .arg("update")
@@ -51,6 +52,7 @@ impl Builder {
         if !update_status.success() {
             return Err(BuildError::DxFailed(update_status.code()));
         }
+        // Add all components to the template project
         let status = Command::new("dx")
             .arg("component")
             .arg("add")
@@ -113,8 +115,8 @@ impl Builder {
     }
 }
 
-/// Run the steps to produce a build for a [`BuildRequest`]
-async fn build(env: EnvVars, request: BuildRequest) -> Result<Option<JumpTable>, BuildError> {
+/// Run the steps to produce a build or patch for a [`BuildRequest`]
+async fn build(env: Arc<EnvVars>, request: BuildRequest) -> Result<Option<JumpTable>, BuildError> {
     let built_path = &env.built_path;
     let template_path = &env.build_template_path;
 
@@ -129,7 +131,9 @@ async fn build(env: EnvVars, request: BuildRequest) -> Result<Option<JumpTable>,
         warn!("failed to clean built projects: {e}");
     }
 
-    let patch = dx_build(&request, &env).await?;
+    // Build or hotpatch depending on the build state
+    let patch = dx_build(&request, env.clone()).await?;
+    // Move the built project or hotpatch binary into the built projects folder.
     move_to_built(&template_path, &built_path, &request, patch.is_some()).await?;
 
     Ok(patch)
@@ -157,7 +161,7 @@ async fn setup_template(
         let new_path = &snippets_to_copy[i];
         let contents = fs::read_to_string(path).await?;
         let contents = contents.replace(
-            BUILD_ID_ID,
+            BUILD_ID_TEMPLATE,
             &request
                 .previous_build_id
                 .filter(|_| patch)
@@ -179,6 +183,8 @@ async fn setup_template(
 
 /// Start a process with limited access to the environment and resources
 fn start_limited_process(mut command: Command, env: &EnvVars) -> Result<Child, BuildError> {
+    // We want to limit the environment variables passed to dx to only those needed for Rust.
+    // This prevents leaking any sensitive information to the build process which could be read with env!
     let filtered_vars = std::env::vars().filter(|(k, _)| {
         let allowed = ["RUST_VERSION", "RUSTUP_HOME", "CARGO_HOME", "PATH", "HOME"];
         allowed.contains(&k.as_str())
@@ -200,16 +206,17 @@ fn start_limited_process(mut command: Command, env: &EnvVars) -> Result<Child, B
 
 /// Run the build command provided by the DX CLI.
 /// Returns if DX built the project successfully.
-async fn dx_build(request: &BuildRequest, env: &EnvVars) -> Result<Option<JumpTable>, BuildError> {
+async fn dx_build(request: &BuildRequest, env: Arc<EnvVars>) -> Result<Option<JumpTable>, BuildError> {
+    // If there is a previous build, get the cache dir for that build if it exists
     let previous_build_cache_dir = request
         .previous_build_id
         .map(|id| env.built_template_hotpatch_cache(&id))
         .filter(|p| p.exists());
 
-    // if there is a previous cache, try to use that to hot patch the build
+    // Ff there is a previous cache, try to use that to hot patch the build
     if let Some(cache_dir) = previous_build_cache_dir {
         let cache_dir = cache_dir.canonicalize()?;
-        let result = dx_patch_build(&request, &env, &cache_dir).await;
+        let result = start_dx_build(&request, env.clone(), &cache_dir, true).await;
         if let Ok(Some(patch)) = result {
             return Ok(Some(patch));
         } else {
@@ -217,6 +224,7 @@ async fn dx_build(request: &BuildRequest, env: &EnvVars) -> Result<Option<JumpTa
         }
     }
 
+    // If there is no previous cache, or the hotpatch failed, get the cache dir for a new build
     let cache_dir = env.built_template_hotpatch_cache(&request.id);
 
     // fallback to a full build
@@ -224,45 +232,63 @@ async fn dx_build(request: &BuildRequest, env: &EnvVars) -> Result<Option<JumpTa
         warn!("failed to create hotpatch cache dir {cache_dir:?}: {err}");
     }
     let cache_dir = cache_dir.canonicalize()?;
-    dx_full_build(request, env, &cache_dir).await.map(|_| None)
+    start_dx_build(request, env, &cache_dir, false).await
 }
 
-async fn dx_patch_build(
+async fn start_dx_build(
     request: &BuildRequest,
-    env: &EnvVars,
+    env: Arc<EnvVars>,
     cache_dir: &Path,
+    patch: bool,
 ) -> Result<Option<JumpTable>, BuildError> {
-    setup_template(&env.build_template_path, &request, true).await?;
+    setup_template(&env.build_template_path, &request, patch).await?;
     let mut command = Command::new("dx");
-    command
-        .arg("tools")
-        .arg("hotpatch")
-        .arg("--web")
-        .arg("--session-cache-dir")
-        .arg(cache_dir)
-        .arg("--aslr-reference")
-        .arg("0")
-        .arg("--json-output");
+    if patch {
+        // If we are patching, use the hotpatch tool instead of doing a full build
+        command
+            .arg("tools")
+            .arg("hotpatch")
+            .arg("--web")
+            .arg("--session-cache-dir")
+            .arg(cache_dir)
+            .arg("--aslr-reference")
+            .arg("0")
+            .arg("--json-output");
+    } else {
+        command
+            .arg("build")
+            .arg("--web")
+            // We always do a fat binary build to allow hotpatching later.
+            .arg("--fat-binary")
+            // Each build gets its own session dir we re-use later for hotpatching.
+            .arg("--session-cache-dir")
+            .arg(cache_dir)
+            .arg("--json-output");
+    }
     tracing::info!("running dx command: {:?}", command);
 
-    let mut child = start_limited_process(command, env)?;
+    let mut child = start_limited_process(command, &env)?;
 
-    // If there is a artifacts cache, we can pipe it to dx for hot patching.
-    let artifacts_cache = cache_dir.join("artifacts.json");
-    let artifacts_cache = std::fs::read_to_string(artifacts_cache)?;
-    if let Some(mut stdin) = child.stdin.take() {
-        use std::io::Write;
-        stdin.write_all(artifacts_cache.as_bytes())?;
-        stdin.flush()?;
+    if patch {
+        // If there is a artifacts cache, we can pipe it to dx for hot patching.
+        let artifacts_cache = cache_dir.join("artifacts.json");
+        let artifacts_cache = std::fs::read_to_string(artifacts_cache)?;
+        if let Some(mut stdin) = child.stdin.take() {
+            use std::io::Write;
+            stdin.write_all(artifacts_cache.as_bytes())?;
+            stdin.flush()?;
+        }
     }
 
-    let (logs, patch) = process_build_messages(&mut child, env, request);
-
-    let status = tokio::task::spawn_blocking(move || child.wait()).await;
+    let BuildResult { logs, patch, status } = tokio::task::spawn_blocking({
+        let request = request.clone();
+        move || {
+        process_build_messages(&mut child, &env, &request)
+    }})
+    .await?;
 
     // Check if the build was successful.
-    let exit_code = status.map(|r| r.map(|c| c.code()));
-    if let Ok(Ok(Some(code))) = exit_code {
+    if let Ok(Some(code)) = status.as_ref().map(ExitStatus::code) {
         if code == 0 {
             return Ok(patch);
         } else {
@@ -282,49 +308,18 @@ async fn dx_patch_build(
     Err(BuildError::DxFailed(None))
 }
 
-async fn dx_full_build(
-    request: &BuildRequest,
-    env: &EnvVars,
-    cache_dir: &Path,
-) -> Result<(), BuildError> {
-    setup_template(&env.build_template_path, &request, false).await?;
-
-    let mut command = Command::new("dx");
-    command
-        .arg("build")
-        .arg("--web")
-        .arg("--fat-binary")
-        .arg("--session-cache-dir")
-        .arg(cache_dir)
-        .arg("--json-output");
-    tracing::info!("running dx command: {:?}", command);
-    let mut child = start_limited_process(command, env)?;
-
-    let (logs, _patch) = process_build_messages(&mut child, env, request);
-
-    let status = tokio::task::spawn_blocking(move || child.wait()).await;
-
-    // Check if the build was successful.
-    let exit_code = status.map(|r| r.map(|c| c.code()));
-    if let Ok(Ok(Some(code))) = exit_code {
-        if code == 0 {
-            return Ok(());
-        } else {
-            // Dump logs in debug.
-            for log in logs {
-                debug!("{log}");
-            }
-            return Err(BuildError::DxFailed(Some(code)));
-        }
-    }
-    Err(BuildError::DxFailed(None))
+struct BuildResult {
+    logs: Vec<String>,
+    patch: Option<JumpTable>,
+    status: std::io::Result<ExitStatus>,
 }
 
+/// Process the stdout and stderr of a dx build process, returning the logs and any hotpatch jump table
 fn process_build_messages(
     child: &mut Child,
     env: &EnvVars,
     request: &BuildRequest,
-) -> (Vec<String>, Option<JumpTable>) {
+) -> BuildResult {
     let stderr = child.stderr.take().expect("dx stdout should exist");
     let stdout = child.stdout.take().expect("dx stdout should exist");
     let mut stdout_reader = BufReader::new(stdout).lines();
@@ -343,12 +338,14 @@ fn process_build_messages(
         warn!("dx stderr: {line}");
     }
 
-    (logs, patch)
+    let status = child.wait();
+
+    BuildResult { logs, patch, status }
 }
 
+/// Limit a child process's resource usage. This prevents extremely long builds or excessive memory usage from crashing the server.
 #[allow(unused)]
 fn set_dx_limits(process: &Child, env: &EnvVars) {
-    // TODO this isn't working, not sure why
     #[cfg(any(target_os = "android", target_os = "linux"))]
     {
         use rustix::process::{Resource, Rlimit};
@@ -373,7 +370,7 @@ fn set_dx_limits(process: &Child, env: &EnvVars) {
     }
 }
 
-/// Process a JSON-formatted message from the DX CLI, returning nothing on error.
+/// Process a JSON-formatted message from the DX CLI, returning a JumpTable if a hot-patch was produced.
 ///
 /// We don't care if this errors as it is human-readable output which the playground doesn't depend on for build status.
 fn process_dx_message(env: &EnvVars, request: &BuildRequest, message: String) -> Option<JumpTable> {
@@ -385,7 +382,16 @@ fn process_dx_message(env: &EnvVars, request: &BuildRequest, message: String) ->
         return None;
     };
 
-    let _ = match output {
+    let from_main_crate = |diagnostic: &CargoDiagnostic| {
+        // Only send diagnostic for the main.rs file of the current build
+        diagnostic.target_crate == Some(format!("play-{}", request.id))
+            && diagnostic
+                .spans
+                .iter()
+                .any(|s| s.file_name == "src/main.rs")
+    };
+
+    _ = match output {
         StructuredOutput::BuildUpdate { stage } => {
             let stage = BuildStage::from(stage);
             request.ws_msg_tx.send(BuildMessage::Building(stage))
@@ -395,8 +401,7 @@ fn process_dx_message(env: &EnvVars, request: &BuildRequest, message: String) ->
                 return None;
             };
 
-            // Don't send any diagnostics for dependencies.
-            if diagnostic.target_crate != Some(format!("play-{}", request.id)) {
+            if !from_main_crate(&diagnostic) {
                 return None;
             }
 
@@ -408,6 +413,10 @@ fn process_dx_message(env: &EnvVars, request: &BuildRequest, message: String) ->
             let Ok(diagnostic) = CargoDiagnostic::try_from(message) else {
                 return None;
             };
+
+            if !from_main_crate(&diagnostic) {
+                return None;
+            }
 
             request
                 .ws_msg_tx
@@ -422,6 +431,7 @@ fn process_dx_message(env: &EnvVars, request: &BuildRequest, message: String) ->
             ) {
                 warn!("failed to write artifacts cache {artifacts_cache:?}: {err}");
             }
+
             Ok(())
         }
         StructuredOutput::Hotpatch { jump_table, .. } => {

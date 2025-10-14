@@ -44,17 +44,15 @@ impl Socket {
 }
 
 /// Handles a websocket message, returning true if further messages shouldn't be handled.
-pub fn handle_message(mut build: Store<BuildState>, message: SocketMessage) -> bool {
+pub fn handle_message(mut build: Store<BuildState>, message: SocketMessage)  {
     match message {
         SocketMessage::BuildStage(stage) => build.set_stage(BuildStage::Building(stage)),
         SocketMessage::QueuePosition(position) => build.set_stage(BuildStage::Queued(position)),
         SocketMessage::BuildFinished(BuildResult::Failed(failure)) => {
             build.set_stage(BuildStage::Finished(Err(failure)));
-            return true;
         }
         SocketMessage::BuildFinished(BuildResult::Built(id)) => {
             build.set_stage(BuildStage::Finished(Ok(id)));
-            return true;
         }
         SocketMessage::BuildFinished(BuildResult::HotPatched(patch)) => {
             // Get the iframe to apply the patch to.
@@ -69,12 +67,10 @@ pub fn handle_message(mut build: Store<BuildState>, message: SocketMessage) -> b
             if let Some(id) = build.previous_build_id().cloned() {
                 build.set_stage(BuildStage::Finished(Ok(id)));
             }
-            return true;
         }
         SocketMessage::BuildDiagnostic(diagnostic) => build.push_diagnostic(diagnostic),
         SocketMessage::RateLimited(time) => build.set_stage(BuildStage::Waiting(time)),
         _ => {}
     }
 
-    false
 }

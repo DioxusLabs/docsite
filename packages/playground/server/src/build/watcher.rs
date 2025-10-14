@@ -17,7 +17,7 @@ use uuid::Uuid;
 /// The build watcher receives [`BuildCommand`]s through a channel and handles
 /// the build queue, providing queue positions, and stopping/cancelling builds.
 pub fn start_build_watcher(
-    env: EnvVars,
+    env: Arc<EnvVars>,
     is_building: Arc<AtomicBool>,
 ) -> UnboundedSender<BuildCommand> {
     let (tx, mut rx) = mpsc::unbounded_channel();

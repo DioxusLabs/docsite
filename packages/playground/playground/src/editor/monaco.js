@@ -88,7 +88,7 @@ export function initMonaco(
       "semanticHighlighting.enabled": true,
     });
 
-    // Super+Enter for Mac, Ctrl+Enter for others.
+    // Build on Ctrl+Enter / Cmd+Enter
     editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
       onBuildCallback();
     });

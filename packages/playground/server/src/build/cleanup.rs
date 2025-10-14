@@ -9,9 +9,12 @@ pub async fn check_cleanup(env: &EnvVars) -> Result<(), io::Error> {
     Ok(())
 }
 
-/// Check and cleanup the target dir if it exceeds the max size.
+/// Check and cleanup the target dir if it exceeds the max size. The hot reloading
+/// cache is inside the target dir so it will also be cleared when the incremental
+/// artifacts are removed.
 async fn check_target_cleanup(env: &EnvVars) -> Result<(), io::Error> {
     let target_path = env.target_dir();
+    // If we just cleaned or this is the first run, the target dir may not exist.
     if !target_path.exists() {
         return Ok(());
     }
@@ -25,8 +28,10 @@ async fn check_target_cleanup(env: &EnvVars) -> Result<(), io::Error> {
     Ok(())
 }
 
-/// Check and cleanup any expired built projects
+/// Check and cleanup any expired built projects. This tends to be much smaller
+/// than the target dir, but it can grow large over time as patches accumulate.
 async fn check_project_cleanup(env: &EnvVars) -> Result<(), io::Error> {
+    // If we just cleaned or this is the first run, the built dir may not exist.
     if !env.built_path.exists() {
         return Ok(());
     }
@@ -34,6 +39,7 @@ async fn check_project_cleanup(env: &EnvVars) -> Result<(), io::Error> {
     let mut dir = tokio::fs::read_dir(&env.built_path).await?;
     let mut dirs_with_size = Vec::new();
 
+    // Go through the project directory and find the size and time modified for each project dir.
     while let Some(item) = dir.next_entry().await? {
         let path = item.path();
         let Some(filename) = path.file_name() else {
@@ -57,9 +63,11 @@ async fn check_project_cleanup(env: &EnvVars) -> Result<(), io::Error> {
     let total_size: u64 = dirs_with_size.iter().map(|(_, _, _, size)| *size).sum();
     // If it exceeds the max, sort by oldest and remove until under the limit.
     if total_size > env.max_built_dir_size {
+        // Sort by oldest first
         dirs_with_size.sort_by_key(|(_, _, time_elapsed, _)| *time_elapsed);
         let mut size = total_size;
 
+        // Remove oldest dirs until under the max size.
         for (pathname, item, _, dir_size) in dirs_with_size {
             if size <= env.max_built_dir_size {
                 break;
@@ -97,6 +105,7 @@ async fn check_project_cleanup(env: &EnvVars) -> Result<(), io::Error> {
     Ok(())
 }
 
+/// Recursively calculate the size of a directory.
 async fn dir_size(path: &std::path::Path) -> Result<u64, io::Error> {
     let mut size = 0;
     let mut dirs = vec![path.to_path_buf()];

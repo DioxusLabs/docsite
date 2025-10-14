@@ -127,8 +127,9 @@ pub async fn start_build(
             Err(e) => return Err(e),
             Ok(None) => break,
             Ok(Some(msg)) => {
-                let is_done = ws::handle_message(build, msg);
-                if is_done {
+                let finished = msg.is_finished();
+                ws::handle_message(build, msg);
+                if finished {
                     break;
                 }
             }

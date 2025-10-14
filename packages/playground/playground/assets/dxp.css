@@ -1,11 +1,9 @@
 #dxp-playground-root {
-    border: 1px solid var(--dxp-border-light);
     overflow: hidden;
 }
 
 /* Header */
 #dxp-header {
-    background-color: var(--dxp-bg-light-darker);
     display: flex;
     flex-direction: row;
     padding: 0.5rem;
@@ -43,7 +41,6 @@
     padding: 0px 10px;
     border-radius: 5px;
     border-style: none;
-    color: var(--dxp-text-light);
     font-family: "Inter", sans-serif;
     font-size: 14px;
     font-weight: 400;
@@ -65,7 +62,6 @@
 
 .dxp-ctrl-btn:hover {
     cursor: pointer;
-    background-color: var(--dxp-bg-light-lighter-alt);
 }
 
 #dxp-header-left > .dxp-ctrl-btn:not(:first-child) {
@@ -88,18 +84,15 @@
     margin-left: auto;
     margin-right: auto;
     display: flex;
-    border-left: 1px solid var(--dxp-border-light);
 }
 
 #dxp-panes-left {
     width: 50%;
     min-width: 100px;
-    background-color: var(--dxp-bg-light);
 }
 
 #dxp-panes-draggable {
     width: 12px;
-    background-color: var(--dxp-border-light);
     cursor: col-resize;
     user-select: none;
     display: flex;
@@ -114,13 +107,11 @@
     align-items: center;
     width: 50%;
     min-width: 100px;
-    background-color: var(--dxp-bg-light-darker);
     position: relative;
     overflow-y: scroll;
 }
 
 #dxp-panes-right > p {
-    color: var(--dxp-text-light);
     font-family: "Inter", sans-serif;
     user-select: none;
     text-align: center;
@@ -169,7 +160,6 @@
 }
 
 #dxp-panes-right > #dxp-progress-container > p {
-    color: var(--dxp-text-light);
     font-family: "Inter", sans-serif;
     margin-left: auto;
     margin-right: auto;
@@ -182,7 +172,6 @@
     width: 70%;
     margin-left: auto;
     margin-right: auto;
-    background-color: var(--dxp-bg-light-lighter);
     border-radius: 5px;
     overflow: hidden;
 }
@@ -197,80 +186,7 @@
     height: 100%;
 }
 
-/* Modal */
 
-#dxp-modal-bg {
-    background-color: rgba(0, 0, 0, 40%);
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    z-index: 100;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#dxp-modal {
-    background-color: var(--dxp-bg-light);
-    border: 1px solid #000000;
-    color: var(--dxp-text-light);
-    border-radius: 5px;
-    padding: 15px;
-    margin-bottom: 20vh;
-
-    font-family: "Inter", sans-serif;
-    font-weight: 400;
-
-    max-width: 500px;
-}
-
-#dxp-modal-header {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-}
-
-#dxp-modal-header > svg {
-    height: 40px;
-}
-
-#dxp-modal-title {
-    font-size: 20px;
-    font-weight: 600;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    margin-left: 10px;
-}
-
-#dxp-modal-text {
-    font-weight: 400;
-    font-size: 16px;
-    margin-bottom: 20px;
-}
-
-#dxp-modal-ok-btn {
-    display: block;
-    background-color: var(--dxp-bg-light-lighter);
-    border-radius: 3px;
-    color: var(--dxp-text-light);
-    padding: 8px;
-
-    font-weight: 400;
-    font-size: 14px;
-    margin-left: auto;
-
-    border: none;
-    transition: background-color 0.2s ease;
-}
-
-#dxp-modal-ok-btn:hover {
-    background-color: var(--dxp-bg-light-darker);
-    cursor: pointer;
-}
 
 /* Logs pane */
 
@@ -280,70 +196,4 @@
     width: 100%;
     overflow-y: auto;
 }
-
-#logs .log {
-    padding: 20px 15px;
-    transition: background-color 0.3s ease;
-    color: var(--dxp-text-light);
-    border-bottom: var(--dxp-log-border) 1px solid;
-}
-
-#logs .log:hover {
-    background-color: var(--dxp-bg-light);
-}
-
-#logs .log .log-level {
-    font-family: "Inter", sans-serif;
-    padding-top: 0px;
-    padding-bottom: 10px;
-    margin: 0px;
-}
-
-#logs .log .level-error {
-    color: var(--dxp-log-error-light);
-}
-
-#logs .log .level-warn {
-    color: var(--dxp-log-warn-light);
-}
-
-#logs .log .level-info {
-    color: var(--dxp-log-info-light);
-}
-
-#logs .log .log-codeblock {
-    background-color: var(--dxp-bg-light);
-    padding: 10px;
-    border-radius: 10px;
-    border: var(--dxp-border-light) 1px solid;
-}
-
-#logs .log .log-message,
-#logs.log.log-span {
-    font-family:
-        ui-monospace,
-        SFMono-Regular,
-        SF Mono,
-        Menlo,
-        Consolas,
-        Liberation Mono,
-        monospace;
-}
-
-#logs .log .log-message {
-    padding: 0px;
-    margin: 0px;
-}
-
-#logs .log .log-span {
-    padding: 0px;
-    margin: 0px;
-    font-family:
-        ui-monospace,
-        SFMono-Regular,
-        SF Mono,
-        Menlo,
-        Consolas,
-        Liberation Mono,
-        monospace;
 }

@@ -187,7 +187,7 @@ fn get_env_or<F: FromStr + Display>(key: &str, default: F) -> F {
 #[derive(Clone)]
 pub struct AppState {
     /// The environment configuration.
-    pub env: EnvVars,
+    pub env: Arc<EnvVars>,
 
     /// The time instante since the last request.
     pub last_request_time: Arc<Mutex<Instant>>,
@@ -210,10 +210,6 @@ impl AppState {
     pub async fn new() -> Self {
         let mut env = EnvVars::new().await;
 
-        // Build the app state
-        let is_building = Arc::new(AtomicBool::new(false));
-        let build_queue_tx = start_build_watcher(env.clone(), is_building.clone());
-
         // Get prebuild arg
         let prebuild = std::env::args().any(|x| x == "--prebuild");
 
@@ -221,6 +217,13 @@ impl AppState {
             info!("server is prebuilding");
             env.shutdown_delay = Some(Duration::from_secs(1));
         }
+
+        let env = Arc::new(env);
+
+        // Build the app state
+        let is_building = Arc::new(AtomicBool::new(false));
+        let build_queue_tx = start_build_watcher(env.clone(), is_building.clone());
+
 
         let build_govener = Arc::new(RateLimiter::keyed(
             Quota::with_period(Duration::from_secs(5))

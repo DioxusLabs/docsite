@@ -39,6 +39,12 @@ pub enum SocketMessage {
     AlreadyConnected,
 }
 
+impl SocketMessage {
+    pub fn is_finished(&self) -> bool {
+        matches!(self, SocketMessage::BuildFinished(_))
+    }
+}
+
 /// A stage of building from the playground.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum BuildStage {
@@ -95,6 +101,7 @@ pub struct CargoDiagnosticSpan {
     pub column_start: usize,
     pub column_end: usize,
     pub label: Option<String>,
+    pub file_name: String,
 }
 
 /// Any socket error.

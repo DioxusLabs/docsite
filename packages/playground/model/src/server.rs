@@ -6,7 +6,7 @@ use crate::{
 };
 use axum::http::StatusCode;
 use axum::{extract::ws, response::IntoResponse};
-use dioxus_dx_wire_format::cargo_metadata::diagnostic::Diagnostic;
+use dioxus_dx_wire_format::cargo_metadata::diagnostic::{Diagnostic, DiagnosticSpan};
 use dioxus_dx_wire_format::{
     cargo_metadata::{diagnostic::DiagnosticLevel, CompilerMessage},
     BuildStage as DxBuildStage,
@@ -69,15 +69,7 @@ impl TryFrom<CompilerMessage> for CargoDiagnostic {
         let spans = diagnostic
             .spans
             .iter()
-            .filter(|s| s.file_name == "src/main.rs")
-            .map(|s| CargoDiagnosticSpan {
-                is_primary: s.is_primary,
-                line_start: s.line_start,
-                line_end: s.line_end,
-                column_start: s.column_start,
-                column_end: s.column_end,
-                label: s.label.clone(),
-            })
+            .map(|s| s.clone().into())
             .collect();
 
         Ok(Self {
@@ -103,15 +95,7 @@ impl TryFrom<Diagnostic> for CargoDiagnostic {
         let spans = value
             .spans
             .iter()
-            .filter(|s| s.file_name == "src/main.rs")
-            .map(|s| CargoDiagnosticSpan {
-                is_primary: s.is_primary,
-                line_start: s.line_start,
-                line_end: s.line_end,
-                column_start: s.column_start,
-                column_end: s.column_end,
-                label: s.label.clone(),
-            })
+            .map(|s| s.clone().into())
             .collect();
 
         Ok(Self {
@@ -123,6 +107,22 @@ impl TryFrom<Diagnostic> for CargoDiagnostic {
         })
     }
 }
+
+
+impl From<DiagnosticSpan> for CargoDiagnosticSpan{
+    fn from(value: DiagnosticSpan) -> Self {
+        Self {
+            is_primary: value.is_primary,
+            line_start: value.line_start,
+            line_end: value.line_end,
+            column_start: value.column_start,
+            column_end: value.column_end,
+            label: value.label,
+            file_name: value.file_name,
+        }
+    }
+}
+
 
 /// IntoResponse for app errors.
 impl IntoResponse for AppError {

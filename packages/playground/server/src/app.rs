@@ -224,8 +224,8 @@ impl AppState {
 
         let build_govener = Arc::new(RateLimiter::keyed(
             Quota::with_period(Duration::from_secs(5))
-                .unwrap()
-                .allow_burst(NonZeroU32::new(2).unwrap()),
+                .expect("period is non-zero")
+                .allow_burst(const { NonZeroU32::new(2).unwrap() }),
         ));
 
         let state = Self {

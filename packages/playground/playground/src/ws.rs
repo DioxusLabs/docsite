@@ -1,5 +1,9 @@
-use crate::{build::BuildStage, hotreload::send_hot_reload, BuildState};
-use dioxus::signals::ReadableExt;
+use crate::{
+    build::{BuildStage, BuildStateStoreExt, BuildStateStoreImplExt},
+    hotreload::send_hot_reload,
+    BuildState,
+};
+use dioxus::{signals::ReadableExt, stores::Store};
 use dioxus_devtools::HotReloadMsg;
 use futures::{SinkExt as _, StreamExt};
 use gloo_net::websocket::futures::WebSocket;
@@ -40,7 +44,7 @@ impl Socket {
 }
 
 /// Handles a websocket message, returning true if further messages shouldn't be handled.
-pub fn handle_message(mut build: BuildState, message: SocketMessage) -> bool {
+pub fn handle_message(mut build: Store<BuildState>, message: SocketMessage) -> bool {
     match message {
         SocketMessage::BuildStage(stage) => build.set_stage(BuildStage::Building(stage)),
         SocketMessage::QueuePosition(position) => build.set_stage(BuildStage::Queued(position)),

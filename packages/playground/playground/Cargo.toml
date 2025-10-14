@@ -14,7 +14,7 @@ uuid = { workspace = true }
 thiserror = { workspace = true }
 
 # Dioxus
-dioxus = { workspace = true, features = ["web"] }
+dioxus = { workspace = true, features = ["web", "router"] }
 dioxus-document = { workspace = true }
 dioxus-sdk = { workspace = true, features = ["util", "time", "window"] }
 

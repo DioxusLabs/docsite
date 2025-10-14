@@ -12,7 +12,7 @@ use std::{collections::HashMap, fmt::Display, path::Path};
 use syn::spanned::Spanned as _;
 
 /// Atempts to hot reload and returns true if a full rebuild is needed.
-pub fn attempt_hot_reload(mut hot_reload: HotReload, new_code: &str) {
+pub fn attempt_hot_reload(mut hot_reload: Store<HotReload>, new_code: &str) {
     // Process any potential hot -eloadable changes and send them to the iframe web client.
     let result = hot_reload.process_file_change(new_code.to_string());
     match result {
@@ -50,12 +50,13 @@ pub fn send_hot_reload(hr_msg: HotReloadMsg) {
     _ = e.send(hr_msg);
 }
 
-#[derive(Clone, Copy)]
+#[derive(Store)]
 pub struct HotReload {
-    needs_rebuild: Signal<bool>,
-    cached_parse: Signal<CachedParse>,
+    needs_rebuild: bool,
+    cached_parse: CachedParse,
 }
 
+#[derive(Store)]
 struct CachedParse {
     raw: String,
     templates: HashMap<TemplateGlobalKey, HotReloadedTemplate>,
@@ -65,34 +66,38 @@ impl HotReload {
     pub fn new() -> Self {
         Self {
             cached_parse: {
-                Signal::new(CachedParse {
+                CachedParse {
                     raw: String::new(),
                     templates: HashMap::new(),
-                })
+                }
             },
-            needs_rebuild: Signal::new(true),
+            needs_rebuild: true,
         }
     }
+}
 
-    pub fn set_needs_rebuild(&mut self, needs_rebuild: bool) {
-        self.needs_rebuild.set(needs_rebuild);
+#[store(pub)]
+impl Store<HotReload> {
+    fn set_needs_rebuild(&mut self, needs_rebuild: bool) {
+        self.needs_rebuild().set(needs_rebuild);
     }
 
-    pub fn set_starting_code(&mut self, code: &str) {
-        *self.cached_parse.write() = CachedParse {
+    fn set_starting_code(&mut self, code: &str) {
+        *self.cached_parse().write() = CachedParse {
             raw: code.to_string(),
             templates: HashMap::new(),
         };
     }
 
-    pub fn process_file_change(
+    fn process_file_change(
         &mut self,
         new_code: String,
     ) -> Result<Vec<HotReloadTemplateWithLocation>, HotReloadError> {
         let new_file = syn::parse_file(&new_code).map_err(|_err| HotReloadError::Parse)?;
 
         let cached_file = {
-            let cached = &mut self.cached_parse.read();
+            let cached = self.cached_parse();
+            let cached = cached.read();
             syn::parse_file(&cached.raw).map_err(|_err| HotReloadError::Parse)?
         };
 
@@ -126,7 +131,8 @@ impl HotReload {
                 return Err(HotReloadError::NeedsRebuild);
             };
 
-            let mut cached = self.cached_parse.write();
+            let mut cached = self.cached_parse();
+            let mut cached = cached.write();
             for (index, template) in results.templates {
                 if template.roots.is_empty() {
                     continue;

@@ -1,4 +1,5 @@
 use crate::hotreload::HotReload;
+use crate::hotreload::HotReloadStoreImplExt;
 use dioxus::prelude::*;
 use dioxus_sdk::window::theme::Theme;
 use model::{CargoDiagnostic, CargoLevel};
@@ -18,7 +19,7 @@ pub fn monaco_loader_src(folder: Asset) -> String {
 }
 
 /// Use monaco code markers for build diagnostics.
-pub fn set_monaco_markers(diagnostics: Signal<Vec<CargoDiagnostic>>) {
+pub fn set_monaco_markers(diagnostics: impl Writable<Target = Vec<CargoDiagnostic>>) {
     let mut markers = Vec::new();
     for diagnostic in diagnostics.read().iter() {
         let severity = match diagnostic.level {
@@ -54,7 +55,7 @@ pub fn on_monaco_load(
     folder: Asset,
     system_theme: Theme,
     contents: &str,
-    mut hot_reload: HotReload,
+    mut hot_reload: Store<HotReload>,
     mut monaco_ready: Signal<bool>,
     on_model_changed: Callback<String>,
     onbuild_callback: Callback<()>,

@@ -11,7 +11,6 @@ use uuid::Uuid;
 use crate::app::AppState;
 
 /// Handle providing temporary built wasm assets.
-/// This should delete temporary projects after 30 seconds.
 pub async fn serve_built_index(
     State(state): State<AppState>,
     Path(build_id): Path<Uuid>,
@@ -21,6 +20,7 @@ pub async fn serve_built_index(
 
     let index_path = path.join("index.html");
 
+    // Serve the file with tower_http
     tower_http::services::ServeFile::new(index_path)
         .oneshot(request)
         .await
@@ -41,6 +41,7 @@ pub async fn serve_other_built(
         .join(build_id.to_string())
         .join(file_path);
 
+    // Serve the file with tower_http
     tower_http::services::ServeFile::new(path)
         .oneshot(request)
         .await

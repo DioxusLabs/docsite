@@ -1,10 +1,11 @@
-use crate::build::{BuildStage, BuildState};
+use crate::build::{BuildStage, BuildState, BuildStateStoreImplExt};
 use crate::components::icons::LoadingSpinner;
 use crate::dx_components::button::*;
 use crate::dx_components::select::*;
+use crate::hotreload::HotReloadStoreImplExt;
 use crate::share_code::copy_share_link;
-use crate::HotReload;
 use crate::{Errors, PlaygroundUrls};
+use crate::{ErrorsStoreImplExt, HotReload};
 use dioxus::prelude::*;
 use model::api::ApiClient;
 use model::Project;
@@ -19,10 +20,10 @@ pub fn Header(
     file_name: ReadSignal<String>,
 ) -> Element {
     let api_client: Signal<ApiClient> = use_context();
-    let mut build: BuildState = use_context();
+    let mut build: Store<BuildState> = use_context();
     let mut project: Signal<Project> = use_context();
-    let mut errors: Errors = use_context();
-    let mut hot_reload: HotReload = use_context();
+    let mut errors: Store<Errors> = use_context();
+    let mut hot_reload: Store<HotReload> = use_context();
 
     let mut share_btn_text = use_signal(|| "Share");
 
@@ -110,7 +111,7 @@ pub fn Header(
                 // Run button
                 Button {
                     variant: ButtonVariant::Outline,
-                    "data-disabled": build.stage().is_running(),
+                    "data-disabled": build.get_stage().is_running(),
                     display: "flex",
                     flex_direction: "row",
                     align_items: "between",
@@ -121,7 +122,7 @@ pub fn Header(
                         on_rebuild.call(());
                     },
 
-                    if build.stage().is_running() {
+                    if build.get_stage().is_running() {
                         Progress {}
                     } else {
                         "Rebuild"
@@ -135,10 +136,10 @@ pub fn Header(
 
 #[component]
 fn Progress() -> Element {
-    let build = use_context::<BuildState>();
+    let build = use_context::<Store<BuildState>>();
 
     // Generate the loading message.
-    let message = use_memo(move || match build.stage() {
+    let message = use_memo(move || match build.get_stage() {
         BuildStage::NotStarted => "Waiting".to_string(),
         BuildStage::Queued(position) => format!("Queued ({position})"),
         BuildStage::Starting => "Starting".to_string(),

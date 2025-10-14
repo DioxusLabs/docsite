@@ -11,6 +11,11 @@ use std::time::Duration;
 
 use dioxus_sdk::window::theme::{use_system_theme, Theme};
 
+use crate::{
+    build::{BuildStateStoreExt, BuildStateStoreImplExt},
+    hotreload::HotReloadStoreImplExt,
+};
+
 mod build;
 mod components;
 mod dx_components;
@@ -40,9 +45,9 @@ pub fn Playground(
     share_code: ReadSignal<Option<String>>,
     class: Option<String>,
 ) -> Element {
-    let mut hot_reload = use_context_provider(HotReload::new);
+    let mut hot_reload = use_context_provider(|| Store::new(HotReload::new()));
     let api_client = use_context_provider(|| Signal::new(ApiClient::new(urls.server)));
-    let mut errors = use_context_provider(Errors::new);
+    let mut errors = use_context_provider(|| Store::new(Errors::new()));
 
     let monaco_ready = use_signal(|| false);
     let mut show_share_warning = use_signal(|| false);
@@ -50,7 +55,7 @@ pub fn Playground(
     // Default to the welcome project.
     // Project dirty determines whether the Rust-project is synced with the project in the editor.
     let mut project = use_context_provider(|| Signal::new(example_projects::get_welcome_project()));
-    let mut build = use_context_provider(|| BuildState::new(&project.read()));
+    let mut build = use_context_provider(|| Store::new(BuildState::new(&project.read())));
     let mut project_dirty = use_signal(|| false);
     use_effect(move || {
         if project_dirty() && monaco_ready() {
@@ -83,7 +88,7 @@ pub fn Playground(
         spawn(async move {
             editor::monaco::set_markers(&[]);
 
-            if build.stage().is_finished() {
+            if build.get_stage().is_finished() {
                 attempt_hot_reload(hot_reload, &new_code);
             }
         });
@@ -103,7 +108,7 @@ pub fn Playground(
     // Handle starting a build.
     let on_rebuild = use_callback(move |_| {
         spawn(async move {
-            if build.stage().is_running() || !monaco_ready() {
+            if build.get_stage().is_running() || !monaco_ready() {
                 return;
             }
 
@@ -127,7 +132,7 @@ pub fn Playground(
     let built_page_url = use_memo(move || {
         let project = project.read();
         let prebuilt_id = project.prebuilt.then_some(project.id());
-        let local_id = build.stage().finished_id();
+        let local_id = build.get_stage().finished_id();
         let id = local_id.or(prebuilt_id)?;
         Some(format!("{}/built/{}", urls.server, id))
     });
@@ -188,7 +193,7 @@ pub fn Playground(
                 on_ok: move |_| {
                     errors.pop();
                 },
-                open: !errors.errors.is_empty(),
+                open: !errors.errors().is_empty(),
                 if let Some((title, text)) = errors.last() {
                     components::ModalContent {
                         icon: rsx! {
@@ -222,25 +227,26 @@ pub fn Playground(
 }
 
 /// A helper type for gracefully handling app errors and logging them.
-#[derive(Clone, Copy)]
+#[derive(Clone, Store)]
 pub struct Errors {
-    errors: Signal<Vec<(String, String)>>,
+    errors: Vec<(String, String)>,
 }
 
 impl Errors {
     pub fn new() -> Self {
-        Self {
-            errors: Signal::new(Vec::new()),
-        }
+        Self { errors: Vec::new() }
     }
+}
 
-    pub fn push_error(&mut self, error: (impl ToString, impl ToString)) {
+#[store(pub)]
+impl Store<Errors> {
+    fn push_error(&mut self, error: (impl ToString, impl ToString)) {
         let error = (error.0.to_string(), error.1.to_string());
         error!(?error, "an error occured and was handled gracefully");
-        self.errors.push(error);
+        self.errors().push(error);
     }
 
-    pub fn push_from_app_error(&mut self, app_error: AppError) {
+    fn push_from_app_error(&mut self, app_error: AppError) {
         let error = match app_error {
             AppError::Parse(error) => ("Parse Error", error.to_string()),
             AppError::Request(error) => ("Request Error", error.to_string()),
@@ -264,16 +270,16 @@ impl Errors {
         self.push_error(error);
     }
 
-    pub fn first(&self) -> Option<(String, String)> {
-        self.errors.first().map(|x| x.clone())
+    fn first(&self) -> Option<(String, String)> {
+        self.errors().first().map(|x| x.clone())
     }
 
-    pub fn last(&self) -> Option<(String, String)> {
-        self.errors.last().map(|x| x.clone())
+    fn last(&self) -> Option<(String, String)> {
+        self.errors().last().map(|x| x.clone())
     }
 
-    pub fn pop(&mut self) -> Option<(String, String)> {
-        self.errors.pop()
+    fn pop(&mut self) -> Option<(String, String)> {
+        self.errors().pop()
     }
 }
 

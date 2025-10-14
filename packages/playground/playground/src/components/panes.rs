@@ -1,4 +1,4 @@
-use crate::build::BuildState;
+use crate::build::{BuildState, BuildStateStoreExt};
 use dioxus::prelude::*;
 use dioxus_document::eval;
 
@@ -26,7 +26,7 @@ pub fn Panes(
     pane_right_width: Signal<Option<i32>>,
     built_page_url: Memo<Option<String>>,
 ) -> Element {
-    let build = use_context::<BuildState>();
+    let build = use_context::<Store<BuildState>>();
     let mut dragging = use_signal(|| false);
     let mut mouse_data = use_signal(DraggableData::default);
 
@@ -120,7 +120,7 @@ pub fn Panes(
 
                 // Viewport
                 div { id: "dxp-viewport",
-                    if build_stage.is_err() {
+                    if build_stage().is_err() {
                         Logs {}
                     } else if let Some(url) = built_page_url() {
                         iframe {

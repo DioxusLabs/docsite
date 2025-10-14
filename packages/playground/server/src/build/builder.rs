@@ -124,7 +124,6 @@ async fn build(env: EnvVars, request: BuildRequest) -> Result<Option<JumpTable>,
         return Ok(None);
     }
 
-    tracing::info!("checking clean up");
     // Check if we need to clean up old builds before starting a new one.
     if let Err(e) = super::cleanup::check_cleanup(&env).await {
         warn!("failed to clean built projects: {e}");

@@ -19,7 +19,7 @@ use tower_http::{compression::CompressionLayer, cors::CorsLayer};
 
 mod app;
 mod build;
-mod serve;
+mod builtbuilt;
 mod share;
 mod ws;
 
@@ -34,9 +34,8 @@ async fn main() {
         use tracing_subscriber::{EnvFilter, fmt};
 
         let fmt_layer = fmt::layer();
-        let filter_layer = EnvFilter::try_from_default_env()
-            .or_else(|_| EnvFilter::try_new("info"))
-            .unwrap();
+        let filter_layer =
+            EnvFilter::try_from_default_env().unwrap_or_else(|_| EnvFilter::new("info"));
 
         tracing_subscriber::registry()
             .with(console_layer)
@@ -54,26 +53,32 @@ async fn main() {
         false => ClientIpSource::ConnectInfo,
     };
 
-    // Allow bursts with up to five requests per IP address
-    // and replenishes one element every 30 seconds
+    // Allow bursts with up to 240 requests per IP address
+    // and replenishes 120 every second. These requests are
+    // very cheap. Rate limiting for builds is handled seperately
     let governor_conf = GovernorConfigBuilder::default()
         .per_second(120)
         .burst_size(240)
         .finish()
-        .unwrap();
+        .expect("neither per_second nor burst_size are zero");
 
     // Build the routers.
     let built_router = Router::new()
-        .route("/", get(serve::serve_built_index))
-        .route("/{*file_path}", get(serve::serve_other_built));
+        .route("/", get(builtbuilt::serve_built_index))
+        .route("/{*file_path}", get(builtbuilt::serve_other_built));
 
     let shared_router = Router::new()
         .route("/", post(share_project))
         .route("/{:id}", get(get_shared_project));
 
     let app = Router::new()
+        // Just wait forever for the devtools to connect. We handle them through the ws route bellow.
+        .route("/_dioxus", get(std::future::pending::<Vec<u8>>))
+        // Every build gets a websocket connection to report build progress.
         .route("/ws", get(ws::ws_handler))
+        // The built routes for project that are cached.
         .nest("/built/{:build_id}", built_router)
+        // Routes for resolving shared projects.
         .nest("/shared", shared_router)
         .route(
             "/",

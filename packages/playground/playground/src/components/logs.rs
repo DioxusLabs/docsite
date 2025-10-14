@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use crate::build::BuildState;
+use crate::build::{BuildState, BuildStateStoreExt};
 use crate::dx_components::accordion::*;
 use ansi_parser::AnsiParser;
 use dioxus::prelude::*;
@@ -8,9 +8,10 @@ use model::{CargoDiagnosticSpan, CargoLevel};
 
 #[component]
 pub fn Logs() -> Element {
-    let build = use_context::<BuildState>();
-    let diagnostics = build.diagnostics()();
-    let diagnostics_with_spans = diagnostics.into_iter().filter(|d| !d.spans.is_empty());
+    let build = use_context::<Store<BuildState>>();
+    let diagnostics = build.diagnostics();
+    let diagnostics = diagnostics.read();
+    let diagnostics_with_spans = diagnostics.iter().filter(|d| !d.spans.is_empty());
     // Deduplicate diagnostics
     let diagnostics_with_spans: HashMap<_, _> = diagnostics_with_spans
         .enumerate()
@@ -18,8 +19,11 @@ pub fn Logs() -> Element {
         .collect();
     let mut diagnostics_with_spans: Vec<_> = diagnostics_with_spans.into_iter().collect();
     diagnostics_with_spans.sort_by_key(|(_, id)| *id);
-    let diagnostics_with_spans = diagnostics_with_spans.into_iter().map(|(item, _)| item);
-    let err_message = build.stage().err_message();
+    let diagnostics_with_spans = diagnostics_with_spans
+        .into_iter()
+        .map(|(item, _)| item)
+        .cloned();
+    let err_message = build.stage().read().err_message();
 
     rsx! {
         // Main failure reason.

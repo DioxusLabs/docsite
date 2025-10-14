@@ -6,9 +6,7 @@ pub enum ButtonVariant {
     #[default]
     Primary,
     Secondary,
-    Destructive,
     Outline,
-    Ghost,
 }
 
 impl ButtonVariant {
@@ -16,9 +14,7 @@ impl ButtonVariant {
         match self {
             ButtonVariant::Primary => "primary",
             ButtonVariant::Secondary => "secondary",
-            ButtonVariant::Destructive => "destructive",
             ButtonVariant::Outline => "outline",
-            ButtonVariant::Ghost => "ghost",
         }
     }
 }

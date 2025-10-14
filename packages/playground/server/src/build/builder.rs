@@ -134,7 +134,7 @@ async fn build(env: Arc<EnvVars>, request: BuildRequest) -> Result<Option<JumpTa
     // Build or hotpatch depending on the build state
     let patch = dx_build(&request, env.clone()).await?;
     // Move the built project or hotpatch binary into the built projects folder.
-    move_to_built(&template_path, &built_path, &request, patch.is_some()).await?;
+    move_to_built(template_path, built_path, &request, patch.is_some()).await?;
 
     Ok(patch)
 }
@@ -216,7 +216,7 @@ async fn dx_build(request: &BuildRequest, env: Arc<EnvVars>) -> Result<Option<Ju
     // Ff there is a previous cache, try to use that to hot patch the build
     if let Some(cache_dir) = previous_build_cache_dir {
         let cache_dir = cache_dir.canonicalize()?;
-        let result = start_dx_build(&request, env.clone(), &cache_dir, true).await;
+        let result = start_dx_build(request, env.clone(), &cache_dir, true).await;
         if let Ok(Some(patch)) = result {
             return Ok(Some(patch));
         } else {
@@ -241,7 +241,7 @@ async fn start_dx_build(
     cache_dir: &Path,
     patch: bool,
 ) -> Result<Option<JumpTable>, BuildError> {
-    setup_template(&env.build_template_path, &request, patch).await?;
+    setup_template(&env.build_template_path, request, patch).await?;
     let mut command = Command::new("dx");
     if patch {
         // If we are patching, use the hotpatch tool instead of doing a full build

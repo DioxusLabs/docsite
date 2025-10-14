@@ -46,7 +46,7 @@ impl TryFrom<ws::Message> for SocketMessage {
 
     fn try_from(value: ws::Message) -> Result<Self, Self::Error> {
         let text = value.into_data();
-        SocketMessage::from_bytes(text)
+        Ok(serde_json::from_slice(&text)?)
     }
 }
 

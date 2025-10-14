@@ -71,12 +71,6 @@ impl TryFrom<String> for SocketMessage {
     }
 }
 
-impl SocketMessage {
-    pub(crate) fn from_bytes<B: AsRef<[u8]>>(value: B) -> Result<Self, SocketError> {
-        Ok(serde_json::from_slice(value.as_ref())?)
-    }
-}
-
 /// A cargo diagnostic
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Hash, Eq)]
 pub struct CargoDiagnostic {

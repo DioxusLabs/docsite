@@ -84,7 +84,7 @@ impl Project {
         // If the project has already been shared, return the share code.
         // We remove the shared id if the content changes.
         if let Some(share_code) = &shared_id {
-            return Ok(share_code.clone());
+            return Ok(*share_code);
         }
 
         let url = format!("{}/shared", client.server_url);

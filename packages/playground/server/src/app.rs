@@ -33,7 +33,7 @@ const DEFAULT_PORT: u16 = 3000;
 const DEFAULT_BUILD_TEMPLATE_PATH: &str = "./template";
 
 /// Max size of the built directory before old projects are removed.
-const DEFAULT_BUILT_DIR_SIZE: u64 = 1 * 1024 * 1024 * 1024; // 1 GB
+const DEFAULT_BUILT_DIR_SIZE: u64 = 1024 * 1024 * 1024; // 1 GB
 /// Max memory usage of dx during a build before it is killed.
 const DEFAULT_DX_MEMORY_LIMIT: u64 = 5 * 1024 * 1024 * 1024; // 5 GB
 /// Max seconds a dx build can take before it is killed.

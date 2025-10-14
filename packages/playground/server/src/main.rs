@@ -19,7 +19,7 @@ use tower_http::{compression::CompressionLayer, cors::CorsLayer};
 
 mod app;
 mod build;
-mod builtbuilt;
+mod built;
 mod share;
 mod ws;
 
@@ -64,8 +64,8 @@ async fn main() {
 
     // Build the routers.
     let built_router = Router::new()
-        .route("/", get(builtbuilt::serve_built_index))
-        .route("/{*file_path}", get(builtbuilt::serve_other_built));
+        .route("/", get(built::serve_built_index))
+        .route("/{*file_path}", get(built::serve_other_built));
 
     let shared_router = Router::new()
         .route("/", post(share_project))

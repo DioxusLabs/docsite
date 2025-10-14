@@ -63,28 +63,28 @@ dioxus-search-macro = { path = "packages/search/search-macro" }
 dioxus-search-shared = { path = "packages/search/search-shared" }
 
 # Dioxus Release
-dioxus = "0.7.0-rc.0"
-dioxus-document = "0.7.0-rc.0"
-dioxus-core = "0.7.0-rc.0"
-dioxus-web = "0.7.0-rc.0"
-dioxus-router = "0.7.0-rc.0"
-dioxus-cli-config = "0.7.0-rc.0"
-dioxus-desktop = "0.7.0-rc.0"
-dioxus-liveview = "0.7.0-rc.0"
-dioxus-ssr = "0.7.0-rc.0"
-dioxus-core-types = "0.7.0-rc.0"
-dioxus-devtools = "0.7.0-rc.0"
-dioxus-rsx-hotreload = "0.7.0-rc.0"
-dioxus-rsx = "0.7.0-rc.0"
-dioxus-html = { version = "0.7.0-rc.0", default-features = false }
-dioxus-rsx-rosetta = "0.7.0-rc.0"
-dioxus-autofmt = "0.7.0-rc.0"
-dioxus-dx-wire-format = "0.7.0-rc.0"
-dioxus-devtools-types = { git = "https://github.com/DioxusLabs/dioxus" }
-dioxus-logger = "0.7.0-rc.0"
+dioxus = "0.7.0-rc.1"
+dioxus-document = "0.7.0-rc.1"
+dioxus-core = "0.7.0-rc.1"
+dioxus-web = "0.7.0-rc.1"
+dioxus-router = "0.7.0-rc.1"
+dioxus-cli-config = "0.7.0-rc.1"
+dioxus-desktop = "0.7.0-rc.1"
+dioxus-liveview = "0.7.0-rc.1"
+dioxus-ssr = "0.7.0-rc.1"
+dioxus-core-types = "0.7.0-rc.1"
+dioxus-devtools = "0.7.0-rc.1"
+dioxus-rsx-hotreload = "0.7.0-rc.1"
+dioxus-rsx = "0.7.0-rc.1"
+dioxus-html = { version = "0.7.0-rc.1", default-features = false }
+dioxus-rsx-rosetta = "0.7.0-rc.1"
+dioxus-autofmt = "0.7.0-rc.1"
+dioxus-dx-wire-format = "0.7.0-rc.1"
+dioxus-devtools-types = "0.7.0-rc.1"
+dioxus-logger = "0.7.0-rc.1"
 
 # 3rd-party dioxus
-dioxus-sdk = { version = "0.7.0-rc.0", default-features = false }
+dioxus-sdk = { git = "https://github.com/ealmloff/dioxus-std", branch = "0.7" }
 
 getrandom = { version = "0.2" }
 serde = { version = "1.0.215", features = ["derive"] }
@@ -121,31 +121,3 @@ opt-level = 3
 codegen-units = 1
 
 
-[patch.crates-io]
-dioxus-geolocation = { git = "https://github.com/ealmloff/dioxus-std", branch = "0.7" }
-dioxus-notification = { git = "https://github.com/ealmloff/dioxus-std", branch = "0.7" }
-dioxus-sdk = { git = "https://github.com/ealmloff/dioxus-std", branch = "git" }
-dioxus_storage = { git = "https://github.com/ealmloff/dioxus-std", branch = "0.7" }
-dioxus-sync = { git = "https://github.com/ealmloff/dioxus-std", branch = "0.7" }
-dioxus-time = { git = "https://github.com/ealmloff/dioxus-std", branch = "0.7" }
-dioxus-util = { git = "https://github.com/ealmloff/dioxus-std", branch = "0.7" }
-dioxus-window = { git = "https://github.com/ealmloff/dioxus-std", branch = "0.7" }
-dioxus-dx-wire-format = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-core = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-router = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-core-types = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-logger = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-cli-config = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-signals = { git = "https://github.com/dioxuslabs/dioxus" }
-subsecond = { git = "https://github.com/dioxuslabs/dioxus" }
-subsecond-types = { git = "https://github.com/dioxuslabs/dioxus" }
-generational-box = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-document = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-devtools = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-rsx = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-desktop = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-web = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-html = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-interpreter-js = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-rsx-rosetta = { git = "https://github.com/dioxuslabs/dioxus" }

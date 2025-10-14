@@ -326,7 +326,7 @@ impl<R: Routable> SearchIndexMapping<R> for BaseDirectoryMapping {
     fn map_route(&self, route: R) -> Option<PathBuf> {
         let route = route.to_string();
         let (route, _) = route.split_once('#').unwrap_or((&route, ""));
-        let (route, _) = route.split_once('?').unwrap_or((&route, ""));
+        let (route, _) = route.split_once('?').unwrap_or((route, ""));
         let route = PathBuf::from(route).join("index.html");
         Some(route)
     }

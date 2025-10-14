@@ -191,7 +191,7 @@ pub fn UseResource() -> Element {
 
 pub fn NotCancelSafe() -> Element {
     // ANCHOR: not_cancel_safe
-    static RESOURCES_RUNNING: GlobalSignal<HashSet<String>> = Signal::global(|| HashSet::new());
+    static RESOURCES_RUNNING: GlobalSignal<HashSet<String>> = Signal::global(HashSet::new);
     let mut breed = use_signal(|| "hound".to_string());
     let dogs = use_resource(move || async move {
         // Modify some global state
@@ -258,7 +258,7 @@ pub fn NotCancelSafe() -> Element {
 
 pub fn CancelSafe() -> Element {
     // ANCHOR: cancel_safe
-    static RESOURCES_RUNNING: GlobalSignal<HashSet<String>> = Signal::global(|| HashSet::new());
+    static RESOURCES_RUNNING: GlobalSignal<HashSet<String>> = Signal::global(HashSet::new);
     let mut breed = use_signal(|| "hound".to_string());
     let dogs = use_resource(move || async move {
         // Modify some global state
@@ -433,7 +433,7 @@ mod suspense_boundary {
     }
 
     #[component]
-    fn BreedGallery(breed: ReadOnlySignal<String>) -> Element {
+    fn BreedGallery(breed: ReadSignal<String>) -> Element {
         let response = use_resource(move || async move {
             // Artificially slow down the request to make the loading indicator easier to seer
             gloo_timers::future::TimeoutFuture::new(1000).await;
@@ -521,7 +521,7 @@ mod use_server_future {
 
     // ANCHOR: use_server_future
     #[component]
-    fn BreedGallery(breed: ReadOnlySignal<String>) -> Element {
+    fn BreedGallery(breed: ReadSignal<String>) -> Element {
         // use_server_future is very similar to use_resource, but the value returned from the future
         // must implement Serialize and Deserialize and it is automatically suspended
         let response = use_server_future(move || async move {

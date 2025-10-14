@@ -9,14 +9,12 @@ mod waterfall_effect {
     }
 
     // ANCHOR: waterfall_effect
-    fn fetch_dog_image(breed: impl Display) -> impl Future<Output = dioxus::Result<String>> {
-        async move {
-            let response = reqwest::get(format!("https://dog.ceo/api/breed/{breed}/images/random"))
-                .await?
-                .json::<DogApi>()
-                .await?;
-            dioxus::Ok(response.message)
-        }
+    async fn fetch_dog_image(breed: impl Display) -> dioxus::Result<String> {
+        let response = reqwest::get(format!("https://dog.ceo/api/breed/{breed}/images/random"))
+            .await?
+            .json::<DogApi>()
+            .await?;
+        dioxus::Ok(response.message)
     }
 
     #[component]
@@ -79,14 +77,12 @@ mod no_waterfall_effect {
         message: String,
     }
 
-    fn fetch_dog_image(breed: impl Display) -> impl Future<Output = dioxus::Result<String>> {
-        async move {
-            let response = reqwest::get(format!("https://dog.ceo/api/breed/{breed}/images/random"))
-                .await?
-                .json::<DogApi>()
-                .await?;
-            dioxus::Ok(response.message)
-        }
+    async fn fetch_dog_image(breed: impl Display) -> dioxus::Result<String> {
+        let response = reqwest::get(format!("https://dog.ceo/api/breed/{breed}/images/random"))
+            .await?
+            .json::<DogApi>()
+            .await?;
+        dioxus::Ok(response.message)
     }
 
     #[component]

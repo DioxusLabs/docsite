@@ -72,8 +72,6 @@ async fn main() {
         .route("/{:id}", get(get_shared_project));
 
     let app = Router::new()
-        // Just wait forever for the devtools to connect. We handle them through the ws route bellow.
-        .route("/_dioxus", get(std::future::pending::<Vec<u8>>))
         // Every build gets a websocket connection to report build progress.
         .route("/ws", get(ws::ws_handler))
         // The built routes for project that are cached.

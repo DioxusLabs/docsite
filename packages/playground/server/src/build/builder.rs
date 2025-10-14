@@ -206,7 +206,10 @@ fn start_limited_process(mut command: Command, env: &EnvVars) -> Result<Child, B
 
 /// Run the build command provided by the DX CLI.
 /// Returns if DX built the project successfully.
-async fn dx_build(request: &BuildRequest, env: Arc<EnvVars>) -> Result<Option<JumpTable>, BuildError> {
+async fn dx_build(
+    request: &BuildRequest,
+    env: Arc<EnvVars>,
+) -> Result<Option<JumpTable>, BuildError> {
     // If there is a previous build, get the cache dir for that build if it exists
     let previous_build_cache_dir = request
         .previous_build_id
@@ -280,11 +283,14 @@ async fn start_dx_build(
         }
     }
 
-    let BuildResult { logs, patch, status } = tokio::task::spawn_blocking({
+    let BuildResult {
+        logs,
+        patch,
+        status,
+    } = tokio::task::spawn_blocking({
         let request = request.clone();
-        move || {
-        process_build_messages(&mut child, &env, &request)
-    }})
+        move || process_build_messages(&mut child, &env, &request)
+    })
     .await?;
 
     // Check if the build was successful.
@@ -315,11 +321,7 @@ struct BuildResult {
 }
 
 /// Process the stdout and stderr of a dx build process, returning the logs and any hotpatch jump table
-fn process_build_messages(
-    child: &mut Child,
-    env: &EnvVars,
-    request: &BuildRequest,
-) -> BuildResult {
+fn process_build_messages(child: &mut Child, env: &EnvVars, request: &BuildRequest) -> BuildResult {
     let stderr = child.stderr.take().expect("dx stdout should exist");
     let stdout = child.stdout.take().expect("dx stdout should exist");
     let mut stdout_reader = BufReader::new(stdout).lines();
@@ -340,7 +342,11 @@ fn process_build_messages(
 
     let status = child.wait();
 
-    BuildResult { logs, patch, status }
+    BuildResult {
+        logs,
+        patch,
+        status,
+    }
 }
 
 /// Limit a child process's resource usage. This prevents extremely long builds or excessive memory usage from crashing the server.

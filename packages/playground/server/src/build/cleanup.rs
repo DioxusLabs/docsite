@@ -86,12 +86,12 @@ async fn check_project_cleanup(env: &EnvVars) -> Result<(), io::Error> {
                     while let Some(entry) = wasm_dir.next_entry().await? {
                         let entry_path = entry.path();
                         if let Some(name) = entry_path.file_name()
-                            && name.to_string_lossy().contains("patch") {
-                                let patch_size =
-                                    entry.metadata().await.map(|m| m.len()).unwrap_or(0);
-                                _ = tokio::fs::remove_file(&entry_path).await;
-                                size -= patch_size;
-                            }
+                            && name.to_string_lossy().contains("patch")
+                        {
+                            let patch_size = entry.metadata().await.map(|m| m.len()).unwrap_or(0);
+                            _ = tokio::fs::remove_file(&entry_path).await;
+                            size -= patch_size;
+                        }
                     }
                 }
             } else {

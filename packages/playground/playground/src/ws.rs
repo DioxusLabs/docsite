@@ -44,7 +44,7 @@ impl Socket {
 }
 
 /// Handles a websocket message, returning true if further messages shouldn't be handled.
-pub fn handle_message(mut build: Store<BuildState>, message: SocketMessage)  {
+pub fn handle_message(mut build: Store<BuildState>, message: SocketMessage) {
     match message {
         SocketMessage::BuildStage(stage) => build.set_stage(BuildStage::Building(stage)),
         SocketMessage::QueuePosition(position) => build.set_stage(BuildStage::Queued(position)),
@@ -72,5 +72,4 @@ pub fn handle_message(mut build: Store<BuildState>, message: SocketMessage)  {
         SocketMessage::RateLimited(time) => build.set_stage(BuildStage::Waiting(time)),
         _ => {}
     }
-
 }

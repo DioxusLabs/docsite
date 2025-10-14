@@ -66,11 +66,7 @@ impl TryFrom<CompilerMessage> for CargoDiagnostic {
         let message = diagnostic.message;
 
         // Collect spans
-        let spans = diagnostic
-            .spans
-            .iter()
-            .map(|s| s.clone().into())
-            .collect();
+        let spans = diagnostic.spans.iter().map(|s| s.clone().into()).collect();
 
         Ok(Self {
             target_crate: Some(value.target.name),
@@ -92,11 +88,7 @@ impl TryFrom<Diagnostic> for CargoDiagnostic {
         let message = value.message;
 
         // Collect spans
-        let spans = value
-            .spans
-            .iter()
-            .map(|s| s.clone().into())
-            .collect();
+        let spans = value.spans.iter().map(|s| s.clone().into()).collect();
 
         Ok(Self {
             target_crate: None,
@@ -108,8 +100,7 @@ impl TryFrom<Diagnostic> for CargoDiagnostic {
     }
 }
 
-
-impl From<DiagnosticSpan> for CargoDiagnosticSpan{
+impl From<DiagnosticSpan> for CargoDiagnosticSpan {
     fn from(value: DiagnosticSpan) -> Self {
         Self {
             is_primary: value.is_primary,
@@ -122,7 +113,6 @@ impl From<DiagnosticSpan> for CargoDiagnosticSpan{
         }
     }
 }
-
 
 /// IntoResponse for app errors.
 impl IntoResponse for AppError {

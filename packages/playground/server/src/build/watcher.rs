@@ -75,18 +75,19 @@ fn stop_build(builder: &mut Builder, pending_builds: &mut VecDeque<BuildRequest>
     // Check if the ongoing build is the cancelled build.
     let current_build_id = builder.current_build().map(|b| b.id);
     if let Some(current_build_id) = current_build_id
-        && id == current_build_id {
-            builder.stop_current();
+        && id == current_build_id
+    {
+        builder.stop_current();
 
-            // Start the next build request.
-            let next_request = pending_builds.pop_front();
-            if let Some(request) = next_request {
-                builder.start(request);
-            }
-
-            update_queue_positions(pending_builds);
-            return;
+        // Start the next build request.
+        let next_request = pending_builds.pop_front();
+        if let Some(request) = next_request {
+            builder.start(request);
         }
+
+        update_queue_positions(pending_builds);
+        return;
+    }
 
     // Try finding the build in the queue
     let mut matching_id = None;

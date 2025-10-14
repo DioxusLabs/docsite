@@ -224,7 +224,6 @@ impl AppState {
         let is_building = Arc::new(AtomicBool::new(false));
         let build_queue_tx = start_build_watcher(env.clone(), is_building.clone());
 
-
         let build_govener = Arc::new(RateLimiter::keyed(
             Quota::with_period(Duration::from_secs(5))
                 .expect("period is non-zero")

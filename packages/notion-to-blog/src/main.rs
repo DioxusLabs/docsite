@@ -222,16 +222,17 @@ fn transform_markdown(content: &str, image_mapping: &HashMap<String, String>) ->
                 // Check if this is a video file - if so, convert to image syntax
                 let url_decoded = dest_url.replace("%20", " ");
                 if let Some(filename) = Path::new(&url_decoded).file_name().and_then(|s| s.to_str())
-                    && is_media_file(filename) {
-                        // Convert link to image for video files
-                        events.push(Event::Start(Tag::Image {
-                            link_type,
-                            dest_url: processed_url.into(),
-                            title,
-                            id,
-                        }));
-                        continue;
-                    }
+                    && is_media_file(filename)
+                {
+                    // Convert link to image for video files
+                    events.push(Event::Start(Tag::Image {
+                        link_type,
+                        dest_url: processed_url.into(),
+                        title,
+                        id,
+                    }));
+                    continue;
+                }
 
                 // Regular link handling
                 in_link = true;
@@ -455,9 +456,10 @@ fn process_image_url(url: &str, image_mapping: &HashMap<String, String>) -> Stri
     let url_decoded = url.replace("%20", " ");
 
     if let Some(filename) = Path::new(&url_decoded).file_name().and_then(|s| s.to_str())
-        && let Some(new_name) = image_mapping.get(filename) {
-            return format!("./assets/{}", new_name);
-        }
+        && let Some(new_name) = image_mapping.get(filename)
+    {
+        return format!("./assets/{}", new_name);
+    }
 
     // Fallback: clean up the URL by removing URL encoding
     format!("./assets/{}", url.replace("%20", "-").to_lowercase())

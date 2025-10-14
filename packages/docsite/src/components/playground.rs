@@ -11,7 +11,7 @@ const URLS: PlaygroundUrls = PlaygroundUrls {
 #[cfg(feature = "production")]
 const URLS: PlaygroundUrls = PlaygroundUrls {
     socket: "wss://docsite-playground.fly.dev/ws",
-    server: "https://docsite-playground.fly.dev/built/",
+    server: "https://docsite-playground.fly.dev",
     location: "https://dioxuslabs.com/playground",
 };
 

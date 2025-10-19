@@ -1,11 +1,14 @@
+#![rustfmt::skip]
+
 use dioxus::prelude::*;
 // ANCHOR: tokio_import
 // Since the tokio dependency is only enabled in the server feature,
 // we need to only import it when the server feature is enabled.
 #[cfg(feature = "server")]
-use tokio::fs::File;
-#[cfg(feature = "server")]
-use tokio::io::AsyncReadExt;
+use {
+    tokio::fs::File,
+    tokio::io::AsyncReadExt
+};
 // ANCHOR_END: tokio_import
 
 // ANCHOR: tokio_usage

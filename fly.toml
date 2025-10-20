@@ -38,6 +38,4 @@ kill_timeout = '300s'
     soft_limit = 20
 
 [[vm]]
-  memory = '2gb'
-  cpu_kind = 'shared'
-  cpus = 8
+  size = 'performance-4x'

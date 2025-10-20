@@ -13,8 +13,8 @@ const URLS: PlaygroundUrls = PlaygroundUrls {
 
 #[cfg(feature = "real-server")]
 const URLS: PlaygroundUrls = PlaygroundUrls {
-    socket: "wss://docsite-playground.fly.dev/ws",
-    server: "https://docsite-playground.fly.dev",
+    socket: "wss://docsite-playground-red-wildflower-209.fly.dev/ws",
+    server: "https://docsite-playground-red-wildflower-209.fly.dev",
     location: "https://dioxuslabs.com/playground",
 };
 

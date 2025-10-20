@@ -1,12 +1,12 @@
-# fly.toml app configuration file generated for docsite-playground on 2025-02-04T15:44:00-08:00
+# fly.toml app configuration file generated for docsite-playground-red-wildflower-209-red-wildflower-209 on 2025-10-20T16:41:20-05:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'docsite-playground'
-primary_region = 'lax'
+app = 'docsite-playground-red-wildflower-209'
+primary_region = 'sjc'
 kill_signal = 'SIGINT'
-kill_timeout = '300s'
+kill_timeout = '5m0s'
 
 [build]
 
@@ -38,4 +38,4 @@ kill_timeout = '300s'
     soft_limit = 20
 
 [[vm]]
-  size = 'performance-4x'
+  size = 'performance-2x'

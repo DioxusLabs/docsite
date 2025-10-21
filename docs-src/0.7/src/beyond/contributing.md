@@ -28,7 +28,7 @@ GitHub CI is much slower at executing all of these than your PC.
 - Format code with [rustfmt](https://github.com/rust-lang/rustfmt):
 
 ```sh
-cargo fmt -- src/**/**.rs
+cargo fmt -- packages/**/**.rs
 ```
 
 - You might need to install some packages on Linux (Ubuntu/deb) before the following commands will complete successfully (there is also a Nix flake in the repo root):
@@ -55,21 +55,13 @@ cargo clippy --workspace --examples --tests -- -D warnings
 cargo test --all --tests
 ```
 
-- More tests, this time with [cargo-make](https://sagiegurari.github.io/cargo-make/). Here are all steps, including installation:
-
-```sh
-cargo install --force cargo-make
-cargo make tests
-```
-
 - Test with Playwright. This tests the UI itself, right in a browser. Here are all steps, including installation:
   **Disclaimer: This might inexplicably fail on your machine without it being your fault.** Make that PR anyway!
 
 ```sh
-cd playwright-tests
+cd packages/playwright-tests
 npm ci
 npm install -D @playwright/test
-npx playwright install --with-deps
 npx playwright test
 ```
 

@@ -34,7 +34,7 @@ pub fn FeaturedExamples() -> Element {
                         title: "File Explorer",
                         subtitle: "Desktop",
                         description: "Interact with native APIs directly from your UI. Works with a simple `cargo run` and is bundle-ready.",
-                        link: "https://github.com/DioxusLabs/dioxus/blob/main/example-projects/file-explorer",
+                        link: "https://github.com/DioxusLabs/dioxus/tree/main/examples/file-explorer",
                         img_avif: "/static/file_explorer.avif",
                         img: "/static/file_explorer.png",
                         img_alt: "File Explorer",

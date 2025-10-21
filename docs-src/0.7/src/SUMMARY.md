@@ -3,6 +3,7 @@
 - [Introduction](getting_started/welcome.md)
   - [Welcome](index.md)
   - [Getting Started](getting_started/index.md)
+
 ---
 
 - [Take a Tour](tutorial/overview.md)
@@ -72,6 +73,28 @@
     - [Custom Hooks](essentials/advanced/custom_hooks.md)
     - [Component Lifecycle](essentials/advanced/lifecycle.md)
     - [Breaking Out](essentials/advanced/breaking_out.md)
+  <!-- - [Routing](essentials/router/index.md)
+    - [Introduction](essentials/router/introduction.md)
+    - [Defining Routes](essentials/router/routes.md)
+    - [Nested Routes](essentials/router/nested-routes.md)
+    - [Layouts](essentials/router/layouts.md)
+    - [Navigation](essentials/router/navigation/index.md)
+      - [Programmatic Navigation](essentials/router/navigation/programmatic-navigation.md)
+    - [History Providers](essentials/router/history-providers.md)
+    - [History Buttons](essentials/router/history-buttons.md)
+    - [Routing Update Callback](essentials/router/routing-update-callback.md)
+  - [Fullstack](essentials/fullstack/index.md)
+    - [Overview](essentials/fullstack/overview.md)
+    - [Server Functions](essentials/fullstack/server_functions.md)
+    - [Managing Dependencies](essentials/fullstack/managing_dependencies.md)
+    - [Extractors](essentials/fullstack/extractors.md)
+    - [Middleware](essentials/fullstack/middleware.md)
+    - [Authentication](essentials/fullstack/authentication.md)
+    - [Routing](essentials/fullstack/routing.md)
+    - [Hydration](essentials/fullstack/hydration.md)
+    - [Streaming](essentials/fullstack/streaming.md)
+    - [Static Site Generation](essentials/fullstack/static_site_generation.md)
+    - [Axum Integration](essentials/fullstack/axum.md) -->
 
 ---
 
@@ -136,6 +159,7 @@
       - [Props](migration/to_05/props.md)
 
 ---
+
 - [Beyond](beyond/index.md)
   - [Contributing](beyond/contributing.md)
   - [Project Structure](beyond/project_structure.md)

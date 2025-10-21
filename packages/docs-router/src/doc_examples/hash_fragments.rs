@@ -7,21 +7,19 @@ use dioxus::prelude::*;
 #[derive(Routable, Clone)]
 #[rustfmt::skip]
 enum Route {
-    // segments that start with ?: are query segments
-    #[route("/blog?:name&:surname")]
+    // segments that start with #: are hash segments
+    #[route("/blog#:name")]
     BlogPost {
-        // You must include query segments in child variants
+        // You must include hash segments in child variants
         name: String,
-        surname: String,
     },
 }
 
 #[component]
-fn BlogPost(name: String, surname: String) -> Element {
+fn BlogPost(name: String) -> Element {
     rsx! {
         div { "This is your blogpost with a query segment:" }
         div { "Name: {name}" }
-        div { "Surname: {surname}" }
     }
 }
 // ANCHOR_END: route

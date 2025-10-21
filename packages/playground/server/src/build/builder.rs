@@ -43,7 +43,7 @@ impl Builder {
     pub fn update_component_library(&mut self) -> Result<(), BuildError> {
         // Update the component library cache
         let update_status = Command::new("dx")
-            .arg("component")
+            .arg("components")
             .arg("update")
             .current_dir(&self.env.build_template_path)
             .stdout(Stdio::null())
@@ -54,7 +54,7 @@ impl Builder {
         }
         // Add all components to the template project
         let status = Command::new("dx")
-            .arg("component")
+            .arg("components")
             .arg("add")
             .arg("--all")
             .arg("--force")

@@ -4,83 +4,35 @@ Almost all apps need a remote server to store and update user data. Dioxus provi
 
 Dioxus Fullstack deeply integrates with the popular [Axum](https://docs.rs/axum/latest/axum/) framework, making it easy to quickly add complex fullstack functionality to your app, including:
 
-- **Server-Side-Rendering**: Render HTML on the server and hydrate on the client
+- **Server-Side-Rendering**: Render HTML on the server and hydrate it on the client
 - **Server Functions**: Type-safe Axum HTTP endpoints directly callable from the client
 - **Ergonomic Typed Routing**: Easily extract queries and paths from the URL
-- **Typed Forms**: Capture multipart form data from the client into type Rust structs
+- **Multi-part Forms**: Capture multipart form data from the client into type Rust structs
 - **Binary Streams**: Easily add file upload/download backend capability
 - **SSE and WebSockets**: Complex, stateful datatypes for server communication
 - **Asset Management**: Automatically optimizes assets for deployment to CDNs
 - **WASM Support**: Deploy to WASM-based providers like Cloudflare Workers
 - **Hot-Reload**: Rapid Rust hot-reload during development powered by [subsecond](https://crates.io/crates/subsecond)
 
-Currently, Dioxus Fullstack does not provide built-in utilities for things like Databases, Caches, Sessions, and Mailers. Our current focus is to finish polishing the fullstack integration before branching out into a more "complete" fullstack solution. As such, you'll need to pull in 3rd-party crates like `Sqlx` and `tower-sessions` to use such features.
-
-## A Quick Example
-
-Dioxus Fullstack is designed to be simple, intuitive, and powerful. To add new endpoints to your app, you can use the built-in procedural macros (`#[get]`, `#[post]`, etc) on Axum handlers:
-
-```rust
-#[get("/api/users/{user_id}", db: SqlDb)]
-async fn get_user(user_id: Uuid) -> Result<UserData> {
-    db.get(user_id)
-}
-```
-
-Here, we define a new endpoint for our app that takes `user_id` as a URL path parameter and `SqlDb` as an Axum extractor. This endpoint can be directly called by the client just like any Rust function:
-
-```rust
-fn app() -> Element {
-    let user_id = use_current_user()?;
-
-    rsx! {
-        button {
-            onclick: move |_| async move {
-                let user = get_user(user_id).await;
-            },
-            "Get user"
-        }
-    }
-}
-```
+Currently, Dioxus Fullstack does not provide built-in utilities for things like Databases, Caches, Sessions, and Mailers. Our current focus is to finish polishing the fullstack integration before branching out into a more "complete" fullstack solution. You'll need to pull in 3rd-party crates like `Sqlx` and `tower-sessions` to use such features. To help, we provide a [few examples in the Dioxus GitHub repo](https://github.com/DioxusLabs/dioxus/tree/main/examples/07-fullstack) to get started.
 
 ## Solid Building BLocks
 
-Dioxus Fullstack is designed to be composable with the broader Axum ecosystem, building on top of foundational crates like Axum, Tower, Hyper, and HTTP. Axum is an extraordinarily performant backend solution and fosters a wide ecosystem add-ons.
+Dioxus Fullstack is designed to be composable with the broader Axum ecosystem, building on top of foundational crates like Axum, Tower, Hyper, and HTTP. Axum is an extraordinarily performant backend solution and fosters a wide ecosystem of add-ons.
 
 If something is not directly built-in to Dioxus Fullstack, definitely look online for an axum-compatible crate to drop in!
 
-```toml
-[dependencies]
-dioxus = { version = "0.7.0", features = ["fullstack"] }
+## Hot-Reload
 
-[features]
-web = ["dioxus/web"] # This feature is enabled in the web client
-server = ["dioxus/server"] # This feature is enabled in the server
-```
+With Dioxus, our goal is to maximize your developer productivity. Dioxus Fullstack comes prebuilt with full Rust hot-reload support built-in, thanks to our hot-patch engine [subsecond](https://crates.io/crates/subsecond). Subsecond uses advanced assembly and linker techniques to allow modifying Rust functions at runtime. In practice, this means you can add new endpoints, pages, and logic to your app without manually rebuilding.
 
-Now when you run `dx serve`, Dioxus will build your app once for the client and once for the server:
+![Dual Serve Hot-Reload](/assets/07/dual-serve-hotreload.mp4)
 
-![Server Client Split](/assets/06_docs/server_split.png)
-
-If you have dependencies you only want to include on either the server or client, you can make those dependencies depend on the `web` or `server` feature:
-
-```toml
-[dependencies]
-dioxus = { version = "0.7.0", features = ["fullstack"] }
-tokio = { version = "1.0", features = ["full"], optional = true }
-
-[features]
-default = []
-web = ["dioxus/web"]
-server = ["dioxus/server", "dep:tokio"] # Only include tokio on the server
-```
-
-For more information on how to manage dependencies and conditional compilation in fullstack applications, see the [managing dependencies guide](./managing_dependencies.md).
+Subsecond currently has a few limitations. For the best experience, we recommend only modifying code in the "tip" of your app. Note that code that runs only once will not be hot-reloadable and will require a restart of the app.
 
 ## Server functions
 
-Fullstack also provides an easy way to communicate with the server from any client. Server functions let you define a function that always runs on the server. When you call that function from the client, Dioxus will automatically serialize the arguments, send them to the server, run the function on the server, serialize the return value, and send it back to the client.
+Dioxus Fullstack provides an easy way to communicate with the server from any client. Server functions let you define a function that always runs on the server. When you call that function from the client, Dioxus will automatically serialize the arguments, send them to the server, run the function on the server, serialize the return value, and send it back to the client.
 
 Server functions are described in more detail in the [server functions guide](./server_functions.md).
 
@@ -101,9 +53,9 @@ fn app() -> Element {
     }
 }
 
-#[server]
-async fn fetch_dog(breed: String) -> Result<String, ServerFnError> {
-    // The body of the function will always run on the server so we can do server-side operations like database queries.
+// The body of the function will always run on the server so we can do server-side operations like database queries
+#[get("/api/dog/:breed")]
+async fn fetch_dog(breed: String) -> Result<String> {
     let image = DB.with(|f| f.execute("SELECT url FROM dogs WHERE id = ?1", &breed))?;
     Ok(image)
 }
@@ -123,26 +75,20 @@ Lets take a look at what rendering looks like for the dioxuslabs.com website wit
 
 ![Fullstack vs client side rendering load diagram](/assets/07/fullstack-request-lifecycle.png)
 
-### Search engine optimization (SEO)
+## Search engine optimization (SEO)
 
 In addition to loading your application faster, server side rendering is especially important for applications that need to be indexed by search engines. Most search engine crawlers do not execute JavaScript, so they will not be able to see the content of a client-side rendered application. By rendering the page on the server, we can ensure that the crawlers will be able to see the content of the page. This is one of the main reasons dioxuslabs.com uses fullstack rendering:
 
 ![Fullstack vs client side rendering load diagram for crawlers](/assets/07/fullstack-crawler-request-lifecycle.png)
 
-## Table of Contents
+## Websockets and Streams
 
-This guide is covers two main topics:
+Dioxus Fullstack comes with full support for Axum, and with it, special client handlers for things like WebSockets and HTTP Streams. We provide a number of utilities like `use_websocket` to reactively manage these resources on the client.
 
-Server integration with server functions for any client
-- [Server Functions](./server_functions.md): How to use server functions to communicate with the server in a type-safe way.
-- [Managing Dependencies](./managing_dependencies.md): How to include server or client specific dependencies in your fullstack application.
-- [Extractors](./extractors.md): Using extractors to access request data in server functions.
-- [Middleware](./middleware.md): Wrapping server functions with middleware for additional functionality.
-- [Authentication](./authentication.md): Securing your fullstack application with authentication.
-- [Axum Integration](./axum.md): Integrating Dioxus fullstack with your existing Axum server.
+![Fullstack websockets](/assets/07/fullstack-websockets.avif)
 
-And server side rendering with a web client
-- [Hydration](./hydration.md): Understanding the process of hydration for fullstack web applications.
-- [Routing](./routing.md): Integrating the dioxus router with your fullstack application.
-- [Streaming](./streaming.md): Starting rendering faster with streaming.
-- [Static Site Generation](./static_site_generation.md): Generating static sites with Dioxus.
+Our `Streaming<T>` wrapper allows you to easily send arbitrary bytes, text, JSON, and chunked file contents to and from the server.
+
+## Assets
+
+Because Dioxus Fullstack integrates with our build tool DX, your fullstack apps come pre-optimized for deploying onto infrastructure like content-distribution-networks (CDNs). CDNs reduce your bandwidth usage and speed up your app's time-to-first byte for maximum performance. Assets bundled with DX are hashed, letting the server infinitely cache their contents.

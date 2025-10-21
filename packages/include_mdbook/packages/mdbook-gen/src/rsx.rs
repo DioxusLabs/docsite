@@ -735,10 +735,19 @@ fn build_codeblock(code: String, lang: &str) -> String {
             ThemeSet::load_from_reader(&mut reader).unwrap()
         });
 
+    let lang = if lang.to_ascii_lowercase() == "rust" {
+        "rs"
+    } else {
+        lang
+    };
+
     let ss = modern_syntax_set();
     let syntax = ss.find_syntax_by_name(lang).unwrap_or_else(|| {
-        ss.find_syntax_by_extension(lang)
-            .unwrap_or_else(|| ss.find_syntax_by_extension("rs").unwrap())
+        ss.find_syntax_by_extension(lang).unwrap_or_else(|| {
+            ss.find_syntax_by_extension("rs").unwrap_or_else(|| {
+                panic!("Failed to find syntax for {lang} from {:#?}", ss.syntaxes())
+            })
+        })
     });
     let html =
         syntect::html::highlighted_html_for_string(code.trim_end(), &ss, syntax, &THEME).unwrap();

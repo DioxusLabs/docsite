@@ -65,8 +65,6 @@ Query segments must be the _after all route segments_ and cannot be included in 
 {{#include ../docs-router/src/doc_examples/query_segments.rs:route}}
 ```
 
-
-
 # Nested Routes
 
 When developing bigger applications we often want to nest routes within each
@@ -105,7 +103,6 @@ To finish a nest, we use the `#[end_nest]` attribute or the end of the enum.
 
 ```rust
 {{#include ../docs-router/src/doc_examples/nest.rs:route}}
-
 ```
 ## Hash Segments
 

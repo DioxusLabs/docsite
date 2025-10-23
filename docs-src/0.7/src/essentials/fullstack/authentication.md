@@ -1,6 +1,6 @@
 # Authentication
 
-You can use [extractors](./extractors) to integrate auth with your Fullstack application.
+You can use extractors to integrate auth with your Fullstack application.
 
 You can create a custom extractor to extract the auth session from the request. From that auth session, you can check if the user has the required privileges before returning the private data.
 

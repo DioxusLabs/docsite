@@ -34,7 +34,7 @@ web = ["dioxus/web"]
 server = ["dioxus/server", "dep:tokio"] # Only include tokio on the server
 ```
 
-For more information on how to manage dependencies and conditional compilation in fullstack applications, see the [managing dependencies guide](./managing_dependencies.md).
+<!-- For more information on how to manage dependencies and conditional compilation in fullstack applications, see the [managing dependencies guide](./managing_dependencies.md). -->
 
 ## Server functions
 
@@ -86,7 +86,7 @@ Lets take a look at what rendering looks like for the dioxuslabs.com website wit
 In addition to loading your application faster, server side rendering is especially important for applications that need to be indexed by search engines. Most search engine crawlers do not execute JavaScript, so they will not be able to see the content of a client-side rendered application. By rendering the page on the server, we can ensure that the crawlers will be able to see the content of the page. This is one of the main reasons dioxuslabs.com uses fullstack rendering:
 
 ![Fullstack vs client side rendering load diagram for crawlers](/assets/07/fullstack-crawler-request-lifecycle.png)
-
+<!--
 ## Table of Contents
 
 This guide is covers two main topics:
@@ -103,4 +103,4 @@ And server side rendering with a web client
 - [Hydration](./hydration.md): Understanding the process of hydration for fullstack web applications.
 - [Routing](./routing.md): Integrating the dioxus router with your fullstack application.
 - [Streaming](./streaming.md): Starting rendering faster with streaming.
-- [Static Site Generation](./static_site_generation.md): Generating static sites with Dioxus.
+- [Static Site Generation](./static_site_generation.md): Generating static sites with Dioxus. -->

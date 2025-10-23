@@ -5,8 +5,8 @@ Fullstack Dioxus apps are structured a bit differently than client-only apps. Th
 In this chapter, we'll explore how to use feature flags and cargo targets to structure our apps for fullstack development.
 
 > Dioxus provides a number of templates with `dx new` to automatically bootstrap new fullstack projects.
-
-If you want to get started quickly, we suggest using one of the built-in templates and then heading on to next chapter.
+>
+> If you want to get started quickly, we suggest using one of the built-in templates and then heading on to next chapter.
 
 ## The Server/Client split
 
@@ -27,7 +27,7 @@ On each of these platforms, we need to include different code and different depe
 
 ## How DX builds your app
 
-Our build tool, DX, is capable of building both the client and server of your app simultaneously. If `--hotpatch` is enabled, DX will also automatically hot-reload both the client and server code in tandem.
+Our build tool, DX, is capable of building both the client and server of your app simultaneously. If the `--hotpatch` flag is enabled, DX will also automatically hot-reload both the client and server code in tandem.
 
 When developing your app, you'll generally use `dx serve`. This command accepts the usual arguments you might pass to `cargo run`:
 
@@ -46,7 +46,7 @@ Under the hood, DX automatically detects if the target app has a server variant 
 server = ["dioxus/server"]
 ```
 
-DX will also look for specific client features (web/desktop/mobile) and enable the relevant feature depending on the target platform. DX uses the concept of "platform" to distinguish types of builds from one another.
+DX will also look for specific client features (`"web"` / `"desktop"` / `"mobile"`) and enable the relevant feature depending on the target platform. DX uses the concept of "platform" to distinguish types of builds from one another.
 
 To set a build's platform, you can use `--platform web/desktop/ios/android` or the shorthands like `--web`, `--desktop`, `--ios`, etc. When we specify a platform, DX also enables a corresponding feature in your Cargo.toml:
 
@@ -59,6 +59,19 @@ desktop = ["dioxus/desktop"]
 
 # enabled with `--mobile`
 mobile = ["dioxus/mobile"]
+```
+
+Running the command might look like:
+
+```sh
+# sets target=wasm32-unknown-unknown, features="web", profile="wasm-dev"
+dx serve --web
+
+# sets target=host, features="desktop", profile="desktop-dev"
+dx serve --desktop
+
+# sets target=aarch64-apple-ios-sim, features="mobile", profile="ios-dev"
+dx serve --ios
 ```
 
 If your `dioxus` dependency enables the `fullstack` feature, DX recgonizes this app is a fullstack app and then creates two builds, each with a separate platform:
@@ -207,9 +220,9 @@ It may be more convenient to group server or client specific code into a module 
 
 ## Separate Frontend and Backend Crates
 
-If you so choose, you can split your frontend and backend into separate crates. This can be useful for larger projects where you have separate teams working on eacho or you have separate entrypoints for web, desktop, and mobile.
+If you so choose, you can split your frontend and backend into separate crates. This can be useful for larger projects where you have separate complex entrypoints for web, desktop, and mobile.
 
-Workspace setups bring extra complexity, but they can make it much easier to share data types and functions across several different projects. For instance, you might have a single API crate with several entirely different apps.
+Workspace setups bring extra complexity, but they can make it much easier to share data types and functions across several different projects. For instance, you might have a single API crate used by several different apps.
 
 In these cases, we might organize our workspace like so:
 
@@ -224,7 +237,7 @@ In these cases, we might organize our workspace like so:
           ...
 ```
 
-If you're using Dioxus Fullstack, then you might want to import your `pet-api`'s server functions to call from your UI. In our client apps, we can then import the `pet-api` crate:
+If you're using Dioxus Fullstack, you can import your `pet-api`'s server functions to call from your UI. In the client app, you can then import the `pet-api` crate:
 
 ```toml
 [dependencies]
@@ -233,8 +246,8 @@ pet-api = { workspace = true }
 
 To launch the server, you can choose one of two options:
 
-- 1. Start the pet-api server from the client project
-- 2. Launch the pet-api crate's main binary
+1. Start the pet-api server from the client project
+2. Launch the pet-api crate's main binary
 
 If your server is simple enough, then option 1 can be a decent option since it automatically integrates with `dx serve`.
 

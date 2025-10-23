@@ -4,7 +4,7 @@ Dioxus fullstack is built on top of Axum under the hood. The launch function wil
 
 ## Adding axum to your project
 
-First, we need to add axum and tokio as dependencies. Since we only need these dependencies on the server, we need to make them optional and enable them in the server feature flag. More information about server only dependencies can be found in the [dependencies guide](./managing_dependencies.md#adding-server-only-dependencies):
+First, we need to add axum and tokio as dependencies. Since we only need these dependencies on the server, we need to make them optional and enable them in the server feature flag. More information about server only dependencies can be found in the [project setup guide](./project_setup.md#adding-server-only-dependencies):
 
 ```toml
 [dependencies]

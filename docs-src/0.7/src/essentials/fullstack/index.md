@@ -16,15 +16,9 @@ Dioxus Fullstack deeply integrates with the popular [Axum](https://docs.rs/axum/
 
 Currently, Dioxus Fullstack does not provide built-in utilities for things like Databases, Caches, Sessions, and Mailers. Our current focus is to finish polishing the fullstack integration before branching out into a more "complete" fullstack solution. You'll need to pull in 3rd-party crates like `Sqlx` and `tower-sessions` to use such features. To help, we provide a [few examples in the Dioxus GitHub repo](https://github.com/DioxusLabs/dioxus/tree/main/examples/07-fullstack) to get started.
 
-## Solid Building BLocks
-
-Dioxus Fullstack is designed to be composable with the broader Axum ecosystem, building on top of foundational crates like Axum, Tower, Hyper, and HTTP. Axum is an extraordinarily performant backend solution and fosters a wide ecosystem of add-ons.
-
-If something is not directly built-in to Dioxus Fullstack, definitely look online for an axum-compatible crate to drop in!
-
 ## Hot-Reload
 
-With Dioxus, our goal is to maximize your developer productivity. Dioxus Fullstack comes prebuilt with full Rust hot-reload support built-in, thanks to our hot-patch engine [subsecond](https://crates.io/crates/subsecond). Subsecond uses advanced assembly and linker techniques to allow modifying Rust functions at runtime. In practice, this means you can add new endpoints, pages, and logic to your app without manually rebuilding.
+With Dioxus, our goal is to maximize your developer productivity. Dioxus Fullstack ships with full Rust hot-reload support built-in thanks to our hot-patch engine [subsecond](https://crates.io/crates/subsecond). Subsecond uses advanced assembly and linker techniques to allow modifying Rust functions at runtime. You can add new endpoints, pages, and logic to your app without manually rebuilding.
 
 ![Dual Serve Hot-Reload](/assets/07/dual-serve-hotreload.mp4)
 

@@ -186,7 +186,9 @@
 .markdown-body h1 {
   margin: 0.67em 0;
   font-weight: 600;
-  font-size: 2em;
+  font-size: 2.5em;
+  /* font-size: 2.5em; */
+  /* font-size: 2em; */
   /* padding-bottom: 0.3em; */
   /* border-bottom: 1px solid var(--color-border-muted) */
 }
@@ -380,14 +382,19 @@
 
 .markdown-body h2 {
   font-weight: 600;
-  font-size: 1.5em;
-  padding-top: 0.75rem;
+  font-size: 1.625em;
+  /* font-size: 1.5em; */
+  padding-top: 1.75rem;
+  /* padding-top: 0.75rem; */
   /* border-bottom: 1px solid var(--color-border-muted) */
 }
 
 .markdown-body h3 {
   font-weight: 600;
-  font-size: 1.25em;
+  padding-top: 1.5rem;
+  /* padding-top: 0.5rem; */
+  font-size: 1.5em;
+  /* font-size: 1.25em; */
 }
 
 .markdown-body h4 {

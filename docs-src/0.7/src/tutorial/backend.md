@@ -127,7 +127,7 @@ And then we'd import the server functions in our app, disabling their `"server"`
 server = { workspace = true, default-features = false }
 ```
 
-We provide a longer guide about the details of managing dependencies across the server and the client [here](../essentials/fullstack/managing_dependencies.md).
+We provide a longer guide about the details of managing dependencies across the server and the client [here](../essentials/fullstack/project_setup.md).
 
 ## Our HotDog Server Function
 

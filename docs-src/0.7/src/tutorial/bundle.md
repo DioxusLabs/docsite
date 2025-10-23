@@ -4,11 +4,7 @@ Congratulations! You built your first fully-functional Dioxus app, completely lo
 
 Let's get your app bundled for multiple platforms and then ready to deploy.
 
-## Testing on Desktop and Mobile
-
-So far, we've been testing our app in a simple web browser. Let's actually build and test our app for mobile platforms.
-
-### Testing on iOS
+## Testing on iOS
 
 To test iOS, your development environment needs to be setup to build iOS apps. This involves a few steps:
 
@@ -25,7 +21,7 @@ Simply run run `dx serve --ios` and your app should load in the iOS Simulator.
 
 Fantastic - our app works seamlessly with no changes.
 
-### Testing on Android
+## Testing on Android
 
 Setting up your environment for Android development takes time, so make sure to read the [mobile tooling guide](../guides/platforms/mobile.md).
 
@@ -117,8 +113,8 @@ We should see the outputs in our terminal:
 ```sh
 18.252s  INFO Bundled app successfully!
 18.252s  INFO App produced 2 outputs:
-18.252s  INFO app - [/Users/jonkelley/Development/Tinkering/06-demos/hot_dog/target/dx/hot_dog/bundle/macos/bundle/macos/HotDog.app]
-18.252s  INFO dmg - [/Users/jonkelley/Development/Tinkering/06-demos/hot_dog/target/dx/hot_dog/bundle/macos/bundle/dmg/HotDog_0.1.0_aarch64.dmg]
+18.252s  INFO app - [./target/dx/hot_dog/bundle/macos/bundle/macos/HotDog.app]
+18.252s  INFO dmg - [./target/dx/hot_dog/bundle/macos/bundle/dmg/HotDog_0.1.0_aarch64.dmg]
 ```
 
 Generally, you can distribute desktop apps without needing an app store. However, some platforms like macOS might require you to sign and notarize your application to be considered "safe" for your users to open.
@@ -177,6 +173,6 @@ dx bundle --webview \
 
 This returns the list of bundles:
 ```
-/Users/jonkelley/Development/Tinkering/06-demos/hot_dog/target/dx/hot_dog/bundle/macos/bundle/macos/HotDog.app
-/Users/jonkelley/Development/Tinkering/06-demos/hot_dog/target/dx/hot_dog/bundle/macos/bundle/dmg/HotDog_0.1.0_aarch64.dmg
+./target/dx/hot_dog/bundle/macos/bundle/macos/HotDog.app
+./target/dx/hot_dog/bundle/macos/bundle/dmg/HotDog_0.1.0_aarch64.dmg
 ```

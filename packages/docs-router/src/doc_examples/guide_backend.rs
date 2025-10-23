@@ -2,8 +2,8 @@ mod save_dog_v1 {
     use dioxus::prelude::*;
 
     // ANCHOR: save_dog_v1
-    #[server]
-    async fn save_dog(image: String) -> Result<(), ServerFnError> {
+    #[post("/api/save_dog")]
+    async fn save_dog(image: String) -> Result<()> {
         Ok(())
     }
     // ANCHOR_END: save_dog_v1
@@ -14,7 +14,7 @@ mod save_dog_client {
 
     // ANCHOR: save_dog_client
     // on the client:
-    async fn save_dog(image: String) -> Result<(), ServerFnError> {
+    async fn save_dog(image: String) -> Result<()> {
         reqwest::Client::new()
             .post("http://localhost:8080/api/save_dog")
             .json(&image)
@@ -35,7 +35,7 @@ mod save_dog_server {
         image: String,
     }
 
-    async fn save_dog(Json(args): Json<SaveDogArgs>) -> Result<(), ServerFnError> {
+    async fn save_dog(Json(args): Json<SaveDogArgs>) -> Result<()> {
         Ok(())
     }
     // ANCHOR_END: save_dog_server
@@ -66,30 +66,19 @@ mod separate_server_launch {
 
     // ANCHOR: separate_server_launch
     fn main() {
-        #[cfg(feature = "server")]
-        tokio::runtime::Runtime::new()
-            .unwrap()
-            .block_on(launch_server());
         #[cfg(not(feature = "server"))]
         dioxus::launch(App);
-    }
 
-    #[cfg(feature = "server")]
-    async fn launch_server() {
-        // Connect to dioxus' logging infrastructure
-        dioxus::logger::initialize_default();
+        #[cfg(feature = "server")]
+        dioxus::serve(|| async move {
+            // Create a new axum router for our Dioxus app
+            let router = dioxus::server::router(App);
 
-        // Connect to the IP and PORT env vars passed by the Dioxus CLI (or your dockerfile)
-        let socket_addr = dioxus::cli_config::fullstack_address_or_localhost();
+            // .. customize it however you want ..
 
-        // Build a custom axum router
-        let router = axum::Router::new()
-            .serve_dioxus_application(ServeConfig::new().unwrap(), App)
-            .into_make_service();
-
-        // And launch it!
-        let listener = tokio::net::TcpListener::bind(socket_addr).await.unwrap();
-        axum::serve(listener, router).await.unwrap();
+            // And then return it
+            Ok(router)
+        })
     }
     // ANCHOR_END: separate_server_launch
 }
@@ -105,8 +94,8 @@ mod server_client_split_broken {
     // ❌ this will leak your DB_PASSWORD to your client app!
     static DB_PASSWORD: &str = "1234";
 
-    #[server]
-    async fn DoThing() -> Result<(), ServerFnError> {
+    #[post("/api/do_thing")]
+    async fn DoThing() -> Result<()> {
         connect_to_db(DB_PASSWORD).await
         // ...
     }
@@ -147,7 +136,7 @@ mod save_dog_v2 {
 
     // ANCHOR: save_dog_v2
     // Expose a `save_dog` endpoint on our server that takes an "image" parameter
-    #[server]
+    #[post("/api/save_dog")]
     async fn save_dog(image: String) -> Result<(), ServerFnError> {
         use std::io::Write;
 

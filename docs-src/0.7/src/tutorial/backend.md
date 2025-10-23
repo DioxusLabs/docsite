@@ -26,7 +26,7 @@ server = ["dioxus/server"] # <----- add this additional target
 
 If you selected _yes_ to the "use fullstack?" prompt when creating your app, you will already have this set up!
 
-> 📣 Unfortunately, `dx` doesn't know how to hot-reload this change, so we'll need to kill our currently running `dx serve` process and launch it again.
+> 📣 Unfortunately, `dx` doesn't know how to hot-reload this change, so we'll need to restart the dev server.
 
 Now instead of running `dx serve`, you need to run with a manual platform with `dx serve --web`. Give your app a moment to build again and make sure that the "fullstack" feature is enabled in the dashboard.
 
@@ -34,7 +34,7 @@ Now instead of running `dx serve`, you need to run with a manual platform with `
 
 ## Server Functions: an inline RPC system
 
-Dioxus integrates with the [server_fn](https://crates.io/crates/server_fn) crate to provide a simple inline communication system for your apps. The server_fn crate makes it easy to build your app's backend with just basic Rust functions. Server Functions are `async` functions annotated with the `#[server]` attribute.
+Dioxus integrates with the [axum](https://crates.io/crates/axum) crate to provide a simple inline communication system for your apps. Server functions makes it easy to build your app's backend with just basic Rust functions. Server Functions are `async` functions annotated with the a procedural macro (like post/get).
 
 A typical server function looks like this:
 
@@ -58,13 +58,7 @@ On the server, the server function expands to an [axum](https://github.com/tokio
 
 When `dioxus::launch` is called, the server functions are automatically registered for you and set up as an Axum router.
 
-```rust
-{{#include ../docs-router/src/doc_examples/guide_backend.rs:save_dog_launch}}
-```
-
-We currently only support the `axum` server framework. We plan to build additional server features in the future and only support `axum` to ship faster.
-
-In some cases, the `dioxus::launch` function might be too limiting for your use-case on the server. You can easily drop down to axum by changing your main.rs. The `dioxus::launch` function also handles setting up logging and reading environment variables, which you will have to handle yourself.
+In some cases, the `dioxus::launch` function might be too limiting for your use-case on the server. Dioxus provides an alternative entrypoint for your app on the server with `dioxus::serve`. This lets you return an Axum router while still having hot-reload, logging, and devtools wired up automatically.
 
 ```rust
 {{#include ../docs-router/src/doc_examples/guide_backend.rs:separate_server_launch}}
@@ -74,8 +68,8 @@ In some cases, the `dioxus::launch` function might be too limiting for your use-
 
 When Dioxus builds your fullstack apps, it actually creates two separate applications: the server and the client. To achieve this, `dx` passes different features to each build.
 
-- The client is built with `--feature web`
-- The server is built with `--feature server`
+- The client is built with `--features web`
+- The server is built with `--features server`
 
 ![Server Client Split](/assets/06_docs/server_split.png)
 

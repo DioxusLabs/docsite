@@ -85,9 +85,9 @@ html {
 }
 
 .codeblock > pre {
-  &:where([data-theme="light"], [data-theme="light"] *) {
+  /* &:where([data-theme="light"], [data-theme="light"] *) {
     background-color: rgb(37, 36, 36) !important;
-  }
+  } */
 }
 
 .codeblock > pre {

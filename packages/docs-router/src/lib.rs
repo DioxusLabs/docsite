@@ -131,11 +131,11 @@ pub enum Route {{\n\t"
 }
 
 #[component]
-pub fn CodeBlock(contents: String, name: Option<String>) -> Element {
+pub fn CodeBlock(contents: String, light_contents: String, name: Option<String>) -> Element {
     let mut copied = use_signal(|| false);
     rsx! {
         div { class: "border overflow-hidden rounded-md border-gray-300 dark:border-gray-700 mx-4 mb-4",
-            div { class: "w-full bg-red flex-row justify-between border-b border-gray-300 dark:border-gray-700 py-1 px-2 text-sm items-center bg-gray-100 dark:bg-ideblack",
+            div { class: "w-full bg-red flex-row justify-between border-b border-gray-300 dark:border-gray-700 py-1 px-2 text-xs items-center bg-gray-100 dark:bg-ideblack",
                 display: if name.is_some() { "flex" } else { "none" },
                 div { class: "font-mono",
                     if let Some(path) = name.as_ref() {
@@ -153,7 +153,8 @@ pub fn CodeBlock(contents: String, name: Option<String>) -> Element {
                     span { Copy {} }
                 }
             }
-            div { class: "codeblock", dangerous_inner_html: contents }
+            div { class: "codeblock hidden dark:block", dangerous_inner_html: contents }
+            div { class: "codeblock dark:hidden", dangerous_inner_html: light_contents }
         }
     }
 }

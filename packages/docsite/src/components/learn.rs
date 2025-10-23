@@ -177,23 +177,14 @@ fn UntypedVersionSelectItem(
 fn SidebarSection<R: AnyBookRoute>(chapter: &'static SummaryItem<R>) -> Element {
     let link = chapter.maybe_link().context("Could not get link")?;
 
-    // top padding is connected to the -top-y on Link
     rsx! {
         div { class: "full-chapter border-gray-600 pb-6 mt-9 ",
-            if let Some(url) = &link.location {
-                Link {
-                    onclick: move |_| *SHOW_SIDEBAR.write() = false,
-                    to: url.global_route(),
-                    class: "dark:text-gray-100 text-gray-700
-                    -top-3 -mt-13 pt-3 sticky z-[1] flex items-center flex-col
-                    font-semibold text-xs uppercase tracking-wide
-                    ",
-                    active_class: "text-sky-600 dark:text-sky-400",
-                    h3 { class: "px-1 pt-1 w-full bg-white dark:bg-black", "{link.name}" }
-                    h3 { class: "bg-gradient-to-b from-white dark:from-black to-transparent h-2 w-full" }
-
-
-                }
+            span {
+                class: "dark:text-gray-100 text-gray-700
+                -top-3 -mt-13 pt-3 sticky z-[1] flex items-center flex-col
+                font-semibold text-xs uppercase tracking-wide",
+                h3 { class: "px-1 pt-1 w-full bg-white dark:bg-black", "{link.name}" }
+                h3 { class: "bg-gradient-to-b from-white dark:from-black to-transparent h-2 w-full" }
             }
             ul { class: "gap-y-0.5",
                 for chapter in link.nested_items.iter() {
@@ -336,7 +327,7 @@ pub fn RightNav<R: AnyBookRoute>() -> Element {
 fn Content<R: AnyBookRoute>() -> Element {
     rsx! {
         section {
-            class: "text-gray-600 dark:text-gray-300 body-font overflow-hidden container pb-12 md:mt-8 grow min-h-[100vh] max-w-screen-md",
+            class: "text-gray-600 dark:text-gray-300 body-font overflow-hidden container pb-12 md:mt-8 grow min-h-[100vh] max-w-screen-sm",
             class: if SHOW_SIDEBAR() { "hidden md:block" },
             div { class: "",
                 Breadcrumbs::<R> {}

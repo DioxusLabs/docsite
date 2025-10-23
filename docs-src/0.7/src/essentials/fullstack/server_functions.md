@@ -547,7 +547,7 @@ dioxus::serve(|| async move {
 
 The `dioxus::server::router` function creates a new axum router that sets up a few imporant pieces:
 
-- Static Assets: automatically server the `public` directory, index.html and assets
+- Static Assets: automatically serve the `public` directory, index.html and assets
 - SSR: automatically run the app, render it to HTML, and serialize data for hydration
 - Server Functions: automatically initialize the API endpoints
 

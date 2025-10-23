@@ -349,10 +349,12 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                         Some("shell") => "sh",
                         Some("javascript") => "js",
                         Some(res) => res,
-                        None => "rs",
+                        None => "txt",
                     };
 
-                    let html = build_codeblock(raw_code, lang);
+                    let dark_html = build_codeblock(&raw_code, lang, true);
+                    let light_html = build_codeblock(&raw_code, lang, false);
+
                     let fname = if let Some(fname) = fname {
                         quote! { name: #fname.to_string() }
                     } else {
@@ -361,7 +363,8 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
 
                     self.start_node(parse_quote! {
                         CodeBlock {
-                            contents: #html,
+                            contents: #dark_html,
+                            light_contents: #light_html,
                             #fname
                         }
                     });
@@ -727,13 +730,22 @@ impl<'a, I: Iterator<Item = Event<'a>>> Iterator for ResolveCodeBlock<'a, I> {
     }
 }
 
-fn build_codeblock(code: String, lang: &str) -> String {
-    static THEME: once_cell::sync::Lazy<syntect::highlighting::Theme> =
+fn build_codeblock(code: &str, lang: &str, is_dark: bool) -> String {
+    static DARK_THEME: once_cell::sync::Lazy<syntect::highlighting::Theme> =
         once_cell::sync::Lazy::new(|| {
             let raw = include_str!("../themes/MonokaiDark.thTheme").to_string();
             let mut reader = std::io::Cursor::new(raw.clone());
             ThemeSet::load_from_reader(&mut reader).unwrap()
         });
+
+    static LIGHT_THEME: once_cell::sync::Lazy<syntect::highlighting::Theme> =
+        once_cell::sync::Lazy::new(|| {
+            let raw = include_str!("../themes/Base16.thTheme").to_string();
+            let mut reader = std::io::Cursor::new(raw.clone());
+            ThemeSet::load_from_reader(&mut reader).unwrap()
+        });
+    // once_cell::sync::Lazy::new(|| ThemeSet::load_defaults().themes["InspiredGitHub"].clone());
+    // once_cell::sync::Lazy::new(|| ThemeSet::load_defaults().themes["InspiredGitHub"].clone());
 
     let lang = if lang.to_ascii_lowercase() == "rust" {
         "rs"
@@ -744,13 +756,19 @@ fn build_codeblock(code: String, lang: &str) -> String {
     let ss = modern_syntax_set();
     let syntax = ss.find_syntax_by_name(lang).unwrap_or_else(|| {
         ss.find_syntax_by_extension(lang).unwrap_or_else(|| {
-            ss.find_syntax_by_extension("rs").unwrap_or_else(|| {
+            ss.find_syntax_by_extension("txt").unwrap_or_else(|| {
                 panic!("Failed to find syntax for {lang} from {:#?}", ss.syntaxes())
             })
         })
     });
-    let html =
-        syntect::html::highlighted_html_for_string(code.trim_end(), &ss, syntax, &THEME).unwrap();
+
+    let html = syntect::html::highlighted_html_for_string(
+        code.trim_end(),
+        &ss,
+        syntax,
+        if is_dark { &DARK_THEME } else { &LIGHT_THEME },
+    )
+    .unwrap();
 
     escape_text(&html)
 }

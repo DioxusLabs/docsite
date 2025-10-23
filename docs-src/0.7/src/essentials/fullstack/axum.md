@@ -1,58 +1,82 @@
-# Axum integration
+# Custom Axum Router
 
-Dioxus fullstack is built on top of Axum under the hood. The launch function will set up a default Axum server for your fullstack project, but if you need more control you can drop down to a custom axum server. This guide will show you how to set up an Axum server with your Dioxus fullstack project.
+Dioxus fullstack is built on the popular backend crate Axum. The default `dioxus::launch` function will initialize a default Axum server for your fullstack project. If you need more control, you can easily customize the router with `dioxus::serve`.
 
-## Adding axum to your project
-
-First, we need to add axum and tokio as dependencies. Since we only need these dependencies on the server, we need to make them optional and enable them in the server feature flag. More information about server only dependencies can be found in the [project setup guide](./project_setup.md#adding-server-only-dependencies):
-
-```toml
-[dependencies]
-dioxus = { version = "0.7.0", features = ["fullstack"] }
-# Axum is optional because we only use it on the server
-axum = { version = "0.7", optional = true }
-tokio = { version = "1.0", features = ["full"], optional = true }
-
-[features]
-# ...
-web = ["dioxus/web"]
-# The server feature enables the axum dependency
-server = ["dioxus/server", "dep:axum", "dep:tokio"]
-```
-
-## Splitting up the main function
-
-Next we need to split up our main function into two parts: one that will start dioxus on the client with the launch function, and one that will serve our Axum router. We can use `#[cfg]` attribute to control what code compiles when the web feature or server feature is enabled:
+The `dioxus::serve` function is the primary entrypoint for Dioxus apps that run on the server, as is standard in fullstack applications. For fullstack apps, we'll typically use both `dioxus::launch` and `dioxus::serve`, enabling each entrypoint based on the `"server"` feature.
 
 ```rust
-{{#include ../docs-router/src/doc_examples/axum_integration.rs:main}}
+fn main() {
+    // Run `serve()` on the server only
+    #[cfg(feature = "server")]
+    dioxus::serve(|| async move {
+        // Create a new router for our app using the `router` function
+        let mut router = dioxus::server::router(app);
+
+        // .. customize the router, adding layers and new routes
+
+        // And then return the router
+        Ok(router)
+    });
+
+    // When not on the server, just run `launch()` like normal
+    #[cfg(not(feature = "server"))]
+    dioxus::launch(app);
+}
 ```
 
-## Starting the axum server
+The `dioxus::server::router` function creates a new axum router that sets up a few imporant pieces:
 
-Now we can setup our axum server in the launch_server function. Since this code should only compile when the server is enabled, we need to gate it behind a `#[cfg(feature = "server")]` attribute again.
+- Static Assets: automatically serve the `public` directory, index.html and assets
+- SSR: automatically run the app, render it to HTML, and serialize data for hydration
+- Server Functions: automatically initialize the API endpoints
 
-
-When we serve our app the CLI will try to proxy the backend under a random port. The proxy adds devtool endpoints for hot reloading and logging to make it easier to develop your app. We need to look for the port the CLI gives us in dev mode with `server_ip` and `server_port`. If we don't find a port from the CLI, we can serve at our own ip and port for production.
-
-
-Finally, when building our Axum server, we need to call `serve_dioxus_application` on the router to add all the routes Dioxus needs to serve your app.
+Dioxus uses extension methods on the Axum router (given by `DioxusRouterExt`) that is equivalent to enabling each of these items manually:
 
 ```rust
-{{#include ../docs-router/src/doc_examples/axum_integration.rs:server}}
+axum::Router::new()
+	.register_server_functions()
+	.serve_static_assets()
+	.fallback(
+		get(render_handler).with_state(RenderHandleState::new(cfg, app)),
+	)
 ```
 
-## Running your application
 
-Now we can run our application with the CLI. The CLI will automatically detect the server feature (that enables `dioxus/server`) and the client feature (which enables `dioxus/web`, `dioxus/desktop` or `dioxus/mobile`) and build once for each platform. To run the application, we can use the following command:
+## Adding New Routes
 
-```bash
-dx serve
+One common use-case of a custom axum router is to add new routes to the router that are *not* defined with server functions. We might want to include special endpoints that respond dynamically or that return non-HTML data types.
+
+This example adds three new routes to our app:
+
+```rust
+dioxus::serve(|| async move {
+    use dioxus::server::axum::routing::{get, post};
+
+    let router = dioxus::server::router(app)
+        .route("/submit", post(|| async { "Form submitted!" }))
+        .route("/about", get(|| async { "About us" }))
+        .route("/contact", get(|| async { "Contact us" }));
+
+    Ok(router)
+});
 ```
 
-## Conclusion
+Note that the server-side-rendering handler is registered as a *fallback* handler. Any routes we manually register will take priority over the Dioxus app. Since these handlers are axum handlers, they can take the typical modifiers, like `.with_state()`, `.layer()`, etc.
 
-This guide showed you how to set up a custom Axum server with your Dioxus fullstack project. You can now use all of the features of Axum in your Dioxus app, including middleware, routing, and more. If you need even more granular control over your router, you can split up the `serve_dioxus_application` function into [`serve_static_assets`](https://docs.rs/dioxus-fullstack/0.6.3/dioxus_fullstack/server/trait.DioxusRouterExt.html#tymethod.serve_static_assets), [`register_server_functions`](https://docs.rs/dioxus-fullstack/0.6.3/dioxus_fullstack/server/trait.DioxusRouterExt.html#method.register_server_functions), and [`render_handler`](https://docs.rs/dioxus-fullstack/0.6.3/dioxus_fullstack/server/fn.render_handler.html). See the documentation on each method for more details
+```rust
+let router = dioxus::server::router(app)
+    .route(
+        "/submit",
+        post(
+            |state: State<FormSubmitter>, ping: Extension<Broadcast>, cookie: TypedHeader<Cookie>| async {
+                // ... endpoint logic
+            },
+        ),
+    )
+    .with_state(FormSubmitter::new())
+    .layer(Extension(Broadcast::new()));
+```
 
+## Adding State with Extensions
 
-If you want to learn more about Axum, check out the [Axum documentation](https://docs.rs/axum/latest/axum/). Axum is built on top of the tower ecosystem which means you can use any tower service with your Axum server. The [tower-http](https://docs.rs/tower-http/latest/tower_http/) crate contains many useful utilities for your server like logging, compression, and file serving.
+As you build out your app, you might want to expose state

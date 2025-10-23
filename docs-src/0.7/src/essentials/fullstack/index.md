@@ -61,7 +61,7 @@ async fn fetch_dog(breed: String) -> Result<String> {
 
 Dioxus web defaults to client-side rendering (CSR). When you load a client-side rendered application, the server sends an empty HTML page to the browser along with some scripts. The browser then downloads your entire application and runs it to generate the HTML for the page.
 
-When fullstack is enabled, the server will generate the HTML for the page and send that to the client. The client will then download your application and "hydrate" the page. Hydration is the process of taking the HTML that was generated on the server and adding all of the event listeners and other things that Dioxus needs to make the page interactive. Your server and client code must render the exact same HTML for hydration to work correctly, as described in the [hydration guide](./hydration.md).
+When fullstack is enabled, the server will generate the HTML for the page and send that to the client. The client will then download your application and "hydrate" the page. Hydration is the process of taking the HTML that was generated on the server and adding all of the event listeners and other things that Dioxus needs to make the page interactive. Your server and client code must render the exact same HTML for hydration to work correctly, as described in the [hydration guide](./ssr.md).
 
 Since all of the data loading can happen on the server during the initial render and the page is visible before the wasm bundle is downloaded, fullstack applications can generally load the initial content of the page much faster than client-side rendered applications.
 

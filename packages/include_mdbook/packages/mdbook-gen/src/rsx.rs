@@ -3,6 +3,7 @@ use proc_macro2::{Span, TokenStream as TokenStream2};
 use quote::{quote, ToTokens};
 use std::{
     iter::Peekable,
+    os::macos::raw,
     path::{Path, PathBuf},
     str::FromStr,
     vec,
@@ -701,6 +702,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> Iterator for ResolveCodeBlock<'a, I> {
             Some(Event::Start(Tag::CodeBlock(mut kind))) => {
                 let raw_code = take_code_or_text(&mut self.iter);
                 let mut fname = None;
+                let is_include = raw_code.starts_with("{{#include");
 
                 // Resolve any embedded include statements
                 let code = match transform_code_block(&self.path, raw_code, &mut fname) {
@@ -715,7 +717,18 @@ impl<'a, I: Iterator<Item = Event<'a>>> Iterator for ResolveCodeBlock<'a, I> {
                 if let (Some(fname), CodeBlockKind::Fenced(lang)) = (fname, &kind) {
                     // If the kind already contains a path, don't add it again
                     if !lang.contains('@') {
-                        kind = CodeBlockKind::Fenced(format!("{}@{}", lang, fname).into());
+                        kind = CodeBlockKind::Fenced(
+                            format!(
+                                "{}@{}",
+                                if !is_include {
+                                    lang.as_ref()
+                                } else {
+                                    "rs".into()
+                                },
+                                fname
+                            )
+                            .into(),
+                        );
                     }
                 }
 

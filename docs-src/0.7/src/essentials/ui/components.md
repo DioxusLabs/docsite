@@ -163,13 +163,13 @@ pub struct LinkProps {
     /// The onclick event handler.
     pub onclick: Option<EventHandler<MouseEvent>>,
 
-    #[props(default)]
     /// Whether the default behavior should be executed if an `onclick` handler is provided.
     ///
     /// 1. When `onclick` is [`None`] (default if not specified), `onclick_only` has no effect.
     /// 2. If `onclick_only` is [`false`] (default if not specified), the provided `onclick` handler
     ///    will be executed after the links regular functionality.
     /// 3. If `onclick_only` is [`true`], only the provided `onclick` handler will be executed.
+    #[props(default)]
     pub onclick_only: bool,
 
     /// The rel attribute for the generated HTML anchor tag.

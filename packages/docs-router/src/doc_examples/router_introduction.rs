@@ -6,25 +6,27 @@ mod first_router {
     enum Route {
         #[route("/")]
         Home,
+
         #[route("/about")]
         About,
+
         #[route("/user/:id")]
         User { id: u32 },
     }
 
     #[component]
     fn Home() -> Element {
-        rsx!("Welcome to the home page!")
+        rsx! { "Welcome to the home page!" }
     }
 
     #[component]
     fn About() -> Element {
-        rsx!("This is the about page.")
+        rsx! { "This is the about page." }
     }
 
     #[component]
     fn User(id: u32) -> Element {
-        rsx!("User page for user with id: {id}")
+        rsx! { "User page for user with id: {id}" }
     }
     // ANCHOR_END: first_router
     // ANCHOR: launch_router

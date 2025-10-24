@@ -27,7 +27,7 @@ pub fn About() -> Element {
 pub fn MyComponent(name: String) -> Element {
     rsx! {
         div {
-            h1 { "Hello, {name}!" }
+            h3 { "Hello, {name}!" }
         }
     }
 }
@@ -49,7 +49,7 @@ pub fn MyStatefulComponent() -> Element {
 
     rsx! {
         div {
-            h1 { "Count: {count}" }
+            h3 { "Count: {count}" }
             button { onclick: move |_| count += 1, "Increment" }
         }
     }
@@ -84,7 +84,7 @@ fn MyImpureComponent() -> Element {
 
     rsx! {
         div {
-            h1 { "Count: {count}" }
+            h3 { "Count: {count}" }
         }
     }
 }
@@ -97,7 +97,7 @@ fn MyPureComponent() -> Element {
 
     rsx! {
         div {
-            h1 { "Count: {count}" }
+            h3 { "Count: {count}" }
             button {
                 // ✅ Event handlers can modify state and have side effects.
                 onclick: move |_| count += 1,
@@ -116,7 +116,7 @@ fn Button(name: String) -> Element {
     log!("Component rerendered with name: {name} count: {count}");
 
     rsx! {
-        h1 { "Hello, {name}!" }
+        h3 { "Hello, {name}!" }
         // MyComponent reads the `count` signal, so it will rerender
         // whenever `count` changes.
         "Count: {count}"

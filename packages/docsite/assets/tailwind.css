@@ -37,6 +37,9 @@
     --color-neutral-900: oklch(20.5% 0 0);
     --color-stone-200: oklch(92.3% 0.003 48.717);
     --color-stone-300: oklch(86.9% 0.005 56.366);
+    --color-stone-400: oklch(70.9% 0.01 56.259);
+    --color-stone-500: oklch(55.3% 0.013 58.071);
+    --color-stone-600: oklch(44.4% 0.011 73.639);
     --color-stone-700: oklch(37.4% 0.01 67.558);
     --color-black: #000;
     --color-white: #fff;
@@ -876,6 +879,9 @@
     @supports (color: color-mix(in lab, red, red)) {
       border-color: color-mix(in oklab, var(--color-neutral-500) 30%, transparent);
     }
+  }
+  .border-stone-200 {
+    border-color: var(--color-stone-200);
   }
   .border-stone-300 {
     border-color: var(--color-stone-300);

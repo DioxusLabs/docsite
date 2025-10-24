@@ -143,7 +143,7 @@ fn app() -> Element {
 
     rsx! {
         // Stores implement display
-        h1 { "{header.title()}" }
+        h3 { "{header.title()}" }
 
         // They are `Copy`, making them easy to share between scopes
         button { onclick: move |_| header.title().write().clear() }

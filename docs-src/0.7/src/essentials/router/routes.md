@@ -65,7 +65,22 @@ Query segments must be the _after all route segments_ and cannot be included in 
 {{#include ../docs-router/src/doc_examples/query_segments.rs:route}}
 ```
 
-# Nested Routes
+## Hash Segments
+
+Hash segments are in the form of `#:field` where `field` is a field in the route variant.
+
+Just like [Query Segments](#query-segments), parsing a Hash segment must not fail.
+
+The segment can be of any type that implements `FromHashFragment`.
+
+Hash fragments must be the _after all route segments and any query segments_ and cannot be included in nests.
+
+```rust
+{{#include ../docs-router/src/doc_examples/hash_fragments.rs:route}}
+```
+
+
+## Nested Routes
 
 When developing bigger applications we often want to nest routes within each
 other. As an example, we might want to organize a settings menu using this
@@ -88,7 +103,7 @@ We might want to map this structure to these paths and components:
 
 Nested routes allow us to do this without repeating /settings in every route.
 
-## Nesting
+### Nesting
 
 To nest routes, we use the `#[nest("path")]` and `#[end_nest]` attributes.
 
@@ -103,17 +118,4 @@ To finish a nest, we use the `#[end_nest]` attribute or the end of the enum.
 
 ```rust
 {{#include ../docs-router/src/doc_examples/nest.rs:route}}
-```
-## Hash Segments
-
-Hash segments are in the form of `#:field` where `field` is a field in the route variant.
-
-Just like [Query Segments](#query-segments), parsing a Hash segment must not fail.
-
-The segment can be of any type that implements `FromHashFragment`.
-
-Hash fragments must be the _after all route segments and any query segments_ and cannot be included in nests.
-
-```rust
-{{#include ../docs-router/src/doc_examples/hash_fragments.rs:route}}
 ```

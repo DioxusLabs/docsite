@@ -15,15 +15,7 @@ A "fullstack" application is actually composed of two distinct apps:
 - The client application that runs the web, desktop, or mobile application
 - The server application that renders the initial HTML and runs server functions
 
-The client application comes in a variety of formats:
-
-- A `public` folder with `index.html`, `main.js`, and `main.wasm`
-- A macOS app bundle (`.app`)
-- A Windows executable (`.exe`)
-- A Linux AppImage, `.deb`, or `.rpm` file
-- An iOS bundle (`.ipa`) or Android bundle (`.apk`)
-
-On each of these platforms, we need to include different code and different dependencies. We can view the server application as just another platform for our app with its own set of dependencies. The server will have different dependencies than our client app, and thus we need to properly configure our app's `Cargo.toml` and build flags.
+Because our client app and server app target different platforms, we need to include different code and different dependencies. You can conceptualize the "server" as just another platform for your app, just like you might target both iOS and Android. The server will have different dependencies than the client app, and thus you need to properly configure your app's `Cargo.toml` and build flags.
 
 ## How DX builds your app
 
@@ -48,7 +40,7 @@ server = ["dioxus/server"]
 
 DX will also look for specific client features (`"web"` / `"desktop"` / `"mobile"`) and enable the relevant feature depending on the target platform. DX uses the concept of "platform" to distinguish types of builds from one another.
 
-To set a build's platform, you can use `--platform web/desktop/ios/android` or the shorthands like `--web`, `--desktop`, `--ios`, etc. When we specify a platform, DX also enables a corresponding feature in your Cargo.toml:
+To set a build's platform, you can use `--platform web/desktop/ios/android` or the shorthands like `--web`, `--desktop`, `--ios`, etc. When you specify a platform, DX also enables a corresponding feature in your Cargo.toml:
 
 ```toml
 # enabled with `--web`

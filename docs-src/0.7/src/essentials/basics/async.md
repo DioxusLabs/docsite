@@ -65,6 +65,59 @@ Since spawning in event handlers is very common, Dioxus provides a more concise 
 {{#include ../docs-router/src/doc_examples/asynchronous.rs:spawn_simplified}}
 ```
 
+## Running Futures with `use_action`
+
+You'll frequently want to spawn an action in response to some user input and store the result. For rapid user input, you'll also want to cancel previous actions to prevent race conditions. Dioxus provides a built-in hook that simplifies this pattern with a function called `use_action`.
+
+The `use_action` hook combines signals and tasks into a single unified interface. Simply call `use_action` with a callback that returns a `Result<T>`:
+
+```rust
+// Whenever this action is called, it will re-run the future and return the result.
+let mut breed = use_action(move |breed| async move {
+    #[derive(Deserialize, Serialize, Debug, PartialEq)]
+    struct DogApi {
+        message: String,
+    }
+
+    reqwest::get(format!("https://dog.ceo/api/breed/{breed}/images/random"))
+        .await
+        .unwrap()
+        .json::<DogApi>()
+        .await
+});
+```
+
+You can call the action with `.call()`:
+
+```rust
+rsx! {
+    button {
+        onclick: move |_| {
+            breed.call(cur_breed.clone());
+        },
+        "{cur_breed}"
+    }
+}
+```
+
+And then, elsewhere in your component, you can read the result with `.value()`:
+
+```rust
+match breed.value() {
+    Some(Ok(res)) => rsx! {
+        img { src: "{res.read().message}" }
+    },
+    Some(Err(_e)) => rsx! {
+        div { "Failed to fetch a dog, please try again." }
+    },
+    None => rsx! {
+        div { "Click the button to fetch a dog!" }
+    },
+}
+```
+
+If an action is pending, calling `.call()` will cancel the current action's `Task`, replacing it with the new task.
+
 ## Automatic Cancellation
 
 The Future you pass to the `spawn` will automatically be cancelled when the component is unmounted. If you need to keep the Future running until it is finished, you can use [`spawn_forever`](https://docs.rs/dioxus/0.7/dioxus/prelude/fn.spawn_forever.html) instead:

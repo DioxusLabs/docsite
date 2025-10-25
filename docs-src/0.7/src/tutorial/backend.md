@@ -42,7 +42,7 @@ A typical server function looks like this:
 {{#include ../docs-router/src/doc_examples/guide_backend.rs:save_dog_v1}}
 ```
 
-Every server function is an async function that takes some parameters and returns a `Result<(), ServerFnError>`. Whenever the client calls the server function, it sends an HTTP request to a corresponding endpoint on the server. The parameters of the server function are serialized as the body of the HTTP request. As a result, each argument must be serializable.
+Every server function is an async function that takes some parameters and returns a `Result<()>`. Whenever the client calls the server function, it sends an HTTP request to a corresponding endpoint on the server. The parameters of the server function are serialized as the body of the HTTP request. As a result, each argument must be serializable.
 
 On the client, the server function expands to a `reqwest` call:
 

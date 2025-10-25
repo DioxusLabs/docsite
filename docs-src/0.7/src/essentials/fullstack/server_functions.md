@@ -126,7 +126,7 @@ We can combine custom payload bodies with query and path extractors, enabling us
 To add query and path extractors, we can use the Axum route syntax in the macro. The macro will parse the route and generate the associated axum extractors for you:
 
 ```rust
-#[get("/api/products/{product}?color&quantity", range: RangeHeader)]
+#[get("/api/products/{product}?color&quantity")]
 async fn get_product_data(product: String, color: String, quantity: Option<i32>) -> Result<Vec<Product>> {
 	// ...
 }
@@ -185,7 +185,7 @@ impl<S: Send> FromRequest<S> for WebSocketOptions {
 }
 ```
 
-Perfect - this lets use the `WebsocketOptions` type as an Axum extractor. Now, we need to implement `IntoRequest` which lets create `WebsocketOptions` on the client before passing it off to the server.
+Implementing `FromRequest` lets us use `WebsocketOptions` type as an Axum extractor. Now, we need to implement `IntoRequest` which lets create `WebsocketOptions` on the client before passing it off to the server.
 
 The `IntoRequest` trait is generic over a hidden "state" type parameter. Generally, you'll implement the plain `IntoRequest` type, but for complex types like Websockets, we need a custom state object that the response (`Websocket`) will use to initialize with. In this case, we create a new state type called `UpgradingWebsocket` which will hold the state from the original request to properly upgrade the server's response into a `Websocket` handle.
 

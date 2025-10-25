@@ -8,7 +8,7 @@ Dioxus Fullstack deeply integrates with the popular [Axum](https://docs.rs/axum/
 - **Server Functions**: Type-safe Axum HTTP endpoints directly callable from the client
 - **Hot-Reload**: Rapid Rust hot-reload during development powered by [subsecond](https://crates.io/crates/subsecond)
 - **Typed Routing**: Easily extract queries and paths from the URL
-- **Multi-part Forms**: Capture multipart form data from the client into type Rust structs
+- **Multi-part Forms**: Capture multipart form data from the client into typed Rust structs
 - **Binary Streams**: Easily add file upload/download backend capability
 - **SSE and WebSockets**: Complex, stateful datatypes for server communication
 - **Asset Management**: Automatically optimizes assets for deployment to CDNs
@@ -66,22 +66,6 @@ Dioxus Fullstack allows you to render your app on the server, speeding up load t
 
 ## Bundle Splitting and Lazy Loading
 
-<!-- ## Search engine optimization (SEO)
-
-In addition to loading your application faster, server side rendering is especially important for applications that need to be indexed by search engines. Most search engine crawlers do not execute JavaScript, so they will not be able to see the content of a client-side rendered application. By rendering the page on the server, we can ensure that the crawlers will be able to see the content of the page. This is one of the main reasons dioxuslabs.com uses fullstack rendering:
-
-![Fullstack vs client side rendering load diagram for crawlers](/assets/07/fullstack-crawler-request-lifecycle.png) -->
-
-
-<!-- Dioxus web defaults to client-side rendering (CSR). When you load a client-side rendered application, the server sends an empty HTML page to the browser along with some scripts. The browser then downloads your entire application and runs it to generate the HTML for the page.
-
-When fullstack is enabled, the server will generate the HTML for the page and send that to the client. The client will then download your application and "hydrate" the page. Hydration is the process of taking the HTML that was generated on the server and adding all of the event listeners and other things that Dioxus needs to make the page interactive. Your server and client code must render the exact same HTML for hydration to work correctly, as described in the [hydration guide](./ssr.md).
-
-Since all of the data loading can happen on the server during the initial render and the page is visible before the wasm bundle is downloaded, fullstack applications can generally load the initial content of the page much faster than client-side rendered applications.
-
-Lets take a look at what rendering looks like for the dioxuslabs.com website with and without fullstack enabled:
-
-![Fullstack vs client side rendering load diagram](/assets/07/fullstack-request-lifecycle.png) -->
 
 
 ## Assets

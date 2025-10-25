@@ -38,12 +38,18 @@ Or, we might want to render some RSX dynamically and assign it to a variable:
 
 ```rust
 let header = match current_timezone() {
-    TimeZone::PST => rsx! { h1 { "Welcome home" } },
-    _ => rsx! { h1 { "Bon voyage!" } },
+    TimeZone::PST => rsx! {
+        h1 { "Welcome home" }
+    },
+    _ => rsx! {
+        h1 { "Bon voyage!" }
+    },
 }
 
 rsx! {
-    div { {header} }
+    div {
+        {header}
+    }
 }
 ```
 

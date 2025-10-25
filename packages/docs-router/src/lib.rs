@@ -23,10 +23,6 @@ pub struct LogState {
     pub logs: Vec<String>,
 }
 
-pub fn use_provide_log_state() -> Signal<LogState> {
-    use_context_provider(|| Signal::new(LogState::default()))
-}
-
 pub fn log(message: impl ToString) {
     consume_context::<Signal<LogState>>()
         .write()
@@ -43,7 +39,7 @@ macro_rules! log {
 
 #[component]
 pub fn ComponentWithLogs(children: Element) -> Element {
-    let logs = use_provide_log_state();
+    let logs = use_context_provider(|| Signal::new(LogState::default()));
 
     rsx! {
         TwoPanelComponent {
@@ -97,6 +93,7 @@ pub fn DemoFrame(
     }
 }
 
+#[component]
 pub fn LayoutsExplanation() -> Element {
     rsx! {
         pre { onmouseenter: move |_| {}, onmouseleave: move |_| {},
@@ -133,8 +130,9 @@ pub enum Route {{\n\t"
 #[component]
 pub fn CodeBlock(contents: String, light_contents: String, name: Option<String>) -> Element {
     let mut copied = use_signal(|| false);
+
     rsx! {
-        div { class: "border overflow-hidden rounded-md border-stone-200 dark:border-gray-700 mx-4 mb-4",
+        div { class: "border overflow-hidden rounded-md border-stone-200 dark:border-gray-700 my-4",
             div { class: "w-full bg-red flex-row justify-between border-b border-stone-200 dark:border-gray-700 py-1 px-2 text-xs items-center bg-gray-100 dark:bg-ideblack",
                 display: if name.is_some() { "flex" } else { "none" },
                 div { class: "font-mono",
@@ -150,7 +148,17 @@ pub fn CodeBlock(contents: String, light_contents: String, name: Option<String>)
                     if copied() {
                         "Copied!"
                     }
-                    span { Copy {} }
+                    span {
+                        svg {
+                            width: "16",
+                            height: "16",
+                            stroke_width: "1.5",
+                            fill: "none",
+                            stroke: "currentColor",
+                            view_box: "0 0 24 24",
+                            path { d: "M8 16c0 1.886 0 2.828.586 3.414C9.172 20 10.114 20 12 20h4c1.886 0 2.828 0 3.414-.586C20 18.828 20 17.886 20 16v-4c0-1.886 0-2.828-.586-3.414C18.828 8 17.886 8 16 8m-8 8h4c1.886 0 2.828 0 3.414-.586C16 14.828 16 13.886 16 12V8m-8 8c-1.886 0-2.828 0-3.414-.586C4 14.828 4 13.886 4 12V8c0-1.886 0-2.828.586-3.414C5.172 4 6.114 4 8 4h4c1.886 0 2.828 0 3.414.586C16 5.172 16 6.114 16 8" }
+                        }
+                    }
                 }
             }
             div { class: "codeblock hidden dark:block", dangerous_inner_html: contents }
@@ -158,16 +166,3 @@ pub fn CodeBlock(contents: String, light_contents: String, name: Option<String>)
         }
     }
 }
-
-pub(crate) static Copy: Component<()> = |_| {
-    rsx!(
-        svg {
-            width: "24",
-            height: "24",
-            stroke_width: "1.5",
-            fill: "none",
-            stroke: "currentColor",
-            path { d: "M8 16c0 1.886 0 2.828.586 3.414C9.172 20 10.114 20 12 20h4c1.886 0 2.828 0 3.414-.586C20 18.828 20 17.886 20 16v-4c0-1.886 0-2.828-.586-3.414C18.828 8 17.886 8 16 8m-8 8h4c1.886 0 2.828 0 3.414-.586C16 14.828 16 13.886 16 12V8m-8 8c-1.886 0-2.828 0-3.414-.586C4 14.828 4 13.886 4 12V8c0-1.886 0-2.828.586-3.414C5.172 4 6.114 4 8 4h4c1.886 0 2.828 0 3.414.586C16 5.172 16 6.114 16 8" }
-        }
-    )
-};

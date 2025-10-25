@@ -26,11 +26,6 @@ Let's change our data fetching to use `use_server_future`:
 
 Now when you load the page, you should see `server data is Ok("Hello from the server!")`. No need to wait for the `WASM` to load or wait for the request to finish!
 
-```inject-dioxus
-SandBoxFrame {
-	url: "https://codesandbox.io/p/sandbox/dioxus-fullstack-server-future-qwpp4p?file=/src/main.rs:3,24"
-}
-```
 
 
 ## Running the client with dioxus-desktop

@@ -1,71 +1,156 @@
+# Native Clients
 
-## Cached data fetching
+So far, we've focused on using fullstack alongside a web application. However, not all apps you'll build with Dioxus will be loaded in a web browser. Dioxus supports mobile apps and desktop apps as well.
 
-One common use case for server functions is fetching data from the server:
+On these platforms, fullstack works a bit differently. You can still use server functions, but things like server-side-rendering no-longer apply.
 
-```rust
-{{#include ../docs-router/src/doc_examples/server_data_fetch.rs}}
-```
+## Server Functions for Native App
 
-If you navigate to the site above, you will first see `server data is None`, then after the `WASM` has loaded and the request to the server has finished, you will see `server data is Some(Ok("Hello from the server!"))`.
+When you build a native app that relies on server functions, you can freely call any server function just as you would with a web app.
 
-
-This approach works, but it can be slow. Instead of waiting for the client to load and send a request to the server, what if we could get all of the data we needed for the page on the server and send it down to the client with the initial HTML page?
-
-
-This is exactly what the `use_server_future` hook allows us to do! `use_server_future` is similar to the `use_resource` hook, but it allows you to wait for a future on the server and send the result of the future down to the client.
-
-
-Let's change our data fetching to use `use_server_future`:
+This simple hello world app works the same on web, desktop, and mobile:
 
 ```rust
-{{#include ../docs-router/src/doc_examples/server_data_prefetch.rs}}
+use dioxus::prelude::*;
+
+fn main() {
+    dioxus::launch(|| {
+        let mut message = use_action(get_message);
+
+        rsx! {
+            h1 { "Server says: "}
+            pre { "{message:?}"}
+            button { onclick: move |_| message.call("world".into(), 30), "Click me!" }
+        }
+    });
+}
+
+#[get("/api/{name}/?age")]
+async fn get_message(name: String, age: i32) -> Result<String> {
+    Ok(format!("Hello {}, you are {} years old!", name, age))
+}
 ```
 
-> Notice the `?` after `use_server_future`. This is what tells Dioxus fullstack to wait for the future to resolve before continuing rendering. If you want to not wait for a specific future, you can just remove the ? and deal with the `Option` manually.
+Your native code can still make requests to your backend. However, when if you deployed your app to production, you might notice that the native app *does not know where to make requests*.
 
-Now when you load the page, you should see `server data is Ok("Hello from the server!")`. No need to wait for the `WASM` to load or wait for the request to finish!
+In the web, requests are always made to the current host origin. For example, requests to this endpoint are made to `/api/dogs`:
 
-
-
-## Running the client with dioxus-desktop
-
-The project presented so far makes a web browser interact with the server, but it is also possible to make a desktop program interact with the server in a similar fashion. (The full example code is available in the [Dioxus repo](https://github.com/DioxusLabs/dioxus/tree/main/packages/fullstack/examples/axum-desktop))
-
-First, we need to make two binary targets, one for the desktop program (the `client.rs` file), one for the server (the `server.rs` file). The client app and the server functions are written in a shared `lib.rs` file.
-
-The desktop and server targets have slightly different build configuration to enable additional dependencies or features.
-The Cargo.toml in the full example has more information, but the main points are:
-- the client.rs has to be run with the `desktop` feature, so that the optional `dioxus-desktop` dependency is included
-- the server.rs has to be run with the `ssr` features; this will generate the server part of the server functions and will run our backend server.
-
-Once you create your project, you can run the server executable with:
-```bash
-cargo run --bin server --features ssr
-```
-and the client desktop executable with:
-```bash
-cargo run --bin client --features desktop
-```
-
-### Client code
-
-The client file is pretty straightforward. You only need to set the server url in the client code, so it knows where to send the network requests. Then, dioxus_desktop launches the app.
-
-For development, the example project runs the server on `localhost:8080`. **Before you release remember to update the url to your production url.**
-
-
-### Server code
-
-In the server code, first you have to set the network address and port where the server will listen to.
 ```rust
-{{#include ../docs-router/src/doc_examples/server_function_desktop_client.rs:server_url}}
+#[get("/api/dogs")]
+async fn get_message() -> Result<()> {
+    // ..
+}
 ```
 
-Then, you have to register the types declared in the server function macros into the server.
-For example, consider this server function:
+Desktop and mobiles are not served from a specific URL, and thus do not know which host to make a request to.
+
+To set a specific server URL, you must call `set_server_url` before making any requests:
+
 ```rust
-{{#include ../docs-router/src/doc_examples/server_function_desktop_client.rs:server_function}}
+fn main() {
+    #[cfg(not(feature = "server"))]
+    dioxus::fullstack::set_server_url("https://hot-dog.fly.dev");
+
+    dioxus::launch(app);
+}
 ```
 
-Finally, the server is started and it begins responding to requests.
+This ensures that requests are always properly joined with the correct host.
+
+## Disabled Fullstack Features
+
+When using fullstack with native apps, a number of features and optimizations are disabled. Native apps are usually meant to be used offline, so their rendering needs to happen entirely on the client. Architecturally, native apps are similar to single-page-applications (SPA) where the bundle loads and *then* HTTP requests are made to load content.
+
+As such, a number of functions are disabled:
+
+- There is no hydration context, and thus no hydration data to hydrate the page
+- The app is never rendered on the server, skipping `[cfg(feature = "server")]` code
+- There is no `FullstackContext` when rendering components
+- HTML Streaming and SSG have no effect
+
+Functionally, this won't change how you build your apps, but you should be aware that some code might never be executed.
+
+
+## Prefer Known Endpoints
+
+Dioxus supports two ways of annotating server functions:
+
+- Explicitly with `#[get]`, `#[post]`, `#[delete]`, etc.
+- Anonymously with `#[server]`
+
+When you use the `#[server]` macro, the endpoint path is free to change as you update the endpoint's signature and body. If you re-redeploy your backend, URLs that worked previously are not guaranteed to exist in the future.
+
+
+```rust
+// ❌ this endpoint generates `/api/do_it12nldkj2378jnakls`
+#[server]
+async fn do_it() -> Result<()> {
+    //
+}
+```
+
+Because the endpoint receives a hash, its name is unique and might change as you update its code.
+
+When using server functions with native clients, we strongly recommend using the `#[get]` / `#[post]` annotations since they guarantee a stable endpoint.
+
+```rust
+// ✅ This endpoint is stable
+#[post("/api/do_it")]
+async fn do_it() -> Result<()> {
+    //
+}
+```
+
+## Versioning
+
+Because native clients are distributed as downloadable software, they might not always up to date as the latest version of your code. This can be particularly challenging when you want to update the signature of an endpoint.
+
+```rust
+// version 1
+#[post("/api/do_it")]
+async fn do_it() -> Result<()> { /* */ }
+
+// version 2
+// ❌ we are breaking old clients!
+#[post("/api/do_it")]
+async fn do_it(name: String) -> Result<()>  { /* */ }
+```
+
+We hope this problem is obvious to you - if you re-redploy your backend with breaking changes, previous clients will break!
+
+To upgrade APIs, we recommend one of two options:
+
+- Use `Option<T>` to add new fields
+- Use `/api/v1`, `/api/v2/` versioning
+
+For most API upgrades, you can simply add new fields by making new values optional with `Option<T>`:
+
+```rust
+// version 2
+// ✅ Option<String> means `name` is not required
+#[post("/api/do_it")]
+async fn do_it(name: Option<String>) -> Result<()>  { /* */ }
+```
+
+For API changes that require much larger changes, we recommend using a versioning scheme to create different versions of the API accessible by the client:
+
+```rust
+// This is at /api/v1/
+#[post("/api/v1/do_it")]
+async fn do_it() -> Result<()> { /* */ }
+
+// This is at api/v2
+#[post("/api/v2/do_it")]
+async fn do_it(name: String) -> Result<()> { /* */ }
+```
+
+Creating different API versions is common practice and helps prevent breaking old clients as you update your app.
+
+## Deploying
+
+You can deploy native fullstack apps just the same as you would deploy a regular web app. Server apps always generate a `server` binary and a `/public/` folder. Native apps will generate an app bundle (`.app`, `.ipa`, `.apk`, etc).
+
+You can distribute the native app via an app store or by making the file downloadable to your users.
+
+To distribute the server, simply upload it to a hosting provider of your choice. As long as you set the `server_url` in the native app, you should be able to access your backend from the native client.
+

@@ -1,7 +1,4 @@
-# Server Side Rendering (SSR)
-
-T
-
+# Server Side Rendering
 
 ## Hydration
 

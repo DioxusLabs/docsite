@@ -4,7 +4,7 @@ Welcome to Dioxus! This first chapter teaches you how to build beautiful user in
 
 Dioxus allows you to write user interfaces in HTML and CSS. On the web, your UI is native and accessible, and on desktop and mobile, your widgets are rendered either in a webview or natively with hybrid native components.
 
-HTML and CSS allow you to build very beautiful, rich, interactive experiences. The world's top companies all use HTML and CSS for their sites and applications:
+HTML and CSS allow you to build very beautiful, rich, interactive experiences. The world's top companies all use HTML and CSS for their sites and applications. Even this doc site is built in HTML and CSS:
 
 ![Animated Homepage](/assets/07/anim-homepage.mp4)
 
@@ -42,17 +42,19 @@ HTML and CSS might not be the *absolute best* tools for UI work, but they are wi
 
 ## What Rust Gives You
 
-Why write a UI framework in Rust? Rust was originally intended for systems programming, though we at Dioxus are working on making it suitable for high-level programming like app dev.
+Why write a UI framework in Rust? Why build an app with Rust? Rust was originally intended for systems programming, though we at Dioxus are working on making it suitable for high-level programming like app dev.
 
 Rust has a rather steep learning curve, but the benefits are tremendous:
 
 - Great, standardized tooling (cargo, rustc)
 - Huge ecosystem and great package manager (crates.io, Cargo.toml)
-- Runs everywhere (mostly) - Mac, Windows, Linux, iOS, Android, Web, etc
+- Runs everywhere - Mac, Windows, Linux, iOS, Android, Web, etc
 - Strong type system that prevents many logic bugs at compile time
 - Great performance, rivaling languages like C / C++
 - Reliable, even at massive scale
 
 There are drawbacks too, like slower compile times, steep learning curve, and ergonomic papercuts. Our goal is to improve the "high-level Rust" experience to make it on par with languages like TypeScript, but with the added benefits of Rust.
+
+We've been pushing Rust forward *so much* that we gave a long-form keynote at RustConf 2025 to talk about our work on things like hot-patching and automatic ref-counting.
 
 <iframe style="width: 100%" height="500px" class="centered-overflow" src="https://www.youtube.com/embed/Kl90J5RmPxY" title="High-Level Rust" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

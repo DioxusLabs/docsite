@@ -52,6 +52,7 @@ pub enum Route {
     // Any routes with no dynamic segments in your router will be included in the static routes list
     #[route("/")]
     Index {},
+
     #[route("/other")]
     Other {},
 }

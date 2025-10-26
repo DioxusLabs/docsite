@@ -41,7 +41,7 @@ In many cases, `.read()` is subtle, like using the value inside a string format:
 rsx! { "Count: {count}" }
 ```
 
-Unlike Svelte, Dioxus does not do compile-time transformation of your state. Unlike SolidJS, Dioxus components run multiple times. You can think of state management in Dioxus to be a hybrid of React and SolidJS, where reactivity is automatically tracked, but components are free to run multiple times throughout their lifetime.
+Unlike Svelte, Dioxus does not do compile-time transformation of your state. Unlike SolidJS, Dioxus components run multiple times. You can think of state management in Dioxus as a hybrid of React and SolidJS, where reactivity is automatically tracked, but components are free to run multiple times throughout their lifetime.
 
 Dioxus also employs "common sense" optimizations like automatic property memoization and automatic reactivity tracking - two huge improvements over React. Dioxus also allows you to early return, optionally with a Suspended future, giving you an `async/await`-like model for data loading in components.
 

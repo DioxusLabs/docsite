@@ -1,6 +1,6 @@
 # Static Site Generation
 
-Static site generation (SSG) lets you pre-generate all static pages of your application at build time. Once you have the static html pages, you can deploy them to any static hosting provider like GitHub Pages.
+Static site generation (SSG) lets you pre-generate all static pages of your application at build time. Once you have the static HTML pages, you can deploy them to any static hosting provider like GitHub Pages.
 
 SSG is extremely powerful since it lets you cache the rendering of your pages before deploying to production. This cuts down on bandwidth costs, lets you cache content on a CDN, and allows for deploying *without* a server. Many deploy providers let you deploy SSG sites for free!
 

@@ -6,7 +6,9 @@ Dioxus Fullstack provides built-in types for creating and managing websockets th
 - Reactive wrapper for use in UI code
 - Typed inputs, outputs, and customizable encoding
 
-Websockets are an extremely powerful communication protocol that allows bidirectional message passing to and from the server. Websockets are more efficient than HTTP requests for large amounts of messages, provide better real-time support, and allow for *ordered* data transmission. However, they are *stateful*, meaning that a websocket connection ties a client and server together for a given session. If you plan to use websockets in a "serverless" environment with time limits of request handling, then you need some way to "store" the websocket session across multiple requests.
+Websockets are an extremely powerful communication protocol that allows bidirectional message passing to and from the server. Websockets are more efficient than HTTP requests for large amounts of messages, provide better real-time support, and allow for *ordered* data transmission.
+
+Note that websockets are *stateful*, meaning that a websocket connection ties a client and server together for a given session. If you plan to use websockets in a "serverless" environment with time limits of request handling, then you need some way to "store" the websocket session across multiple requests.
 
 ## Websocket and WebsocketOptions
 
@@ -39,9 +41,9 @@ pub struct Websocket<In = String, Out = String, E = JsonEncoding> {
 
 The input and output types are the types used when you call `.send()` and `.recv()` on the `socket` object provided after `on_upgrade`. By strongly typing the websocket, we guarantee that your client and server always use the right message format across the client and server.
 
-The `on_upgrade` method is a wrapper over the underlying Axum `on_upgrade` API that returns an axum response, indicating to the client that the websocket upgrade process is succesful. If the client agrees, then the server will run the `on_upgrade` callback, spawning the future. Note that this future is spawned on a tokio [LocalSet](https://docs.rs/tokio/latest/tokio/task/struct.LocalSet.html). This means the future does not need to be `Send`, which can drastically simplify your logic.
+The `on_upgrade` method is a wrapper over the underlying Axum `on_upgrade` API that returns an axum response, indicating to the client that the websocket upgrade process is succesful. If the client agrees, then the server will run the `on_upgrade` callback, spawning the future. Note that this future is spawned on a tokio [LocalSet](https://docs.rs/tokio/latest/tokio/task/struct.LocalSet.html). This means the future does not need to be `Send`.
 
-We can use our own message types for the input and output messages. Calls to `send` and `recv` will attempt to deserialize data websocket messages into the right type, returning an error if the deserialization fails.
+We can use our own message types for the input and output messages. Calls to `.send()` and `.recv()` will attempt to deserialize messages into the right type, returning an error if the deserialization fails.
 
 ```rust
 // Events flowing *from* the client to the server
@@ -62,7 +64,7 @@ async fn uppercase_ws(options: WebSocketOptions) -> Result<Websocket<ClientEvent
 }
 ```
 
-We can also customize the encoding of the websocket with the third generic on `Websocket`. By default, messages are encoded using JSON with `JsonEncoding`, but you can opt for an alternative format like the binary Cbor format:
+We can also customize the encoding of the websocket with the third generic on `Websocket`. By default, messages are encoded using JSON with `JsonEncoding`, but you can opt for an alternative format like the binary Cbor format with `CborEncoding`:
 
 ```rust
 #[get("/api/uppercase_ws")]

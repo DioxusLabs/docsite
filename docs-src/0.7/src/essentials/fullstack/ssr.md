@@ -1,8 +1,125 @@
 # Server Side Rendering
 
+Dioxus Fullstack supports a powerful feature called "server side rendering" (SSR). SSR enables your apps to load data on the server *before* sending HTML to the client.
+
+Server-side-rendering improve's your site's page load times and makes it easier for web crawlers like Google to index. Sites that are easier to index rank higher in web searches, improving your conversion rate and ultimately, your bottom line.
+
+## SSR vs CSR
+
+You might be intimated by the various terms, tradeoffs, and details. Don't worry - these additional concepts are simply optimizations to make your site perform better in various ways. You can still build a beautiful, useful, accessible site without enhancements like server-side-rendering.
+
+The terms SSR and CSR refer to two different approaches to rendering pages:
+
+- **CSR**: *Client-side-rendering*, data is loaded by a "skeleton" page with `fetch()`
+- **SSR**: *Server-side-rendering*, data is loaded on the server and serialized into HTML
+
+SSR gives us the ability to send a more "complete" HTML document to the user when the visit the site, making the site immediately usable and improving its ranking in search results.
+
+### CSR: The "App" Architecture
+
+The architecture of web applications have shifted substantially over the years. Client-side-rendering is a somewhat "modern" architecture where the server responds to user requests with a "skeleton" HTML.
+
+The skeleton HTML might be barebones - something like:
+
+```html
+
+<html>
+    <head>
+        <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
+        <script src="/index.js"> </script>
+    </head>
+    <body>
+        <div id="main"></div>
+    </body>
+</html>
+```
+
+Note how there's no content *in the HTML document* when it loads. Once this barebones page is loaded by the browser, the `index.js` script executes, calling your app's `main` function. Data fetching is usually done as an *effect* after the initial `main` executes.
+
+When using the CSR approach, there are *many* HTTP requests required to load the page:
+
+- The initial GET to `index.html`
+- The GET to `index.js`
+- Multiple `GET` calls to backend endpoints to load data
+
+Also note the numerous phases where the app *appears* to be in a loading state:
+
+- The initial HTML is blank
+- Once `main` executes, the page is blank, waiting for data to load
+- Cascading fetches cause child components to be blank in a "waterfall"
+
+This architecture is called client-side-rendering because the **client** is responsible for rendering the HTML on the page. This approach is well suited for interactive apps with little static content, like document editors, search tools, or anything that is well suited as an "app". This architecture is the primary architecture for desktop and mobile apps.
+
+![CSR Diagram](/assets/07/csr-diagram.avif)
+
+
+### SSR: The "Site" Architecture
+
+In contrast to CSR, server-side-rendering is widely used for the classic "site" type application. Websites like e-commerce, portfolios, blogs, news, and other content-heavy applications prefer to render the initial HTML **on the server**.
+
+Once the initial HTML reaches the client, extra supporting JavaScript (or WebAssembly) is executed, transforming the static page into an interactive one.
+
+The HTML that reaches the client is usually "complete" with content:
+
+```html
+<html>
+    <head>
+        <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
+        <title> Our Site | Page XYZ </title>
+        <meta name="description" content="Our really cool site - Page XYZ" />
+        <link href="/main.css" />
+        <link href="/page-xyz.css" />
+        <script src="/index.js"/>
+    </head>
+    <body>
+        <div id="main">
+            <h1> This is a really cool site </h1>
+            <h3> You are on page XYZ </h3>
+            <p> Enjoy the content! </p>
+        </div>
+    </body>
+</html>
+```
+
+Look closely to compare the two HTML bodies. The SSR HTML is full of content - the "main" div has headers and paragraphs, and the "head" of the app has page-specific attributes like its title, meta tags, and page-specific styling.
+
+When using the SSR approach, there are *few* HTTP requests required to load the page:
+
+- Initial GET to load `index.html`
+- Follow-up GET requests to load assets
+
+Also note the page only seems to be loading *once*:
+
+- The user is waiting for the `index.html` to download.
+
+Because the initial `GET` requests returns a complete picture of the site, crawlers like Google can easily read your site's contents, improving your ranking in search results.
+
+![SSR Diagram](/assets/07/ssr-diagram.avif)
+
+### Mixing CSR and SSR
+
+Fortunately, these two architectures can be used *together* in a hybrid approach. This comes in two flavors:
+
+- Default to SSR, add reactivity with "islands"
+- Default to CSR, caching *some* data from the server
+
+Dioxus employs the second approach. As a framework, we are focused on enabling great "app-like" experiences. Rust excels when building complex logic that is typically found in interaction-heavy applications.
+
+There are *many* frameworks in the first category - projects like Ruby on Rails, NextJS, and Elixir Phoenix all serve primarily server-rendered content quite well. Dioxus easily handles SSR, but provides many tools and utilities that focus on client interaction.
+
+## Do You Need SSR?
+
+SSR is ideal for sites and pages that need to rank well in web searches like e-commerce stores, blogs, news, and other static content. In some instances, if your site is *entirely* static, you can even use static-site-generation to pre-render every page and deploy directly to a CDN.
+
+However, adding SSR to your site is not always necessary, nor does it need to be enabled for every page. Dioxus SSR is *progressive*, meaning that by default, pages are rendered on the client, and you can *opt-in* to rendering components on the server. Any data not cached by the server will become a client-side fetch when the page finally loads.
+
 ## Hydration
 
-In dioxus fullstack, the server renders the initial HTML for improved loading times. This initial version of the page is what most web crawlers and search engines see. After the initial HTML is rendered, the client makes the page interactive and takes over rendering in a process called **hydration**. Most of the time, you shouldn't need to think about hydration, but there are a few things you need to keep in mind to avoid [hydration errors](#hydration-errors). To better understand hydration, let's walk through a simple example:
+In dioxus fullstack, the server renders the initial HTML for improved loading times. This initial version of the page is what most web crawlers and search engines see.
+
+After the initial HTML is rendered, the client makes the page interactive through a process called **hydration**. Usually, hydration is purely an enhancement. You generally shouldn't need to think about hydration, but there are a few things you need to keep in mind to avoid [hydration errors](#hydration-errors).
+
+To better understand hydration, let's walk through a simple example:
 
 ```rust
 {{#include ../docs-router/src/doc_examples/hydration.rs:hydration_intro}}
@@ -25,17 +142,20 @@ Once the server finishes rendering, it will send this structure to the client as
 
 ## Hydrating on the client
 
-When the client receives the initial HTML, it hydrates the HTML by rerunning each component and linking each node that component renders to the node the server rendered. Rerunning each component lets the client re-construct some non-serializable state like event handlers and kick off any client side logic like `use_effect` and `use_future`.
+When the client receives the initial HTML, it hydrates the HTML by rerunning each component. As each component re-reruns, Dioxus loads cached data from the server, properly linking the HTML to each interactive DOM node.
 
-It will follow these steps:
+Rerunning each component lets the client re-construct some non-serializable state like event handlers and kick off any client side logic like `use_effect` and `use_future`.
 
-1. Deserialize any non-deterministic data from the server (like the `weather` future)
-2. Run the component with the deserialized data. All server futures are immediately resolved with the deserialized data from the server.
-3. Hydrate the HTML sent from the server. This adds all event handlers and links the html nodes to the component so they can be moved or modified later
+Hydration follows these steps:
+
+1. Deserialize any data from the server (like the `weather` future)
+2. Run the component with the deserialized data.
+3. Hydrate the HTML sent from the server, adding event listeners and running effects.
+
 
 [![](https://mermaid.ink/img/pako:eNpdkLFuAjEMhl_F8gxDgemGLlyrDnThmNp0SC-Gi7g4JydpRRHvXsOdkFpnif__s534jG10hBXu-_jddlYy7GrDkMrnQezQQXp4N7juPXGGxjuCl5MT63Nkgx8Kajgv1GYfGTbbUblGWmphTYnE297_EDQkXyTwXHIRSvfqG7tQdlsY1jEMkXXWX3ul9m1u1vm7183kErsRSkuYzx-1zZQuxnRleDw4w0ASrHf60_MVMpg7CmSw0quzcjRo-KKcLTk2J26xylJohhLLocNqb_ukWRmcvqH2VpcT7upg-S3G8I96crolmcTLL4RBdIg?type=png)](https://mermaid-js.github.io/mermaid-live-editor/edit#pako:eNpdkLFuAjEMhl_F8gxDgemGLlyrDnThmNp0SC-Gi7g4JydpRRHvXsOdkFpnif__s534jG10hBXu-_jddlYy7GrDkMrnQezQQXp4N7juPXGGxjuCl5MT63Nkgx8Kajgv1GYfGTbbUblGWmphTYnE297_EDQkXyTwXHIRSvfqG7tQdlsY1jEMkXXWX3ul9m1u1vm7183kErsRSkuYzx-1zZQuxnRleDw4w0ASrHf60_MVMpg7CmSw0quzcjRo-KKcLTk2J26xylJohhLLocNqb_ukWRmcvqH2VpcT7upg-S3G8I96crolmcTLL4RBdIg)
 
-## Hydration errors
+## Hydration Errors
 
 For hydration to work, **the component must render exactly the same thing on the client and the server**. If it doesn't, you might see an error like this:
 
@@ -52,7 +172,13 @@ Semantic(None, "invalid type: floating point `1.2`, expected integer")
 This type was serialized on the server at src/main.rs:11:5 with the type name f64. The client failed to deserialize the type i32 at /path/to/server_future.rs
 ```
 
-### Non-deterministic data with server cached
+### Non-deterministic Eata
+
+Much of the logic in your components is "deterministic" - meaning that given the same inputs to a component, the component will render the same output. It's very important that the inputs to your component remain stable across the client and the server.
+
+Some inputs are "non-deterministic". For example, an app like Instagram has a "feed" of content. Calling `GET /api/feed` might not return the same result every time. This type of data must be serialized *into the HTML* and then *deserialized on the client* to ensure the exact same data is used during hydration.
+
+### Non-deterministic Data with Server Cached
 
 You must put any non-deterministic data in `use_server_future`, `use_server_cached` or `use_effect` to avoid hydration errors. For example, if you need to render a random number on your page, you can use `use_server_cached` to cache the random number on the server and then use it on the client:
 
@@ -60,7 +186,7 @@ You must put any non-deterministic data in `use_server_future`, `use_server_cach
 {{#include ../docs-router/src/doc_examples/hydration.rs:server_cached}}
 ```
 
-### Async loading with server futures
+### Async Loading with Server Futures
 
 If you need render some data from a server future, you need to use `use_server_future` to serialize the data instead of waiting for the (non-deterministic) amount of time `use_resource(...).suspend()?` takes:
 
@@ -68,7 +194,38 @@ If you need render some data from a server future, you need to use `use_server_f
 {{#include ../docs-router/src/doc_examples/hydration.rs:server_future}}
 ```
 
-### Client only data with effects
+### Async Loading with `use_loader`
+
+New in Dioxus 0.7 is the `use_loader` hook - a hook dedicated for isomorphic data loading that excels in both CSR and SSR architectures.
+
+The `use_loader` hook is very similiar to `use_server_future`, but with a slightly different API. Unlike `use_server_future`, the `use_loader` hook will not re-suspend the page when the underyling future re-runs. Also, unlike `use_server_future`, the `use_loader` hook will re-throw any loading errors to the nearest suspense boundary:
+
+```rust
+fn app() -> Element {
+    // Fetch the list of breeds from the Dog API, using the `?` syntax to suspend or throw errors
+    let breed_list = use_loader(move || async move {
+        reqwest::get("https://dog.ceo/api/breeds/list/all")
+            .await?
+            .json::<ListBreeds>()
+            .await
+    })?;
+
+    rsx! {
+        for cur_breed in breed_list.read().message.keys().take(20).cloned() {
+            button {
+                onclick: move |_| {
+                    breed.call(cur_breed.clone());
+                },
+                "{cur_breed}"
+            }
+        }
+    }
+}
+```
+
+The `use_loader` hook takes a callback that returns a `Result<T, E>`. If that future returns a result, the error is automatically thrown. The `use_loader` hook excels when building sites that are both highly interactive and require SSR capabilities.
+
+### Client Only Data with Effects
 
 If you need to grab some data that is only available on the client, make sure you get it inside of a `use_effect` hook which runs after the component has been hydrated:
 
@@ -76,7 +233,7 @@ If you need to grab some data that is only available on the client, make sure yo
 {{#include ../docs-router/src/doc_examples/hydration.rs:effects}}
 ```
 
-### Avoid side effects in server cached hooks
+### Avoid Side Effects in Server Cached Hooks
 
 The dioxus fullstack specific hooks `use_server_cached` and `use_server_future` don't run the same on the server and the client. The server will always run the closure, but the client may not run the closure if the server serialized the result. Because of this, the code you run inside these hooks **cannot have side effects**. If it does, the side effects will not be serialized and it can cause a hydration mismatch error:
 

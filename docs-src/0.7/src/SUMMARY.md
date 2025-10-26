@@ -79,46 +79,19 @@
 
 - [Guides](guides/index.md)
   - [Tools](guides/tools/index.md)
-    - [Serve](guides/tools/serve.md)
-    - [Bundle](guides/tools/bundle.md)
     - [Create a Project](guides/tools/creating.md)
     - [Configure Project](guides/tools/configure.md)
-    - [Android](guides/tools/android.md)
-    - [iOS](guides/tools/ios.md)
     - [Translate HTML](guides/tools/translate.md)
     - [VSCode Extension](guides/tools/vscode.md)
-  - [Platform APIs](guides/apis/index.md)
-    - [Dioxus Feature Overview](guides/apis/features.md)
-    - [Window](guides/apis/window.md)
-    - [Document](guides/apis/document.md)
-    - [History](guides/apis/history.md)
-    - [Desktop Webview](guides/apis/desktop.md)
-    - [Native](guides/apis/native.md)
-    - [Components](guides/apis/components.md)
-    - [SDK](guides/apis/sdk.md)
   - [Platform Support](guides/platforms/index.md)
     - [Web](guides/platforms/web.md)
     - [Desktop](guides/platforms/desktop.md)
     - [Mobile](guides/platforms/mobile.md)
   - [Publishing](guides/deploy/index.md)
-    - [Web Apps](guides/deploy/web.md)
-    - [SSG](guides/deploy/ssg.md)
-    - [iOS Apps](guides/deploy/ios.md)
-    - [macOS Apps](guides/deploy/macos.md)
-    - [Linux Apps](guides/deploy/linux.md)
-    - [Windows Apps](guides/deploy/windows.md)
-    - [Android Apps](guides/deploy/android.md)
     - [Bundle Config](guides/deploy/config.md)
-  - [Organizing your Project](guides/organization/index.md)
-    - [Single Files](guides/organization/single.md)
-    - [Workspaces](guides/organization/workspaces.md)
-    - [Shared Code](guides/organization/shared.md)
   - [Testing and Debugging](guides/testing/index.md)
     - [Web](guides/testing/web.md)
-    - [Desktop](guides/testing/desktop.md)
     - [Debugging](guides/testing/debugging.md)
-    - [Continuous Integration](guides/testing/ci.md)
-    - [Docker](guides/testing/docker.md)
     - [Optimizing](guides/tips/optimizing.md)
     - [Anti-patterns](guides/tips/antipatterns.md)
   - [Utilities](guides/utilities/index.md)
@@ -126,7 +99,6 @@
     - [Internationalization](guides/utilities/internationalization.md)
     - [Tailwind](guides/utilities/tailwind.md)
   - [In-Depth](guides/depth/index.md)
-    - [Asset Pipeline](guides/depth/assets.md)
     - [Custom Renderer](guides/depth/custom_renderer.md)
   - [Migration](migration/index.md)
     - [To 0.7](migration/to_07.md)
@@ -142,3 +114,33 @@
 - [Beyond](beyond/index.md)
   - [Contributing](beyond/contributing.md)
   - [Project Structure](beyond/project_structure.md)
+
+
+    <!-- - [Serve](guides/tools/serve.md) -->
+    <!-- - [Bundle](guides/tools/bundle.md) -->
+    <!-- - [Android](guides/tools/android.md) -->
+    <!-- - [iOS](guides/tools/ios.md) -->
+  <!-- - [Platform APIs](guides/apis/index.md) -->
+    <!-- - [Dioxus Feature Overview](guides/apis/features.md) -->
+    <!-- - [Window](guides/apis/window.md) -->
+    <!-- - [Document](guides/apis/document.md) -->
+    <!-- - [History](guides/apis/history.md) -->
+    <!-- - [Desktop Webview](guides/apis/desktop.md) -->
+    <!-- - [Native](guides/apis/native.md) -->
+    <!-- - [Components](guides/apis/components.md) -->
+    <!-- - [SDK](guides/apis/sdk.md) -->
+    <!-- - [Web Apps](guides/deploy/web.md) -->
+    <!-- - [SSG](guides/deploy/ssg.md) -->
+    <!-- - [iOS Apps](guides/deploy/ios.md) -->
+    <!-- - [macOS Apps](guides/deploy/macos.md) -->
+    <!-- - [Linux Apps](guides/deploy/linux.md) -->
+    <!-- - [Windows Apps](guides/deploy/windows.md) -->
+    <!-- - [Android Apps](guides/deploy/android.md) -->
+  <!-- - [Organizing your Project](guides/organization/index.md) -->
+    <!-- - [Single Files](guides/organization/single.md) -->
+    <!-- - [Workspaces](guides/organization/workspaces.md) -->
+    <!-- - [Shared Code](guides/organization/shared.md) -->
+    <!-- - [Desktop](guides/testing/desktop.md) -->
+    <!-- - [Continuous Integration](guides/testing/ci.md) -->
+    <!-- - [Docker](guides/testing/docker.md) -->
+    <!-- - [Asset Pipeline](guides/depth/assets.md) -->

@@ -4,6 +4,26 @@ So far, we've focused on using fullstack alongside a web application. However, n
 
 On these platforms, fullstack works a bit differently. You can still use server functions, but things like server-side-rendering no-longer apply.
 
+## Developing a Native Fullstack App
+
+Developing a native fullstack app works just the same as developing a fullstack web app. Make sure your `Cargo.toml` has the appropriate features:
+
+```toml
+[dependencies]
+dioxus = { verison = "0.7", features = ["fullstack"] }
+
+[features]
+server = ["dioxus/server"]
+desktop = ["dioxus/desktop"]
+```
+
+And then, to serve the app, use `dx serve --<platform>`:
+
+```sh
+dx serve --desktop
+```
+
+
 ## Server Functions for Native App
 
 When you build a native app that relies on server functions, you can freely call any server function just as you would with a web app.

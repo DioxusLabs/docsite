@@ -63,20 +63,6 @@ fn LeftNav<R: AnyBookRoute>() -> Element {
         &book.summary.suffix_chapters,
     ];
 
-    info!(
-        "chapters: {:#?}",
-        chapters
-            .iter()
-            .copied()
-            .flatten()
-            .map(|c| match c {
-                SummaryItem::Link(link) => link.name.to_string(),
-                SummaryItem::PartTitle(title) => title.to_string(),
-                _ => "Other".to_string(),
-            })
-            .collect::<Vec<_>>()
-    );
-
     rsx! {
         div {
             class: if SHOW_SIDEBAR() { "w-full md:w-auto" } else { "hidden" },

@@ -1,7 +1,8 @@
 use crate::hotreload::HotReload;
 use crate::hotreload::HotReloadStoreImplExt;
+use crate::theme::Theme;
 use dioxus::prelude::*;
-use dioxus_sdk::window::theme::Theme;
+// use dioxus_sdk::window::theme::Theme;
 use model::{CargoDiagnostic, CargoLevel};
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;

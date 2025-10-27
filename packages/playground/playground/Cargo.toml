@@ -16,7 +16,7 @@ thiserror = { workspace = true }
 # Dioxus
 dioxus = { workspace = true, features = ["web", "router"] }
 dioxus-document = { workspace = true }
-dioxus-sdk = { workspace = true, features = ["util", "time", "window"] }
+# dioxus-sdk = { workspace = true, features = ["util", "time", "window"] }
 
 # Hot reload / Paste as RSX
 dioxus-core = { workspace = true }
@@ -42,6 +42,10 @@ proc-macro2 = "1.0.89"
 example-projects = { workspace = true }
 dioxus-primitives = { git = "https://github.com/DioxusLabs/components", version = "0.0.1", default-features = false }
 tracing = "0.1.41"
+
+[target.'cfg(target_family = "wasm")'.dependencies]
+web-sys = { version = "0.3.60", features = ["Window", "MediaQueryList"] }
+
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 # dioxus-sdk = { workspace = true, default-features = false, features = ["system_theme", "window_size", "timing",] }

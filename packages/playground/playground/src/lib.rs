@@ -3,13 +3,18 @@ use components::icons::Warning;
 use dioxus::logger::tracing::error;
 use dioxus::prelude::*;
 use dioxus_document::Link;
-use dioxus_sdk::time::use_debounce;
+// use dioxus_sdk::time::use_debounce;
 use editor::monaco::{self, monaco_loader_src, set_monaco_markers};
 use hotreload::{attempt_hot_reload, HotReload};
 use model::{api::ApiClient, AppError, Project, SocketError};
 use std::time::Duration;
 
-use dioxus_sdk::window::theme::{use_system_theme, Theme};
+mod theme;
+use theme::{get_theme, use_system_theme, Theme};
+mod debounce;
+use debounce::use_debounce;
+
+// use dioxus_sdk::window::theme::{use_system_theme, Theme};
 
 use crate::{
     build::{BuildStateStoreExt, BuildStateStoreImplExt},
@@ -99,11 +104,11 @@ pub fn Playground(
     // Handle setting diagnostics based on build state.
     use_effect(move || set_monaco_markers(build.diagnostics()));
 
-    // Themes
-    let system_theme = use_system_theme();
-    use_effect(move || {
-        editor::monaco::set_theme(system_theme().unwrap_or(Theme::Light));
-    });
+    // // Themes
+    // let system_theme = use_system_theme();
+    // use_effect(move || {
+    //     editor::monaco::set_theme(system_theme().unwrap_or(Theme::Light));
+    // });
 
     // Handle starting a build.
     let on_rebuild = use_callback(move |_| {
@@ -162,7 +167,7 @@ pub fn Playground(
                 onload: move |_| {
                     monaco::on_monaco_load(
                         MONACO_FOLDER,
-                        system_theme().unwrap_or(Theme::Light),
+                        get_theme().unwrap_or(Theme::Light),
                         &project.read().contents(),
                         hot_reload,
                         monaco_ready,

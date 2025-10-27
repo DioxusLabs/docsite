@@ -2049,6 +2049,7 @@ dependencies = [
  "tracing",
  "uuid",
  "wasm-bindgen",
+ "web-sys",
 ]
 
 [[package]]

@@ -83,8 +83,8 @@ dioxus-dx-wire-format = "0.7.0-rc.3"
 dioxus-devtools-types = "0.7.0-rc.3"
 dioxus-logger = "0.7.0-rc.3"
 
-# 3rd-party dioxus
-dioxus-sdk = { git = "https://github.com/ealmloff/dioxus-std", branch = "0.7" }
+# # 3rd-party dioxus
+# dioxus-sdk = { git = "https://github.com/ealmloff/dioxus-std", branch = "0.7" }
 
 getrandom = { version = "0.2" }
 serde = { version = "1.0.215", features = ["derive"] }

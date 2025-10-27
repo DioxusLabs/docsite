@@ -59,7 +59,7 @@ fn Component(name: String) -> Element {
     let mut count = use_signal(|| 0);
 
     rsx! {
-        h1 { "Hello, {name}" }
+        em { "Hello, {name}" }
         p { "Count: {count}" }
     }
 }

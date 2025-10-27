@@ -20,15 +20,11 @@ enum Route {
 fn NavBar(cx: Scope) -> Element {
     render! {
         nav {
-            ul {
-                li {
-                    Link {
-                        // The Link component will navigate to the route specified
-                        // in the target prop which is checked to exist at compile time
-                        to: Route::Home {},
-                        "Home"
-                    }
-                }
+            Link {
+                // The Link component will navigate to the route specified
+                // in the target prop which is checked to exist at compile time
+                to: Route::Home {},
+                "Home"
             }
         }
         Outlet::<Route> {}

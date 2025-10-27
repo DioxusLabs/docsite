@@ -134,6 +134,26 @@ DemoFrame {
 >
 > Async methods will often mention if they are cancel safe in their documentation.
 
+## Asynchronous State with `use_loader`
+
+The `use_resource` hook is great for loading arbitrary values. However, working with resources that return results can be a little cumbersome. In some cases, the `use_loader` hook is a better choice.
+
+The `use_loader` hook is designed to work with reactive futures that return `Result<T, E>`. Instead of returning a `Resouce<T>`, like `use_resource`, the `use_loader` hook *actually* returns a `Result<Loader<T>, Loading>`. The `Loading` return type tightly integrates with Error Boundaries and Suspense - both of which are very useful in server-side-rendering (SSR).
+
+Because `use_loader` returns a Result, you can use the `?` syntax to early return if the resource is pending or errored:
+
+```rust
+// Fetch the list of breeds from the Dog API, using the `?` syntax to suspend or throw errors
+let breed_list = use_loader(move || async move {
+    reqwest::get("https://dog.ceo/api/breeds/list/all")
+        .await?
+        .json::<ListBreeds>()
+        .await
+})?;
+```
+
+Generally, we recommend using `use_resource` when doing client-side fetching and `use_loader` when doing hybrid client/server fetching.
+
 ## Avoiding Waterfalls
 
 One common issue when fetching data is the "waterfall" effect, where requests run sequentially. This can lead to slow loading times and a poor user experience. To avoid waterfalls, you can hoist your data loading logic to a higher level in your component tree and avoid returning early before unrelated requests.

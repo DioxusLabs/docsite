@@ -1,7 +1,5 @@
 # Conditional Rendering
 
-## Dynamic Content
-
 Our user interfaces have been quite static so far. However, most apps we build with Dioxus usually contain lots of dynamic content. Our UIs will react to changes in buttons, form inputs, sliders, or external data sources like the network. Dioxus apps generally store this dynamic state in Hooks or Context.
 
 In this chapter, we're not going to dive too deep in how we store this state - future chapters cover state in depth.
@@ -40,12 +38,18 @@ Or, we might want to render some RSX dynamically and assign it to a variable:
 
 ```rust
 let header = match current_timezone() {
-    TimeZone::PST => rsx! { h1 { "Welcome home" } },
-    _ => rsx! { h1 { "Bon voyage!" } },
+    TimeZone::PST => rsx! {
+        h1 { "Welcome home" }
+    },
+    _ => rsx! {
+        h1 { "Bon voyage!" }
+    },
 }
 
 rsx! {
-    div { {header} }
+    div {
+        {header}
+    }
 }
 ```
 
@@ -62,7 +66,9 @@ In Dioxus, you'd simply use an if/else statement:
 ```rust
 let screen = if authenticated { render_app() } else { render_login() };
 rsx! {
-    div { {screen} }
+    div {
+        {screen}
+    }
 }
 ```
 
@@ -70,13 +76,21 @@ Rust's guards can be especially helpful in these scenarios, letting us select ma
 
 ```rust
 let header = match current_timezone() {
-    TimeZone::PST => rsx! { h1 { "Welcome home" } },
-    _ if app.snoozed() => rsx! { h1 { "snoozed..." } },
-    _ => rsx! { h1 { "Bon voyage!" } },
+    TimeZone::PST => rsx! {
+        h1 { "Welcome home" }
+    },
+    _ if app.snoozed() => rsx! {
+        h1 { "snoozed..." }
+    },
+    _ => rsx! {
+        h1 { "Bon voyage!" }
+    },
 }
 
 rsx! {
-    div { {header} }
+    div {
+        {header}
+    }
 }
 ```
 
@@ -92,7 +106,9 @@ Dioxus uses the [`IntoDynNode`](https://docs.rs/dioxus-core/latest/dioxus_core/t
 Many things implement this trait. For example, empty expressions are valid:
 ```rust
 rsx! {
-    div { { /* empty.. */} }
+    div {
+        { /* empty.. */}
+    }
 }
 ```
 
@@ -101,7 +117,9 @@ Other Element objects are valid:
 ```rust
 let inner = rsx! { "inner" };
 rsx! {
-    div { {inner} }
+    div {
+        {inner}
+    }
 }
 ```
 
@@ -123,7 +141,9 @@ The Rust `Option` type is valid provided the inner type implements `IntoDynNode`
 ```rust
 let inner = Some(rsx! { "inner" });
 rsx! {
-    div { {inner} }
+    div {
+        {inner}
+    }
 }
 ```
 
@@ -135,7 +155,9 @@ let cards = (0..10).map(|i| rsx! {
 });
 
 rsx! {
-    ol { {cards} }
+    ol {
+        {cards}
+    }
 }
 ```
 
@@ -153,7 +175,9 @@ let cards = std::iter::from_fn(move || {
 })
 
 rsx! {
-    ol { {cards} }
+    ol {
+        {cards}
+    }
 }
 ```
 

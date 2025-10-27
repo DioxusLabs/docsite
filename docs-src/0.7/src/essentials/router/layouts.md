@@ -5,12 +5,6 @@ Layouts allow you to wrap all child routes in a component. This can be useful wh
 [`Outlet`] tells the router where to render content in layouts. In the following example,
 the Index will be rendered within the [`Outlet`].
 
-This page is built with Dioxus. It uses Layouts in several different places. Here is an outline of how layouts are used on the current page:
-
-```inject-dioxus
-LayoutsExplanation {}
-```
-
 Here is a more complete example of a layout wrapping the body of a page.
 
 ```rust
@@ -28,7 +22,7 @@ readability):
 
 ## Layouts with dynamic segments
 
-You can combine layouts with [nested routes](./nested-routes.md) to create dynamic layouts with content that changes based on the current route.
+You can combine layouts with nested routes to create dynamic layouts with content that changes based on the current route.
 
 Just like routes, layouts components must accept a prop for each dynamic segment in the route. For example, if you have a route with a dynamic segment like `/:name`, your layout component must accept a `name` prop:
 

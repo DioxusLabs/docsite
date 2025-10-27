@@ -1,7 +1,7 @@
 mod waterfall_effect {
     use std::fmt::Display;
 
-    use dioxus::prelude::*;
+    use dioxus::{CapturedError, prelude::*};
 
     #[derive(serde::Deserialize)]
     struct DogApi {
@@ -9,13 +9,15 @@ mod waterfall_effect {
     }
 
     // ANCHOR: waterfall_effect
-    fn fetch_dog_image(breed: impl Display) -> impl Future<Output = dioxus::Result<String>> {
+    fn fetch_dog_image(
+        breed: impl Display,
+    ) -> impl Future<Output = dioxus::Result<String, CapturedError>> {
         async move {
             let response = reqwest::get(format!("https://dog.ceo/api/breed/{breed}/images/random"))
                 .await?
                 .json::<DogApi>()
                 .await?;
-            dioxus::Ok(response.message)
+            Ok(response.message)
         }
     }
 
@@ -69,20 +71,20 @@ mod waterfall_effect {
 mod no_waterfall_effect {
     use std::fmt::Display;
 
-    use dioxus::prelude::*;
+    use dioxus::{CapturedError, prelude::*};
 
     #[derive(serde::Deserialize)]
     struct DogApi {
         message: String,
     }
 
-    fn fetch_dog_image(breed: impl Display) -> impl Future<Output = dioxus::Result<String>> {
+    fn fetch_dog_image(breed: impl Display) -> impl Future<Output = Result<String, CapturedError>> {
         async move {
             let response = reqwest::get(format!("https://dog.ceo/api/breed/{breed}/images/random"))
                 .await?
                 .json::<DogApi>()
                 .await?;
-            dioxus::Ok(response.message)
+            Ok(response.message)
         }
     }
 

@@ -2,7 +2,9 @@
 
 The Dioxus Hot-Reload engine is incredibly powerful. When used properly, it provides the fastest development experience for building apps with Rust.
 
-Dioxus 0.5 featured a limited form of hot-reloading, while Dioxus 0.6 drastically improved it. **Dioxus 0.7 introduces experimental Rust hot-reloading**, making it the first Rust framework to support hot-reloading of actual Rust code.
+> Dioxus 0.5 featured a limited form of hot-reloading, while Dioxus 0.6 drastically improved it.
+>
+> **Dioxus 0.7 introduces experimental Rust hot-reloading**, making it the first Rust framework to support hot-reloading of actual Rust code. 🎉🎉
 
 Dioxus provides three forms of hotreloading.
 

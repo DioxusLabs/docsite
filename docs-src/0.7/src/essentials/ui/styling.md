@@ -244,7 +244,7 @@ static STYLES: Asset = asset!("/assets/styles.scss");
 
 Your `assets/styles.scss` file can use all SCSS features:
 
-```scss
+```css
 $primary-color: #3b82f6;
 $secondary-color: #64748b;
 $border-radius: 8px;
@@ -457,13 +457,11 @@ use dioxus_free_icons::{Icon, icons::fa_solid_icons};
 
 fn App() -> Element {
     rsx! {
-        div {
-            Icon {
-                width: 30,
-                height: 30,
-                fill: "blue",
-                icon: fa_solid_icons::FaHeart
-            }
+        Icon {
+            width: 30,
+            height: 30,
+            fill: "blue",
+            icon: fa_solid_icons::FaHeart
         }
     }
 }

@@ -16,7 +16,86 @@ The `RenderError` type can be created from an error type that implements `Error`
 {{#include ../docs-router/src/doc_examples/error_handling.rs:throw_error}}
 ```
 
-The [`RenderError`](https://docs.rs/anyhow/latest/anyhow/) is very similar to the crate `anyhow`'s error type. Unlike anyhow's error type, the `RenderError` lets you attach additional Dioxus-specific metadata when throwing errors.
+The [`RenderError`](https://docs.rs/anyhow/latest/anyhow/) is special error type that is an enum of either `Error(CapturedError)` or `Suspended(SuspendedFuture)`. A `RenderError` automatically implements `From<CapturedError>` which implements `From<anyhow::Error>`.
+
+```rust
+/// An error that can occur while rendering a component
+#[derive(Debug, Clone, PartialEq)]
+pub enum RenderError {
+    /// The render function returned early due to an error.
+    ///
+    /// We captured the error, wrapped it in an Arc, and stored it here. You can no longer modify the error,
+    /// but you can cheaply pass it around.
+    Error(CapturedError),
+
+    /// The component was suspended
+    Suspended(SuspendedFuture),
+}
+```
+
+Because `RenderError` can be automatically coerced from an `anyhow::Error`, we can use anyhow's `Context` trait to bubble up any error while rendering:
+
+```rust
+fn Counter() -> Element {
+    let count = "123".parse::<i32>().context("Could not parse input")?;
+
+    // ...
+}
+```
+
+## CapturedError, RenderError, and anyhow::Error
+
+Through the entire stack, Dioxus has many different error types. The large quantity can lead to some confusion.
+
+### anyhow::Error
+
+Unlike many other libraries, Dioxus uses the `anyhow::Error` as its core error type. In many APIs that take user code - like callbacks, actions, and loaders - you can cleanly use anyhow's Error type:
+
+```rust
+let mut breed = use_action(move |breed| async move {
+    let res = reqwest::get(format!("https://dog.ceo/api/breed/{breed}/images/random"))
+        .await
+        .context("Failed to fetch")?
+        .json::<DogApi>()
+        .await
+        .context("Failed to deserialize")?;
+
+    anyhow::Ok(res)
+});
+```
+
+Many APIs also either take or return an anyhow error. You can use `anyhow::Result` as the result type for a server function:
+
+```rust
+#[get("/dogs")]
+async fn get_dogs() -> anyhow::Result<i32> {
+    Ok(123)
+}
+```
+
+The anyhow crate provides an ergonomic, dynamic error type that can ingest any errors that implement the `std::Error` trait. We chose to use anyhow's error type since it cleanly integrates with the broader Rust ecosystem. GUI apps can encounter many different types of errors along the way, and only a few are worth handling completely with a dedicated variant.
+
+If you need to downcast the anyhow error to a specific error type, you can use `.downcast_ref::<T>()`. Other utilities like `.context()`, `anyhow!()`, and `bail!()` work seamlessly with the rest of Dioxus
+
+### Captured Error
+
+A `CapturedError` is a transparent wrapper type around anyhow's Error that makes it implement the `Clone` trait. The implementation is quite simple:
+
+```rust
+#[derive(Debug, Clone)]
+pub struct CapturedError(pub Arc<anyhow::Error>);
+```
+
+The `CapturedError` type is useful when you need to call `.clone()` on the error, as is required by `use_resource`. The hook `use_resource` requires that the output by `Clone` - but the default `anyhow::Error` type is *not*.
+
+In cases where you need a concrete error type, like in loaders and actions, consider using `dioxus::Ok()` which will return a `Result<T, CapturedError>`:
+
+```rust
+let value = use_resource(|| async move {
+    let res = fetch("/dogs")?;
+    dioxus::Ok(res)
+});
+```
 
 ## Capturing errors with ErrorBoundaries
 
@@ -33,10 +112,9 @@ try {
 }
 ```
 
-In Dioxus, you can take a similar try/catch approach within the component tree with error boundaries. Error boundaries let us catch and handle errors produced while rendering our app.
+In Dioxus, you can take a similar try/catch approach within the component tree with error boundaries. Error boundaries let you catch and handle errors produced while rendering our app.
 
 [Error Boundaries](/assets/07/error-boundaries.png)
-
 
 When you return an error from a component, it gets thrown to the nearest error boundary. That error boundary can then handle the error and render a fallback UI with the handle_error closure:
 
@@ -52,30 +130,32 @@ In addition to components, you can throw errors from event handlers. If you thro
 {{#include ../docs-router/src/doc_examples/error_handling.rs:throw_error_event_handler}}
 ```
 
-This is extremely useful when handling async work or work that fails frequently.
+This is useful when handling async work or work that fails frequently.
 
 ## Adding context to errors
 
-You can add additional context to your errors with the [`Context`](https://docs.rs/dioxus/0.6/dioxus/prelude/trait.Context.html) trait. Calling `context` on a `Result` will add the context to the error variant of the `Result`:
+You can add additional context to your errors with anyhow's [`Context`](https://docs.rs/anyhow/latest/anyhow/trait.Context.html) trait. Calling `context` on a `Result` will add the context to the error variant of the `Result`:
 
 ```rust, no_run
 {{#include ../docs-router/src/doc_examples/error_handling.rs:add_context}}
 ```
 
+If you need to show some specific UI for the error, we recommend wrapping the error in a custom type and then downcasting when it's caught.
+
 ## Downcasting Specific Errors
 
-When handling errors in Error Boundaries, we can match on specific types of errors, optionally choosing to capture the error and prevent it from bubbling.
+When handling errors in Error Boundaries, you can match on specific types of errors, optionally choosing to capture the error and prevent it from bubbling.
 
 By default, errors are caught by the nearest Error Boundary. In some scenarios, we might not want to catch a specific type of error, like a NetworkError.
 
-In our handler code, we can iterate through the list of captured errors with `.errors()` and then re-throw the error if necessary:
+In our handler code, we can use with `.error()` to get the current error and then re-throw it if necessary:
 
 ```rust
 rsx! {
     ErrorBoundary {
-        handle_error: |errors: ErrorContext| {
+        handle_error: |error: ErrorContext| {
             // Network errors need to be handled by a different error boundary!
-            if let Err(e) = errors.errors().iter().find(|s| s.downcast::<NetworkError>().is_some()) {
+            if let Some(err) = error.error() {
                 return Err(e.into())
             }
 

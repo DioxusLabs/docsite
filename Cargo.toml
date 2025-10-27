@@ -63,25 +63,25 @@ dioxus-search-macro = { path = "packages/search/search-macro" }
 dioxus-search-shared = { path = "packages/search/search-shared" }
 
 # Dioxus Release
-dioxus = "0.7.0-rc.1"
-dioxus-document = "0.7.0-rc.1"
-dioxus-core = "0.7.0-rc.1"
-dioxus-web = "0.7.0-rc.1"
-dioxus-router = "0.7.0-rc.1"
-dioxus-cli-config = "0.7.0-rc.1"
-dioxus-desktop = "0.7.0-rc.1"
-dioxus-liveview = "0.7.0-rc.1"
-dioxus-ssr = "0.7.0-rc.1"
-dioxus-core-types = "0.7.0-rc.1"
-dioxus-devtools = "0.7.0-rc.1"
-dioxus-rsx-hotreload = "0.7.0-rc.1"
-dioxus-rsx = "0.7.0-rc.1"
-dioxus-html = { version = "0.7.0-rc.1", default-features = false }
-dioxus-rsx-rosetta = "0.7.0-rc.1"
-dioxus-autofmt = "0.7.0-rc.1"
-dioxus-dx-wire-format = "0.7.0-rc.1"
-dioxus-devtools-types = "0.7.0-rc.1"
-dioxus-logger = "0.7.0-rc.1"
+dioxus = "0.7.0-rc.3"
+dioxus-document = "0.7.0-rc.3"
+dioxus-core = "0.7.0-rc.3"
+dioxus-web = "0.7.0-rc.3"
+dioxus-router = "0.7.0-rc.3"
+dioxus-cli-config = "0.7.0-rc.3"
+dioxus-desktop = "0.7.0-rc.3"
+dioxus-liveview = "0.7.0-rc.3"
+dioxus-ssr = "0.7.0-rc.3"
+dioxus-core-types = "0.7.0-rc.3"
+dioxus-devtools = "0.7.0-rc.3"
+dioxus-rsx-hotreload = "0.7.0-rc.3"
+dioxus-rsx = "0.7.0-rc.3"
+dioxus-html = { version = "0.7.0-rc.3", default-features = false }
+dioxus-rsx-rosetta = "0.7.0-rc.3"
+dioxus-autofmt = "0.7.0-rc.3"
+dioxus-dx-wire-format = "0.7.0-rc.3"
+dioxus-devtools-types = "0.7.0-rc.3"
+dioxus-logger = "0.7.0-rc.3"
 
 # 3rd-party dioxus
 dioxus-sdk = { git = "https://github.com/ealmloff/dioxus-std", branch = "0.7" }

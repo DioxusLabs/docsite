@@ -470,6 +470,98 @@ mod suspense_boundary {
     // ANCHOR_END: suspense_boundary
 }
 
+pub use suspense_boundary_with_loading_placeholder::DogGridViewWithLoadingPlaceholder;
+
+mod suspense_boundary_with_loading_placeholder {
+    use super::{BreedResponse, ClientOnly};
+    use dioxus::prelude::*;
+
+    pub fn DogGridViewWithLoadingPlaceholder() -> Element {
+        let mut uuid = use_signal(|| 0);
+        rsx! {
+            div {
+                height: "20em",
+                ClientOnly {
+                    button { onclick: move |_| uuid += 1, "🔄" }
+                    {std::iter::once(rsx! {
+                        DogGrid { key: "{uuid}" }
+                    })}
+                }
+            }
+        }
+    }
+
+    // ANCHOR: suspense_boundary_with_loading_placeholder
+    fn DogGrid() -> Element {
+        rsx! {
+            SuspenseBoundary {
+                // The fallback closure accepts a SuspenseContext which contains
+                // information about the suspended component
+                fallback: |suspense_context: SuspenseContext| {
+                    rsx! {
+                        div {
+                            width: "100%",
+                            height: "100%",
+                            display: "flex",
+                            align_items: "center",
+                            justify_content: "center",
+                            "Loading..."
+                        }
+                    }
+                },
+                div {
+                    display: "flex",
+                    flex_direction: "column",
+                    BreedGallery {
+                        breed: "hound"
+                    }
+                    BreedGallery {
+                        breed: "poodle"
+                    }
+                    BreedGallery {
+                        breed: "beagle"
+                    }
+                }
+            }
+        }
+    }
+
+    #[component]
+    fn BreedGallery(breed: ReadSignal<String>) -> Element {
+        let response = use_resource(move || async move {
+            gloo_timers::future::TimeoutFuture::new(breed().len() as u32 * 100).await;
+            reqwest::Client::new()
+                .get(format!("https://dog.ceo/api/breed/{breed}/images"))
+                .send()
+                .await?
+                .json::<BreedResponse>()
+                .await
+        })
+        .suspend()?;
+
+        // Then you can just handle the happy path with the resolved future
+        rsx! {
+            div {
+                display: "flex",
+                flex_direction: "row",
+                match &*response.read() {
+                    Ok(urls) => rsx! {
+                        for image in urls.iter().take(3) {
+                            img {
+                                src: "{image}",
+                                width: "100px",
+                                height: "100px",
+                            }
+                        }
+                    },
+                    Err(err) => rsx! { "Failed to fetch response: {err}" },
+                }
+            }
+        }
+    }
+    // ANCHOR_END: suspense_boundary_with_loading_placeholder
+}
+
 #[cfg(not(feature = "fullstack"))]
 pub use suspense_boundary::DogGridView as DogGridFullstack;
 #[cfg(feature = "fullstack")]
@@ -604,7 +696,7 @@ mod use_server_future_streaming {
         dioxus::LaunchBuilder::new()
             .with_context(server_only! {
                 // Enable out of order streaming during SSR
-                dioxus::fullstack::ServeConfig::builder().enable_out_of_order_streaming()
+                dioxus::server::ServeConfig::builder().enable_out_of_order_streaming()
             })
             .launch(DogGrid);
     }

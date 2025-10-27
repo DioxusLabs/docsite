@@ -148,3 +148,19 @@ let logging_js_path = format!("{}/logging.js", asset!("/assets/posthog-js"));
 ```
 
 Note that we need to format the `Asset` returned by the `asset!()` macro here because the actual folder name will receive an asset hash.
+
+
+## The Public folder
+
+If you're deploying your app to the web, then DX will automatically copy any files from your app's `/public` directory into the output `/public` directory.
+
+This can be useful to copy files like `robots.txt` into the output directory since they're not referenced by any code in your app.
+
+```
+├── assets
+├── src
+└── public
+    └── robots.txt
+```
+
+Note that this `/public` directory is *merged* into the output, allowing you to manually insert files into the output `/public/assets` directory.

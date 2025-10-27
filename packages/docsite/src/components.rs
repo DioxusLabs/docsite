@@ -23,3 +23,6 @@ pub use component_demo::*;
 pub mod llms;
 pub mod theme;
 pub use theme::*;
+
+// border-stone-200
+// border-stone-300

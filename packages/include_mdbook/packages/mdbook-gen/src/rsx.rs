@@ -349,10 +349,12 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                         Some("shell") => "sh",
                         Some("javascript") => "js",
                         Some(res) => res,
-                        None => "rs",
+                        None => "txt",
                     };
 
-                    let html = build_codeblock(raw_code, lang);
+                    let dark_html = build_codeblock(&raw_code, lang, true);
+                    let light_html = build_codeblock(&raw_code, lang, false);
+
                     let fname = if let Some(fname) = fname {
                         quote! { name: #fname.to_string() }
                     } else {
@@ -361,7 +363,8 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
 
                     self.start_node(parse_quote! {
                         CodeBlock {
-                            contents: #html,
+                            contents: #dark_html,
+                            light_contents: #light_html,
                             #fname
                         }
                     });
@@ -698,6 +701,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> Iterator for ResolveCodeBlock<'a, I> {
             Some(Event::Start(Tag::CodeBlock(mut kind))) => {
                 let raw_code = take_code_or_text(&mut self.iter);
                 let mut fname = None;
+                let is_include = raw_code.starts_with("{{#include");
 
                 // Resolve any embedded include statements
                 let code = match transform_code_block(&self.path, raw_code, &mut fname) {
@@ -712,7 +716,18 @@ impl<'a, I: Iterator<Item = Event<'a>>> Iterator for ResolveCodeBlock<'a, I> {
                 if let (Some(fname), CodeBlockKind::Fenced(lang)) = (fname, &kind) {
                     // If the kind already contains a path, don't add it again
                     if !lang.contains('@') {
-                        kind = CodeBlockKind::Fenced(format!("{}@{}", lang, fname).into());
+                        kind = CodeBlockKind::Fenced(
+                            format!(
+                                "{}@{}",
+                                if !is_include {
+                                    lang.as_ref()
+                                } else {
+                                    "rs".into()
+                                },
+                                fname
+                            )
+                            .into(),
+                        );
                     }
                 }
 
@@ -727,21 +742,45 @@ impl<'a, I: Iterator<Item = Event<'a>>> Iterator for ResolveCodeBlock<'a, I> {
     }
 }
 
-fn build_codeblock(code: String, lang: &str) -> String {
-    static THEME: once_cell::sync::Lazy<syntect::highlighting::Theme> =
+fn build_codeblock(code: &str, lang: &str, is_dark: bool) -> String {
+    static DARK_THEME: once_cell::sync::Lazy<syntect::highlighting::Theme> =
         once_cell::sync::Lazy::new(|| {
             let raw = include_str!("../themes/MonokaiDark.thTheme").to_string();
             let mut reader = std::io::Cursor::new(raw.clone());
             ThemeSet::load_from_reader(&mut reader).unwrap()
         });
 
+    static LIGHT_THEME: once_cell::sync::Lazy<syntect::highlighting::Theme> =
+        once_cell::sync::Lazy::new(|| {
+            let raw = include_str!("../themes/Base16.thTheme").to_string();
+            let mut reader = std::io::Cursor::new(raw.clone());
+            ThemeSet::load_from_reader(&mut reader).unwrap()
+        });
+    // once_cell::sync::Lazy::new(|| ThemeSet::load_defaults().themes["InspiredGitHub"].clone());
+    // once_cell::sync::Lazy::new(|| ThemeSet::load_defaults().themes["InspiredGitHub"].clone());
+
+    let lang = if lang.to_ascii_lowercase() == "rust" {
+        "rs"
+    } else {
+        lang
+    };
+
     let ss = modern_syntax_set();
     let syntax = ss.find_syntax_by_name(lang).unwrap_or_else(|| {
-        ss.find_syntax_by_extension(lang)
-            .unwrap_or_else(|| ss.find_syntax_by_extension("rs").unwrap())
+        ss.find_syntax_by_extension(lang).unwrap_or_else(|| {
+            ss.find_syntax_by_extension("txt").unwrap_or_else(|| {
+                panic!("Failed to find syntax for {lang} from {:#?}", ss.syntaxes())
+            })
+        })
     });
-    let html =
-        syntect::html::highlighted_html_for_string(code.trim_end(), &ss, syntax, &THEME).unwrap();
+
+    let html = syntect::html::highlighted_html_for_string(
+        code.trim_end(),
+        &ss,
+        syntax,
+        if is_dark { &DARK_THEME } else { &LIGHT_THEME },
+    )
+    .unwrap();
 
     escape_text(&html)
 }

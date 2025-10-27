@@ -1,7 +1,7 @@
 mod waterfall_effect {
     use std::fmt::Display;
 
-    use dioxus::prelude::*;
+    use dioxus::{CapturedError, prelude::*};
 
     #[derive(serde::Deserialize)]
     struct DogApi {
@@ -70,7 +70,7 @@ mod waterfall_effect {
 mod no_waterfall_effect {
     use std::fmt::Display;
 
-    use dioxus::prelude::*;
+    use dioxus::{CapturedError, prelude::*};
 
     #[derive(serde::Deserialize)]
     struct DogApi {

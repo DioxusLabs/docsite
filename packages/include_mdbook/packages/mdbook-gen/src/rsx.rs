@@ -3,7 +3,6 @@ use proc_macro2::{Span, TokenStream as TokenStream2};
 use quote::{quote, ToTokens};
 use std::{
     iter::Peekable,
-    os::macos::raw,
     path::{Path, PathBuf},
     str::FromStr,
     vec,

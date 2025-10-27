@@ -2036,6 +2036,7 @@ dependencies = [
  "example-projects",
  "futures",
  "gloo-net",
+ "gloo-timers",
  "gloo-utils",
  "miniz_oxide",
  "model",

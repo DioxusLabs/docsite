@@ -2033,7 +2033,6 @@ dependencies = [
  "dioxus-rsx",
  "dioxus-rsx-hotreload",
  "dioxus-rsx-rosetta",
- "dioxus-sdk",
  "example-projects",
  "futures",
  "gloo-net",
@@ -2145,16 +2144,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 2.0.108",
-]
-
-[[package]]
-name = "dioxus-sdk"
-version = "0.7.0-rc.3"
-source = "git+https://github.com/ealmloff/dioxus-std?branch=0.7#4b21134c3950d219a6e42ba33b6ba4bda97c062b"
-dependencies = [
- "dioxus-time",
- "dioxus-util",
- "dioxus-window",
 ]
 
 [[package]]
@@ -2321,15 +2310,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "dioxus-util"
-version = "0.7.0-rc.3"
-source = "git+https://github.com/ealmloff/dioxus-std?branch=0.7#4b21134c3950d219a6e42ba33b6ba4bda97c062b"
-dependencies = [
- "dioxus",
- "serde",
-]
-
-[[package]]
 name = "dioxus-web"
 version = "0.7.0-rc.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2360,18 +2340,6 @@ dependencies = [
  "wasm-bindgen",
  "wasm-bindgen-futures",
  "wasm-streams",
- "web-sys",
-]
-
-[[package]]
-name = "dioxus-window"
-version = "0.7.0-rc.3"
-source = "git+https://github.com/ealmloff/dioxus-std?branch=0.7#4b21134c3950d219a6e42ba33b6ba4bda97c062b"
-dependencies = [
- "dioxus",
- "dioxus-config-macro",
- "dioxus-desktop",
- "wasm-bindgen",
  "web-sys",
 ]
 

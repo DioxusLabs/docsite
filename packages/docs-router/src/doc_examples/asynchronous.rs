@@ -696,7 +696,7 @@ mod use_server_future_streaming {
         dioxus::LaunchBuilder::new()
             .with_context(server_only! {
                 // Enable out of order streaming during SSR
-                dioxus::fullstack::ServeConfig::builder().enable_out_of_order_streaming()
+                dioxus::server::ServeConfig::builder().enable_out_of_order_streaming()
             })
             .launch(DogGrid);
     }

@@ -86,7 +86,7 @@ mod separate_server_launch {
 mod server_client_split_broken {
     use dioxus::prelude::*;
 
-    async fn connect_to_db(password: &str) -> Result<(), ServerFnError> {
+    async fn connect_to_db(password: &str) -> Result<()> {
         Ok(())
     }
 
@@ -137,7 +137,7 @@ mod save_dog_v2 {
     // ANCHOR: save_dog_v2
     // Expose a `save_dog` endpoint on our server that takes an "image" parameter
     #[post("/api/save_dog")]
-    async fn save_dog(image: String) -> Result<(), ServerFnError> {
+    async fn save_dog(image: String) -> Result<()> {
         use std::io::Write;
 
         // Open the `dogs.txt` file in append-only mode, creating it if it doesn't exist;
@@ -159,7 +159,7 @@ mod save_dog_v2 {
 mod save_dog_call {
     use dioxus::prelude::*;
 
-    async fn save_dog(image: String) -> Result<(), ServerFnError> {
+    async fn save_dog(image: String) -> Result<()> {
         todo!()
     }
 

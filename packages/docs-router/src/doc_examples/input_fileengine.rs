@@ -14,11 +14,8 @@ pub fn App() -> Element {
             // pick multiple files
             multiple: true,
             onchange: move |evt| {
-                if let Some(file_engine) = &evt.files() {
-                    let files = file_engine.files();
-                    for file_name in files {
-                        filenames.write().push(file_name);
-                    }
+                for file in evt.files() {
+                    filenames.write().push(file.name());
                 }
             }
         }

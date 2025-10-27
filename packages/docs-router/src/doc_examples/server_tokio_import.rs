@@ -1,14 +1,9 @@
-#![rustfmt::skip]
-
 use dioxus::prelude::*;
 // ANCHOR: tokio_import
 // Since the tokio dependency is only enabled in the server feature,
 // we need to only import it when the server feature is enabled.
 #[cfg(feature = "server")]
-use {
-    tokio::fs::File,
-    tokio::io::AsyncReadExt
-};
+use {tokio::fs::File, tokio::io::AsyncReadExt};
 // ANCHOR_END: tokio_import
 
 // ANCHOR: tokio_usage
@@ -24,7 +19,7 @@ async fn read_file() -> Result<String, std::io::Error> {
 
 // The bodies of server functions automatically only compile when the server feature is enabled.
 #[server]
-async fn get_file_contents() -> Result<String, ServerFnError> {
+async fn get_file_contents() -> Result<String> {
     let mut file = File::open("path/to/file").await?;
     let mut contents = String::new();
     file.read_to_string(&mut contents).await?;
@@ -56,13 +51,13 @@ mod tokio_module {
     // Then you can define your server functions using shared utilities you defined for
     // server only code.
     #[server]
-    async fn get_file_contents() -> Result<String, ServerFnError> {
+    async fn get_file_contents() -> Result<String> {
         let file = tokio_utilities::read_file(PathBuf::from("path/to/file")).await?;
         Ok(file)
     }
 
     #[server]
-    async fn get_other_file_contents() -> Result<String, ServerFnError> {
+    async fn get_other_file_contents() -> Result<String> {
         let file = tokio_utilities::read_file(PathBuf::from("path/to/other/file")).await?;
         Ok(file)
     }

@@ -63,6 +63,20 @@ fn LeftNav<R: AnyBookRoute>() -> Element {
         &book.summary.suffix_chapters,
     ];
 
+    info!(
+        "chapters: {:#?}",
+        chapters
+            .iter()
+            .copied()
+            .flatten()
+            .map(|c| match c {
+                SummaryItem::Link(link) => link.name.to_string(),
+                SummaryItem::PartTitle(title) => title.to_string(),
+                _ => "Other".to_string(),
+            })
+            .collect::<Vec<_>>()
+    );
+
     rsx! {
         div {
             class: if SHOW_SIDEBAR() { "w-full md:w-auto" } else { "hidden" },
@@ -73,7 +87,7 @@ fn LeftNav<R: AnyBookRoute>() -> Element {
                 styled-scrollbar
                 pb-2 z-20 text-sm sm:block top-24
                 md:w-72 lg:text-sm content-start text-gray-600 dark:text-gray-400 overflow-y-scroll mt-2",
-                    for chapter in chapters.into_iter().flatten().filter(|chapter| chapter.maybe_link().is_some()) {
+                    for chapter in chapters.into_iter().flatten() {
                         SidebarSection { chapter }
                     }
                 }
@@ -175,23 +189,22 @@ fn UntypedVersionSelectItem(
 /// This renders a single section
 #[component]
 fn SidebarSection<R: AnyBookRoute>(chapter: &'static SummaryItem<R>) -> Element {
-    let link = chapter.maybe_link().context("Could not get link")?;
-
-    rsx! {
-        div { class: "full-chapter border-gray-600 pb-6 mt-9 ",
-            span {
-                class: "dark:text-gray-100 text-gray-700
-                -top-3 -mt-13 pt-3 sticky z-[1] flex items-center flex-col
-                font-semibold text-xs uppercase tracking-wide",
-                h3 { class: "px-1 pt-1 w-full bg-white dark:bg-black", "{link.name}" }
-                h3 { class: "bg-gradient-to-b from-white dark:from-black to-transparent h-2 w-full" }
-            }
-            ul { class: "gap-y-0.5",
-                for chapter in link.nested_items.iter() {
-                    SidebarChapter { chapter, nest: 0 }
+    match chapter {
+        SummaryItem::Link(_) => rsx! {
+            SidebarChapter { chapter, nest: 0 }
+        },
+        SummaryItem::PartTitle(title) => rsx! {
+            div { class: "mt-9 pt-6 -mb-3",
+                span {
+                    class: "dark:text-gray-100 text-gray-700
+                    -top-3 -mt-13 pt-3 sticky z-[1] flex items-center flex-col
+                    font-semibold text-xs uppercase tracking-wide",
+                    h3 { class: "px-1 pt-1 w-full bg-white dark:bg-black", "{title}" }
+                    h3 { class: "bg-gradient-to-b from-white dark:from-black to-transparent h-2 w-full" }
                 }
             }
-        }
+        },
+        _ => rsx! {},
     }
 }
 

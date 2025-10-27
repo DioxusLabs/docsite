@@ -14,12 +14,18 @@ With server functions, this might be
 
 todo... waiting for changes in dioxus itself...
 
+`SetHeader<T>` can set a specific header
+`Redirect` can set the redirect header
+
+
 ## Setting Client-Side Headers
 
 todo... waiting for changes in dioxus itself...
+
+Currently not possible, sadly.
 
 ## Setting Server Headers
 
 todo... waiting for changes in dioxus itself...
 
-
+`FullstackContext::response_headers`

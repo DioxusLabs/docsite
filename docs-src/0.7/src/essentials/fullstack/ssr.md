@@ -172,7 +172,7 @@ Semantic(None, "invalid type: floating point `1.2`, expected integer")
 This type was serialized on the server at src/main.rs:11:5 with the type name f64. The client failed to deserialize the type i32 at /path/to/server_future.rs
 ```
 
-### Non-deterministic Eata
+### Non-deterministic Data
 
 Much of the logic in your components is "deterministic" - meaning that given the same inputs to a component, the component will render the same output. It's very important that the inputs to your component remain stable across the client and the server.
 

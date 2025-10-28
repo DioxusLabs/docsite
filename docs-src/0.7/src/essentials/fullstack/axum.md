@@ -24,6 +24,8 @@ fn main() {
 }
 ```
 
+Note how we use Rust's built-in `#[cfg]` macro to conditionally launch the app based on the `server` feature. When `server` feature is enabled, we enable `dioxus::serve`, and when it is disabled, we enable `dioxus::launch`.
+
 The `dioxus::server::router` function creates a new axum router that sets up a few important pieces:
 
 - Static Assets: automatically serve the `public` directory, index.html and assets
@@ -39,6 +41,27 @@ axum::Router::new()
 	.fallback(
 		get(render_handler).with_state(RenderHandleState::new(cfg, app)),
 	)
+```
+
+## Registering Server Functions
+
+When you use `dioxus::server::router` or `dioxus::launch` to start your fullstack server, Dioxus Fullstack registers all server functions for you automatically. This means you can quickly build your backend without needing to explicitly wire up endpoints to a central router.
+
+If you need more control with a custom axum setup, you can manually iterate through the list of global server functions and register single endpoints, or create new routers with a subset of routes with `ServerFunction::collect()`:
+
+```rust
+// We can iterate through all server functions:
+for func in ServerFunction::collect() {
+	// Read their data
+	tracing::info!(
+		"Registering server function: {} {}",
+		func.method(),
+		func.path()
+	);
+
+	// And add them to our router
+	router = func.register_server_fn_on_router(router);
+}
 ```
 
 ## Adding New Routes

@@ -23,9 +23,6 @@ pub fn start_build_watcher(
     let (tx, mut rx) = mpsc::unbounded_channel();
 
     let mut builder = Builder::new(env, is_building);
-    if let Err(err) = builder.update_component_library() {
-        tracing::error!("failed to update component library: {err}");
-    }
 
     tokio::spawn(async move {
         let mut pending_builds = VecDeque::new();

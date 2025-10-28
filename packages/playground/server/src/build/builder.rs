@@ -40,28 +40,30 @@ impl Builder {
     }
 
     /// Make sure the components are initialized
-    pub fn update_component_library(&mut self) -> Result<(), BuildError> {
+    pub async fn update_component_library(build_template_path: &Path) -> Result<(), BuildError> {
         // Update the component library cache
-        let update_status = Command::new("dx")
+        let update_status = tokio::process::Command::new("dx")
             .arg("components")
             .arg("update")
-            .current_dir(&self.env.build_template_path)
+            .current_dir(build_template_path)
             .stdout(Stdio::null())
             .stderr(Stdio::null())
-            .status()?;
+            .status()
+            .await?;
         if !update_status.success() {
             return Err(BuildError::DxFailed(update_status.code()));
         }
         // Add all components to the template project
-        let status = Command::new("dx")
+        let status = tokio::process::Command::new("dx")
             .arg("components")
             .arg("add")
-            .arg("--all")
+            .arg("calendar")
             .arg("--force")
-            .current_dir(&self.env.build_template_path)
+            .current_dir(build_template_path)
             .stdout(Stdio::null())
             .stderr(Stdio::null())
-            .status()?;
+            .status()
+            .await?;
         if !status.success() {
             return Err(BuildError::DxFailed(status.code()));
         }
@@ -145,9 +147,9 @@ async fn setup_template(
     request: &BuildRequest,
     patch: bool,
 ) -> Result<(), BuildError> {
-    let snippets_from_copy = [
-        template_path.join("snippets/Cargo.toml"),
-        template_path.join("snippets/Dioxus.toml"),
+    let snippets_templates = [
+        include_str!("../../template/snippets/Cargo.toml"),
+        include_str!("../../template/snippets/Dioxus.toml"),
     ];
 
     // New locations
@@ -157,9 +159,8 @@ async fn setup_template(
     ];
 
     // Enumerate over a list of paths to copy and copies them to the new location while modifying any template strings.
-    for (i, path) in snippets_from_copy.iter().enumerate() {
+    for (i, contents) in snippets_templates.iter().enumerate() {
         let new_path = &snippets_to_copy[i];
-        let contents = fs::read_to_string(path).await?;
         let contents = contents.replace(
             BUILD_ID_TEMPLATE,
             &request
@@ -171,12 +172,24 @@ async fn setup_template(
         fs::write(new_path, contents).await?;
     }
 
+    // Create the src directory if it doesn't exist
+    let src_path = template_path.join("src");
+    if !src_path.exists() {
+        fs::create_dir_all(&src_path).await?;
+    }
+
     // Write the user's code to main.rs
     fs::write(
         template_path.join("src/main.rs"),
         request.project.contents(),
     )
     .await?;
+
+    // If the component library doesn't exist, create it
+    let component_folder_path = template_path.join("src").join("components");
+    if !component_folder_path.exists() {
+        Builder::update_component_library(template_path).await?;
+    }
 
     Ok(())
 }

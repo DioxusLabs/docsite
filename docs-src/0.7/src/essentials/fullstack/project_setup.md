@@ -10,10 +10,10 @@ In this chapter, we'll explore how to use feature flags and cargo targets to str
 
 ## The Server/Client split
 
-A "fullstack" application is actually composed of two distinct apps:
+A "fullstack" application is actually composed of at least two distinct binaries:
 
-- The client application that runs the web, desktop, or mobile application
-- The server application that renders the initial HTML and runs server functions
+- The client binary that runs the web, desktop, or mobile application
+- The server binary that renders the initial HTML and runs server functions
 
 Because our client app and server app target different platforms, we need to include different code and different dependencies. You can conceptualize the "server" as just another platform for your app, just like you might target both iOS and Android. The server will have different dependencies than the client app, and thus you need to properly configure your app's `Cargo.toml` and build flags.
 
@@ -127,8 +127,6 @@ For example, if we want to interact with the filesystem in a server function, we
 tokio = { version = "1", features = ["full"] }
 ```
 
-If we try to compile with tokio as a required dependency, we will get a compilation error like this:
-
 ```sh
 error[E0432]: unresolved import `crate::sys::IoSourceState`
   --> /Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/mio-1.0.2/src   |source.rs:14:5
@@ -137,15 +135,14 @@ error[E0432]: unresolved import `crate::sys::IoSourceState`
 ...
 ```
 
-Since we added `tokio` as a dependency for all three binaries, cargo tries to compile it for each target. This fails because `tokio` is not compatible with the `wasm32-unknown-unknown` target.
+Since we added `tokio` as a dependency for both the server and the client binary, cargo tries to compile it for each target. This fails because `tokio` is not compatible with the `wasm32-unknown-unknown` target.
 
 To fix the issue, we can **make the dependency optional and only enable it in the server feature**:
 
 ```toml
 [dependencies]
 # ...
-# ✅ Since the tokio dependency is optional, it is not included in the web and desktop
-# bundles.
+# ✅ Since the tokio dependency is optional, it is not included in client bundle.
 tokio = { version = "1", features = ["full"], optional = true }
 
 [features]

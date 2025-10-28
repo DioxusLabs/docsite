@@ -63,8 +63,3 @@ num_names.set(names.len());
 ```
 
 Hopefully, the fact that data should be *derived* is apparent. If we were to modify component state while rendering, we would inadvertently queue re-render side-effects, potentially leading to infinite loops.
-
-
-## The Big Picture
-
-These three pillars are essential to "thinking reactively" - a mindset required to understand the future chapters. By combining just a few primitives, we have a sophisticated reactivity system that automatically handles changes in our app's state.

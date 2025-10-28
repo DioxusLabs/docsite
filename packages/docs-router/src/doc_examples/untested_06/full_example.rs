@@ -37,14 +37,8 @@ pub fn App() -> Element {
 fn NavBar() -> Element {
     rsx! {
         nav {
-            ul {
-                li {
-                    Link { to: Route::Home {}, "Home" }
-                }
-                li {
-                    Link { to: Route::BlogList {}, "Blog" }
-                }
-            }
+            Link { to: Route::Home {}, "Home" }
+            Link { to: Route::BlogList {}, "Blog" }
         }
         Outlet::<Route> {}
     }

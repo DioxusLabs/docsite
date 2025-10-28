@@ -167,3 +167,18 @@ If you are targeting a platform like windows or macos where assets are bundled a
 ```rust
 {{#include ../docs-router/src/doc_examples/assets.rs:resolve_assets}}
 ```
+
+## The Public folder
+
+If you're deploying your app to the web, then DX will automatically copy any files from your app's `/public` directory into the output `/public` directory.
+
+This can be useful to copy files like `robots.txt` into the output directory since they're not referenced by any code in your app.
+
+```
+├── assets
+├── src
+└── public
+    └── robots.txt
+```
+
+Note that this `/public` directory is *merged* into the output, allowing you to manually insert files into the output `/public/assets` directory.

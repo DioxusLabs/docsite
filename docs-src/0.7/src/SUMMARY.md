@@ -90,7 +90,7 @@
   - [Bundle Config](guides/deploy/config.md)
 - [Testing and Debugging](guides/testing/index.md)
   - [Web](guides/testing/web.md)
-  - [Debugging](guides/testing/debugging.md)
+  <!--- [Debugging](guides/testing/debugging.md)-->
   - [Optimizing](guides/tips/optimizing.md)
   - [Anti-patterns](guides/tips/antipatterns.md)
 - [Utilities](guides/utilities/index.md)

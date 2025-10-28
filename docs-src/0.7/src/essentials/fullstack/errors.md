@@ -76,7 +76,7 @@ async fn get_post() -> Result<String, HttpError> {
 
 If you `curl` the app, you'll notice that it returns a `404` status code.
 
-If we want to catch the error and provide a nice fallback UI, we can use an `ErrorBoundary`. Note that when we catch the error, we must
+If we want to catch the error and provide a nice fallback UI, we can use an `ErrorBoundary`. Note that when we catch the error, we must explicitly set the HTTP status code on the outgoing response with `FullstackContext::commit_error_status`:
 
 ```rust
 fn app() -> Element {

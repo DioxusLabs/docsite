@@ -99,6 +99,8 @@ let router = dioxus::server::router(app)
     .layer(Extension(Broadcast::new()));
 ```
 
+The [Axum documentation](https://docs.rs/axum/latest/axum/index.html) has more information on defining routes and handlers outside of server functions.
+
 ## Adding `Layers`
 
 Axum allows you to to attach middleware to many parts of your router:
@@ -151,15 +153,9 @@ let router = dioxus::server::router(app)
     }))
 ```
 
-## Adding State with `State<T>`
-
-As you migrate an existing Axum backend to Dioxus Fullstack, you might eventually need to use Axum's `State<T>` type parameter. In Axum, the `State<T>` type provides state to your axum endpoints using compile-time guarantees.
-
-... todo - currently no migration pattern here
-
 ## Using `Lazy<T>` as Global State
 
-As a simpler alternative to axyn extensions and `State<T>`, you can also use the built-in `Lazy<T>` type to access server resources without needing to set up a dedicated `dioxus::serve` entrypoint. The `Lazy<T>` type is very similar to the standard library's `LazyLock<T>` type, making it possible to initialize asynchronous data like database connections.
+As a simpler alternative to axum extensions and `State<T>`, you can also use the built-in `Lazy<T>` type to access server resources without needing to set up a dedicated `dioxus::serve` entrypoint. The `Lazy<T>` type is very similar to the standard library's `LazyLock<T>` type, making it possible to initialize asynchronous data like database connections.
 
 Simply create a new `Lazy<T>` instance as a `static` variable:
 
@@ -175,7 +171,7 @@ static DATABASE: Lazy<sqlx::SqlitePool> = Lazy::new(|| async move {
 });
 ```
 
-When you access the `DATABASE` object in your code, Dioxus will ensure it's properly initialized, blocking the current thread until the initializer finishes. This lets you use asynchronous resources *synchronously* which makes them extremely ergonomic.
+Then when you access the `DATABASE` object in your code, Dioxus will ensure it's properly initialized, blocking the current thread until the initializer finishes. This lets you use asynchronous resources *synchronously* which makes them extremely ergonomic.
 
 ```rust
 /// When using the `Lazy<T>` type, it implements `Deref<Target = T>`, so you can use it like a normal reference.
@@ -205,7 +201,3 @@ async fn add_message() -> Result<()> {
     Ok(())
 }
 ```
-
-## Nesting Routers
-
-todo....

@@ -44,7 +44,7 @@ const PATH_TO_BUNDLED_CARGO_TOML: Asset = asset!("/Cargo.toml");
 const _: Asset = asset!("/assets/tailwind.css");
 // ANCHOR_END: style_sheets
 
-fn read_assets() {
+async fn read_assets() {
     // ANCHOR: read_assets
     use dioxus::prelude::*;
 

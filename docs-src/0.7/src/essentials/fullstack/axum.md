@@ -24,7 +24,7 @@ fn main() {
 }
 ```
 
-The `dioxus::server::router` function creates a new axum router that sets up a few imporant pieces:
+The `dioxus::server::router` function creates a new axum router that sets up a few important pieces:
 
 - Static Assets: automatically serve the `public` directory, index.html and assets
 - SSR: automatically run the app, render it to HTML, and serialize data for hydration

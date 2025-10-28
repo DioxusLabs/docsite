@@ -60,7 +60,7 @@
   - [Middleware](essentials/fullstack/middleware.md)
   - [Websockets](essentials/fullstack/websockets.md)
   - [Streams and SSE](essentials/fullstack/streams.md)
-  - [Forms and Mutlipart](essentials/fullstack/forms.md)
+  - [Forms and Multipart](essentials/fullstack/forms.md)
   - [Authentication](essentials/fullstack/authentication.md)
   - [Native Clients](essentials/fullstack/native.md)
   - [HTML Streaming](essentials/fullstack/streaming.md)

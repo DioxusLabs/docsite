@@ -383,7 +383,7 @@ Generally, you'll use either Flexbox or CSS Grid.
 
 ### Flexbox Layout
 
-Flexbox is incredibly handy for building responsive user interfaces. As you adjust the document viewport, elements will automatically adjust their size and placement to fit their flex constraints. The [CSS-Tricks guide](https://css-tricks.com/snippets/css/a-guide-to-flexbox/) provides a very helpful tutorial on all the flex contraints you can use.
+Flexbox is incredibly handy for building responsive user interfaces. As you adjust the document viewport, elements will automatically adjust their size and placement to fit their flex constraints. The [CSS-Tricks guide](https://css-tricks.com/snippets/css/a-guide-to-flexbox/) provides a very helpful tutorial on all the flex constraints you can use.
 
 ![Flexbox Guide](/assets/07/flexbox-diagram.webp)
 

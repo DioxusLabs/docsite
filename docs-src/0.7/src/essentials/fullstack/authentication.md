@@ -22,7 +22,7 @@ You don't want one user to change another user's login credentials, so any actio
 
 Fundamentally, auth works by associating a users *connection* with some *session* in a database. As a user traverses our page and makes actions, we need some way of identifying their session on the server.
 
-Usually, this is done via a middleware that automatically registers every connection with a row in your database. If the user is *unauthenticated*, you can either store their session as an anonymous user, or a ignore it competely.
+Usually, this is done via a middleware that automatically registers every connection with a row in your database. If the user is *unauthenticated*, you can either store their session as an anonymous user, or a ignore it completely.
 
 A session is usually inserted with an axum-level middleware:
 

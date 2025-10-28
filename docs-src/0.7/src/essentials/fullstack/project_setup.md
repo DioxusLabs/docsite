@@ -66,7 +66,7 @@ dx serve --desktop
 dx serve --ios
 ```
 
-If your `dioxus` dependency enables the `fullstack` feature, DX recgonizes this app is a fullstack app and then creates two builds, each with a separate platform:
+If your `dioxus` dependency enables the `fullstack` feature, DX recognizes this app is a fullstack app and then creates two builds, each with a separate platform:
 
 ```toml
 [dependencies]
@@ -100,11 +100,11 @@ This syntax makes it possible to have two separate entrypoints for our app. This
 By default, DX isolates your server and client builds by levaraging Cargo Profiles. Cargo profiles let us specify certain build modifiers like opt-level, debug symbols, LTO, and other optimizations.
 
 DX will use these profiles
-- `web-dev` / `web-release`: targetting the web with `--web`
-- `server-dev` / `server-release`: targetting the server (implicitly, or with `--server`)
-- `desktop-dev` / `desktop-release`: targetting iOS apps with `--ios`
-- `ios-dev` / `ios-release`: targetting iOS apps with `--ios`
-- `android-dev` / `android-release`: targetting iOS apps with `--ios`
+- `web-dev` / `web-release`: targeting the web with `--web`
+- `server-dev` / `server-release`: targeting the server (implicitly, or with `--server`)
+- `desktop-dev` / `desktop-release`: targeting iOS apps with `--ios`
+- `ios-dev` / `ios-release`: targeting iOS apps with `--ios`
+- `android-dev` / `android-release`: targeting iOS apps with `--ios`
 
 These profiles correspond 1:1 with the "platforms" DX supports. Note that a `platform` is just a way of DX to isolate two builds from each other. You can completely customize the build, including:
 
@@ -243,7 +243,7 @@ To launch the server, you can choose one of two options:
 
 If your server is simple enough, then option 1 can be a decent option since it automatically integrates with `dx serve`.
 
-However, if you choose to have a dedicated server binary, then you'll need to use the `@client` and `@server` modifiers to use a diffeent binary:
+However, if you choose to have a dedicated server binary, then you'll need to use the `@client` and `@server` modifiers to use a different binary:
 
 ```sh
 dx serve @client --bin dog-app @serer --bin pet-api

@@ -10,7 +10,7 @@ Developing a native fullstack app works just the same as developing a fullstack 
 
 ```toml
 [dependencies]
-dioxus = { verison = "0.7", features = ["fullstack"] }
+dioxus = { version = "0.7", features = ["fullstack"] }
 
 [features]
 server = ["dioxus/server"]

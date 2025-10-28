@@ -38,7 +38,7 @@ Ultimately, a server function is just an axum endpoint - you can cleanly use the
 
 ## Anatomy of a Server Function
 
-A server function is an HTTP endpoint in the form of a Rust fuction. We can transform a regular function into a server function by annotating it with one of a few procedural macros:
+A server function is an HTTP endpoint in the form of a Rust function. We can transform a regular function into a server function by annotating it with one of a few procedural macros:
 
 - Explicitly using the `#[get]`, `#[post]`, `#[put]`, `#[delete]`, `#[patch]` macros
 - Anonymously with the `#[server]` macro
@@ -50,7 +50,7 @@ To make a server function, simply add one of `#[get]`, `#[post]`, etc on top of 
 - Take arguments that are either `Serialize + Deserialize` *or* `IntoRequest + FromRequest`
 - Return a type that is either `Serialize + Deserialize` *or* `IntoResponse + FromResponse`
 
-Dioxus uses some specialization "magic" to enable flexible input and output types, so the errors for types not satisfying these bounds might be rather unwieldly.
+Dioxus uses some specialization "magic" to enable flexible input and output types, so the errors for types not satisfying these bounds might be rather unwieldy.
 
 In essence, the non-URL inputs must either be a set of items that are obviously serializable (think strings, numbers, custom types):
 
@@ -81,7 +81,7 @@ async fn upload(file: FileStream) -> Result<()> {
 }
 ```
 
-Similarly, the output type can be either a serializable object (strings, numbers, custom strutures)
+Similarly, the output type can be either a serializable object (strings, numbers, custom structures)
 
 ```rust
 // Our custom payload implements `Serialize + Deserialize`
@@ -277,7 +277,7 @@ pub trait FromResponse<R = ClientResponse>: Sized {
 }
 ```
 
-Just like `IntoRequest`, the `FromResponse` trait is generic over a default state parameter (usually `ClientResponse`). For our `Websocket` type, we need to match the same state parameter as our `WebsocketOptions` type. Usually, we *aren't* generic over the state paramter since the `ClientResponse` type is quite useful on its own, but for `Websocket`, we want to make sure the input request has the required state at compile time.
+Just like `IntoRequest`, the `FromResponse` trait is generic over a default state parameter (usually `ClientResponse`). For our `Websocket` type, we need to match the same state parameter as our `WebsocketOptions` type. Usually, we *aren't* generic over the state parameter since the `ClientResponse` type is quite useful on its own, but for `Websocket`, we want to make sure the input request has the required state at compile time.
 
 To implement `FromResponse`, we need to create a new instance of our type from the stored state:
 
@@ -366,7 +366,7 @@ pub async fn login() -> Result<(), ServerFnError> {
 }
 ```
 
-The `ServerFnError` type is a special error type that integrates cleanly with the rest of Dioxus. Its many variants represent various failure points of handling a given request. Its two most imporant variants are `ServerError` and `RequestError`.
+The `ServerFnError` type is a special error type that integrates cleanly with the rest of Dioxus. Its many variants represent various failure points of handling a given request. Its two most important variants are `ServerError` and `RequestError`.
 
 ```rust
 pub enum ServerFnError {
@@ -506,7 +506,7 @@ todo ...
 
 Dioxus Fullstack automatically registers all server functions for you automatically. This means you can quickly build your backend without needing to explicitly wire up endpoints to a central router.
 
-By default, this is done when you call `dioxus::launch`. If you wish to customize the underyling Axum router, you can instead use `dioxus::serve` which lets you manually construct the router.
+By default, this is done when you call `dioxus::launch`. If you wish to customize the underlying Axum router, you can instead use `dioxus::serve` which lets you manually construct the router.
 
 For simplicity, you can use the `dioxus::server::router` function to create the very same Axum router that `dioxus::launch` initializes:
 
@@ -545,7 +545,7 @@ dioxus::serve(|| async move {
 });
 ```
 
-The `dioxus::server::router` function creates a new axum router that sets up a few imporant pieces:
+The `dioxus::server::router` function creates a new axum router that sets up a few important pieces:
 
 - Static Assets: automatically serve the `public` directory, index.html and assets
 - SSR: automatically run the app, render it to HTML, and serialize data for hydration

@@ -198,7 +198,7 @@ If you need render some data from a server future, you need to use `use_server_f
 
 New in Dioxus 0.7 is the `use_loader` hook - a hook dedicated for isomorphic data loading that excels in both CSR and SSR architectures.
 
-The `use_loader` hook is very similiar to `use_server_future`, but with a slightly different API. Unlike `use_server_future`, the `use_loader` hook will not re-suspend the page when the underyling future re-runs. Also, unlike `use_server_future`, the `use_loader` hook will re-throw any loading errors to the nearest suspense boundary:
+The `use_loader` hook is very similar to `use_server_future`, but with a slightly different API. Unlike `use_server_future`, the `use_loader` hook will not re-suspend the page when the underlying future re-runs. Also, unlike `use_server_future`, the `use_loader` hook will re-throw any loading errors to the nearest suspense boundary:
 
 ```rust
 fn app() -> Element {

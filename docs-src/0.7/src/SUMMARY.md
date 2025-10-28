@@ -54,7 +54,7 @@
   - [Project Setup](essentials/fullstack/project_setup.md)
   - [Server Side Rendering](essentials/fullstack/ssr.md)
   - [Server Functions](essentials/fullstack/server_functions.md)
-  - [Status and Headers](essentials/fullstack/headers.md)
+  <!--- [Status and Headers](essentials/fullstack/headers.md)-->
   - [Custom Error Pages](essentials/fullstack/errors.md)
   - [Router and State](essentials/fullstack/axum.md)
   - [Middleware](essentials/fullstack/middleware.md)

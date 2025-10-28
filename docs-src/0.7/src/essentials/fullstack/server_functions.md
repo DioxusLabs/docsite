@@ -253,7 +253,7 @@ As mentioned above, the return type of a server function must be one of two type
 - An obviously serializable object (string, int, custom struct)
 - A type that implements `IntoResponse` and `FromResponse`
 
-The [`IntoResponse`](https://docs.rs/axum/latest/axum/response/trait.IntoResponse.html) trait comes from Axum and is quite simple to implement. To implement the `IntoResponse` type, we just need to implement the `into_response` method for our custom type. The return type here is an Axum `Response` which is very simple to construct:
+The [`IntoResponse`](https://docs.rs/axum/latest/axum/response/trait.IntoResponse.html) trait comes from Axum and is quite simple to implement. To implement the `IntoResponse` trait, we just need to implement the `into_response` method for our custom type. The return type here is an Axum `Response` which is very simple to construct:
 
 ```rust
 impl IntoResponse for Websocket {
@@ -492,19 +492,9 @@ pub async fn login() -> Result<()> {
 
 This is true for `HttpError`, `StatusCode`, and `ServerFnError`, all of which are downcasted from the anyhow Error type.
 
-## Customizing Headers
-
-### Customizing Response Headers
-
-todo ...
-
-### Customizing Request Headers
-
-todo ...
-
 ## Registering Server Functions
 
-Dioxus Fullstack automatically registers all server functions for you automatically. This means you can quickly build your backend without needing to explicitly wire up endpoints to a central router.
+Dioxus Fullstack registers all server functions for you automatically. This means you can quickly build your backend without needing to explicitly wire up endpoints to a central router.
 
 By default, this is done when you call `dioxus::launch`. If you wish to customize the underlying Axum router, you can instead use `dioxus::serve` which lets you manually construct the router.
 

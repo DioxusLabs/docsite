@@ -1,9 +1,9 @@
 # Websockets
 
-Dioxus Fullstack provides built-in types for creating and managing websockets that work alongside server functions. Dioxus websockets are built on top of the underlying Axum websocket API, but with a few improvements tailored for building fullstack apps:
+Dioxus Fullstack provides built-in types for creating and managing websockets that work alongside server functions. Dioxus websockets are built on top of the underlying Axum websocket API, but with a few improvements tailored for fullstack apps:
 
-- Hybrid shared server/client types
-- Reactive wrapper for use in UI code
+- Shared server/client types
+- Reactive wrappers for use in UI code
 - Typed inputs, outputs, and customizable encoding
 
 Websockets are an extremely powerful communication protocol that allows bidirectional message passing to and from the server. Websockets are more efficient than HTTP requests for large amounts of messages, provide better real-time support, and allow for *ordered* data transmission.

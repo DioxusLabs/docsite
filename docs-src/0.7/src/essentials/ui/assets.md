@@ -12,7 +12,7 @@ To include an image in your application, you can simply wrap the path to the ass
 {{#include ../docs-router/src/doc_examples/assets.rs:images}}
 ```
 
-The asset macro takes a path to the asset relative to the root of your app. The path is *not* absolute to your machine, making it possible to use the same asset paths across multiple machines.
+The asset macro takes a path to the asset relative to the root of your app. The path is _not_ absolute to your machine, making it possible to use the same asset paths across multiple machines.
 
 ```rust
 // ❌ does not work!
@@ -20,6 +20,7 @@ let ferrous = asset!("/Users/dioxus/Downloads/image.png");
 ```
 
 The asset macro is `const`, meaning we can use it inline or as a static/const item:
+
 ```rust
 // as a static item
 static FERROUS: Asset = asset!("/assets/static/ferrous_wave.png");
@@ -49,6 +50,7 @@ You can include stylesheets in your application using the `asset!` macro. Styles
 > The [tailwind guide](../../guides/utilities/tailwind.md) has more information on how to use tailwind with dioxus.
 
 ## SCSS Support
+
 SCSS is also supported through the `asset!` macro. Include it the same way as a regular CSS file.
 
 You can read more about assets and all the options available to optimize your assets in the [manganis documentation](https://docs.rs/manganis/0.6.0/manganis).
@@ -75,13 +77,14 @@ println!("{}", asset!("/assets/static/ferrous_wave.png"))
 Asset hashes are an extremely powerful feature of the asset system. Hashes integrate with CDNs and can greatly speedup your application's load performance and save you money in infrastructure costs.
 
 However, you occasionally might want to disable them. We can customize the asset processing options with the `AssetOptions` builder:
+
 ```rust
 let ferrous = asset!("/assets/static/ferrous_wave.png", AssetOptions::builder().with_hash_suffix(false));
 ```
 
 ## Linker-based Asset Bundling
 
-Unlike Rust's `include_bytes!` macro, the `asset!` macro *does not* copy the contents of the asset into your final application binary. Instead, it adds the asset path and options into the final binary's metadata. When you run `dx serve` or `dx build`, we automatically read that metadata and process the asset.
+Unlike Rust's `include_bytes!` macro, the `asset!` macro _does not_ copy the contents of the asset into your final application binary. Instead, it adds the asset path and options into the final binary's metadata. When you run `dx serve` or `dx build`, we automatically read that metadata and process the asset.
 
 ![Asset Bundling](/assets/07/asset-pipeline-full.png)
 
@@ -92,7 +95,7 @@ The metadata for each asset is automatically embedded in the final executable by
 static SERIALIZED_ASSET_OPTIONS: &[u8] = r#"{"path": "/assets/main.css","minify":"true","hash":"dxh0000"}"#;
 ```
 
-This means that assets are not permanently baked into your final executable. The final executable is smaller, loads faster, and asset loading is much more flexible. This is important on platforms like the  browser where assets are fetched in parallel over the network.
+This means that assets are not permanently baked into your final executable. The final executable is smaller, loads faster, and asset loading is much more flexible. This is important on platforms like the browser where assets are fetched in parallel over the network.
 
 To dynamically load the asset's contents, you can use the [dioxus-asset-resolver](https://crates.io/crates/dioxus-asset-resolver) crate which properly understands the app's bundle format and loads an asset given its `Display` impl.
 
@@ -132,7 +135,7 @@ fn main() {
 
 Because the `RED_STYLES` asset is never referenced by the user's application, it won't be bundled in the final output.
 
-However, you might want to include an asset even if you never reference it directly. Rust's [`#[used]`](https://doc.rust-lang.org/reference/abi.html#the-used-attribute) attribute is useful here, annotating to the compiler that asset *is* used, even if we can't prove so at compile time.
+However, you might want to include an asset even if you never reference it directly. Rust's [`#[used]`](https://doc.rust-lang.org/reference/abi.html#the-used-attribute) attribute is useful here, annotating to the compiler that asset _is_ used, even if we can't prove so at compile time.
 
 ```rust
 #[used]
@@ -149,6 +152,21 @@ let logging_js_path = format!("{}/logging.js", asset!("/assets/posthog-js"));
 
 Note that we need to format the `Asset` returned by the `asset!()` macro here because the actual folder name will receive an asset hash.
 
+## Reading Assets
+
+When you use an asset in an element like the `img` tag, the browser automatically fetches the asset for you. However, sometimes you might want to read the contents of an asset directly in your application code. For example, you might want to read a JSON file and parse it into a data structure.
+
+To read assets at runtime, you can use the [`read_asset_bytes`](https://docs.rs/dioxus-asset-resolver/latest/dioxus_asset_resolver/fn.read_asset_bytes.html) from the [`asset_resolver`](https://docs.rs/dioxus-asset-resolver/latest/dioxus_asset_resolver/) module. This will either fetch the asset from the network (for the web target) or read it from the bundle (for native targets):
+
+```rust
+{{#include ../docs-router/src/doc_examples/assets.rs:read_assets}}
+```
+
+If you are targeting a platform like windows or macos where assets are bundled alongside the executable in the filesystem, you can also get the path to the asset using the `asset_path` function. Keep in mind this will not work in the browser or in android bundles since assets are not stored in the filesystem:
+
+```rust
+{{#include ../docs-router/src/doc_examples/assets.rs:resolve_assets}}
+```
 
 ## The Public folder
 

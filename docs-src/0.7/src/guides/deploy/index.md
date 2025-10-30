@@ -1,6 +1,6 @@
 # Publishing
 
-After you have build your application, you will need to publish it somewhere. This reference will outline different methods of publishing your desktop or web application.
+After you have built your application, you will need to publish it somewhere. This reference will outline different methods of publishing your desktop or web application.
 
 ## Web: Publishing with GitHub Pages
 

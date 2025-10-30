@@ -222,3 +222,4 @@ pub(crate) enum PackageType {
     /// "updater"
     Updater,
 }
+```

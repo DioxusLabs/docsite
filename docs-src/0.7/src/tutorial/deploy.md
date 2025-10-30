@@ -74,7 +74,7 @@ COPY . .
 RUN cargo chef prepare --recipe-path recipe.json
 ```
 
-In the second phase, we use cargo chef to load cached dependencies and preform the build:
+In the second phase, we use cargo chef to load cached dependencies and perform the build:
 
 ```dockerfile
 FROM chef AS builder

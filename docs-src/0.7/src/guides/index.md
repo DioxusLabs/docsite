@@ -1,6 +1,6 @@
 # Dioxus Guides
 
-These guides build on topics covered in the [core concepts](../essentials/index.md) chapter to provide more detailed explanations and examples. While we recommend everyone read either the entire [tutorial](../tutorials/index.md) or [core concepts](../essentials/index.md) chapters as you learn dioxus, these guides are intended for users who want to dive deeper into specific topics as needed.
+These guides build on topics covered in the [core concepts](../essentials/index.md) chapter to provide more detailed explanations and examples. While we recommend everyone read either the entire [tutorial](../tutorial/index.md) or [core concepts](../essentials/index.md) chapters as you learn dioxus, these guides are intended for users who want to dive deeper into specific topics as needed.
 
 ## Tools
 
@@ -16,9 +16,9 @@ Once you finish building your application, the [publishing guide](./deploy/index
 
 ## Custom Renderer
 
-If you are ready to dive into building your own renderer for dioxus, the [custom renderer guide](./advanced/custom_renderer.md) provides an overview of how to get started.
+If you are ready to dive into building your own renderer for dioxus, the [custom renderer guide](./depth/custom_renderer.md) provides an overview of how to get started.
 
 ## Migration
 
-If you are updating from an older version of dioxus, the [migration guides](./migration/index.md) provide information about breaking changes and how to update your code to work with the latest version of dioxus.
+If you are updating from an older version of dioxus, the [migration guides](../migration/index.md) provide information about breaking changes and how to update your code to work with the latest version of dioxus.
 

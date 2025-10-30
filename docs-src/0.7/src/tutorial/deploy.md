@@ -6,7 +6,7 @@ This step is optional for the tutorial but worth covering to understand the proc
 
 ## Dioxus Deploy
 
-As mentioned in the [introduction](../index.md#whose-funding-dioxus), Dioxus is an independent project with aspirations to fund itself through a paid deploy platform. Hopefully, one day, enough people ship apps with [Dioxus Deploy](https://dioxuslabs.com/deploy) to fund development on Dioxus itself!
+As mentioned in the [introduction](../index.md#whos-funding-dioxus), Dioxus is an independent project with aspirations to fund itself through a paid deploy platform. Hopefully, one day, enough people ship apps with [Dioxus Deploy](https://dioxuslabs.com/deploy) to fund development on Dioxus itself!
 
 Currently, Dioxus does not provide its own deploy platform. If you want to sign-up for the beta and help us design the ideal "end-to-end app-development experience," please [join the waitlist!](https://forms.gle/zeBZmrjSkajqg7hUA)
 

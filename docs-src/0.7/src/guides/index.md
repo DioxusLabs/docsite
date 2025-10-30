@@ -12,7 +12,7 @@ When you build an app with dioxus, most of your application code can be platform
 
 ## Publishing
 
-Once you finish building your application, the [publishing guide](./deploy/config.md) provides an overview of how to package and distribute your application. It also includes information about what configuration options are available for bundling.
+Once you finish building your application, the [publishing guide](./deploy/index.md) provides an overview of how to package and distribute your application. It also includes information about what configuration options are available for bundling.
 
 ## Custom Renderer
 

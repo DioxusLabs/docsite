@@ -190,20 +190,15 @@ fn Head() -> Element {
 #[derive(Clone, Routable, PartialEq, Eq, Serialize, Deserialize, Debug)]
 #[rustfmt::skip]
 pub enum Route {
-    // #[layout(HeadLayout)]
-    // #[layout(HeaderLayout)]
-    // #[layout(FooterLayout)]
     #[layout(HeaderFooter)]
         #[route("/")]
         Homepage {},
 
-        // #[route("/playground")]
-        // Playground {},
+        #[route("/playground")]
+        Playground {},
 
-        // #[route("/playground/shared/:share_code")]
-        // SharePlayground { share_code: String },
-
-
+        #[route("/playground/shared/:share_code", Playground)]
+        SharePlayground { share_code: String },
 
         #[route("/awesome")]
         Awesome {},

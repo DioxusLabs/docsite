@@ -1,27 +1,30 @@
+use std::net::IpAddr;
+
 use crate::{
-    build::{BuildCommand, BuildMessage, BuildRequest},
     AppState,
+    build::{BuildCommand, BuildMessage, BuildRequest},
 };
 use axum::{
-    extract::{ws::WebSocket, State, WebSocketUpgrade},
+    extract::{State, WebSocketUpgrade, ws::WebSocket},
     response::IntoResponse,
 };
-use axum_client_ip::SecureClientIp;
+use axum_client_ip::ClientIp;
 use dioxus_logger::tracing::error;
 use futures::{SinkExt, StreamExt as _};
+use governor::clock::{Clock, QuantaClock};
 use model::{Project, SocketMessage};
 use tokio::{
     select,
     sync::mpsc::{self, UnboundedSender},
 };
+use uuid::Uuid;
 
 /// Handle any pre-websocket processing.
 pub async fn ws_handler(
     State(state): State<AppState>,
-    SecureClientIp(ip): SecureClientIp,
+    ClientIp(ip): ClientIp,
     ws: WebSocketUpgrade,
 ) -> impl IntoResponse {
-    let ip = ip.to_string();
     ws.on_upgrade(move |socket| handle_socket(state, ip, socket))
 }
 
@@ -31,22 +34,8 @@ pub async fn ws_handler(
 /// - Handle submitting build requests, allowing only one build per socket.
 /// - Send any build messages to the client.
 /// - Stop any ongoing builds if the connection closes.
-async fn handle_socket(state: AppState, _ip: String, socket: WebSocket) {
+async fn handle_socket(state: AppState, ip: IpAddr, socket: WebSocket) {
     let (mut socket_tx, mut socket_rx) = socket.split();
-
-    // Ensure only one client per socket.
-    // let mut connected_sockets = state.connected_sockets.lock().await;
-    // if connected_sockets.contains(&ip) {
-    //     // Client is already connected. Send error and close socket.
-    //     let _ = socket_tx
-    //         .send(SocketMessage::AlreadyConnected.into_axum())
-    //         .await;
-    //     let _ = socket_tx.close().await;
-    //     return;
-    // } else {
-    // connected_sockets.push(ip.clone());
-    // }
-    // drop(connected_sockets);
 
     // Start our build loop.
     let (build_tx, mut build_rx) = mpsc::unbounded_channel();
@@ -61,17 +50,21 @@ async fn handle_socket(state: AppState, _ip: String, socket: WebSocket) {
                     continue;
                 };
 
-                // Start a new build, stopping any existing ones.
-                if let SocketMessage::BuildRequest(code) = socket_msg {
-                    if let Some(ref request) = current_build {
-                        let result = state.build_queue_tx.send(BuildCommand::Stop { id: request.id });
-                        if result.is_err() {
-                            error!(build_id = ?request.id, "failed to send build stop signal for new build request");
-                            continue;
+                // Start a new build
+                if let SocketMessage::BuildRequest { code, previous_build_id } = socket_msg {
+                    // Rate limit the build requests by ip. If we are being rate limited, send a message
+                    // to the client with the wait time and then wait before continuing.
+                    if let Err(n) = state.build_govener.check_key(&ip) {
+                        let wait_time = n.wait_time_from(QuantaClock::default().now());
+                        let socket_msg = SocketMessage::RateLimited(wait_time);
+                        let socket_result = socket_tx.send(socket_msg.into_axum()).await;
+                        if socket_result.is_err() {
+                            break;
                         }
+                        tokio::time::sleep(wait_time).await;
                     }
 
-                    let request = start_build(&state, build_tx.clone(), code);
+                    let request = start_build(&state, build_tx.clone(), code, previous_build_id);
                     current_build = Some(request);
                 }
             }
@@ -84,8 +77,8 @@ async fn handle_socket(state: AppState, _ip: String, socket: WebSocket) {
                     break;
                 }
 
-                // If the build finished, let's close this socket.
-                if let BuildMessage::Finished(_) = build_msg {
+                // If the build finished, close this socket.
+                if build_msg.is_done() {
                     current_build = None;
                     let _ = socket_tx.close().await;
                     break;
@@ -105,14 +98,6 @@ async fn handle_socket(state: AppState, _ip: String, socket: WebSocket) {
             error!(build_id = ?request.id, "failed to send build stop signal for closed websocket");
         }
     }
-
-    // Drop the socket from our connected list.
-    // TODO: Convert this to a drop guard.
-    // let mut connected_sockets = state.connected_sockets.lock().await;
-    // let index = connected_sockets.iter().position(|x| **x == ip);
-    // if let Some(index) = index {
-    //     connected_sockets.remove(index);
-    // }
 }
 
 /// Assembles the build request and sends it to the queue.
@@ -120,10 +105,12 @@ fn start_build(
     state: &AppState,
     build_tx: UnboundedSender<BuildMessage>,
     code: String,
+    previous_build_id: Option<Uuid>,
 ) -> BuildRequest {
     let project = Project::new(code, None, None);
     let request = BuildRequest {
         id: project.id(),
+        previous_build_id,
         project,
         ws_msg_tx: build_tx,
     };

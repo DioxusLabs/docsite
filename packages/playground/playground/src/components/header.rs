@@ -1,12 +1,14 @@
-use crate::build::BuildState;
+use crate::build::{BuildStage, BuildState, BuildStateStoreImplExt};
 use crate::components::icons::LoadingSpinner;
+use crate::dx_components::button::*;
+use crate::dx_components::select::*;
+use crate::hotreload::HotReloadStoreImplExt;
 use crate::share_code::copy_share_link;
 use crate::{Errors, PlaygroundUrls};
+use crate::{ErrorsStoreImplExt, HotReload};
 use dioxus::prelude::*;
-// use dioxus_sdk::utils::timing::use_debounce;
 use model::api::ApiClient;
 use model::Project;
-use std::time::Duration;
 
 #[component]
 pub fn Header(
@@ -15,50 +17,81 @@ pub fn Header(
     pane_left_width: Signal<Option<i32>>,
     pane_right_width: Signal<Option<i32>>,
     mut show_examples: Signal<bool>,
-    file_name: ReadOnlySignal<String>,
+    file_name: ReadSignal<String>,
 ) -> Element {
-    let build = use_context::<BuildState>();
-    let api_client = use_context::<Signal<ApiClient>>();
-    let project = use_context::<Signal<Project>>();
-    let mut errors = use_context::<Errors>();
+    let api_client: Signal<ApiClient> = use_context();
+    let mut build: Store<BuildState> = use_context();
+    let mut project: Signal<Project> = use_context();
+    let mut errors: Store<Errors> = use_context();
+    let mut hot_reload: Store<HotReload> = use_context();
 
     let mut share_btn_text = use_signal(|| "Share");
-    // let mut reset_share_btn = use_debounce(Duration::from_secs(1), move |()| {
-    //     share_btn_text.set("Share")
-    // });
-    // reset_share_btn.action(());
 
     rsx! {
         div { id: "dxp-header",
             // Left pane header
             div {
                 id: "dxp-header-left",
-                style: if let Some(val) = pane_left_width() { "width:{val}px;" },
 
                 // Examples button/menu
-                button {
-                    id: "dxp-menu-btn",
-                    class: "dxp-ctrl-btn",
-                    class: if show_examples() { "dxp-open" },
-                    onclick: move |_| show_examples.toggle(),
-                    crate::components::icons::MenuIcon {}
+                Select::<Project> {
+                    width: "75%",
+                    value: Some(project()),
+                    on_value_change: move |example: Option<Project>| {
+                        use crate::monaco;
+                        let Some(example) = example else {
+                            return;
+                        };
+
+                        project.set(example.clone());
+                        build.set_stage(BuildStage::Finished(Ok(example.id())));
+                        monaco::set_current_model_value(&example.contents());
+                        hot_reload.set_starting_code(&example.contents());
+                    },
+                    SelectTrigger {
+                        {file_name}
+                    }
+                    SelectList {
+                        for (index, example) in example_projects::get_example_projects().iter().enumerate() {
+                            SelectOption::<Project> {
+                                index,
+                                value: example.clone(),
+                                text_value: example.path.clone(),
+                                div {
+                                    display: "flex",
+                                    flex_direction: "column",
+                                    align_items: "left",
+                                    padding: "0.25rem",
+                                    h3 {
+                                        margin: "0",
+                                        margin_bottom: ".25rem",
+                                        {example.path.clone()}
+                                    }
+                                    p {
+                                        margin: "0",
+                                        {example.description.clone()}
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
-                button { class: "dxp-ctrl-btn dxp-file-btn dxp-selected-file", {file_name} }
             }
 
             // Right pane header
             div {
                 id: "dxp-header-right",
-                style: if let Some(val) = pane_right_width() { "width:{val}px;" } else { "".to_string() },
 
                 // Share button
-                button {
-                    id: "dxp-share-btn",
-                    class: "dxp-ctrl-btn",
+                Button {
+                    variant: ButtonVariant::Secondary,
+                    id: "dxp-header-share-btn",
                     onclick: move |_| async move {
                         share_btn_text.set("Sharing...");
                         match copy_share_link(&api_client(), project, urls.location).await {
-                            Ok(()) => share_btn_text.set("Link Copied!"),
+                            Ok(()) => {
+                                share_btn_text.set("Link Copied!");
+                            },
                             Err(error) => {
                                 share_btn_text.set("Error!");
                                 errors
@@ -76,25 +109,21 @@ pub fn Header(
 
 
                 // Run button
-                button {
-                    id: "dxp-run-btn",
-                    class: "dxp-ctrl-btn",
-                    class: if build.stage().is_running() { "disabled" },
+                Button {
+                    variant: ButtonVariant::Outline,
+                    "data-disabled": build.get_stage().is_running(),
+                    display: "flex",
+                    flex_direction: "row",
+                    align_items: "between",
+                    justify_content: "center",
+                    gap: "0.5rem",
+                    width: "10rem",
                     onclick: move |_| {
                         on_rebuild.call(());
                     },
 
-                    if build.stage().is_running() {
-                        LoadingSpinner {}
-                        if let Some(pos) = build.queue_position() {
-                            if pos == 0 {
-                                "Building"
-                            } else {
-                                "#{pos}"
-                            }
-                        } else {
-                            "Starting"
-                        }
+                    if build.get_stage().is_running() {
+                        Progress {}
                     } else {
                         "Rebuild"
                     }
@@ -102,5 +131,35 @@ pub fn Header(
                 }
             }
         }
+    }
+}
+
+#[component]
+fn Progress() -> Element {
+    let build = use_context::<Store<BuildState>>();
+
+    // Generate the loading message.
+    let message = use_memo(move || match build.get_stage() {
+        BuildStage::NotStarted => "Waiting".to_string(),
+        BuildStage::Queued(position) => format!("Queued ({position})"),
+        BuildStage::Starting => "Starting".to_string(),
+        BuildStage::Waiting(time) => {
+            format!("Waiting {}s", time.as_secs())
+        }
+        BuildStage::Building(build_stage) => match build_stage {
+            model::BuildStage::RunningBindgen => "Binding".to_string(),
+            model::BuildStage::Other => "Computing".to_string(),
+            model::BuildStage::Compiling {
+                crates_compiled,
+                total_crates,
+                ..
+            } => format!("{crates_compiled}/{total_crates}"),
+        },
+        BuildStage::Finished(_) => "Finished!".to_string(),
+    });
+
+    rsx! {
+        LoadingSpinner {}
+        "{message}"
     }
 }

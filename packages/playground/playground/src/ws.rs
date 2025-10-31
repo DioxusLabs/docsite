@@ -1,4 +1,10 @@
-use crate::{build::BuildStage, BuildState};
+use crate::{
+    build::{BuildStage, BuildStateStoreExt, BuildStateStoreImplExt},
+    hotreload::send_hot_reload,
+    BuildState,
+};
+use dioxus::{signals::ReadableExt, stores::Store};
+use dioxus_devtools::HotReloadMsg;
 use futures::{SinkExt as _, StreamExt};
 use gloo_net::websocket::futures::WebSocket;
 use model::*;
@@ -38,17 +44,32 @@ impl Socket {
 }
 
 /// Handles a websocket message, returning true if further messages shouldn't be handled.
-pub fn handle_message(mut build: BuildState, message: SocketMessage) -> bool {
+pub fn handle_message(mut build: Store<BuildState>, message: SocketMessage) {
     match message {
         SocketMessage::BuildStage(stage) => build.set_stage(BuildStage::Building(stage)),
-        SocketMessage::QueuePosition(position) => build.set_queue_position(Some(position)),
-        SocketMessage::BuildFinished(result) => {
-            build.set_stage(BuildStage::Finished(result));
-            return true;
+        SocketMessage::QueuePosition(position) => build.set_stage(BuildStage::Queued(position)),
+        SocketMessage::BuildFinished(BuildResult::Failed(failure)) => {
+            build.set_stage(BuildStage::Finished(Err(failure)));
+        }
+        SocketMessage::BuildFinished(BuildResult::Built(id)) => {
+            build.set_stage(BuildStage::Finished(Ok(id)));
+        }
+        SocketMessage::BuildFinished(BuildResult::HotPatched(patch)) => {
+            // Get the iframe to apply the patch to.
+            send_hot_reload(HotReloadMsg {
+                templates: Default::default(),
+                assets: Default::default(),
+                ms_elapsed: Default::default(),
+                for_pid: Default::default(),
+                for_build_id: Some(0),
+                jump_table: Some(patch),
+            });
+            if let Some(id) = build.previous_build_id().cloned() {
+                build.set_stage(BuildStage::Finished(Ok(id)));
+            }
         }
         SocketMessage::BuildDiagnostic(diagnostic) => build.push_diagnostic(diagnostic),
+        SocketMessage::RateLimited(time) => build.set_stage(BuildStage::Waiting(time)),
         _ => {}
     }
-
-    false
 }

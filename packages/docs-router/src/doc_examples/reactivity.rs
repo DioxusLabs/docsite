@@ -348,11 +348,11 @@ mod non_reactive_state {
         use super::*;
 
         // ANCHOR: making_props_reactive
-        // You can track props by wrapping the type in a ReadOnlySignal
-        // Dioxus will automatically convert T into ReadOnlySignal<T> when you pass
+        // You can track props by wrapping the type in a ReadSignal
+        // Dioxus will automatically convert T into ReadSignal<T> when you pass
         // props to the component
         #[component]
-        fn Count(count: ReadOnlySignal<i32>) -> Element {
+        fn Count(count: ReadSignal<i32>) -> Element {
             // Then when you read count inside the memo, it subscribes to the count signal
             let double_count = use_memo(move || count() * 2);
 

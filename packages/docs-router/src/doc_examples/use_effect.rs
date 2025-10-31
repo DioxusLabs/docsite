@@ -2,7 +2,7 @@
 use dioxus::prelude::*;
 
 #[component]
-fn Profile(id: ReadOnlySignal<i32>) -> Element {
+fn Profile(id: ReadSignal<i32>) -> Element {
     // Only change the page title when the id changes
     use_effect(move || {
         // We read the id signal here, so it will automatically be added as a dependency for the effect

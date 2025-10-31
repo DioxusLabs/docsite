@@ -25,7 +25,7 @@ pub fn component_borrowed_props() -> Element {
 }
 
 pub fn hooks_use_ref() -> Element {
-    let mut list = use_signal(|| Vec::new());
+    let mut list = use_signal(Vec::new);
 
     rsx! {
         p { "Current list: {list:?}" }

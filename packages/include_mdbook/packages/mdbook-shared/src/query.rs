@@ -194,8 +194,7 @@ impl MdBook<PathBuf> {
                             c.is_ascii_alphanumeric() || *c == ' ' || *c == '-' || *c == '_'
                         })
                         .collect::<String>()
-                        .replace('_', "-")
-                        .replace(' ', "-");
+                        .replace(['_', ' '], "-");
                     sections.push(Section {
                         level: *current_level as usize,
                         title: title.clone(),

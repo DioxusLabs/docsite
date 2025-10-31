@@ -50,7 +50,7 @@ async fn resolve_story(
 }
 
 #[component]
-fn StoryListing(story: ReadOnlySignal<StoryItem>) -> Element {
+fn StoryListing(story: ReadSignal<StoryItem>) -> Element {
     let preview_state = consume_context::<Signal<PreviewState>>();
     let StoryItem {
         title,

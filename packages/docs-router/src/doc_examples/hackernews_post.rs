@@ -170,7 +170,7 @@ pub mod story_v6 {
     }
 
     #[component]
-    fn StoryListing(story: ReadOnlySignal<StoryItem>) -> Element {
+    fn StoryListing(story: ReadSignal<StoryItem>) -> Element {
         let StoryItem {
             title,
             url,
@@ -268,7 +268,7 @@ pub mod story_final {
     }
 
     #[component]
-    fn StoryListing(story: ReadOnlySignal<StoryItem>) -> Element {
+    fn StoryListing(story: ReadSignal<StoryItem>) -> Element {
         let StoryItem {
             title,
             url,

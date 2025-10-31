@@ -246,7 +246,7 @@ impl<'a> SummaryParser<'a> {
     /// Get the current line and column to give the user more useful error
     /// messages.
     fn current_location(&self) -> (usize, usize) {
-        let previous_text = self.src[..self.offset].as_bytes();
+        let previous_text = &self.src.as_bytes()[..self.offset];
         let line = Memchr::new(b'\n', previous_text).count() + 1;
         let start_of_line = memchr::memrchr(b'\n', previous_text).unwrap_or(0);
         let col = self.src[start_of_line..self.offset].chars().count();

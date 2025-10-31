@@ -1,4 +1,4 @@
-use dioxus::signals::{Signal, Writable};
+use dioxus::prelude::*;
 use dioxus_document::eval;
 use model::{api::ApiClient, AppError, Project};
 
@@ -8,9 +8,16 @@ pub async fn copy_share_link(
     mut project: Signal<Project>,
     location: &str,
 ) -> Result<(), AppError> {
-    let share_code = project.write().share_project(api_client).await?;
+    let read_project = project.read();
+    let shared_id = read_project.shared_id();
+    let code = read_project.contents();
+    // Drop the lock before running any async code.
+    drop(read_project);
+    let share_code = Project::share_project(shared_id, code, api_client).await?;
 
-    let formatted = format!("{}/shared/{}", location, share_code);
+    project.write().set_shared_id(share_code);
+
+    let formatted = format!("{}/shared/{}", location, share_code.as_simple());
     let e = eval(
         r#"
         const data = await dioxus.recv();
@@ -18,7 +25,8 @@ pub async fn copy_share_link(
         "#,
     );
 
-    e.send(formatted)?;
+    e.send(&formatted)?;
+    router().push(formatted);
 
     Ok(())
 }

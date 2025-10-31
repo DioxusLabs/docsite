@@ -1,9 +1,10 @@
-use super::{builder::Builder, BuildCommand, BuildError, BuildMessage, BuildRequest};
+use super::{BuildCommand, BuildError, BuildMessage, BuildRequest, builder::Builder};
 use crate::app::EnvVars;
+use dioxus::subsecond::JumpTable;
 use std::{
     collections::VecDeque,
     error::Error as _,
-    sync::{atomic::AtomicBool, Arc},
+    sync::{Arc, atomic::AtomicBool},
 };
 use tokio::{
     select,
@@ -16,13 +17,14 @@ use uuid::Uuid;
 /// The build watcher receives [`BuildCommand`]s through a channel and handles
 /// the build queue, providing queue positions, and stopping/cancelling builds.
 pub fn start_build_watcher(
-    env: EnvVars,
+    env: Arc<EnvVars>,
     is_building: Arc<AtomicBool>,
 ) -> UnboundedSender<BuildCommand> {
     let (tx, mut rx) = mpsc::unbounded_channel();
 
+    let mut builder = Builder::new(env, is_building);
+
     tokio::spawn(async move {
-        let mut builder = Builder::new(env, is_building);
         let mut pending_builds = VecDeque::new();
 
         loop {
@@ -69,19 +71,19 @@ fn start_build(
 fn stop_build(builder: &mut Builder, pending_builds: &mut VecDeque<BuildRequest>, id: Uuid) {
     // Check if the ongoing build is the cancelled build.
     let current_build_id = builder.current_build().map(|b| b.id);
-    if let Some(current_build_id) = current_build_id {
-        if id == current_build_id {
-            builder.stop_current();
+    if let Some(current_build_id) = current_build_id
+        && id == current_build_id
+    {
+        builder.stop_current();
 
-            // Start the next build request.
-            let next_request = pending_builds.pop_front();
-            if let Some(request) = next_request {
-                builder.start(request);
-            }
-
-            update_queue_positions(pending_builds);
-            return;
+        // Start the next build request.
+        let next_request = pending_builds.pop_front();
+        if let Some(request) = next_request {
+            builder.start(request);
         }
+
+        update_queue_positions(pending_builds);
+        return;
     }
 
     // Try finding the build in the queue
@@ -114,26 +116,33 @@ fn stop_build(builder: &mut Builder, pending_builds: &mut VecDeque<BuildRequest>
 fn handle_finished_build(
     builder: &mut Builder,
     pending_builds: &mut VecDeque<BuildRequest>,
-    build_result: Result<BuildRequest, BuildError>,
+    build_result: Result<(BuildRequest, Option<JumpTable>), BuildError>,
 ) {
     // Tell the socket the result of their build.
-    let _ = match build_result {
-        Ok(request) => {
-            dioxus::logger::tracing::trace!(request = ?request, "build finished");
-            request
-                .ws_msg_tx
-                .send(BuildMessage::Finished(Ok(request.id)))
-        }
-        Err(e) => {
-            dioxus::logger::tracing::warn!(err = ?e, src = ?e.source(), "build failed");
-            match builder.current_build() {
-                Some(request) => request
-                    .ws_msg_tx
-                    .send(BuildMessage::Finished(Err(e.to_string()))),
-                None => Ok(()),
+    let _ =
+        match build_result {
+            Ok((request, response)) => {
+                dioxus::logger::tracing::trace!(request = ?request, "build finished");
+                if let Some(patch) = response {
+                    request.ws_msg_tx.send(BuildMessage::Finished(
+                        crate::build::BuildResult::HotPatched(patch),
+                    ))
+                } else {
+                    request.ws_msg_tx.send(BuildMessage::Finished(
+                        crate::build::BuildResult::Built(request.id),
+                    ))
+                }
             }
-        }
-    };
+            Err(e) => {
+                dioxus::logger::tracing::warn!(err = ?e, src = ?e.source(), "build failed");
+                match builder.current_build() {
+                    Some(request) => request.ws_msg_tx.send(BuildMessage::Finished(
+                        crate::build::BuildResult::Failed(e.to_string()),
+                    )),
+                    None => Ok(()),
+                }
+            }
+        };
 
     // Start the next build.
     let next_request = pending_builds.pop_front();

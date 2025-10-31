@@ -9,23 +9,20 @@ mod waterfall_effect {
     }
 
     // ANCHOR: waterfall_effect
-    fn fetch_dog_image(
-        breed: impl Display,
-    ) -> impl Future<Output = dioxus::Result<String, CapturedError>> {
-        async move {
-            let response = reqwest::get(format!("https://dog.ceo/api/breed/{breed}/images/random"))
-                .await?
-                .json::<DogApi>()
-                .await?;
-            Ok(response.message)
-        }
+    async fn fetch_dog_image(breed: impl Display) -> dioxus::Result<String> {
+        let response = reqwest::get(format!("https://dog.ceo/api/breed/{breed}/images/random"))
+            .await?
+            .json::<DogApi>()
+            .await?;
+        dioxus::Ok(response.message)
     }
 
     #[component]
     fn DogView() -> Element {
         let poodle_img = use_resource(|| fetch_dog_image("poodle"));
 
-        let poodle_img = match poodle_img() {
+        let read = poodle_img.read();
+        let poodle_img = match read.as_ref() {
             Some(Ok(src)) => src,
             _ => {
                 return rsx! {
@@ -36,7 +33,8 @@ mod waterfall_effect {
 
         let golden_retriever_img = use_resource(|| fetch_dog_image("golden retriever"));
 
-        let golden_retriever_img = match golden_retriever_img() {
+        let read = golden_retriever_img.read();
+        let golden_retriever_img = match read.as_ref() {
             Some(Ok(src)) => src,
             _ => {
                 return rsx! {
@@ -47,7 +45,8 @@ mod waterfall_effect {
 
         let pug_img = use_resource(|| fetch_dog_image("pug"));
 
-        let pug_img = match pug_img() {
+        let read = pug_img.read();
+        let pug_img = match read.as_ref() {
             Some(Ok(src)) => src,
             _ => {
                 return rsx! {
@@ -78,14 +77,12 @@ mod no_waterfall_effect {
         message: String,
     }
 
-    fn fetch_dog_image(breed: impl Display) -> impl Future<Output = Result<String, CapturedError>> {
-        async move {
-            let response = reqwest::get(format!("https://dog.ceo/api/breed/{breed}/images/random"))
-                .await?
-                .json::<DogApi>()
-                .await?;
-            Ok(response.message)
-        }
+    async fn fetch_dog_image(breed: impl Display) -> dioxus::Result<String> {
+        let response = reqwest::get(format!("https://dog.ceo/api/breed/{breed}/images/random"))
+            .await?
+            .json::<DogApi>()
+            .await?;
+        dioxus::Ok(response.message)
     }
 
     #[component]
@@ -95,7 +92,8 @@ mod no_waterfall_effect {
         let golden_retriever_img = use_resource(|| fetch_dog_image("golden retriever"));
         let pug_img = use_resource(|| fetch_dog_image("pug"));
 
-        let poodle_img = match poodle_img() {
+        let read = poodle_img.read();
+        let poodle_img = match read.as_ref() {
             Some(Ok(src)) => src,
             _ => {
                 return rsx! {
@@ -103,7 +101,8 @@ mod no_waterfall_effect {
                 };
             }
         };
-        let golden_retriever_img = match golden_retriever_img() {
+        let read = golden_retriever_img.read();
+        let golden_retriever_img = match read.as_ref() {
             Some(Ok(src)) => src,
             _ => {
                 return rsx! {
@@ -111,7 +110,8 @@ mod no_waterfall_effect {
                 };
             }
         };
-        let pug_img = match pug_img() {
+        let read = pug_img.read();
+        let pug_img = match read.as_ref() {
             Some(Ok(src)) => src,
             _ => {
                 return rsx! {

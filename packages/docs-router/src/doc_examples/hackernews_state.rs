@@ -79,7 +79,7 @@ pub mod app_v1 {
 
     // ANCHOR_END: app_v1
     #[component]
-    fn StoryListing(story: ReadOnlySignal<StoryItem>) -> Element {
+    fn StoryListing(story: ReadSignal<StoryItem>) -> Element {
         let StoryItem {
             title,
             url,
@@ -190,7 +190,7 @@ mod story_listing_listener {
     }
 
     #[component]
-    fn StoryListing(story: ReadOnlySignal<StoryItem>) -> Element {
+    fn StoryListing(story: ReadSignal<StoryItem>) -> Element {
         let mut preview_state = consume_context::<Signal<PreviewState>>();
         let StoryItem {
             title,
@@ -260,7 +260,7 @@ pub fn App() -> Element {
 
 // ANCHOR: shared_state_stories
 #[component]
-fn StoryListing(story: ReadOnlySignal<StoryItem>) -> Element {
+fn StoryListing(story: ReadSignal<StoryItem>) -> Element {
     let mut preview_state = consume_context::<Signal<PreviewState>>();
     let StoryItem {
         title,

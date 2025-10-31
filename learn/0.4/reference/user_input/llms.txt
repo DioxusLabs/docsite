@@ -1,0 +1,285 @@
+<SYSTEM>This is the developer documentation for Dioxus from /learn/0.4/reference/user_input.</SYSTEM>
+# User Input
+
+Interfaces often need to provide a way to input data: e.g. text, numbers, checkboxes, etc. In Dioxus, there are two ways you can work with user input.
+
+## Controlled Inputs
+
+With controlled inputs, you are directly in charge of the state of the input. This gives you a lot of flexibility, and makes it easy to keep things in sync. For example, this is how you would create a controlled text input:
+
+````rs@input_controlled.rs
+pub fn App(cx: Scope) -> Element {
+    let name = use_state(cx, || "bob".to_string());
+
+    cx.render(rsx! {
+        input {
+            // we tell the component what to render
+            value: "{name}",
+            // and what to do when the value changes
+            oninput: move |evt| name.set(evt.value.clone()),
+        }
+    })
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    input_controlled::App {}
+}
+````
+
+Notice the flexibility – you can:
+
+* Also display the same contents in another element, and they will be in sync
+* Transform the input every time it is modified (e.g. to make sure it is upper case)
+* Validate the input every time it changes
+* Have custom logic happening when the input changes (e.g. network request for autocompletion)
+* Programmatically change the value (e.g. a "randomize" button that fills the input with nonsense)
+
+## Uncontrolled Inputs
+
+As an alternative to controlled inputs, you can simply let the platform keep track of the input values. If we don't tell a HTML input what content it should have, it will be editable anyway (this is built into the browser). This approach can be more performant, but less flexible. For example, it's harder to keep the input in sync with another element.
+
+Since you don't necessarily have the current value of the uncontrolled input in state, you can access it either by listening to `oninput` events (similarly to controlled components), or, if the input is part of a form, you can access the form data in the form events (e.g. `oninput` or `onsubmit`):
+
+````rs@input_uncontrolled.rs
+pub fn App(cx: Scope) -> Element {
+    cx.render(rsx! {
+        form {
+            onsubmit: move |event| {
+                log::info!("Submitted! {event:?}")
+            },
+            input { name: "name", },
+            input { name: "age", },
+            input { name: "date", },
+            input { r#type: "submit", },
+        }
+    })
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    input_uncontrolled::App {}
+}
+````
+
+````
+Submitted! UiEvent { data: FormData { value: "", values: {"age": "very old", "date": "1966", "name": "Fred"} } }
+````
+
+## Handling files
+
+You can insert a file picker by using an input element of type `file`. This element supports the `multiple` attribute, to let you pick more files at the same time. You can select a folder by adding the `directory` attribute: Dioxus will map this attribute to browser specific attributes, because there is no standardized way to allow a directory to be selected.
+
+`type` is a Rust keyword, so when specifying the type of the input field, you have to write it as `r#type:"file"`.
+
+Extracting the selected files is a bit different from what you may typically use in Javascript.
+
+The `FormData` event contains a `files` field with data about the uploaded files. This field contains a `FileEngine` struct which lets you fetch the filenames selected by the user. This example saves the filenames of the selected files to a `Vec`:
+
+````rs@input_fileengine.rs
+pub fn App(cx: Scope) -> Element {
+    let filenames: &UseRef<Vec<String>> = use_ref(cx, Vec::new);
+    cx.render(rsx! {
+        input {
+            // tell the input to pick a file
+            r#type:"file",
+            // list the accepted extensions
+            accept: ".txt,.rs",
+            // pick multiple files
+            multiple: true,
+            onchange: move |evt| {
+                if let Some(file_engine) = &evt.files {
+                    let files = file_engine.files();
+                    for file_name in files {
+                        filenames.write().push(file_name);
+                    }
+                }
+            }
+        }
+    })
+}
+````
+
+If you're planning to read the file content, you need to do it asynchronously, to keep the rest of the UI interactive. This example event handler loads the content of the selected files in an async closure:
+
+````rs@input_fileengine_async.rs
+onchange: move |evt| {
+    // A helper macro to use hooks in async environments
+    to_owned![files_uploaded];
+    async move {
+        if let Some(file_engine) = &evt.files {
+            let files = file_engine.files();
+            for file_name in &files {
+                // Make sure to use async/await when doing heavy I/O operations,
+                // to not freeze the interface in the meantime
+                if let Some(file) = file_engine.read_file_to_string(file_name).await{
+                    files_uploaded.write().push(file);
+                }
+            }
+        }
+    }
+}
+````
+
+Lastly, this example shows you how to select a folder, by setting the `directory` attribute to `true`.
+
+````rs@input_fileengine_folder.rs
+input {
+    r#type:"file",
+    // Select a folder by setting the directory attribute
+    directory: true,
+    onchange: |evt| {
+        if let Some(file_engine) = &evt.files {
+            let files = file_engine.files();
+            for file_name in files {
+                println!("{}", file_name);
+                // Do something with the folder path
+            }
+        }
+    }
+}
+````
+# User Input
+
+Interfaces often need to provide a way to input data: e.g. text, numbers, checkboxes, etc. In Dioxus, there are two ways you can work with user input.
+
+## Controlled Inputs
+
+With controlled inputs, you are directly in charge of the state of the input. This gives you a lot of flexibility, and makes it easy to keep things in sync. For example, this is how you would create a controlled text input:
+
+````rs@input_controlled.rs
+pub fn App(cx: Scope) -> Element {
+    let name = use_state(cx, || "bob".to_string());
+
+    cx.render(rsx! {
+        input {
+            // we tell the component what to render
+            value: "{name}",
+            // and what to do when the value changes
+            oninput: move |evt| name.set(evt.value.clone()),
+        }
+    })
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    input_controlled::App {}
+}
+````
+
+Notice the flexibility – you can:
+
+* Also display the same contents in another element, and they will be in sync
+* Transform the input every time it is modified (e.g. to make sure it is upper case)
+* Validate the input every time it changes
+* Have custom logic happening when the input changes (e.g. network request for autocompletion)
+* Programmatically change the value (e.g. a "randomize" button that fills the input with nonsense)
+
+## Uncontrolled Inputs
+
+As an alternative to controlled inputs, you can simply let the platform keep track of the input values. If we don't tell a HTML input what content it should have, it will be editable anyway (this is built into the browser). This approach can be more performant, but less flexible. For example, it's harder to keep the input in sync with another element.
+
+Since you don't necessarily have the current value of the uncontrolled input in state, you can access it either by listening to `oninput` events (similarly to controlled components), or, if the input is part of a form, you can access the form data in the form events (e.g. `oninput` or `onsubmit`):
+
+````rs@input_uncontrolled.rs
+pub fn App(cx: Scope) -> Element {
+    cx.render(rsx! {
+        form {
+            onsubmit: move |event| {
+                log::info!("Submitted! {event:?}")
+            },
+            input { name: "name", },
+            input { name: "age", },
+            input { name: "date", },
+            input { r#type: "submit", },
+        }
+    })
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    input_uncontrolled::App {}
+}
+````
+
+````
+Submitted! UiEvent { data: FormData { value: "", values: {"age": "very old", "date": "1966", "name": "Fred"} } }
+````
+
+## Handling files
+
+You can insert a file picker by using an input element of type `file`. This element supports the `multiple` attribute, to let you pick more files at the same time. You can select a folder by adding the `directory` attribute: Dioxus will map this attribute to browser specific attributes, because there is no standardized way to allow a directory to be selected.
+
+`type` is a Rust keyword, so when specifying the type of the input field, you have to write it as `r#type:"file"`.
+
+Extracting the selected files is a bit different from what you may typically use in Javascript.
+
+The `FormData` event contains a `files` field with data about the uploaded files. This field contains a `FileEngine` struct which lets you fetch the filenames selected by the user. This example saves the filenames of the selected files to a `Vec`:
+
+````rs@input_fileengine.rs
+pub fn App(cx: Scope) -> Element {
+    let filenames: &UseRef<Vec<String>> = use_ref(cx, Vec::new);
+    cx.render(rsx! {
+        input {
+            // tell the input to pick a file
+            r#type:"file",
+            // list the accepted extensions
+            accept: ".txt,.rs",
+            // pick multiple files
+            multiple: true,
+            onchange: move |evt| {
+                if let Some(file_engine) = &evt.files {
+                    let files = file_engine.files();
+                    for file_name in files {
+                        filenames.write().push(file_name);
+                    }
+                }
+            }
+        }
+    })
+}
+````
+
+If you're planning to read the file content, you need to do it asynchronously, to keep the rest of the UI interactive. This example event handler loads the content of the selected files in an async closure:
+
+````rs@input_fileengine_async.rs
+onchange: move |evt| {
+    // A helper macro to use hooks in async environments
+    to_owned![files_uploaded];
+    async move {
+        if let Some(file_engine) = &evt.files {
+            let files = file_engine.files();
+            for file_name in &files {
+                // Make sure to use async/await when doing heavy I/O operations,
+                // to not freeze the interface in the meantime
+                if let Some(file) = file_engine.read_file_to_string(file_name).await{
+                    files_uploaded.write().push(file);
+                }
+            }
+        }
+    }
+}
+````
+
+Lastly, this example shows you how to select a folder, by setting the `directory` attribute to `true`.
+
+````rs@input_fileengine_folder.rs
+input {
+    r#type:"file",
+    // Select a folder by setting the directory attribute
+    directory: true,
+    onchange: |evt| {
+        if let Some(file_engine) = &evt.files {
+            let files = file_engine.files();
+            for file_name in files {
+                println!("{}", file_name);
+                // Do something with the folder path
+            }
+        }
+    }
+}
+````

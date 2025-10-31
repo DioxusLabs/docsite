@@ -1,0 +1,1387 @@
+<SYSTEM>This is the developer documentation for Dioxus at /learn/0.6/guides/rules_of_hooks and all its subroutes.</SYSTEM>
+
+# The Rules of Hooks
+
+Hooks are a powerful way to manage state in Dioxus, but there are some rules you need to follow to ensure they work as expected. Dioxus uses the order you call hooks to differentiate between hooks. Because the order you call hooks matters, you must follow these rules:
+
+1. Hooks may be only used in components or other hooks (we'll get to that later)
+1. On every call to the component function
+   1. The same hooks must be called
+   1. In the same order
+1. Hooks name's should start with `use_` so you don't accidentally confuse them with regular functions
+
+These rules mean that there are certain things you can't do with hooks:
+
+#### No Hooks in Conditionals
+
+````rs@hooks_bad.rs
+// ❌ don't call hooks in conditionals!
+// We must ensure that the same hooks will be called every time
+// But `if` statements only run if the conditional is true!
+// So we might violate rule 2.
+if you_are_happy && you_know_it {
+    let something = use_signal(|| "hands");
+    println!("clap your {something}")
+}
+
+// ✅ instead, *always* call use_signal
+// You can put other stuff in the conditional though
+let something = use_signal(|| "hands");
+if you_are_happy && you_know_it {
+    println!("clap your {something}")
+}
+````
+
+#### No Hooks in Closures
+
+````rs@hooks_bad.rs
+// ❌ don't call hooks inside closures!
+// We can't guarantee that the closure, if used, will be called in the same order every time
+let _a = || {
+    let b = use_signal(|| 0);
+    b()
+};
+
+// ✅ instead, move hook `b` outside
+let b = use_signal(|| 0);
+let _a = || b();
+````
+
+#### No Hooks in Loops
+
+````rs@hooks_bad.rs
+// `names` is a Vec<&str>
+
+// ❌ Do not use hooks in loops!
+// In this case, if the length of the Vec changes, we break rule 2
+for _name in &names {
+    let is_selected = use_signal(|| false);
+    println!("selected: {is_selected}");
+}
+
+// ✅ Instead, use a hashmap with use_signal
+let selection_map = use_signal(HashMap::<&str, bool>::new);
+
+for name in &names {
+    let is_selected = selection_map.read()[name];
+    println!("selected: {is_selected}");
+}
+````
+# Assets
+
+Assets are files that are included in the final build of the application. They can be images, fonts, stylesheets, or any other file that is not a source file. Dioxus includes first class support for assets, and provides a simple way to include them in your application and automatically optimize them for production.
+
+Assets in dioxus are also compatible with libraries! If you are building a library, you can include assets in your library and they will be automatically included in the final build of any application that uses your library.
+
+## Including images
+
+To include an asset in your application, you can simply wrap the path to the asset in the `asset!` macro. For example, to include an image in your application, you can use the following code:
+
+````rs@assets.rs
+use dioxus::prelude::*;
+
+fn App() -> Element {
+    // You can link to assets that are relative to the package root or even link to an asset from a url
+    // These assets will automatically be picked up by the dioxus cli, optimized, and bundled with your final applications
+    const ASSET: Asset = asset!("/assets/static/ferrous_wave.png");
+
+    rsx! {
+        img { src: "{ASSET}" }
+    }
+}
+````
+
+You can also optimize, resize, and preload images using the `asset!` macro. Choosing an optimized file type (like Avif) and a reasonable quality setting can significantly reduce the size of your images which helps your application load faster. For example, you can use the following code to include an optimized image in your application:
+
+````rs@assets.rs
+pub const ENUM_ROUTER_IMG: Asset = asset!(
+    "/assets/static/enum_router.png",
+    // You can pass a second argument to the asset macro to set up options for the asset
+    ImageAssetOptions::new()
+        // You can set the image size in pixels at compile time to send the smallest possible image to the client
+        .with_size(ImageSize::Manual {
+            width: 52,
+            height: 52
+        })
+        // You can also convert the image to a web friendly format at compile time. This can make your images significantly smaller
+        .with_format(ImageFormat::Avif)
+);
+
+fn EnumRouter() -> Element {
+    rsx! {
+        img { src: "{ENUM_ROUTER_IMG}" }
+    }
+}
+````
+
+## Including arbitrary files
+
+In dioxus desktop, you may want to include a file with data for your application. If you don't set any options for your asset and the file extension is not recognized, the asset will be copied without any changes. For example, you can use the following code to include a binary file in your application:
+
+````rs@assets.rs
+// You can also collect arbitrary files. Relative paths are resolved relative to the package root
+const PATH_TO_BUNDLED_CARGO_TOML: Asset = asset!("/Cargo.toml");
+````
+
+These files will be automatically included in the final build of your application, and you can use them in your application as you would any other file.
+
+## Including stylesheets
+
+You can include stylesheets in your application using the `asset!` macro. Stylesheets will automatically be minified as they are bundled to speed up load times. For example, you can use the following code to include a stylesheet in your application:
+
+````rs@assets.rs
+// You can also bundle stylesheets with your application
+// Any files that end with .css will be minified and bundled with your application even if you don't explicitly include them in your <head>
+const _: Asset = asset!("/assets/tailwind.css");
+````
+
+ > 
+ > The [tailwind guide](../cookbook/tailwind.md) has more information on how to use tailwind with dioxus.
+
+#### SCSS Support
+
+SCSS is also supported through the `asset!` macro. Include it the same way as a regular CSS file.
+
+## Conclusion
+
+Dioxus provides first class support for assets, and makes it easy to include them in your application. You can include images, arbitrary files, and stylesheets in your application, and dioxus will automatically optimize them for production. This makes it easy to include assets in your application and ensure that they are optimized for production.
+
+You can read more about assets and all the options available to optimize your assets in the [manganis documentation](https://docs.rs/manganis/0.6.0/manganis).
+# Web
+
+To run on the Web, your app must be compiled to WebAssembly and depend on the `dioxus` and `dioxus-web` crates.
+
+A build of Dioxus for the web will be roughly equivalent to the size of a React build (70kb vs 65kb) but it will load significantly faster because [WebAssembly can be compiled as it is streamed](https://hacks.mozilla.org/2018/01/making-webassembly-even-faster-firefoxs-new-streaming-and-tiering-compiler/).
+
+Examples:
+
+* [TodoMVC](https://github.com/DioxusLabs/dioxus/blob/main/examples/todomvc.rs)
+* [Tailwind App](https://github.com/DioxusLabs/dioxus/tree/main/examples/tailwind)
+
+[![TodoMVC example](https://github.com/DioxusLabs/example-projects/raw/master/todomvc/example.png)](https://github.com/DioxusLabs/dioxus/blob/main/examples/todomvc.rs)
+
+ > 
+ > Note: Because of the limitations of Wasm, [not every crate will work](https://rustwasm.github.io/docs/book/reference/which-crates-work-with-wasm.html) with your web apps, so you'll need to make sure that your crates work without native system calls (timers, IO, etc).
+
+## Support
+
+The Web is the best-supported target platform for Dioxus.
+
+* Because your app will be compiled to WASM you have access to browser APIs through [wasm-bindgen](https://rustwasm.github.io/docs/wasm-bindgen/introduction.html).
+* Dioxus provides hydration to resume apps that are rendered on the server. See the [fullstack](../fullstack/index.md) reference for more information.
+
+## Running Javascript
+
+Dioxus provides some ergonomic wrappers over the browser API, but in some cases you may need to access parts of the browser API Dioxus does not expose.
+
+For these cases, Dioxus web exposes the use_eval hook that allows you to run raw Javascript in the webview:
+
+````rs@eval.rs
+use dioxus::prelude::*;
+
+fn main() {
+    launch(app);
+}
+
+fn app() -> Element {
+    let future = use_resource(move || async move {
+        // You can create as many eval instances as you want
+        let mut eval = document::eval(
+            r#"
+            // You can send messages from JavaScript to Rust with the dioxus.send function
+            dioxus.send("Hi from JS!");
+            // You can receive messages from Rust to JavaScript with the dioxus.recv function
+            let msg = await dioxus.recv();
+            console.log(msg);
+            "#,
+        );
+
+        // You can send messages to JavaScript with the send method
+        eval.send("Hi from Rust!").unwrap();
+
+        // You can receive any message from JavaScript with the recv method
+        eval.recv::<String>().await.unwrap()
+    });
+
+    match future.read_unchecked().as_ref() {
+        Some(v) => rsx! {
+            p { "{v}" }
+        },
+        _ => rsx! {
+            p { "hello" }
+        },
+    }
+}
+
+````
+
+If you are targeting web, but don't plan on targeting any other Dioxus renderer you can also use the generated wrappers in the [web-sys](https://rustwasm.github.io/wasm-bindgen/web-sys/index.html) and [gloo](https://gloo-rs.web.app/) crates.
+
+## Customizing Index Template
+
+Dioxus supports providing custom index.html templates. The index.html must include a `div` with the id `main` to be used. Hot Reload is still supported. An example
+is provided in the [PWA-Example](https://github.com/DioxusLabs/dioxus/blob/main/examples/pwa/index.html).
+# Desktop
+
+This guide will cover concepts specific to the Dioxus desktop renderer.
+
+Apps built with Dioxus desktop use the system WebView to render the page. This makes the final size of application much smaller than other WebView renderers (typically under 5MB).
+
+Although desktop apps are rendered in a WebView, your Rust code runs natively. This means that browser APIs are *not* available, so rendering WebGL, Canvas, etc is not as easy as the Web. However, native system APIs *are* accessible, so streaming, WebSockets, filesystem, etc are all easily accessible though system APIs.
+
+Dioxus desktop is built on top of [wry](https://github.com/tauri-apps/wry), a Rust library for creating desktop applications with a WebView.
+
+ > 
+ > In the future, we plan to move to a custom web renderer-based DOM renderer with WGPU integrations ([Blitz](https://github.com/DioxusLabs/blitz)).
+
+## Examples
+
+* [File Explorer](https://github.com/DioxusLabs/dioxus/tree/main/examples/file-explorer)
+* [Tailwind App](https://github.com/DioxusLabs/dioxus/tree/main/examples/tailwind)
+
+[![Tailwind App screenshot](/assets/static/tailwind_desktop_app.png)](https://github.com/DioxusLabs/dioxus/tree/main/examples/tailwind)
+
+## Running Javascript
+
+Dioxus provides some ergonomic wrappers over the browser API, but in some cases you may need to access parts of the browser API Dioxus does not expose.
+
+For these cases, Dioxus desktop exposes the use_eval hook that allows you to run raw Javascript in the webview:
+
+````rs@eval.rs
+use dioxus::prelude::*;
+
+fn main() {
+    launch(app);
+}
+
+fn app() -> Element {
+    let future = use_resource(move || async move {
+        // You can create as many eval instances as you want
+        let mut eval = document::eval(
+            r#"
+            // You can send messages from JavaScript to Rust with the dioxus.send function
+            dioxus.send("Hi from JS!");
+            // You can receive messages from Rust to JavaScript with the dioxus.recv function
+            let msg = await dioxus.recv();
+            console.log(msg);
+            "#,
+        );
+
+        // You can send messages to JavaScript with the send method
+        eval.send("Hi from Rust!").unwrap();
+
+        // You can receive any message from JavaScript with the recv method
+        eval.recv::<String>().await.unwrap()
+    });
+
+    match future.read_unchecked().as_ref() {
+        Some(v) => rsx! {
+            p { "{v}" }
+        },
+        _ => rsx! {
+            p { "hello" }
+        },
+    }
+}
+
+````
+
+## Custom Assets
+
+You can link to local assets in dioxus desktop instead of using a url:
+
+````rs@custom_assets.rs
+use dioxus::prelude::*;
+
+fn main() {
+    launch(app);
+}
+
+fn app() -> Element {
+    rsx! {
+        div {
+            img { src: asset!("/assets/static/scanner.png") }
+        }
+    }
+}
+
+````
+
+You can read more about assets in the [assets](../assets.md) reference.
+
+## Integrating with Wry
+
+In cases where you need more low level control over your window, you can use wry APIs exposed through the [Desktop Config](https://docs.rs/dioxus-desktop/0.6.0/dioxus_desktop/struct.Config.html) and the [use_window hook](https://docs.rs/dioxus-desktop/0.6.0/dioxus_desktop/fn.use_window.html)
+# Mobile App
+
+Build a mobile app with Dioxus!
+
+## Support
+
+The Rust ecosystem for mobile continues to mature, with Dioxus offering strong support for mobile applications. Mobile is a first-class target for Dioxus apps, with a robust WebView implementation that supports CSS animations and transparency effects.
+
+Mobile apps are rendered with either the platform's WebView or experimentally with WGPU. While native Android animations and widgets aren't currently supported, CSS-based animations and styling provide a powerful alternative.
+
+Mobile support is well-suited for most application types, from business tools to consumer apps, making it an excellent choice for teams looking to build cross-platform applications with a single codebase.
+
+## Getting Set up
+
+## Android
+
+Android devices run a different executable architecture than desktop and web. We need to install these toolchains to build Dioxus apps for Android.
+
+First, install the Rust Android targets:
+
+````sh
+rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
+````
+
+To develop on Android, you will need to [install Android Studio](https://developer.android.com/studio).
+
+Once you have installed Android Studio, you will need to install the Android SDK and NDK:
+
+1. Create a blank Android project
+1. Select `Tools > SDK manager`
+1. Navigate to the `SDK tools` window:
+
+![NDK install window](/assets/static/android_ndk_install.png)
+
+Then select:
+
+* The SDK
+* The SDK Command line tools
+* The NDK (side by side)
+* CMAKE
+
+4. Select `apply` and follow the prompts
+
+ > 
+ > More details that could be useful for debugging any errors you encounter are available [in the official android docs](https://developer.android.com/studio/intro/update#sdk-manager)
+
+Next set the Java, Android, NDK, and PATH variables:
+
+Mac:
+
+````sh
+export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+export ANDROID_HOME="$HOME/Library/Android/sdk"
+export NDK_HOME="$ANDROID_HOME/ndk/25.2.9519653"
+export PATH="$PATH:$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools"
+````
+
+Windows:
+
+````powershell
+[System.Environment]::SetEnvironmentVariable("JAVA_HOME", "C:\Program Files\Android\Android Studio\jbr", "User")
+[System.Environment]::SetEnvironmentVariable("ANDROID_HOME", "$env:LocalAppData\Android\Sdk", "User")
+[System.Environment]::SetEnvironmentVariable("NDK_HOME", "$env:LocalAppData\Android\Sdk\ndk\25.2.9519653", "User")
+````
+
+ > 
+ > The NDK version in the paths should match the version you installed in the last step
+
+We manually set the PATH variable to include the Android emulator since some distributions of Android Studio include the emulator in the wrong location.
+
+## IOS
+
+To develop on IOS, you will need to [install XCode](https://apps.apple.com/us/app/xcode/id497799835). Also make sure to install the iOS targets
+
+````sh
+rustup target add aarch64-apple-ios aarch64-apple-ios-sim
+````
+
+ > 
+ > If you are using M1, you will have to run `cargo build --target x86_64-apple-ios` instead of `cargo apple build` if you want to run in simulator.
+
+You will also need to install the iOS SDK and the Xcode command line tools.
+
+## Running your app
+
+Starting with Dioxus 0.6, `dx` ships with built-in support for mobile.
+
+Simply create a new Dioxus project:
+
+````sh
+dx new my-app
+````
+
+Make sure to launch the relevant mobile simulator. For Android, you can use the Android Studio emulator, or the Android Emulator in the terminal. Make sure to adjust the device name depending on which emulator you installed.
+
+````shell
+emulator -avd Pixel_6_API_34  -netdelay none -netspeed full
+````
+
+For iOS, you can use the iOS simulator. You can launch it with:
+
+````sh
+open /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app
+xcrun simctl boot "iPhone 15 Pro Max"
+````
+
+And then run the app with:
+
+````sh
+cd my-app
+dx serve
+````
+
+This will start the app in development mode.
+# Mobile
+
+This guide will cover concepts specific to the Dioxus mobile renderer.
+
+## Running Javascript
+
+Dioxus provides some ergonomic wrappers over the browser API, but in some cases you may need to access parts of the browser API Dioxus does not expose.
+
+For these cases, Dioxus desktop exposes the use_eval hook that allows you to run raw Javascript in the webview:
+
+````rs@eval.rs
+use dioxus::prelude::*;
+
+fn main() {
+    launch(app);
+}
+
+fn app() -> Element {
+    let future = use_resource(move || async move {
+        // You can create as many eval instances as you want
+        let mut eval = document::eval(
+            r#"
+            // You can send messages from JavaScript to Rust with the dioxus.send function
+            dioxus.send("Hi from JS!");
+            // You can receive messages from Rust to JavaScript with the dioxus.recv function
+            let msg = await dioxus.recv();
+            console.log(msg);
+            "#,
+        );
+
+        // You can send messages to JavaScript with the send method
+        eval.send("Hi from Rust!").unwrap();
+
+        // You can receive any message from JavaScript with the recv method
+        eval.recv::<String>().await.unwrap()
+    });
+
+    match future.read_unchecked().as_ref() {
+        Some(v) => rsx! {
+            p { "{v}" }
+        },
+        _ => rsx! {
+            p { "hello" }
+        },
+    }
+}
+
+````
+
+## Custom Assets
+
+You can link to local assets in dioxus mobile instead of using a url:
+
+````rs@custom_assets.rs
+use dioxus::prelude::*;
+
+fn main() {
+    launch(app);
+}
+
+fn app() -> Element {
+    rsx! {
+        div {
+            img { src: asset!("/assets/static/scanner.png") }
+        }
+    }
+}
+
+````
+
+## Integrating with Wry
+
+In cases where you need more low level control over your window, you can use wry APIs exposed through the [Desktop Config](https://docs.rs/dioxus-desktop/0.6.0/dioxus_desktop/type.DesktopContext.html) and the [use_window hook](https://docs.rs/dioxus-desktop/0.6.0/dioxus_desktop/fn.use_window.html)
+# Server-Side Rendering
+
+For lower-level control over the rendering process, you can use the `dioxus-ssr` crate directly. This can be useful when integrating with a web framework that `dioxus-fullstack` does not support, or pre-rendering pages.
+
+## Setup
+
+For this guide, we're going to show how to use Dioxus SSR with [Axum](https://docs.rs/axum/latest/axum/).
+
+Make sure you have Rust and Cargo installed, and then create a new project:
+
+````shell
+cargo new --bin demo
+cd demo
+````
+
+Add Dioxus and the ssr renderer as dependencies:
+
+````shell
+cargo add dioxus
+cargo add dioxus-ssr
+````
+
+Next, add all the Axum dependencies. This will be different if you're using a different Web Framework
+
+````
+cargo add tokio --features full
+cargo add axum
+````
+
+Your dependencies should look roughly like this:
+
+````toml
+[dependencies]
+axum = "0.7"
+dioxus = { version = "*" }
+dioxus-ssr = { version = "*" }
+tokio = { version = "1.15.0", features = ["full"] }
+````
+
+Now, set up your Axum app to respond on an endpoint.
+
+````rs@ssr.rs
+use axum::{response::Html, routing::get, Router};
+use dioxus::prelude::*;
+
+#[tokio::main]
+async fn main() {
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:3000")
+        .await
+        .unwrap();
+
+    println!("listening on http://127.0.0.1:3000");
+
+    axum::serve(
+        listener,
+        Router::new()
+            .route("/", get(app_endpoint))
+            .into_make_service(),
+    )
+    .await
+    .unwrap();
+}
+````
+
+And then add our endpoint. We can either render `rsx!` directly:
+
+````rs@ssr.rs
+async fn app_endpoint() -> Html<String> {
+    // render the rsx! macro to HTML
+    Html(dioxus_ssr::render_element(rsx! { div { "hello world!" } }))
+}
+````
+
+Or we can render VirtualDoms.
+
+````rs@ssr.rs
+async fn app_endpoint() -> Html<String> {
+    // create a component that renders a div with the text "hello world"
+    fn app() -> Element {
+        rsx! { div { "hello world" } }
+    }
+    // create a VirtualDom with the app component
+    let mut app = VirtualDom::new(app);
+    // rebuild the VirtualDom before rendering
+    app.rebuild_in_place();
+
+    // render the VirtualDom to HTML
+    Html(dioxus_ssr::render(&app))
+}
+````
+
+Finally, you can run it using `cargo run` rather than `dx serve`.
+
+## Multithreaded Support
+
+The Dioxus VirtualDom, sadly, is not currently `Send`. Internally, we use quite a bit of interior mutability which is not thread-safe.
+When working with web frameworks that require `Send`, it is possible to render a VirtualDom immediately to a String – but you cannot hold the VirtualDom across an await point. For retained-state SSR (essentially LiveView), you'll need to spawn a VirtualDom on its own thread and communicate with it via channels or create a pool of VirtualDoms.
+You might notice that you cannot hold the VirtualDom across an await point. Because Dioxus is currently not ThreadSafe, it *must* remain on the thread it started. We are working on loosening this requirement.
+# Fullstack development
+
+Dioxus Fullstack contains helpers for:
+
+* Incremental, static, and server side rendering
+* Hydrating your application on the Client
+* Communicating between a server and a client
+
+This guide will teach you everything you need to know about how to use the utilities in Dioxus fullstack to create amazing fullstack applications.
+
+ > 
+ > In addition to this guide, you can find more examples of full-stack apps and information about how to integrate with other frameworks and desktop renderers in the [examples directory](https://github.com/DioxusLabs/dioxus/tree/main/examples).
+# Hydration
+
+In dioxus fullstack, the server renders the initial HTML for improved loading times. This initial version of the page is what most web crawlers and search engines see. After the initial HTML is rendered, the client makes the page interactive and takes over rendering in a process called **hydration**. Most of the time, you shouldn't need to think about hydration, but there are a few things you need to keep in mind to avoid [hydration errors](#hydration-errors). To better understand hydration, let's walk through a simple example:
+
+````rs@hydration.rs
+fn Weather() -> Element {
+    let mut weather = use_server_future(fetch_weather)?;
+
+    rsx! {
+        div {
+            "{weather:?}"
+        }
+        button {
+            onclick: move |_| weather.restart(),
+            "Refetch"
+        }
+    }
+}
+````
+
+## Rendering the initial HTML
+
+When the server receives a request to render the `Weather` component, it renders the page to HTML and serializes some additional data the client needs to hydrate the page. It will follow these steps to render our component:
+
+1. Run the component
+1. Wait until all server futures are resolved
+1. Serialize any non-deterministic data (like the `weather` future) for the client
+1. Render the HTML
+
+[![](https://mermaid.ink/img/pako:eNpdkDFTwzAMhf-KT3M70HbKwELhGMqSdAIziFhNfI2lnGzDQa__HZfk4Iq1-D1_ejr5BK04ggoOg3y0PWoy-61lE_Nbpzj2Jt68WGhI30lN4x2ZmtiReu4svBZwPs4rtckLm13958ZVaa4zmzsJozBxumqK6ynb4-C_yMxTHnLKSvGa3FyCfiabx_3Tbn4sxsTElVkub0vgLNeT3FieChYQSAN6V1Y9XSALqadAFqpydahHC5bPhcOcpPnkFqqkmRagkrseqgMOsag8Oky09Vh-J_y6I_KzSPhH3TufRGfz_A3Ce3PT?type=png)](https://mermaid-js.github.io/mermaid-live-editor/edit#pako:eNpdkDFTwzAMhf-KT3M70HbKwELhGMqSdAIziFhNfI2lnGzDQa__HZfk4Iq1-D1_ejr5BK04ggoOg3y0PWoy-61lE_Nbpzj2Jt68WGhI30lN4x2ZmtiReu4svBZwPs4rtckLm13958ZVaa4zmzsJozBxumqK6ynb4-C_yMxTHnLKSvGa3FyCfiabx_3Tbn4sxsTElVkub0vgLNeT3FieChYQSAN6V1Y9XSALqadAFqpydahHC5bPhcOcpPnkFqqkmRagkrseqgMOsag8Oky09Vh-J_y6I_KzSPhH3TufRGfz_A3Ce3PT)
+
+Once the server finishes rendering, it will send this structure to the client as HTML:
+
+[![](https://mermaid.ink/img/pako:eNqFUcFKAzEQ_ZUwh57agy22sAUFqaCgF1sQNCLTZLYbupss2VmLlv67s92luoo4uSRv3nvzhuzBBEuQQJqHnckwslottFdVvd5ELDNVjZ81LCk6zN0HWbVARg0vQpGyLpJhF7xaXbVIU_5MJCmxyV53hJxR7ATkbc96Irxb71i81c3q_u4_3ybKIOe5dW-DDc9P9GPzXJr7bl5yeeg3p51yXTOLa_Amd2b722QmvAdKI1XZH5mb3R57W7VVjb_dJ1_KY241Gl1IQjWQJB02bbGZ9u2BIRQUC3RWPmPfkDTIkII0JHK1GLcatD8ID2sOy3dvIOFY0xBiqDcZJCnmlbzq0iLTwqEELk5oif4phOIH69o6DrEDD5_uGqQ1?type=png)](https://mermaid-js.github.io/mermaid-live-editor/edit#pako:eNqFUcFKAzEQ_ZUwh57agy22sAUFqaCgF1sQNCLTZLYbupss2VmLlv67s92luoo4uSRv3nvzhuzBBEuQQJqHnckwslottFdVvd5ELDNVjZ81LCk6zN0HWbVARg0vQpGyLpJhF7xaXbVIU_5MJCmxyV53hJxR7ATkbc96Irxb71i81c3q_u4_3ybKIOe5dW-DDc9P9GPzXJr7bl5yeeg3p51yXTOLa_Amd2b722QmvAdKI1XZH5mb3R57W7VVjb_dJ1_KY241Gl1IQjWQJB02bbGZ9u2BIRQUC3RWPmPfkDTIkII0JHK1GLcatD8ID2sOy3dvIOFY0xBiqDcZJCnmlbzq0iLTwqEELk5oif4phOIH69o6DrEDD5_uGqQ1)
+
+## Hydrating on the client
+
+When the client receives the initial HTML, it hydrates the HTML by rerunning each component and linking each node that component renders to the node the server rendered. Rerunning each component lets the client re-construct some non-serializable state like event handlers and kick off any client side logic like `use_effect` and `use_future`.
+
+It will follow these steps:
+
+1. Deserialize any non-deterministic data from the server (like the `weather` future)
+1. Run the component with the deserialized data. All server futures are immediately resolved with the deserialized data from the server.
+1. Hydrate the HTML sent from the server. This adds all event handlers and links the html nodes to the component so they can be moved or modified later
+
+[![](https://mermaid.ink/img/pako:eNpdkLFuAjEMhl_F8gxDgemGLlyrDnThmNp0SC-Gi7g4JydpRRHvXsOdkFpnif__s534jG10hBXu-_jddlYy7GrDkMrnQezQQXp4N7juPXGGxjuCl5MT63Nkgx8Kajgv1GYfGTbbUblGWmphTYnE297_EDQkXyTwXHIRSvfqG7tQdlsY1jEMkXXWX3ul9m1u1vm7183kErsRSkuYzx-1zZQuxnRleDw4w0ASrHf60_MVMpg7CmSw0quzcjRo-KKcLTk2J26xylJohhLLocNqb_ukWRmcvqH2VpcT7upg-S3G8I96crolmcTLL4RBdIg?type=png)](https://mermaid-js.github.io/mermaid-live-editor/edit#pako:eNpdkLFuAjEMhl_F8gxDgemGLlyrDnThmNp0SC-Gi7g4JydpRRHvXsOdkFpnif__s534jG10hBXu-_jddlYy7GrDkMrnQezQQXp4N7juPXGGxjuCl5MT63Nkgx8Kajgv1GYfGTbbUblGWmphTYnE297_EDQkXyTwXHIRSvfqG7tQdlsY1jEMkXXWX3ul9m1u1vm7183kErsRSkuYzx-1zZQuxnRleDw4w0ASrHf60_MVMpg7CmSw0quzcjRo-KKcLTk2J26xylJohhLLocNqb_ukWRmcvqH2VpcT7upg-S3G8I96crolmcTLL4RBdIg)
+
+## Hydration errors
+
+For hydration to work, **the component must render exactly the same thing on the client and the server**. If it doesn't, you might see an error like this:
+
+````
+Uncaught TypeError: Cannot set properties of undefined (setting 'textContent')
+at RawInterpreter.run (yourwasm-hash.js:1:12246)
+````
+
+Or this:
+
+````
+Error deserializing data:
+Semantic(None, "invalid type: floating point `1.2`, expected integer")
+This type was serialized on the server at src/main.rs:11:5 with the type name f64. The client failed to deserialize the type i32 at /path/to/server_future.rs
+````
+
+### Non-deterministic data with server cached
+
+You must put any non-deterministic data in `use_server_future`, `use_server_cached` or `use_effect` to avoid hydration errors. For example, if you need to render a random number on your page, you can use `use_server_cached` to cache the random number on the server and then use it on the client:
+
+````rs@hydration.rs
+// ❌ The random number will be different on the client and the server
+let random: u8 = use_hook(|| rand::random());
+// ✅ The same random number will be serialized on the server and deserialized on the client
+let random: u8 = use_server_cached(|| rand::random());
+````
+
+### Async loading with server futures
+
+If you need render some data from a server future, you need to use `use_server_future` to serialize the data instead of waiting for the (non-deterministic) amount of time `use_resource(...).suspend()?` takes:
+
+````rs@hydration.rs
+// ❌ The server function result may be finished on the server, but pending on the client
+let random: u8 = use_resource(|| random_server_function()).suspend()?().unwrap_or_default();
+// ✅ Once the server function is resolved on the server, it will be sent to the client
+let random: u8 = use_server_future(|| random_server_function())?()
+    .unwrap()
+    .unwrap_or_default();
+````
+
+### Client only data with effects
+
+If you need to grab some data that is only available on the client, make sure you get it inside of a `use_effect` hook which runs after the component has been hydrated:
+
+````rs@hydration.rs
+// ❌ Using a different value client side before hydration will cause hydration issues
+// because the server rendered the html with another value
+let mut storage = use_signal(|| {
+    #[cfg(feature = "server")]
+    return None;
+    let window = web_sys::window().unwrap();
+    let local_storage = window.local_storage().unwrap().unwrap();
+    local_storage.set_item("count", "1").unwrap();
+    local_storage.get_item("count").unwrap()
+});
+
+// ✅ Changing the value inside of an effect is fine because effects run after hydration
+let mut storage = use_signal(|| None);
+use_effect(move || {
+    let window = web_sys::window().unwrap();
+    let local_storage = window.local_storage().unwrap().unwrap();
+    local_storage.set_item("count", "1").unwrap();
+    storage.set(local_storage.get_item("count").unwrap());
+});
+````
+
+### Avoid side effects in server cached hooks
+
+The dioxus fullstack specific hooks `use_server_cached` and `use_server_future` don't run the same on the server and the client. The server will always run the closure, but the client may not run the closure if the server serialized the result. Because of this, the code you run inside these hooks **cannot have side effects**. If it does, the side effects will not be serialized and it can cause a hydration mismatch error:
+
+````rs@hydration.rs
+// ❌ The state of the signal cannot be serialized on the server
+let mut storage = use_signal(|| None);
+use_server_future(move || async move {
+    storage.set(Some(server_future().await));
+})?;
+
+// ✅ The value returned from use_server_future will be serialized on the server and hydrated on the client
+let storage = use_server_future(|| async move { server_future().await })?;
+````
+# Managing Fullstack Dependencies
+
+Fullstack applications build to at least two different binaries:
+
+* The client application that runs the desktop, mobile, or web application
+* The server that renders the initial HTML and runs server functions
+
+Those binaries tend to have different dependencies and those dependencies often are only compatible with a specific target platform. This guide will cover how fullstack manages each binary's dependencies and how to add dependencies that are only compatible with one binary/target.
+
+## Client and Server Feature Flags
+
+Dioxus uses feature flags to differentiate between the different binaries a single library can produce. Each target binary should have a feature flag in your `Cargo.toml` file that enables the corresponding feature in dioxus. For example, if you are targeting `web` and `desktop` with a fullstack server, you would add the following to your `Cargo.toml`:
+
+````toml
+[dependencies]
+# Don't include any renderer features in your dioxus dependency directly. They will be added in feature flags.
+# The fullstack feature enables the bindings between the server and client without enabling a specific binary target.
+dioxus = { version = "0.6", features = ["fullstack"] }
+
+[features]
+# The web feature enables the web renderer. Dioxus will automatically enable the feature you define that activates `dioxus/web` when building the client WASM bundle.
+web = ["dioxus/web"]
+# The desktop feature enables the desktop renderer. Dioxus will automatically enable the feature you define that activates `dioxus/desktop` when building the client native bundle.
+desktop = ["dioxus/desktop"]
+# The server feature enables server functions and server-side rendering. Dioxus will automatically enable the feature you define that activates `dioxus/server` when building the server binary.
+server = ["dioxus/server"]
+````
+
+Feature flags like these for the client and server are automatically generated by the CLI when you run `dx new` with fullstack enabled. If you are creating a project from scratch, you will need to add the feature flags manually.
+
+ > 
+ > If you are not familiar with features in rust, you can read more about feature flags in the [cargo reference](https://doc.rust-lang.org/cargo/reference/features.html).
+
+## Adding Server Only Dependencies
+
+Many dependencies like [`tokio`](https://docs.rs/tokio/latest/tokio/index.html) and [`axum`](https://docs.rs/axum/latest/axum/index.html) are only compatible with the server. If these dependencies are enabled when building a WASM bundle for the browser client, you will get a compilation error. For example, if we want to interact with the filesystem in a server function, we might want to add `tokio`. `tokio` has utilities for working with async IO like [`tokio::fs::File`](https://docs.rs/tokio/latest/tokio/fs/struct.File.html). Let's try it as a dependency to our fullstack project:
+
+````toml
+[dependencies]
+# ...
+# ❌ If tokio is added as a required dependency, it will be included in both the server
+# and the web bundle. The web bundle will fail to build because tokio is not
+# compatible with wasm
+tokio = { version = "1", features = ["full"] }
+````
+
+If we try to compile with tokio as a required dependency, we will get a compilation error like this:
+
+````shell
+error[E0432]: unresolved import `crate::sys::IoSourceState`
+  --> /Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/mio-1.0.2/src   |source.rs:14:5
+14 | use crate::sys::IoSourceState;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^ no `IoSourceState` in `sys`
+...
+````
+
+Since we added `tokio` as a dependency for all three binaries, cargo tries to compile it for each target. This fails because `tokio` is not compatible with the `wasm32-unknown-unknown` target.
+
+To fix the issue, we can **make the dependency optional and only enable it in the server feature**:
+
+````toml
+[dependencies]
+# ...
+# ✅ Since the tokio dependency is optional, it is not included in the web and desktop
+# bundles.
+tokio = { version = "1", features = ["full"], optional = true }
+
+[features]
+# ...
+# ✅ Since the tokio dependency is enabled in the server feature, it is included in
+# the server binary.
+server = ["dioxus/server", "dep:tokio"]
+````
+
+Now when we build with `dx serve`, the project compiles successfully.
+
+## Adding Client Only Dependencies
+
+Many dependencies like [`wasm-bindgen`](https://docs.rs/wasm-bindgen/latest/wasm_bindgen/index.html) and [`web-sys`](https://docs.rs/web-sys/latest/web_sys/index.html) are only compatible with the client. Unlike server-only dependencies, these dependencies can generally compile on native targets, but they will panic when used outside of the browser.
+
+You can cut down on build times for your server and native binaries by only including web dependencies in the browser client binary.
+
+Instead of adding web only dependencies every binary in your project like this:
+
+````toml
+[dependencies]
+# ...
+# ❌ If web-sys is added as a required dependency, it will be included in the server,
+# native, and the web bundle which makes build times longer.
+web-sys = { version = "0.3.60", features = ["console"] }
+````
+
+You can make the dependency optional and only enable it in the `web` feature in your `Cargo.toml`:
+
+````toml
+[dependencies]
+# ...
+# ✅ Since the web-sys dependency is optional, it is not included in the server and
+# native bundles.
+web-sys = { version = "0.3.60", features = ["console"], optional = true }
+
+[features]
+# ...
+# ✅ Since the web-sys dependency is enabled in the web feature, it is included in
+# the web bundle.
+web = ["dioxus/web", "dep:web-sys"]
+````
+
+## Managing Binary Specific Imports
+
+Once you have set up binary specific dependencies, you need to adjust any of your imports to only import the dependencies when building for the binary that includes those dependencies.
+
+For example, if `tokio` is only enabled in the server feature, you will need to import it like this:
+
+````rs@server_tokio_import.rs
+// Since the tokio dependency is only enabled in the server feature,
+// we need to only import it when the server feature is enabled.
+#[cfg(feature = "server")]
+use tokio::fs::File;
+#[cfg(feature = "server")]
+use tokio::io::AsyncReadExt;
+````
+
+You also need to only compile any usage of the dependency when the feature is enabled:
+
+````rs@server_tokio_import.rs
+// Since the tokio dependency is only enabled in the server feature,
+// we need to only compile any usage of the dependency when the server feature is enabled.
+#[cfg(feature = "server")]
+async fn read_file() -> Result<String, std::io::Error> {
+    let mut file = File::open("path/to/file").await?;
+    let mut contents = String::new();
+    file.read_to_string(&mut contents).await?;
+    Ok(contents)
+}
+
+// The bodies of server functions automatically only compile when the server feature is enabled.
+#[server]
+async fn get_file_contents() -> Result<String, ServerFnError> {
+    let mut file = File::open("path/to/file").await?;
+    let mut contents = String::new();
+    file.read_to_string(&mut contents).await?;
+    Ok(contents)
+}
+````
+
+It may be more convenient to group server or client specific code into a module that is only compiled when the feature is enabled:
+
+````rs@server_tokio_import.rs
+// Instead of configuring each item that is only used in the server, you can group
+// them into a module that is only compiled when the server feature is enabled.
+#[cfg(feature = "server")]
+mod tokio_utilities {
+    use std::path::PathBuf;
+    use tokio::fs::File;
+    use tokio::io::AsyncReadExt;
+
+    pub async fn read_file(path: PathBuf) -> Result<String, std::io::Error> {
+        let mut file = File::open(path).await?;
+        let mut contents = String::new();
+        file.read_to_string(&mut contents).await?;
+        Ok(contents)
+    }
+}
+
+// Then you can define your server functions using shared utilities you defined for
+// server only code.
+#[server]
+async fn get_file_contents() -> Result<String, ServerFnError> {
+    let file = tokio_utilities::read_file(PathBuf::from("path/to/file")).await?;
+    Ok(file)
+}
+
+#[server]
+async fn get_other_file_contents() -> Result<String, ServerFnError> {
+    let file = tokio_utilities::read_file(PathBuf::from("path/to/other/file")).await?;
+    Ok(file)
+}
+````
+
+ > 
+ > The [rust reference](https://doc.rust-lang.org/reference/conditional-compilation.html) has more information about conditional compilation in rust.
+# Communicating with the server
+
+`dioxus-fullstack` provides server functions that allow you to call an automatically generated API on the server from the client as if it were a local function.
+
+To make a server function, simply add the `#[server(YourUniqueType)]` attribute to a function. The function must:
+
+* Be an async function
+* Have arguments and a return type that both implement serialize and deserialize (with [serde](https://serde.rs/)).
+* Return a `Result` with an error type of ServerFnError
+
+ > 
+ > If you are targeting WASM on the server with WASI, you must call `register` on the type you passed into the server macro in your main function before starting your server to tell Dioxus about the server function. For all other targets, the server function will be registered automatically.
+
+Let's continue building on the app we made in the [getting started](../../getting_started/index.md) guide. We will add a server function to our app that allows us to double the count on the server.
+
+First, add serde as a dependency:
+
+````shell
+cargo add serde
+````
+
+Next, add the server function to your `main.rs`:
+
+````rs@server_function.rs
+#![allow(non_snake_case)]
+
+use dioxus::prelude::*;
+
+fn main() {
+    launch(App)
+}
+
+fn App() -> Element {
+    let mut count = use_signal(|| 0);
+
+    rsx! {
+        h1 { "High-Five counter: {count}" }
+        button { onclick: move |_| count += 1, "Up high!" }
+        button { onclick: move |_| count -= 1, "Down low!" }
+        button {
+            onclick: move |_| {
+                async move {
+                    if let Ok(new_count) = double_server(count()).await {
+                        count.set(new_count);
+                    }
+                }
+            },
+            "Double"
+        }
+    }
+}
+
+#[server]
+async fn double_server(number: i32) -> Result<i32, ServerFnError> {
+    // Perform some expensive computation or access a database on the server
+    tokio::time::sleep(std::time::Duration::from_secs(1)).await;
+    let result = number * 2;
+    println!("server calculated {result}");
+    Ok(result)
+}
+
+````
+
+Now, build your client-side bundle with `dx build --features web` and run your server with `cargo run --features ssr`. You should see a new button that multiplies the count by 2.
+
+## Cached data fetching
+
+One common use case for server functions is fetching data from the server:
+
+````rs@server_data_fetch.rs
+#![allow(non_snake_case, unused)]
+
+use dioxus::prelude::*;
+
+fn main() {
+    launch(app)
+}
+
+fn app() -> Element {
+    let mut count = use_resource(get_server_data);
+
+    rsx! { "server data is {count.value():?}" }
+}
+
+#[server]
+async fn get_server_data() -> Result<String, ServerFnError> {
+    // Access a database
+    tokio::time::sleep(std::time::Duration::from_millis(100)).await;
+    Ok("Hello from the server!".to_string())
+}
+
+````
+
+If you navigate to the site above, you will first see `server data is None`, then after the `WASM` has loaded and the request to the server has finished, you will see `server data is Some(Ok("Hello from the server!"))`.
+
+This approach works, but it can be slow. Instead of waiting for the client to load and send a request to the server, what if we could get all of the data we needed for the page on the server and send it down to the client with the initial HTML page?
+
+This is exactly what the `use_server_future` hook allows us to do! `use_server_future` is similar to the `use_resource` hook, but it allows you to wait for a future on the server and send the result of the future down to the client.
+
+Let's change our data fetching to use `use_server_future`:
+
+````rs@server_data_prefetch.rs
+#![allow(non_snake_case, unused)]
+
+use dioxus::prelude::*;
+
+fn main() {
+    launch(app);
+}
+
+fn app() -> Element {
+    let mut count = use_server_future(get_server_data)?;
+
+    rsx! {"server data is {count.value():?}"}
+}
+
+#[server]
+async fn get_server_data() -> Result<String, ServerFnError> {
+    // Access a database
+    tokio::time::sleep(std::time::Duration::from_millis(100)).await;
+    Ok("Hello from the server!".to_string())
+}
+
+````
+
+ > 
+ > Notice the `?` after `use_server_future`. This is what tells Dioxus fullstack to wait for the future to resolve before continuing rendering. If you want to not wait for a specific future, you can just remove the ? and deal with the `Option` manually.
+
+Now when you load the page, you should see `server data is Ok("Hello from the server!")`. No need to wait for the `WASM` to load or wait for the request to finish!
+
+````inject-dioxus
+SandBoxFrame {
+	url: "https://codesandbox.io/p/sandbox/dioxus-fullstack-server-future-qwpp4p?file=/src/main.rs:3,24"
+}
+````
+
+## Running the client with dioxus-desktop
+
+The project presented so far makes a web browser interact with the server, but it is also possible to make a desktop program interact with the server in a similar fashion. (The full example code is available in the [Dioxus repo](https://github.com/DioxusLabs/dioxus/tree/main/packages/fullstack/examples/axum-desktop))
+
+First, we need to make two binary targets, one for the desktop program (the `client.rs` file), one for the server (the `server.rs` file). The client app and the server functions are written in a shared `lib.rs` file.
+
+The desktop and server targets have slightly different build configuration to enable additional dependencies or features.
+The Cargo.toml in the full example has more information, but the main points are:
+
+* the client.rs has to be run with the `desktop` feature, so that the optional `dioxus-desktop` dependency is included
+* the server.rs has to be run with the `ssr` features; this will generate the server part of the server functions and will run our backend server.
+
+Once you create your project, you can run the server executable with:
+
+````bash
+cargo run --bin server --features ssr
+````
+
+and the client desktop executable with:
+
+````bash
+cargo run --bin client --features desktop
+````
+
+### Client code
+
+The client file is pretty straightforward. You only need to set the server url in the client code, so it knows where to send the network requests. Then, dioxus_desktop launches the app.
+
+For development, the example project runs the server on `localhost:8080`. **Before you release remember to update the url to your production url.**
+
+### Server code
+
+In the server code, first you have to set the network address and port where the server will listen to.
+
+````rs@server_function_desktop_client.rs
+let listener = tokio::net::TcpListener::bind("127.0.0.1:3000")
+    .await
+    .unwrap();
+println!("listening on http://127.0.0.1:3000");
+````
+
+Then, you have to register the types declared in the server function macros into the server.
+For example, consider this server function:
+
+````rs@server_function_desktop_client.rs
+#[server(GetServerData)]
+async fn get_server_data() -> Result<String, ServerFnError> {
+    Ok("Hello from the server!".to_string())
+}
+````
+
+Finally, the server is started and it begins responding to requests.
+# Extractors
+
+Server functions are an ergonomic way to call a function on the server. Server function work by registering an endpoint on the server and using requests on the client. Most of the time, you shouldn't need to worry about how server functions operate, but there are some times when you need to get some value from the request other than the data passed in the server function.
+
+For example, requests contain information about the user's browser (called the [user agent](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent)). We can use an extractor to retrieve that information.
+
+You can use the `extract` method within a server function to extract something from the request. You can extract any type that implements `FromServerContext` (or when axum is enabled, you can use axum extractors directly):
+
+````rs@server_function_extract.rs
+#[server]
+pub async fn log_headers() -> Result<(), ServerFnError> {
+    let headers: http::HeaderMap = extract().await?;
+    log::info!("{:?}", headers[http::header::USER_AGENT]);
+    Ok(())
+}
+````
+# Middleware
+
+Extractors allow you to wrap your server function in some code that changes either the request or the response. Dioxus fullstack integrates with [Tower](https://docs.rs/tower/latest/tower/index.html) to allow you to wrap your server functions in middleware.
+
+You can use the `#[middleware]` attribute to add a layer of middleware to your server function. Let's add a timeout middleware to a server function. This middleware will stop running the server function if it reaches a certain timeout:
+
+````rs@server_function_middleware.rs
+#[server]
+// Add a timeout middleware to the server function that will return an error if the function takes longer than 1 second to execute
+#[middleware(tower_http::timeout::TimeoutLayer::new(std::time::Duration::from_secs(1)))]
+pub async fn timeout() -> Result<(), ServerFnError> {
+    tokio::time::sleep(std::time::Duration::from_secs(2)).await;
+    Ok(())
+}
+````
+# Authentication
+
+You can use [extractors](./extractors) to integrate auth with your Fullstack application.
+
+You can create a custom extractors that extracts the auth session from the request. From that auth session, you can check if the user has the required privileges before returning the private data.
+
+A [full auth example](https://github.com/DioxusLabs/dioxus/blob/v0.6/examples/fullstack-auth) with the complete implementation is available in the fullstack examples.
+# Routing
+
+You can easily integrate your fullstack application with a client side router using Dioxus Router. This allows you to create different scenes in your app and navigate between them. You can read more about the router in the [router reference](../../router/index.md)
+
+````rs@server_router.rs
+#![allow(non_snake_case)]
+
+use axum::Router;
+use dioxus::prelude::*;
+
+use serde::{Deserialize, Serialize};
+
+fn main() {
+    launch(|| rsx! { Router::<Route> {} });
+}
+
+#[derive(Clone, Routable, Debug, PartialEq, Serialize, Deserialize)]
+enum Route {
+    #[route("/")]
+    Home {},
+    #[route("/blog/:id")]
+    Blog { id: i32 },
+}
+
+#[component]
+fn Blog(id: i32) -> Element {
+    rsx! {
+        Link { to: Route::Home {}, "Go to counter" }
+        table {
+            tbody {
+                for _ in 0..id {
+                    tr {
+                        for _ in 0..id {
+                            td { "hello world!" }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+#[component]
+fn Home() -> Element {
+    let mut count = use_signal(|| 0);
+    let mut text = use_signal(|| "...".to_string());
+
+    rsx! {
+        Link { to: Route::Blog { id: count() }, "Go to blog" }
+        div {
+            h1 { "High-Five counter: {count}" }
+            button { onclick: move |_| count += 1, "Up high!" }
+            button { onclick: move |_| count -= 1, "Down low!" }
+            button {
+                onclick: move |_| {
+                    async move {
+                        if let Ok(data) = get_server_data().await {
+                            println!("Client received: {}", data);
+                            text.set(data.clone());
+                            post_server_data(data).await.unwrap();
+                        }
+                    }
+                },
+                "Run server function!"
+            }
+            "Server said: {text}"
+        }
+    }
+}
+
+#[server(PostServerData)]
+async fn post_server_data(data: String) -> Result<(), ServerFnError> {
+    println!("Server received: {}", data);
+
+    Ok(())
+}
+
+#[server(GetServerData)]
+async fn get_server_data() -> Result<String, ServerFnError> {
+    Ok("Hello from the server!".to_string())
+}
+
+````
+
+````inject-dioxus
+SandBoxFrame {
+	url: "https://codesandbox.io/p/sandbox/dioxus-fullstack-router-s75v5q?file=%2Fsrc%2Fmain.rs%3A7%2C1"
+}
+````
+# Static Site Generation
+
+Static site generation (SSG) lets you pre-generate all static pages of your application at build time. Once you have the static html pages, you can deploy them to any static hosting provider like GitHub Pages.
+
+## Setting up the ServeConfig
+
+SSG builds on top of the incremental rendering feature of Dioxus fullstack. We need to set up the `ServeConfig` to enable incremental rendering. The incremental config needs to render to the `public` directory where Dioxus places all other public files like the wasm binary and static assets. The `public` directory in the web folder will always be placed alongside the server binary.
+
+````rs@static_site_generation.rs
+fn main() {
+    dioxus::LaunchBuilder::new()
+        // Set the server config only if we are building the server target
+        .with_cfg(server_only! {
+            ServeConfig::builder()
+                // Enable incremental rendering
+                .incremental(
+                    IncrementalRendererConfig::new()
+                        // Store static files in the public directory where other static assets like wasm are stored
+                        .static_dir(
+                            std::env::current_exe()
+                                .unwrap()
+                                .parent()
+                                .unwrap()
+                                .join("public")
+                        )
+                        // Don't clear the public folder on every build. The public folder has other files including the wasm
+                        // binary and static assets required for the app to run
+                        .clear_cache(false)
+                )
+                .enable_out_of_order_streaming()
+        })
+        .launch(app);
+}
+````
+
+## Configuring static routes
+
+Once you have incremental rendering enabled, you need to tell the CLI about the static routes in your app. The CLI looks for a server function at the endpoint `"static_routes"` that returns a list of all static urls. It will call this server function at build time and pre-render all of the routes in the list.
+
+````rs@static_site_generation.rs
+#[derive(Routable, Clone, PartialEq)]
+pub enum Route {
+    // Any routes with no dynamic segments in your router will be included in the static routes list
+    #[route("/")]
+    Index {},
+    #[route("/other")]
+    Other {},
+}
+
+// The server function at the endpoint "static_routes" will be called by the CLI to generate the list of static
+// routes. You must explicitly set the endpoint to `"static_routes"` in the server function attribute instead of
+// the default randomly generated endpoint.
+#[server(endpoint = "static_routes", output = server_fn::codec::Json)]
+async fn static_routes() -> Result<Vec<String>, ServerFnError> {
+    // The `Routable` trait has a `static_routes` method that returns all static routes in the enum
+    Ok(Route::static_routes().iter().map(ToString::to_string).collect())
+}
+````
+
+## Publishing static sites
+
+Finally, you can bundle your site with `dx bundle --platform web --ssg`. Once the CLI finishes bundling, you should see a `public` folder in the dx folder of your project:
+
+![Dioxus SSG](/assets/06_docs/ssg_folder.png)
+
+The folder contains all of the static assets that you need to serve your site. You can copy the public folder into any static hosting provider like GitHub Pages.
+# Axum integration
+
+Dioxus fullstack is built on top of Axum under the hood. The launch function will set up a default Axum server for your fullstack project, but if you need more control you can drop down to a custom axum server. This guide will show you how to set up an Axum server with your Dioxus fullstack project.
+
+## Adding axum to your project
+
+First, we need to add axum and tokio as dependencies. Since we only need these dependencies on the server, we need to make them optional and enable them in the server feature flag. More information about server only dependencies can be found in the [dependencies guide](./managing_dependencies.md#adding-server-only-dependencies):
+
+````toml
+[dependencies]
+dioxus = { version = "0.6.0", features = ["fullstack"] }
+# Axum is optional because we only use it on the server
+axum = { version = "0.7", optional = true }
+tokio = { version = "1.0", features = ["full"], optional = true }
+
+[features]
+# ...
+web = ["dioxus/web"]
+# The server feature enables the axum dependency
+server = ["dioxus/server", "dep:axum", "dep:tokio"]
+````
+
+## Splitting up the main function
+
+Next we to split up our main function into two parts: one that will start dioxus on the client with the launch function, and one that will serve our Axum router. We can use `#[cfg]` attribute to control what code compiles when the web feature or server feature is enabled:
+
+````rs@axum_integration.rs
+fn main() {
+    #[cfg(feature = "web")]
+    // Hydrate the application on the client
+    dioxus::launch(App);
+
+    // Launch axum on the server
+    #[cfg(feature = "server")]
+    {
+        tokio::runtime::Runtime::new()
+            .unwrap()
+            .block_on(async move {
+                launch_server(App).await;
+            });
+    }
+}
+````
+
+## Starting the axum server
+
+Now we can setup our axum server in the launch_server function. Since this code should only compile when the server is enabled, we need to gate it behind a `#[cfg(feature = "server")]` attribute again.
+
+When we serve our app the CLI will try to proxy the backend under a random port. The proxy adds devtool endpoints for hot reloading and logging to make it easier to develop your app. We need to look for the port the CLI gives us in dev mode with `server_ip` and `server_port`. If we don't find a port from the CLI, we can serve at our own ip and port for production.
+
+Finally, when building our Axum server, we need to call `serve_dioxus_application` on the router to add all the routes Dioxus needs to serve your app.
+
+````rs@axum_integration.rs
+#[cfg(feature = "server")]
+async fn launch_server(component: fn() -> Element) {
+    use std::net::{IpAddr, Ipv4Addr, SocketAddr};
+
+    // Get the address the server should run on. If the CLI is running, the CLI proxies fullstack into the main address
+    // and we use the generated address the CLI gives us
+    let ip =
+        dioxus::cli_config::server_ip().unwrap_or_else(|| IpAddr::V4(Ipv4Addr::new(127, 0, 0, 1)));
+    let port = dioxus::cli_config::server_port().unwrap_or(8080);
+    let address = SocketAddr::new(ip, port);
+    let listener = tokio::net::TcpListener::bind(address).await.unwrap();
+    let router = axum::Router::new()
+        // serve_dioxus_application adds routes to server side render the application, serve static assets, and register server functions
+        .serve_dioxus_application(ServeConfigBuilder::default(), App)
+        .into_make_service();
+    axum::serve(listener, router).await.unwrap();
+}
+````
+
+## Running your application
+
+Now we can run our application with the CLI. The CLI will automatically detect the server feature (that enables `dioxus/server`) and the client feature (which enables `dioxus/web`, `dioxus/desktop` or `dioxus/mobile`) and build once for each platform. To run the application, we can use the following command:
+
+````bash
+dx serve
+````
+
+## Conclusion
+
+This guide showed you how to set up a custom Axum server with your Dioxus fullstack project. You can now use all of the features of Axum in your Dioxus app, including middleware, routing, and more. If you need even more granular control over your router, you can split up the `serve_dioxus_application` function into [`serve_static_assets`](https://docs.rs/dioxus-fullstack/0.6.3/dioxus_fullstack/server/trait.DioxusRouterExt.html#tymethod.serve_static_assets), [`register_server_functions`](https://docs.rs/dioxus-fullstack/0.6.3/dioxus_fullstack/server/trait.DioxusRouterExt.html#method.register_server_functions), and [`render_handler`](https://docs.rs/dioxus-fullstack/0.6.3/dioxus_fullstack/server/fn.render_handler.html). See the documentation on each method for more details
+
+If you want to learn more about Axum, check out the [Axum documentation](https://docs.rs/axum/latest/axum/). Axum is built on top of the tower ecosystem which means you can use any tower service with your Axum server. The [tower-http](https://docs.rs/tower-http/latest/tower_http/) crate contains many useful utilities for your server like logging, compression, and file serving.

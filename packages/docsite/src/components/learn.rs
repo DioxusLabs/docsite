@@ -86,7 +86,7 @@ fn VersionSwitch() -> Element {
     let mut show_versions = use_signal(|| false);
     let current_version = use_current_docs_version();
     let current_stability = match current_version {
-        CurrentDocsVersion::V07(_) => "Alpha",
+        CurrentDocsVersion::V07(_) => "Stable",
         CurrentDocsVersion::V06(_) => "Stable",
         CurrentDocsVersion::V05(_) => "Stable",
         CurrentDocsVersion::V04(_) => "Stable",
@@ -342,15 +342,16 @@ fn Content<R: AnyBookRoute>() -> Element {
 
 fn VersionWarning() -> Element {
     let current_version = use_current_docs_version();
+    // div { class: "flex flex-row items-center justify-start w-full bg-yellow-200 opacity-80 text-yellow-800 text-sm font-normal py-2 px-2 rounded-md mb-4 gap-2",
+    //     crate::icons::IconWarning {}
+    //     "You are currently viewing the docs for Dioxus 0.7.0 which is under construction."
+    // }
     match current_version {
-        CurrentDocsVersion::V07(_) => rsx! {
-            div { class: "flex flex-row items-center justify-start w-full bg-yellow-200 opacity-80 text-yellow-800 text-sm font-normal py-2 px-2 rounded-md mb-4 gap-2",
-                crate::icons::IconWarning {}
-                "You are currently viewing the docs for Dioxus 0.7.0 which is under construction."
-            }
-        },
-        CurrentDocsVersion::V06(_) => rsx! {},
-        CurrentDocsVersion::V05(_) | CurrentDocsVersion::V04(_) | CurrentDocsVersion::V03(_) => {
+        CurrentDocsVersion::V07(_) => rsx! {},
+        CurrentDocsVersion::V06(_)
+        | CurrentDocsVersion::V05(_)
+        | CurrentDocsVersion::V04(_)
+        | CurrentDocsVersion::V03(_) => {
             rsx! {
                 div { class: "flex flex-row items-center justify-start w-full bg-yellow-200 opacity-80 text-yellow-800 text-sm font-normal py-2 px-2 rounded-md mb-4 gap-2",
                     crate::icons::IconWarning {}

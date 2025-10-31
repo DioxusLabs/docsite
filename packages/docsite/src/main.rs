@@ -222,7 +222,10 @@ pub enum Route {
 
         #[layout(Learn)]
             #[nest("/learn")]
-                #[redirect("/", || Route::Docs06 { child: crate::docs::router_06::BookRoute::Index { section: Default::default() } })]
+                #[redirect("/", || Route::Docs07 { child: crate::docs::router_07::BookRoute::Index { section: Default::default() } })]
+                #[child("/0.7")]
+                Docs07 { child: crate::docs::router_07::BookRoute },
+
                 #[child("/0.6")]
                 Docs06 { child: crate::docs::router_06::BookRoute },
 
@@ -235,8 +238,7 @@ pub enum Route {
                 #[child("/0.3")]
                 Docs03 { child: crate::docs::router_03::BookRoute },
 
-                #[child("/0.7")]
-                Docs07 { child: crate::docs::router_07::BookRoute },
+
             #[end_nest]
         #[end_layout]
     #[end_nest]
@@ -273,7 +275,7 @@ impl Route {
     }
 
     fn is_latest_docs(&self) -> bool {
-        matches!(self, Route::Docs06 { .. })
+        matches!(self, Route::Docs07 { .. })
     }
 }
 

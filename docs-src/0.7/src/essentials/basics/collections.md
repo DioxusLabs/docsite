@@ -215,7 +215,7 @@ let title = header.title().unwrap();
 let subtitle = header.subtitle().unwrap();
 ```
 
-To properly gain access to the underyling `Option<String>` we can use one of two approaches:
+To properly gain access to the underlying `Option<String>` we can use one of two approaches:
 
 - The `.transpose()` method which converts `Store<Option<String>>` to `Option<Store<String>>`
 - Using `.read().as_ref()`

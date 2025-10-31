@@ -1,9 +1,9 @@
 # Websockets
 
-Dioxus Fullstack provides built-in types for creating and managing websockets that work alongside server functions. Dioxus websockets are built on top of the underyling Axum websocket API, but with a few improvements tailored for building fullstack apps:
+Dioxus Fullstack provides built-in types for creating and managing websockets that work alongside server functions. Dioxus websockets are built on top of the underlying Axum websocket API, but with a few improvements tailored for fullstack apps:
 
-- Hybrid shared server/client types
-- Reactive wrapper for use in UI code
+- Shared server/client types
+- Reactive wrappers for use in UI code
 - Typed inputs, outputs, and customizable encoding
 
 Websockets are an extremely powerful communication protocol that allows bidirectional message passing to and from the server. Websockets are more efficient than HTTP requests for large amounts of messages, provide better real-time support, and allow for *ordered* data transmission.
@@ -41,7 +41,7 @@ pub struct Websocket<In = String, Out = String, E = JsonEncoding> {
 
 The input and output types are the types used when you call `.send()` and `.recv()` on the `socket` object provided after `on_upgrade`. By strongly typing the websocket, we guarantee that your client and server always use the right message format across the client and server.
 
-The `on_upgrade` method is a wrapper over the underlying Axum `on_upgrade` API that returns an axum response, indicating to the client that the websocket upgrade process is succesful. If the client agrees, then the server will run the `on_upgrade` callback, spawning the future. Note that this future is spawned on a tokio [LocalSet](https://docs.rs/tokio/latest/tokio/task/struct.LocalSet.html). This means the future does not need to be `Send`.
+The `on_upgrade` method is a wrapper over the underlying Axum `on_upgrade` API that returns an axum response, indicating to the client that the websocket upgrade process is successful. If the client agrees, then the server will run the `on_upgrade` callback, spawning the future. Note that this future is spawned on a tokio [LocalSet](https://docs.rs/tokio/latest/tokio/task/struct.LocalSet.html). This means the future does not need to be `Send`.
 
 We can use our own message types for the input and output messages. Calls to `.send()` and `.recv()` will attempt to deserialize messages into the right type, returning an error if the deserialization fails.
 
@@ -112,7 +112,7 @@ The `Websocket` object has a number of utility methods you can use to assess the
 
 ## The use_websocket hook
 
-You might notice in the `use_future` example above, the websocket is only accessible to its containining scope. In a practical app, you'll want to send messages into the websocket and react to any changes in connection status.
+You might notice in the `use_future` example above, the websocket is only accessible to its containing scope. In a practical app, you'll want to send messages into the websocket and react to any changes in connection status.
 
 The `use_websocket` hook wraps the `websocket` object with signal-based reactivity. We can use `.status()` to read the websocket connection state, and `.send()` to send messages to the server.
 

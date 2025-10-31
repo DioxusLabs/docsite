@@ -15,13 +15,13 @@ pub async fn login() -> Result<()> {
 }
 ```
 
-Because server functions are called from the client, they need some way of expressiong *both* a request failure and a server failure. If the user is offline, we want to reliably return an offline error and status in the UI.
+Because server functions are called from the client, they need some way of expressing *both* a request failure and a server failure. If the user is offline, we want to reliably return an offline error and status in the UI.
 
 Also recall that server functions can return several different error types:
 
-- `ServerFnError`: A broad error type encompasing request failures and server failures
+- `ServerFnError`: A broad error type encompassing request failures and server failures
 - `anyhow::Error`: A general-purpose error type that downcasts its inner value
-- `CapturedError`: A cheaply-clonable `anyhow::Error` wrapper
+- `CapturedError`: A cheaply-cloneable `anyhow::Error` wrapper
 - `StatusCode`: A specific HTTP status code
 - `HttpError`: A specific HTTP status code and a message
 - Custom Errors: User errors that implement `Serialize + Deserialize + AsStatusCode`
@@ -76,7 +76,7 @@ async fn get_post() -> Result<String, HttpError> {
 
 If you `curl` the app, you'll notice that it returns a `404` status code.
 
-If we want to catch the error and provide a nice fallback UI, we can use an `ErrorBoundary`. Note that when we catch the error, we must
+If we want to catch the error and provide a nice fallback UI, we can use an `ErrorBoundary`. Note that when we catch the error, we must explicitly set the HTTP status code on the outgoing response with `FullstackContext::commit_error_status`:
 
 ```rust
 fn app() -> Element {
@@ -87,7 +87,7 @@ fn app() -> Element {
                 let http_error = FullstackContext::commit_error_status(err.error().unwrap());
 
                 // and then we can render some pretty fallback UI
-                rsx! { "An error occured! {http_error:?}" }
+                rsx! { "An error occurred! {http_error:?}" }
             },
             Post {}
         }

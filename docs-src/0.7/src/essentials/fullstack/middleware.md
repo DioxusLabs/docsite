@@ -11,7 +11,7 @@ Dioxus Fullstack provides two main ways of adding middleware to your app:
 
 In web applications, middleware are functions that are called before and after the request is handled by your endpoint logic.
 
-The underyling web framework that Dioxus Fullstack is built on - Axum - does not define its own bespoke middleware system. Instead, it leans on the broader ecosystem, integrating with the more fundamental [`tower`](https://github.com/tower-rs/tower) and [`hyper`](https://github.com/hyperium/hyper) crates.
+The underlying web framework that Dioxus Fullstack is built on - Axum - does not define its own bespoke middleware system. Instead, it leans on the broader ecosystem, integrating with the more fundamental [`tower`](https://github.com/tower-rs/tower) and [`hyper`](https://github.com/hyperium/hyper) crates.
 
 Axum *does* provide a simple way of writing middleware with `middleware::from_fn`:
 
@@ -43,7 +43,7 @@ The broader Rust ecosystem has many different 3rd party crates for middleware.
 
 The two main crates to look for middleware are:
 
-- [Tower](https://docs.rs/tower/latest/tower/): The underyling library for networking
+- [Tower](https://docs.rs/tower/latest/tower/): The underlying library for networking
 - [Tower-HTTP](https://github.com/tower-rs/tower-http): A dedicated HTTP-specific middleware library
 
 ## Middleware on the Router
@@ -181,7 +181,6 @@ dioxus::server::router(app)
     .layer(caching_layer)
 ```
 
-If we're not careful, we might accidentally cache a *logged-in user's* homepage! Caching is typically based on the request's URL, but middleware also operate on headers. If we show dynamic content based on headers (like auth or sessions), we need to take care to only cache certain respones.
+If we're not careful, we might accidentally cache a *logged-in user's* homepage! Caching is typically based on the request's URL, but middleware also operate on headers. If we show dynamic content based on headers (like auth or sessions), we need to take care to only cache certain responses.
 
 Many reverse proxies have the ability to configure caching based on request headers. We suggest diving into our deploy platform's reverse proxy setup, or implementing a smarter caching middleware yourself.
-

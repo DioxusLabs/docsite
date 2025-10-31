@@ -164,4 +164,4 @@ async fn upload_file_as_filestream(mut upload: FileStream) -> Result<()> {
 }
 ```
 
-The `FileStream` type also sets extra headers like `Content-Dispostion` and `X-Content-Size` which give the server endpoint more information to efficiently handle the upload.
+The `FileStream` type also sets extra headers like `Content-Disposition` and `X-Content-Size` which give the server endpoint more information to efficiently handle the upload.

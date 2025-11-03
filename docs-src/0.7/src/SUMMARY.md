@@ -80,7 +80,6 @@
   - [Create a Project](guides/tools/creating.md)
   - [Configure Project](guides/tools/configure.md)
   - [Translate HTML](guides/tools/translate.md)
-  - [VSCode Extension](guides/tools/vscode.md)
 - [Platform Support](guides/platforms/index.md)
   - [Web](guides/platforms/web.md)
   - [Desktop](guides/platforms/desktop.md)

@@ -10,10 +10,10 @@ In this chapter, we'll explore how to use feature flags and cargo targets to str
 
 ## The Server/Client split
 
-A "fullstack" application is actually composed of two distinct apps:
+A "fullstack" application is actually composed of at least two distinct binaries:
 
-- The client application that runs the web, desktop, or mobile application
-- The server application that renders the initial HTML and runs server functions
+- The client binary that runs the web, desktop, or mobile application
+- The server binary that renders the initial HTML and runs server functions
 
 Because our client app and server app target different platforms, we need to include different code and different dependencies. You can conceptualize the "server" as just another platform for your app, just like you might target both iOS and Android. The server will have different dependencies than the client app, and thus you need to properly configure your app's `Cargo.toml` and build flags.
 
@@ -66,7 +66,7 @@ dx serve --desktop
 dx serve --ios
 ```
 
-If your `dioxus` dependency enables the `fullstack` feature, DX recgonizes this app is a fullstack app and then creates two builds, each with a separate platform:
+If your `dioxus` dependency enables the `fullstack` feature, DX recognizes this app is a fullstack app and then creates two builds, each with a separate platform:
 
 ```toml
 [dependencies]
@@ -100,11 +100,11 @@ This syntax makes it possible to have two separate entrypoints for our app. This
 By default, DX isolates your server and client builds by levaraging Cargo Profiles. Cargo profiles let us specify certain build modifiers like opt-level, debug symbols, LTO, and other optimizations.
 
 DX will use these profiles
-- `web-dev` / `web-release`: targetting the web with `--web`
-- `server-dev` / `server-release`: targetting the server (implicitly, or with `--server`)
-- `desktop-dev` / `desktop-release`: targetting iOS apps with `--ios`
-- `ios-dev` / `ios-release`: targetting iOS apps with `--ios`
-- `android-dev` / `android-release`: targetting iOS apps with `--ios`
+- `web-dev` / `web-release`: targeting the web with `--web`
+- `server-dev` / `server-release`: targeting the server (implicitly, or with `--server`)
+- `desktop-dev` / `desktop-release`: targeting iOS apps with `--ios`
+- `ios-dev` / `ios-release`: targeting iOS apps with `--ios`
+- `android-dev` / `android-release`: targeting iOS apps with `--ios`
 
 These profiles correspond 1:1 with the "platforms" DX supports. Note that a `platform` is just a way of DX to isolate two builds from each other. You can completely customize the build, including:
 
@@ -127,8 +127,6 @@ For example, if we want to interact with the filesystem in a server function, we
 tokio = { version = "1", features = ["full"] }
 ```
 
-If we try to compile with tokio as a required dependency, we will get a compilation error like this:
-
 ```sh
 error[E0432]: unresolved import `crate::sys::IoSourceState`
   --> /Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/mio-1.0.2/src   |source.rs:14:5
@@ -137,15 +135,14 @@ error[E0432]: unresolved import `crate::sys::IoSourceState`
 ...
 ```
 
-Since we added `tokio` as a dependency for all three binaries, cargo tries to compile it for each target. This fails because `tokio` is not compatible with the `wasm32-unknown-unknown` target.
+Since we added `tokio` as a dependency for both the server and the client binary, cargo tries to compile it for each target. This fails because `tokio` is not compatible with the `wasm32-unknown-unknown` target.
 
 To fix the issue, we can **make the dependency optional and only enable it in the server feature**:
 
 ```toml
 [dependencies]
 # ...
-# ✅ Since the tokio dependency is optional, it is not included in the web and desktop
-# bundles.
+# ✅ Since the tokio dependency is optional, it is not included in client bundle.
 tokio = { version = "1", features = ["full"], optional = true }
 
 [features]

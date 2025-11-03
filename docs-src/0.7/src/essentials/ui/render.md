@@ -88,4 +88,4 @@ If you find yourself writing components that *are not* pure, then you are likely
 
 ## Similar to React
 
-If you're familiar with libraries like ReactJS, then this paradigm is familar to you. Dioxus borrows many ideas from React and your existing knowledge will be extremely helpful. If anything here is confusing to you, check out the [React docs](https://react.dev/learn) or do some extra research on React's reactivity system.
+If you're familiar with libraries like ReactJS, then this paradigm is familiar to you. Dioxus borrows many ideas from React and your existing knowledge will be extremely helpful. If anything here is confusing to you, check out the [React docs](https://react.dev/learn) or do some extra research on React's reactivity system.

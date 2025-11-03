@@ -24,7 +24,9 @@ fn main() {
 }
 ```
 
-The `dioxus::server::router` function creates a new axum router that sets up a few imporant pieces:
+Note how we use Rust's built-in `#[cfg]` macro to conditionally launch the app based on the `server` feature. When `server` feature is enabled, we enable `dioxus::serve`, and when it is disabled, we enable `dioxus::launch`.
+
+The `dioxus::server::router` function creates a new axum router that sets up a few important pieces:
 
 - Static Assets: automatically serve the `public` directory, index.html and assets
 - SSR: automatically run the app, render it to HTML, and serialize data for hydration
@@ -39,6 +41,27 @@ axum::Router::new()
 	.fallback(
 		get(render_handler).with_state(RenderHandleState::new(cfg, app)),
 	)
+```
+
+## Registering Server Functions
+
+When you use `dioxus::server::router` or `dioxus::launch` to start your fullstack server, Dioxus Fullstack registers all server functions for you automatically. This means you can quickly build your backend without needing to explicitly wire up endpoints to a central router.
+
+If you need more control with a custom axum setup, you can manually iterate through the list of global server functions and register single endpoints, or create new routers with a subset of routes with `ServerFunction::collect()`:
+
+```rust
+// We can iterate through all server functions:
+for func in ServerFunction::collect() {
+	// Read their data
+	tracing::info!(
+		"Registering server function: {} {}",
+		func.method(),
+		func.path()
+	);
+
+	// And add them to our router
+	router = func.register_server_fn_on_router(router);
+}
 ```
 
 ## Adding New Routes
@@ -75,6 +98,8 @@ let router = dioxus::server::router(app)
     .with_state(FormSubmitter::new())
     .layer(Extension(Broadcast::new()));
 ```
+
+The [Axum documentation](https://docs.rs/axum/latest/axum/index.html) has more information on defining routes and handlers outside of server functions.
 
 ## Adding `Layers`
 
@@ -128,15 +153,9 @@ let router = dioxus::server::router(app)
     }))
 ```
 
-## Adding State with `State<T>`
-
-As you migrate an existing Axum backend to Dioxus Fullstack, you might eventually need to use Axum's `State<T>` type parameter. In Axum, the `State<T>` type provides state to your axum endpoints using compile-time guarantees.
-
-... todo - currently no migration pattern here
-
 ## Using `Lazy<T>` as Global State
 
-As a simpler alternative to axyn extensions and `State<T>`, you can also use the built-in `Lazy<T>` type to access server resources without needing to set up a dedicated `dioxus::serve` entrypoint. The `Lazy<T>` type is very similar to the standard library's `LazyLock<T>` type, making it possible to initialize asynchronous data like database connections.
+As a simpler alternative to axum extensions and `State<T>`, you can also use the built-in `Lazy<T>` type to access server resources without needing to set up a dedicated `dioxus::serve` entrypoint. The `Lazy<T>` type is very similar to the standard library's `LazyLock<T>` type, making it possible to initialize asynchronous data like database connections.
 
 Simply create a new `Lazy<T>` instance as a `static` variable:
 
@@ -152,7 +171,7 @@ static DATABASE: Lazy<sqlx::SqlitePool> = Lazy::new(|| async move {
 });
 ```
 
-When you access the `DATABASE` object in your code, Dioxus will ensure it's properly initialized, blocking the current thread until the initializer finishes. This lets you use asynchronous resources *synchronously* which makes them extremely ergonomic.
+Then when you access the `DATABASE` object in your code, Dioxus will ensure it's properly initialized, blocking the current thread until the initializer finishes. This lets you use asynchronous resources *synchronously* which makes them extremely ergonomic.
 
 ```rust
 /// When using the `Lazy<T>` type, it implements `Deref<Target = T>`, so you can use it like a normal reference.
@@ -182,7 +201,3 @@ async fn add_message() -> Result<()> {
     Ok(())
 }
 ```
-
-## Nesting Routers
-
-todo....

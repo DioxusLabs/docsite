@@ -53,7 +53,7 @@ You can include stylesheets in your application using the `asset!` macro. Styles
 
 SCSS is also supported through the `asset!` macro. Include it the same way as a regular CSS file.
 
-You can read more about assets and all the options available to optimize your assets in the [manganis documentation](https://docs.rs/manganis/0.6.0/manganis).
+You can read more about assets and all the options available to optimize your assets in the [manganis documentation](https://docs.rs/manganis/latest/manganis).
 
 ## Including arbitrary files
 

@@ -2,7 +2,7 @@
 
 Almost all apps need a remote server to store and update user data. Dioxus provides a number of fullstack utilities for building your app's server alongisde the client. With Dioxus Fullstack, you can build *both* your app's frontend and backend entirely in Rust!
 
-Dioxus Fullstack deeply integrates with the popular [Axum](https://docs.rs/axum/latest/axum/) framework, making it easy to quickly add complex fullstack functionality to your app, including:
+Dioxus Fullstack deeply integrates with the popular [Axum](https://docs.rs/axum/latest/axum/) framework, making it easy to quickly add complex functionality to your app, including:
 
 - **Server-Side-Rendering**: Render HTML on the server and hydrate it on the client
 - **Server Functions**: Type-safe Axum HTTP endpoints directly callable from the client
@@ -42,7 +42,7 @@ async fn fetch_dog(breed: String) -> Result<String> {
 We can use the results of server functions during server-side-rendering along with hydration:
 
 ```rust
-let url = use_server_future(|| fetch_dog("poodle".to_string()));
+let url = use_loader(|| fetch_dog("poodle".to_string()))?;
 
 rsx! {
     img { src: "{url}", alt: "A cute dog" }
@@ -61,14 +61,8 @@ Our `Streaming<T>` wrapper allows you to easily send arbitrary bytes, text, JSON
 
 ## Server Side Rendering
 
-Dioxus Fullstack allows you to render your app on the server, speeding up load times for your users and improving your site's discoverability for search engines like Google. Server-side-rendering (SSR) allows you to render
-
-
-## Bundle Splitting and Lazy Loading
-
-
+Dioxus Fullstack allows you to render your app on the server, speeding up load times for your users and improving your site's discoverability for search engines like Google. Server-side-rendering (SSR) allows you to render your app's initial HTML on the server, sending a fully-formed HTML document to the client. The client can then "hydrate" the HTML into a fully-interactive app that can continue running on the client without requiring a persistant server connection.
 
 ## Assets
 
-Because Dioxus Fullstack integrates with our build tool DX, your fullstack apps come pre-optimized for deploying onto infrastructure like content-distribution-networks (CDNs). CDNs reduce your bandwidth usage and speed up your app's time-to-first byte for maximum performance. Assets bundled with DX are hashed, letting the server infinitely cache their contents.
-
+Because Dioxus Fullstack integrates with our build tool DX, your fullstack apps come pre-optimized for deploying onto infrastructure like content-distribution-networks (CDNs). CDNs reduce your bandwidth usage and speed up your app's time-to-first byte for maximum performance. Assets bundled with DX are hashed, letting the client infinitely cache their contents.

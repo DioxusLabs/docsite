@@ -68,7 +68,7 @@ Next, the Dioxus router is defined as an enum with the `Routable` derive attribu
 {{#include ../docs-router/src/doc_examples/guide_router.rs:new_router}}
 ```
 
-With the Dioxus router, every route is an enum variant with a `#[route]` attribute that specifics the route's URL. Whenever the router renders our route, the component of the same name will be rendered.
+With the Dioxus router, every route is an enum variant with a `#[route]` attribute that specifies the route's URL. Whenever the router renders our route, the component of the same name will be rendered.
 
 ```rust
 {{#include ../docs-router/src/doc_examples/guide_router.rs:new_router_with_component}}

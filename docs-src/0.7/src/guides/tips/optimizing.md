@@ -63,7 +63,6 @@ debug = false
 lto = true
 codegen-units = 1
 panic = "abort"
-strip = true
 incremental = false
 ```
 

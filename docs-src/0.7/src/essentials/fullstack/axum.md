@@ -106,7 +106,7 @@ dioxus::serve(|| async move {
 Now, in our handlers, we can extract the extension from the request:
 
 ```rust
-#[post("/api/broadcast", ext: Extension<broadcast::Sender<String>>;)]
+#[post("/api/broadcast", ext: Extension<broadcast::Sender<String>>)]
 async fn broadcast_message() -> Result<()> {
     ext.send("New broadcast message".to_string())?;
     Ok(())

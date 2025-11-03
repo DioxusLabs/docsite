@@ -81,10 +81,10 @@ This ensures that requests are always properly joined with the correct host.
 
 When using fullstack with native apps, a number of features and optimizations are disabled. Native apps are usually meant to be used offline, so their rendering needs to happen entirely on the client. Architecturally, native apps are similar to single-page-applications (SPA) where the bundle loads and *then* HTTP requests are made to load content.
 
-As such, a number of functions are disabled:
+As such, a number of features are disabled:
 
 - There is no hydration context, and thus no hydration data to hydrate the page
-- The app is never rendered on the server, skipping `[cfg(feature = "server")]` code
+- The app is never rendered on the server, skipping `#[cfg(feature = "server")]` code
 - There is no `FullstackContext` when rendering components
 - HTML Streaming and SSG have no effect
 
@@ -173,4 +173,3 @@ You can deploy native fullstack apps just the same as you would deploy a regular
 You can distribute the native app via an app store or by making the file downloadable to your users.
 
 To distribute the server, simply upload it to a hosting provider of your choice. As long as you set the `server_url` in the native app, you should be able to access your backend from the native client.
-

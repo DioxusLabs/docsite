@@ -71,7 +71,7 @@ dioxus::serve(|| async move {
 })
 ```
 
-The `axum_session_auth` crate integrates with `Sqlx` to automatically manage sessions using a row in your database.
+The `axum_session_auth` crate integrates with `sqlx` to automatically manage sessions using a row in your database.
 
 
 ## Auth as an Extractor

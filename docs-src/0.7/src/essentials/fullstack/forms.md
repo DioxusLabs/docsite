@@ -65,7 +65,7 @@ With some forms, you'll need to handle multiple request bodies in a single reque
 
 Dioxus provides the `MultipartFormData` type which will automatically convert `FormEvent` objects into proper multi-part requests.
 
-On the client, youd'd convert the `FormEvent` with `.into()`:
+On the client, you can convert the `FormEvent` with `.into()`:
 
 ```
 rsx! {
@@ -91,7 +91,7 @@ rsx! {
 }
 ```
 
-On the server, youd'd use an endpoint that takes `MultipartFormData` and then iterate through the fields using `next_field()`:
+On the server, you can use an endpoint that takes `MultipartFormData` and then iterate through the fields using `next_field()`:
 
 ```rust
 #[post("/api/upload-multipart")]

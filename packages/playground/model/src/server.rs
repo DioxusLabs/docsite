@@ -6,6 +6,7 @@ use crate::{
 };
 use axum::http::StatusCode;
 use axum::{extract::ws, response::IntoResponse};
+use dioxus_dx_wire_format::cargo_metadata::diagnostic::{Diagnostic, DiagnosticSpan};
 use dioxus_dx_wire_format::{
     cargo_metadata::{diagnostic::DiagnosticLevel, CompilerMessage},
     BuildStage as DxBuildStage,
@@ -36,7 +37,7 @@ impl SocketMessage {
         let msg = self
             .as_json_string()
             .expect("socket message should be valid json");
-        ws::Message::Text(msg)
+        ws::Message::Text(msg.into())
     }
 }
 
@@ -44,8 +45,8 @@ impl TryFrom<ws::Message> for SocketMessage {
     type Error = SocketError;
 
     fn try_from(value: ws::Message) -> Result<Self, Self::Error> {
-        let text = value.into_text()?;
-        SocketMessage::try_from(text)
+        let text = value.into_data();
+        Ok(serde_json::from_slice(&text)?)
     }
 }
 
@@ -65,25 +66,48 @@ impl TryFrom<CompilerMessage> for CargoDiagnostic {
         let message = diagnostic.message;
 
         // Collect spans
-        let spans = diagnostic
-            .spans
-            .iter()
-            .map(|s| CargoDiagnosticSpan {
-                is_primary: s.is_primary,
-                line_start: s.line_start,
-                line_end: s.line_end,
-                column_start: s.column_start,
-                column_end: s.column_end,
-                label: s.label.clone(),
-            })
-            .collect();
+        let spans = diagnostic.spans.iter().map(|s| s.clone().into()).collect();
 
         Ok(Self {
-            target_crate: value.target.name,
+            target_crate: Some(value.target.name),
             level,
             message,
             spans,
+            rendered: diagnostic.rendered,
         })
+    }
+}
+
+impl From<Diagnostic> for CargoDiagnostic {
+    fn from(value: Diagnostic) -> Self {
+        let level = CargoLevel::Error;
+
+        let message = value.message;
+
+        // Collect spans
+        let spans = value.spans.iter().map(|s| s.clone().into()).collect();
+
+        Self {
+            target_crate: None,
+            level,
+            message,
+            spans,
+            rendered: value.rendered,
+        }
+    }
+}
+
+impl From<DiagnosticSpan> for CargoDiagnosticSpan {
+    fn from(value: DiagnosticSpan) -> Self {
+        Self {
+            is_primary: value.is_primary,
+            line_start: value.line_start,
+            line_end: value.line_end,
+            column_start: value.column_start,
+            column_end: value.column_end,
+            label: value.label,
+            file_name: value.file_name,
+        }
     }
 }
 

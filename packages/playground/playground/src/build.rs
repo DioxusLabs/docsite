@@ -1,19 +1,26 @@
+use std::time::Duration;
+
 use crate::ws;
 use dioxus::prelude::*;
-use model::{AppError, CargoDiagnostic, SocketMessage};
+use model::{AppError, CargoDiagnostic, Project, SocketMessage};
 use uuid::Uuid;
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Store)]
 pub(crate) enum BuildStage {
     NotStarted,
     Starting,
+    Waiting(Duration),
+    Queued(usize),
     Building(model::BuildStage),
     Finished(Result<Uuid, String>),
 }
 
 impl BuildStage {
     pub fn is_running(&self) -> bool {
-        matches!(self, Self::Starting | Self::Building(..))
+        matches!(
+            self,
+            Self::Starting | Self::Building(..) | Self::Waiting(..) | Self::Queued(..)
+        )
     }
 
     pub fn is_finished(&self) -> bool {
@@ -39,92 +46,79 @@ impl BuildStage {
 
         None
     }
-
-    /// Extract the compiling stage info if available.
-    pub fn get_compiling_stage(&self) -> Option<(usize, usize, String)> {
-        if let Self::Building(model::BuildStage::Compiling {
-            crates_compiled,
-            total_crates,
-            current_crate,
-        }) = self
-        {
-            return Some((*crates_compiled, *total_crates, current_crate.to_string()));
-        }
-
-        None
-    }
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Store)]
 pub(crate) struct BuildState {
-    stage: Signal<BuildStage>,
-    queue_position: Signal<Option<usize>>,
-    diagnostics: Signal<Vec<CargoDiagnostic>>,
+    stage: BuildStage,
+    diagnostics: Vec<CargoDiagnostic>,
+    previous_build_id: Option<Uuid>,
 }
 
 impl BuildState {
-    pub fn new() -> Self {
+    pub fn new(project: &Project) -> Self {
         Self {
-            stage: Signal::new(BuildStage::NotStarted),
-            queue_position: Signal::new(None),
-            diagnostics: Signal::new(Vec::new()),
+            stage: if project.prebuilt {
+                BuildStage::Finished(Ok(project.id()))
+            } else {
+                BuildStage::NotStarted
+            },
+            diagnostics: Vec::new(),
+            previous_build_id: None,
         }
     }
+}
 
+#[store(pub)]
+impl Store<BuildState> {
     /// Reset the build state to it's default.
-    pub fn reset(&mut self) {
-        self.stage.set(BuildStage::NotStarted);
-        self.queue_position.set(None);
-        self.diagnostics.clear();
+    fn reset(&mut self) {
+        self.stage().set(BuildStage::NotStarted);
+        self.diagnostics().clear();
+        self.previous_build_id().set(None);
     }
 
     /// Get the current stage.
-    pub fn stage(&self) -> BuildStage {
-        (self.stage)()
+    fn get_stage(&self) -> BuildStage {
+        self.stage().cloned()
     }
 
     /// Set the build stage.
-    pub fn set_stage(&mut self, stage: BuildStage) {
-        self.stage.set(stage);
-    }
-
-    /// Get the current queue position.
-    pub fn queue_position(&self) -> Option<usize> {
-        (self.queue_position)()
-    }
-
-    /// Set the queue position.
-    pub fn set_queue_position(&mut self, position: Option<usize>) {
-        self.queue_position.set(position);
-    }
-
-    /// Get the diagnostics signal.
-    pub fn diagnostics(&self) -> Signal<Vec<CargoDiagnostic>> {
-        self.diagnostics
+    fn set_stage(&mut self, stage: BuildStage) {
+        self.stage().set(stage);
     }
 
     /// Add another diagnostic to the current list.
-    pub fn push_diagnostic(&mut self, diagnostic: CargoDiagnostic) {
-        self.diagnostics.push(diagnostic);
+    fn push_diagnostic(&mut self, diagnostic: CargoDiagnostic) {
+        self.diagnostics().push(diagnostic);
     }
 }
 
 /// Start a build and handle updating the build signals according to socket messages.
 pub async fn start_build(
-    mut build: BuildState,
+    mut build: Store<BuildState>,
     socket_url: String,
     code: String,
 ) -> Result<bool, AppError> {
+    let stage = build.get_stage();
     // Reset build state
-    if build.stage().is_running() {
+    if stage.is_running() {
         return Err(AppError::BuildIsAlreadyRunning);
     }
     build.reset();
+    if let Some(build_id) = stage.finished_id() {
+        build.previous_build_id().set(Some(build_id));
+    }
     build.set_stage(BuildStage::Starting);
 
     // Send socket compile request
     let mut socket = ws::Socket::new(&socket_url)?;
-    socket.send(SocketMessage::BuildRequest(code)).await?;
+    socket
+        .send(SocketMessage::BuildRequest {
+            code,
+            previous_build_id: stage.finished_id(),
+        })
+        .await?;
 
     // Handle socket messages
     loop {
@@ -133,8 +127,9 @@ pub async fn start_build(
             Err(e) => return Err(e),
             Ok(None) => break,
             Ok(Some(msg)) => {
-                let is_done = ws::handle_message(build, msg);
-                if is_done {
+                let finished = msg.is_finished();
+                ws::handle_message(build, msg);
+                if finished {
                     break;
                 }
             }
@@ -143,7 +138,7 @@ pub async fn start_build(
     socket.close().await;
 
     let mut success = false;
-    if let BuildStage::Finished(Ok(_)) = build.stage() {
+    if let BuildStage::Finished(Ok(_)) = build.get_stage() {
         success = true;
     };
 

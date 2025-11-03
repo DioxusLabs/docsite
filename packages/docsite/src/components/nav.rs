@@ -138,7 +138,7 @@ static LINKS: &[(&str, &str)] = &[
     // while developing, the `learn` link should point to the latest version of the docs. makes our lives a bit easier
     ("Learn", "/learn/0.7/"),
     // ("SDK", "/sdk"),
-    // ("Playground", "/playground"),
+    ("Playground", "/playground"),
     ("Components", "/components"),
     // ("Awesome", "/awesome"),
     ("Blog", "/blog"),

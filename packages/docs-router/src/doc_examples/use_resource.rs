@@ -42,7 +42,7 @@ pub fn App() -> Element {
 }
 
 #[component]
-fn RandomDog(breed: ReadOnlySignal<String>) -> Element {
+fn RandomDog(breed: ReadSignal<String>) -> Element {
     // ANCHOR: dependency
     let future = use_resource(move || async move {
         reqwest::get(format!("https://dog.ceo/api/breed/{breed}/images/random"))

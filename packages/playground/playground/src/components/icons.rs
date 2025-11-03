@@ -6,6 +6,7 @@ use dioxus::prelude::*;
 pub fn Warning() -> Element {
     rsx! {
         svg {
+            height: "16px",
             xmlns: "http://www.w3.org/2000/svg",
             fill: "#FFB11F",
             "viewBox": "0 -960 960 960",

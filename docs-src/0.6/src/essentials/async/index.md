@@ -106,12 +106,6 @@ If you need to change the loading view while a specific task is loading, you can
 {{#include ../docs-router/src/doc_examples/untested_06/asynchronous.rs:suspense_boundary_with_loading_placeholder}}
 ```
 
-```inject-dioxus
-DemoFrame {
-    asynchronous::DogGridViewWithLoadingPlaceholder {}
-}
-```
-
 ## Suspense with Fullstack
 
 To use suspense in your fullstack application, you need to use the `use_server_future` hook instead of `use_resource`. `use_server_future` handles serialization of the result of the future for hydration. It will also suspend automatically, so you don't need to call `.suspend()` on the future.

@@ -1,7 +1,6 @@
-use crate::build::{BuildStage, BuildState};
+use crate::build::{BuildState, BuildStateStoreExt};
 use dioxus::prelude::*;
 use dioxus_document::eval;
-// use dioxus_sdk::utils::{timing::use_debounce, window::use_window_size};
 
 use super::Logs;
 
@@ -27,24 +26,9 @@ pub fn Panes(
     pane_right_width: Signal<Option<i32>>,
     built_page_url: Memo<Option<String>>,
 ) -> Element {
-    let build = use_context::<BuildState>();
+    let build = use_context::<Store<BuildState>>();
     let mut dragging = use_signal(|| false);
     let mut mouse_data = use_signal(DraggableData::default);
-
-    // // Reset the panes slider on window resize.
-    // // TODO: This is annoying for the user, it should instead just recalculate the size from previous data.
-    // let window_size = use_window_size();
-    // let mut reset_panes_debounce = use_debounce(std::time::Duration::from_millis(200), move |_| {
-    //     spawn(async move {
-    //         pane_left_width.set(None);
-    //         pane_right_width.set(None);
-    //     });
-    // });
-
-    // use_effect(move || {
-    //     window_size();
-    //     reset_panes_debounce.action(());
-    // });
 
     // Handle retrieving required data from dom elements and enabling drag.
     let draggable_mousedown = move |e: Event<MouseData>| async move {
@@ -107,85 +91,47 @@ pub fn Panes(
             // Left Pane
             div {
                 id: "dxp-panes-left",
-                style: if let Some(val) = pane_left_width() { "width:{val}px;" },
+                width: if let Some(val) = pane_left_width() { "{val}px;" },
             }
             // Draggable
             div {
                 id: "dxp-panes-draggable",
                 onmousedown: draggable_mousedown,
                 onmouseup: stop_dragging,
+                // Two vertical lines to indicate draggable
+                svg {
+                    width: "12",
+                    height: "48",
+                    xmlns: "http://www.w3.org/2000/svg",
+                    view_box: "0 0 34 48",
+                    fill: "none",
+                    stroke: "currentColor",
+                    stroke_width: "6",
+                    stroke_linecap: "round",
+                    stroke_linejoin: "round",
+                    path { d: "M10 8v48" }
+                    path { d: "M24 8v48" }
+                }
             }
             // Right Pane
             div {
                 id: "dxp-panes-right",
-                style: if let Some(val) = pane_right_width() { "width:{val}px;" },
+                width: if let Some(val) = pane_right_width() { "{val}px;" },
 
-                if build_stage.is_running() {
-                    Progress {}
-                } else {
-                    // Viewport
-                    if let Some(url) = built_page_url() {
-                        div { id: "dxp-viewport",
-                            iframe {
-                                id: "dxp-iframe",
-                                src: "{url}",
-                                pointer_events: if dragging() { "none" } else { "all" },
-                            }
-                        }
-                    } else if build_stage.is_err() {
+                // Viewport
+                div { id: "dxp-viewport",
+                    if build_stage().is_err() {
                         Logs {}
+                    } else if let Some(url) = built_page_url() {
+                        iframe {
+                            id: "dxp-iframe",
+                            src: "{url}",
+                            pointer_events: if dragging() { "none" } else { "all" },
+                        }
                     } else {
                         p { "Click `Rebuild` to start a build!" }
                     }
                 }
-            }
-        }
-    }
-}
-
-#[component]
-fn Progress() -> Element {
-    let build = use_context::<BuildState>();
-
-    // Generate the loading message.
-    let message = use_memo(move || {
-        let compiling = build.stage().get_compiling_stage();
-        if let Some((crates_compiled, total_crates, current_crate)) = compiling {
-            return format!("[{crates_compiled}/{total_crates}] Compiling {current_crate}");
-        }
-
-        match build.stage() {
-            BuildStage::NotStarted => "Build has not started.",
-            BuildStage::Starting => "Starting build...",
-            BuildStage::Building(build_stage) => match build_stage {
-                model::BuildStage::RunningBindgen => "Running wasm-bindgen...",
-                model::BuildStage::Other => "Computing...",
-                model::BuildStage::Compiling { .. } => unreachable!(),
-            },
-            BuildStage::Finished(_) => "Finished!",
-        }
-        .to_string()
-    });
-
-    // Determine the progress width.
-    let progress_width = use_memo(move || {
-        let stage = build.stage();
-        let compiling = stage.get_compiling_stage();
-        if let Some((crates_compiled, total_crates, _)) = compiling {
-            return (crates_compiled as f64 / total_crates as f64) * 100.0;
-        }
-
-        match stage.is_running() {
-            true => 50.0,
-            false => 0.0,
-        }
-    });
-
-    rsx! {
-        div { id: "dxp-progress-container",
-            p { "{message}" }
-            div { id: "dxp-progress",
-                div { id: "dxp-bar", width: "{progress_width}%" }
             }
         }
     }

@@ -1,3 +1,4 @@
+use model::BuildResult;
 use model::CargoDiagnostic;
 use model::Project;
 use std::io;
@@ -6,6 +7,7 @@ use tokio::{sync::mpsc::UnboundedSender, task::JoinError};
 use uuid::Uuid;
 
 pub mod builder;
+pub mod cleanup;
 pub mod watcher;
 
 /// A build command which allows consumers of the builder api to submit and stop builds.
@@ -19,6 +21,7 @@ pub enum BuildCommand {
 #[derive(Debug, Clone)]
 pub struct BuildRequest {
     pub id: Uuid,
+    pub previous_build_id: Option<Uuid>,
     pub project: Project,
     pub ws_msg_tx: UnboundedSender<BuildMessage>,
 }
@@ -28,14 +31,21 @@ pub struct BuildRequest {
 pub enum BuildMessage {
     Building(model::BuildStage),
     CargoDiagnostic(CargoDiagnostic),
-    Finished(Result<Uuid, String>),
+    Finished(BuildResult),
     QueuePosition(usize),
+}
+
+impl BuildMessage {
+    /// Check if the build is done
+    pub fn is_done(&self) -> bool {
+        matches!(self, Self::Finished(_))
+    }
 }
 
 /// The DX CLI serves parseable JSON output with the regular tracing message and a parseable "json" field.
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub struct CliMessage {
-    json: Option<String>,
+    json: String,
 }
 
 /// Build failed to complete.

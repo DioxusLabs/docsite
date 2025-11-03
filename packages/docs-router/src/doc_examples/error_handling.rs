@@ -171,7 +171,7 @@ mod phone_number_validation {
     // ANCHOR: phone_number_validation
     #[component]
     pub fn PhoneNumberValidation() -> Element {
-        let mut phone_number = use_signal(|| String::new());
+        let mut phone_number = use_signal(String::new);
         let parsed_phone_number = use_memo(move || phone_number().parse::<PhoneNumber>());
 
         rsx! {

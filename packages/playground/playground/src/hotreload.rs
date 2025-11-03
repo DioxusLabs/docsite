@@ -1,9 +1,9 @@
 //! Simplified hot reloading for a single main.rs file.
+use ::dioxus_devtools::HotReloadMsg;
 use dioxus::{logger::tracing::error, prelude::*};
 use dioxus_core::internal::{
     HotReloadTemplateWithLocation, HotReloadedTemplate, TemplateGlobalKey,
 };
-use dioxus_devtools::HotReloadMsg;
 use dioxus_document::eval;
 use dioxus_html::HtmlCtx;
 use dioxus_rsx::CallBody;
@@ -12,7 +12,7 @@ use std::{collections::HashMap, fmt::Display, path::Path};
 use syn::spanned::Spanned as _;
 
 /// Atempts to hot reload and returns true if a full rebuild is needed.
-pub fn attempt_hot_reload(mut hot_reload: HotReload, new_code: &str) {
+pub fn attempt_hot_reload(mut hot_reload: Store<HotReload>, new_code: &str) {
     // Process any potential hot -eloadable changes and send them to the iframe web client.
     let result = hot_reload.process_file_change(new_code.to_string());
     match result {
@@ -24,21 +24,8 @@ pub fn attempt_hot_reload(mut hot_reload: HotReload, new_code: &str) {
                 jump_table: Default::default(),
                 for_build_id: Default::default(),
                 for_pid: Default::default(),
-                // unknown_files: Vec::new(),
             };
-
-            let e = eval(
-                r#"
-                const hrMsg = await dioxus.recv();
-                const iframeElem = document.getElementById("dxp-iframe");
-                const hrMsgJson = JSON.stringify(hrMsg);
-
-                if (iframeElem) {
-                    iframeElem.contentWindow.postMessage(hrMsgJson, "*");
-                }
-                "#,
-            );
-            _ = e.send(hr_msg);
+            send_hot_reload(hr_msg);
         }
         Err(HotReloadError::NeedsRebuild) => hot_reload.set_needs_rebuild(true),
         Err(e) => {
@@ -48,12 +35,28 @@ pub fn attempt_hot_reload(mut hot_reload: HotReload, new_code: &str) {
     }
 }
 
-#[derive(Clone, Copy)]
-pub struct HotReload {
-    needs_rebuild: Signal<bool>,
-    cached_parse: Signal<CachedParse>,
+pub fn send_hot_reload(hr_msg: HotReloadMsg) {
+    let e = eval(
+        r#"
+        const hrMsg = await dioxus.recv();
+        const iframeElem = document.getElementById("dxp-iframe");
+        const hrMsgJson = JSON.stringify(hrMsg);
+
+        if (iframeElem) {
+            iframeElem.contentWindow.postMessage(hrMsgJson, "*");
+        }
+        "#,
+    );
+    _ = e.send(hr_msg);
 }
 
+#[derive(Store)]
+pub struct HotReload {
+    needs_rebuild: bool,
+    cached_parse: CachedParse,
+}
+
+#[derive(Store)]
 struct CachedParse {
     raw: String,
     templates: HashMap<TemplateGlobalKey, HotReloadedTemplate>,
@@ -63,48 +66,44 @@ impl HotReload {
     pub fn new() -> Self {
         Self {
             cached_parse: {
-                Signal::new(CachedParse {
+                CachedParse {
                     raw: String::new(),
                     templates: HashMap::new(),
-                })
+                }
             },
-            needs_rebuild: Signal::new(true),
+            needs_rebuild: true,
         }
     }
+}
 
-    pub fn set_needs_rebuild(&mut self, needs_rebuild: bool) {
-        self.needs_rebuild.set(needs_rebuild);
+#[store(pub)]
+impl Store<HotReload> {
+    fn set_needs_rebuild(&mut self, needs_rebuild: bool) {
+        self.needs_rebuild().set(needs_rebuild);
     }
 
-    pub fn set_starting_code(&mut self, code: &str) {
-        *self.cached_parse.write() = CachedParse {
+    fn set_starting_code(&mut self, code: &str) {
+        *self.cached_parse().write() = CachedParse {
             raw: code.to_string(),
             templates: HashMap::new(),
         };
     }
 
-    fn full_rebuild(&mut self, code: String) -> HotReloadError {
-        *self.cached_parse.write() = CachedParse {
-            raw: code,
-            templates: HashMap::new(),
-        };
-        HotReloadError::NeedsRebuild
-    }
-
-    pub fn process_file_change(
+    fn process_file_change(
         &mut self,
         new_code: String,
     ) -> Result<Vec<HotReloadTemplateWithLocation>, HotReloadError> {
         let new_file = syn::parse_file(&new_code).map_err(|_err| HotReloadError::Parse)?;
 
         let cached_file = {
-            let cached = &mut self.cached_parse.read();
+            let cached = self.cached_parse();
+            let cached = cached.read();
             syn::parse_file(&cached.raw).map_err(|_err| HotReloadError::Parse)?
         };
 
         let changes = match diff_rsx(&new_file, &cached_file) {
             Some(rsx_calls) => rsx_calls,
-            None => return Err(self.full_rebuild(new_code)),
+            None => return Err(HotReloadError::NeedsRebuild),
         };
 
         let mut out_templates = Vec::new();
@@ -129,10 +128,11 @@ impl HotReload {
 
             // if the template is not hotreloadable, we need to do a full rebuild
             let Some(results) = hotreload_result else {
-                return Err(self.full_rebuild(new_code));
+                return Err(HotReloadError::NeedsRebuild);
             };
 
-            let mut cached = self.cached_parse.write();
+            let mut cached = self.cached_parse();
+            let mut cached = cached.write();
             for (index, template) in results.templates {
                 if template.roots.is_empty() {
                     continue;

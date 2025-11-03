@@ -2,7 +2,7 @@
 name = "{BUILD_ID}"
 default_platform = "web"
 out_dir = "dist"
-asset_dir = "public"
+asset_dir = "assets"
 hot_reload = false
 
 [web.app]
@@ -20,4 +20,3 @@ script = []
 [application.plugins]
 available = true
 required = []
-

@@ -101,9 +101,7 @@ mod effect {
         // You can use them to read or modify the rendered component
         use_effect(|| {
             log!("Effect ran");
-            document::eval(&format!(
-                "document.getElementById('effect-output').innerText = 'Effect ran'"
-            ));
+            document::eval("document.getElementById('effect-output').innerText = 'Effect ran'");
         });
 
         rsx! {

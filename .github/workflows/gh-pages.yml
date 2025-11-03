@@ -33,9 +33,9 @@ jobs:
           cache-on-failure: "false"
       - uses: cargo-bins/cargo-binstall@main
       - name: Install CLI
-        run: cargo binstall dioxus-cli -y --force --version 0.7.0-rc.0
+        run: cargo binstall dioxus-cli -y --force
       - name: Build
-        run: cd packages/docsite && dx build --verbose --trace --platform web --fullstack true --features fullstack,production --release --ssg
+        run: cd packages/docsite && dx build --verbose --trace --web --fullstack true --features fullstack,production --release --ssg
       - name: Generate search index
         run: target/dx/dioxus_docs_site/release/web/dioxus_docs_site --generate-search-index
       - name: Copy output

@@ -40,7 +40,7 @@ server = ["dioxus/server"]
 
 DX will also look for specific client features (`"web"` / `"desktop"` / `"mobile"`) and enable the relevant feature depending on the target platform. DX uses the concept of "platform" to distinguish types of builds from one another.
 
-To set a build's platform, you can use `--platform web/desktop/ios/android` or the shorthands like `--web`, `--desktop`, `--ios`, etc. When you specify a platform, DX also enables a corresponding feature in your Cargo.toml:
+To set a build's platform, you can use `--web`, `--desktop`, `--ios`, etc. When you specify a platform, DX also enables a corresponding feature in your Cargo.toml:
 
 ```toml
 # enabled with `--web`

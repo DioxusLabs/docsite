@@ -87,7 +87,7 @@
 - [Publishing](guides/deploy/index.md)
   - [Bundle Config](guides/deploy/config.md)
 - [Testing and Debugging](guides/testing/index.md)
-  - [Web](guides/testing/web.md)
+  - [Web Testing](guides/testing/web.md)
   - [Optimizing](guides/tips/optimizing.md)
   - [Anti-patterns](guides/tips/antipatterns.md)
 - [Utilities](guides/utilities/index.md)

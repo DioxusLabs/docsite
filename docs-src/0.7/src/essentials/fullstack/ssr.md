@@ -6,7 +6,7 @@ Server-side-rendering improve's your site's page load times and makes it easier 
 
 ## SSR vs CSR
 
-You might be intimated by the various terms, tradeoffs, and details. Don't worry - these additional concepts are simply optimizations to make your site perform better in various ways. You can still build a beautiful, useful, accessible site without enhancements like server-side-rendering.
+You might be intimidated by the various terms, tradeoffs, and details. Don't worry - these additional concepts are simply optimizations to make your site perform better in various ways. You can still build a beautiful, useful, accessible site without enhancements like server-side-rendering.
 
 The terms SSR and CSR refer to two different approaches to rendering pages:
 

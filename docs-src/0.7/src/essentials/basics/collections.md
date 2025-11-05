@@ -41,7 +41,7 @@ let header = use_store(|| HeaderState {
 });
 ```
 
-The `Store` drive macro generates additional methods on `Store<HeaderState>` that allow us to "zoom in" to fields of the struct. We access the fields by calling the field name like a method:
+The `Store` derive macro generates additional methods on `Store<HeaderState>` that allow us to "zoom in" to fields of the struct. We access the fields by calling the field name like a method:
 
 ```rust
 fn app() -> Element {

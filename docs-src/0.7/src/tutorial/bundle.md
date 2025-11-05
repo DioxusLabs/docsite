@@ -42,7 +42,7 @@ dx serve --android
 
 ## Testing on Desktop
 
-HotDog also works on macOS, Windows, and Linux! We can use `dx serve --webview` to serve our app as a desktop app.
+HotDog also works on macOS, Windows, and Linux! We can use `dx serve --desktop` to serve our app as a desktop app.
 
 ![HotDogDesktop](/assets/06_docs/hotdog-desktop.png)
 
@@ -101,12 +101,12 @@ When bundling installable apps, there are many distribution formats to choose fr
 You can specify package types like so:
 
 ```sh
-dx bundle --webview \
+dx bundle --desktop \
     --package-types "macos" \
     --package-types "dmg"
 ```
 
-Note that not all package-types are compatible with each platform - eg. only `.exe` can be built when specifying `--webview`.
+Note that not all package-types are compatible with each platform - eg. only `.exe` can be built when specifying `--desktop`.
 
 We should see the outputs in our terminal:
 
@@ -164,7 +164,7 @@ This mode is not particular friendly to humans, but does contain more informatio
 JSON mode works with all `dx` commands. However, it is most useful with `dx build` and `dx bundle`. The CLI always guarantees that the last emitted line is the result of the command. To collect the list of bundles from the `dx bundle` command, we can use `tail -1` and simple jq.
 
 ```sh
-dx bundle --webview \
+dx bundle --desktop \
     --json-output \
     --verbose \
     | tail -1 \

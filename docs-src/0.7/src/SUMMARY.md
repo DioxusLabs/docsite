@@ -80,7 +80,6 @@
   - [Create a Project](guides/tools/creating.md)
   - [Configure Project](guides/tools/configure.md)
   - [Translate HTML](guides/tools/translate.md)
-  - [VSCode Extension](guides/tools/vscode.md)
 - [Platform Support](guides/platforms/index.md)
   - [Web](guides/platforms/web.md)
   - [Desktop](guides/platforms/desktop.md)
@@ -88,8 +87,7 @@
 - [Publishing](guides/deploy/index.md)
   - [Bundle Config](guides/deploy/config.md)
 - [Testing and Debugging](guides/testing/index.md)
-  - [Web](guides/testing/web.md)
-  <!--- [Debugging](guides/testing/debugging.md)-->
+  - [Web Testing](guides/testing/web.md)
   - [Optimizing](guides/tips/optimizing.md)
   - [Anti-patterns](guides/tips/antipatterns.md)
 - [Utilities](guides/utilities/index.md)

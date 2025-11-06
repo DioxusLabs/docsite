@@ -1,6 +1,6 @@
 # Dioxus Guides
 
-These guides contains more detailed explanations for some concepts covered in the [`guide`](../guide/index.md) and more.
+These guides contain more detailed explanations for some concepts covered in the [`guide`](../guide/index.md) and more.
 
 ## State
 

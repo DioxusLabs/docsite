@@ -27,12 +27,11 @@ pub fn About() -> Element {
 pub fn MyComponent(name: String) -> Element {
     rsx! {
         div {
-            h1 { "Hello, {name}!" }
+            h3 { "Hello, {name}!" }
         }
     }
 }
 // ANCHOR_END: MyComponent
-
 
 #[component]
 pub fn MyComponentCall() -> Element {
@@ -43,7 +42,6 @@ pub fn MyComponentCall() -> Element {
     // ANCHOR_END: MyComponentCall
 }
 
-
 // ANCHOR: MyStatefulComponent
 #[component]
 pub fn MyStatefulComponent() -> Element {
@@ -51,7 +49,7 @@ pub fn MyStatefulComponent() -> Element {
 
     rsx! {
         div {
-            h1 { "Count: {count}" }
+            h3 { "Count: {count}" }
             button { onclick: move |_| count += 1, "Increment" }
         }
     }
@@ -74,7 +72,6 @@ fn increment_global_count() -> i32 {
 }
 // ANCHOR_END: increment_global_count
 
-
 // ANCHOR: MyImpureComponent
 #[component]
 fn MyImpureComponent() -> Element {
@@ -87,7 +84,7 @@ fn MyImpureComponent() -> Element {
 
     rsx! {
         div {
-            h1 { "Count: {count}" }
+            h3 { "Count: {count}" }
         }
     }
 }
@@ -100,7 +97,7 @@ fn MyPureComponent() -> Element {
 
     rsx! {
         div {
-            h1 { "Count: {count}" }
+            h3 { "Count: {count}" }
             button {
                 // ✅ Event handlers can modify state and have side effects.
                 onclick: move |_| count += 1,
@@ -119,7 +116,7 @@ fn Button(name: String) -> Element {
     log!("Component rerendered with name: {name} count: {count}");
 
     rsx! {
-        h1 { "Hello, {name}!" }
+        h3 { "Hello, {name}!" }
         // MyComponent reads the `count` signal, so it will rerender
         // whenever `count` changes.
         "Count: {count}"

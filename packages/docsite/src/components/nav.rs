@@ -136,11 +136,11 @@ fn CurrentStarCount() -> Element {
 
 static LINKS: &[(&str, &str)] = &[
     // while developing, the `learn` link should point to the latest version of the docs. makes our lives a bit easier
-    ("Learn", if cfg!(debug_assertions) { "/learn/0.7/" } else { "/learn/0.6/" }),
+    ("Learn", "/learn/0.7/"),
     // ("SDK", "/sdk"),
     // ("Playground", "/playground"),
     ("Components", "/components"),
-    ("Awesome", "/awesome"),
+    // ("Awesome", "/awesome"),
     ("Blog", "/blog"),
 ];
 
@@ -317,10 +317,12 @@ fn SearchResults(results: Signal<Results>, search_text: Signal<String>) -> Eleme
             Route::Docs03 { .. } => matches!(cur_route, Route::Docs03 { .. }),
             Route::Docs04 { .. } => matches!(cur_route, Route::Docs04 { .. }),
             Route::Docs05 { .. } => matches!(cur_route, Route::Docs05 { .. }),
-            Route::Docs06 { .. } => {
+            Route::Docs06 { .. } => matches!(cur_route, Route::Docs06 { .. }),
+            Route::Docs07 { .. } => {
                 !matches!(cur_route, Route::Docs03 { .. })
                     && !matches!(cur_route, Route::Docs04 { .. })
                     && !matches!(cur_route, Route::Docs05 { .. })
+                    && !matches!(cur_route, Route::Docs06 { .. })
             }
             _ => true,
         })

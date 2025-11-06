@@ -8,17 +8,14 @@ pub fn App() -> Element {
     rsx! {
         input {
             // tell the input to pick a file
-            r#type: "file",
+            type: "file",
             // list the accepted extensions
             accept: ".txt,.rs",
             // pick multiple files
             multiple: true,
             onchange: move |evt| {
-                if let Some(file_engine) = &evt.files() {
-                    let files = file_engine.files();
-                    for file_name in files {
-                        filenames.write().push(file_name);
-                    }
+                for file in evt.files() {
+                    filenames.write().push(file.name());
                 }
             }
         }

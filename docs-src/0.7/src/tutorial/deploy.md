@@ -74,7 +74,7 @@ COPY . .
 RUN cargo chef prepare --recipe-path recipe.json
 ```
 
-In the second phase, we use cargo chef to load cached dependencies and preform the build:
+In the second phase, we use cargo chef to load cached dependencies and perform the build:
 
 ```dockerfile
 FROM chef AS builder
@@ -191,7 +191,7 @@ To make server functions maintain a stable endpoint, we can manually name them w
 
 Let's re-deploy our web app with `fly deploy`. This deploy should complete faster thanks to `cargo chef` caching our build.
 
-Now, with `dx serve --webview`, we should be able to interact with the same backend across web and desktop.
+Now, with `dx serve --desktop`, we should be able to interact with the same backend across web and desktop.
 
 Amazing! Our startup is coming along nicely.
 

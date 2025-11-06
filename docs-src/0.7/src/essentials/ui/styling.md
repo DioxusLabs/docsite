@@ -125,7 +125,7 @@ To use the style declarations from our stylesheet, we can use [class selectors](
     background-color: #f0f9ff;
 }
 #root-component {
-    font-weight: 500px;
+    font-weight: 500;
 }
 ```
 
@@ -244,7 +244,7 @@ static STYLES: Asset = asset!("/assets/styles.scss");
 
 Your `assets/styles.scss` file can use all SCSS features:
 
-```scss
+```css
 $primary-color: #3b82f6;
 $secondary-color: #64748b;
 $border-radius: 8px;
@@ -383,7 +383,7 @@ Generally, you'll use either Flexbox or CSS Grid.
 
 ### Flexbox Layout
 
-Flexbox is incredibly handy for building responsive user interfaces. As you adjust the document viewport, elements will automatically adjust their size and placement to fit their flex constraints. The [CSS-Tricks guide](https://css-tricks.com/snippets/css/a-guide-to-flexbox/) provides a very helpful tutorial on all the flex contraints you can use.
+Flexbox is incredibly handy for building responsive user interfaces. As you adjust the document viewport, elements will automatically adjust their size and placement to fit their flex constraints. The [CSS-Tricks guide](https://css-tricks.com/snippets/css/a-guide-to-flexbox/) provides a very helpful tutorial on all the flex constraints you can use.
 
 ![Flexbox Guide](/assets/07/flexbox-diagram.webp)
 
@@ -457,13 +457,11 @@ use dioxus_free_icons::{Icon, icons::fa_solid_icons};
 
 fn App() -> Element {
     rsx! {
-        div {
-            Icon {
-                width: 30,
-                height: 30,
-                fill: "blue",
-                icon: fa_solid_icons::FaHeart
-            }
+        Icon {
+            width: 30,
+            height: 30,
+            fill: "blue",
+            icon: fa_solid_icons::FaHeart
         }
     }
 }

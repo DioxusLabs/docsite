@@ -47,7 +47,7 @@ fn RsxExpression() -> Element {
 
         // And iterators
         ul {
-            {(0..5).map(|i| rsx! { "{i}" })}
+            {(0..5).map(|i| rsx! { li { "{i}" } })}
         }
     }
     // ANCHOR_END: rsx_expression
@@ -63,7 +63,7 @@ fn RsxLoop() -> Element {
 
         ul {
             for item in 0..5 {
-                "{item}"
+                li { "{item}" }
             }
         }
     }

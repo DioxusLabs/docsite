@@ -1,4 +1,4 @@
-use crate::docs::router_06::BookRoute;
+use crate::docs::router_07::BookRoute;
 use crate::*;
 
 pub(crate) fn Hero() -> Element {
@@ -20,7 +20,7 @@ pub(crate) fn Hero() -> Element {
                         }
                         div { class: "pt-8 lg:pt-16 text-[1em] flex flex-row space-x-4 mx-auto lg:mx-0 justify-center lg:justify-start",
                             Link {
-                                to: Route::Docs06 {
+                                to: Route::Docs07 {
                                     child: BookRoute::Index {
                                         section: Default::default(),
                                     },

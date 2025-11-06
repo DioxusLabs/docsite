@@ -7,25 +7,26 @@ There are many packages in the Dioxus organization. This document will help you 
 ## Entry Points
 
 - [dioxus](https://github.com/DioxusLabs/dioxus/tree/main/packages/dioxus): The main crate for Dioxus applications. The dioxus crate has different feature flags to enable a specific [renderer](#renderers) with the launch API and expose different features like the router and [fullstack](#fullstack). The [CLI](https://github.com/DioxusLabs/dioxus/tree/main/packages/cli) uses the renderer feature flag that is enabled to determine what rust target to compile for.
-- [dioxus-lib](https://github.com/DioxusLabs/dioxus/tree/main/packages/dioxus-lib): Dioxus lib is a re-export of the dioxus crate without any renderer features. This crate is recommended for libraries because it is impossible to pull in a renderer feature accidentally which would enable that renderer for any downstream crates.
 
 ## Renderers
 
 Renderers are the entry point for Dioxus applications. They handle rendering the application, polling async tasks, and handling events. Each renderer depends on `dioxus-core` for the core virtual dom and implements both the history trait from `dioxus-history` and the event conversion trait from `dioxus-html`. Dioxus has four renderers in the main repository:
 
-- [desktop](https://github.com/DioxusLabs/dioxus/tree/main/packages/desktop): A Render that Runs Dioxus applications natively, but renders them with the system webview
-- [mobile](https://github.com/DioxusLabs/dioxus/tree/main/packages/mobile): A Render that Runs Dioxus applications natively, but renders them with the system webview. This is currently a think wrapper on top of the desktop renderer since both renderers use the webview
 - [web](https://github.com/DioxusLabs/dioxus/tree/main/packages/web): Renders Dioxus applications in the browser by compiling to WASM and manipulating the DOM. The web renderer has a hydration feature to take over rendering from the server if [fullstack](#fullstack) is enabled
-- [liveview](https://github.com/DioxusLabs/dioxus/tree/main/packages/liveview): A Render that Runs on the server, and renders using a websocket proxy in the browser. The liveview renderer is currently supported, but development has been deprioritized in favor of fullstack and it may be removed in the future
+- [desktop](https://github.com/DioxusLabs/dioxus/tree/main/packages/desktop): A renderer that runs on desktop and mobile platforms. The Dioxus application code is compiled natively, and the UI is rendered using a system webview.
+- [mobile](https://github.com/DioxusLabs/dioxus/tree/main/packages/mobile): A Render that Runs Dioxus applications natively, but renders them with the system webview. This is currently a thin wrapper on top of the desktop renderer since both renderers use the webview
+- [native](https://github.com/DioxusLabs/dioxus/tree/main/packages/native): An (experimental) renderer that runs on desktop and mobile platforms. The Dioxus application is compiled natively and the UI is rendered using a custom WGPU HTML/CSS renderer ([blitz](https://github.com/DioxusLabs/blitz))
+- [liveview](https://github.com/DioxusLabs/dioxus/tree/main/packages/liveview): A renderer that runs on the server, and renders using a websocket proxy in the browser. The liveview renderer is currently supported, but development has been deprioritized in favor of fullstack and it may be removed in the future
 
-> The [TUI](https://github.com/DioxusLabs/blitz/tree/legacy/packages/dioxus-tui) renderer has been deprecated but may be revisited in the future once the new version of Blitz is more stable
+> The [TUI](https://github.com/DioxusLabs/blitz/tree/legacy/packages/dioxus-tui) renderer has been deprecated but may be revisited in the future once  Blitz is more stable
 
-## Experimental Native Rendering
+## Native Rendering 
 
 In addition to the renderers listed above, Dioxus also has an experimental native renderer called Blitz that uses WebGPU to render HTML+CSS for dioxus applications:
 
-- [taffy](https://github.com/DioxusLabs/taffy): Layout engine powering Blitz-Core, Plasmo, and Bevy UI
-- [blitz](https://github.com/DioxusLabs/blitz): An experimental native renderer for Dioxus applications using WGPU
+- [taffy](https://github.com/DioxusLabs/taffy): Standalone CSS layout engine which powers Blitz (also used by Zed and Bevy UI)
+- [blitz](https://github.com/DioxusLabs/blitz): An experimental custom WGPU-based HTML/CSS renderer which is the basis of Dioxus Native
+- [native-dom](https://github.com/DioxusLabs/dioxus/tree/main/packages/native-dom): The core integration of `blitz` with `dioxus-core`. Useful for embedding Dioxus Native into an another application (e.g. a Bevy game) which already has it's own windowing and input handling.
 
 ## Fullstack
 

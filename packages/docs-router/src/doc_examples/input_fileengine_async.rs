@@ -7,19 +7,15 @@ pub fn App() -> Element {
 
     rsx! {
         input {
-            r#type: "file",
+            type: "file",
             accept: ".txt,.rs",
             multiple: true,
             // ANCHOR: onchange_event
             onchange: move |evt| {
                 async move {
-                    if let Some(file_engine) = evt.files() {
-                        let files = file_engine.files();
-                        for file_name in &files {
-                            if let Some(file) = file_engine.read_file_to_string(file_name).await
-                            {
-                                files_uploaded.write().push(file);
-                            }
+                    for file in evt.files() {
+                        if let Ok(file) = file.read_string().await {
+                            files_uploaded.write().push(file);
                         }
                     }
                 }

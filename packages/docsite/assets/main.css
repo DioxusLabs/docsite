@@ -49,22 +49,6 @@
   flex-direction: column; */
 }
 
-/* .full-chapter {
-  padding-top: 12px;
-  padding-bottom: 12px;
-} */
-/* .full-chapter:not(:last-child) {
-  &:where([data-theme="light"], [data-theme="light"] *) {
-    border-bottom: 1px solid #3b3d3e29;
-  }
-}
-
-.full-chapter:not(:last-child) {
-  &:where([data-theme="dark"], [data-theme="dark"] *) {
-    border-bottom: 1px solid #a4a9ac7d;
-  }
-} */
-
 html {
     &:where([data-theme="dark"], [data-theme="dark"] *) {
         background-color: black;
@@ -85,9 +69,9 @@ html {
 }
 
 .codeblock > pre {
-    &:where([data-theme="light"], [data-theme="light"] *) {
-        background-color: rgb(37, 36, 36) !important;
-    }
+  /* &:where([data-theme="light"], [data-theme="light"] *) {
+    background-color: rgb(37, 36, 36) !important;
+  } */
 }
 
 .codeblock > pre {

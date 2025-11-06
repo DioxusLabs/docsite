@@ -25,7 +25,7 @@ The lifecycle of a future follows a consistent structure:
 - The Future is polled in the background until it returns a `Ready` value
 - If the Future is cancelled, Rust calls its `Drop` implementation
 
-[Future Diagram](/assets/07/future-diagram.png)
+![Future Diagram](/assets/07/future-diagram.png)
 
 ## Lazy futures
 
@@ -64,6 +64,59 @@ Since spawning in event handlers is very common, Dioxus provides a more concise 
 ```rust
 {{#include ../docs-router/src/doc_examples/asynchronous.rs:spawn_simplified}}
 ```
+
+## Running Futures with `use_action`
+
+You'll frequently want to spawn an action in response to some user input and store the result. For rapid user input, you'll also want to cancel previous actions to prevent race conditions. Dioxus provides a built-in hook that simplifies this pattern with a function called `use_action`.
+
+The `use_action` hook combines signals and tasks into a single unified interface. Simply call `use_action` with a callback that returns a `Result<T>`:
+
+```rust
+// Whenever this action is called, it will re-run the future and return the result.
+let mut breed = use_action(move |breed| async move {
+    #[derive(Deserialize, Serialize, Debug, PartialEq)]
+    struct DogApi {
+        message: String,
+    }
+
+    reqwest::get(format!("https://dog.ceo/api/breed/{breed}/images/random"))
+        .await
+        .unwrap()
+        .json::<DogApi>()
+        .await
+});
+```
+
+You can call the action with `.call()`:
+
+```rust
+rsx! {
+    button {
+        onclick: move |_| {
+            breed.call(cur_breed.clone());
+        },
+        "{cur_breed}"
+    }
+}
+```
+
+And then, elsewhere in your component, you can read the result with `.value()`:
+
+```rust
+match breed.value() {
+    Some(Ok(res)) => rsx! {
+        img { src: "{res.read().message}" }
+    },
+    Some(Err(_e)) => rsx! {
+        div { "Failed to fetch a dog, please try again." }
+    },
+    None => rsx! {
+        div { "Click the button to fetch a dog!" }
+    },
+}
+```
+
+If an action is pending, calling `.call()` will cancel the current action's `Task`, replacing it with the new task.
 
 ## Automatic Cancellation
 
@@ -106,7 +159,7 @@ DemoFrame {
 }
 ```
 
-You can mitigate issues with cancelation by cleaning up resources manually. For example, by making sure global state is restored when the future is dropped:
+You can mitigate issues with cancellation by cleaning up resources manually. For example, by making sure global state is restored when the future is dropped:
 ```rust
 {{#include ../docs-router/src/doc_examples/asynchronous.rs:cancel_safe}}
 ```
@@ -151,7 +204,7 @@ Futures will pause execution at `.await` points, allowing other tasks to run unt
 
 ## Long-lived Futures
 
-In some apps, you might want to include long-lived tasks that exist for the lifetime of the app. This might be a background sync engine or a thread listening to some system IO. For these usecases, we provide the `spawn_forever` function. This works exactly the same as `spawn`, but instead of spawning the future under the *current* component, the future is attached to the *root* component. Because the root component is never unmounted, the task continues until the app is closed.
+In some apps, you might want to include long-lived tasks that exist for the lifetime of the app. This might be a background sync engine or a thread listening to some system IO. For these use cases, we provide the `spawn_forever` function. This works exactly the same as `spawn`, but instead of spawning the future under the *current* component, the future is attached to the *root* component. Because the root component is never unmounted, the task continues until the app is closed.
 
 ```rust
 use_hook(|| spawn_forever(async move {
@@ -159,4 +212,4 @@ use_hook(|| spawn_forever(async move {
 }));
 ```
 
-This function does have its drawbacks and is meant for advanced usecases. If any resources like a Signal are used in this future, they must *also* be valid for the lifetime of the app. Using Signals after they have been dropped will lead to a panic and crash your app!
+This function does have its drawbacks and is meant for advanced use cases. If any resources like a Signal are used in this future, they must *also* be valid for the lifetime of the app. Using Signals after they have been dropped will lead to a panic and crash your app!

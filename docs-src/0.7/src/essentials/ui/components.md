@@ -99,7 +99,7 @@ Many Dioxus utilities use comparison-by-pointer instead of comparison-by-content
 
 ### Clone
 
-The `Clone` bound is a particularly interesting requirement for component properties. The Dioxus component tree architecture is designed around an idea called "unidirectional data flow." This is a design pattern that prevents components down the component tree from modifying their input properties. By preventing these accidental mutations, user interfaces generally have fewer bugs. Rust itself generally solves this problem its borrow checker system, but the borrow checker does not work well with asynchronous work which is quite prevelant in app development.
+The `Clone` bound is a particularly interesting requirement for component properties. The Dioxus component tree architecture is designed around an idea called "unidirectional data flow." This is a design pattern that prevents components down the component tree from modifying their input properties. By preventing these accidental mutations, user interfaces generally have fewer bugs. Rust itself generally solves this problem its borrow checker system, but the borrow checker does not work well with asynchronous work which is quite prevalent in app development.
 
 Generally, it's fine to `.clone()` most component properties, but some objects might be too expensive to clone and negatively impact performance. In most cases, you can simply wrap the value in the [`ReadSignal`] wrapper type and the object will be automatically wrapped in a smart pointer:
 
@@ -163,13 +163,13 @@ pub struct LinkProps {
     /// The onclick event handler.
     pub onclick: Option<EventHandler<MouseEvent>>,
 
-    #[props(default)]
     /// Whether the default behavior should be executed if an `onclick` handler is provided.
     ///
     /// 1. When `onclick` is [`None`] (default if not specified), `onclick_only` has no effect.
     /// 2. If `onclick_only` is [`false`] (default if not specified), the provided `onclick` handler
     ///    will be executed after the links regular functionality.
     /// 3. If `onclick_only` is [`true`], only the provided `onclick` handler will be executed.
+    #[props(default)]
     pub onclick_only: bool,
 
     /// The rel attribute for the generated HTML anchor tag.
@@ -186,11 +186,6 @@ pub struct LinkProps {
 }
 ```
 
-By default, property attributes have implicit behavior:
-- `field: Option<T>` will make using the field optional, defaulting to `None`
-- `children: Element` is automatically set for children passed to the component
-- `field: EventHandler<T>` enforces closures
-
 You can use the `#[props()]` attribute on each field to modify properties your component accepts:
 
 - [`#[props(default)]`](https://docs.rs/dioxus/latest/dioxus/prelude/attr.component.html#default-props) - Makes the field optional in the component and uses the default value if it is not set when creating the component.
@@ -203,7 +198,8 @@ Props also act slightly differently when used with:
 - [`Option<T>`](https://docs.rs/dioxus/latest/dioxus/prelude/attr.component.html#optional-props) - The field is automatically optional with a default value of `None`.
 - [`ReadOnlySignal<T>`](https://docs.rs/dioxus/latest/dioxus/prelude/attr.component.html#reactive-props) - The props macro will automatically convert `T` into `ReadOnlySignal<T>` when it is passed as a prop.
 - [`String`](https://docs.rs/dioxus/latest/dioxus/prelude/attr.component.html#formatted-props) - The props macro will accept formatted strings for any prop field with the type `String`.
-- [`children`](https://docs.rs/dioxus/latest/dioxus/prelude/attr.component.html#children-props) - The props macro will accept child elements if you include the `children` prop.
+- [`children: Element`](https://docs.rs/dioxus/latest/dioxus/prelude/attr.component.html#children-props) - The props macro will accept child elements if you include the `children` prop.
+- `EventHandler<T>` enforces closures
 
 Note that these attributes work both for struct-based property definitions as well as inline definitions:
 
@@ -252,7 +248,7 @@ rsx! {
 
 ## Children
 
-Properties have a special field called "children" that contain a component's child elements. For example, we could build a wrapper component that wraps its children in a red div. This component would take a special argument named "children" which is an Element that can be used in RSX expressions.
+Properties have a special field called "children" that contain a component's child elements. For example, we can build a wrapper component that wraps its children in a red div. This component takes a special argument named "children" which is an Element that is used in RSX expressions.
 
 ```rust
 #[component]
@@ -266,7 +262,7 @@ fn RedDiv(children: Element) {
 }
 ```
 
-When calling the component, we would simply add nested children as if we were adding children to an element:
+When calling the component, we can simply add nested children like an element:
 ```rust
 rsx! {
   RedDiv {

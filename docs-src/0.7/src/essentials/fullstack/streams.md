@@ -29,7 +29,7 @@ async fn text_stream(start: Option<i32>) -> Result<TextStream> {
 }
 ```
 
-You can create a new stream with `TextStream::spawn` which gives you an `UnboundedSender` object, or from `TextStream::new()` which takes an existing type that implements the `Stream` trait
+You can create a new stream with `TextStream::spawn` which gives you an `UnboundedSender` object, or from `TextStream::new()` which takes an existing type that implements the `Stream` trait:
 
 ```rust
 // the `rx` here implements `Stream` which can be used in `new()`
@@ -72,7 +72,7 @@ Note that in this example, we are *consuming* the byte stream using `.next()`. S
 
 Both the `TextStream` and `ByteStream` types are implemented as specific variations of the generic `Streaming<T, E>` type. Under the hood, both stream types are simply streams of `Vec<u8>`. The `ByteStream` type wraps the incoming bytes in the `Bytes` type while `TextStream` ensures they're valid utf-8 text.
 
-You can use any encoding provided it imlpements the `Encoding` trait.
+You can use any encoding provided it implements the `Encoding` trait.
 
 ```rust
 pub trait Encoding {

@@ -49,7 +49,7 @@
   - [Global Context](essentials/basics/context.md)
   - [Stores and Collections](essentials/basics/collections.md)
   - [Error Handling](essentials/basics/error_handling.md)
-  - [Suspense](essentials/advanced/suspense.md)
+  - [Suspense](essentials/basics/suspense.md)
 - [Fullstack](essentials/fullstack/index.md)
   - [Project Setup](essentials/fullstack/project_setup.md)
   - [Server Side Rendering](essentials/fullstack/ssr.md)

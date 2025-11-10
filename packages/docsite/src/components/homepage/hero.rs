@@ -76,14 +76,6 @@ pub(crate) fn Hero() -> Element {
                         "Trusted by top companies"
                     }
                     div { class: "flex flex-row flex-wrap lg:justify-start justify-center invert dark:invert-0  gap-8  min-h-0",
-                        img {
-                            class: "h-6",
-                            src: asset!("/assets/static/airbuslogo.svg"),
-                        }
-                        img {
-                            class: "h-6 ",
-                            src: asset!("/assets/static/ESA_logo.svg"),
-                        }
                         // img {
                         //     class: "h-6 ",
                         //     src: asset!("/assets/static/xailogo.svg"),

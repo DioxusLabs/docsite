@@ -1,0 +1,665 @@
+<SYSTEM>This is the developer documentation for Dioxus from /learn/0.7/migration/to_05/.</SYSTEM>
+# How to Upgrade to Dioxus 0.5
+
+This guide will outline the API changes between the `0.4` and `0.5` releases.
+
+`0.5` includes significant changes to hooks, props, and global state.
+
+## Cheat Sheet
+
+Here is a quick cheat sheet for the changes:
+
+### Scope
+
+Dioxus 0.4:
+
+````rust
+fn app(cx: Scope) -> Element {
+    cx.use_hook(|| {
+        /*...*/
+    });
+    cx.provide_context({
+        /*...*/
+    });
+    cx.spawn(async move {
+        /*...*/
+    });
+    cx.render(rsx! {
+        /*...*/
+    })
+}
+````
+
+Dioxus 0.5:
+
+````rs@migration.rs
+use dioxus::prelude::*;
+
+// In dioxus 0.5, the scope is no longer passed as an argument to the function
+fn app() -> Element {
+    // Hooks, context, and spawn are now called directly
+    use_hook(|| { /*...*/ });
+    provide_context({ /*...*/ });
+    spawn(async move { /*...*/ });
+    rsx! {
+        /*...*/
+    }
+}
+````
+
+### Props
+
+Dioxus 0.4:
+
+````rust
+#[component]
+fn Comp(cx: Scope, name: String) -> Element {
+    // You pass in an owned prop, but inside the component, it is borrowed (name is the type &String inside the function)
+    let owned_name: String = name.clone();
+
+    cx.render(rsx! {
+        "Hello {owned_name}"
+        BorrowedComp {
+            "{name}"
+        }
+        ManualPropsComponent {
+            name: name
+        }
+    })
+}
+
+#[component]
+fn BorrowedComp<'a>(cx: Scope<'a>, name: &'a str) -> Element<'a> {
+    cx.render(rsx! {
+        "Hello {name}"
+    })
+}
+
+#[derive(Props, PartialEq)]
+struct ManualProps {
+    name: String
+}
+
+fn ManualPropsComponent(cx: Scope<ManualProps>) -> Element {
+    cx.render(rsx! {
+        "Hello {cx.props.name}"
+    })
+}
+````
+
+Dioxus 0.5:
+
+````rs@migration.rs
+use dioxus::prelude::*;
+
+// In dioxus 0.5, props are always owned. You pass in owned props and you get owned props in the body of the component
+#[component]
+fn Comp(name: String) -> Element {
+    // Name is owned here already (name is the type String inside the function)
+    let owned_name: String = name;
+
+    rsx! {
+        "Hello {owned_name}"
+        BorrowedComp {
+            name: "other name"
+        }
+        ManualPropsComponent {
+            name: "other name 2"
+        }
+    }
+}
+
+// Borrowed props are removed in dioxus 0.5. Mapped signals can act similarly to borrowed props if your props are borrowed from state
+// ReadOnlySignal is a copy wrapper over a state that will be automatically converted to
+#[component]
+fn BorrowedComp(name: ReadOnlySignal<String>) -> Element {
+    rsx! {
+        "Hello {name}"
+    }
+}
+
+// In dioxus 0.5, props need to implement Props, Clone, and PartialEq
+#[derive(Props, Clone, PartialEq)]
+struct ManualProps {
+    name: String,
+}
+
+// Functions accept the props directly instead of the scope
+fn ManualPropsComponent(props: ManualProps) -> Element {
+    rsx! {
+        "Hello {props.name}"
+    }
+}
+````
+
+You can read more about the new props API in the [Props Migration](props.md) guide.
+
+### Futures
+
+Dioxus 0.4:
+
+````rust
+use_future((dependency1, dependency2,), move |(dependency1, dependency2,)| async move {
+	/*use dependency1 and dependency2*/
+});
+````
+
+Dioxus 0.5:
+
+````rs@migration.rs
+// dependency1 and dependency2 must be Signal-like types like Signal, ReadOnlySignal, GlobalSignal, or another Resource
+use_resource(|| async move { /*use dependency1 and dependency2*/ });
+
+let non_reactive_state = 0;
+// You can also add non-reactive state to the resource hook with the use_reactive macro
+use_resource(use_reactive!(|(non_reactive_state,)| async move {
+    tokio::time::sleep(std::time::Duration::from_secs(1)).await;
+    non_reactive_state + 1
+}));
+````
+
+Read more about the `use_resource` hook in the [Hook Migration](hooks.md) guide.
+
+### State Hooks
+
+Dioxus 0.4:
+
+````rust
+let copy_state = use_state(cx, || 0);
+let clone_local_state = use_ref(cx, || String::from("Hello"));
+use_shared_state_provider(cx, || String::from("Hello"));
+let clone_shared_state = use_shared_state::<String>(cx);
+
+let copy_state_value = **copy_state;
+let clone_local_state_value = clone_local_state.read();
+let clone_shared_state_value = clone_shared_state.read();
+
+cx.render(rsx!{
+	"{copy_state_value}"
+	"{clone_shared_state_value}"
+	"{clone_local_state_value}"
+	button {
+		onclick: move |_| {
+			copy_state.set(1);
+			*clone_local_state.write() = "World".to_string();
+			*clone_shared_state.write() = "World".to_string();
+		},
+		"Set State"
+	}
+})
+````
+
+Dioxus 0.5:
+
+````rs@migration.rs
+// You can now use signals for local copy state, local clone state, and shared state with the same API
+let mut copy_state = use_signal(|| 0);
+let mut clone_shared_state = use_context_provider(|| Signal::new(String::from("Hello")));
+let mut clone_local_state = use_signal(|| String::from("Hello"));
+
+// Call the signal like a function to clone the current value
+let copy_state_value = copy_state();
+// Or use the read method to borrow the current value
+let clone_local_state_value = clone_local_state.read();
+let clone_shared_state_value = clone_shared_state.read();
+
+rsx! {
+    "{copy_state_value}"
+    "{clone_shared_state_value}"
+    "{clone_local_state_value}"
+    button {
+        onclick: move |_| {
+            // All three states have the same API for updating the state
+            copy_state.set(1);
+            clone_shared_state.set("World".to_string());
+            clone_local_state.set("World".to_string());
+        },
+        "Set State"
+    }
+}
+````
+
+Read more about the `use_signal` hook in the [State Migration](state.md) guide.
+
+### Fermi
+
+Dioxus 0.4:
+
+````rust
+use dioxus::prelude::*;
+use fermi::*;
+
+static NAME: Atom<String> = Atom(|_| "world".to_string());
+
+fn app(cx: Scope) -> Element {
+    use_init_atom_root(cx);
+    let name = use_read(cx, &NAME);
+
+    cx.render(rsx! {
+        div { "hello {name}!" }
+        Child {}
+        ChildWithRef {}
+    })
+}
+
+fn Child(cx: Scope) -> Element {
+    let set_name = use_set(cx, &NAME);
+
+    cx.render(rsx! {
+        button {
+            onclick: move |_| set_name("dioxus".to_string()),
+            "reset name"
+        }
+    })
+}
+
+static NAMES: AtomRef<Vec<String>> = AtomRef(|_| vec!["world".to_string()]);
+
+fn ChildWithRef(cx: Scope) -> Element {
+    let names = use_atom_ref(cx, &NAMES);
+
+    cx.render(rsx! {
+        div {
+            ul {
+                names.read().iter().map(|f| rsx!{
+                    li { "hello: {f}" }
+                })
+            }
+            button {
+                onclick: move |_| {
+                    let names = names.clone();
+                    cx.spawn(async move {
+                        names.write().push("asd".to_string());
+                    })
+                },
+                "Add name"
+            }
+        }
+    })
+}
+````
+
+Dioxus 0.5:
+
+````rs@migration.rs
+use dioxus::prelude::*;
+
+// Atoms and AtomRefs have been replaced with GlobalSignals
+static NAME: GlobalSignal<String> = Signal::global(|| "world".to_string());
+
+fn app() -> Element {
+    rsx! {
+        // You can use global state directly without the use_read or use_set hooks
+        div { "hello {NAME}!" }
+        Child {}
+        ChildWithRef {}
+    }
+}
+
+fn Child() -> Element {
+    rsx! {
+        button {
+            onclick: move |_| *NAME.write() = "dioxus".to_string(),
+            "reset name"
+        }
+    }
+}
+
+// Atoms and AtomRefs have been replaced with GlobalSignals
+static NAMES: GlobalSignal<Vec<String>> = Signal::global(|| vec!["world".to_string()]);
+
+fn ChildWithRef() -> Element {
+    rsx! {
+        div {
+            ul {
+                for name in NAMES.read().iter() {
+                    li { "hello: {name}" }
+                }
+            }
+            button {
+                onclick: move |_| {
+                    // No need to clone the signal into futures, you can use it directly
+                    async move {
+                        NAMES.write().push("asd".to_string());
+                    }
+                },
+                "Add name"
+            }
+        }
+    }
+}
+````
+
+You can read more about global signals in the [Fermi migration guide](fermi.md).
+# How to Upgrade to Dioxus 0.5
+
+This guide will outline the API changes between the `0.4` and `0.5` releases.
+
+`0.5` includes significant changes to hooks, props, and global state.
+
+## Cheat Sheet
+
+Here is a quick cheat sheet for the changes:
+
+### Scope
+
+Dioxus 0.4:
+
+````rust
+fn app(cx: Scope) -> Element {
+    cx.use_hook(|| {
+        /*...*/
+    });
+    cx.provide_context({
+        /*...*/
+    });
+    cx.spawn(async move {
+        /*...*/
+    });
+    cx.render(rsx! {
+        /*...*/
+    })
+}
+````
+
+Dioxus 0.5:
+
+````rs@migration.rs
+use dioxus::prelude::*;
+
+// In dioxus 0.5, the scope is no longer passed as an argument to the function
+fn app() -> Element {
+    // Hooks, context, and spawn are now called directly
+    use_hook(|| { /*...*/ });
+    provide_context({ /*...*/ });
+    spawn(async move { /*...*/ });
+    rsx! {
+        /*...*/
+    }
+}
+````
+
+### Props
+
+Dioxus 0.4:
+
+````rust
+#[component]
+fn Comp(cx: Scope, name: String) -> Element {
+    // You pass in an owned prop, but inside the component, it is borrowed (name is the type &String inside the function)
+    let owned_name: String = name.clone();
+
+    cx.render(rsx! {
+        "Hello {owned_name}"
+        BorrowedComp {
+            "{name}"
+        }
+        ManualPropsComponent {
+            name: name
+        }
+    })
+}
+
+#[component]
+fn BorrowedComp<'a>(cx: Scope<'a>, name: &'a str) -> Element<'a> {
+    cx.render(rsx! {
+        "Hello {name}"
+    })
+}
+
+#[derive(Props, PartialEq)]
+struct ManualProps {
+    name: String
+}
+
+fn ManualPropsComponent(cx: Scope<ManualProps>) -> Element {
+    cx.render(rsx! {
+        "Hello {cx.props.name}"
+    })
+}
+````
+
+Dioxus 0.5:
+
+````rs@migration.rs
+use dioxus::prelude::*;
+
+// In dioxus 0.5, props are always owned. You pass in owned props and you get owned props in the body of the component
+#[component]
+fn Comp(name: String) -> Element {
+    // Name is owned here already (name is the type String inside the function)
+    let owned_name: String = name;
+
+    rsx! {
+        "Hello {owned_name}"
+        BorrowedComp {
+            name: "other name"
+        }
+        ManualPropsComponent {
+            name: "other name 2"
+        }
+    }
+}
+
+// Borrowed props are removed in dioxus 0.5. Mapped signals can act similarly to borrowed props if your props are borrowed from state
+// ReadOnlySignal is a copy wrapper over a state that will be automatically converted to
+#[component]
+fn BorrowedComp(name: ReadOnlySignal<String>) -> Element {
+    rsx! {
+        "Hello {name}"
+    }
+}
+
+// In dioxus 0.5, props need to implement Props, Clone, and PartialEq
+#[derive(Props, Clone, PartialEq)]
+struct ManualProps {
+    name: String,
+}
+
+// Functions accept the props directly instead of the scope
+fn ManualPropsComponent(props: ManualProps) -> Element {
+    rsx! {
+        "Hello {props.name}"
+    }
+}
+````
+
+You can read more about the new props API in the [Props Migration](props.md) guide.
+
+### Futures
+
+Dioxus 0.4:
+
+````rust
+use_future((dependency1, dependency2,), move |(dependency1, dependency2,)| async move {
+	/*use dependency1 and dependency2*/
+});
+````
+
+Dioxus 0.5:
+
+````rs@migration.rs
+// dependency1 and dependency2 must be Signal-like types like Signal, ReadOnlySignal, GlobalSignal, or another Resource
+use_resource(|| async move { /*use dependency1 and dependency2*/ });
+
+let non_reactive_state = 0;
+// You can also add non-reactive state to the resource hook with the use_reactive macro
+use_resource(use_reactive!(|(non_reactive_state,)| async move {
+    tokio::time::sleep(std::time::Duration::from_secs(1)).await;
+    non_reactive_state + 1
+}));
+````
+
+Read more about the `use_resource` hook in the [Hook Migration](hooks.md) guide.
+
+### State Hooks
+
+Dioxus 0.4:
+
+````rust
+let copy_state = use_state(cx, || 0);
+let clone_local_state = use_ref(cx, || String::from("Hello"));
+use_shared_state_provider(cx, || String::from("Hello"));
+let clone_shared_state = use_shared_state::<String>(cx);
+
+let copy_state_value = **copy_state;
+let clone_local_state_value = clone_local_state.read();
+let clone_shared_state_value = clone_shared_state.read();
+
+cx.render(rsx!{
+	"{copy_state_value}"
+	"{clone_shared_state_value}"
+	"{clone_local_state_value}"
+	button {
+		onclick: move |_| {
+			copy_state.set(1);
+			*clone_local_state.write() = "World".to_string();
+			*clone_shared_state.write() = "World".to_string();
+		},
+		"Set State"
+	}
+})
+````
+
+Dioxus 0.5:
+
+````rs@migration.rs
+// You can now use signals for local copy state, local clone state, and shared state with the same API
+let mut copy_state = use_signal(|| 0);
+let mut clone_shared_state = use_context_provider(|| Signal::new(String::from("Hello")));
+let mut clone_local_state = use_signal(|| String::from("Hello"));
+
+// Call the signal like a function to clone the current value
+let copy_state_value = copy_state();
+// Or use the read method to borrow the current value
+let clone_local_state_value = clone_local_state.read();
+let clone_shared_state_value = clone_shared_state.read();
+
+rsx! {
+    "{copy_state_value}"
+    "{clone_shared_state_value}"
+    "{clone_local_state_value}"
+    button {
+        onclick: move |_| {
+            // All three states have the same API for updating the state
+            copy_state.set(1);
+            clone_shared_state.set("World".to_string());
+            clone_local_state.set("World".to_string());
+        },
+        "Set State"
+    }
+}
+````
+
+Read more about the `use_signal` hook in the [State Migration](state.md) guide.
+
+### Fermi
+
+Dioxus 0.4:
+
+````rust
+use dioxus::prelude::*;
+use fermi::*;
+
+static NAME: Atom<String> = Atom(|_| "world".to_string());
+
+fn app(cx: Scope) -> Element {
+    use_init_atom_root(cx);
+    let name = use_read(cx, &NAME);
+
+    cx.render(rsx! {
+        div { "hello {name}!" }
+        Child {}
+        ChildWithRef {}
+    })
+}
+
+fn Child(cx: Scope) -> Element {
+    let set_name = use_set(cx, &NAME);
+
+    cx.render(rsx! {
+        button {
+            onclick: move |_| set_name("dioxus".to_string()),
+            "reset name"
+        }
+    })
+}
+
+static NAMES: AtomRef<Vec<String>> = AtomRef(|_| vec!["world".to_string()]);
+
+fn ChildWithRef(cx: Scope) -> Element {
+    let names = use_atom_ref(cx, &NAMES);
+
+    cx.render(rsx! {
+        div {
+            ul {
+                names.read().iter().map(|f| rsx!{
+                    li { "hello: {f}" }
+                })
+            }
+            button {
+                onclick: move |_| {
+                    let names = names.clone();
+                    cx.spawn(async move {
+                        names.write().push("asd".to_string());
+                    })
+                },
+                "Add name"
+            }
+        }
+    })
+}
+````
+
+Dioxus 0.5:
+
+````rs@migration.rs
+use dioxus::prelude::*;
+
+// Atoms and AtomRefs have been replaced with GlobalSignals
+static NAME: GlobalSignal<String> = Signal::global(|| "world".to_string());
+
+fn app() -> Element {
+    rsx! {
+        // You can use global state directly without the use_read or use_set hooks
+        div { "hello {NAME}!" }
+        Child {}
+        ChildWithRef {}
+    }
+}
+
+fn Child() -> Element {
+    rsx! {
+        button {
+            onclick: move |_| *NAME.write() = "dioxus".to_string(),
+            "reset name"
+        }
+    }
+}
+
+// Atoms and AtomRefs have been replaced with GlobalSignals
+static NAMES: GlobalSignal<Vec<String>> = Signal::global(|| vec!["world".to_string()]);
+
+fn ChildWithRef() -> Element {
+    rsx! {
+        div {
+            ul {
+                for name in NAMES.read().iter() {
+                    li { "hello: {name}" }
+                }
+            }
+            button {
+                onclick: move |_| {
+                    // No need to clone the signal into futures, you can use it directly
+                    async move {
+                        NAMES.write().push("asd".to_string());
+                    }
+                },
+                "Add name"
+            }
+        }
+    }
+}
+````
+
+You can read more about global signals in the [Fermi migration guide](fermi.md).

@@ -140,6 +140,32 @@ When you use suspense with fullstack without streaming enabled, dioxus will wait
 
 ![Out of order streaming](/assets/06_docs/streaming_dogs.mp4)
 
+## Client-Side Navigation
+
+When navigating between instances of the same component, use signal props to make `use_server_future` reactive:
+
+```rust
+// This doesn't work for navigation between instances
+#[component]
+pub fn ProductPage(product_id: String) -> Element {
+    let product = use_server_future({
+        to_owned![product_id];
+        move || fetch_product(product_id.clone())
+    })?;
+}
+
+// This works correctly
+#[component]
+pub fn ProductPage(product_id: ReadSignal<String>) -> Element {
+    let product = use_server_future(move || {
+        let id = product_id();
+        fetch_product(id)
+    })?;
+}
+```
+
+When component props are signals, the reactivity system detects changes during navigation and reruns the closure. With plain props, the closure doesn't see the change.
+
 ## Conclusion
 
 This guide has covered the basics of asynchronous tasks in Dioxus. More detailed documentation about specific hooks are available in docs.rs:

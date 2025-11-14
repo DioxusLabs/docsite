@@ -8,3 +8,4 @@
 - [Dioxus 0.4 $ Release Notes $ August 1, 2023 $ Server Functions, Suspense, Enum Router, Overhauled Docs, Bundler, Android Support, and more!](release-040.md)
 - [Dioxus 0.5 $ Release Notes $ March 21, 2024 $ A signal rewrite, zero unsafe, no lifetimes, unified launch, and more!](release-050.md)
 - [Dioxus 0.6 $ Release Notes $ December 9, 2024 $ Massive Tooling Improvements: Mobile Simulators, Magical Hot-Reloading, Interactive CLI, and more!](release-060.md)
+- [Dioxus 0.7 $ Release Notes $ Sep 8, 2025 $ Hot-Patching, Native Renderer, Bundle Splitting, Radix-UI, more!](release-070.md)

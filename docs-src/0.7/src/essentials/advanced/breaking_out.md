@@ -73,3 +73,18 @@ DemoFrame {
     breaking_out::Downcast {}
 }
 ```
+
+## Externally Managed Nodes
+
+Dioxus uses diffs between templates to determine which elements have changed in the DOM and applies those changes to the existing DOM. A great post about this can be found [here](https://dioxuslabs.com/blog/templates-diffing/). In short, what these means for managing elements outside of Dioxus with Javascript is, one must be careful that the diffing process does not overwite the changes or if so, this is accounted for.
+
+An `rsx` block creates a tree of static and dynamic elements. If the structure of this tree changes then everything underneath it is replaced as well.
+
+```rust, no_run
+{{#include ../docs-router/src/doc_examples/breaking_out.rs:template_diffing}}
+```
+```inject-dioxus
+DemoFrame {
+    breaking_out::TemplateDiffing {}
+}
+```

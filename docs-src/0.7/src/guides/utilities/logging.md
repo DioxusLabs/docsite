@@ -29,7 +29,7 @@ use tracing::Level;
 
 fn main() {
     // Init logger
-    dioxus_logger::init(Level::INFO).expect("failed to init logger");
+    dioxus::logger::init(Level::INFO).expect("failed to init logger");
 
     // Dioxus launch code
     dioxus::launch(|| rsx! {})

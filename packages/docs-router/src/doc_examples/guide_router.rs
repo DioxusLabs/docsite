@@ -198,7 +198,7 @@ mod list_dogs {
         pub fn Favorites() -> Element {
             // Create a pending resource that resolves to the list of dogs from the backend
             // Wait for the favorites list to resolve with `.suspend()`
-            let mut favorites = use_resource(super::backend::list_dogs).suspend()?;
+            let mut favorites = use_resource(crate::backend::list_dogs).suspend()?;
 
             rsx! {
                 div { id: "favorites",

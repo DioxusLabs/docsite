@@ -102,9 +102,9 @@ By default, DX isolates your server and client builds by levaraging Cargo Profil
 DX will use these profiles
 - `web-dev` / `web-release`: targeting the web with `--web`
 - `server-dev` / `server-release`: targeting the server (implicitly, or with `--server`)
-- `desktop-dev` / `desktop-release`: targeting iOS apps with `--ios`
+- `desktop-dev` / `desktop-release`: targeting desktop apps with `--desktop`
 - `ios-dev` / `ios-release`: targeting iOS apps with `--ios`
-- `android-dev` / `android-release`: targeting iOS apps with `--ios`
+- `android-dev` / `android-release`: targeting Android apps with `--android`
 
 These profiles correspond 1:1 with the "platforms" DX supports. Note that a `platform` is just a way of DX to isolate two builds from each other. You can completely customize the build, including:
 

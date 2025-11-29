@@ -1,0 +1,439 @@
+<SYSTEM>This is the developer documentation for Dioxus from /learn/0.5/guide/data_fetching.</SYSTEM>
+# Fetching Data
+
+In this chapter, we will fetch data from the hacker news API and use it to render the list of top posts in our application.
+
+## Defining the API
+
+First we need to create some utilities to fetch data from the hackernews API using [reqwest](https://docs.rs/reqwest/latest/reqwest/index.html):
+
+````rs@hackernews_async.rs
+// Define the Hackernews API
+use futures::future::join_all;
+
+pub static BASE_API_URL: &str = "https://hacker-news.firebaseio.com/v0/";
+pub static ITEM_API: &str = "item/";
+pub static USER_API: &str = "user/";
+const COMMENT_DEPTH: i64 = 2;
+
+pub async fn get_story_preview(id: i64) -> Result<StoryItem, reqwest::Error> {
+    let url = format!("{}{}{}.json", BASE_API_URL, ITEM_API, id);
+    reqwest::get(&url).await?.json().await
+}
+
+pub async fn get_stories(count: usize) -> Result<Vec<StoryItem>, reqwest::Error> {
+    let url = format!("{}topstories.json", BASE_API_URL);
+    let stories_ids = &reqwest::get(&url).await?.json::<Vec<i64>>().await?[..count];
+
+    let story_futures = stories_ids[..usize::min(stories_ids.len(), count)]
+        .iter()
+        .map(|&story_id| get_story_preview(story_id));
+    let stories = join_all(story_futures)
+        .await
+        .into_iter()
+        .filter_map(|story| story.ok())
+        .collect();
+    Ok(stories)
+}
+
+pub async fn get_story(id: i64) -> Result<StoryPageData, reqwest::Error> {
+    let url = format!("{}{}{}.json", BASE_API_URL, ITEM_API, id);
+    let mut story = reqwest::get(&url).await?.json::<StoryPageData>().await?;
+    let comment_futures = story.item.kids.iter().map(|&id| get_comment(id));
+    let comments = join_all(comment_futures)
+        .await
+        .into_iter()
+        .filter_map(|c| c.ok())
+        .collect();
+
+    story.comments = comments;
+    Ok(story)
+}
+
+#[async_recursion::async_recursion(?Send)]
+pub async fn get_comment_with_depth(id: i64, depth: i64) -> Result<CommentData, reqwest::Error> {
+    let url = format!("{}{}{}.json", BASE_API_URL, ITEM_API, id);
+    let mut comment = reqwest::get(&url).await?.json::<CommentData>().await?;
+    if depth > 0 {
+        let sub_comments_futures = comment
+            .kids
+            .iter()
+            .map(|story_id| get_comment_with_depth(*story_id, depth - 1));
+        comment.sub_comments = join_all(sub_comments_futures)
+            .await
+            .into_iter()
+            .filter_map(|c| c.ok())
+            .collect();
+    }
+    Ok(comment)
+}
+
+pub async fn get_comment(comment_id: i64) -> Result<CommentData, reqwest::Error> {
+    let comment = get_comment_with_depth(comment_id, COMMENT_DEPTH).await?;
+    Ok(comment)
+}
+````
+
+The code above requires you to add the [reqwest](https://crates.io/crates/reqwest), [async_recursion](https://crates.io/crates/async-recursion), and [futures](https://crates.io/crates/futures) crate:
+
+````bash
+cargo add reqwest --features json
+cargo add async_recursion
+cargo add futures
+````
+
+A quick overview of the supporting crates:
+
+* [reqwest](https://crates.io/crates/reqwest) allows us to create HTTP calls to the hackernews API.
+* [async_recursion](https://crates.io/crates/async-recursion) provides a utility macro to allow us to recursively use an async function.
+* [futures](https://crates.io/crates/futures) provides us with utilities all around Rust's futures.
+
+## Working with Async
+
+[`use_resource`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_resource.html) is a [hook](./state.md) that lets you run an async closure, and provides you with its result.
+
+For example, we can make an API request (using [reqwest](https://docs.rs/reqwest/latest/reqwest/index.html)) inside `use_resource`:
+
+````rs@hackernews_async.rs
+fn Stories() -> Element {
+    // Fetch the top 10 stories on Hackernews
+    let stories = use_resource(move || get_stories(10));
+
+    // check if the future is resolved
+    match &*stories.read_unchecked() {
+        Some(Ok(list)) => {
+            // if it is, render the stories
+            rsx! {
+                div {
+                    // iterate over the stories with a for loop
+                    for story in list {
+                        // render every story with the StoryListing component
+                        StoryListing { story: story.clone() }
+                    }
+                }
+            }
+        }
+        Some(Err(err)) => {
+            // if there was an error, render the error
+            rsx! {"An error occurred while fetching stories {err}"}
+        }
+        None => {
+            // if the future is not resolved yet, render a loading message
+            rsx! {"Loading items"}
+        }
+    }
+}
+````
+
+The code inside `use_resource` will be submitted to the Dioxus scheduler once the component has rendered.
+
+We can use `.read()` to get the result of the future. On the first run, since there's no data ready when the component loads, its value will be `None`.  However, once the future is finished, the component will be re-rendered and the value will now be `Some(...)`, containing the return value of the closure.
+
+We can then render the result by looping over each of the posts and rendering them with the `StoryListing` component.
+
+````inject-dioxus
+DemoFrame {
+	hackernews_async::fetch::App {}
+}
+````
+
+ > 
+ > You can read more about working with Async in Dioxus in the [Async reference](../reference/index.md)
+
+## Lazily Fetching Data
+
+Finally, we will lazily fetch the comments on each post as the user hovers over the post.
+
+We need to revisit the code that handles hovering over an item. Instead of passing an empty list of comments, we can fetch all the related comments when the user hovers over the item.
+
+We will cache the list of comments with a [use_signal](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_signal.html) hook. This hook allows you to store some state in a single component. When the user triggers fetching the comments we will check if the response has already been cached before fetching the data from the hackernews API.
+
+````rs@hackernews_async.rs
+// New
+async fn resolve_story(
+    mut full_story: Signal<Option<StoryPageData>>,
+    mut preview_state: Signal<PreviewState>,
+    story_id: i64,
+) {
+    if let Some(cached) = full_story.as_ref() {
+        *preview_state.write() = PreviewState::Loaded(cached.clone());
+        return;
+    }
+
+    *preview_state.write() = PreviewState::Loading;
+    if let Ok(story) = get_story(story_id).await {
+        *preview_state.write() = PreviewState::Loaded(story.clone());
+        *full_story.write() = Some(story);
+    }
+}
+
+#[component]
+fn StoryListing(story: ReadOnlySignal<StoryItem>) -> Element {
+    let mut preview_state = consume_context::<Signal<PreviewState>>();
+    let StoryItem {
+        title,
+        url,
+        by,
+        score,
+        time,
+        kids,
+        id,
+        ..
+    } = story();
+    // New
+    let full_story = use_signal(|| None);
+
+    let url = url.as_deref().unwrap_or_default();
+    let hostname = url
+        .trim_start_matches("https://")
+        .trim_start_matches("http://")
+        .trim_start_matches("www.");
+    let score = format!("{score} {}", if score == 1 { " point" } else { " points" });
+    let comments = format!(
+        "{} {}",
+        kids.len(),
+        if kids.len() == 1 {
+            " comment"
+        } else {
+            " comments"
+        }
+    );
+    let time = time.format("%D %l:%M %p");
+
+    rsx! {
+        div {
+            padding: "0.5rem",
+            position: "relative",
+            onmouseenter: move |_event| { resolve_story(full_story, preview_state, id) },
+            div { font_size: "1.5rem",
+                a {
+                    href: url,
+                    onfocus: move |_event| { resolve_story(full_story, preview_state, id) },
+                    // ...
+
+````
+
+````inject-dioxus
+DemoFrame {
+	hackernews_async::App {}
+}
+````
+# Fetching Data
+
+In this chapter, we will fetch data from the hacker news API and use it to render the list of top posts in our application.
+
+## Defining the API
+
+First we need to create some utilities to fetch data from the hackernews API using [reqwest](https://docs.rs/reqwest/latest/reqwest/index.html):
+
+````rs@hackernews_async.rs
+// Define the Hackernews API
+use futures::future::join_all;
+
+pub static BASE_API_URL: &str = "https://hacker-news.firebaseio.com/v0/";
+pub static ITEM_API: &str = "item/";
+pub static USER_API: &str = "user/";
+const COMMENT_DEPTH: i64 = 2;
+
+pub async fn get_story_preview(id: i64) -> Result<StoryItem, reqwest::Error> {
+    let url = format!("{}{}{}.json", BASE_API_URL, ITEM_API, id);
+    reqwest::get(&url).await?.json().await
+}
+
+pub async fn get_stories(count: usize) -> Result<Vec<StoryItem>, reqwest::Error> {
+    let url = format!("{}topstories.json", BASE_API_URL);
+    let stories_ids = &reqwest::get(&url).await?.json::<Vec<i64>>().await?[..count];
+
+    let story_futures = stories_ids[..usize::min(stories_ids.len(), count)]
+        .iter()
+        .map(|&story_id| get_story_preview(story_id));
+    let stories = join_all(story_futures)
+        .await
+        .into_iter()
+        .filter_map(|story| story.ok())
+        .collect();
+    Ok(stories)
+}
+
+pub async fn get_story(id: i64) -> Result<StoryPageData, reqwest::Error> {
+    let url = format!("{}{}{}.json", BASE_API_URL, ITEM_API, id);
+    let mut story = reqwest::get(&url).await?.json::<StoryPageData>().await?;
+    let comment_futures = story.item.kids.iter().map(|&id| get_comment(id));
+    let comments = join_all(comment_futures)
+        .await
+        .into_iter()
+        .filter_map(|c| c.ok())
+        .collect();
+
+    story.comments = comments;
+    Ok(story)
+}
+
+#[async_recursion::async_recursion(?Send)]
+pub async fn get_comment_with_depth(id: i64, depth: i64) -> Result<CommentData, reqwest::Error> {
+    let url = format!("{}{}{}.json", BASE_API_URL, ITEM_API, id);
+    let mut comment = reqwest::get(&url).await?.json::<CommentData>().await?;
+    if depth > 0 {
+        let sub_comments_futures = comment
+            .kids
+            .iter()
+            .map(|story_id| get_comment_with_depth(*story_id, depth - 1));
+        comment.sub_comments = join_all(sub_comments_futures)
+            .await
+            .into_iter()
+            .filter_map(|c| c.ok())
+            .collect();
+    }
+    Ok(comment)
+}
+
+pub async fn get_comment(comment_id: i64) -> Result<CommentData, reqwest::Error> {
+    let comment = get_comment_with_depth(comment_id, COMMENT_DEPTH).await?;
+    Ok(comment)
+}
+````
+
+The code above requires you to add the [reqwest](https://crates.io/crates/reqwest), [async_recursion](https://crates.io/crates/async-recursion), and [futures](https://crates.io/crates/futures) crate:
+
+````bash
+cargo add reqwest --features json
+cargo add async_recursion
+cargo add futures
+````
+
+A quick overview of the supporting crates:
+
+* [reqwest](https://crates.io/crates/reqwest) allows us to create HTTP calls to the hackernews API.
+* [async_recursion](https://crates.io/crates/async-recursion) provides a utility macro to allow us to recursively use an async function.
+* [futures](https://crates.io/crates/futures) provides us with utilities all around Rust's futures.
+
+## Working with Async
+
+[`use_resource`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_resource.html) is a [hook](./state.md) that lets you run an async closure, and provides you with its result.
+
+For example, we can make an API request (using [reqwest](https://docs.rs/reqwest/latest/reqwest/index.html)) inside `use_resource`:
+
+````rs@hackernews_async.rs
+fn Stories() -> Element {
+    // Fetch the top 10 stories on Hackernews
+    let stories = use_resource(move || get_stories(10));
+
+    // check if the future is resolved
+    match &*stories.read_unchecked() {
+        Some(Ok(list)) => {
+            // if it is, render the stories
+            rsx! {
+                div {
+                    // iterate over the stories with a for loop
+                    for story in list {
+                        // render every story with the StoryListing component
+                        StoryListing { story: story.clone() }
+                    }
+                }
+            }
+        }
+        Some(Err(err)) => {
+            // if there was an error, render the error
+            rsx! {"An error occurred while fetching stories {err}"}
+        }
+        None => {
+            // if the future is not resolved yet, render a loading message
+            rsx! {"Loading items"}
+        }
+    }
+}
+````
+
+The code inside `use_resource` will be submitted to the Dioxus scheduler once the component has rendered.
+
+We can use `.read()` to get the result of the future. On the first run, since there's no data ready when the component loads, its value will be `None`.  However, once the future is finished, the component will be re-rendered and the value will now be `Some(...)`, containing the return value of the closure.
+
+We can then render the result by looping over each of the posts and rendering them with the `StoryListing` component.
+
+````inject-dioxus
+DemoFrame {
+	hackernews_async::fetch::App {}
+}
+````
+
+ > 
+ > You can read more about working with Async in Dioxus in the [Async reference](../reference/index.md)
+
+## Lazily Fetching Data
+
+Finally, we will lazily fetch the comments on each post as the user hovers over the post.
+
+We need to revisit the code that handles hovering over an item. Instead of passing an empty list of comments, we can fetch all the related comments when the user hovers over the item.
+
+We will cache the list of comments with a [use_signal](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_signal.html) hook. This hook allows you to store some state in a single component. When the user triggers fetching the comments we will check if the response has already been cached before fetching the data from the hackernews API.
+
+````rs@hackernews_async.rs
+// New
+async fn resolve_story(
+    mut full_story: Signal<Option<StoryPageData>>,
+    mut preview_state: Signal<PreviewState>,
+    story_id: i64,
+) {
+    if let Some(cached) = full_story.as_ref() {
+        *preview_state.write() = PreviewState::Loaded(cached.clone());
+        return;
+    }
+
+    *preview_state.write() = PreviewState::Loading;
+    if let Ok(story) = get_story(story_id).await {
+        *preview_state.write() = PreviewState::Loaded(story.clone());
+        *full_story.write() = Some(story);
+    }
+}
+
+#[component]
+fn StoryListing(story: ReadOnlySignal<StoryItem>) -> Element {
+    let mut preview_state = consume_context::<Signal<PreviewState>>();
+    let StoryItem {
+        title,
+        url,
+        by,
+        score,
+        time,
+        kids,
+        id,
+        ..
+    } = story();
+    // New
+    let full_story = use_signal(|| None);
+
+    let url = url.as_deref().unwrap_or_default();
+    let hostname = url
+        .trim_start_matches("https://")
+        .trim_start_matches("http://")
+        .trim_start_matches("www.");
+    let score = format!("{score} {}", if score == 1 { " point" } else { " points" });
+    let comments = format!(
+        "{} {}",
+        kids.len(),
+        if kids.len() == 1 {
+            " comment"
+        } else {
+            " comments"
+        }
+    );
+    let time = time.format("%D %l:%M %p");
+
+    rsx! {
+        div {
+            padding: "0.5rem",
+            position: "relative",
+            onmouseenter: move |_event| { resolve_story(full_story, preview_state, id) },
+            div { font_size: "1.5rem",
+                a {
+                    href: url,
+                    onfocus: move |_event| { resolve_story(full_story, preview_state, id) },
+                    // ...
+
+````
+
+````inject-dioxus
+DemoFrame {
+	hackernews_async::App {}
+}
+````

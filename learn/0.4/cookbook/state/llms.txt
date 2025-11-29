@@ -1,0 +1,9 @@
+<SYSTEM>This is the developer documentation for Dioxus from /learn/0.4/cookbook/state/.</SYSTEM>
+# State Cookbook
+
+* [External State](external/index.md)
+* [Custom Hook](custom_hooks/index.md)
+# State Cookbook
+
+* [External State](external/index.md)
+* [Custom Hook](custom_hooks/index.md)

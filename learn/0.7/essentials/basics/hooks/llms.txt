@@ -1,0 +1,403 @@
+<SYSTEM>This is the developer documentation for Dioxus from /learn/0.7/essentials/basics/hooks.</SYSTEM>
+# Hooks
+
+In Dioxus, state that is local to a component is stored in *hooks*.
+
+Dioxus hooks work similarly to React's hooks. If you haven't done much web development, hooks might seem particularly unusual. Hooks provide a way of storing state, and attaching effects composability in components. Even better - they're less verbose than declaring structs and implementing "render" traits!
+
+## The `use_hook` primitive
+
+All hooks in Dioxus are built on the `use_hook` primitive. While you might never directly use this primitive, it's good to know where all state eventually resides. The `use_hook` primitive is a function that takes an initializer and returns a `.clone()` of the value.
+
+````rust
+fn Simple() -> Element {
+    let count = use_hook(|| 123);
+    rsx! { "{count}" }
+}
+````
+
+Whenever `use_hook` is called, one of two things happens:
+
+* if this `use_hook` has never been called before, the initializer is ran and a new slot is created
+* otherwise, `use_hook` returns a clone of the current value in the slot.
+
+Internally, the "hook index" is incremented by 1 on every call to `use_hook` and reset to 0 before the component re-renders.
+
+![Hook List](/assets/07/hook-list.png)
+
+## Rules of Hooks
+
+In Dioxus, we are transparent with the inner workings of the framework. Because hooks are implemented by walking an internal "hook list," they have certain rules that would cause walking the list to fail and your app to panic. It's important to note that these rules are not arbitrary - they are the intended result of how hooks are implemented.
+
+Hooks use their call order to keep track of what state belongs to which hook. You must call hooks in the same order every time the component is run. To make sure the order is always the same, **you should only call hooks at the top level of a component or another hook**.
+
+These rules mean that there are certain things you can't do with hooks:
+
+### No Hooks in Conditionals
+
+You should not call a hook function conditionally. When the component re-renders, this might lead to the hook list skipping an entry, causing the next hook to retrieve the wrong value.
+
+````rs@hooks_bad.rs
+// ❌ don't call hooks in conditionals!
+// We must ensure that the same hooks will be called every time
+// But `if` statements only run if the conditional is true!
+// So we might violate rule 2.
+if you_are_happy && you_know_it {
+    let something = use_signal(|| "hands");
+    println!("clap your {something}")
+}
+
+// ✅ instead, *always* call use_signal
+// You can put other stuff in the conditional though
+let something = use_signal(|| "hands");
+if you_are_happy && you_know_it {
+    println!("clap your {something}")
+}
+````
+
+### No Hooks in Closures
+
+Similar to conditionals, closures provide a way for hook functions to be called in an inconsistent order between renders. Instead of placing the hook in a closure, prefer to only use the result of the hook function in a closure.
+
+````rs@hooks_bad.rs
+// ❌ don't call hooks inside closures!
+// We can't guarantee that the closure, if used, will be called in the same order every time
+let _a = || {
+    let b = use_signal(|| 0);
+    b()
+};
+
+// ✅ instead, move hook `b` outside
+let b = use_signal(|| 0);
+let _a = || b();
+````
+
+### No Hooks in Loops
+
+Just like conditionals and closures, calling hook functions in loops can lead to inconsistent retrieval of hook values between renders, causing hooks to return the wrong value.
+
+````rs@hooks_bad.rs
+// `names` is a Vec<&str>
+
+// ❌ Do not use hooks in loops!
+// In this case, if the length of the Vec changes, we break rule 2
+for _name in &names {
+    let is_selected = use_signal(|| false);
+    println!("selected: {is_selected}");
+}
+
+// ✅ Instead, use a hashmap with use_signal
+let selection_map = use_signal(HashMap::<&str, bool>::new);
+
+for name in &names {
+    let is_selected = selection_map.read()[name];
+    println!("selected: {is_selected}");
+}
+````
+
+### Early Returns
+
+Unlike in React, in Dioxus, you *can* early return between hook calls. However, we generally discourage this pattern since it can lead to similar consistency issues as conditionals. Dioxus supports early returns because error boundaries and suspense boundaries use the question-mark syntax for ergonomics.
+
+````rust
+let name = use_signal(|| "bob".to_string());
+
+// ❌ dont early return between hooks!
+if name() == "jack" {
+    return Err("wrong name".into())
+}
+
+let age = use_signal(|| 123);
+
+rsx! { "{name}, {age}" }
+
+
+// ✅ instead, prefer to early return *after* all hook functions are run
+let name = use_signal(|| "bob".to_string());
+let age = use_signal(|| 123);
+
+if name() == "jack" {
+    return Err("wrong name".into())
+}
+
+rsx! { "{name}, {age}" }
+````
+
+### Prefix hook names with "`use_`"
+
+By convention, hooks are Rust functions that have the `use_` prefix. When you see a function with the `use_` prefix, you should be aware that it internally walks the component's hook list and therefore must follow the Rules of Hooks.
+
+## Why Hooks?
+
+You might be wondering - why use hooks? Aren't structs and traits enough?
+
+Hooks are useful because they compose exceptionally well. We can combine hook primitives to build complex yet modular interactions with a consistent interface. With a single function, we can encapsulate both state *and* effects.
+
+````rust
+// This hook is *derived* from an initializer
+fn use_document_title(initial: impl FnOnce() -> String) -> Signal<String> {
+    let mut title = use_signal(initial);
+
+    // Whenever the title signal changes, we queue a side-effect to modify the window state
+    use_effect(move || {
+        window().document().set_title(title());
+    });
+
+    // We return the reactive String
+    title
+}
+````
+
+Another perk of hooks: we don't need to declare the boilerplate that a struct-based approach might require. A simple component that stores user name and email is simple with hooks:
+
+````rust
+#[component]
+fn Card(default_name: String) -> Element {
+    let mut name = use_signal(|| default_name);
+    let mut email = use_signal(|| "".to_string());
+    rsx! {
+        span { "default: {default_name}" }
+        input { oninput: move |e| name.set(e.value()), }
+        input { oninput: move |e| email.set(e.value()), }
+    }
+}
+````
+
+whereas struct components might be quite verbose:
+
+````rust
+struct Card {
+    default_name: String
+    name: Signal<String>,
+    email: Signal<String>
+}
+
+#[derive(PartialEq, Clone)]
+struct CardProps {
+    default_name: String
+}
+impl Component for Card {
+    type Props = CardProps;
+    fn new(props: Self::Props) -> Self {
+        Self {
+            name: Signal::new(props.default_name)
+            email: Signal::new("".to_string())
+        }
+    }
+
+    fn change(&mut self, props: Self::Props) {
+        self.default_name = props.default_name;
+    }
+
+    fn render(mut state: Handle<Self>) -> Element {
+        rsx! {
+            span { "default: {self.default_name}" }
+            input { oninput: move |e| state.name.set(e.value()) }
+            input { oninput: move |e| state.email.set(e.value()) }
+        }
+    }
+}
+````
+
+With a single function, we are able to express a value initializer, establish automatic value tracking, and handle changes to component properties. We can easily encapsulate shared behavior, queue side-effects, and compose modular primitives.
+# Hooks
+
+In Dioxus, state that is local to a component is stored in *hooks*.
+
+Dioxus hooks work similarly to React's hooks. If you haven't done much web development, hooks might seem particularly unusual. Hooks provide a way of storing state, and attaching effects composability in components. Even better - they're less verbose than declaring structs and implementing "render" traits!
+
+## The `use_hook` primitive
+
+All hooks in Dioxus are built on the `use_hook` primitive. While you might never directly use this primitive, it's good to know where all state eventually resides. The `use_hook` primitive is a function that takes an initializer and returns a `.clone()` of the value.
+
+````rust
+fn Simple() -> Element {
+    let count = use_hook(|| 123);
+    rsx! { "{count}" }
+}
+````
+
+Whenever `use_hook` is called, one of two things happens:
+
+* if this `use_hook` has never been called before, the initializer is ran and a new slot is created
+* otherwise, `use_hook` returns a clone of the current value in the slot.
+
+Internally, the "hook index" is incremented by 1 on every call to `use_hook` and reset to 0 before the component re-renders.
+
+![Hook List](/assets/07/hook-list.png)
+
+## Rules of Hooks
+
+In Dioxus, we are transparent with the inner workings of the framework. Because hooks are implemented by walking an internal "hook list," they have certain rules that would cause walking the list to fail and your app to panic. It's important to note that these rules are not arbitrary - they are the intended result of how hooks are implemented.
+
+Hooks use their call order to keep track of what state belongs to which hook. You must call hooks in the same order every time the component is run. To make sure the order is always the same, **you should only call hooks at the top level of a component or another hook**.
+
+These rules mean that there are certain things you can't do with hooks:
+
+### No Hooks in Conditionals
+
+You should not call a hook function conditionally. When the component re-renders, this might lead to the hook list skipping an entry, causing the next hook to retrieve the wrong value.
+
+````rs@hooks_bad.rs
+// ❌ don't call hooks in conditionals!
+// We must ensure that the same hooks will be called every time
+// But `if` statements only run if the conditional is true!
+// So we might violate rule 2.
+if you_are_happy && you_know_it {
+    let something = use_signal(|| "hands");
+    println!("clap your {something}")
+}
+
+// ✅ instead, *always* call use_signal
+// You can put other stuff in the conditional though
+let something = use_signal(|| "hands");
+if you_are_happy && you_know_it {
+    println!("clap your {something}")
+}
+````
+
+### No Hooks in Closures
+
+Similar to conditionals, closures provide a way for hook functions to be called in an inconsistent order between renders. Instead of placing the hook in a closure, prefer to only use the result of the hook function in a closure.
+
+````rs@hooks_bad.rs
+// ❌ don't call hooks inside closures!
+// We can't guarantee that the closure, if used, will be called in the same order every time
+let _a = || {
+    let b = use_signal(|| 0);
+    b()
+};
+
+// ✅ instead, move hook `b` outside
+let b = use_signal(|| 0);
+let _a = || b();
+````
+
+### No Hooks in Loops
+
+Just like conditionals and closures, calling hook functions in loops can lead to inconsistent retrieval of hook values between renders, causing hooks to return the wrong value.
+
+````rs@hooks_bad.rs
+// `names` is a Vec<&str>
+
+// ❌ Do not use hooks in loops!
+// In this case, if the length of the Vec changes, we break rule 2
+for _name in &names {
+    let is_selected = use_signal(|| false);
+    println!("selected: {is_selected}");
+}
+
+// ✅ Instead, use a hashmap with use_signal
+let selection_map = use_signal(HashMap::<&str, bool>::new);
+
+for name in &names {
+    let is_selected = selection_map.read()[name];
+    println!("selected: {is_selected}");
+}
+````
+
+### Early Returns
+
+Unlike in React, in Dioxus, you *can* early return between hook calls. However, we generally discourage this pattern since it can lead to similar consistency issues as conditionals. Dioxus supports early returns because error boundaries and suspense boundaries use the question-mark syntax for ergonomics.
+
+````rust
+let name = use_signal(|| "bob".to_string());
+
+// ❌ dont early return between hooks!
+if name() == "jack" {
+    return Err("wrong name".into())
+}
+
+let age = use_signal(|| 123);
+
+rsx! { "{name}, {age}" }
+
+
+// ✅ instead, prefer to early return *after* all hook functions are run
+let name = use_signal(|| "bob".to_string());
+let age = use_signal(|| 123);
+
+if name() == "jack" {
+    return Err("wrong name".into())
+}
+
+rsx! { "{name}, {age}" }
+````
+
+### Prefix hook names with "`use_`"
+
+By convention, hooks are Rust functions that have the `use_` prefix. When you see a function with the `use_` prefix, you should be aware that it internally walks the component's hook list and therefore must follow the Rules of Hooks.
+
+## Why Hooks?
+
+You might be wondering - why use hooks? Aren't structs and traits enough?
+
+Hooks are useful because they compose exceptionally well. We can combine hook primitives to build complex yet modular interactions with a consistent interface. With a single function, we can encapsulate both state *and* effects.
+
+````rust
+// This hook is *derived* from an initializer
+fn use_document_title(initial: impl FnOnce() -> String) -> Signal<String> {
+    let mut title = use_signal(initial);
+
+    // Whenever the title signal changes, we queue a side-effect to modify the window state
+    use_effect(move || {
+        window().document().set_title(title());
+    });
+
+    // We return the reactive String
+    title
+}
+````
+
+Another perk of hooks: we don't need to declare the boilerplate that a struct-based approach might require. A simple component that stores user name and email is simple with hooks:
+
+````rust
+#[component]
+fn Card(default_name: String) -> Element {
+    let mut name = use_signal(|| default_name);
+    let mut email = use_signal(|| "".to_string());
+    rsx! {
+        span { "default: {default_name}" }
+        input { oninput: move |e| name.set(e.value()), }
+        input { oninput: move |e| email.set(e.value()), }
+    }
+}
+````
+
+whereas struct components might be quite verbose:
+
+````rust
+struct Card {
+    default_name: String
+    name: Signal<String>,
+    email: Signal<String>
+}
+
+#[derive(PartialEq, Clone)]
+struct CardProps {
+    default_name: String
+}
+impl Component for Card {
+    type Props = CardProps;
+    fn new(props: Self::Props) -> Self {
+        Self {
+            name: Signal::new(props.default_name)
+            email: Signal::new("".to_string())
+        }
+    }
+
+    fn change(&mut self, props: Self::Props) {
+        self.default_name = props.default_name;
+    }
+
+    fn render(mut state: Handle<Self>) -> Element {
+        rsx! {
+            span { "default: {self.default_name}" }
+            input { oninput: move |e| state.name.set(e.value()) }
+            input { oninput: move |e| state.email.set(e.value()) }
+        }
+    }
+}
+````
+
+With a single function, we are able to express a value initializer, establish automatic value tracking, and handle changes to component properties. We can easily encapsulate shared behavior, queue side-effects, and compose modular primitives.

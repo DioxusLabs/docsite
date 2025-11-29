@@ -1,0 +1,271 @@
+<SYSTEM>This is the developer documentation for Dioxus from /learn/0.6/guide/rsx.</SYSTEM>
+# Describing the UI
+
+Dioxus is a *declarative* framework. This means that instead of telling Dioxus what to do (e.g. to "create an element" or "set the color to red") we simply *declare* what we want the UI to look like using RSX.
+
+````rs@hello_world_desktop.rs
+// define a component that renders a div with the text "Hello, world!"
+fn App() -> Element {
+    rsx! {
+        div { "Hello, world!" }
+    }
+}
+````
+
+Here, we use the `rsx!` macro to *declare* that we want a `div` element, containing the text `"Hello, world!"`. Dioxus takes the RSX and constructs a user interface from it.
+
+## Editing RSX with Hot-Reloading
+
+When using `dx serve`, your app's RSX is automatically hot-reloaded whenever you edit and save the file. You can edit RSX structure, add new elements, and style your markup without a full rebuild.
+
+Whenever you edit *Rust* code, then `dx` will automatically force a "full rebuild" of your app.
+
+![Dog App Hotreloading](/assets/06_docs/dog_app_hotreload.mp4)
+
+For an in-depth guide on what can and can't be hot-reloaded, check the [hot-reload guide](../reference/hotreload.md) in the reference.
+
+## RSX is just HTML
+
+Dioxus provides the `rsx! {}` macro for assembling `Element`s in your app. The `rsx! {}` macro primarily speaks HTML: the web, desktop, and mobile Dioxus first-party renderers all use HTML and CSS as the layout and styling technologies.
+
+This means you can reuse your knowledge of the web and build your app using `div`, `span`, `img`, `style`, `button`, and more.
+
+The RSX syntax is a "strict" form of Rust that uses Rust's `Struct` syntax for assembling elements:
+
+````rs@guide_rsx.rs
+rsx! {
+    div {
+        class: "bg-red-100"
+    }
+}
+````
+
+Elements in RSX differ slightly from Rust struct syntax: they can also contain child structs placed immediately after the final attribute.
+
+````rs@guide_rsx.rs
+rsx! {
+    div { class: "bg-red-100",
+        button {
+            onclick: move |_| info!("Clicked"),
+            "Click me!"
+        }
+    }
+}
+````
+
+Additionally, all quoted strings in RSX imply `format!()` automatically, so you can define a variable outside your markup and use it in your strings without an explicit format call:
+
+````rs@guide_rsx.rs
+rsx! {
+    div { "Breed: {breed}" }
+}
+````
+
+Any expression that can be rendered to a String can be included directly in RSX. RSX also accepts `Option<Element>` and iterators of Elements:
+
+````rs@guide_rsx.rs
+rsx! {
+    // Anything that's `Display`
+    {"Something"}
+
+    // Optionals
+    {show_title.then(|| rsx! { "title!" } )}
+
+    // And iterators
+    ul {
+        {(0..5).map(|i| rsx! { "{i}" })}
+    }
+}
+````
+
+Dioxus provides two items of syntax sugar for these common cases: `for` loops and `if` chains. These blocks return the contained RSX directly.
+
+````rs@guide_rsx.rs
+rsx! {
+    if show_title {
+        "title!"
+    }
+
+    ul {
+        for item in 0..5 {
+            "{item}"
+        }
+    }
+}
+````
+
+For lists, Dioxus uses the `key` attribute to ensure it's comparing the right elements between renders. If you forget to add a `key` attribute to your list item, you might run into performance and state management issues. Usually you can find a unique key to differentiate your list items:
+
+````rs@guide_rsx.rs
+rsx! {
+    for user in users {
+        div {
+            key: "{user.id}",
+            "{user.name}"
+        }
+    }
+}
+````
+
+## Adding UI to our *HotDog* App
+
+Let's add a basic UI to our app. We'll add a header, a body image for the dog photo, and some basic buttons.
+
+````rs@guide_rsx.rs
+#[component]
+fn App() -> Element {
+    rsx! {
+        div { id: "title",
+            h1 { "HotDog! 🌭" }
+        }
+        div { id: "dogview",
+            img { src: "https://images.dog.ceo/breeds/pitbull/dog-3981540_1280.jpg" }
+        }
+        div { id: "buttons",
+            button { id: "skip", "skip" }
+            button { id: "save", "save!" }
+        }
+    }
+}
+````
+
+Our app is coming together!
+
+![Unstyled Dog App](/assets/06_docs/unstyled_dog_app.png)
+
+Unfortunately, it's not very beautiful yet. Let's move on to [styling our app](assets.md).
+# Describing the UI
+
+Dioxus is a *declarative* framework. This means that instead of telling Dioxus what to do (e.g. to "create an element" or "set the color to red") we simply *declare* what we want the UI to look like using RSX.
+
+````rs@hello_world_desktop.rs
+// define a component that renders a div with the text "Hello, world!"
+fn App() -> Element {
+    rsx! {
+        div { "Hello, world!" }
+    }
+}
+````
+
+Here, we use the `rsx!` macro to *declare* that we want a `div` element, containing the text `"Hello, world!"`. Dioxus takes the RSX and constructs a user interface from it.
+
+## Editing RSX with Hot-Reloading
+
+When using `dx serve`, your app's RSX is automatically hot-reloaded whenever you edit and save the file. You can edit RSX structure, add new elements, and style your markup without a full rebuild.
+
+Whenever you edit *Rust* code, then `dx` will automatically force a "full rebuild" of your app.
+
+![Dog App Hotreloading](/assets/06_docs/dog_app_hotreload.mp4)
+
+For an in-depth guide on what can and can't be hot-reloaded, check the [hot-reload guide](../reference/hotreload.md) in the reference.
+
+## RSX is just HTML
+
+Dioxus provides the `rsx! {}` macro for assembling `Element`s in your app. The `rsx! {}` macro primarily speaks HTML: the web, desktop, and mobile Dioxus first-party renderers all use HTML and CSS as the layout and styling technologies.
+
+This means you can reuse your knowledge of the web and build your app using `div`, `span`, `img`, `style`, `button`, and more.
+
+The RSX syntax is a "strict" form of Rust that uses Rust's `Struct` syntax for assembling elements:
+
+````rs@guide_rsx.rs
+rsx! {
+    div {
+        class: "bg-red-100"
+    }
+}
+````
+
+Elements in RSX differ slightly from Rust struct syntax: they can also contain child structs placed immediately after the final attribute.
+
+````rs@guide_rsx.rs
+rsx! {
+    div { class: "bg-red-100",
+        button {
+            onclick: move |_| info!("Clicked"),
+            "Click me!"
+        }
+    }
+}
+````
+
+Additionally, all quoted strings in RSX imply `format!()` automatically, so you can define a variable outside your markup and use it in your strings without an explicit format call:
+
+````rs@guide_rsx.rs
+rsx! {
+    div { "Breed: {breed}" }
+}
+````
+
+Any expression that can be rendered to a String can be included directly in RSX. RSX also accepts `Option<Element>` and iterators of Elements:
+
+````rs@guide_rsx.rs
+rsx! {
+    // Anything that's `Display`
+    {"Something"}
+
+    // Optionals
+    {show_title.then(|| rsx! { "title!" } )}
+
+    // And iterators
+    ul {
+        {(0..5).map(|i| rsx! { "{i}" })}
+    }
+}
+````
+
+Dioxus provides two items of syntax sugar for these common cases: `for` loops and `if` chains. These blocks return the contained RSX directly.
+
+````rs@guide_rsx.rs
+rsx! {
+    if show_title {
+        "title!"
+    }
+
+    ul {
+        for item in 0..5 {
+            "{item}"
+        }
+    }
+}
+````
+
+For lists, Dioxus uses the `key` attribute to ensure it's comparing the right elements between renders. If you forget to add a `key` attribute to your list item, you might run into performance and state management issues. Usually you can find a unique key to differentiate your list items:
+
+````rs@guide_rsx.rs
+rsx! {
+    for user in users {
+        div {
+            key: "{user.id}",
+            "{user.name}"
+        }
+    }
+}
+````
+
+## Adding UI to our *HotDog* App
+
+Let's add a basic UI to our app. We'll add a header, a body image for the dog photo, and some basic buttons.
+
+````rs@guide_rsx.rs
+#[component]
+fn App() -> Element {
+    rsx! {
+        div { id: "title",
+            h1 { "HotDog! 🌭" }
+        }
+        div { id: "dogview",
+            img { src: "https://images.dog.ceo/breeds/pitbull/dog-3981540_1280.jpg" }
+        }
+        div { id: "buttons",
+            button { id: "skip", "skip" }
+            button { id: "save", "save!" }
+        }
+    }
+}
+````
+
+Our app is coming together!
+
+![Unstyled Dog App](/assets/06_docs/unstyled_dog_app.png)
+
+Unfortunately, it's not very beautiful yet. Let's move on to [styling our app](assets.md).

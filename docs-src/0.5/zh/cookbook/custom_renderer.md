@@ -19,7 +19,7 @@ For reference, check out the [javascript interpreter](https://github.com/DioxusL
 
 ## Templates
 
-Dioxus is built around the concept of [Templates](https://docs.rs/dioxus-core/latest/dioxus_core/prelude/struct.Template.html). Templates describe a UI tree known at compile time with dynamic parts filled at runtime. This is useful internally to make skip diffing static nodes, but it is also useful for the renderer to reuse parts of the UI tree. This can be useful for things like a list of items. Each item could contain some static parts and some dynamic parts. The renderer can use the template to create a static part of the UI once, clone it for each element in the list, and then fill in the dynamic parts.
+Dioxus is built around the concept of [Templates](https://docs.rs/dioxus-core/0.5.6/dioxus_core/prelude/struct.Template.html). Templates describe a UI tree known at compile time with dynamic parts filled at runtime. This is useful internally to make skip diffing static nodes, but it is also useful for the renderer to reuse parts of the UI tree. This can be useful for things like a list of items. Each item could contain some static parts and some dynamic parts. The renderer can use the template to create a static part of the UI once, clone it for each element in the list, and then fill in the dynamic parts.
 
 ## Mutations
 
@@ -100,7 +100,7 @@ Template {
 }
 \```
 
-> For more detailed docs about the structure of templates see the [Template api docs](https://docs.rs/dioxus-core/latest/dioxus_core/prelude/struct.Template.html)
+> For more detailed docs about the structure of templates see the [Template api docs](https://docs.rs/dioxus-core/0.5.6/dioxus_core/prelude/struct.Template.html)
 
 This template will be sent to the renderer in the [list of templates](https://docs.rs/dioxus-core/latest/dioxus_core/struct.Mutations.html#structfield.templates) supplied with the mutations the first time it is used. Any time the renderer encounters a [LoadTemplate](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.LoadTemplate) mutation after this, it should clone the template and store it in the given id.
 

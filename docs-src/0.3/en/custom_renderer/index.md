@@ -19,7 +19,7 @@ For reference, check out the [javascript interpreter](https://github.com/DioxusL
 
 ## Templates
 
-Dioxus is built around the concept of [Templates](https://docs.rs/dioxus-core/latest/dioxus_core/struct.Template.html). Templates describe a UI tree known at compile time with dynamic parts filled at runtime. This is useful internally to make skip diffing static nodes, but it is also useful for the renderer to reuse parts of the UI tree. This can be useful for things like a list of items. Each item could contain some static parts and some dynamic parts. The renderer can use the template to create a static part of the UI once, clone it for each element in the list, and then fill in the dynamic parts.
+Dioxus is built around the concept of [Templates](https://docs.rs/dioxus-core/~0.3/dioxus_core/struct.Template.html). Templates describe a UI tree known at compile time with dynamic parts filled at runtime. This is useful internally to make skip diffing static nodes, but it is also useful for the renderer to reuse parts of the UI tree. This can be useful for things like a list of items. Each item could contain some static parts and some dynamic parts. The renderer can use the template to create a static part of the UI once, clone it for each element in the list, and then fill in the dynamic parts.
 
 ## Mutations
 

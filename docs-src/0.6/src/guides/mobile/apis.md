@@ -23,4 +23,4 @@ You can link to local assets in dioxus mobile instead of using a url:
 
 ## Integrating with Wry
 
-In cases where you need more low level control over your window, you can use wry APIs exposed through the [Desktop Config](https://docs.rs/dioxus-desktop/0.6.0/dioxus_desktop/type.DesktopContext.html) and the [use_window hook](https://docs.rs/dioxus-desktop/0.6.0/dioxus_desktop/fn.use_window.html)
+In cases where you need more low level control over your window, you can use wry APIs exposed through the [Desktop Config](https://docs.rs/dioxus-desktop/~0.6/dioxus_desktop/type.DesktopContext.html) and the [use_window hook](https://docs.rs/dioxus-desktop/~0.6/dioxus_desktop/fn.use_window.html)

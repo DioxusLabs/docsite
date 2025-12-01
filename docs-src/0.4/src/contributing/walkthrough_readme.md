@@ -25,7 +25,7 @@ Before the Rust compiler runs the program, it will expand all [macros](https://d
 {{#include ../docs-router/src/doc_examples/untested_04/readme_expanded.rs}}
 ```
 
-The rsx macro separates the static parts of the rsx (the template) and the dynamic parts (the [dynamic_nodes](https://docs.rs/dioxus-core/0.3.2/dioxus_core/prelude/struct.VNode.html#structfield.dynamic_nodes) and [dynamic_attributes](https://docs.rs/dioxus-core/0.3.2/dioxus_core/prelude/struct.VNode.html#structfield.dynamic_attrs)).
+The rsx macro separates the static parts of the rsx (the template) and the dynamic parts (the [dynamic_nodes](https://docs.rs/dioxus-core/~0.3/dioxus_core/prelude/struct.VNode.html#structfield.dynamic_nodes) and [dynamic_attributes](https://docs.rs/dioxus-core/~0.3/dioxus_core/prelude/struct.VNode.html#structfield.dynamic_attrs)).
 
 The static template only contains the parts of the rsx that cannot change at runtime with holes for the dynamic parts:
 
@@ -81,7 +81,7 @@ Scopes serve three main purposes:
 
 1. They store the state of hooks used by the component
 2. They store the state for the context API (for example: using
-   [use_shared_state_provider](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_shared_state_provider.html)).
+   [use_shared_state_provider](https://docs.rs/dioxus/~0.3/dioxus/prelude/fn.use_shared_state_provider.html)).
 3. They store the current and previous versions of the `VNode` that was rendered, so they can be
    diffed to generate the set of mutations needed to re-render it.
 
@@ -109,10 +109,10 @@ There are generally two ways a scope is marked as dirty:
 1. The renderer triggers an event: An event listener on this event may be called, which may mark a
    component as dirty, if processing the event resulted in any generated any mutations.
 2. The renderer calls
-   [`wait_for_work`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.VirtualDom.html#method.wait_for_work):
+   [`wait_for_work`](https://docs.rs/dioxus/~0.3/dioxus/prelude/struct.VirtualDom.html#method.wait_for_work):
    This polls dioxus internal future queue. One of these futures may mark a component as dirty.
 
-Once at least one `Scope` is marked as dirty, the renderer can call [`render_with_deadline`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.VirtualDom.html#method.render_with_deadline) to diff the dirty scopes.
+Once at least one `Scope` is marked as dirty, the renderer can call [`render_with_deadline`](https://docs.rs/dioxus/~0.3/dioxus/prelude/struct.VirtualDom.html#method.render_with_deadline) to diff the dirty scopes.
 
 ### Diffing Scopes
 

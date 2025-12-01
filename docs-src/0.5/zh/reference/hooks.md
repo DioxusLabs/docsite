@@ -8,7 +8,7 @@ Dioxus provides many built-in hooks, but if those hooks don't fit your specific 
 
 ## use_signal hook
 
-[`use_signal`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_signal.html) is one of the simplest hooks.
+[`use_signal`](https://docs.rs/dioxus/~0.5/dioxus/prelude/fn.use_signal.html) is one of the simplest hooks.
 
 - You provide a closure that determines the initial value: `let mut count = use_signal(|| 0);`
 - `use_signal` gives you the current value, and a way to write to the value
@@ -28,7 +28,7 @@ DemoFrame {
 
 Every time the component's state changes, it re-renders, and the component function is called, so you can describe what you want the new UI to look like. You don't have to worry about "changing" anything – describe what you want in terms of the state, and Dioxus will take care of the rest!
 
-> `use_signal` returns your value wrapped in a smart pointer of type [`Signal`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.Signal.html) that is `Copy`. This is why you can both read the value and update it, even within an event handler.
+> `use_signal` returns your value wrapped in a smart pointer of type [`Signal`](https://docs.rs/dioxus/~0.5/dioxus/prelude/struct.Signal.html) that is `Copy`. This is why you can both read the value and update it, even within an event handler.
 
 You can use multiple hooks in the same component if you want:
 
@@ -95,5 +95,5 @@ These rules mean that there are certain things you can't do with hooks:
 
 ## Additional resources
 
-- [dioxus_hooks API docs](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/)
+- [dioxus_hooks API docs](https://docs.rs/dioxus-hooks/~0.5/dioxus_hooks/)
 - [dioxus_hooks source code](https://github.com/DioxusLabs/dioxus/tree/main/packages/hooks)

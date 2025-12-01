@@ -6,7 +6,7 @@ Hooks allow us to create state in our components. Hooks are Rust functions that 
 
 ## use_state Hook
 
-[`use_state`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_state.html) is one of the simplest hooks.
+[`use_state`](https://docs.rs/dioxus/~0.3/dioxus/prelude/fn.use_state.html) is one of the simplest hooks.
 
 - You provide a closure that determines the initial value
 - `use_state` gives you the current value, and a way to update it by setting it to something else
@@ -21,7 +21,7 @@ For example, you might have seen the counter example, in which state (a number) 
 
 Every time the component's state changes, it re-renders, and the component function is called, so you can describe what you want the new UI to look like. You don't have to worry about "changing" anything – just describe what you want in terms of the state, and Dioxus will take care of the rest!
 
-> `use_state` returns your value wrapped in a smart pointer of type [`UseState`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.UseState.html). This is why you can both read the value and update it, even within an event handler.
+> `use_state` returns your value wrapped in a smart pointer of type [`UseState`](https://docs.rs/dioxus/~0.3/dioxus/prelude/struct.UseState.html). This is why you can both read the value and update it, even within an event handler.
 
 You can use multiple hooks in the same component if you want:
 
@@ -67,7 +67,7 @@ These rules mean that there are certain things you can't do with hooks:
 
 ## use_ref Hook
 
-`use_state` is great for tracking simple values. However, you may notice in the [`UseState` API](https://docs.rs/dioxus/latest/dioxus/hooks/struct.UseState.html) that the only way to modify its value is to replace it with something else (e.g., by calling `set`, or through one of the `+=`, `-=` operators). This works well when it is cheap to construct a value (such as any primitive). But what if you want to maintain more complex data in the components state?
+`use_state` is great for tracking simple values. However, you may notice in the [`UseState` API](https://docs.rs/dioxus/~0.3/dioxus/prelude/struct.UseState.html) that the only way to modify its value is to replace it with something else (e.g., by calling `set`, or through one of the `+=`, `-=` operators). This works well when it is cheap to construct a value (such as any primitive). But what if you want to maintain more complex data in the components state?
 
 For example, suppose we want to maintain a `Vec` of values. If we stored it with `use_state`, the only way to add a new value to the list would be to create a new `Vec` with the additional value, and put it in the state. This is expensive! We want to modify the existing `Vec` instead.
 

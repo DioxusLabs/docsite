@@ -14,7 +14,7 @@ Por exemplo, para manipular cliques em um elemento, podemos especificar um manip
 
 ## O Objeto `Evento`
 
-Os manipuladores de eventos recebem um objeto [`UiEvent`](https://docs.rs/dioxus-core/latest/dioxus_core/struct.UiEvent.html) contendo informações sobre o evento. Diferentes tipos de eventos contêm diferentes tipos de dados. Por exemplo, eventos relacionados ao mouse contêm [`MouseData`](https://docs.rs/dioxus/latest/dioxus/events/struct.MouseData.html), que informa coisas como onde o mouse foi clicado e quais botões do mouse foram usados.
+Os manipuladores de eventos recebem um objeto [`Event`](https://docs.rs/dioxus-core/~0.3/dioxus_core/struct.Event.html) contendo informações sobre o evento. Diferentes tipos de eventos contêm diferentes tipos de dados. Por exemplo, eventos relacionados ao mouse contêm [`MouseData`](https://docs.rs/dioxus/~0.3/dioxus/events/struct.MouseData.html), que informa coisas como onde o mouse foi clicado e quais botões do mouse foram usados.
 
 No exemplo acima, esses dados de evento foram registrados no terminal:
 
@@ -23,7 +23,7 @@ Clicked! Event: UiEvent { data: MouseData { coordinates: Coordinates { screen: (
 Clicked! Event: UiEvent { data: MouseData { coordinates: Coordinates { screen: (468.0, 109.0), client: (73.0, 25.0), element: (63.0, 15.0), page: (73.0, 25.0) }, modifiers: (empty), held_buttons: EnumSet(), trigger_button: Some(Primary) } }
 ```
 
-Para saber o que os diferentes tipos de eventos fornecem, leia os [documentos do módulo de eventos](https://docs.rs/dioxus/latest/dioxus/events/index.html).
+Para saber o que os diferentes tipos de eventos fornecem, leia os [documentos do módulo de eventos](https://docs.rs/dioxus/~0.3/dioxus/events/index.html).
 
 ### Parando a propagação
 

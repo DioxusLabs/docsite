@@ -46,7 +46,7 @@ enum Mutation {
 }
 ```
 
-The Dioxus diffing mechanism operates as a [stack machine](https://en.wikipedia.org/wiki/Stack_machine) where the [LoadTemplate](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.LoadTemplate), [CreatePlaceholder](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.CreatePlaceholder), and [CreateTextNode](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.CreateTextNode) mutations pushes a new "real" DOM node onto the stack and [AppendChildren](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.AppendChildren), [InsertAfter](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.InsertAfter), [InsertBefore](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.InsertBefore), [ReplacePlaceholder](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.ReplacePlaceholder), and [ReplaceWith](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.ReplaceWith) all remove nodes from the stack.
+The Dioxus diffing mechanism operates as a [stack machine](https://en.wikipedia.org/wiki/Stack_machine) where the [LoadTemplate](https://docs.rs/dioxus-core/~0.4/dioxus_core/enum.Mutation.html#variant.LoadTemplate), [CreatePlaceholder](https://docs.rs/dioxus-core/~0.4/dioxus_core/enum.Mutation.html#variant.CreatePlaceholder), and [CreateTextNode](https://docs.rs/dioxus-core/~0.4/dioxus_core/enum.Mutation.html#variant.CreateTextNode) mutations pushes a new "real" DOM node onto the stack and [AppendChildren](https://docs.rs/dioxus-core/~0.4/dioxus_core/enum.Mutation.html#variant.AppendChildren), [InsertAfter](https://docs.rs/dioxus-core/~0.4/dioxus_core/enum.Mutation.html#variant.InsertAfter), [InsertBefore](https://docs.rs/dioxus-core/~0.4/dioxus_core/enum.Mutation.html#variant.InsertBefore), [ReplacePlaceholder](https://docs.rs/dioxus-core/~0.4/dioxus_core/enum.Mutation.html#variant.ReplacePlaceholder), and [ReplaceWith](https://docs.rs/dioxus-core/~0.4/dioxus_core/enum.Mutation.html#variant.ReplaceWith) all remove nodes from the stack.
 
 ## Node storage
 
@@ -102,7 +102,7 @@ Template {
 
 > For more detailed docs about the structure of templates see the [Template api docs](https://docs.rs/dioxus-core/~0.4/dioxus_core/prelude/struct.Template.html)
 
-This template will be sent to the renderer in the [list of templates](https://docs.rs/dioxus-core/latest/dioxus_core/struct.Mutations.html#structfield.templates) supplied with the mutations the first time it is used. Any time the renderer encounters a [LoadTemplate](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.LoadTemplate) mutation after this, it should clone the template and store it in the given id.
+This template will be sent to the renderer in the [list of templates](https://docs.rs/dioxus-core/~0.4/dioxus_core/struct.Mutations.html#structfield.templates) supplied with the mutations the first time it is used. Any time the renderer encounters a [LoadTemplate](https://docs.rs/dioxus-core/~0.4/dioxus_core/enum.Mutation.html#variant.LoadTemplate) mutation after this, it should clone the template and store it in the given id.
 
 For dynamic nodes and dynamic text nodes, a placeholder node should be created and inserted into the UI so that the node can be modified later.
 
@@ -398,7 +398,9 @@ Now that we have our state, we can put it to use in our RealDom. We can update t
 
 ## Layout
 
-For most platforms, the layout of the Elements will stay the same. The [layout_attributes](https://docs.rs/dioxus-native-core/latest/dioxus_native_core/layout_attributes/index.html) module provides a way to apply HTML attributes a [Taffy](https://docs.rs/taffy/latest/taffy/index.html) layout style.
+TODO: The `layout_attributes` module is behind a feature flag, and the docs were not built in a way that makes it visible.
+
+For most platforms, the layout of the Elements will stay the same. The [layout_attributes](https://docs.rs/dioxus-native-core/~0.4/dioxus_native_core/layout_attributes/index.html) module provides a way to apply HTML attributes a [Taffy](https://docs.rs/taffy/latest/taffy/index.html) layout style.
 
 ## Text Editing
 

@@ -195,7 +195,7 @@ fn SearchModal() -> Element {
             Route::Docs05 { .. } => "0_5",
             Route::Docs04 { .. } => "0_4",
             Route::Docs03 { .. } => "0_3",
-            _ => "0_6",
+            _ => "0_7",
         };
 
         let url = format!("{url_base}/index_searchable_{docs_index_version}.bin");
@@ -318,13 +318,12 @@ fn SearchResults(results: Signal<Results>, search_text: Signal<String>) -> Eleme
             Route::Docs04 { .. } => matches!(cur_route, Route::Docs04 { .. }),
             Route::Docs05 { .. } => matches!(cur_route, Route::Docs05 { .. }),
             Route::Docs06 { .. } => matches!(cur_route, Route::Docs06 { .. }),
-            Route::Docs07 { .. } => {
+            _ => {
                 !matches!(cur_route, Route::Docs03 { .. })
                     && !matches!(cur_route, Route::Docs04 { .. })
                     && !matches!(cur_route, Route::Docs05 { .. })
                     && !matches!(cur_route, Route::Docs06 { .. })
             }
-            _ => true,
         })
         .collect::<Vec<_>>();
 

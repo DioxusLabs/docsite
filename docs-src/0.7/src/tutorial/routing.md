@@ -171,7 +171,7 @@ Finally, we can build our favorites page. Let's add a new `list_dogs` server fun
 {{#include ../docs-router/src/doc_examples/guide_router.rs:list_dogs}}
 ```
 
-Now, we can fill in our component. We're going to use the same `use_resource` hook from earlier. Resolving the request from the server might take some time, so we'll use the `.suspend()?` method on `Resource` to wait for the request to finish before mapping the contents to a list.
+Now, we can fill in our component. Resolving the request from the server might take some time, so we'll use the `use_server_future(...)?` to wait for the request to finish before mapping the contents to a list. `use_server_future` is very similar to `use_resource`, but it waits for the future to finish before continuing rendering and integrates with dioxus fullstack to serialize that data from the server to the client.
 
 ```rust
 {{#include ../docs-router/src/doc_examples/guide_router.rs:favorites_list_dogs}}

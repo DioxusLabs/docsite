@@ -70,6 +70,7 @@ pub(crate) fn BlogPost() -> Element {
     let meta = use_current_blog().unwrap();
 
     rsx! {
+        Stylesheet { href: asset!("/assets/githubmarkdown.css") }
         section { class: "text-gray-600 body-font pt-12 font-light w-full",
             div { class: "flex flex-row justify-center pt-4 md:pt-[3.125rem] lg:gap-12",
                 div { class: "hidden xl:block w-72" }

@@ -104,7 +104,7 @@ console = "=0.15.11"
 lto = true
 codegen-units = 1
 opt-level = 'z'
-strip = "debuginfo"
+strip = true
 
 [profile.dev.build-override]
 opt-level = 3

@@ -1,0 +1,2172 @@
+<SYSTEM>This is the developer documentation for Dioxus at /learn/0.7/tutorial/tooling and all its subroutes.</SYSTEM>
+
+# Setting up Tooling
+
+Before we get started, make sure you've followed the [Getting Started](../getting_started/index.md) page on installing the required dependencies. We will be primarily developing *HotDog* as web application, but we still recommend setting up the relevant tooling for desktop and mobile development as well.
+
+## Checklist
+
+We covered the setup instructions in [Getting Started](../getting_started/index.md), but first verify your setup:
+
+* Rust and Cargo are installed
+* The wasm32-unknown-unknown Rust target is installed
+* The `dioxus-cli` is installed and up-to-date
+* System-specific dependencies are installed
+
+Refer to the `dx doctor` command to see what `dx` uses to build your app.
+
+## All the Commands
+
+Before proceeding, make sure you have the `dioxus-cli` installed and up-to-date. Verify the returned version matches this guide by running:
+
+````sh
+dx --version
+````
+
+You can also run `dx help` which will give you a list of useful commands and some information on how to use `dx`.
+
+````txt
+Build, Bundle & Ship Dioxus Apps
+
+Usage: dx [OPTIONS] <COMMAND>
+
+Commands:
+  build      Build the Dioxus project and all of its assets
+  translate  Translate a source file into Dioxus code
+  serve      Build, watch & serve the Dioxus project and all of its assets
+  new        Create a new project for Dioxus
+  init       Init a new project for Dioxus in the current directory (by default). Will attempt to keep your project in a good state
+  clean      Clean output artifacts
+  bundle     Bundle the Dioxus app into a shippable object
+  fmt        Automatically format RSX
+  check      Check the project for any issues
+  run        Run the project without any hotreloading
+  config     Dioxus config file controls
+  help       Print this message or the help of the given subcommand(s)
+
+Options:
+      --verbose      Use verbose output [default: false]
+      --trace        Use trace output [default: false]
+      --json-output  Output logs in JSON format
+  -h, --help         Print help
+  -V, --version      Print version
+````
+
+If `dx` is installed properly, then you're ready to proceed!
+# Creating a new project
+
+You can create a new Dioxus project by running the following command and following the prompts:
+
+````sh
+dx new hot_dog
+````
+
+![dxnew](/assets/06_docs/dx_new_06.mp4)
+
+You'll need to select a template to use to get started.
+
+* Bare-bones: a very simple setup with just a `main.rs` and an `assets` folder.
+* Jumpstart: a scaffolded app with components, views, and suggested structure.
+* Workspace: a full cargo workspace setup with different crates per platform.
+
+We're going to use the bare-bones template for *HotDog* since our app will be quite simple.
+
+* Select "false" when asked if you want to create a fullstack website.
+* Select "false" for the router, though we *will* eventually add the router to the app.
+* Select "true" for TailwindCSS.
+* Select "false" for prompts for LLMs.
+* Select "Web" as the default platform.
+
+ > 
+ > 📣 You don't need `dx new` to create new Dioxus apps! Dioxus apps are Rust projects and can also be built with tools like cargo.
+
+## Running the project
+
+Once the project is generated, you can start it with the following command:
+
+````sh
+cd hot_dog
+dx serve
+````
+
+![Serve](/assets/06_docs/dx_serve_06.mp4)
+
+This will start the cargo build and launch a web server to serve your app. If you visit the "serve" address (in this case, `http://127.0.0.1:8080`), then you'll receive a loading screen in your browser:
+
+![loading](/assets/06_docs/hotdog_loading.png)
+
+Once the app is loaded, you should be greeted with the default Dioxus template app:
+
+![app](/assets/06_docs/default_dioxus_app.png)
+
+Congrats! You have your very first Dioxus app.
+
+## Structure of the app
+
+Open the app in your editor and take a look at its structure:
+
+````sh
+├── Cargo.lock
+├── Cargo.toml
+├── Dioxus.toml
+├── README.md
+├── assets
+│   ├── favicon.ico
+│   ├── header.svg
+│   └── main.css
+└── src
+    └── main.rs
+````
+
+All Rust apps are comprised of a root `Cargo.toml` with a `main.rs` file located in the `src` folder. Our CLI `dx` pre-filled these files with the `dioxus` dependency and some starter code for us to get building quickly.
+
+Assets in Dioxus can be placed anywhere in the project, but we suggest leaving them in the `assets` folder.
+
+### The Cargo.toml
+
+The `Cargo.toml` outlines the dependencies to our app and specifies compiler settings. All Rust apps are *compiled*: we execute the Rust tool `cargo` which aggregates our `.rs` files together and generates a final binary executable (like a `.exe`) that runs our app.
+
+All Dioxus apps will include `dioxus` as a dependency:
+
+````toml
+[dependencies]
+dioxus = { version = "0.7.0" }
+````
+
+The prebuilt Dioxus templates initialize different cargo features for your app. `dx` will use these to decide which cargo features to enable when you specify the `--web`, or `--desktop` flags. For example, if you use `dx serve --desktop` to build your app for desktop, `dx` will call `cargo build --no-default-features --features desktop`.
+
+````toml
+[features]
+default = ["web"]
+web = ["dioxus/web"]
+desktop = ["dioxus/desktop"]
+mobile = ["dioxus/mobile"]
+````
+
+### Dioxus.toml
+
+The `Dioxus.toml` file contains Dioxus-specific configuration for bundling and deploying your app. We won't need to configure the `Dioxus.toml` for our app just yet.
+
+### Assets Folder
+
+To include assets in your Dioxus app, you'll want to use the `asset!()` macro that we'll cover later in the [Styling and Assets](assets.md) chapter. You can include assets from anywhere within your app's file tree, but we recommend using the pregenerated `assets` folder.
+
+### tailwind.css
+
+Dioxus has built-in support for TailwindCSS! When serving and building your app, `dx` automatically runs the TailwindCSS CLI if it detects a `tailwind.css` at the root of your app. The default output for the tailwind compiler is in the assets folder.
+
+### main.rs
+
+Finally, the `main.rs`. The `main.rs` file is the entrypoint of our app, containing the `fn main` function. All Rust executables start their life at `main`.
+
+The `main` of our HotDog app looks like this:
+
+````rs@guide_new_app.rs
+use dioxus::prelude::*;
+
+fn main() {
+    dioxus::launch(App);
+}
+````
+
+The `launch` function calls the platform-specific `launch` function depending on which feature (web/desktop/mobile) is enabled on `dioxus`. `launch` accepts a root component, typically called `App`.
+
+We'll cover components more in-depth in the [next chapter](component.md).
+
+## Resetting to Basics
+
+The bare-bones template provides basic starter code for our app. However, we want to start *truly* from scratch, so we'll wipe away the `Hero` component and empty the `App` component to its basics:
+
+````rs@guide_new_app.rs
+use dioxus::prelude::*;
+
+fn main() {
+    dioxus::launch(App);
+}
+
+#[component]
+fn App() -> Element {
+    rsx! { "HotDog!" }
+}
+````
+# Your First Component
+
+Now that we've initialized our *HotDog* app, we can start building out its components.
+
+## What is a component?
+
+In Dioxus, apps are comprised of individual functions called *Components* that take in some *Properties* and render an *Element*:
+
+````rs@guide_component.rs
+fn DogApp(props: DogAppProps) -> Element {
+    todo!()
+}
+````
+
+## Component Properties
+
+All components take an object that outlines which parameters the component can accept. All `Props` structs in Dioxus need to derive the `Properties` trait which requires both `Clone` and `PartialEq`:
+
+````rs@guide_component.rs
+#[derive(Props, PartialEq, Clone)]
+struct DogAppProps {
+    breed: String,
+}
+````
+
+Dioxus provides the `#[component]` macro for simplifying how components are defined. This macro converts the parameters of the annotated function into a hidden accompanying struct.
+
+````rs@guide_component.rs
+#[component]
+fn DogApp(breed: String) -> Element {
+    todo!()
+}
+````
+
+When building apps, you'll frequently use the `#[component]` macro. When building libraries, we generally suggest deriving Props instead.
+
+## Properties are Immutable
+
+If you're familiar with JavaScript, then you might also be familiar with libraries like [React](http://react.dev). Dioxus is *very* similar to React: if you know React then you will feel comfortable with Dioxus.
+
+Just like React, Dioxus components are rendered by calling the function component. On every render, Dioxus makes a `.clone()` of the component's props. This ensures you can't accidentally modify your props which can lead to hard-to-track issues with state management.
+
+````rs@guide_component.rs
+#[component]
+fn DogApp(breed: String) -> Element {
+    tracing::info!("Rendered with breed: {breed}");
+
+    todo!()
+}
+````
+
+Dioxus provides types that make `.clone()` cheaper to call, so don't worry about performance gotchas here.
+
+## Component Functions are Called Multiple Times
+
+Just like React, Dioxus will call your component function multiple times throughout its lifecycle. This is called *re-rendering*. In Dioxus, re-renders are extremely cheap (much cheaper than React!). In most cases you shouldn't worry about re-rendering too frequently.
+
+When Dioxus re-renders your component, it compares the `Element` from the last render with the `Element` from the current render.
+
+For example, when the `breed` property changes on the DogApp component, Dioxus will call the DogApp function a second time and compare the previous Element against the new Element.
+
+````rs@guide_component.rs
+#[component]
+fn DogApp(breed: String) -> Element {
+    rsx! {
+        "Breed: {breed}"
+    }
+}
+````
+
+![Diffing](/assets/06_docs/diffing_diagram.png)
+
+Dioxus will re-render your component in only two circumstances:
+
+* When the `Props` change as determined by `PartialEq`
+* When a function like `signal.set()` or `signal.write()` calls `Scope.needs_update()`
+
+Unlike React, all Dioxus components are *memoized by default* meaning Dioxus will always compare `Props` before deciding to re-render your component. As an additional optimization, Dioxus only compares dynamic parts of your RSX. Elements that don't contain dynamic data won't be checked for changes.
+
+## Composing Components
+
+In Dioxus, *Components* are composed together to create *Apps*. Each component will hold onto its own state and handle its own updates. This makes it easy to abstract your app into different parts and even share pieces of your app as libraries for others to use.
+
+To compose components together, we'll use the `rsx! {}` macro to define the structure of our app.
+
+````rs@guide_component.rs
+#[component]
+fn App() -> Element {
+    rsx! {
+        Header {}
+        DogApp { breed: "corgi" }
+        Footer {}
+    }
+}
+````
+
+We'll cover `rsx! {}` in more depth in the [next chapter](rsx.md).
+# Describing the UI
+
+Dioxus is a *declarative* framework. This means that instead of telling Dioxus what to do (e.g. to "create an element" or "set the color to red") we simply *declare* what we want the UI to look like using RSX.
+
+````rs@hello_world_desktop.rs
+// define a component that renders a div with the text "Hello, world!"
+fn App() -> Element {
+    rsx! {
+        div { "Hello, world!" }
+    }
+}
+````
+
+Here, we use the `rsx!` macro to *declare* that we want a `div` element, containing the text `"Hello, world!"`. Dioxus takes the RSX and constructs a user interface from it.
+
+## Editing RSX with Hot-Reloading
+
+When using `dx serve`, your app's RSX is automatically hot-reloaded whenever you edit and save the file. You can edit RSX structure, add new elements, and style your markup without a full rebuild.
+
+Whenever you edit *Rust* code, then `dx` will automatically force a "full rebuild" of your app.
+
+As of Dioxus 0.7, you can run `dx serve --hotpatch` to enable hot-reloading of Rust code at runtime.
+
+![Dog App Hotreloading](/assets/06_docs/dog_app_hotreload.mp4)
+
+For an in-depth guide in what can and can't be hot-reloaded, check the [hot-reload guide](../essentials/ui/hotreload.md).
+
+## RSX is just HTML
+
+Dioxus provides the `rsx! {}` macro for assembling `Element`s in your app. The `rsx! {}` macro primarily speaks HTML: the web, desktop, and mobile Dioxus first-party renderers all use HTML and CSS as the layout and styling technologies.
+
+This means you can reuse your knowledge of the web and build your app using `div`, `span`, `img`, `style`, `button`, and more.
+
+The RSX syntax is a "strict" form of Rust that uses Rust's `Struct` syntax for assembling elements:
+
+````rs@guide_rsx.rs
+rsx! {
+    div {
+        class: "bg-red-100"
+    }
+}
+````
+
+Elements in RSX differ slightly from Rust struct syntax: they can also contain child structs placed immediately after the final attribute.
+
+````rs@guide_rsx.rs
+rsx! {
+    div { class: "bg-red-100",
+        button {
+            onclick: move |_| info!("Clicked"),
+            "Click me!"
+        }
+    }
+}
+````
+
+Additionally, all quoted strings in RSX imply `format!()` automatically, so you can define a variable outside your markup and use it in your strings without an explicit format call:
+
+````rs@guide_rsx.rs
+rsx! {
+    div { "Breed: {breed}" }
+}
+````
+
+Any expression that can be rendered to a String can be included directly in RSX. RSX also accepts `Option<Element>` and iterators of Elements:
+
+````rs@guide_rsx.rs
+rsx! {
+    // Anything that's `Display`
+    {"Something"}
+
+    // Optionals
+    {show_title.then(|| rsx! { "title!" } )}
+
+    // And iterators
+    ul {
+        {(0..5).map(|i| rsx! { li { "{i}" } })}
+    }
+}
+````
+
+Dioxus provides two items of syntax sugar for these common cases: `for` loops and `if` chains. These blocks return the contained RSX directly.
+
+````rs@guide_rsx.rs
+rsx! {
+    if show_title {
+        "title!"
+    }
+
+    ul {
+        for item in 0..5 {
+            li { "{item}" }
+        }
+    }
+}
+````
+
+For lists, Dioxus uses the `key` attribute to ensure it's comparing the right elements between renders. If you forget to add a `key` attribute to your list item, you might run into performance and state management issues. Usually you can find a unique key to differentiate your list items:
+
+````rs@guide_rsx.rs
+rsx! {
+    for user in users {
+        div {
+            key: "{user.id}",
+            "{user.name}"
+        }
+    }
+}
+````
+
+## Adding UI to our *HotDog* App
+
+Let's add a basic UI to our app. We'll add a header, a body image for the dog photo, and some basic buttons.
+
+````rs@guide_rsx.rs
+#[component]
+fn App() -> Element {
+    rsx! {
+        div { id: "title",
+            h1 { "HotDog! 🌭" }
+        }
+        div { id: "dogview",
+            img { src: "https://images.dog.ceo/breeds/pitbull/dog-3981540_1280.jpg" }
+        }
+        div { id: "buttons",
+            button { id: "skip", "skip" }
+            button { id: "save", "save!" }
+        }
+    }
+}
+````
+
+Our app is coming together!
+
+![Unstyled Dog App](/assets/06_docs/unstyled_dog_app.png)
+
+Unfortunately, it's not very beautiful yet. Let's move on to [styling our app](assets.md).
+# Styling and Assets
+
+## Dioxus uses CSS for Styling
+
+As mentioned earlier, Dioxus apps use HTML and CSS as the core markup and styling technology. Instead of re-inventing the wheel like Flutter and React-Native, we designed Dioxus to use HTML and CSS.
+
+CSS is by-far the most popular styling system and is extremely capable. For example, here's a screenshot of [ebou](https://github.com/terhechte/Ebou), a very beautiful Mastodon client built with Dioxus.
+
+![Ebou](/assets/06_docs/ebou-following.png)
+
+## Adding the CSS File with asset!()
+
+The bare-bones template already includes a base `main.css` in the `assets` folder.
+
+````sh
+├── Cargo.toml
+├── assets
+│   └── main.css
+└── src
+    └── main.rs
+````
+
+To include the CSS in our app, we can use the `asset!()` macro. This macro ensures the asset will be included in the final app bundle.
+
+````rs@guide_assets.rs
+static CSS: Asset = asset!("/assets/main.css");
+````
+
+We also need to load the asset into our app using the `document::Stylesheet` component. This component is equivalent to the `<link>` HTML element but also ensures the CSS will be pre-loaded during server-side-rendering.
+
+````rs@guide_assets.rs
+fn App() -> Element {
+    rsx! {
+        document::Stylesheet { href: CSS }
+    }
+}
+````
+
+Unlike Rust's `include_str!()` macro, the `asset!()` macro does not actually include the *contents* of the asset in our final executable. Instead, it generates a unique path so that the asset can be loaded at runtime. This is ideal for web apps where assets are loaded in parallel through different HTTP requests.
+
+ > 
+ > 📣 The `asset!()` macro generates a unique name that won't exactly match the input name. This helps prevents name collisions and improves caching.
+
+## Hot-Reloading
+
+All assets in Dioxus participate in hot-reloading. Try editing your app's `main.css` and watch changes propagate in real time.
+
+![CSS Hot-reloading](/assets/06_docs/dog-asset-hotreload.mp4)
+
+## Including Images
+
+In Dioxus, you can include images in two ways:
+
+* Dynamically with a URL
+* Statically with the `asset!()` macro.
+
+When including assets with a URL, simply fill the `src` attribute of `img {}`. Note that when the app is offline, URL-based images won't download.
+
+````rs@guide_assets.rs
+rsx! {
+    // ...
+    div {
+        img { src: "https://images.dog.ceo/breeds/pitbull/dog-3981540_1280.jpg" }
+    }
+}
+````
+
+For static images, you can use the same `asset!()` macro that we used to include the app's CSS.
+
+````rs@guide_assets.rs
+static ICON: Asset = asset!("/assets/icon.png");
+
+rsx! {
+    img { src: ICON }
+}
+````
+
+## Optimizations
+
+By default, the `asset!()` macro will lightly optimize CSS, JavaScript, JSON, and images. The name of the asset will also be modified to include a content hash.
+
+````rs@guide_assets.rs
+// would output main-j1238nask123.css
+asset!("/assets/main.css").to_string();
+````
+
+You can optimize assets even further, with an optional `Options` struct. For example, `dx` can automatically convert `.png` images to a more optimized `.avif` format:
+
+````rs@guide_assets.rs
+// outputs icon-j1238jd2.avif
+asset!("/assets/icon.png", AssetOptions::image().with_avif());
+````
+
+For many apps, asset optimization is the most effective way of improving load times. As developers, we frequently overlook the size of images and accidentally make our sites load slower.
+
+Check out the [assets guide](../essentials/ui/assets.md) for a more in-depth explanation of how the Dioxus asset system works.
+
+## The Final CSS
+
+We can use the asset hot-reload system of `dx` and our knowledge of CSS to create a beautiful app:
+
+![Styled Dog App](/assets/06_docs/dog_app_styled.png)
+
+The final CSS is here for reference:
+
+````css
+/* App-wide styling */
+html, body {
+    background-color: #0e0e0e;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    margin: 0;
+}
+
+#main {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+}
+
+#dogview {
+    max-height: 80vh;
+    flex-grow: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#dogview img {
+    display: block;
+    max-width: 50%;
+    max-height: 50%;
+    transform: scale(1.8);
+    border-radius: 5px;
+    border: 1px solid rgb(233, 233, 233);
+    box-shadow: 0px 0px 5px 1px rgb(216, 216, 216, 0.5);
+}
+
+#title {
+    text-align: center;
+    padding-top: 10px;
+    border-bottom: 1px solid #a8a8a8;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#title a {
+    text-decoration: none;
+    color: white;
+}
+
+a#heart {
+    background-color: white;
+    color: red;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+#title span {
+    width: 20px;
+}
+
+#title h1 {
+    margin: 0.25em;
+    font-style: italic;
+}
+
+#buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+    /* padding-top: 20px; */
+    padding-bottom: 20px;
+}
+
+#skip { background-color: gray }
+#save { background-color: green; }
+
+#skip, #save {
+    padding: 5px 30px 5px 30px;
+    border-radius: 3px;
+    font-size: 2rem;
+    font-weight: bold;
+    color: rgb(230, 230, 230)
+}
+
+#navbar {
+    border: 1px solid rgb(233, 233, 233);
+    border-width: 1px 0px 0px 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding: 20px;
+    gap: 20px;
+}
+
+#navbar a {
+    background-color: #a8a8a8;
+    border-radius: 5px;
+    border: 1px solid black;
+    text-decoration: none;
+    color: black;
+    padding: 10px 30px 10px 30px;
+}
+
+#favorites {
+    flex-grow: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+#favorites-container {
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+}
+
+.favorite-dog {
+    max-height: 180px;
+    max-width: 60%;
+    position: relative;
+}
+
+.favorite-dog img {
+    max-height: 150px;
+    border-radius: 5px;
+    margin: 5px;
+}
+
+.favorite-dog:hover button {
+    display: block;
+}
+
+.favorite-dog button {
+    display: none;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    z-index: 10;
+}
+````
+# Interactivity
+
+Now that our *HotDog* app is scaffolded and styled, we can finally add some interactive elements.
+
+## Encapsulating State
+
+Before we get too far, let's split our app into two parts: the `Title` and the `DogView`. This will help us organize our app and keep the `DogView` state separated from `Title` state.
+
+````rs@guide_state.rs
+#[component]
+fn App() -> Element {
+    rsx! {
+        document::Stylesheet { href: CSS }
+        Title {}
+        DogView {}
+    }
+}
+
+#[component]
+fn Title() -> Element {
+    rsx! {
+        div { id: "title",
+            h1 { "HotDog! 🌭" }
+        }
+    }
+}
+
+#[component]
+fn DogView() -> Element {
+    rsx! {
+        div { id: "dogview",
+            img { src: "https://images.dog.ceo/breeds/pitbull/dog-3981540_1280.jpg" }
+        }
+        div { id: "buttons",
+            button { id: "skip", "skip" }
+            button { id: "save", "save!" }
+        }
+    }
+}
+````
+
+## Event Handlers
+
+In the `DogView` component, we want to attach an action to the click of the buttons. For example: skipping or saving the current dog photo. We can use an [EventHandler](../essentials/basics/event_handlers.md) to listen for the `click` events.
+
+Event handlers are similar to regular attributes, but their name usually starts with `on` - and they accept closures as values. The closure will be called whenever its corresponding event is triggered. The listener receives information about the event from the [Event](https://docs.rs/dioxus/latest/dioxus/prelude/struct.Event.html) object.
+
+We'll add some closures inline and then pass them to the `onclick` attribute for both the *skip* and *save* buttons:
+
+````rs@guide_state.rs
+#[component]
+fn DogView() -> Element {
+    let skip = move |evt| {};
+    let save = move |evt| {};
+
+    rsx! {
+        // ...
+        div { id: "buttons",
+            button { onclick: skip, id: "skip",  "skip" }
+            button { onclick: save, id: "save",  "save!" }
+        }
+    }
+}
+````
+
+ > 
+ > You can read more about Event Handlers in the [Event Handler reference](../essentials/basics/event_handlers.md)
+
+## State with use_hook
+
+So far, our components have no internal state. For our `DogView`, we want to change the currently displayed dog photo whenever the user clicks *skip* or *save*.
+
+To store state in components, Dioxus provides the `use_hook` function. This makes it possible for bare Rust functions to store and load state without the use of an extra struct.
+
+When called in a component, the `use_hook` function will return a `.clone()` of the originally stored value:
+
+````rs@guide_state.rs
+#[component]
+fn DogView() -> Element {
+    let img_src = use_hook(|| "https://images.dog.ceo/breeds/pitbull/dog-3981540_1280.jpg");
+
+    // ..
+
+    rsx! {
+        div { id: "dogview",
+            img { src: "{img_src}" }
+        }
+        // ..
+    }
+}
+````
+
+Dioxus hooks are very similar to React's hooks and need to follow some [simple rules](../essentials/basics/hooks.md) to function properly.
+
+## Signals and use_signal
+
+While `use_hook` makes it possible to store any value that implements `Clone`, you'll frequently want a more capable form of state management. Built-in to Dioxus are *signals*.
+
+`Signal` is a wrapper type around an ordinary Rust value that tracks reads and writes, bringing your app to life. You can wrap any Rust value in a signal. Signals can be created manually with `Signal::new()` but we strongly recommend using the `use_signal` hook instead.
+
+ > 
+ > 📣 Manually creating Signals requires remembering to call `.manually_drop()` on the signal whereas `use_signal` cleans the Signal up for you automatically.
+
+Whenever a signal's value changes, its containing "reactive scope" will be "marked dirty" and re-run. By default, Dioxus components are reactive scopes, and thus, will re-render whenever a signal value changes.
+
+![Basic Interactivity](/assets/06_docs/hotdog-interactivity.mp4)
+
+Signals are core to Dioxus and take time to master. We recommend reading the [basics](../essentials/basics/index.md) guide in depth before diving into your first large app.
+
+## Global State with Context
+
+While hooks are good for state *local* to components, occasionally you'll want to manage state for your *entire* app. Dioxus provides two mechanisms: `Context` and `GlobalSignal`.
+
+The `Context` API makes it possible for parent components to share state with child components without explicitly declaring an additional property field. This is used by larger apps and libraries to share state across the app without modifying component signatures.
+
+To "provide" context, simply call `use_context_provider()` with a struct that implements `Clone`. To read the context in a child, call `use_context()`.
+
+````rs@guide_state.rs
+// Create a new wrapper type
+#[derive(Clone)]
+struct TitleState(String);
+
+fn App() -> Element {
+    // Provide that type as a Context
+    use_context_provider(|| TitleState("HotDog".to_string()));
+    rsx! {
+        Title {}
+    }
+}
+
+fn Title() -> Element {
+    // Consume that type as a Context
+    let title = use_context::<TitleState>();
+    rsx! {
+        h1 { "{title.0}" }
+    }
+}
+````
+
+You can combine `use_signal` and `Context` to provide reactive state to your app:
+
+````rs@guide_state.rs
+#[derive(Clone, Copy)]
+struct MusicPlayer {
+    song: Signal<String>,
+}
+
+fn use_music_player_provider() {
+    let song = use_signal(|| "Drift Away".to_string());
+    use_context_provider(|| MusicPlayer { song });
+}
+````
+
+With `use_context` and `consume_context`, you can easily reach up to modify that state:
+
+````rs@guide_state.rs
+#[component]
+fn Player() -> Element {
+    rsx! {
+        button {
+            onclick: move |_| consume_context::<MusicPlayer>().song.set("Vienna".to_string()),
+            "Shuffle"
+        }
+    }
+}
+````
+
+Any components that read the song signal will automatically re-render when the value changes.
+
+## Global Signals
+
+Occasionally you'll want a simple global value. This is where `GlobalSignal` helps. GlobalSignals are a combination of the Context system and Signals that require no additional structs or setup.
+
+Simply declare a GlobalSignal somewhere in your app:
+
+````rs@guide_state.rs
+static SONG: GlobalSignal<String> = Signal::global(|| "Drift Away".to_string());
+````
+
+And then read and write to it from anywhere:
+
+````rs@guide_state.rs
+#[component]
+fn Player() -> Element {
+    rsx! {
+        h3 { "Now playing {SONG}" }
+        button {
+            onclick: move |_| *SONG.write() = "Vienna".to_string(),
+            "Shuffle"
+        }
+    }
+}
+````
+
+GlobalSignals are only global to one app - not the entire program. On the server, every app gets its own GlobalSignal. We won't need either GlobalSignal or Context for *HotDog*, but it's useful to know that these are available to you.
+# Fetching Data
+
+## Adding Dependencies
+
+Dioxus does not provide any built-in utilities for fetching data. Crates like [dioxus-query](https://github.com/marc2332/dioxus-query) exist, but for this tutorial we'll implement data-fetching from scratch.
+
+First, we need to add two new dependencies to our app: [serde](https://crates.io/crates/serde) and [reqwest](https://crates.io/crates/reqwest).
+
+* Reqwest provides an HTTP client for fetching.
+* Serde will let us derive a JSON Deserializer to decode the response.
+
+In a new terminal window, add these crates to your app with `cargo add`.
+
+````bash
+cargo add reqwest --features json
+cargo add serde --features derive
+````
+
+## Defining a Response Type
+
+We'll be using the amazing [dog.ceo/dog-api](https://dog.ceo/dog-api/) to fetch images of dogs for *HotDog*. Fortunately, the API response is quite simple to deserialize. Let's create a new Rust struct that matches the format of the API and derive `Deserialize` for it.
+
+The Dog API docs outline a sample API response:
+
+````json
+{
+    "message": "https://images.dog.ceo/breeds/leonberg/n02111129_974.jpg",
+    "status": "success"
+}
+````
+
+Our Rust struct needs to match that format, though for now we'll only include the "message" field.
+
+````rs@guide_data_fetching.rs
+#[derive(serde::Deserialize)]
+struct DogApi {
+    message: String,
+}
+````
+
+## Using `reqwest` and `async`
+
+Dioxus has great support for asynchronous Rust. We can simply convert our `onclick` handler to be `async` and then set the `img_src` after the future has resolved.
+
+![Dog Fetching](/assets/06_docs/fetch-dog.mp4)
+
+The changes to our code are quite simple - just add the `reqwest::get` call and then call `.set()` on `img_src` with the result.
+
+````rs@guide_data_fetching.rs
+#[component]
+fn DogView() -> Element {
+    let mut img_src = use_signal(|| "".to_string());
+
+    let save = move |_| async move {
+        let response = reqwest::get("https://dog.ceo/api/breeds/image/random")
+            .await
+            .unwrap()
+            .json::<DogApi>()
+            .await
+            .unwrap();
+
+        img_src.set(response.message);
+    };
+
+    // ..
+
+    rsx! {
+        div { id: "dogview",
+            img { src: "{img_src}" }
+        }
+        div { id: "buttons",
+            // ..
+            button { onclick: save, id: "save", "save!" }
+        }
+    }
+}
+````
+
+Dioxus automatically calls `dioxus::spawn` on asynchronous closures. You can also use `dioxus::spawn` to perform async work *without* async closures - just call `dioxus::spawn()` on any async block. Futures spawned with `dioxus::spawn` automatically run on the current async executor and are dropped automatically.
+
+````rs@guide_data_fetching.rs
+rsx! {
+    button {
+        onclick: move |_| {
+            spawn(async move {
+                // do some async work...
+            });
+        }
+    }
+}
+````
+
+The futures passed to `dioxus::spawn` can not borrow data from outside the async block. Data that is `Copy` *can* be captured by async blocks, but all other data must be *moved*, usually by calling `.clone()`.
+
+## Data Fetching with `use_resource`
+
+Eventually, using bare `async` calls might lead to race conditions and weird state bugs. For example, if the user clicks the *fetch* button too quickly, then two requests will be made in parallel. If the request is updating data somewhere else, the wrong request might finish early and causes a race condition.
+
+In Dioxus, *Resources* are pieces of state whose value is dependent on the completion of some asynchronous work. The `use_resource` hook provides a `Resource` object with helpful methods to start, stop, pause, and modify the asynchronous state.
+
+Let's change our component to use a resource instead:
+
+````rs@guide_data_fetching.rs
+#[component]
+fn DogView() -> Element {
+    let mut img_src = use_resource(|| async move {
+        reqwest::get("https://dog.ceo/api/breeds/image/random")
+            .await
+            .unwrap()
+            .json::<DogApi>()
+            .await
+            .unwrap()
+            .message
+    });
+
+    rsx! {
+        div { id: "dogview",
+            img { src: img_src.cloned().unwrap_or_default() }
+        }
+        div { id: "buttons",
+            button { onclick: move |_| img_src.restart(), id: "skip", "skip" }
+            button { onclick: move |_| img_src.restart(), id: "save", "save!" }
+        }
+    }
+}
+````
+
+Resources are very powerful: they integrate with Suspense, Streaming HTML, reactivity, and more.
+
+The details of the `Resource` API are not terribly important right now, but you'll be using Resources frequently in larger apps, so it's a good idea to [read the docs](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_resource.html).
+# Adding a Backend
+
+Dioxus is a *fullstack* framework, enabling you to seamlessly build your frontend alongside your backend.
+
+We provide a number of utilities like *Server Functions*, *Server Futures*, and *Server State* for you to integrate into your apps. In this chapter, we'll cover loading and saving state to our backend with *Server Functions*. For an in-depth guide on fullstack, check out the dedicated [Fullstack Guide](../essentials/fullstack/index.md).
+
+## Enabling Fullstack
+
+Before we can start using server functions, we need to enable the "fullstack" feature on Dioxus in our Cargo.toml.
+
+````toml
+[dependencies]
+dioxus = { version = "0.7.0", features = ["fullstack"] }
+````
+
+We also need to add the "server" feature to our app's features in the Cargo.toml and remove the default web target.
+
+````toml
+[features]
+default = [] # <----- remove the default web target
+web = ["dioxus/web"]
+desktop = ["dioxus/desktop"]
+mobile = ["dioxus/mobile"]
+server = ["dioxus/server"] # <----- add this additional target
+````
+
+If you selected *yes* to the "use fullstack?" prompt when creating your app, you will already have this set up!
+
+ > 
+ > 📣 Unfortunately, `dx` doesn't know how to hot-reload this change, so we'll need to restart the dev server.
+
+Now instead of running `dx serve`, you need to run with a manual platform with `dx serve --web`. Give your app a moment to build again and make sure that the "fullstack" feature is enabled in the dashboard.
+
+![Fullstack Enabled](/assets/06_docs/serve_with_fullstack.png)
+
+## Server Functions: an inline RPC system
+
+Dioxus integrates with the [axum](https://crates.io/crates/axum) crate to provide a simple inline communication system for your apps. Server functions makes it easy to build your app's backend with just basic Rust functions. Server Functions are `async` functions annotated with the a procedural macro (like post/get).
+
+A typical server function looks like this:
+
+````rs@guide_backend.rs
+#[post("/api/save_dog")]
+async fn save_dog(image: String) -> Result<()> {
+    Ok(())
+}
+````
+
+Every server function is an async function that takes some parameters and returns a `Result<()>`. Whenever the client calls the server function, it sends an HTTP request to a corresponding endpoint on the server. The parameters of the server function are serialized as the body of the HTTP request. As a result, each argument must be serializable.
+
+On the client, the server function expands to a `reqwest` call:
+
+````rs@guide_backend.rs
+// on the client:
+async fn save_dog(image: String) -> Result<()> {
+    reqwest::Client::new()
+        .post("http://localhost:8080/api/save_dog")
+        .json(&image)
+        .send()
+        .await?;
+    Ok(())
+}
+````
+
+On the server, the server function expands to an [axum](https://github.com/tokio-rs/axum) handler:
+
+````rs@guide_backend.rs
+// on the server:
+struct SaveDogArgs {
+    image: String,
+}
+
+async fn save_dog(Json(args): Json<SaveDogArgs>) -> Result<()> {
+    Ok(())
+}
+````
+
+When `dioxus::launch` is called, the server functions are automatically registered for you and set up as an Axum router.
+
+In some cases, the `dioxus::launch` function might be too limiting for your use-case on the server. Dioxus provides an alternative entrypoint for your app on the server with `dioxus::serve`. This lets you return an Axum router while still having hot-reload, logging, and devtools wired up automatically.
+
+````rs@guide_backend.rs
+fn main() {
+    #[cfg(not(feature = "server"))]
+    dioxus::launch(App);
+
+    #[cfg(feature = "server")]
+    dioxus::serve(|| async move {
+        // Create a new axum router for our Dioxus app
+        let router = dioxus::server::router(App);
+
+        // .. customize it however you want ..
+
+        // And then return it
+        Ok(router)
+    })
+}
+````
+
+## The Client/Server split
+
+When Dioxus builds your fullstack apps, it actually creates two separate applications: the server and the client. To achieve this, `dx` passes different features to each build.
+
+* The client is built with `--features web`
+* The server is built with `--features server`
+
+![Server Client Split](/assets/06_docs/server_split.png)
+
+When embedding server code in our apps, we need to be careful about which code gets compiled. The body of the server function is designed to only be *executed on the server* - not the client. Any code configured by the `"server"` feature will not be present in the final app. Conversely, any code not configured by the `"server"` feature *will* make it into the final app.
+
+````rs@guide_backend.rs
+// ❌ this will leak your DB_PASSWORD to your client app!
+static DB_PASSWORD: &str = "1234";
+
+#[post("/api/do_thing")]
+async fn DoThing() -> Result<()> {
+    connect_to_db(DB_PASSWORD).await
+    // ...
+}
+````
+
+Instead, we recommend placing server-only code within modules configured for the `"server"` feature.
+
+````rs@guide_backend.rs
+// ✅ code in this module can only be accessed on the server
+#[cfg(feature = "server")]
+mod server_utils {
+    pub static DB_PASSWORD: &str = "1234";
+}
+````
+
+In addition to the "server" feature, Dioxus expects a client side rendering feature like "web" or "desktop". Some libraries like web-sys only work when running in the browser, so make sure to not run specific client code in your server functions or before your `launch`. You can place client only code under a config for a client target feature like "web".
+
+````rs@guide_backend.rs
+fn main() {
+    // ❌ attempting to use web_sys on the server will panic!
+    let window = web_sys::window();
+
+    // ..
+
+    dioxus::launch(App);
+}
+````
+
+## Managing Dependencies
+
+Some dependencies like [Tokio](https://github.com/tokio-rs/tokio) only compile properly when targeting native platforms. Other dependencies like [jni-sys](https://github.com/jni-rs/jni-sys) only work properly when running on a specific platform. In these cases, you'll want to make sure that these dependencies are only compiled when a particular feature is enabled. To do this, we can use Rust's `optional` [flag on dependencies in our Cargo.toml](https://doc.rust-lang.org/cargo/reference/features.html#optional-dependencies).
+
+````toml
+[dependencies]
+tokio = { version = "1", optional = true }
+
+[features]
+default = []
+server = ["dep:tokio"]
+````
+
+Eventually, if your project becomes large enough, you might want to pull your server functions out into their own crate to be used across different apps. We'd create a `server` crate in our workspace:
+
+````sh
+├── Cargo.toml
+└── crates
+    ├── dashboard
+    ├── marketplace
+    └── server
+````
+
+And then we'd import the server functions in our app, disabling their `"server"` feature.
+
+````toml
+[dependencies]
+server = { workspace = true, default-features = false }
+````
+
+We provide a longer guide about the details of managing dependencies across the server and the client [here](../essentials/fullstack/project_setup.md).
+
+## Our HotDog Server Function
+
+Revisiting our HotDog app, let's create a new server function that saves our favorite dog to a file called `dogs.txt`. In production, you'd want to use a proper database as covered in [the next chapter](databases.md), but for now we'll use a simple file to test things out.
+
+````rs@guide_backend.rs
+// Expose a `save_dog` endpoint on our server that takes an "image" parameter
+#[post("/api/save_dog")]
+async fn save_dog(image: String) -> Result<()> {
+    use std::io::Write;
+
+    // Open the `dogs.txt` file in append-only mode, creating it if it doesn't exist;
+    let mut file = std::fs::OpenOptions::new()
+        .write(true)
+        .append(true)
+        .create(true)
+        .open("dogs.txt")
+        .unwrap();
+
+    // And then write a newline to it with the image url
+    file.write_fmt(format_args!("{image}\n"));
+
+    Ok(())
+}
+````
+
+### Calling the server function
+
+Now, in our client code, we can actually call the server function.
+
+````rs@guide_backend.rs
+fn DogView() -> Element {
+    let mut img_src = use_resource(snipped!());
+
+    // ...
+    rsx! {
+        // ...
+        div { id: "buttons",
+            // ...
+            button {
+                id: "save",
+                onclick: move |_| async move {
+                    let current = img_src.cloned().unwrap();
+                    img_src.restart();
+                    _ = save_dog(current).await;
+                },
+
+                "save!"
+            }
+        }
+    }
+}
+}
+````
+
+Wow, our app is really coming together!
+
+![Working Server Functions](/assets/06_docs/dog-save-serverfn.mp4)
+
+Server functions are extremely capable and can even be used during server-side-rendering. Check out the complete [fullstack guide](../essentials/fullstack/index.md) for more information.
+# Working with Databases
+
+Our HotDog app is coming together nicely! We implemented a very simple backend that saves the user's favorite dog images to a local "dogs.txt" file.
+
+In practice, you will likely want to store data in a proper database. Modern databases are *much* more powerful than a text file!
+
+If you already have a good understanding of databases, jump ahead to the [section where we integrate Sqlite with HotDog](#adding-database-operations-to-hotdog).
+
+## Choosing a Database
+
+In today's age of app development, there are *many* databases to choose from, each with their own strengths, weaknesses, and tradeoffs to consider. For apps with just a few users, it is fine to select a "simpler" database that's easier to manage. For apps with many users, you might want to consider more advanced databases with additional tooling to meet stricter requirements.
+
+Here is a (incomplete!) list of databases and a short summary of each:
+
+* [PostgreSQL](https://www.postgresql.org): Advanced database known for its powerful plugin system.
+* [MySQL](https://www.mysql.com): World's most popular open source database good for all apps.
+* [SQLite](https://www.sqlite.org): Simple file-based engine known for its reliability and embeddability.
+* [Oracle](https://www.oracle.com/database/): Advanced commercial database known for its enterprise features.
+* [Redis](http://redis.io): Simple key-value database known for its great performance.
+* [MongoDB](https://www.mongodb.com/): A database ideal for data that doesn't fit into rows and columns.
+* [SurrealDB](https://surrealdb.com/): A new "all-in-one" database that combines many models.
+* [CockroachDB](https://www.cockroachlabs.com): Distributed SQL database designed for high-availability.
+* [and many more](https://dev.to/shreyvijayvargiya/list-of-45-databases-in-the-world-57e8)!
+
+There are many different types of databases, each good at different tasks. These might include:
+
+* **Relational**: traditional row/column/table approach.
+* **Document**: storing unstructured or loosely structured blobs of data.
+* **Timeseries**: storing and querying lots of data that changes over time.
+* **Graph**: querying data based on its connections to other data.
+* **Key-value**: storing just key-value pairs - a fast concurrent HashMap.
+* **In-memory**: designed for low-latency operations usually used as a cache.
+* **Embedded**: a database that is shipped *inside* your app.
+
+For most apps - unless you have specific requirements - we recommend a mainstream relational database like PostgreSQL or MySQL.
+
+ > 
+ > 📣 PostgreSQL is currently a very interesting option: it can be extended to support time-series, vector, graph, search and geo-spatial data with plugins.
+
+In some cases, you might want a database that's specific to *just one app instance* or the *user's machine*. In these cases, you'll want to use an embedded database like [SQLite](https://www.sqlite.org) or [RocksDB](https://rocksdb.org).
+
+## Adding Database operations to HotDog
+
+For *HotDog*, we're going to use Sqlite. *HotDog* is a very simple app and will only ever have one user: you!
+
+To add sqlite functionality to *HotDog*, we'll pull in the `rusqlite` crate. Note that `rusqlite` is only meant to be compiled on the server, so we'll feature gate it behind the `"server"` feature in our Cargo.toml.
+
+````toml
+[dependencies]
+# ....
+rusqlite = { version = "0.32.1", optional = true } # <--- add rusqlite
+
+[features]
+# ....
+server = ["dioxus/server", "dep:rusqlite"] # <---- add dep:rusqlite
+````
+
+To connect to our database, we're going to use the `rusqlite::Connection`. Rusqlite connections are not thread-safe and must exist once-per-thread, so we'll need to wrap it in a thread_local.
+
+When the connection is initialized, we'll run a SQL action to create the "dogs" table with our data.
+
+````rs@guide_databases.rs
+// The database is only available to server code
+#[cfg(feature = "server")]
+thread_local! {
+    pub static DB: rusqlite::Connection = {
+        // Open the database from the persisted "hotdog.db" file
+        let conn = rusqlite::Connection::open("hotdog.db").expect("Failed to open database");
+
+        // Create the "dogs" table if it doesn't already exist
+        conn.execute_batch(
+            "CREATE TABLE IF NOT EXISTS dogs (
+                id INTEGER PRIMARY KEY,
+                url TEXT NOT NULL
+            );",
+        ).unwrap();
+
+        // Return the connection
+        conn
+    };
+}
+````
+
+Now, in our `save_dog` server function, we can use SQL to insert the value into the database:
+
+````rs@guide_databases.rs
+#[server]
+async fn save_dog(image: String) -> Result<()> {
+    DB.with(|f| f.execute("INSERT INTO dogs (url) VALUES (?1)", &[&image]))?;
+    Ok(())
+}
+````
+
+Once the app is launched, you should see a "hotdog.db" file in your crate's directory. Let's save a few dog photos and then open the database in a database viewer. If all goes well, you should see the saved dog photos!
+
+![Databaseview](/assets/06_docs/hotdog-db-view.mp4)
+
+## Notes on Databases and Rust
+
+While there are many database providers, Rust support can be limited. Rust is still a new choice for web development. In this section we'll provide our own (biased!) opinions on what libraries we recommend for interacting with databases.
+
+It's also important to note that several libraries exist at a higher level abstraction than raw SQL. These are called an *Object Relationship Mapper (ORM)*. Rust ORM libraries map the SQL language into ordinary Rust functions. We generally recommend just sticking with SQL, but ORMs can make working writing some queries easier.
+
+* [Sqlx](https://github.com/launchbadge/sqlx): A straightforward yet large interface to Postgres, MySql, and Sqlite.
+* [SeaORM](https://github.com/SeaQL/sea-orm): An ORM built on top of Sqlx for deriving databases.
+* [rusqlite](https://github.com/rusqlite/rusqlite): An intuitive sqlite interface with no special ORM magic.
+* [rust-postgres](https://github.com/sfackler/rust-postgres): An interface to Postgres with an API similar to rusqlite.
+* [Turbosql](https://github.com/trevyn/turbosql): A *very* terse interface to Sqlite with automatic derives.
+
+We aren't including libraries like [Diesel](http://diesel.rs) in this list since it seems that the Rust ecosystem has evolved towards newer projects with 1st-class async support.
+
+There are many libraries we haven't tested yet, but might be worth checking out:
+
+* [firebase-rs](https://github.com/emreyalvac/firebase-rs): Firebase client crate
+* [postgrest-rs](https://github.com/supabase-community/postgrest-rs): Supabase client crate
+* [mongo-rust-driver](https://github.com/mongodb/mongo-rust-driver): Official MongoDB client crate
+
+## Choosing a Database Provider
+
+While there are just a handful of databases you might consider for your app, there are many *database providers*, each with their own strengths and weaknesses. We are not sponsored by any of these providers - this is just a list of providers we have seen in use by Rust apps.
+
+You *do not* need to use a database provider. Databases providers provide paid database hosting. It will cost you money to use these providers! Many have a free tier and some support "scale-to-zero" to help you save money on small apps. At any time, you are free to host and manage your own database.
+
+For popular relational databases:
+
+* [GCP](https://cloud.google.com/products/databases): Provides AlloyDB (enterprise postgres), CloudSQL (MySql, Postgres), and more.
+* [AWS](https://aws.amazon.com/products/databases/): Provides RDS, Aurora, DynamoDB, and more.
+* [PlanetScale](https://planetscale.com): Reliable MySQL-compatible database with sharding designed for scale.
+* [Firebase](https://firebase.google.com): Google's comprehensive real-time database designed for rapid app development.
+* [Supabase](https://supabase.com): Hosted Postgres known for its great dashboard and tooling.
+* [Neon](https://neon.tech): Hosted Postgres that separates compute and storage for scale-to-zero apps.
+
+For Sqlite:
+
+* [LiteFS](https://fly.io/docs/litefs/): A distributed Sqlite sync engine designed to be used with Fly.io
+* [Turso](https://turso.tech): A "multi-tenant" sqlite provider that maintains one isolated database per user
+
+The "scale-to-zero" relational solutions:
+
+* [AWS Aurora](https://aws.amazon.com/rds/aurora/)
+* [LiteFS](https://fly.io/docs/litefs/)
+
+We don't suggest any particular database provider.
+
+* If you have lots of free cloud credits, consider AWS/GCP/Azure.
+* If you want Postgres with a good dashboard, consider Supabase or Neon.
+* If you want a simple experience, consider Turso or LiteFS.
+# Adding More Routes
+
+So far, our app has only had a single page. Let's change that!
+
+In this chapter, we'll be adding a Navbar, a welcome screen, and a "favorites" page where we can revisit our favorite dogs.
+
+## Organizing our Project
+
+Before we get too far with adding new pages to our app, let's organize our codebase a bit better. For larger projects you might want to break your app into different smaller crates. For HotDog, we'll keep it simple.
+
+ > 
+ > The `dx new` Jumpstart and Workspace templates provide great scaffolding for new apps!
+
+We generally recommend splitting your components, models, and backend functionality into different files. For HotDog, we're going to use a simple directory structure:
+
+````sh
+├── Cargo.toml
+├── assets
+│   └── main.css
+└── src
+    ├── backend.rs
+    ├── components
+    │   ├── favorites.rs
+    │   ├── mod.rs
+    │   ├── nav.rs
+    │   └── view.rs
+    └── main.rs
+````
+
+We'll have a `backend.rs` that contains our server functions and a `components` folder that contains our components. We don't have a `NavBar` or a `Favorites` component yet, but we'll still create the relevant files before adding them. By splitting out our server functions into a `backend.rs` file, we'll make it easier to extract our backend functionality as a shared library for different apps in the future.
+
+Our `components/mod.rs` file will simply import and re-export the components in `view.rs`, `nav.rs`, and `favorites.rs`:
+
+````rust
+mod favorites;
+mod nav;
+mod view;
+
+pub use favorites::*;
+pub use nav::*;
+pub use view::*;
+````
+
+Finally, we need to bring `backend` and `components` into scope in our `main.rs` file:
+
+````rust
+mod components;
+mod backend;
+
+use crate::components::*;
+````
+
+For more information on organizing Rust projects with modules, see the [Modules section](https://doc.rust-lang.org/book/ch07-02-defining-modules-to-control-scope-and-privacy.html) of the Rust Book.
+
+## Creating a Route
+
+Most Dioxus apps you'll build will have different screens. This could include pages like *Login*, *Settings*, and *Profile*. Our HotDog app will have two screens: a *DogView* page and a *Favorites* page.
+
+Dioxus provides a first-party router that natively integrates with web, desktop, and mobile. For example, on web, whenever you visit the `/favorites` url in your browser, the corresponding *Favorites* page will load. The Dioxus router is very powerful, and most importantly, type-safe. You can rest easy knowing that users will never be sent to an invalid route. To achieve this, we first need to add the "Router" feature to the Cargo.toml file:
+
+````toml
+[dependencies]
+dioxus = { version = "0.7.0", features = ["fullstack", "router"] } # <----- add "router"
+````
+
+Next, the Dioxus router is defined as an enum with the `Routable` derive attribute:
+
+````rs@guide_router.rs
+#[derive(Routable, Clone, PartialEq)]
+enum Route {
+    #[route("/")]
+    DogView,
+}
+````
+
+With the Dioxus router, every route is an enum variant with a `#[route]` attribute that specifies the route's URL. Whenever the router renders our route, the component of the same name will be rendered.
+
+````rs@guide_router.rs
+use dioxus::prelude::*;
+
+#[derive(Routable, Clone, PartialEq)]
+enum Route {
+    #[route("/")]
+    DogView, // <---- a DogView component must be in scope
+}
+
+fn DogView() -> Element {
+    todo!()
+}
+````
+
+## Rendering the Route
+
+Now that we have our app's `Route` defined, we need to render it. Let's change our `app` component to render the `Route {}` component instead of the `DogView`.
+
+````rs@guide_router.rs
+fn app() -> Element {
+    rsx! {
+        document::Stylesheet { href: asset!("/assets/main.css") }
+
+        // 📣 delete Title and DogView and replace it with the Router component.
+        Router::<Route> {}
+    }
+}
+````
+
+When the `Router {}` component renders, it will parse the document's current URL into a `Route` variant. If the url doesn't parse properly, the router will render nothing unless you add a "catch-all" route:
+
+````rs@guide_router.rs
+#[derive(Routable, Clone, PartialEq)]
+enum Route {
+    // ...
+    // We can collect the segments of the URL into a Vec<String>
+    #[route("/:..segments")]
+    PageNotFound { segments: Vec<String> },
+}
+````
+
+Note here that the `PageNotFound` route takes the "segments" parameter. Dioxus routes are not only type-safe as variants, but also type-safe with URL parameters. For more information on how this works, [check the router guide](../essentials/router/index.md).
+
+At this point, we should see our app, but this time without its Title.
+
+![No Navbar](/assets/06_docs/no_navbar.png)
+
+## Rendering the NavBar with a Layout
+
+We're rendering our DogView component, but unfortunately we no longer see our Title. Let's add that back and turn it into a NavBar!
+
+In our `src/components/nav.rs` file, we'll add back our Title code, but rename it to NavBar and modify it with two new items: the `Link {}` and `Outlet` components.
+
+````rust@guide_router.rs
+use crate::Route;
+use dioxus::prelude::*;
+
+#[component]
+pub fn NavBar() -> Element {
+    rsx! {
+        div { id: "title",
+            Link { to: Route::DogView,
+                h1 { "🌭 HotDog! " }
+            }
+        }
+        Outlet::<Route> {}
+    }
+}
+````
+
+The `Link {}` component wraps the anchor `<a>` element with a type-safe interface. This means any struct that implements `Routable` - anything that can `.to_string()` - is a valid navigation target.
+
+````rs@guide_router.rs
+// Using the Link with Route
+Link { to: Route::DogView }
+
+// Or passing in a "/" route directly
+Link { to: "/" }
+````
+
+The Link component takes many different arguments, making it possible to extend and customize for your use-case.
+
+In `NavBar`, we also added an `Outlet::<Route> {}` component. When the Router component renders, it first looks for any child `Outlet` components. If one is present, it renders the current route *under the outlet*. This lets us wrap the current page in extra elements - in this case, the NavBar. If no Outlet is present, then the current route is simply rendered where the `Router {}` is declared.
+
+To actually add the NavBar component to our app, we need to update our `Route` enum with the `#[layout]` attribute. This forces the router to render the `NavBar` component *first* so it can expose its `Outlet {}`.
+
+````rs@guide_router.rs
+#[derive(Routable, PartialEq, Clone)]
+enum Route {
+    #[layout(NavBar)] // <---- add the #[layout] attribute
+    #[route("/")]
+    DogView,
+}
+````
+
+The `layout` attribute instructs the Router to wrap the following enum variants in the given component.
+
+````rust, ignore
+Router  {
+    NavBar {
+        Outlet {
+            if route == “/” {
+                DogView {}
+            }
+        }
+    }
+}
+````
+
+Visually, this should be straight-forward to understand. Note that the Router and Outlet share the same `Route` generic type.
+
+![RouterLayout](/assets/06_docs/routeroutlet.png)
+
+## Adding a Favorites Route
+
+Now that we understand the fundamentals of routing, let's finally add our *Favorites* page so we can view the dog photos we saved.
+
+We'll start by creating an empty component `src/components/favorites.rs`:
+
+````rs@guide_router.rs
+use dioxus::prelude::*;
+
+#[component]
+pub fn Favorites() -> Element {
+    rsx! { "favorites!" }
+}
+````
+
+And then let's make sure to add a new variant in our `Route` enum:
+
+````rs@guide_router.rs
+#[derive(Routable, PartialEq, Clone)]
+enum Route {
+    #[layout(NavBar)]
+    #[route("/")]
+    DogView,
+
+    #[route("/favorites")]
+    Favorites, // <------ add this new variant
+}
+````
+
+To make sure the user can reach this page, let's also add a button in the nav that points to it.
+
+````rust@guide_router.rs
+use crate::Route;
+use dioxus::prelude::*;
+
+#[component]
+pub fn NavBar() -> Element {
+    rsx! {
+        div { id: "title",
+            Link { to: Route::DogView,
+                h1 { "🌭 HotDog! " }
+            }
+            Link { to: Route::Favorites, id: "heart", "♥️" } // <------- add this Link
+        }
+        Outlet::<Route> {}
+    }
+}
+````
+
+## Our Favorites Page
+
+Finally, we can build our favorites page. Let's add a new `list_dogs` server function that fetches the 10 most recently saved dog photos:
+
+````rs@guide_router.rs
+// Query the database and return the last 10 dogs and their url
+#[server]
+pub async fn list_dogs() -> Result<Vec<(usize, String)>, ServerFnError> {
+    let dogs = DB.with(|f| {
+        f.prepare("SELECT id, url FROM dogs ORDER BY id DESC LIMIT 10")
+            .unwrap()
+            .query_map([], |row| Ok((row.get(0)?, row.get(1)?)))
+            .unwrap()
+            .map(|r| r.unwrap())
+            .collect()
+    });
+
+    Ok(dogs)
+}
+````
+
+Now, we can fill in our component. Resolving the request from the server might take some time, so we'll use the `use_server_future(...)?` to wait for the request to finish before mapping the contents to a list. `use_server_future` is very similar to `use_resource`, but it waits for the future to finish before continuing rendering and integrates with dioxus fullstack to serialize that data from the server to the client.
+
+````rs@guide_router.rs
+use dioxus::prelude::*;
+
+#[component]
+pub fn Favorites() -> Element {
+    // Create a pending resource that resolves to the list of dogs from the backend
+    // Wait for the favorites list to resolve with `?`
+    let mut favorites = use_server_future(super::backend::list_dogs)?;
+
+    rsx! {
+        div { id: "favorites",
+            div { id: "favorites-container",
+                for (id, url) in favorites().unwrap().unwrap() {
+                    // Render a div for each photo using the dog's ID as the list key
+                    div {
+                        key: "{id}",
+                        class: "favorite-dog",
+                        img { src: "{url}" }
+                    }
+                }
+            }
+        }
+    }
+}
+````
+
+As a stretch goal, try adding a button that lets the user also delete items from the database.
+
+![FullDemo](/assets/06_docs/hotdogfull.mp4)
+# Bundling
+
+Congratulations! You built your first fully-functional Dioxus app, completely loaded with Routing, asynchronous data-fetching, Server Functions, and a database! That's incredible for just a few minutes of work.
+
+Let's get your app bundled for multiple platforms and then ready to deploy.
+
+## Testing on iOS
+
+To test iOS, your development environment needs to be setup to build iOS apps. This involves a few steps:
+
+* Make sure you are developing on a device running macOS
+* Install XCode
+* [Download a recent iOS SDK and Emulator pack](https://developer.apple.com/ios/)
+* Install the iOS Rust toolchains (`aarch64-apple-ios aarch64-apple-ios-sim`)
+
+This is a multi-step process and requires creating an Apple Developer account. You shouldn't need to pay any fees until you want to sign your app. Signing your app is required for deploying to the Apple App Store and testing on your iOS device.
+
+Simply run run `dx serve --ios` and your app should load in the iOS Simulator.
+
+![DogApp](/assets/06_docs/dog-app-ios.mp4)
+
+Fantastic - our app works seamlessly with no changes.
+
+## Testing on Android
+
+Setting up your environment for Android development takes time, so make sure to read the [mobile tooling guide](../guides/platforms/mobile.md).
+
+* Install the Android NDK and SDK
+* Set JAVA_HOME, ANDROID_HOME, NDK_HOME, and fix PATH issues to use the `emulator` tool
+* Install and set up an Android emulator
+* Install the Android rustup targets (`aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android`)
+
+Getting your Android install correct might be somewhat tricky, so try enabling "verbose" mode on dx to debug any issues.
+
+If all goes well, we can simply serve and our app should show up in our Android simulator.
+
+````
+dx serve --android
+````
+
+![Android DogApp](/assets/06_docs/android-dogapp.mp4)
+
+## Testing on Desktop
+
+HotDog also works on macOS, Windows, and Linux! We can use `dx serve --desktop` to serve our app as a desktop app.
+
+![HotDogDesktop](/assets/06_docs/hotdog-desktop.png)
+
+## Bundling for the web
+
+After we're done making changes to our server and client apps, we can build bundles that are ready to distribute.
+
+We're going to follow the same pattern as `dx serve` but with `dx bundle`. To start, let's build the web version of our app.
+
+````sh
+dx bundle --web
+````
+
+We should receive a series of INFO traces from the CLI as it builds, and then finally a path to the `public` folder it generates. Let's `cd` into its public directory and then check out its parent directory (cd ..) (the "web" folder).
+
+````sh
+❯ tree -L 3 --gitignore
+.
+├── public
+│   ├── assets
+│   │   ├── favicon.ico
+│   │   ├── header.svg
+│   │   ├── main-14aa55e73f669f3e.css
+│   │   ├── main.css
+│   │   └── screenshot.png
+│   ├── index.html
+│   └── wasm
+│       ├── hot_dog.js
+│       ├── hot_dog.js.br
+│       ├── hot_dog_bg.wasm
+│       ├── hot_dog_bg.wasm.br
+│       └── snippets
+└── server
+````
+
+`dx` built a `public` folder containing our assets, index.html, and various JavaScript snippets. Alongside our public folder is a `server` binary. When we deploy our web assets, we'll also want to deploy the server since it provides our server functions.
+
+We can manually run the server simply by executing it. If you're using a default `dioxus::launch` setup, then the server will read the `IP` and `PORT` environment variables to serve.
+
+ > 
+ > 📣 If you intend to serve from within a container (e.g., Docker), then you need to override the default `127.0.0.1` address with `IP=0.0.0.0` to listen for external connections.
+
+![Serving the server](/assets/06_docs/serving_server.png)
+
+## Bundling for Desktop and Mobile
+
+To bundle desktop and mobile apps for deployment, we'll again use `dx bundle`. As of today, `dx bundle` only builds desktop apps for the native platform and architecture. Unfortunately, you can't build macOS apps from Windows, Linux apps from Mac, etc. We recommend using a Continuous Integration Matrix (like [Github Actions](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/running-variations-of-jobs-in-a-workflow)) to perform a "cross-build" of your app in multiple different containers.
+
+When bundling installable apps, there are many distribution formats to choose from. We can specify these formats using the `--package-types` flag on `dx bundle`. Dioxus supports packaging a broad number of package types:
+
+* macOS: `.app`, `.dmg`
+* Linux: `.appimage`, `.rpm`, `.deb`
+* Windows: `.msi`, `.exe`
+* iOS: `.app`
+* Android: `.apk`
+
+You can specify package types like so:
+
+````sh
+dx bundle --desktop \
+    --package-types "macos" \
+    --package-types "dmg"
+````
+
+Note that not all package-types are compatible with each platform - eg. only `.exe` can be built when specifying `--desktop`.
+
+We should see the outputs in our terminal:
+
+````sh
+18.252s  INFO Bundled app successfully!
+18.252s  INFO App produced 2 outputs:
+18.252s  INFO app - [./target/dx/hot_dog/bundle/macos/bundle/macos/HotDog.app]
+18.252s  INFO dmg - [./target/dx/hot_dog/bundle/macos/bundle/dmg/HotDog_0.1.0_aarch64.dmg]
+````
+
+Generally, you can distribute desktop apps without needing an app store. However, some platforms like macOS might require you to sign and notarize your application to be considered "safe" for your users to open.
+
+When distributing mobile apps, you *are required* to sign and notarize your apps. Currently, Dioxus doesn't provide built-in utilities for this, so you'll need to figure out signing by reading 3rd-party documentation.
+
+Tauri provides documentation on the signing process:
+
+* [macOS](https://tauri.app/distribute/sign/macos/)
+* [iOS](https://tauri.app/distribute/sign/iOS/)
+* [Android](https://tauri.app/distribute/sign/android/)
+* [Windows](https://tauri.app/distribute/sign/Windows/)
+* [Linux](https://tauri.app/distribute/sign/Linux/)
+
+## Customizing your Bundle
+
+Before you ship your app, you might want to configure how your app icon looks, what entitlements it has, and other details. Our `dx bundle` tool can help you configure your bundles in a variety of ways.
+
+To configure our bundle, we'll use our `Dioxus.toml` and modify the bundle section.
+
+````toml
+[application]
+name = "docsite"
+
+[bundle]
+identifier = "com.dioxuslabs"
+publisher = "DioxusLabs"
+icon = ["assets/icon.png"]
+````
+
+For a full list of options, see the [reference page on the `bundle` section](../guides/deploy/config.md).
+
+## Automating dx bundle with JSON mode
+
+Also added in Dioxus 0.6 is a JSON output mode for `dx`. This makes it possible to parse the output of the CLI using tools like [jq](https://jqlang.github.io/jq/) which provide stdin/stdout support for JSON parsing.
+
+This mode is not particular friendly to humans, but does contain more information than the standard trace output.
+
+````sh
+{"timestamp":"   9.927s","level":"INFO","message":"Bundled app successfully!","target":"dx::cli::bundle"}
+{"timestamp":"   9.927s","level":"INFO","message":"App produced 2 outputs:","target":"dx::cli::bundle"}
+{"timestamp":"   9.927s","level":"DEBUG","message":"Bundling produced bundles: [\n    Bundle {\n        package_type: MacOsBundle,\n        bundle_paths: [\n            \"/Users/jonkelley/Development/Tinkering/06-demos/hot_dog/target/dx/hot_dog/bundle/macos/bundle/macos/HotDog.app\",\n        ],\n    },\n    Bundle {\n        package_type: Dmg,\n        bundle_paths: [\n            \"/Users/jonkelley/Development/Tinkering/06-demos/hot_dog/target/dx/hot_dog/bundle/macos/bundle/dmg/HotDog_0.1.0_aarch64.dmg\",\n        ],\n    },\n]","target":"dx::cli::bundle"}
+{"timestamp":"   9.927s","level":"INFO","message":"app - [/Users/jonkelley/Development/Tinkering/06-demos/hot_dog/target/dx/hot_dog/bundle/macos/bundle/macos/HotDog.app]","target":"dx::cli::bundle"}
+{"timestamp":"   9.927s","level":"INFO","message":"dmg - [/Users/jonkelley/Development/Tinkering/06-demos/hot_dog/target/dx/hot_dog/bundle/macos/bundle/dmg/HotDog_0.1.0_aarch64.dmg]","target":"dx::cli::bundle"}
+{"timestamp":"   9.927s","level":"DEBUG","json":"{\"BundleOutput\":{\"bundles\":[\"/Users/jonkelley/Development/Tinkering/06-demos/hot_dog/target/dx/hot_dog/bundle/macos/bundle/macos/HotDog.app\",\"/Users/jonkelley/Development/Tinkering/06-demos/hot_dog/target/dx/hot_dog/bundle/macos/bundle/dmg/HotDog_0.1.0_aarch64.dmg\"]}}","target":"dx"}
+````
+
+JSON mode works with all `dx` commands. However, it is most useful with `dx build` and `dx bundle`. The CLI always guarantees that the last emitted line is the result of the command. To collect the list of bundles from the `dx bundle` command, we can use `tail -1` and simple jq.
+
+````sh
+dx bundle --desktop \
+    --json-output \
+    --verbose \
+    | tail -1 \
+    | jq -r '.json | fromjson | .BundleOutput.bundles []'
+````
+
+This returns the list of bundles:
+
+````
+./target/dx/hot_dog/bundle/macos/bundle/macos/HotDog.app
+./target/dx/hot_dog/bundle/macos/bundle/dmg/HotDog_0.1.0_aarch64.dmg
+````
+# Deploying
+
+We're *finally* ready to deploy our bundled apps into the world. Congrats on making it this far!
+
+This step is optional for the tutorial but worth covering to understand the process. Feel free to skip ahead to [next steps](next_steps.md) if you're not interested in deploying.
+
+## Dioxus Deploy
+
+As mentioned in the [introduction](../index.md#whos-funding-dioxus), Dioxus is an independent project with aspirations to fund itself through a paid deploy platform. Hopefully, one day, enough people ship apps with [Dioxus Deploy](https://dioxuslabs.com/deploy) to fund development on Dioxus itself!
+
+Currently, Dioxus does not provide its own deploy platform. If you want to sign-up for the beta and help us design the ideal "end-to-end app-development experience," please [join the waitlist!](https://forms.gle/zeBZmrjSkajqg7hUA)
+
+![Deploy](/assets/06_docs/deploy_screenshot.png)
+
+## Deploying your Desktop and Mobile apps
+
+Generally, deploying a desktop app is as simple as distributing the bundle directly. Simply upload your app bundles to a host like GitHub or S3. With a download link, your users can easily download and install your apps.
+
+ > 
+ > 📣 When shipping fullstack apps to production, you'll want to make sure to set your backend API URL properly as [covered later](#fullstack-desktop-and-mobile).
+
+If you'd like to distribute your app through app stores, you'll need to follow some additional steps.
+
+* [iOS](https://developer.apple.com/ios/submit/): Directly publish to the Apple App Store
+* [macOS](https://developer.apple.com/macos/submit/): Directly publish to the Apple App Store
+* [Android](https://developer.android.com/studio/publish): Directly publish to the Google Play Store
+
+Tauri provides some [helpful guides](https://tauri.app/distribute/) for deploying Tauri apps which, while not Dioxus apps, need to follow many of the same steps for deploying to app stores.
+
+Making native app distribution easier is a top priority for Dioxus Deploy!
+
+## Deploy Requirements
+
+Dioxus web apps are structured as a Client bundle and a Server executable. Generally, any deploy provider that exposes a simple container will be sufficient for a Dioxus fullstack web application.
+
+Some providers like [Cloudflare Workers](http://workers.cloudflare.com) and [Fermyon Spin](https://www.fermyon.com/spin) provide WASM-based containers for apps. WASM runtimes are typically cheaper to operate and can horizontally scale better than a traditional virtual-machine based container. When deploying on WASM runtimes, you will need to create a WASM build of your server manually.
+
+Running the webserver is as simple as executing `./server`. Make sure to set the IP and PORT environment variables correctly:
+
+![Serving a Server](/assets/06_docs/serving_server.png)
+
+## Choosing a deploy provider
+
+There are *many* deploy providers! We're not going to get too deep into the pros/cons of any particular provider. Generally, providers are good at one of a few categories: price, performance, UI/UX, advanced features, and enterprise requirements.
+
+Depending on your app, you might have strict requirements like SOC2 or HIPAA compliance. Make sure to do your own research for your own use-case.
+
+* [AWS](http://aws.amazon.com): Full-featured cloud provider powered by Amazon.
+* [GCP](https://cloud.google.com): Full-featured cloud provider powered by Google.
+* [Azure](http://azure.microsoft.com): Full-featured cloud provider powered by Microsoft.
+* [Fly.io](http://fly.io): Simple scale-to-zero micro-vm-based cloud with integrated wireguard.
+* [Vercel](https://vercel.com): Developer-focused cloud built on AWS cloud functions popular with JavaScript frameworks.
+* [Render](http://render.com): A "Modern Heroku" focused on developer experience and simplicity.
+* [Digital Ocean](https://www.digitalocean.com): A cloud built around virtual machines, databases, and storage.
+
+For *HotDog* we're going to deploy on [Fly.io](http://fly.io). We like [Fly.io](http://fly.io) for a number of reasons. Most importantly, Fly is built on Amazon's [Firecracker](https://firecracker-microvm.github.io) project which is entirely written in Rust!
+
+Fly is also quite simple to get started - just log in with either your GitHub account or Google account.
+
+## Building a Dockerfile
+
+Some deploy providers have prebuilt solutions for various runtimes. For example, some have dedicated NodeJS and Python runtimes with strict requirements.
+
+With Rust apps, there generally isn't a prebuilt "pack" to target. In these cases, we need to write a simple Dockerfile which compiles and starts our apps.
+
+Our Dockerfile will have three phases. The first phase downloads and caches dependencies so incremental builds stay fast:
+
+````dockerfile
+FROM rust:1 AS chef
+RUN cargo install cargo-chef
+WORKDIR /app
+
+FROM chef AS planner
+COPY . .
+RUN cargo chef prepare --recipe-path recipe.json
+````
+
+In the second phase, we use cargo chef to load cached dependencies and perform the build:
+
+````dockerfile
+FROM chef AS builder
+COPY --from=planner /app/recipe.json recipe.json
+RUN cargo chef cook --release --recipe-path recipe.json
+COPY . .
+
+# Install `dx`
+RUN curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
+RUN cargo binstall dioxus-cli --root /.cargo -y --force
+ENV PATH="/.cargo/bin:$PATH"
+
+# Create the final bundle folder. Bundle always executes in release mode with optimizations enabled
+RUN dx bundle --web
+````
+
+Finally, we copy the built "web" folder to the "slim" runtime that serves our app.
+
+````dockerfile
+FROM chef AS runtime
+COPY --from=builder /app/target/dx/hot_dog/release/web/ /usr/local/app
+
+# set our port and make sure to listen for all connections
+ENV PORT=8080
+ENV IP=0.0.0.0
+
+# expose the port 8080
+EXPOSE 8080
+
+WORKDIR /usr/local/app
+ENTRYPOINT [ "/usr/local/app/server" ]
+````
+
+It's also a smart idea to set up a `.dockerignore` file:
+
+````
+**/target
+**/dist
+LICENSES
+LICENSE
+temp
+README.md
+````
+
+## Deploying to Fly
+
+To get started with Fly, we need to go through the [Sign Up flow](https://fly.io/app/sign-up) and enter our details. This shouldn't take too long.
+
+We'll add the dockerfile from above along with the dockerignore. We'll want to [install `flyctl`](https://fly.io/docs/flyctl/install/) which also installs the `fly` CLI.
+
+Let's call [`fly launch`](https://fly.io/docs/flyctl/launch/) which will automatically initialize our `fly.toml`.
+
+![Fly Launch](/assets/06_docs/fly_launch.png)
+
+`fly launch` will spin up a build machine for us and build our app. In a minute or two, our app should be fully built and deployed.
+
+If we ever want to re-deploy our code, we can run `fly deploy`.
+
+![Running fly deploy](/assets/06_docs/fly_deploy.mp4)
+
+We can also add a volume to our app to persist our Sqlite database by adding a `[mounts]` section to our Fly.toml:
+
+````toml
+[mounts]
+  source = "hotdogdb"
+  destination = "/usr/local/app/hotdogdb"
+````
+
+Once the build is complete, Fly will assign our app a URL that we can customize later. With any luck, our app should be live!
+
+![Live App](/assets/06_docs/fly-deployed.png)
+
+## Continuous Deployment
+
+Fly also supports [continuous deployment](https://fly.io/docs/app-guides/continuous-deployment-with-github-actions/). Whenever we push to our GitHub repository, we can execute `fly deploy` automatically. This can serve as a foundation for staging environments and automatic releases.
+
+Our app just needs a `.github/workflows/fly-deploy.yml`.
+
+````yml
+name: Fly Deploy
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    name: Deploy app
+    runs-on: ubuntu-latest
+    concurrency: deploy-group
+    steps:
+      - uses: actions/checkout@v4
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+````
+
+## Fullstack Desktop and Mobile
+
+Now that our backend is live, we can wire up the API to our native apps. By default, Dioxus doesn't know where to find your API, so you'll need to specify the URL manually by calling `server_fn::client::set_server_url`.
+
+````rs@guide_deploy.rs
+fn main() {
+    #[cfg(not(feature = "server"))]
+    server_fn::client::set_server_url("https://hot-dog.fly.dev");
+
+    dioxus::launch(App);
+}
+````
+
+Note that as our app changes, the "true" endpoint of our server functions might change. The `#[server]` macro generates an API endpoint with the form of `/api/fetch_dogs-jkhj12` where the trailing data is a unique hash. As we update our server functions, the hash will change.
+
+To make server functions maintain a stable endpoint, we can manually name them with the `endpoint = "xyz"` attribute.
+
+````rs@guide_deploy.rs
+#[server(endpoint = "list_dogs")]
+pub async fn list_dogs() -> Result<Vec<(usize, String)>, ServerFnError> {
+    todo!()
+}
+
+#[server(endpoint = "remove_dog")]
+pub async fn remove_dog(id: usize) -> Result<(), ServerFnError> {
+    todo!()
+}
+
+#[server(endpoint = "save_dog")]
+pub async fn save_dog(image: String) -> Result<(), ServerFnError> {
+    todo!()
+}
+````
+
+Let's re-deploy our web app with `fly deploy`. This deploy should complete faster thanks to `cargo chef` caching our build.
+
+Now, with `dx serve --desktop`, we should be able to interact with the same backend across web and desktop.
+
+Amazing! Our startup is coming along nicely.
+
+![Full Cross Build](/assets/06_docs/full-crossplatform.png)
+
+## Next Steps
+
+Our app isn't done yet, but this guide has become pretty long!
+
+There's so much extra to do:
+
+* Adding users, login, and auth.
+* Protecting our site from DDOS with tools Cloudflare.
+* Adding more features
+* Marketing and sharing with friends!
+# Wrapping Up
+
+Congrats on making it through our *HotDog* tutorial!
+
+Hopefully this isn't the end of our journey, but rather, a bold new beginning.
+
+## Up Next
+
+We strongly recommend moving on to the [Essential Topics](../essentials/index.md) to become familiar with the important details of Dioxus.
+
+The essentials section will guide you through key concepts in Dioxus:
+
+* [Building UIs with RSX](../essentials/ui/index.md) will teach you how to define html inside your Dioxus app with rsx.
+
+* [Managing State](../essentials/basics/index.md) guides you through how state works in Dioxus. It will teach you how to create state with `use_signal`, derive state with `use_memo`, and integrate state with asynchronous tasks with `use_resource`. Along the way, you will learn about how you can use reactivity to declaratively describe your UI.
+
+* [Advanced Reactivity](../essentials/advanced/index.md) teaches you deeper concepts about Dioxus like building custom hooks, optimizing your app, and breaking out of the Dioxus framework.
+
+## Ideas for New Features
+
+Challenge yourself by adding new features to *HotDog*.
+
+* Add animations to your app with CSS or [dioxus-motion](https://github.com/wheregmis/dioxus-motion).
+* Style your app with a library like [TailwindCSS](http://tailwindcss.com).
+* Add inputs to allow users to upload their own dog photos.
+* Make it social! Add login, user accounts, and a feed.
+* Remix HotDog for something entirely new.
+
+## FAQ
+
+You might be curious how particular features work in Dioxus. Let's try to address a few popular question:
+
+### Is Dioxus Fast?
+
+Dioxus is really fast. Dioxus is built around an *extremely* performant VirtualDom. While a VirtualDom might sound like ["pure overhead"](https://svelte.dev/blog/virtual-dom-is-pure-overhead), Dioxus leverages compile-time optimizations that make it faster than nearly all UI frameworks.
+
+On the web, Dioxus [is on par with frameworks like Solid and Svelte](https://krausest.github.io/js-framework-benchmark/2023/table_chrome_120.0.6099.62.html) which leverage new reactivity models or custom compilers.
+
+### Is Rust too hard?
+
+Rust is a notoriously difficult language to learn, but it's extremely powerful. Dioxus has been designed to use the "easy" parts of Rust. For example, Dioxus primarily uses single-threaded code and avoids complicated generic interfaces.
+
+All-in-all, the productivity you gain by building once and deploying everywhere usually makes up for the steeper learning curve. Plus, as Dioxus matures, interfaces become easier to use and the ecosystem improves.
+
+### Does Dioxus support "xyz"?
+
+* TailwindCSS: Yes, but it requires an additional step, see the [docs for more info](../guides/utilities/tailwind.md).
+* Native Widgets: Yes, but you might need to write this code yourself. The Rust ecosystem is young.
+* Shadcn-ui: Not yet, a radix-ui port to Dioxus is underway but we're not done yet.
+* Actix/Rocket: Yes, kind-of. In Dioxus, Server-Functions are built on axum, but you can use server-side-rendering with any framework.
+* Static-site-generation: Yes! The docs are currently under construction, so stay tuned. 🏗️
+* Animations: Yes, you can use CSS animations, [dioxus-motion](https://github.com/wheregmis/dioxus-motion), or integrate with the system animation APIs.
+* Accessibility: Yes. Use semantic HTML and aria-tags for good screen-reader support.
+* WGPU: Yes, kinda. You can overlay Dioxus on a WGPU scene or experiment with Dioxus-Native which renders with WGPU.
+* AI: Yes, you can interface with providers like [OpenAI](https://crates.io/crates/openai-api-rs) or even [build your own provider](https://github.com/DioxusLabs/dioxus-ai).
+
+If you have an FAQ not covered here, suggest an edit!
+
+### Why RSX instead of HTML?
+
+If you've seen React's JSX or the `html!{}` Rust macro, you might be curious as to why Dioxus chose to use its own syntax instead of a syntax that looks more similar to HTML.
+
+A few reasons:
+
+* RSX gets token coloring and code-folding without additional tooling
+* RSX is faster to type since curly braces are auto-closed
+* Not all RSX is HTML - Dioxus can be used in non-HTML contexts
+* HTML is not valid Rust - not all HTML can be used in html!{}
+
+We want the out-of-the-box experience for Dioxus to be great without setting up any custom tooling.
+
+The Dioxus [VSCode Extension](http://marketplace.visualstudio.com/items?itemName=DioxusLabs.dioxus) can convert HTML to RSX as well as the CLI with `dx translate`.
+
+### Should I use Dioxus or Tauri or Leptos or Iced or...?
+
+There's a budding ecosystem of Rust projects for building apps and websites! We have a good comparison in our [Readme.md](https://github.com/DioxusLabs/dioxus#dioxus-vs-other-frameworks)
+
+Dioxus is an "all-in-one" solution for building apps with Rust. We try to be helpful every step of the way: getting started, iterating, testing, bundling, and deploying.
+
+* **Tauri**: You can use Dioxus with Tauri, but we focus primarily on the standalone Dioxus experience. Tauri is a good choice if you want to use a JavaScript frontend or need full-featured access to the Webview DOM.
+* **Leptos**: Dioxus and Leptos are both good choices for fullstack web development with differences in syntax and reactivity models. Dioxus is architected to support desktop and mobile "1st-class" whereas Leptos is primarily a web framework.
+* **Iced:** Iced is GUI framework that renders using its own render engine, making it highly customizable. Iced is a good choice for apps that need access to lower-level rendering through WGPU. Dioxus will be releasing its own WGPU renderer in early 2025, so stay tuned!
+
+Dioxus is quite a large project and has been a bit slower to mature than other projects with larger development teams or smaller scopes. With 0.6, Dioxus is more mature but still has some ground to cover.

@@ -1,0 +1,2476 @@
+<SYSTEM>This is the developer documentation for Dioxus at /learn/0.7/guides/tools/ and all its subroutes.</SYSTEM>
+
+# Tools
+
+Dioxus has an ecosystem of tools to help you develop and deploy your applications. This guide will help you set up, configure and use these tools.
+
+## Installing the CLI
+
+The CLI bundles together many different tools for dioxus development. Dioxus provides prebuilt binaries for Windows, macOS, and Linux you can download with [cargo-binstall](https://github.com/cargo-bins/cargo-binstall):
+
+````bash
+cargo binstall dioxus-cli
+````
+
+### Manual installation
+
+If you don't have cargo-binstall installed or we don't have a prebuilt binary for your platform, you can install the CLI with manually with cargo install:
+
+````bash
+cargo install dioxus-cli
+````
+
+## Commands
+
+To verify your installation and get an overview of all the commands available, run:
+
+````sh
+dx --help
+````
+
+You should see something like this:
+
+````sh
+Dioxus: build web, desktop, and mobile apps with a single codebase
+
+Usage: dx [OPTIONS] <COMMAND>
+
+Commands:
+  new          Create a new Dioxus project
+  serve        Build, watch, and serve the project
+  bundle       Bundle the Dioxus app into a shippable object
+  build        Build the Dioxus project and all of its assets
+  run          Run the project without any hotreloading
+  init         Init a new project for Dioxus in the current directory (by default). Will attempt to keep your project in a good state
+  doctor       Diagnose installed tools and system configuration
+  print        Print project information in a structured format, like cargo args, linker args, and other flags DX sets that might be useful in third-party tools
+  translate    Translate a source file into Dioxus code
+  fmt          Automatically format RSX
+  check        Check the project for any issues
+  config       Dioxus config file controls
+  self-update  Update the Dioxus CLI to the latest version
+  tools        Run a dioxus build tool. IE `build-assets`, `hotpatch`, etc
+  components   Manage components from the `dioxus-component` registry
+  help         Print this message or the help of the given subcommand(s)
+
+Options:
+      --verbose      Use verbose output [default: false]
+      --trace        Use trace output [default: false]
+      --json-output  Output logs in JSON format
+  -h, --help         Print help
+  -V, --version      Print version
+
+Logging Options:
+      --log-to-file <LOG_TO_FILE>  Write *all* logs to a file
+
+Manifest Options:
+      --locked   Assert that `Cargo.lock` will remain unchanged
+      --offline  Run without accessing the network
+      --frozen   Equivalent to specifying both --locked and --offline
+````
+
+## Table of Contents
+
+Many chapters in this guide cover different commands in the CLI:
+
+* [Create a project](./creating.md) provides an overview of the `dx new` and `dx init` commands to scaffold your dioxus project
+* [Translate HTML](./translate.md) provides an overview of the `dx translate` command to convert HTML into rsx.
+
+Other chapters explore different aspects of using the CLI and other tools:
+
+* [Configure Project](./configure.md) explores how you can configure your project with the `Dioxus.toml` file the CLI reads
+# Create a Project
+
+Once you have the Dioxus CLI installed, you can use it to create your own project!
+
+## Initializing a project
+
+First, run the `dx new` command to create a new project.
+
+ > 
+ > It clones this [template](https://github.com/DioxusLabs/dioxus-template), which is used to create dioxus apps.
+ > 
+ > You can create your project from a different template by passing the `template` argument:
+ > 
+ > ````
+ > dx new --template gh:dioxuslabs/dioxus-template
+ > ````
+
+Next, navigate into your new project using `cd project-name`, or simply opening it in an IDE.
+
+ > 
+ > Make sure the WASM target is installed before running the projects.
+ > You can install the WASM target for rust using rustup:
+ > 
+ > ````
+ > rustup target add wasm32-unknown-unknown
+ > ````
+
+Finally, serve your project with `dx serve`! The CLI will tell you the address it is serving on, along with additional
+info such as code warnings.
+# Configure Project
+
+This chapter will teach you how to configure the CLI with the `Dioxus.toml` file. There's an [example](#config-example) which has comments to describe individual keys. You can copy that or view this documentation for a more complete learning experience.
+
+"🔒" indicates a mandatory item. Some headers are mandatory, but none of the keys inside them are. In that case, you only need to include the header, but no keys. It might look weird, but it's normal.
+
+## Structure
+
+Each header has its TOML form directly under it.
+
+### Application 🔒
+
+````toml
+[application]
+````
+
+Application-wide configuration. Applies to both web and desktop.
+
+* **asset_dir** - The directory with your static assets. The CLI will automatically copy these assets into the **out_dir** after a build/serve.
+  ````toml
+  asset_dir = "public"
+  ````
+
+* **sub_package** - The sub package in the workspace to build by default.
+  ````toml
+  sub_package = "my-crate"
+  ````
+
+### Web.App 🔒
+
+````toml
+[web.app]
+````
+
+Web-specific configuration.
+
+* **title** - The title of the web page.
+  ````toml
+  # HTML title tag content
+  title = "project_name"
+  ````
+
+* **base_path** - The base path to build the application for serving at. This can be useful when serving your application in a subdirectory under a domain. For example, when building a site to be served on GitHub Pages.
+  ````toml
+  # The application will be served at domain.com/my_application/, so we need to modify the base_path to the path where the application will be served
+  base_path = "my_application"
+  ````
+
+### Web.Watcher 🔒
+
+````toml
+[web.watcher]
+````
+
+Development server configuration.
+
+* **reload_html** - If this is true, the cli will rebuild the index.html file every time the application is rebuilt
+  
+  ````toml
+  reload_html = true
+  ````
+
+* **watch_path** - The files & directories to monitor for changes
+  
+  ````toml
+  watch_path = ["src", "public"]
+  ````
+
+* **index_on_404** - If enabled, Dioxus will serve the root page when a route is not found.
+  *This is needed when serving an application that uses the router*. However, when serving your app using something else than Dioxus (e.g. GitHub Pages), you will have to check how to configure it on that platform. In GitHub Pages, you can make a copy of `index.html` named `404.html` in the same directory.
+  
+  ````toml
+  index_on_404 = true
+  ````
+
+### Web.Resource 🔒
+
+````toml
+[web.resource]
+````
+
+Static resource configuration.
+
+* **style** - CSS files to include in your application.
+  
+  ````toml
+  style = [
+     # Include from public_dir.
+     "./assets/style.css",
+     # Or some asset from online cdn.
+     "https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.css"
+  ]
+  ````
+
+* **script** - JavaScript files to include in your application.
+  
+  ````toml
+  script = [
+      # Include from asset_dir.
+      "./public/index.js",
+      # Or from an online CDN.
+      "https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.js"
+  ]
+  ````
+
+### Web.Resource.Dev 🔒
+
+````toml
+[web.resource.dev]
+````
+
+This is the same as [`[web.resource]`](#webresource-), but it only works in development servers. For example, if you want to include a file in a `dx serve` server, but not a `dx serve --release` server, put it here.
+
+### Web.Proxy
+
+````toml
+[[web.proxy]]
+````
+
+Configuration related to any proxies your application requires during development. Proxies will forward requests to a new service.
+
+* **backend** - The URL to the server to proxy. The CLI will forward any requests under the backend relative route to the backend instead of returning 404
+  ````toml
+  backend = "http://localhost:8000/api/"
+  ````
+  
+  This will cause any requests made to the dev server with prefix /api/ to be redirected to the backend server at http://localhost:8000. The path and query parameters will be passed on as-is (path rewriting is currently not supported).
+
+### Web.https
+
+````toml
+[[web.https]]
+````
+
+Controls the https config for the CLI.
+
+* **enabled** enables or disables https in the CLI
+  ````toml
+  enabled = true
+  ````
+
+* **mkcert** enables or disables generating certs with the mkcert CLI
+  ````toml
+  mkcert = true
+  ````
+
+* **key_path** sets the path to use for the https key
+  ````toml
+  key_path = "/path/to/key"
+  ````
+
+* **cert_path** sets the path to use for the https cert
+  ````toml
+  cert_path = "/path/to/cert"
+  ````
+
+### Web.pre_compress
+
+If this setting is enabled, the CLI will pre-compress the built assets in release mode with brotli. This setting is enabled by default.
+
+````toml
+[web]
+pre_compress = true
+````
+
+### Web.wasm_opt
+
+Controls the wasm-opt config for the CLI.
+
+* **level** sets the level of optimization to use for wasm-opt in release builds.
+  * z: optimize aggressively for size
+  * s: optimize for size
+  * 1: optimize for speed
+  * 2: optimize for more for speed
+  * 3: optimize for even more for speed
+  * 4: optimize aggressively for speed (default)
+  ````toml
+  level = "z"
+  ````
+
+* **debug** keep debug symbols in the wasm file even in release builds
+  ````toml
+  debug = true
+  ````
+
+### Bundle
+
+````toml
+[bundle]
+````
+
+Controls the bundling process for your application. Dioxus uses tauri-bundler under the hood. This section only includes a subset of the options available in tauri-bundler. More options can be found in the tauri-bundler [documentation](https://v1.tauri.app/v1/guides/building/#configuration-options).
+
+* **identifier** - A unique identifier for your application (e.g., `com.dioxuslabs`).
+  ````toml
+  identifier = "com.dioxuslabs"
+  ````
+
+* **publisher** - The name of the entity publishing the application.
+  ````toml
+  publisher = "DioxusLabs"
+  ````
+
+* **icon** - Paths to icon files to be used in the bundle. Icon files must be square and 16, 24, 32, 64, or 256 pixels in size. PNG icons must have a 32 bit depth in the RGBA format. If you use a `.icns` file is must fit [this](https://github.com/tauri-apps/tauri/blob/d8db5042a28635259f646c329c3ec5ccf23eac9e/tooling/cli/src/helpers/icns.json) format. The icons must include a `.icns` icon for macOS, `.ico` for Windows and `.png` for Linux.
+  ````toml
+  icon = [
+     "icons/32x32.png",
+     "icons/128x128.png",
+     "icons/128x128@2x.png",
+     "icons/icon.icns",
+     "icons/icon.ico"
+  ]
+  ````
+
+* **resources** - Additional files to include in the bundle. Each asset is copied from the path and is accessible from the bundle at the same path. Any [assets](../../essentials/ui/assets.md) are automatically bundled with the installer.
+  ````toml
+  resources = ["path/to/resource"]
+  ````
+
+* **copyright** - Copyright information for the application.
+  ````toml
+  copyright = "Copyright 2023 DioxusLabs"
+  ````
+
+* **category** - The category of the application. Must be one of `Business`, `DeveloperTool`, `Education`, `Entertainment`, `Finance`, `Game`, `ActionGame`, `AdventureGame`, `ArcadeGame`, `BoardGame`, `CardGame`, `CasinoGame`, `DiceGame`, `EducationalGame`, `FamilyGame`, `KidsGame`, `MusicGame`, `PuzzleGame`, `RacingGame`, `RolePlayingGame`, `SimulationGame`, `SportsGame`, `StrategyGame`, `TriviaGame`, `WordGame`, `GraphicsAndDesign`, `HealthcareAndFitness`, `Lifestyle`, `Medical`, `Music`, `News`, `Photography`, `Productivity`, `Reference`, `SocialNetworking`, `Sports`, `Travel`, `Utility`, `Video`, or `Weather`
+  ````toml
+  category = "Utility"
+  ````
+
+* **short_description** - A brief description of the application.
+  ````toml
+  short_description = "A utility application built with Dioxus"
+  ````
+
+* **long_description** - A detailed description of the application.
+  ````toml
+  long_description = "This application provides various utility functions..."
+  ````
+
+* **external_bin** - Paths to external sidecar binaries to include in the bundle. These bundles may be accessed at runtime with the name of the binary (not the absolute path). **the target triple will be automatically added to the binary name before it is added to the bundle.**
+  ````toml
+  external_bin = ["path/to/external_binary"] # On macos, the binary at path/to/external_binary-aarch64-apple-darwin will be included in the bundle. It can be accessed at runtime with the name external_binary
+  ````
+
+### Bundle.macos
+
+````toml
+[bundle.macos]
+````
+
+Configuration options for macOS bundles.
+
+* **frameworks** - List of frameworks to include in the bundle.
+  ````toml
+  frameworks = ["CoreML"]
+  ````
+
+* **minimum_system_version** - Minimum macOS version required. (default: `10.13`)
+  ````toml
+  minimum_system_version = "10.13"
+  ````
+
+* **license** - Path to the license file.
+  ````toml
+  license = "LICENSE.txt"
+  ````
+
+* **exception_domain** - Domain for exception handling. The domain must be lowercase without a port or protocol.
+  ````toml
+  exception_domain = "mysite.com"
+  ````
+
+* **signing_identity** - macOS signing identity.
+  ````toml
+  signing_identity = "SIGNING IDENTITY KEYCHAIN ENTRY NAME"
+  ````
+
+* **provider_short_name** - Provider short name for the bundle.
+  ````toml
+  provider_short_name = "DioxusLabs"
+  ````
+
+* **entitlements** - Path to the entitlements file.
+  ````toml
+  entitlements = "entitlements.plist"
+  ````
+
+* **hardened_runtime** - Whether to enable the [hardened runtime](https://developer.apple.com/documentation/security/hardened-runtime) in the bundle.
+  ````toml
+  hardened_runtime = true
+  ````
+
+### Bundle.windows
+
+````toml
+[bundle.windows]
+````
+
+Configuration options for Windows bundles.
+
+* **digest_algorithm** - Sets the file digest algorithm used for signing.
+  ````toml
+  digest_algorithm = "sha-256"
+  ````
+
+* **certificate_thumbprint** - SHA1 hash of the signing certificate.
+  ````toml
+  certificate_thumbprint = "A1B2C3D4E5F6..."
+  ````
+
+* **timestamp_url** - Sets the server to used for timestamping the signature.
+  ````toml
+  timestamp_url = "http://timestamp.digicert.com"
+  ````
+
+* **tsp** - Whether to use the time stamping protocol.
+  ````toml
+  tsp = true
+  ````
+
+* **icon_path** - Path to the icon for the system tray icon. (defaults to `./icons/icon.ico`)
+  ````toml
+  icon_path = "assets/icon.ico"
+  ````
+
+* **webview_install_mode** - Installation mode for WebView2.
+  EmbedBootstrapper: embed the WebView2 bootstrapper into the installer
+  ````toml
+  [webview_install_mode.EmbedBootstrapper]
+  silent = true
+  ````
+  
+  DownloadBootstrapper: download the WebView2 bootstrapper in the installer at runtime
+  ````toml
+  [webview_install_mode.DownloadBootstrapper]
+  silent = true
+  ````
+  
+  OfflineInstaller: Embed the WebView2 installer into the main installer
+  ````toml
+  [webview_install_mode.OfflineInstaller]
+  silent = true
+  ````
+  
+  FixedRuntime: Use a fixed path to the WebView2 runtime
+  ````toml
+  [webview_install_mode.FixedRuntime]
+  path = "path/to/runtime"
+  ````
+  
+  Skip: Does not install WebView2 as part of the installer. This will cause the application to fail if webview was not already installed
+  ````toml
+  webview_install_mode = "Skip"
+  ````
+
+## Config example
+
+This includes all fields, mandatory or not.
+
+````toml
+[application]
+
+# App name
+name = "project_name"
+
+# `build` & `serve` output path
+out_dir = "dist"
+
+# The static resource path
+asset_dir = "public"
+
+[web.app]
+
+# HTML title tag content
+title = "project_name"
+
+[web.watcher]
+
+# When watcher is triggered, regenerate the `index.html`
+reload_html = true
+
+# Which files or dirs will be monitored
+watch_path = ["src", "public"]
+
+# Include style or script assets
+[web.resource]
+
+# CSS style file
+style = []
+
+# Javascript code file
+script = []
+
+[web.resource.dev]
+
+# Same as [web.resource], but for development servers
+
+# CSS style file
+style = []
+
+# JavaScript files
+script = []
+
+[[web.proxy]]
+backend = "http://localhost:8000/api/"
+
+[bundle]
+identifier = "com.dioxuslabs"
+publisher = "DioxusLabs"
+icon = "assets/icon.png"
+````
+# Translating existing HTML
+
+Dioxus uses a custom format called RSX to represent the HTML because it is more concise and looks more like Rust code. However, it can be a pain to convert existing HTML to RSX. That's why Dioxus comes with a tool called `dx translate` that can automatically convert HTML to RSX!
+
+Dx translate can make converting large chunks of HTML to RSX much easier! Lets try translating some of the HTML from the Dioxus homepage:
+
+````sh
+dx translate --raw  "<div class=\"relative w-full mx-4 sm:mx-auto text-gray-600\"><div class=\"text-[3em] md:text-[5em] font-semibold dark:text-white text-ghdarkmetal font-sans py-12 flex flex-col\"><span>Fullstack, crossplatform,</span><span>lightning fast, fully typed.</span></div><h3 class=\"text-[2em] dark:text-white font-extralight text-ghdarkmetal pt-4 max-w-screen-md mx-auto\">Dioxus is a Rust library for building apps that run on desktop, web, mobile, and more.</h3><div class=\"pt-12 text-white text-[1.2em] font-sans font-bold flex flex-row justify-center space-x-4\"><a href=\"/learn/0.7/getting_started\" dioxus-prevent-default=\"onclick\" class=\"bg-red-600 py-2 px-8 hover:-translate-y-2 transition-transform duration-300\" data-dioxus-id=\"216\">Quickstart</a><a href=\"/learn/0.7/reference\" dioxus-prevent-default=\"onclick\" class=\"bg-blue-500 py-2 px-8 hover:-translate-y-2 transition-transform duration-300\" data-dioxus-id=\"214\">Read the docs</a></div><div class=\"max-w-screen-2xl mx-auto pt-36\"><h1 class=\"text-md\">Trusted by top companies</h1><div class=\"pt-4 flex flex-row flex-wrap justify-center\"><div class=\"h-12 w-40 bg-black p-2 m-4 flex justify-center items-center\"><img src=\"static/futurewei_bw.png\"></div><div class=\"h-12 w-40 bg-black p-2 m-4 flex justify-center items-center\"><img src=\"static/airbuslogo.svg\"></div><div class=\"h-12 w-40 bg-black p-2 m-4 flex justify-center items-center\"><img src=\"static/ESA_logo.svg\"></div><div class=\"h-12 w-40 bg-black p-2 m-4 flex justify-center items-center\"><img src=\"static/yclogo.svg\"></div><div class=\"h-12 w-40 bg-black p-2 m-4 flex justify-center items-center\"><img src=\"static/satellite.webp\"></div></div></div></div>"
+````
+
+We get the following RSX you can easily copy and paste into your code:
+
+````rs
+div { class: "relative w-full mx-4 sm:mx-auto text-gray-600",
+   div { class: "text-[3em] md:text-[5em] font-semibold dark:text-white text-ghdarkmetal font-sans py-12 flex flex-col",
+      span { "Fullstack, crossplatform," }
+      span { "lightning fast, fully typed." }
+   }
+   h3 { class: "text-[2em] dark:text-white font-extralight text-ghdarkmetal pt-4 max-w-screen-md mx-auto",
+      "Dioxus is a Rust library for building apps that run on desktop, web, mobile, and more."
+   }
+   div { class: "pt-12 text-white text-[1.2em] font-sans font-bold flex flex-row justify-center space-x-4",
+      a {
+         href: "/learn/0.7/getting_started",
+         data_dioxus_id: "216",
+         dioxus_prevent_default: "onclick",
+         class: "bg-red-600 py-2 px-8 hover:-translate-y-2 transition-transform duration-300",
+         "Quickstart"
+      }
+      a {
+         dioxus_prevent_default: "onclick",
+         href: "/learn/0.7/reference",
+         data_dioxus_id: "214",
+         class: "bg-blue-500 py-2 px-8 hover:-translate-y-2 transition-transform duration-300",
+         "Read the docs"
+      }
+   }
+   div { class: "max-w-screen-2xl mx-auto pt-36",
+      h1 { class: "text-md", "Trusted by top companies" }
+      div { class: "pt-4 flex flex-row flex-wrap justify-center",
+         div { class: "h-12 w-40 p-2 m-4 flex justify-center items-center",
+            img { src: "/assets/static/futurewei_bw.png" }
+         }
+         div { class: "h-12 w-40 p-2 m-4 flex justify-center items-center",
+            img { src: "/assets/static/airbuslogo.svg" }
+         }
+         div { class: "h-12 w-40 p-2 m-4 flex justify-center items-center",
+            img { src: "/assets/static/ESA_logo.svg" }
+         }
+         div { class: "h-12 w-40 p-2 m-4 flex justify-center items-center",
+            img { src: "/assets/static/yclogo.svg" }
+         }
+         div { class: "h-12 w-40 p-2 m-4 flex justify-center items-center",
+            img { src: "/assets/static/satellite.webp" }
+         }
+      }
+   }
+}
+````
+
+## Usage
+
+The `dx translate` command has several flags you can use to control your html input and rsx output.
+
+You can use the `--file` flag to translate an HTML file to RSX:
+
+````sh
+dx translate --file index.html
+````
+
+Or you can use the `--raw` flag to translate a string of HTML to RSX:
+
+````sh
+dx translate --raw "<div>Hello world</div>"
+````
+
+Both of those commands will output the following RSX:
+
+````rs
+div { "Hello world" }
+````
+
+The `dx translate` command will output the RSX to stdout. You can use the `--output` flag to write the RSX to a file instead.
+
+````sh
+dx translate --raw "<div>Hello world</div>" --output index.rs
+````
+
+You can automatically create a component with the `--component` flag.
+
+````sh
+dx translate --raw "<div>Hello world</div>" --component
+````
+
+This will output the following component:
+
+````rs
+fn component() -> Element {
+   rsx! {
+      div { "Hello world" }
+   }
+}
+````
+
+To learn more about the different flags `dx translate` supports, run `dx translate --help`.
+# Platform Support
+
+Most of your code in dioxus will work across all platforms. However, each platform has its own set of features and limitations. For example, the web platform supports calling JavaScript through wasm-bindgen, while the desktop platform supports customizing the appearance of the window around the application.
+
+## Platform specific code
+
+Before diving into platform-specific code, it's important to have a good understanding of features in rust. Features let you add code that will only be included in the build if a certain feature is enabled.
+
+Dioxus uses a different feature for each platform. For example, the web platform enables the `dioxus/web` feature, while the desktop platform enables the `dioxus/desktop` feature.
+
+In your `Cargo.toml` file, you should set up a feature for each platform you want to support. For example:
+
+````toml
+[features]
+default = []
+web = ["dioxus/web"] # This feature is enabled during web builds
+desktop = ["dioxus/desktop"] # This feature is enabled during desktop builds
+````
+
+Once you have your features set up, you can wrap your code in `#[cfg(feature = "web")]` or `#[cfg(feature = "desktop")]` to conditionally include code for each platform.
+
+````rust
+#[cfg(feature = "web")]
+fn web_specific_code() {
+    // Code specific to the web platform
+}
+
+#[cfg(feature = "desktop")]
+fn desktop_specific_code() {
+    // Code specific to the desktop platform
+}
+````
+
+## Platform-specific dependancies
+
+In addition to platform specific code, you may need to set up dependencies that are only included on specific platforms. For example, if you're building a web application, you may want to include a dependency on the `wasm-bindgen` crate to call JavaScript functions from Rust.
+
+You can add platform specific dependencies as optional in your `Cargo.toml` and enable them using the `features` table. For example:
+
+````toml
+# Since this dependency is optional, it isn't included in the build automatically
+wasm-bindgen = { version = "*", optional = true }
+
+[features]
+default = []
+# adding dep:wasm-bindgen enables the wasm-bindgen dependency only
+# in web builds
+web = ["dioxus/web", "dep:wasm-bindgen"]
+desktop = ["dioxus/desktop"]
+````
+
+## Table of Contents
+
+Each chapter in this guide covers a different platform:
+
+* [Web](web.md) The web platform lets you compile to wasm and render to the DOM in the browser
+* [Desktop](desktop.md) The desktop platform runs your code natively and renders using webview
+* [Mobile](mobile.md) The mobile platform has the same rendering engine as desktop, but requires additional setup for mobile devices/emulators
+# Web
+
+To run on the Web, your app must be compiled to WebAssembly and depend on the `dioxus` and `dioxus-web` crates.
+
+A build of Dioxus for the web will be roughly equivalent to the size of a React build (70kb vs 65kb) but it will load significantly faster because [WebAssembly can be compiled as it is streamed](https://hacks.mozilla.org/2018/01/making-webassembly-even-faster-firefoxs-new-streaming-and-tiering-compiler/).
+
+Examples:
+
+* [TodoMVC](https://github.com/DioxusLabs/dioxus/blob/main/examples/todomvc.rs)
+* [Tailwind App](https://github.com/DioxusLabs/dioxus/tree/main/examples/tailwind)
+
+[![TodoMVC example](https://github.com/DioxusLabs/example-projects/raw/master/todomvc/example.png)](https://github.com/DioxusLabs/dioxus/blob/main/examples/todomvc.rs)
+
+ > 
+ > Note: Because of the limitations of Wasm, [not every crate will work](https://rustwasm.github.io/docs/book/reference/which-crates-work-with-wasm.html) with your web apps, so you'll need to make sure that your crates work without native system calls (timers, IO, etc).
+
+## Support
+
+The Web is the best-supported target platform for Dioxus.
+
+* Because your app will be compiled to WASM you have access to browser APIs through [wasm-bindgen](https://rustwasm.github.io/docs/wasm-bindgen/introduction.html).
+* Dioxus provides hydration to resume apps that are rendered on the server. See the [fullstack](../../essentials/fullstack/index.md) reference for more information.
+
+## Running Javascript
+
+Dioxus provides some ergonomic wrappers over the browser API, but in some cases you may need to access parts of the browser API Dioxus does not expose.
+
+For these cases, Dioxus web exposes the use_eval hook that allows you to run raw Javascript in the webview:
+
+````rs@eval.rs
+use dioxus::prelude::*;
+
+fn main() {
+    launch(app);
+}
+
+fn app() -> Element {
+    let future = use_resource(move || async move {
+        // You can create as many eval instances as you want
+        let mut eval = document::eval(
+            r#"
+            // You can send messages from JavaScript to Rust with the dioxus.send function
+            dioxus.send("Hi from JS!");
+            // You can receive messages from Rust to JavaScript with the dioxus.recv function
+            let msg = await dioxus.recv();
+            console.log(msg);
+            "#,
+        );
+
+        // You can send messages to JavaScript with the send method
+        eval.send("Hi from Rust!").unwrap();
+
+        // You can receive any message from JavaScript with the recv method
+        eval.recv::<String>().await.unwrap()
+    });
+
+    match future.read_unchecked().as_ref() {
+        Some(v) => rsx! {
+            p { "{v}" }
+        },
+        _ => rsx! {
+            p { "hello" }
+        },
+    }
+}
+
+````
+
+If you are targeting web, but don't plan on targeting any other Dioxus renderer you can also use the generated wrappers in the [web-sys](https://rustwasm.github.io/wasm-bindgen/web-sys/index.html) and [gloo](https://gloo-rs.web.app/) crates.
+
+## Customizing Index Template
+
+Dioxus supports providing custom index.html templates. The index.html must include a `div` with the id `main` to be used. Hot Reload is still supported. An example
+is provided in the [PWA-Example](https://github.com/DioxusLabs/dioxus/blob/main/examples/10-integrations/pwa/index.html).
+# Desktop
+
+This guide will cover concepts specific to the Dioxus desktop renderer.
+
+Apps built with Dioxus desktop use the system WebView to render the page. This makes the final size of application much smaller than other WebView renderers (typically under 5MB).
+
+Although desktop apps are rendered in a WebView, your Rust code runs natively. This means that browser APIs are *not* available, so rendering WebGL, Canvas, etc is not as easy as the Web. However, native system APIs *are* accessible, so streaming, WebSockets, the filesystem, etc are all easily accessible though system APIs.
+
+Dioxus desktop is built on top of [wry](https://github.com/tauri-apps/wry), a Rust library for creating desktop applications with a WebView.
+
+ > 
+ > In the future, we plan to move to a custom web renderer-based DOM renderer with WGPU integrations ([Blitz](https://github.com/DioxusLabs/blitz)).
+
+## Examples
+
+* [File Explorer](https://github.com/DioxusLabs/dioxus/tree/main/examples/file-explorer)
+* [Tailwind App](https://github.com/DioxusLabs/dioxus/tree/main/examples/tailwind)
+
+[![Tailwind App screenshot](/assets/static/tailwind_desktop_app.png)](https://github.com/DioxusLabs/dioxus/tree/main/examples/tailwind)
+
+## Running Javascript
+
+Dioxus provides some ergonomic wrappers over the browser API, but in some cases you may need to access parts of the browser API Dioxus does not expose.
+
+For these cases, Dioxus desktop exposes the use_eval hook that allows you to run raw Javascript in the webview:
+
+````rs@eval.rs
+use dioxus::prelude::*;
+
+fn main() {
+    launch(app);
+}
+
+fn app() -> Element {
+    let future = use_resource(move || async move {
+        // You can create as many eval instances as you want
+        let mut eval = document::eval(
+            r#"
+            // You can send messages from JavaScript to Rust with the dioxus.send function
+            dioxus.send("Hi from JS!");
+            // You can receive messages from Rust to JavaScript with the dioxus.recv function
+            let msg = await dioxus.recv();
+            console.log(msg);
+            "#,
+        );
+
+        // You can send messages to JavaScript with the send method
+        eval.send("Hi from Rust!").unwrap();
+
+        // You can receive any message from JavaScript with the recv method
+        eval.recv::<String>().await.unwrap()
+    });
+
+    match future.read_unchecked().as_ref() {
+        Some(v) => rsx! {
+            p { "{v}" }
+        },
+        _ => rsx! {
+            p { "hello" }
+        },
+    }
+}
+
+````
+
+## Custom Assets
+
+You can link to local assets in dioxus desktop instead of using a url:
+
+````rs@custom_assets.rs
+use dioxus::prelude::*;
+
+fn main() {
+    launch(app);
+}
+
+fn app() -> Element {
+    rsx! {
+        div {
+            img { src: asset!("/assets/static/scanner.png") }
+        }
+    }
+}
+
+````
+
+## Integrating with Wry
+
+In cases where you need more low level control over your window, you can use wry APIs exposed through the [Desktop Config](https://docs.rs/dioxus-desktop/latest/dioxus_desktop/struct.Config.html) and the [use_window hook](https://docs.rs/dioxus-desktop/latest/dioxus_desktop/fn.use_window.html)
+# Mobile App
+
+Build a mobile app with Dioxus!
+
+## Support
+
+The Rust ecosystem for mobile continues to mature, with Dioxus offering strong support for mobile applications. Mobile is a first-class target for Dioxus apps, with a robust WebView implementation that supports CSS animations and transparency effects.
+
+Mobile apps are rendered with either the platform's WebView or experimentally with WGPU. While native Android animations and widgets aren't currently supported, CSS-based animations and styling provide a powerful alternative.
+
+Mobile support is well-suited for most application types, from business tools to consumer apps, making it an excellent choice for teams looking to build cross-platform applications with a single codebase.
+
+## Getting Set up
+
+## Android
+
+Android devices run a different executable architecture than desktop and web. We need to install these toolchains to build Dioxus apps for Android.
+
+First, install the Rust Android targets:
+
+````sh
+rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
+````
+
+To develop on Android, you will need to [install Android Studio](https://developer.android.com/studio).
+
+Once you have installed Android Studio, you will need to install the Android SDK and NDK:
+
+1. Create a blank Android project
+1. Select `Tools > SDK manager`
+1. Navigate to the `SDK tools` window:
+
+![NDK install window](/assets/static/android_ndk_install.png)
+
+Then select:
+
+* The SDK
+* The SDK Command line tools
+* The NDK (side by side)
+* CMAKE
+
+4. Select `apply` and follow the prompts
+
+ > 
+ > More details that could be useful for debugging any errors you encounter are available [in the official android docs](https://developer.android.com/studio/intro/update#sdk-manager)
+
+Next set the Java, Android, NDK, and PATH variables:
+
+Mac:
+
+````sh
+export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+export ANDROID_HOME="$HOME/Library/Android/sdk"
+export NDK_HOME="$ANDROID_HOME/ndk/25.2.9519653"
+export PATH="$PATH:$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools"
+````
+
+Windows:
+
+````powershell
+[System.Environment]::SetEnvironmentVariable("JAVA_HOME", "C:\Program Files\Android\Android Studio\jbr", "User")
+[System.Environment]::SetEnvironmentVariable("ANDROID_HOME", "$env:LocalAppData\Android\Sdk", "User")
+[System.Environment]::SetEnvironmentVariable("NDK_HOME", "$env:LocalAppData\Android\Sdk\ndk\25.2.9519653", "User")
+````
+
+ > 
+ > The NDK version in the paths should match the version you installed in the last step
+
+We manually set the PATH variable to include the Android emulator since some distributions of Android Studio include the emulator in the wrong location.
+
+## IOS
+
+To develop on IOS, you will need to [install XCode](https://apps.apple.com/us/app/xcode/id497799835). Also make sure to install the iOS targets
+
+````sh
+rustup target add aarch64-apple-ios aarch64-apple-ios-sim
+````
+
+ > 
+ > If you are using M1, you will have to run `cargo build --target x86_64-apple-ios` instead of `cargo apple build` if you want to run in simulator.
+
+You will also need to install the iOS SDK and the Xcode command line tools.
+
+## Running your app
+
+Starting with Dioxus 0.6, `dx` ships with built-in support for mobile.
+
+Simply create a new Dioxus project:
+
+````sh
+dx new my-app
+````
+
+Make sure to launch the relevant mobile simulator. For Android, you can use the Android Studio emulator, or the Android Emulator in the terminal. Make sure to adjust the device name depending on which emulator you installed.
+
+````sh
+emulator -avd Pixel_6_API_34  -netdelay none -netspeed full
+````
+
+For iOS, you can use the iOS simulator. You can launch it with:
+
+````sh
+open /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app
+xcrun simctl boot "iPhone 15 Pro Max"
+````
+
+And then run the app with:
+
+````sh
+cd my-app
+dx serve
+````
+
+This will start the app in development mode.
+# Publishing
+
+After you have built your application, you will need to publish it somewhere. This reference will outline different methods of publishing your desktop or web application.
+
+## Web: Publishing with GitHub Pages
+
+Edit your `Dioxus.toml` to point your `out_dir` to the `docs` folder and the `base_path` to the name of your repo:
+
+````toml
+[application]
+# ...
+[web.app]
+base_path = "your_repo"
+````
+
+Then build your app and publish it to Github:
+
+* Make sure GitHub Pages is set up for your repo to publish any static files in the docs directory
+* Build your app into the `docs` directory with:
+
+````sh
+dx bundle --out-dir docs
+````
+
+* Move the static content from `docs/public` to `docs`
+
+````sh
+mv docs/public/* docs
+````
+
+* Make a copy of your `docs/index.html` file and rename the copy to `docs/404.html` so that your app will work with client-side routing:
+
+````sh
+cp docs/index.html docs/404.html
+````
+
+* Add and commit with git
+* Push to GitHub
+
+## Desktop: Creating an installer
+
+Dioxus desktop app uses your operating system's WebView library, so it's portable to be distributed for other platforms.
+
+In this section, we'll cover how to bundle your app for macOS, Windows, and Linux.
+
+## Preparing your application for bundling
+
+Depending on your platform, you may need to add some additional code to your `main.rs` file to make sure your app is ready for bundling. On Windows, you'll need to add the `#![windows_subsystem = "windows"]` attribute to your `main.rs` file to hide the terminal window that pops up when you run your app. **If you're developing on Windows, only use this when bundling.** It will disable the terminal, so you will not get logs of any kind. You can gate it behind a feature, like so:
+
+````toml
+# Cargo.toml
+[features]
+bundle = []
+````
+
+And then your `main.rs`:
+
+````rust
+#![cfg_attr(feature = "bundle", windows_subsystem = "windows")]
+````
+
+## Adding assets to your application
+
+If you want to bundle assets with your application, you can either use them with the `manganis` crate (covered more in the [assets](../../essentials/ui/assets.md) page), or you can include them in your `Dioxus.toml` file:
+
+````toml
+[bundle]
+# The list of files to include in the bundle. These can contain globs.
+resources = ["main.css", "header.svg", "**/*.png"]
+````
+
+## Install `dioxus CLI`
+
+The first thing we'll do is install the [dioxus-cli](https://github.com/DioxusLabs/dioxus/tree/main/packages/cli). This extension to cargo will make it very easy to package our app for the various platforms.
+
+To install, simply run
+
+`cargo install dioxus-cli`
+
+## Building
+
+To bundle your application you can simply run `dx bundle --release` (also add `--features bundle` if you're using that, see the [this](#preparing-your-application-for-bundling) for more) to produce a final app with all the optimizations and assets builtin.
+
+Once you've ran the command, your app should be accessible in `dist/bundle/`.
+
+For example, a macOS app would look like this:
+
+![Published App](/assets/static/publish.png)
+
+Nice! And it's only 4.8 Mb – extremely lean!! Because Dioxus leverages your platform's native WebView, Dioxus apps are extremely memory efficient and won't waste your battery.
+
+ > 
+ > Note: not all CSS works the same on all platforms. Make sure to view your app's CSS on each platform – or web browser (Firefox, Chrome, Safari) before publishing.
+### Bundling config
+
+The `[bundle]` section of our Dioxus.toml can take a variety of options.
+
+Here are the options, in the form of Rust structs.
+
+````rust
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+pub(crate) struct BundleConfig {
+    /// eg. com.dioxuslabs
+    pub(crate) identifier: Option<String>,
+    /// eg. DioxusLabs
+    pub(crate) publisher: Option<String>,
+    /// eg. assets/icon.png
+    pub(crate) icon: Option<Vec<String>>,
+    /// eg. Extra assets like "img.png"
+    pub(crate) resources: Option<Vec<String>>,
+    /// eg. DioxusLabs
+    pub(crate) copyright: Option<String>,
+    /// eg. "Social Media"
+    pub(crate) category: Option<String>,
+    /// eg. "A great social media app"
+    pub(crate) short_description: Option<String>,
+    /// eg. "A social media app that makes people love app development"
+    pub(crate) long_description: Option<String>,
+    /// eg. extra binaries (like tools) to include in the final app
+    pub(crate) external_bin: Option<Vec<String>>,
+    /// Additional debian-only settings (see below)
+    pub(crate) deb: Option<DebianSettings>,
+    /// Additional macos settings (see below)
+    pub(crate) macos: Option<MacOsSettings>,
+    /// Additional windows settings (see below)
+    pub(crate) windows: Option<WindowsSettings>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+pub(crate) struct DebianSettings {
+    // OS-specific settings:
+    /// the list of debian dependencies.
+    pub depends: Option<Vec<String>>,
+    /// the list of dependencies the package provides.
+    pub provides: Option<Vec<String>>,
+    /// the list of package conflicts.
+    pub conflicts: Option<Vec<String>>,
+    /// the list of package replaces.
+    pub replaces: Option<Vec<String>>,
+    /// List of custom files to add to the deb package.
+    /// Maps the path on the debian package to the path of the file to include (relative to the current working directory).
+    pub files: HashMap<PathBuf, PathBuf>,
+    /// Path to a custom desktop file Handlebars template.
+    ///
+    /// Available variables: `categories`, `comment` (optional), `exec`, `icon` and `name`.
+    pub desktop_template: Option<PathBuf>,
+    /// Define the section in Debian Control file. See : <https://www.debian.org/doc/debian-policy/ch-archive.html#s-subsections>
+    pub section: Option<String>,
+    /// Change the priority of the Debian Package. By default, it is set to `optional`.
+    /// Recognized Priorities as of now are :  `required`, `important`, `standard`, `optional`, `extra`
+    pub priority: Option<String>,
+    /// Path of the uncompressed Changelog file, to be stored at /usr/share/doc/package-name/changelog.gz. See
+    /// <https://www.debian.org/doc/debian-policy/ch-docs.html#changelog-files-and-release-notes>
+    pub changelog: Option<PathBuf>,
+    /// Path to script that will be executed before the package is unpacked. See
+    /// <https://www.debian.org/doc/debian-policy/ch-maintainerscripts.html>
+    pub pre_install_script: Option<PathBuf>,
+    /// Path to script that will be executed after the package is unpacked. See
+    /// <https://www.debian.org/doc/debian-policy/ch-maintainerscripts.html>
+    pub post_install_script: Option<PathBuf>,
+    /// Path to script that will be executed before the package is removed. See
+    /// <https://www.debian.org/doc/debian-policy/ch-maintainerscripts.html>
+    pub pre_remove_script: Option<PathBuf>,
+    /// Path to script that will be executed after the package is removed. See
+    /// <https://www.debian.org/doc/debian-policy/ch-maintainerscripts.html>
+    pub post_remove_script: Option<PathBuf>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+pub(crate) struct WixSettings {
+    pub(crate) language: Vec<(String, Option<PathBuf>)>,
+    pub(crate) template: Option<PathBuf>,
+    pub(crate) fragment_paths: Vec<PathBuf>,
+    pub(crate) component_group_refs: Vec<String>,
+    pub(crate) component_refs: Vec<String>,
+    pub(crate) feature_group_refs: Vec<String>,
+    pub(crate) feature_refs: Vec<String>,
+    pub(crate) merge_refs: Vec<String>,
+    pub(crate) skip_webview_install: bool,
+    pub(crate) license: Option<PathBuf>,
+    pub(crate) enable_elevated_update_task: bool,
+    pub(crate) banner_path: Option<PathBuf>,
+    pub(crate) dialog_image_path: Option<PathBuf>,
+    pub(crate) fips_compliant: bool,
+    /// MSI installer version in the format `major.minor.patch.build` (build is optional).
+    ///
+    /// Because a valid version is required for MSI installer, it will be derived from [`PackageSettings::version`] if this field is not set.
+    ///
+    /// The first field is the major version and has a maximum value of 255. The second field is the minor version and has a maximum value of 255.
+    /// The third and fourth fields have a maximum value of 65,535.
+    ///
+    /// See <https://learn.microsoft.com/en-us/windows/win32/msi/productversion> for more info.
+    pub version: Option<String>,
+    /// A GUID upgrade code for MSI installer. This code **_must stay the same across all of your updates_**,
+    /// otherwise, Windows will treat your update as a different app and your users will have duplicate versions of your app.
+    ///
+    /// By default, tauri generates this code by generating a Uuid v5 using the string `<productName>.exe.app.x64` in the DNS namespace.
+    /// You can use Tauri's CLI to generate and print this code for you by running `tauri inspect wix-upgrade-code`.
+    ///
+    /// It is recommended that you set this value in your tauri config file to avoid accidental changes in your upgrade code
+    /// whenever you want to change your product name.
+    pub upgrade_code: Option<uuid::Uuid>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+pub(crate) struct MacOsSettings {
+    pub(crate) frameworks: Option<Vec<String>>,
+    pub(crate) minimum_system_version: Option<String>,
+    pub(crate) license: Option<String>,
+    pub(crate) exception_domain: Option<String>,
+    pub(crate) signing_identity: Option<String>,
+    pub(crate) provider_short_name: Option<String>,
+    pub(crate) entitlements: Option<String>,
+    pub(crate) info_plist_path: Option<PathBuf>,
+    /// List of custom files to add to the application bundle.
+    /// Maps the path in the Contents directory in the app to the path of the file to include (relative to the current working directory).
+    pub files: HashMap<PathBuf, PathBuf>,
+    /// Preserve the hardened runtime version flag, see <https://developer.apple.com/documentation/security/hardened_runtime>
+    ///
+    /// Settings this to `false` is useful when using an ad-hoc signature, making it less strict.
+    pub hardened_runtime: bool,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub(crate) struct WindowsSettings {
+    pub(crate) digest_algorithm: Option<String>,
+    pub(crate) certificate_thumbprint: Option<String>,
+    pub(crate) timestamp_url: Option<String>,
+    pub(crate) tsp: bool,
+    pub(crate) wix: Option<WixSettings>,
+    pub(crate) icon_path: Option<PathBuf>,
+    pub(crate) webview_install_mode: WebviewInstallMode,
+    pub(crate) webview_fixed_runtime_path: Option<PathBuf>,
+    pub(crate) allow_downgrades: bool,
+    pub(crate) nsis: Option<NsisSettings>,
+    /// Specify a custom command to sign the binaries.
+    /// This command needs to have a `%1` in it which is just a placeholder for the binary path,
+    /// which we will detect and replace before calling the command.
+    ///
+    /// Example:
+    /// ```text
+    /// sign-cli --arg1 --arg2 %1
+    /// ```
+    ///
+    /// By Default we use `signtool.exe` which can be found only on Windows so
+    /// if you are on another platform and want to cross-compile and sign you will
+    /// need to use another tool like `osslsigncode`.
+    pub sign_command: Option<CustomSignCommandSettings>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub(crate) struct NsisSettings {
+    pub(crate) template: Option<PathBuf>,
+    pub(crate) license: Option<PathBuf>,
+    pub(crate) header_image: Option<PathBuf>,
+    pub(crate) sidebar_image: Option<PathBuf>,
+    pub(crate) installer_icon: Option<PathBuf>,
+    pub(crate) install_mode: NSISInstallerMode,
+    pub(crate) languages: Option<Vec<String>>,
+    pub(crate) custom_language_files: Option<HashMap<String, PathBuf>>,
+    pub(crate) display_language_selector: bool,
+    pub(crate) start_menu_folder: Option<String>,
+    pub(crate) installer_hooks: Option<PathBuf>,
+    /// Try to ensure that the WebView2 version is equal to or newer than this version,
+    /// if the user's WebView2 is older than this version,
+    /// the installer will try to trigger a WebView2 update.
+    pub minimum_webview2_version: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub(crate) enum NSISInstallerMode {
+    CurrentUser,
+    PerMachine,
+    Both,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub(crate) enum WebviewInstallMode {
+    Skip,
+    DownloadBootstrapper { silent: bool },
+    EmbedBootstrapper { silent: bool },
+    OfflineInstaller { silent: bool },
+    FixedRuntime { path: PathBuf },
+}
+
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct CustomSignCommandSettings {
+    /// The command to run to sign the binary.
+    pub cmd: String,
+    /// The arguments to pass to the command.
+    ///
+    /// "%1" will be replaced with the path to the binary to be signed.
+    pub args: Vec<String>,
+}
+
+#[derive(Clone, Copy, Debug)]
+pub(crate) enum PackageType {
+    /// "macos"
+    MacOsBundle,
+    /// "ios"
+    IosBundle,
+    /// "msi"
+    WindowsMsi,
+    /// "nsis"
+    Nsis,
+    /// "deb"
+    Deb,
+    /// "rpm"
+    Rpm,
+    /// "appimage"
+    AppImage,
+    /// "dmg"
+    Dmg,
+    /// "updater"
+    Updater,
+}
+````
+# Testing and Debugging
+
+Testing and debugging are essential parts of the development process. This guide covers the basics of testing dioxus applications and debugging issues.
+
+## Testing
+
+Testing can be broken down into several categories:
+
+* **Unit Testing**: Testing individual components or functions in isolation.
+* **End-to-End Testing**: Testing the entire application from start to finish.
+
+### Unit Testing
+
+Unit testing involves testing individual components or functions in isolation. Rust has built in support for testing using `cargo test`. You can annotate any function with the `#[test]` attribute to mark it as a test function. Here's an example of how to write a unit test for a simple function:
+
+````rust
+fn add(a: i32, b: i32) -> i32 {
+    a + b
+}
+
+#[test]
+fn test_add() {
+    assert_eq!(add(2, 3), 5);
+}
+````
+
+### End-to-End Testing
+
+End-to-end testing involves testing the entire application from start to finish. For dioxus applications, playwright can be used to automate the browser and test different aspects of your application. The [Web Testing](./web.md) guide provides more information on how to setup and use playwright with dioxus.
+
+## Avoiding Common Pitfalls
+
+While it is important to understand how to debug issues when they come up, avoiding issues altogether is even better. The [anti-patterns](../tips/antipatterns.md) guide walks through a couple of common pitfalls and how to avoid them.
+
+## Optimizing Builds
+
+Once you have ironed out all of the bugs in your application and are ready to deploy, its worth taking some time to get your application ready for production. The [Optimizing](../tips/optimizing.md) guide covers optimizing your build settings for production.
+# Testing
+
+When building application or libraries with Dioxus, you may want to include some tests to check the behavior of parts of your application. This guide will teach you how to test different parts of your Dioxus application.
+
+## Component Testing
+
+You can use a combination of [pretty-assertions](https://docs.rs/pretty_assertions/latest/pretty_assertions/) and [dioxus-ssr](http://crates.io/crates/dioxus-ssr) to check that two snippets of rsx are equal:
+
+````rs@component_test.rs
+use futures::FutureExt;
+use std::{cell::RefCell, sync::Arc};
+
+use dioxus::prelude::*;
+
+#[test]
+fn test() {
+    assert_rsx_eq(
+        rsx! {
+            div { "Hello world" }
+            div { "Hello world" }
+        },
+        rsx! {
+            for _ in 0..2 {
+                div { "Hello world" }
+            }
+        },
+    )
+}
+
+fn assert_rsx_eq(first: Element, second: Element) {
+    let first = dioxus_ssr::render_element(first);
+    let second = dioxus_ssr::render_element(second);
+    pretty_assertions::assert_str_eq!(first, second);
+}
+
+````
+
+## Hook Testing
+
+When creating libraries around Dioxus, it can be helpful to make tests for your [custom hooks](../../essentials/advanced/custom_hooks.md).
+
+Dioxus does not currently have a full hook testing library, but you can build a bespoke testing framework by manually driving the virtual dom.
+
+````rs@hook_test.rs
+use futures::FutureExt;
+use std::{cell::RefCell, rc::Rc, sync::Arc, thread::Scope};
+
+use dioxus::{dioxus_core::NoOpMutations, prelude::*};
+
+#[test]
+fn test() {
+    test_hook(
+        || use_signal(|| 0),
+        |mut value, mut proxy| match proxy.generation {
+            0 => {
+                value.set(1);
+            }
+            1 => {
+                assert_eq!(*value.read(), 1);
+                value.set(2);
+            }
+            2 => {
+                proxy.rerun();
+            }
+            3 => {}
+            _ => todo!(),
+        },
+        |proxy| assert_eq!(proxy.generation, 4),
+    );
+}
+
+fn test_hook<V: 'static>(
+    initialize: impl FnMut() -> V + 'static,
+    check: impl FnMut(V, MockProxy) + 'static,
+    mut final_check: impl FnMut(MockProxy) + 'static,
+) {
+    #[derive(Props)]
+    struct MockAppComponent<I: 'static, C: 'static> {
+        hook: Rc<RefCell<I>>,
+        check: Rc<RefCell<C>>,
+    }
+
+    impl<I, C> PartialEq for MockAppComponent<I, C> {
+        fn eq(&self, _: &Self) -> bool {
+            true
+        }
+    }
+
+    impl<I, C> Clone for MockAppComponent<I, C> {
+        fn clone(&self) -> Self {
+            Self {
+                hook: self.hook.clone(),
+                check: self.check.clone(),
+            }
+        }
+    }
+
+    fn mock_app<I: FnMut() -> V, C: FnMut(V, MockProxy), V>(
+        props: MockAppComponent<I, C>,
+    ) -> Element {
+        let value = props.hook.borrow_mut()();
+
+        props.check.borrow_mut()(value, MockProxy::new());
+
+        rsx! {
+            div {}
+        }
+    }
+
+    let mut vdom = VirtualDom::new_with_props(
+        mock_app,
+        MockAppComponent {
+            hook: Rc::new(RefCell::new(initialize)),
+            check: Rc::new(RefCell::new(check)),
+        },
+    );
+
+    vdom.rebuild_in_place();
+
+    while vdom.wait_for_work().now_or_never().is_some() {
+        vdom.render_immediate(&mut NoOpMutations);
+    }
+
+    vdom.in_scope(ScopeId::ROOT, || {
+        final_check(MockProxy::new());
+    })
+}
+
+struct MockProxy {
+    rerender: Arc<dyn Fn()>,
+    pub generation: usize,
+}
+
+impl MockProxy {
+    fn new() -> Self {
+        let generation = dioxus::core::generation();
+        let rerender = dioxus::core::schedule_update();
+
+        Self {
+            rerender,
+            generation,
+        }
+    }
+
+    pub fn rerun(&mut self) {
+        (self.rerender)();
+    }
+}
+
+````
+
+## End to End Testing
+
+You can use [Playwright](https://playwright.dev/) to create end to end tests for your dioxus application.
+
+In your `playwright.config.js`, you will need to run cargo run or dx serve instead of the default build command. Here is a snippet from the end to end web example:
+
+````js
+//...
+webServer: [
+    {
+        cwd: path.join(process.cwd(), 'playwright-tests', 'web'),
+        command: 'dx serve',
+        port: 8080,
+        timeout: 10 * 60 * 1000,
+        reuseExistingServer: !process.env.CI,
+        stdout: "pipe",
+    },
+],
+````
+
+* [Web example](https://github.com/DioxusLabs/dioxus/tree/main/playwright-tests/web)
+* [Liveview example](https://github.com/DioxusLabs/dioxus/tree/main/playwright-tests/liveview)
+* [Fullstack example](https://github.com/DioxusLabs/dioxus/tree/main/playwright-tests/fullstack)
+# Optimizing
+
+*Note: This is written primarily for the web, but the main optimizations will work on other platforms too.*
+
+You might have noticed that Dioxus binaries are pretty big.
+The WASM binary of a [TodoMVC app](https://github.com/tigerros/dioxus-todo-app) weighs in at 2.36mb!
+Don't worry; we can get it down to a much more manageable 234kb.
+This will get obviously lower over time.
+With nightly features, you can even reduce the binary size of a hello world app to less than 100kb!
+
+We will also discuss ways to optimize your app for increased speed.
+
+However, certain optimizations will sacrifice speed for decreased binary size or the other way around.
+That's what you need to figure out yourself. Does your app perform performance-intensive tasks, such as graphical processing or tons of DOM manipulations?
+You could go for increased speed. In most cases, though, decreased binary size is the better choice, especially because Dioxus WASM binaries are quite large.
+
+To test binary sizes, we will use [this](https://github.com/tigerros/dioxus-todo-app) repository as a sample app.
+The `no-optimizations` package will serve as the base, which weighs 2.36mb as of right now.
+
+Additional resources:
+
+* [WASM book - Shrinking `.wasm` code size](https://rustwasm.github.io/docs/book/reference/code-size.html)
+* [min-sized-rust](https://github.com/johnthagen/min-sized-rust)
+
+## Building in release mode
+
+This is the best way to optimize. In fact, the 2.36mb figure at the start of the guide is with release mode.
+In debug mode, it's actually a whopping 32mb! It also increases the speed of your app.
+
+We can use the `--release` flag to create an optimized build of our application which will be both faster and smaller:
+
+`dx build --release`
+
+## UPX
+
+If you're not targeting web, you can use the [UPX](https://github.com/upx/upx) CLI tool to compress your executables.
+
+Setup:
+
+* Download a [release](https://github.com/upx/upx/releases) and extract the directory inside to a sensible location.
+* Add the executable located in the directory to your path variable.
+
+You can run `upx --help` to get the CLI options, but you should also view `upx-doc.html` for more detailed information.
+It's included in the extracted directory.
+
+An example command might be: `upx --best -o target/release/compressed.exe target/release/your-executable.exe`.
+
+## Build configuration
+
+*Note: Settings defined in `.cargo/config.toml` will override settings in `Cargo.toml`.*
+
+Other than the `--release` flag, this is the easiest way to optimize your projects, and also the most effective way,
+at least in terms of reducing binary size.
+
+### Stable
+
+This configuration is 100% stable and decreases the binary size from 2.36mb to 310kb.
+Add this to your `.cargo/config.toml`:
+
+````toml
+[profile.release]
+opt-level = "z"
+debug = false
+lto = true
+codegen-units = 1
+panic = "abort"
+incremental = false
+````
+
+Links to the documentation of each value:
+
+* [`opt-level`](https://doc.rust-lang.org/rustc/codegen-options/index.html#opt-level)
+* [`debug`](https://doc.rust-lang.org/rustc/codegen-options/index.html#debuginfo)
+* [`lto`](https://doc.rust-lang.org/rustc/codegen-options/index.html#lto)
+* [`codegen-units`](https://doc.rust-lang.org/rustc/codegen-options/index.html#codegen-units)
+* [`panic`](https://doc.rust-lang.org/rustc/codegen-options/index.html#panic)
+* [`strip`](https://doc.rust-lang.org/rustc/codegen-options/index.html#strip)
+* [`incremental`](https://doc.rust-lang.org/rustc/codegen-options/index.html#incremental)
+
+### Unstable
+
+This configuration contains some unstable features, but it should work just fine.
+It decreases the binary size from 310kb to 234kb.
+Add this to your `.cargo/config.toml`:
+
+````toml
+[unstable]
+build-std = ["std", "panic_abort", "core", "alloc"]
+build-std-features = ["panic_immediate_abort"]
+
+[build]
+rustflags = [
+    "-Clto",
+    "-Zvirtual-function-elimination",
+    "-Zlocation-detail=none"
+]
+
+# Same as in the Stable section
+[profile.release]
+opt-level = "z"
+debug = false
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
+incremental = false
+````
+
+*Note: The omitted space in each flag (e.g., `-C<no space here>lto`) is intentional. It is not a typo.*
+
+The values in `[profile.release]` are documented in the [Stable](#stable) section. Links to the documentation of each value:
+
+* [`[build.rustflags]`](https://doc.rust-lang.org/cargo/reference/config.html#buildrustflags)
+* [`-C lto`](https://doc.rust-lang.org/rustc/codegen-options/index.html#lto)
+* [`-Z virtual-function-elimination`](https://doc.rust-lang.org/stable/unstable-book/compiler-flags/virtual-function-elimination.html)
+* [`-Z location-detail`](https://doc.rust-lang.org/stable/unstable-book/compiler-flags/location-detail.html)
+
+## wasm-opt
+
+*Note: In the future, `wasm-opt` will be supported natively through the [Dioxus CLI](https://crates.io/crates/dioxus-cli).*
+
+`wasm-opt` is a tool from the [binaryen](https://github.com/WebAssembly/binaryen) library that optimizes your WASM files.
+To use it, install a [binaryen release](https://github.com/WebAssembly/binaryen/releases) and run this command from the package directory:
+
+````
+wasm-opt dist/assets/dioxus/APP_NAME_bg.wasm -o dist/assets/dioxus/APP_NAME_bg.wasm -Oz
+````
+
+The `-Oz` flag specifies that `wasm-opt` should optimize for size. For speed, use `-O4`.
+
+## Improving Dioxus code
+
+Let's talk about how you can improve your Dioxus code to be more performant.
+
+It's important to minimize the number of dynamic parts in your `rsx`, like conditional rendering.
+When Dioxus is rendering your component, it will skip parts that are the same as the last render.
+That means that if you keep dynamic rendering to a minimum, your app will speed up, and quite a bit if it's not just hello world.
+
+Also check out [Anti-patterns](antipatterns.md) for patterns that you should avoid.
+Obviously, not all of them are just about performance, but some of them are.
+
+## Optimizing the size of assets
+
+Assets can be a significant part of your app's size. Dioxus includes alpha support for first party assets. Any assets you include with the `asset!` macro will be optimized for production in release builds.
+# Antipatterns
+
+This example shows what not to do and provides a reason why a given pattern is considered an "AntiPattern". Most anti-patterns are considered wrong for performance or code re-usability reasons.
+
+## Incorrect Iterator Keys
+
+As described in the [rsx chapter](../../essentials/ui/iteration.md), list items must have unique keys that are associated with the same items across renders. This helps Dioxus associate state with the contained components and ensures good diffing performance. Do not omit keys, unless you know that the list will never change.
+
+````rs@anti_patterns.rs
+let data: &HashMap<_, _> = &props.data;
+
+// ❌ No keys
+rsx! {
+    ul {
+        for value in data.values() {
+            li { "List item: {value}" }
+        }
+    }
+};
+
+// ❌ Using index as keys
+rsx! {
+    ul {
+        for (index , value) in data.values().enumerate() {
+            li { key: "{index}", "List item: {value}" }
+        }
+    }
+};
+
+// ✅ Using unique IDs as keys:
+rsx! {
+    ul {
+        for (key , value) in props.data.iter() {
+            li { key: "{key}", "List item: {value}" }
+        }
+    }
+}
+````
+
+## Avoid Interior Mutability in Props
+
+While it is technically acceptable to have a `Mutex` or a `RwLock` in the props, they will be difficult to use.
+
+Suppose you have a struct `User` containing the field `username: String`. If you pass a `Mutex<User>` prop to a `UserComponent` component, that component may wish to write to the `username` field. However, when it does, the parent component will not be aware of the change, and the component will not re-render which causes the UI to be out of sync with the state. Instead, consider passing down a reactive value like a `Signal` or immutable data.
+
+````rs@anti_patterns.rs
+// ❌ Mutex/RwLock/RefCell in props
+#[derive(Props, Clone)]
+struct AntipatternInteriorMutability {
+    map: Rc<RefCell<HashMap<u32, String>>>,
+}
+
+impl PartialEq for AntipatternInteriorMutability {
+    fn eq(&self, other: &Self) -> bool {
+        std::rc::Rc::ptr_eq(&self.map, &other.map)
+    }
+}
+
+fn AntipatternInteriorMutability(map: Rc<RefCell<HashMap<u32, String>>>) -> Element {
+    rsx! {
+        button {
+            onclick: {
+                let map = map.clone();
+                move |_| {
+                    // Writing to map will not rerun any components
+                    map.borrow_mut().insert(0, "Hello".to_string());
+                }
+            },
+            "Mutate map"
+        }
+        // Since writing to map will not rerun any components, this will get out of date
+        "{map.borrow().get(&0).unwrap()}"
+    }
+}
+
+// ✅ Use a signal to pass mutable state
+#[component]
+fn AntipatternInteriorMutabilitySignal(map: Signal<HashMap<u32, String>>) -> Element {
+    rsx! {
+        button {
+            onclick: move |_| {
+                // Writing to map will rerun any components that read the map
+                map.write().insert(0, "Hello".to_string());
+            },
+            "Mutate map"
+        }
+        // Since writing to map will rerun subscribers, this will get updated
+        "{map.read().get(&0).unwrap()}"
+    }
+}
+````
+
+## Avoid Updating State During Render
+
+Every time you update the state, Dioxus needs to re-render the component – this is inefficient! Consider refactoring your code to avoid this.
+
+Also, if you unconditionally update the state during render, it will be re-rendered in an infinite loop.
+
+````rs@anti_patterns.rs
+// ❌ Updating state in render
+let first_signal = use_signal(|| 0);
+let mut second_signal = use_signal(|| 0);
+
+// Updating the state during a render can easily lead to infinite loops
+if first_signal() + 1 != second_signal() {
+    second_signal.set(first_signal() + 1);
+}
+
+// ✅ Update state in an effect
+let first_signal = use_signal(|| 0);
+let mut second_signal = use_signal(|| 0);
+
+// The closure you pass to use_effect will be rerun whenever any of the dependencies change without re-rendering the component
+use_effect(move || {
+    if first_signal() + 1 != second_signal() {
+        second_signal.set(first_signal() + 1);
+    }
+});
+
+// ✅ Deriving state with use_memo
+let first_signal = use_signal(|| 0);
+// Memos are specifically designed for derived state. If your state fits this pattern, use it.
+let second_signal = use_memo(move || first_signal() + 1);
+````
+
+## Avoid Large Groups of State
+
+It can be tempting to have a single large state struct that contains all of your application's state. However, this can lead to issues:
+
+* It can be easy to accidentally mutate the state in a way that causes an infinite loop
+* It can be difficult to reason about when and how the state is updated
+* It can lead to performance issues because many components will need to re-render when the state changes
+
+Instead, consider breaking your state into smaller, more manageable pieces. This will make it easier to reason about the state, avoid update loops, and improve performance.
+
+````rs@anti_patterns.rs
+fn app() -> Element {
+    // ❌ Large state struct
+    #[derive(Props, Clone, PartialEq)]
+    struct LargeState {
+        users: Vec<User>,
+        logged_in: bool,
+        warnings: Vec<String>,
+    }
+
+    #[derive(Props, Clone, PartialEq)]
+    struct User {
+        name: String,
+        email: String,
+    }
+
+    let mut all_my_state = use_signal(|| LargeState {
+        users: vec![User {
+            name: "Alice".to_string(),
+            email: "alice@example.com".to_string(),
+        }],
+        logged_in: true,
+        warnings: vec![],
+    });
+
+    use_effect(move || {
+        // It is very easy to accidentally read and write to the state object if it contains all your state
+        let read = all_my_state.read();
+        let logged_in = read.logged_in;
+        if !logged_in {
+            all_my_state
+                .write_unchecked()
+                .warnings
+                .push("You are not logged in".to_string());
+        }
+    });
+
+    // ✅ Use multiple signals to manage state
+    let users = use_signal(|| {
+        vec![User {
+            name: "Alice".to_string(),
+            email: "alice@example.com".to_string(),
+        }]
+    });
+    let logged_in = use_signal(|| true);
+    let mut warnings = use_signal(|| vec![]);
+
+    use_effect(move || {
+        // Now you can read and write to separate signals which will not cause issues
+        if !logged_in() {
+            warnings.write().push("You are not logged in".to_string());
+        }
+    });
+
+    // ✅ Use memos to create derived state when larger states are unavoidable
+    // Notice we didn't split everything into separate signals. Users still make sense as a vec of data
+    let users = use_signal(|| {
+        vec![User {
+            name: "Alice".to_string(),
+            email: "alice@example.com".to_string(),
+        }]
+    });
+    let logged_in = use_signal(|| true);
+    let warnings: Signal<Vec<String>> = use_signal(|| vec![]);
+
+    // In child components, you can use the memo to create derived that will only update when a specific part of the state changes
+    // This will help you avoid unnecessary re-renders and infinite loops
+    #[component]
+    fn FirstUser(users: Signal<Vec<User>>) -> Element {
+        let first_user = use_memo(move || users.read().first().unwrap().clone());
+
+        rsx! {
+            div {
+                "First user: {first_user().name}"
+            }
+        }
+    }
+
+    rsx! {
+        FirstUser {
+            users
+        }
+    }
+}
+````
+
+## Running Non-Deterministic Code in the Body of a Component
+
+If you have a component that contains non-deterministic code, that code should generally not be run in the body of the component. If it is put in the body of the component, it will be executed every time the component is re-rendered which can lead to performance issues.
+
+Instead, consider moving the non-deterministic code into a hook that only runs when the component is first created or an effect that reruns when dependencies change.
+
+````rs@anti_patterns.rs
+// ❌ Non-deterministic code in the body of a component
+#[component]
+fn NonDeterministic(name: String) -> Element {
+    let my_random_id = rand::random::<u64>();
+
+    rsx! {
+        div {
+            // Id will change every single time the component is re-rendered
+            id: "{my_random_id}",
+            "Hello {name}"
+        }
+    }
+}
+
+// ✅ Use a hook to run non-deterministic code
+fn NonDeterministicHook(name: String) -> Element {
+    // If you store the result of the non-deterministic code in a hook, it will stay the same between renders
+    let my_random_id = use_hook(|| rand::random::<u64>());
+
+    rsx! {
+        div {
+            id: "{my_random_id}",
+            "Hello {name}"
+        }
+    }
+}
+````
+
+## Overly Permissive PartialEq for Props
+
+You may have noticed that `Props` requires a `PartialEq` implementation. That `PartialEq` is very important for Dioxus to work correctly. It is used to determine if a component should re-render or not when the parent component re-renders.
+
+If you cannot derive `PartialEq` for your `Props`, you will need to implement it yourself. If you do implement `PartialEq`, make sure to return `false` any time the props change in a way that would cause the UI in the child component to change.
+
+In general, returning `false` from `PartialEq` if you aren't sure if the props have changed or not is better than returning `true`. This will help you avoid out of date UI in your child components.
+
+````rs@anti_patterns.rs
+// ❌ Permissive PartialEq for Props
+#[derive(Props, Clone)]
+struct PermissivePartialEqProps {
+    name: String,
+}
+
+// This will cause the component to **never** re-render when the parent component re-renders
+impl PartialEq for PermissivePartialEqProps {
+    fn eq(&self, _: &Self) -> bool {
+        true
+    }
+}
+
+fn PermissivePartialEq(name: PermissivePartialEqProps) -> Element {
+    rsx! {
+        div {
+            "Hello {name.name}"
+        }
+    }
+}
+
+#[component]
+fn PermissivePartialEqParent() -> Element {
+    let name = use_signal(|| "Alice".to_string());
+
+    rsx! {
+        PermissivePartialEq {
+            // The PermissivePartialEq component will not get the updated value of name because the PartialEq implementation says that the props are the same
+            name: name()
+        }
+    }
+}
+
+// ✅ Derive PartialEq for Props
+#[derive(Props, Clone, PartialEq)]
+struct DerivePartialEqProps {
+    name: String,
+}
+
+fn DerivePartialEq(name: DerivePartialEqProps) -> Element {
+    rsx! {
+        div {
+            "Hello {name.name}"
+        }
+    }
+}
+
+#[component]
+fn DerivePartialEqParent() -> Element {
+    let name = use_signal(|| "Alice".to_string());
+
+    rsx! {
+        DerivePartialEq {
+            name: name()
+        }
+    }
+}
+
+// ✅ Return false from PartialEq if you are unsure if the props have changed
+#[derive(Debug)]
+struct NonPartialEq;
+
+#[derive(Props, Clone)]
+struct RcPartialEqProps {
+    name: Rc<NonPartialEq>,
+}
+
+impl PartialEq for RcPartialEqProps {
+    fn eq(&self, other: &Self) -> bool {
+        // This will almost always return false because the Rc will likely point to a different value
+        // Implementing PartialEq for NonPartialEq would be better, but if it is controlled by another library, it may not be possible
+        // **Always** return false if you are unsure if the props have changed
+        std::rc::Rc::ptr_eq(&self.name, &other.name)
+    }
+}
+
+fn RcPartialEq(name: RcPartialEqProps) -> Element {
+    rsx! {
+        div {
+            "Hello {name.name:?}"
+        }
+    }
+}
+
+fn RcPartialEqParent() -> Element {
+    let name = use_signal(|| Rc::new(NonPartialEq));
+
+    rsx! {
+        RcPartialEq {
+            // Generally, RcPartialEq will rerun even if the value of name hasn't actually changed because the Rc will point to a different value
+            name: name()
+        }
+    }
+}
+````
+# Utilities
+
+The utilities section provides a collection of useful libraries that can be used alongside dioxus.
+
+* [Logging](./logging.md) Covers how to use dioxus-logger to configure logging for your project.
+* [Internationalization](./internationalization.md) Explains how to use dioxus-i8n to support multiple languages in your application.
+* [Tailwind](./tailwind.md) Provides setup instructions for using dioxus with Tailwind CSS.
+# Logging
+
+Dioxus has a wide range of supported platforms, each with their own logging requirements. We'll discuss the different options available for your projects.
+
+## Dioxus Logger
+
+Dioxus provides a first-party logger as part of `launch`. This sets up a tracing subscriber that cleanly integrates with the Dioxus CLI and platforms like Web and Mobile. In development mode, the `Debug` tracing level is set, and in release only the `Info` level is set.
+
+````rust
+use dioxus::prelude::*;
+
+fn main() {
+    dioxus::launch(|| {
+        // Will only log in "dev" mode
+        tracing::debug!("Rendering app!");
+
+        // Will log in dev and release
+        tracing::info!("Rendering app!");
+
+        rsx! {}
+    })
+}
+````
+
+To override the default or initialize the logger before `launch`, you can use the `init` function yourself:
+
+To use Dioxus Logger, call the `init()` function:
+
+````rs
+use tracing::Level;
+
+fn main() {
+    // Init logger
+    dioxus::logger::init(Level::INFO).expect("failed to init logger");
+
+    // Dioxus launch code
+    dioxus::launch(|| rsx! {})
+}
+````
+
+## The Tracing Crate
+
+The [Tracing](https://crates.io/crates/tracing) crate is the logging interface that the dioxus-logger uses. It is not required to use the Tracing crate, but you will not receive logs from the Dioxus library.
+
+The Tracing crate provides a variety of simple `println`-like macros with varying levels of severity.
+The available macros are as follows with the highest severity on the bottom:
+
+````rs
+fn main() {
+    tracing::trace!("trace");
+    tracing::debug!("debug");
+    tracing::info!("info");
+    tracing::warn!("warn");
+    tracing::error!("error");
+}
+````
+
+All the loggers provided on this page are, besides configuration and initialization, interfaced using these macros. Often you will also utilize the Tracing crate's `Level` enum. This enum usually represents the maximum log severity you want your application to emit and can be loaded from a variety of sources such as configuration file, environment variable, and more.
+
+For more information, visit the Tracing crate's [docs](https://docs.rs/tracing/latest/tracing/).
+
+## Platform Intricacies
+
+On web, Dioxus Logger will use [tracing-wasm](https://crates.io/crates/tracing-wasm). On Desktop and server-based targets, Dioxus Logger will use [tracing-subscriber](https://crates.io/crates/tracing-subscriber)'s `FmtSubscriber`.
+
+## Viewing Logs
+
+Android logs are sent to logcat. To use logcat through the Android debugger, run:
+
+````cmd
+adb -d logcat
+````
+
+Your Android device will need developer options/usb debugging enabled.
+
+For more information, visit android_logger's [docs](https://docs.rs/android_logger/latest/android_logger/).
+
+iOS logs are sent to oslog.
+
+For more information, visit [oslog](https://crates.io/crates/oslog).
+
+#### Final Notes
+
+Dioxus Logger is the preferred logger to use with Dioxus if it suites your needs. There are more features to come. If there are any feature suggestions or issues with Dioxus Logger, feel free to reach out on the [Dioxus Discord Server](https://discord.gg/XgGxMSkvUM)!
+
+For more information, visit Dioxus Logger's [docs](https://docs.rs/dioxus-logger/latest/dioxus_logger/).
+# Internationalization
+
+If your application supports multiple languages, the [dioxus-i18n](https://github.com/dioxus-community/dioxus-i18n) crate contains helpers to make working with translations in your application easier.
+
+You can find an example [here](https://github.com/dioxus-community/dioxus-i18n/blob/main/examples/dioxus-desktop.rs).
+# Tailwind
+
+You can style your Dioxus application with whatever CSS framework you choose, or just write vanilla CSS.
+
+One popular option for styling your Dioxus application is [Tailwind](https://tailwindcss.com/). Tailwind allows you to style your elements with CSS utility classes. This guide will show you how to setup Tailwind CSS with your Dioxus application.
+
+## Setup
+
+1. Install the Dioxus CLI:
+
+````bash
+cargo install dioxus-cli
+````
+
+2. Install NPM: [https://docs.npmjs.com/downloading-and-installing-node-js-and-npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+
+2. Install the Tailwind CSS CLI: [https://tailwindcss.com/docs/installation/tailwind-cli](https://tailwindcss.com/docs/installation/tailwind-cli)
+
+2. Create a `input.css` file in the root of your project with the following content:
+
+````css
+@import "tailwindcss";
+@source "./src/**/*.{rs,html,css}";
+````
+
+5. Create a link to the `tailwind.css` file using manganis somewhere in your rust code:
+
+````rs@tailwind.rs
+use dioxus::prelude::*;
+
+#[component]
+fn app() -> Element {
+    rsx! {
+        // The Stylesheet component inserts a style link into the head of the document
+        document::Stylesheet {
+            // Urls are relative to your Cargo.toml file
+            href: asset!("/assets/tailwind.css")
+        }
+    }
+}
+
+````
+
+### Bonus Steps
+
+1. Install the Tailwind CSS VSCode extension
+1. Go to the settings for the extension and find the experimental regex support section. Edit the setting.json file to look like this:
+
+````json
+"tailwindCSS.experimental.classRegex": ["class: \"(.*)\""],
+"tailwindCSS.includeLanguages": {
+    "rust": "html"
+},
+````
+
+## Development
+
+* Run the following command in the root of the project to start the Tailwind CSS compiler:
+
+````bash
+npx @tailwindcss/cli -i ./input.css -o ./assets/tailwind.css --watch
+````
+
+### Web
+
+* Run the following command in the root of the project to start the Dioxus dev server:
+
+````bash
+dx serve
+````
+
+* Open the browser to [http://localhost:8080](http://localhost:8080).
+
+### Desktop
+
+* Launch the Dioxus desktop app:
+
+````bash
+dx serve --desktop
+````
+
+# Custom Renderer
+
+Dioxus is an incredibly portable framework for UI development. The lessons, knowledge, hooks, and components you acquire over time can always be used for future projects. However, sometimes those projects cannot leverage a supported renderer or you need to implement your own better renderer.
+
+Great news: the design of the renderer is entirely up to you! We provide suggestions and inspiration with the 1st party renderers, but only really require processing `Mutations` and sending `UserEvents`.
+
+## The specifics:
+
+Implementing the renderer is fairly straightforward. The renderer needs to:
+
+1. Handle the stream of edits generated by updates to the virtual DOM
+1. Register listeners and pass events into the virtual DOM's event system
+
+Essentially, your renderer needs to process edits and generate events to update the VirtualDOM. From there, you'll have everything needed to render the VirtualDOM to the screen.
+
+Internally, Dioxus handles the tree relationship, diffing, memory management, and the event system, leaving as little as possible required for renderers to implement themselves.
+
+For reference, check out the [javascript interpreter](https://github.com/DioxusLabs/dioxus/tree/v0.5/packages/interpreter) or [tui renderer](https://github.com/DioxusLabs/blitz/tree/master/packages/dioxus-tui) as a starting point for your custom renderer.
+
+## Templates
+
+Dioxus is built around the concept of [Templates](https://docs.rs/dioxus-core/latest/dioxus_core/prelude/struct.Template.html). Templates describe a UI tree known at compile time with dynamic parts filled at runtime. This is useful internally to make skip diffing static nodes, but it is also useful for the renderer to reuse parts of the UI tree. This can be useful for things like a list of items. Each item could contain some static parts and some dynamic parts. The renderer can use the template to create a static part of the UI once, clone it for each element in the list, and then fill in the dynamic parts.
+
+## Mutations
+
+The `Mutation` type is a serialized enum that represents an operation that should be applied to update the UI. The variants roughly follow this set:
+
+````rust
+enum Mutation {
+	AppendChildren,
+	AssignId,
+	CreatePlaceholder,
+	CreateTextNode,
+	HydrateText,
+	LoadTemplate,
+	ReplaceWith,
+	ReplacePlaceholder,
+	InsertAfter,
+	InsertBefore,
+	SetAttribute,
+	SetText,
+	NewEventListener,
+	RemoveEventListener,
+	Remove,
+	PushRoot,
+}
+````
+
+The Dioxus diffing mechanism operates as a [stack machine](https://en.wikipedia.org/wiki/Stack_machine) where the [LoadTemplate](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.LoadTemplate), [CreatePlaceholder](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.CreatePlaceholder), and [CreateTextNode](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.CreateTextNode) mutations pushes a new "real" DOM node onto the stack and [AppendChildren](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.AppendChildren), [InsertAfter](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.InsertAfter), [InsertBefore](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.InsertBefore), [ReplacePlaceholder](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.ReplacePlaceholder), and [ReplaceWith](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.ReplaceWith) all remove nodes from the stack.
+
+## Node storage
+
+Dioxus saves and loads elements with IDs. Inside the VirtualDOM, this is just tracked as as a u64.
+
+Whenever a `CreateElement` edit is generated during diffing, Dioxus increments its node counter and assigns that new element its current NodeCount. The RealDom is responsible for remembering this ID and pushing the correct node when id is used in a mutation. Dioxus reclaims the IDs of elements when removed. To stay in sync with Dioxus you can use a sparse Vec (Vec\<Option<T>\>) with possibly unoccupied items. You can use the ids as indexes into the Vec for elements, and grow the Vec when an id does not exist.
+
+### An Example
+
+For the sake of understanding, let's consider this example – a very simple UI declaration:
+
+````rust
+rsx! {
+	h1 { "count: {x}" }
+}
+````
+
+#### Building Templates
+
+The above rsx will create a template that contains one static h1 tag and a placeholder for a dynamic text node. The template contains the static parts of the UI, and ids for the dynamic parts along with the paths to access them.
+
+The template will look something like this:
+
+````rust
+Template {
+	// Some id that is unique for the entire project
+	name: "main.rs:1:1:0",
+	// The root nodes of the template
+	roots: &[
+		TemplateNode::Element {
+			tag: "h1",
+			namespace: None,
+			attrs: &[],
+			children: &[
+				TemplateNode::DynamicText {
+					id: 0
+				},
+			],
+		}
+	],
+	// the path to each of the dynamic nodes
+	node_paths: &[
+		// the path to dynamic node with a id of 0
+		&[
+			// on the first root node
+			0,
+			// the first child of the root node
+			0,
+		]
+	],
+	// the path to each of the dynamic attributes
+	attr_paths: &'a [&'a [u8]],
+}
+````
+
+ > 
+ > For more detailed docs about the structure of templates see the [Template api docs](https://docs.rs/dioxus-core/latest/dioxus_core/prelude/struct.Template.html)
+
+This template will be sent to the renderer in the [list of templates](https://docs.rs/dioxus-core/latest/dioxus_core/struct.Mutations.html#structfield.templates) supplied with the mutations the first time it is used. Any time the renderer encounters a [LoadTemplate](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.LoadTemplate) mutation after this, it should clone the template and store it in the given id.
+
+For dynamic nodes and dynamic text nodes, a placeholder node should be created and inserted into the UI so that the node can be modified later.
+
+In HTML renderers, this template could look like this:
+
+````html
+<h1>""</h1>
+````
+
+#### Applying Mutations
+
+After the renderer has created all of the new templates, it can begin to process the mutations.
+
+When the renderer starts, it should contain the Root node on the stack and store the Root node with an id of 0. The Root node is the top-level node of the UI. In HTML, this is the `<div id="main">` element.
+
+````rust
+instructions: []
+stack: [
+	RootNode,
+]
+nodes: [
+	RootNode,
+]
+````
+
+The first mutation is a `LoadTemplate` mutation. This tells the renderer to load a root from the template with the given id. The renderer will then push the root node of the template onto the stack and store it with an id for later. In this case, the root node is an h1 element.
+
+````rust
+instructions: [
+	LoadTemplate {
+		// the id of the template
+		name: "main.rs:1:1:0",
+		// the index of the root node in the template
+		index: 0,
+		// the id to store
+		id: ElementId(1),
+	}
+]
+stack: [
+	RootNode,
+	<h1>""</h1>,
+]
+nodes: [
+	RootNode,
+	<h1>""</h1>,
+]
+````
+
+Next, Dioxus will create the dynamic text node. The diff algorithm decides that this node needs to be created, so Dioxus will generate the Mutation `HydrateText`. When the renderer receives this instruction, it will navigate to the placeholder text node in the template and replace it with the new text.
+
+````rust
+instructions: [
+	LoadTemplate {
+		name: "main.rs:1:1:0",
+		index: 0,
+		id: ElementId(1),
+	},
+	HydrateText {
+		// the id to store the text node
+		id: ElementId(2),
+		// the text to set
+		text: "count: 0",
+	}
+]
+stack: [
+	RootNode,
+	<h1>"count: 0"</h1>,
+]
+nodes: [
+	RootNode,
+	<h1>"count: 0"</h1>,
+	"count: 0",
+]
+````
+
+Remember, the h1 node is not attached to anything (it is unmounted) so Dioxus needs to generate an Edit that connects the h1 node to the Root. It depends on the situation, but in this case, we use `AppendChildren`. This pops the text node off the stack, leaving the Root element as the next element on the stack.
+
+````rust
+instructions: [
+	LoadTemplate {
+		name: "main.rs:1:1:0",
+		index: 0,
+		id: ElementId(1),
+	},
+	HydrateText {
+		id: ElementId(2),
+		text: "count: 0",
+	},
+	AppendChildren {
+		// the id of the parent node
+		id: ElementId(0),
+		// the number of nodes to pop off the stack and append
+		m: 1
+	}
+]
+stack: [
+	RootNode,
+]
+nodes: [
+	RootNode,
+	<h1>"count: 0"</h1>,
+	"count: 0",
+]
+````
+
+Over time, our stack looked like this:
+
+````rust
+[Root]
+[Root, <h1>""</h1>]
+[Root, <h1>"count: 0"</h1>]
+[Root]
+````
+
+Conveniently, this approach completely separates the Virtual DOM and the Real DOM. Additionally, these edits are serializable, meaning we can even manage UIs across a network connection. This little stack machine and serialized edits make Dioxus independent of platform specifics.
+
+Dioxus is also really fast. Because Dioxus splits the diff and patch phase, it's able to make all the edits to the RealDOM in a very short amount of time (less than a single frame) making rendering very snappy. It also allows Dioxus to cancel large diffing operations if higher priority work comes in while it's diffing.
+
+This little demo serves to show exactly how a Renderer would need to process a mutation stream to build UIs.
+
+## Event loop
+
+Like most GUIs, Dioxus relies on an event loop to progress the VirtualDOM. The VirtualDOM itself can produce events as well, so it's important for your custom renderer can handle those too.
+
+The code for the WebSys implementation is straightforward, so we'll add it here to demonstrate how simple an event loop is:
+
+````rust, ignore
+pub async fn run(&mut self) -> dioxus_core::error::Result<()> {
+	// Push the body element onto the WebsysDom's stack machine
+	let mut websys_dom = crate::new::WebsysDom::new(prepare_websys_dom());
+	websys_dom.stack.push(root_node);
+
+	// Rebuild or hydrate the virtualdom
+	let mutations = self.internal_dom.rebuild();
+	websys_dom.apply_mutations(mutations);
+
+	// Wait for updates from the real dom and progress the virtual dom
+	loop {
+		let user_input_future = websys_dom.wait_for_event();
+		let internal_event_future = self.internal_dom.wait_for_work();
+
+		match select(user_input_future, internal_event_future).await {
+			Either::Left((_, _)) => {
+				let mutations = self.internal_dom.work_with_deadline(|| false);
+				websys_dom.apply_mutations(mutations);
+			},
+			Either::Right((event, _)) => websys_dom.handle_event(event),
+		}
+
+		// render
+	}
+}
+````
+
+It's important to decode what the real events are for your event system into Dioxus' synthetic event system (synthetic meaning abstracted). This simply means matching your event type and creating a Dioxus `UserEvent` type. Right now, the virtual event system is modeled almost entirely around the HTML spec, but we are interested in slimming it down.
+
+````rust, ignore
+fn virtual_event_from_websys_event(event: &web_sys::Event) -> VirtualEvent {
+	match event.type_().as_str() {
+		"keydown" => {
+			let event: web_sys::KeyboardEvent = event.clone().dyn_into().unwrap();
+			UserEvent::KeyboardEvent(UserEvent {
+				scope_id: None,
+				priority: EventPriority::Medium,
+				name: "keydown",
+				// This should be whatever element is focused
+				element: Some(ElementId(0)),
+				data: Arc::new(KeyboardData{
+					char_code: event.char_code(),
+					key: event.key(),
+					key_code: event.key_code(),
+					alt_key: event.alt_key(),
+					ctrl_key: event.ctrl_key(),
+					meta_key: event.meta_key(),
+					shift_key: event.shift_key(),
+					location: event.location(),
+					repeat: event.repeat(),
+					which: event.which(),
+				})
+			})
+		}
+		_ => todo!()
+	}
+}
+````
+
+## Custom raw elements
+
+If you need to go as far as relying on custom elements/attributes for your renderer – you totally can. This still enables you to use Dioxus' reactive nature, component system, shared state, and other features, but will ultimately generate different nodes. All attributes and listeners for the HTML and SVG namespace are shuttled through helper structs that essentially compile away. You can drop in your elements any time you want, with little hassle. However, you must be sure your renderer can handle the new namespace.
+
+For more examples and information on how to create custom namespaces, see the [`dioxus_html` crate](https://github.com/DioxusLabs/dioxus/blob/main/packages/html/README.md#how-to-extend-it).
+
+## Conclusion
+
+That should be it! You should have nearly all the knowledge required on how to implement your renderer. We're super interested in seeing Dioxus apps brought to custom desktop renderers, mobile renderers, video game UI, and even augmented reality! If you're interested in contributing to any of these projects, don't be afraid to reach out or join the [community](https://discord.gg/XgGxMSkvUM).

@@ -22,6 +22,7 @@ pub(crate) fn Learn() -> Element {
     let current_version = use_current_docs_version();
 
     rsx! {
+        Stylesheet { href: asset!("/assets/githubmarkdown.css") }
         div { class: "w-full text-sm border-b dark:border-[#a4a9ac7d] border-gray-300",
             div { class: "flex flex-row justify-between dark:text-[#dee2e6] font-light max-w-screen-2xl gap-8 mx-auto px-4 sm:px-6 md:px-8",
                 match current_version {

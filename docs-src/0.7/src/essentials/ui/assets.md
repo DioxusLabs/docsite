@@ -53,7 +53,7 @@ You can include stylesheets in your application using the `asset!` macro. Styles
 
 SCSS is also supported through the `asset!` macro. Include it the same way as a regular CSS file.
 
-You can read more about assets and all the options available to optimize your assets in the [manganis documentation](https://docs.rs/manganis/latest/manganis).
+You can read more about assets and all the options available to optimize your assets in the [manganis documentation](https://docs.rs/manganis/~0.7/manganis).
 
 ## Including arbitrary files
 
@@ -156,7 +156,7 @@ Note that we need to format the `Asset` returned by the `asset!()` macro here be
 
 When you use an asset in an element like the `img` tag, the browser automatically fetches the asset for you. However, sometimes you might want to read the contents of an asset directly in your application code. For example, you might want to read a JSON file and parse it into a data structure.
 
-To read assets at runtime, you can use the [`read_asset_bytes`](https://docs.rs/dioxus-asset-resolver/latest/dioxus_asset_resolver/fn.read_asset_bytes.html) from the [`asset_resolver`](https://docs.rs/dioxus-asset-resolver/latest/dioxus_asset_resolver/) module. This will either fetch the asset from the network (for the web target) or read it from the bundle (for native targets):
+To read assets at runtime, you can use the [`read_asset_bytes`](https://docs.rs/dioxus-asset-resolver/~0.7/dioxus_asset_resolver/fn.read_asset_bytes.html) from the [`asset_resolver`](https://docs.rs/dioxus-asset-resolver/~0.7/dioxus_asset_resolver/) module. This will either fetch the asset from the network (for the web target) or read it from the bundle (for native targets):
 
 ```rust
 {{#include ../docs-router/src/doc_examples/assets.rs:read_assets}}

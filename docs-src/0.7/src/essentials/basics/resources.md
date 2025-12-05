@@ -84,7 +84,7 @@ Manually handling edge cases of data loading can be tedious, so we've built a mo
 
 ## Asynchronous State with `use_resource`
 
-The [`use_resource`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_resource.html) hook can be used to *derive* asynchronous state. This function accepts an async closure that returns a Future. As the future is polled, `use_resource` tracks `.read()` calls of any contained Signals. If another action calls `.write()` on the tracked signals, the `use_resource` immediately restarts.
+The [`use_resource`](https://docs.rs/dioxus-hooks/~0.7/dioxus_hooks/fn.use_resource.html) hook can be used to *derive* asynchronous state. This function accepts an async closure that returns a Future. As the future is polled, `use_resource` tracks `.read()` calls of any contained Signals. If another action calls `.write()` on the tracked signals, the `use_resource` immediately restarts.
 
 ```rust
 {{#include ../docs-router/src/doc_examples/asynchronous.rs:use_resource}}

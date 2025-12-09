@@ -59,7 +59,7 @@ fn Demo() -> Element {
 }
 ```
 
-When assigning values to a `.write()` call, note that we use the [*dereference operator*](https://doc.rust-lang.org/std/ops/trait.DerefMut.html) which let's us write a value directly into the mutable reference.
+When assigning values to a `.write()` call, note that we use the [*dereference operator*](https://doc.rust-lang.org/std/ops/trait.DerefMut.html) which lets us write a value directly into the mutable reference.
 
 ## Ergonomic Methods on Signals
 
@@ -128,7 +128,7 @@ Dioxus provides two variations of the base Signal type: `ReadSignal` and `WriteS
 - **`ReadSignal`**: a read-only version of the base Signal type
 - **`WriteSignal`**: a read-write version of the base Signal type, equivalent to `Signal` itself
 
-`ReadSignals` are reactive values that are implement the `Readable` trait. `WriteSignals` are reactive values that implement the `Writable` trait.
+`ReadSignals` are reactive values that implement the `Readable` trait. `WriteSignals` are reactive values that implement the `Writable` trait.
 
 These two variations are useful when writing components that need to be generic over their input types. If a component only needs the `.read()` method and its extensions, then it can specify a `ReadSignal` as an argument.
 

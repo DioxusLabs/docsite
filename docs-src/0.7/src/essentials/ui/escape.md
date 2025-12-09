@@ -127,7 +127,7 @@ fn app() -> Element {
 }
 ```
 
-For a typed macro wrapper around `eval` that also integrates with the asset system, checkout [dioxus-use-js](https://github.com/mcmah309/dioxus-use-js).
+For a typed macro wrapper around `eval` that also integrates with the asset system, check out [dioxus-use-js](https://github.com/mcmah309/dioxus-use-js).
 
 ### Using `web-sys` and Event Downcasting
 

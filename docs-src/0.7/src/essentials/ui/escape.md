@@ -127,6 +127,8 @@ fn app() -> Element {
 }
 ```
 
+For a typed macro wrapper around `eval` that also integrates with the asset system, checkout [dioxus-use-js](https://github.com/mcmah309/dioxus-use-js).
+
 ### Using `web-sys` and Event Downcasting
 
 On the web, it's possible to use the [`web-sys`](https://docs.rs/web-sys/latest/web_sys/) crate to directly call JavaScript methods from Rust. This uses foreign-function-interfaces to bridge the gap between Rust and JavaScript. We don't necessarily suggest using web-sys in *all* cases since web-sys is currently not portable to the Dioxus Desktop and Mobile renderers.

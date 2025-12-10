@@ -48,7 +48,7 @@ The full list of event listeners is available in the [MDN docs](https://develope
 
 ## The Event Object
 
-Event handlers receive an [`Event`](https://docs.rs/dioxus-core/latest/dioxus_core/struct.Event.html) object containing information about the event. Different types of events contain different types of data. For example, mouse-related events contain [`MouseData`](https://docs.rs/dioxus/latest/dioxus/events/struct.MouseData.html), which provides details like the mouse position and which mouse buttons were pressed.
+Event handlers receive an [`Event`](https://docs.rs/dioxus-core/~0.7/dioxus_core/struct.Event.html) object containing information about the event. Different types of events contain different types of data. For example, mouse-related events contain [`MouseData`](https://docs.rs/dioxus/~0.7/dioxus/events/struct.MouseData.html), which provides details like the mouse position and which mouse buttons were pressed.
 
 The event object is the first argument in the event handler callback:
 
@@ -69,7 +69,7 @@ Clicked! Event: UiEvent { bubble_state: Cell { value: true }, data: MouseData { 
 Clicked! Event: UiEvent { bubble_state: Cell { value: true }, data: MouseData { coordinates: Coordinates { screen: (242.0, 256.0), client: (26.0, 17.0), element: (16.0, 7.0), page: (26.0, 17.0) }, modifiers: (empty), held_buttons: EnumSet(), trigger_button: Some(Primary) } }
 ```
 
-> To learn what the different event types for HTML provide, read the [events module docs](https://docs.rs/dioxus-html/latest/dioxus_html/events/index.html).
+> To learn what the different event types for HTML provide, read the [events module docs](https://docs.rs/dioxus-html/~0.7/dioxus_html/events/index.html).
 
 ## Handling Common Events
 

@@ -29,7 +29,7 @@ That's it! Now your users will be redirected to the blog.
 Well done! You've completed the Dioxus Router guide. You've built a small
 application and learned about the many things you can do with Dioxus Router.
 To continue your journey, you attempt a challenge listed below, look at the [router examples](https://github.com/DioxusLabs/dioxus/tree/main/packages/router/examples), or
-the [API reference](https://docs.rs/dioxus-router/).
+the [API reference](https://docs.rs/dioxus-router/~0.7).
 
 ### Challenges
 

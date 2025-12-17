@@ -28,7 +28,7 @@ In addition to components, you can throw errors from event handlers. If you thro
 
 ## Adding context to errors
 
-You can add additional context to your errors with the [`Context`](https://docs.rs/dioxus/0.6/dioxus/prelude/trait.Context.html) trait. Calling `context` on a `Result` will add the context to the error variant of the `Result`:
+You can add additional context to your errors with the [`Context`](https://docs.rs/dioxus/~0.6/dioxus/prelude/trait.Context.html) trait. Calling `context` on a `Result` will add the context to the error variant of the `Result`:
 
 ```rust, no_run
 {{#include ../docs-router/src/doc_examples/untested_06/error_handling.rs:add_context}}

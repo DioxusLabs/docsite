@@ -40,7 +40,7 @@ On web, Dioxus Logger will use [tracing-wasm](https://crates.io/crates/tracing-w
 #### Final Notes
 Dioxus Logger is the preferred logger to use with Dioxus if it suites your needs. There are more features to come and Dioxus Logger is planned to become an integral part of Dioxus. If there are any feature suggestions or issues with Dioxus Logger, feel free to reach out on the [Dioxus Discord Server](https://discord.gg/XgGxMSkvUM)!
 
-For more information, visit Dioxus Logger's [docs](https://docs.rs/dioxus-logger/latest/dioxus_logger/).
+For more information, visit Dioxus Logger's [docs](https://docs.rs/dioxus-logger/~0.5/dioxus_logger/).
 
 ## Desktop and Server
 For Dioxus' desktop and server targets, you can generally use the logger of your choice.

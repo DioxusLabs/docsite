@@ -77,7 +77,7 @@ DemoFrame {
 }
 ```
 
-> Note: All attributes defined in [`dioxus-html`](https://docs.rs/dioxus-html/latest/dioxus_html/) follow the snake_case naming convention. They transform their `snake_case` names to HTML's `camelCase` attributes.
+> Note: All attributes defined in [`dioxus-html`](https://docs.rs/dioxus-html/~0.4/dioxus_html/) follow the snake_case naming convention. They transform their `snake_case` names to HTML's `camelCase` attributes.
 
 > Note: Styles can be used directly outside of the `style:` attribute. In the above example, `color: "red"` is turned into `style="color: red"`.
 

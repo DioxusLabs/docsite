@@ -14,7 +14,7 @@ Before we get too far, let's split our app into two parts: the `Title` and the `
 
 In the `DogView` component, we want to attach an action to the click of the buttons. For example: skipping or saving the current dog photo. We can use an [EventHandler](../essentials/basics/event_handlers.md) to listen for the `click` events.
 
-Event handlers are similar to regular attributes, but their name usually starts with `on` - and they accept closures as values. The closure will be called whenever its corresponding event is triggered. The listener receives information about the event from the [Event](https://docs.rs/dioxus/latest/dioxus/prelude/struct.Event.html) object.
+Event handlers are similar to regular attributes, but their name usually starts with `on` - and they accept closures as values. The closure will be called whenever its corresponding event is triggered. The listener receives information about the event from the [Event](https://docs.rs/dioxus/~0.7/dioxus/prelude/struct.Event.html) object.
 
 We'll add some closures inline and then pass them to the `onclick` attribute for both the *skip* and *save* buttons:
 

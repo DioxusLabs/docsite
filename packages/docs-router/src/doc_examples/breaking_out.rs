@@ -2,6 +2,8 @@ use dioxus::prelude::*;
 pub use downcast::Downcast;
 pub use eval::Eval;
 pub use onmounted_::OnMounted;
+// TODO: Uncomment when onunmounted lands (PR #5113)
+// pub use onunmounted_::OnUnmounted;
 pub use use_effect::Canvas;
 pub use web_sys::WebSys;
 
@@ -143,3 +145,38 @@ mod onmounted_ {
     }
     // ANCHOR_END: onmounted
 }
+
+// TODO: Uncomment when onunmounted lands (PR #5113)
+// mod onunmounted_ {
+//     use super::*;
+//
+//     // ANCHOR: onunmounted
+//     pub fn OnUnmounted() -> Element {
+//         let mut show = use_signal(|| true);
+//         let mut status = use_signal(|| String::from("Element is mounted"));
+//
+//         rsx! {
+//             div {
+//                 button {
+//                     onclick: move |_| show.toggle(),
+//                     if show() { "Hide element" } else { "Show element" }
+//                 }
+//                 if show() {
+//                     div {
+//                         style: "width: 100px; height: 100px; background-color: #3b82f6; margin: 10px 0;",
+//                         // The onmounted event fires when the element is added to the DOM
+//                         onmounted: move |_| {
+//                             status.set(String::from("Element was mounted"));
+//                         },
+//                         // The onunmounted event fires when the element is removed from the DOM
+//                         onunmounted: move |_| {
+//                             status.set(String::from("Element was unmounted"));
+//                         },
+//                     }
+//                 }
+//                 div { "{status}" }
+//             }
+//         }
+//     }
+//     // ANCHOR_END: onunmounted
+// }

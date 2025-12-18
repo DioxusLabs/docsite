@@ -62,3 +62,24 @@ DemoFrame {
     component_lifecycle::DropDemo {}
 }
 ```
+
+## Cleaning Up Elements with `onunmounted`
+
+> **Note:** This feature is coming soon in a future Dioxus release. See [PR #5113](https://github.com/DioxusLabs/dioxus/pull/5113) for progress.
+
+While `use_drop` fires when an entire component is dropped, sometimes you need to know when a specific element within a component is removed from the DOM. For this, you can use the `onunmounted` event.
+
+This is particularly useful when you have conditional elements or lists where individual items can be added or removed while the parent component remains mounted:
+
+```rust, no_run
+div {
+    onmounted: move |_| {
+        // Register the element with some external system
+    },
+    onunmounted: move |_| {
+        // Clean up when the element is removed
+    },
+}
+```
+
+See the [Breaking Out of Dioxus](./breaking_out.md#cleaning-up-when-elements-are-removed-with-onunmounted) chapter for a complete example.

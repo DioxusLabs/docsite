@@ -61,6 +61,47 @@ DemoFrame {
 }
 ```
 
+## Cleaning up when elements are removed with `onunmounted`
+
+> **Note:** This feature is coming soon in a future Dioxus release. See [PR #5113](https://github.com/DioxusLabs/dioxus/pull/5113) for progress.
+
+The `onunmounted` event is the counterpart to `onmounted`. It fires after an element is removed from the DOM, allowing you to clean up any resources associated with that element.
+
+This is particularly useful for:
+- Animation engines that need to deregister elements
+- State tracking systems that need to clean up when elements disappear
+- Releasing resources tied to specific DOM elements
+
+Unlike `use_drop`, which fires when an entire component unmounts, `onunmounted` fires at the element level. This means you can track when individual elements within a component are removed, even if the parent component remains mounted.
+
+```rust, no_run
+fn ToggleElement() -> Element {
+    let mut show = use_signal(|| true);
+    let mut status = use_signal(|| String::from("Element is mounted"));
+
+    rsx! {
+        div {
+            button {
+                onclick: move |_| show.toggle(),
+                if show() { "Hide element" } else { "Show element" }
+            }
+            if show() {
+                div {
+                    style: "width: 100px; height: 100px; background-color: #3b82f6;",
+                    onmounted: move |_| {
+                        status.set(String::from("Element was mounted"));
+                    },
+                    onunmounted: move |_| {
+                        status.set(String::from("Element was unmounted"));
+                    },
+                }
+            }
+            div { "{status}" }
+        }
+    }
+}
+```
+
 ## Down casting web sys events
 
 Dioxus provides platform agnostic wrappers over each event type. These wrappers are often nicer to interact with than the raw event types, but they can be more limited. If you are targeting web, you can downcast the event with the `as_web_event` method to get the underlying web-sys event:

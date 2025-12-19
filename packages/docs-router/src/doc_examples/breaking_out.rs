@@ -2,6 +2,7 @@ use dioxus::prelude::*;
 pub use downcast::Downcast;
 pub use eval::Eval;
 pub use onmounted_::OnMounted;
+pub use onmounted_cleanup::OnMountedWithCleanup;
 pub use use_effect::Canvas;
 pub use web_sys::WebSys;
 
@@ -142,4 +143,45 @@ mod onmounted_ {
         }
     }
     // ANCHOR_END: onmounted
+}
+
+mod onmounted_cleanup {
+    use super::*;
+
+    // ANCHOR: onmounted_cleanup
+    pub fn OnMountedWithCleanup() -> Element {
+        let mut show_element = use_signal(|| true);
+        let mut status = use_signal(|| "Element not mounted yet".to_string());
+
+        rsx! {
+            div {
+                button {
+                    onclick: move |_| show_element.toggle(),
+                    if show_element() { "Remove Element" } else { "Add Element" }
+                }
+                div { "Status: {status}" }
+                if show_element() {
+                    div {
+                        class: "p-4 bg-blue-100 rounded mt-2",
+                        onmounted: move |e| {
+                            let el = e.data();
+                            start_animation(el.clone(), status);
+                            // Return a cleanup closure that runs when the element is removed
+                            move || stop_animation(el, status)
+                        },
+                        "Animated element"
+                    }
+                }
+            }
+        }
+    }
+
+    fn start_animation(_el: std::rc::Rc<MountedData>, mut status: Signal<String>) {
+        status.set("Animation started".to_string());
+    }
+
+    fn stop_animation(_el: std::rc::Rc<MountedData>, mut status: Signal<String>) {
+        status.set("Animation stopped (cleanup ran)".to_string());
+    }
+    // ANCHOR_END: onmounted_cleanup
 }

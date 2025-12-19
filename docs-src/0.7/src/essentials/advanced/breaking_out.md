@@ -61,6 +61,27 @@ DemoFrame {
 }
 ```
 
+### Returning a Cleanup Closure
+
+You can return a cleanup closure from your `onmounted` handler. This closure runs when the element is removed from the DOM, allowing you to clean up resources like animations, event listeners, or observers:
+
+```rust, no_run
+{{#include ../docs-router/src/doc_examples/breaking_out.rs:onmounted_cleanup}}
+```
+```inject-dioxus
+DemoFrame {
+    breaking_out::OnMountedWithCleanup {}
+}
+```
+
+This pattern is useful when you need to:
+- Stop animations running on an element
+- Remove event listeners added to the window or document
+- Clear intervals or timeouts
+- Disconnect observers (ResizeObserver, IntersectionObserver, etc.)
+
+> The cleanup runs before the element is removed, so you still have access to the DOM state if needed.
+
 ## Down casting web sys events
 
 Dioxus provides platform agnostic wrappers over each event type. These wrappers are often nicer to interact with than the raw event types, but they can be more limited. If you are targeting web, you can downcast the event with the `as_web_event` method to get the underlying web-sys event:

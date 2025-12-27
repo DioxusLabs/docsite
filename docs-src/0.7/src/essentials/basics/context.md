@@ -93,7 +93,7 @@ use_context_provider(|| Subtitle("Hello world!".to_string()));
 To consume the context, we pass in the appropriate struct type:
 ```rust
 let title = use_context::<Title>();
-let title = use_context::<Subtitle>();
+let subtitle = use_context::<Subtitle>();
 ```
 
 In practice, you don't need to wrap *every* field of your state in a newtype, usually just one struct to encapsulate a set of data is enough.

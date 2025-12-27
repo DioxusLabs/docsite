@@ -1,0 +1,225 @@
+<SYSTEM>This is the developer documentation for Dioxus from /learn/0.5/router/reference/layouts.</SYSTEM>
+# Layouts
+
+Layouts allow you to wrap all child routes in a component. This can be useful when creating something like a header that will be used in many different routes.
+
+[`Outlet`] tells the router where to render content in layouts. In the following example,
+the Index will be rendered within the [`Outlet`].
+
+This page is built with Dioxus. It uses Layouts in several different places. Here is an outline of how layouts are used on the current page:
+
+````inject-dioxus
+LayoutsExplanation {}
+````
+
+Here is a more complete example of a layout wrapping the body of a page.
+
+````rs@outlet.rs
+#[derive(Routable, Clone)]
+#[rustfmt::skip]
+enum Route {
+    #[layout(Wrapper)]
+        #[route("/")]
+        Index {},
+}
+
+#[component]
+fn Wrapper() -> Element {
+    rsx! {
+        header { "header" }
+        // The index route will be rendered here
+        Outlet::<Route> {}
+        footer { "footer" }
+    }
+}
+
+#[component]
+fn Index() -> Element {
+    rsx! { h1 { "Index" } }
+}
+````
+
+The example above will output the following HTML (line breaks added for
+readability):
+
+````html
+<header>header</header>
+<h1>Index</h1>
+<footer>footer</footer>
+````
+
+## Layouts with dynamic segments
+
+You can combine layouts with [nested routes](./routes/nested.md) to create dynamic layouts with content that changes based on the current route.
+
+Just like routes, layouts components must accept a prop for each dynamic segment in the route. For example, if you have a route with a dynamic segment like `/:name`, your layout component must accept a `name` prop:
+
+````rs@outlet.rs
+#[derive(Routable, Clone)]
+#[rustfmt::skip]
+enum Route {
+    #[nest("/:name")]
+        #[layout(Wrapper)]
+            #[route("/")]
+            Index {
+                name: String,
+            },
+}
+
+#[component]
+fn Wrapper(name: String) -> Element {
+    rsx! {
+        header { "Welcome {name}!" }
+        // The index route will be rendered here
+        Outlet::<Route> {}
+        footer { "footer" }
+    }
+}
+
+#[component]
+fn Index(name: String) -> Element {
+    rsx! { h1 { "This is a homepage for {name}" } }
+}
+````
+
+Or to get the full route, you can use the `use_route` hook.
+
+````rs@outlet.rs
+#[derive(Routable, Clone)]
+#[rustfmt::skip]
+enum Route {
+    #[layout(Wrapper)]
+        #[route("/:name")]
+        Index {
+            name: String,
+        },
+}
+
+#[component]
+fn Wrapper() -> Element {
+    let full_route = use_route::<Route>();
+    rsx! {
+        header { "Welcome to {full_route}!" }
+        // The index route will be rendered here
+        Outlet::<Route> {}
+        footer { "footer" }
+    }
+}
+
+#[component]
+fn Index(name: String) -> Element {
+    rsx! { h1 { "This is a homepage for {name}" } }
+}
+````
+# Layouts
+
+Layouts allow you to wrap all child routes in a component. This can be useful when creating something like a header that will be used in many different routes.
+
+[`Outlet`] tells the router where to render content in layouts. In the following example,
+the Index will be rendered within the [`Outlet`].
+
+This page is built with Dioxus. It uses Layouts in several different places. Here is an outline of how layouts are used on the current page:
+
+````inject-dioxus
+LayoutsExplanation {}
+````
+
+Here is a more complete example of a layout wrapping the body of a page.
+
+````rs@outlet.rs
+#[derive(Routable, Clone)]
+#[rustfmt::skip]
+enum Route {
+    #[layout(Wrapper)]
+        #[route("/")]
+        Index {},
+}
+
+#[component]
+fn Wrapper() -> Element {
+    rsx! {
+        header { "header" }
+        // The index route will be rendered here
+        Outlet::<Route> {}
+        footer { "footer" }
+    }
+}
+
+#[component]
+fn Index() -> Element {
+    rsx! { h1 { "Index" } }
+}
+````
+
+The example above will output the following HTML (line breaks added for
+readability):
+
+````html
+<header>header</header>
+<h1>Index</h1>
+<footer>footer</footer>
+````
+
+## Layouts with dynamic segments
+
+You can combine layouts with [nested routes](./routes/nested.md) to create dynamic layouts with content that changes based on the current route.
+
+Just like routes, layouts components must accept a prop for each dynamic segment in the route. For example, if you have a route with a dynamic segment like `/:name`, your layout component must accept a `name` prop:
+
+````rs@outlet.rs
+#[derive(Routable, Clone)]
+#[rustfmt::skip]
+enum Route {
+    #[nest("/:name")]
+        #[layout(Wrapper)]
+            #[route("/")]
+            Index {
+                name: String,
+            },
+}
+
+#[component]
+fn Wrapper(name: String) -> Element {
+    rsx! {
+        header { "Welcome {name}!" }
+        // The index route will be rendered here
+        Outlet::<Route> {}
+        footer { "footer" }
+    }
+}
+
+#[component]
+fn Index(name: String) -> Element {
+    rsx! { h1 { "This is a homepage for {name}" } }
+}
+````
+
+Or to get the full route, you can use the `use_route` hook.
+
+````rs@outlet.rs
+#[derive(Routable, Clone)]
+#[rustfmt::skip]
+enum Route {
+    #[layout(Wrapper)]
+        #[route("/:name")]
+        Index {
+            name: String,
+        },
+}
+
+#[component]
+fn Wrapper() -> Element {
+    let full_route = use_route::<Route>();
+    rsx! {
+        header { "Welcome to {full_route}!" }
+        // The index route will be rendered here
+        Outlet::<Route> {}
+        footer { "footer" }
+    }
+}
+
+#[component]
+fn Index(name: String) -> Element {
+    rsx! { h1 { "This is a homepage for {name}" } }
+}
+````

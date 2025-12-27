@@ -1,0 +1,141 @@
+<SYSTEM>This is the developer documentation for Dioxus from /learn/0.6/router/reference/routes/nested.</SYSTEM>
+# Nested Routes
+
+When developing bigger applications we often want to nest routes within each
+other. As an example, we might want to organize a settings menu using this
+pattern:
+
+````plain
+└ Settings
+  ├ General Settings (displayed when opening the settings)
+  ├ Change Password
+  └ Privacy Settings
+````
+
+We might want to map this structure to these paths and components:
+
+````plain
+/settings		  -> Settings { GeneralSettings }
+/settings/password -> Settings { PWSettings }
+/settings/privacy  -> Settings { PrivacySettings }
+````
+
+Nested routes allow us to do this without repeating /settings in every route.
+
+## Nesting
+
+To nest routes, we use the `#[nest("path")]` and `#[end_nest]` attributes.
+
+The path in nest must not:
+
+1. Contain a [Catch All Segment](index.md#catch-all-segments)
+1. Contain a [Query Segment](index.md#query-segments)
+
+If you define a dynamic segment in a nest, it will be available to all child routes and layouts.
+
+To finish a nest, we use the `#[end_nest]` attribute or the end of the enum.
+
+````rs@nest.rs
+#[derive(Routable, Clone)]
+// Skipping formatting allows you to indent nests
+#[rustfmt::skip]
+enum Route {
+    // Start the /blog nest
+    #[nest("/blog")]
+        // You can nest as many times as you want
+        #[nest("/:id")]
+            #[route("/post")]
+            PostId {
+                // You must include parent dynamic segments in child variants
+                id: usize,
+            },
+        // End nests manually with #[end_nest]
+        #[end_nest]
+        #[route("/:id")]
+        // The absolute route of BlogPost is /blog/:name
+        BlogPost {
+            id: usize,
+        },
+    // Or nests are ended automatically at the end of the enum
+}
+
+#[component]
+fn BlogPost(id: usize) -> Element {
+    todo!()
+}
+
+#[component]
+fn PostId(id: usize) -> Element {
+    todo!()
+}
+````
+# Nested Routes
+
+When developing bigger applications we often want to nest routes within each
+other. As an example, we might want to organize a settings menu using this
+pattern:
+
+````plain
+└ Settings
+  ├ General Settings (displayed when opening the settings)
+  ├ Change Password
+  └ Privacy Settings
+````
+
+We might want to map this structure to these paths and components:
+
+````plain
+/settings		  -> Settings { GeneralSettings }
+/settings/password -> Settings { PWSettings }
+/settings/privacy  -> Settings { PrivacySettings }
+````
+
+Nested routes allow us to do this without repeating /settings in every route.
+
+## Nesting
+
+To nest routes, we use the `#[nest("path")]` and `#[end_nest]` attributes.
+
+The path in nest must not:
+
+1. Contain a [Catch All Segment](index.md#catch-all-segments)
+1. Contain a [Query Segment](index.md#query-segments)
+
+If you define a dynamic segment in a nest, it will be available to all child routes and layouts.
+
+To finish a nest, we use the `#[end_nest]` attribute or the end of the enum.
+
+````rs@nest.rs
+#[derive(Routable, Clone)]
+// Skipping formatting allows you to indent nests
+#[rustfmt::skip]
+enum Route {
+    // Start the /blog nest
+    #[nest("/blog")]
+        // You can nest as many times as you want
+        #[nest("/:id")]
+            #[route("/post")]
+            PostId {
+                // You must include parent dynamic segments in child variants
+                id: usize,
+            },
+        // End nests manually with #[end_nest]
+        #[end_nest]
+        #[route("/:id")]
+        // The absolute route of BlogPost is /blog/:name
+        BlogPost {
+            id: usize,
+        },
+    // Or nests are ended automatically at the end of the enum
+}
+
+#[component]
+fn BlogPost(id: usize) -> Element {
+    todo!()
+}
+
+#[component]
+fn PostId(id: usize) -> Element {
+    todo!()
+}
+````

@@ -1,0 +1,506 @@
+<SYSTEM>This is the developer documentation for Dioxus at /learn/0.7/guides/tips/optimizing and all its subroutes.</SYSTEM>
+
+# Optimizing
+
+*Note: This is written primarily for the web, but the main optimizations will work on other platforms too.*
+
+You might have noticed that Dioxus binaries are pretty big.
+The WASM binary of a [TodoMVC app](https://github.com/tigerros/dioxus-todo-app) weighs in at 2.36mb!
+Don't worry; we can get it down to a much more manageable 234kb.
+This will get obviously lower over time.
+With nightly features, you can even reduce the binary size of a hello world app to less than 100kb!
+
+We will also discuss ways to optimize your app for increased speed.
+
+However, certain optimizations will sacrifice speed for decreased binary size or the other way around.
+That's what you need to figure out yourself. Does your app perform performance-intensive tasks, such as graphical processing or tons of DOM manipulations?
+You could go for increased speed. In most cases, though, decreased binary size is the better choice, especially because Dioxus WASM binaries are quite large.
+
+To test binary sizes, we will use [this](https://github.com/tigerros/dioxus-todo-app) repository as a sample app.
+The `no-optimizations` package will serve as the base, which weighs 2.36mb as of right now.
+
+Additional resources:
+
+* [WASM book - Shrinking `.wasm` code size](https://rustwasm.github.io/docs/book/reference/code-size.html)
+* [min-sized-rust](https://github.com/johnthagen/min-sized-rust)
+
+## Building in release mode
+
+This is the best way to optimize. In fact, the 2.36mb figure at the start of the guide is with release mode.
+In debug mode, it's actually a whopping 32mb! It also increases the speed of your app.
+
+We can use the `--release` flag to create an optimized build of our application which will be both faster and smaller:
+
+`dx build --release`
+
+## UPX
+
+If you're not targeting web, you can use the [UPX](https://github.com/upx/upx) CLI tool to compress your executables.
+
+Setup:
+
+* Download a [release](https://github.com/upx/upx/releases) and extract the directory inside to a sensible location.
+* Add the executable located in the directory to your path variable.
+
+You can run `upx --help` to get the CLI options, but you should also view `upx-doc.html` for more detailed information.
+It's included in the extracted directory.
+
+An example command might be: `upx --best -o target/release/compressed.exe target/release/your-executable.exe`.
+
+## Build configuration
+
+*Note: Settings defined in `.cargo/config.toml` will override settings in `Cargo.toml`.*
+
+Other than the `--release` flag, this is the easiest way to optimize your projects, and also the most effective way,
+at least in terms of reducing binary size.
+
+### Stable
+
+This configuration is 100% stable and decreases the binary size from 2.36mb to 310kb.
+Add this to your `.cargo/config.toml`:
+
+````toml
+[profile.release]
+opt-level = "z"
+debug = false
+lto = true
+codegen-units = 1
+panic = "abort"
+incremental = false
+````
+
+Links to the documentation of each value:
+
+* [`opt-level`](https://doc.rust-lang.org/rustc/codegen-options/index.html#opt-level)
+* [`debug`](https://doc.rust-lang.org/rustc/codegen-options/index.html#debuginfo)
+* [`lto`](https://doc.rust-lang.org/rustc/codegen-options/index.html#lto)
+* [`codegen-units`](https://doc.rust-lang.org/rustc/codegen-options/index.html#codegen-units)
+* [`panic`](https://doc.rust-lang.org/rustc/codegen-options/index.html#panic)
+* [`strip`](https://doc.rust-lang.org/rustc/codegen-options/index.html#strip)
+* [`incremental`](https://doc.rust-lang.org/rustc/codegen-options/index.html#incremental)
+
+### Unstable
+
+This configuration contains some unstable features, but it should work just fine.
+It decreases the binary size from 310kb to 234kb.
+Add this to your `.cargo/config.toml`:
+
+````toml
+[unstable]
+build-std = ["std", "panic_abort", "core", "alloc"]
+build-std-features = ["panic_immediate_abort"]
+
+[build]
+rustflags = [
+    "-Clto",
+    "-Zvirtual-function-elimination",
+    "-Zlocation-detail=none"
+]
+
+# Same as in the Stable section
+[profile.release]
+opt-level = "z"
+debug = false
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
+incremental = false
+````
+
+*Note: The omitted space in each flag (e.g., `-C<no space here>lto`) is intentional. It is not a typo.*
+
+The values in `[profile.release]` are documented in the [Stable](#stable) section. Links to the documentation of each value:
+
+* [`[build.rustflags]`](https://doc.rust-lang.org/cargo/reference/config.html#buildrustflags)
+* [`-C lto`](https://doc.rust-lang.org/rustc/codegen-options/index.html#lto)
+* [`-Z virtual-function-elimination`](https://doc.rust-lang.org/stable/unstable-book/compiler-flags/virtual-function-elimination.html)
+* [`-Z location-detail`](https://doc.rust-lang.org/stable/unstable-book/compiler-flags/location-detail.html)
+
+## wasm-opt
+
+*Note: In the future, `wasm-opt` will be supported natively through the [Dioxus CLI](https://crates.io/crates/dioxus-cli).*
+
+`wasm-opt` is a tool from the [binaryen](https://github.com/WebAssembly/binaryen) library that optimizes your WASM files.
+To use it, install a [binaryen release](https://github.com/WebAssembly/binaryen/releases) and run this command from the package directory:
+
+````
+wasm-opt dist/assets/dioxus/APP_NAME_bg.wasm -o dist/assets/dioxus/APP_NAME_bg.wasm -Oz
+````
+
+The `-Oz` flag specifies that `wasm-opt` should optimize for size. For speed, use `-O4`.
+
+## Improving Dioxus code
+
+Let's talk about how you can improve your Dioxus code to be more performant.
+
+It's important to minimize the number of dynamic parts in your `rsx`, like conditional rendering.
+When Dioxus is rendering your component, it will skip parts that are the same as the last render.
+That means that if you keep dynamic rendering to a minimum, your app will speed up, and quite a bit if it's not just hello world.
+
+Also check out [Anti-patterns](antipatterns.md) for patterns that you should avoid.
+Obviously, not all of them are just about performance, but some of them are.
+
+## Optimizing the size of assets
+
+Assets can be a significant part of your app's size. Dioxus includes alpha support for first party assets. Any assets you include with the `asset!` macro will be optimized for production in release builds.
+# Antipatterns
+
+This example shows what not to do and provides a reason why a given pattern is considered an "AntiPattern". Most anti-patterns are considered wrong for performance or code re-usability reasons.
+
+## Incorrect Iterator Keys
+
+As described in the [rsx chapter](../../essentials/ui/iteration.md), list items must have unique keys that are associated with the same items across renders. This helps Dioxus associate state with the contained components and ensures good diffing performance. Do not omit keys, unless you know that the list will never change.
+
+````rs@anti_patterns.rs
+let data: &HashMap<_, _> = &props.data;
+
+// ❌ No keys
+rsx! {
+    ul {
+        for value in data.values() {
+            li { "List item: {value}" }
+        }
+    }
+};
+
+// ❌ Using index as keys
+rsx! {
+    ul {
+        for (index , value) in data.values().enumerate() {
+            li { key: "{index}", "List item: {value}" }
+        }
+    }
+};
+
+// ✅ Using unique IDs as keys:
+rsx! {
+    ul {
+        for (key , value) in props.data.iter() {
+            li { key: "{key}", "List item: {value}" }
+        }
+    }
+}
+````
+
+## Avoid Interior Mutability in Props
+
+While it is technically acceptable to have a `Mutex` or a `RwLock` in the props, they will be difficult to use.
+
+Suppose you have a struct `User` containing the field `username: String`. If you pass a `Mutex<User>` prop to a `UserComponent` component, that component may wish to write to the `username` field. However, when it does, the parent component will not be aware of the change, and the component will not re-render which causes the UI to be out of sync with the state. Instead, consider passing down a reactive value like a `Signal` or immutable data.
+
+````rs@anti_patterns.rs
+// ❌ Mutex/RwLock/RefCell in props
+#[derive(Props, Clone)]
+struct AntipatternInteriorMutability {
+    map: Rc<RefCell<HashMap<u32, String>>>,
+}
+
+impl PartialEq for AntipatternInteriorMutability {
+    fn eq(&self, other: &Self) -> bool {
+        std::rc::Rc::ptr_eq(&self.map, &other.map)
+    }
+}
+
+fn AntipatternInteriorMutability(map: Rc<RefCell<HashMap<u32, String>>>) -> Element {
+    rsx! {
+        button {
+            onclick: {
+                let map = map.clone();
+                move |_| {
+                    // Writing to map will not rerun any components
+                    map.borrow_mut().insert(0, "Hello".to_string());
+                }
+            },
+            "Mutate map"
+        }
+        // Since writing to map will not rerun any components, this will get out of date
+        "{map.borrow().get(&0).unwrap()}"
+    }
+}
+
+// ✅ Use a signal to pass mutable state
+#[component]
+fn AntipatternInteriorMutabilitySignal(map: Signal<HashMap<u32, String>>) -> Element {
+    rsx! {
+        button {
+            onclick: move |_| {
+                // Writing to map will rerun any components that read the map
+                map.write().insert(0, "Hello".to_string());
+            },
+            "Mutate map"
+        }
+        // Since writing to map will rerun subscribers, this will get updated
+        "{map.read().get(&0).unwrap()}"
+    }
+}
+````
+
+## Avoid Updating State During Render
+
+Every time you update the state, Dioxus needs to re-render the component – this is inefficient! Consider refactoring your code to avoid this.
+
+Also, if you unconditionally update the state during render, it will be re-rendered in an infinite loop.
+
+````rs@anti_patterns.rs
+// ❌ Updating state in render
+let first_signal = use_signal(|| 0);
+let mut second_signal = use_signal(|| 0);
+
+// Updating the state during a render can easily lead to infinite loops
+if first_signal() + 1 != second_signal() {
+    second_signal.set(first_signal() + 1);
+}
+
+// ✅ Update state in an effect
+let first_signal = use_signal(|| 0);
+let mut second_signal = use_signal(|| 0);
+
+// The closure you pass to use_effect will be rerun whenever any of the dependencies change without re-rendering the component
+use_effect(move || {
+    if first_signal() + 1 != second_signal() {
+        second_signal.set(first_signal() + 1);
+    }
+});
+
+// ✅ Deriving state with use_memo
+let first_signal = use_signal(|| 0);
+// Memos are specifically designed for derived state. If your state fits this pattern, use it.
+let second_signal = use_memo(move || first_signal() + 1);
+````
+
+## Avoid Large Groups of State
+
+It can be tempting to have a single large state struct that contains all of your application's state. However, this can lead to issues:
+
+* It can be easy to accidentally mutate the state in a way that causes an infinite loop
+* It can be difficult to reason about when and how the state is updated
+* It can lead to performance issues because many components will need to re-render when the state changes
+
+Instead, consider breaking your state into smaller, more manageable pieces. This will make it easier to reason about the state, avoid update loops, and improve performance.
+
+````rs@anti_patterns.rs
+fn app() -> Element {
+    // ❌ Large state struct
+    #[derive(Props, Clone, PartialEq)]
+    struct LargeState {
+        users: Vec<User>,
+        logged_in: bool,
+        warnings: Vec<String>,
+    }
+
+    #[derive(Props, Clone, PartialEq)]
+    struct User {
+        name: String,
+        email: String,
+    }
+
+    let mut all_my_state = use_signal(|| LargeState {
+        users: vec![User {
+            name: "Alice".to_string(),
+            email: "alice@example.com".to_string(),
+        }],
+        logged_in: true,
+        warnings: vec![],
+    });
+
+    use_effect(move || {
+        // It is very easy to accidentally read and write to the state object if it contains all your state
+        let read = all_my_state.read();
+        let logged_in = read.logged_in;
+        if !logged_in {
+            all_my_state
+                .write_unchecked()
+                .warnings
+                .push("You are not logged in".to_string());
+        }
+    });
+
+    // ✅ Use multiple signals to manage state
+    let users = use_signal(|| {
+        vec![User {
+            name: "Alice".to_string(),
+            email: "alice@example.com".to_string(),
+        }]
+    });
+    let logged_in = use_signal(|| true);
+    let mut warnings = use_signal(|| vec![]);
+
+    use_effect(move || {
+        // Now you can read and write to separate signals which will not cause issues
+        if !logged_in() {
+            warnings.write().push("You are not logged in".to_string());
+        }
+    });
+
+    // ✅ Use memos to create derived state when larger states are unavoidable
+    // Notice we didn't split everything into separate signals. Users still make sense as a vec of data
+    let users = use_signal(|| {
+        vec![User {
+            name: "Alice".to_string(),
+            email: "alice@example.com".to_string(),
+        }]
+    });
+    let logged_in = use_signal(|| true);
+    let warnings: Signal<Vec<String>> = use_signal(|| vec![]);
+
+    // In child components, you can use the memo to create derived that will only update when a specific part of the state changes
+    // This will help you avoid unnecessary re-renders and infinite loops
+    #[component]
+    fn FirstUser(users: Signal<Vec<User>>) -> Element {
+        let first_user = use_memo(move || users.read().first().unwrap().clone());
+
+        rsx! {
+            div {
+                "First user: {first_user().name}"
+            }
+        }
+    }
+
+    rsx! {
+        FirstUser {
+            users
+        }
+    }
+}
+````
+
+## Running Non-Deterministic Code in the Body of a Component
+
+If you have a component that contains non-deterministic code, that code should generally not be run in the body of the component. If it is put in the body of the component, it will be executed every time the component is re-rendered which can lead to performance issues.
+
+Instead, consider moving the non-deterministic code into a hook that only runs when the component is first created or an effect that reruns when dependencies change.
+
+````rs@anti_patterns.rs
+// ❌ Non-deterministic code in the body of a component
+#[component]
+fn NonDeterministic(name: String) -> Element {
+    let my_random_id = rand::random::<u64>();
+
+    rsx! {
+        div {
+            // Id will change every single time the component is re-rendered
+            id: "{my_random_id}",
+            "Hello {name}"
+        }
+    }
+}
+
+// ✅ Use a hook to run non-deterministic code
+fn NonDeterministicHook(name: String) -> Element {
+    // If you store the result of the non-deterministic code in a hook, it will stay the same between renders
+    let my_random_id = use_hook(|| rand::random::<u64>());
+
+    rsx! {
+        div {
+            id: "{my_random_id}",
+            "Hello {name}"
+        }
+    }
+}
+````
+
+## Overly Permissive PartialEq for Props
+
+You may have noticed that `Props` requires a `PartialEq` implementation. That `PartialEq` is very important for Dioxus to work correctly. It is used to determine if a component should re-render or not when the parent component re-renders.
+
+If you cannot derive `PartialEq` for your `Props`, you will need to implement it yourself. If you do implement `PartialEq`, make sure to return `false` any time the props change in a way that would cause the UI in the child component to change.
+
+In general, returning `false` from `PartialEq` if you aren't sure if the props have changed or not is better than returning `true`. This will help you avoid out of date UI in your child components.
+
+````rs@anti_patterns.rs
+// ❌ Permissive PartialEq for Props
+#[derive(Props, Clone)]
+struct PermissivePartialEqProps {
+    name: String,
+}
+
+// This will cause the component to **never** re-render when the parent component re-renders
+impl PartialEq for PermissivePartialEqProps {
+    fn eq(&self, _: &Self) -> bool {
+        true
+    }
+}
+
+fn PermissivePartialEq(name: PermissivePartialEqProps) -> Element {
+    rsx! {
+        div {
+            "Hello {name.name}"
+        }
+    }
+}
+
+#[component]
+fn PermissivePartialEqParent() -> Element {
+    let name = use_signal(|| "Alice".to_string());
+
+    rsx! {
+        PermissivePartialEq {
+            // The PermissivePartialEq component will not get the updated value of name because the PartialEq implementation says that the props are the same
+            name: name()
+        }
+    }
+}
+
+// ✅ Derive PartialEq for Props
+#[derive(Props, Clone, PartialEq)]
+struct DerivePartialEqProps {
+    name: String,
+}
+
+fn DerivePartialEq(name: DerivePartialEqProps) -> Element {
+    rsx! {
+        div {
+            "Hello {name.name}"
+        }
+    }
+}
+
+#[component]
+fn DerivePartialEqParent() -> Element {
+    let name = use_signal(|| "Alice".to_string());
+
+    rsx! {
+        DerivePartialEq {
+            name: name()
+        }
+    }
+}
+
+// ✅ Return false from PartialEq if you are unsure if the props have changed
+#[derive(Debug)]
+struct NonPartialEq;
+
+#[derive(Props, Clone)]
+struct RcPartialEqProps {
+    name: Rc<NonPartialEq>,
+}
+
+impl PartialEq for RcPartialEqProps {
+    fn eq(&self, other: &Self) -> bool {
+        // This will almost always return false because the Rc will likely point to a different value
+        // Implementing PartialEq for NonPartialEq would be better, but if it is controlled by another library, it may not be possible
+        // **Always** return false if you are unsure if the props have changed
+        std::rc::Rc::ptr_eq(&self.name, &other.name)
+    }
+}
+
+fn RcPartialEq(name: RcPartialEqProps) -> Element {
+    rsx! {
+        div {
+            "Hello {name.name:?}"
+        }
+    }
+}
+
+fn RcPartialEqParent() -> Element {
+    let name = use_signal(|| Rc::new(NonPartialEq));
+
+    rsx! {
+        RcPartialEq {
+            // Generally, RcPartialEq will rerun even if the value of name hasn't actually changed because the Rc will point to a different value
+            name: name()
+        }
+    }
+}
+````

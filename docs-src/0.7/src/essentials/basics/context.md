@@ -201,7 +201,7 @@ struct HeaderContext {
 }
 ```
 
-Notice how our `HeaderContext` derives both `Clone` and `Copy`. For context to be shared throughout the component tree, each context entry must implement `Clone`. Dioxus signals are extremely ergonomic because the implement `Copy` too, which makes them easier to work with in async contexts. Similarly, our custom context structs can also implement `Copy` and gain the same ergonomic benefits.
+Notice how our `HeaderContext` derives both `Clone` and `Copy`. For context to be shared throughout the component tree, each context entry must implement `Clone`. Dioxus signals are extremely ergonomic because they implement `Copy` too, which makes them easier to work with in async contexts. Similarly, our custom context structs can also implement `Copy` and gain the same ergonomic benefits.
 
 To construct our HeaderContext, we use one of two approaches. The first is to build a Provider component:
 

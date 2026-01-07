@@ -1,0 +1,3779 @@
+<SYSTEM>This is the developer documentation for Dioxus at /learn/0.7/essentials/basics/reactivity and all its subroutes.</SYSTEM>
+
+# Intro to Reactivity
+
+So far, we've covered how to declare static user interfaces with RSX. Now, it's time to make our UI interactive. When the user clicks a button, moves their cursor, or inputs text, we want to update our UI in response.
+
+The act of reacting to a state changes is called *reactivity*. Reactivity sits at the very heart of Dioxus. Everything from data fetching to routing is centered around reacting to state changes.
+
+Similar to libraries like ReactJS, Dioxus provides a built-in reactivity system, saving you from manually queuing re-renders of components. If you're coming from web development, this should feel familiar. If you're mostly experienced with immediate-mode GUIs, this might seem foreign.
+
+Reactivity systems enable larger, more modular, complex GUIs than is typically achievable with other approaches. To build UIs that effectively leverage reactivity, we follow three main pillars:
+
+* **Data Flows Down**: Our apps maintain a one-way flow of data from parents to children
+* **Data is Tracked**: Modifications to data is observed by reactive scopes and side-effects
+* **Data is Derived**: Our UI and state is a pure function of our data sources
+
+## Pillar 1: Data Flows Down
+
+The first fundamental pillar of reactivity: data flows down. As our apps grow in size, so do their complexity. In apps with dozens of screens and hundreds of components, it can become difficult to reason about relationships between parent and child elements. By enforcing a unidirectional flow of data through our app, we can be sure that a child component renders *purely* as a function of its inputs.
+
+To make our apps interactive, we follow a similar pattern. Components provide two items: *values* and *functions* to modify those values. These items are passed *down* the tree as properties. Dioxus does not provide a way for child components to "reach up" and modify the state of a parent.
+
+The functions we pass down the tree are free to mutate state in the *current* component. However, a child component cannot *directly* modify its parent's state. This ensures all mutations to state are defined in the **same scope as the state itself**, making it easier to reason about our app's state at scale.
+
+![Reactivity Tree](/assets/07/reactivity-tree.png)
+
+## Pillar 2: Data is Tracked
+
+The second fundamental pillar of reactivity: data is tracked. When you use various state primitives in Dioxus, the Dioxus runtime *tracks* changes to the underlying value. Whenever you call `.set()` or `.write()` on a *Reactive Value*, that operation is *observed* and *effects* are run.
+
+The core Reactive Value in Dioxus is the Signal. When Signals are used in *reactive contexts*, their associated *reads* and *writes* are tracked. Every component is a reactive context. Whenever a Signal's value is modified, a *side-effect* is queued that re-reruns any reactive contexts that read the signal's value.
+
+````rust
+#[component]
+fn Filter() -> Element {
+    let mut selection = use_signal(|| "none");
+
+    rsx! {
+        // reading the *selection* value has a side-effect of re-rendering this component
+        div { "{selection}" }
+
+        // Calling `.set()` runs side-effects
+        button { onclick: move |_| selection.set("dogs"), "Set Filter" }
+    }
+}
+````
+
+Many hooks utilize reactive contexts to attach their own side-effects.
+
+## Pillar 3: Data is Derived
+
+The third pillar of reactivity: values are *derived*. After any state in our app changes, we want the UI to match what we declared in our RSX. In this case, the UI is *derived* from our app state. Similarly, in reactive programming, all data is either a source, or *derived* from a source.
+
+When rendering components, we therefore prefer to perform any transformations of the data while rendering or in a memo. We *do not* modify the data while rendering.
+
+````rust
+// ✅ *num_names* is derived from "names"
+let names = use_signal(|| vec!["Jane", "Jack", "Jill"]);
+let num_names = names.read().len();
+
+// ❌ we do not store num_names in a signal
+let names = use_signal(|| vec!["Jane", "Jack", "Jill"]);
+let mut num_names = use_signal(|| 0);
+num_names.set(names.len());
+````
+
+Hopefully, the fact that data should be *derived* is apparent. If we were to modify component state while rendering, we would inadvertently queue re-render side-effects, potentially leading to infinite loops.
+# Hooks
+
+In Dioxus, state that is local to a component is stored in *hooks*.
+
+Dioxus hooks work similarly to React's hooks. If you haven't done much web development, hooks might seem particularly unusual. Hooks provide a way of storing state, and attaching effects composability in components. Even better - they're less verbose than declaring structs and implementing "render" traits!
+
+## The `use_hook` primitive
+
+All hooks in Dioxus are built on the `use_hook` primitive. While you might never directly use this primitive, it's good to know where all state eventually resides. The `use_hook` primitive is a function that takes an initializer and returns a `.clone()` of the value.
+
+````rust
+fn Simple() -> Element {
+    let count = use_hook(|| 123);
+    rsx! { "{count}" }
+}
+````
+
+Whenever `use_hook` is called, one of two things happens:
+
+* if this `use_hook` has never been called before, the initializer is ran and a new slot is created
+* otherwise, `use_hook` returns a clone of the current value in the slot.
+
+Internally, the "hook index" is incremented by 1 on every call to `use_hook` and reset to 0 before the component re-renders.
+
+![Hook List](/assets/07/hook-list.png)
+
+## Rules of Hooks
+
+In Dioxus, we are transparent with the inner workings of the framework. Because hooks are implemented by walking an internal "hook list," they have certain rules that would cause walking the list to fail and your app to panic. It's important to note that these rules are not arbitrary - they are the intended result of how hooks are implemented.
+
+Hooks use their call order to keep track of what state belongs to which hook. You must call hooks in the same order every time the component is run. To make sure the order is always the same, **you should only call hooks at the top level of a component or another hook**.
+
+These rules mean that there are certain things you can't do with hooks:
+
+### No Hooks in Conditionals
+
+You should not call a hook function conditionally. When the component re-renders, this might lead to the hook list skipping an entry, causing the next hook to retrieve the wrong value.
+
+````rs@hooks_bad.rs
+// ❌ don't call hooks in conditionals!
+// We must ensure that the same hooks will be called every time
+// But `if` statements only run if the conditional is true!
+// So we might violate rule 2.
+if you_are_happy && you_know_it {
+    let something = use_signal(|| "hands");
+    println!("clap your {something}")
+}
+
+// ✅ instead, *always* call use_signal
+// You can put other stuff in the conditional though
+let something = use_signal(|| "hands");
+if you_are_happy && you_know_it {
+    println!("clap your {something}")
+}
+````
+
+### No Hooks in Closures
+
+Similar to conditionals, closures provide a way for hook functions to be called in an inconsistent order between renders. Instead of placing the hook in a closure, prefer to only use the result of the hook function in a closure.
+
+````rs@hooks_bad.rs
+// ❌ don't call hooks inside closures!
+// We can't guarantee that the closure, if used, will be called in the same order every time
+let _a = || {
+    let b = use_signal(|| 0);
+    b()
+};
+
+// ✅ instead, move hook `b` outside
+let b = use_signal(|| 0);
+let _a = || b();
+````
+
+### No Hooks in Loops
+
+Just like conditionals and closures, calling hook functions in loops can lead to inconsistent retrieval of hook values between renders, causing hooks to return the wrong value.
+
+````rs@hooks_bad.rs
+// `names` is a Vec<&str>
+
+// ❌ Do not use hooks in loops!
+// In this case, if the length of the Vec changes, we break rule 2
+for _name in &names {
+    let is_selected = use_signal(|| false);
+    println!("selected: {is_selected}");
+}
+
+// ✅ Instead, use a hashmap with use_signal
+let selection_map = use_signal(HashMap::<&str, bool>::new);
+
+for name in &names {
+    let is_selected = selection_map.read()[name];
+    println!("selected: {is_selected}");
+}
+````
+
+### Early Returns
+
+Unlike in React, in Dioxus, you *can* early return between hook calls. However, we generally discourage this pattern since it can lead to similar consistency issues as conditionals. Dioxus supports early returns because error boundaries and suspense boundaries use the question-mark syntax for ergonomics.
+
+````rust
+let name = use_signal(|| "bob".to_string());
+
+// ❌ dont early return between hooks!
+if name() == "jack" {
+    return Err("wrong name".into())
+}
+
+let age = use_signal(|| 123);
+
+rsx! { "{name}, {age}" }
+
+
+// ✅ instead, prefer to early return *after* all hook functions are run
+let name = use_signal(|| "bob".to_string());
+let age = use_signal(|| 123);
+
+if name() == "jack" {
+    return Err("wrong name".into())
+}
+
+rsx! { "{name}, {age}" }
+````
+
+### Prefix hook names with "`use_`"
+
+By convention, hooks are Rust functions that have the `use_` prefix. When you see a function with the `use_` prefix, you should be aware that it internally walks the component's hook list and therefore must follow the Rules of Hooks.
+
+## Why Hooks?
+
+You might be wondering - why use hooks? Aren't structs and traits enough?
+
+Hooks are useful because they compose exceptionally well. We can combine hook primitives to build complex yet modular interactions with a consistent interface. With a single function, we can encapsulate both state *and* effects.
+
+````rust
+// This hook is *derived* from an initializer
+fn use_document_title(initial: impl FnOnce() -> String) -> Signal<String> {
+    let mut title = use_signal(initial);
+
+    // Whenever the title signal changes, we queue a side-effect to modify the window state
+    use_effect(move || {
+        window().document().set_title(title());
+    });
+
+    // We return the reactive String
+    title
+}
+````
+
+Another perk of hooks: we don't need to declare the boilerplate that a struct-based approach might require. A simple component that stores user name and email is simple with hooks:
+
+````rust
+#[component]
+fn Card(default_name: String) -> Element {
+    let mut name = use_signal(|| default_name);
+    let mut email = use_signal(|| "".to_string());
+    rsx! {
+        span { "default: {default_name}" }
+        input { oninput: move |e| name.set(e.value()), }
+        input { oninput: move |e| email.set(e.value()), }
+    }
+}
+````
+
+whereas struct components might be quite verbose:
+
+````rust
+struct Card {
+    default_name: String
+    name: Signal<String>,
+    email: Signal<String>
+}
+
+#[derive(PartialEq, Clone)]
+struct CardProps {
+    default_name: String
+}
+impl Component for Card {
+    type Props = CardProps;
+    fn new(props: Self::Props) -> Self {
+        Self {
+            name: Signal::new(props.default_name)
+            email: Signal::new("".to_string())
+        }
+    }
+
+    fn change(&mut self, props: Self::Props) {
+        self.default_name = props.default_name;
+    }
+
+    fn render(mut state: Handle<Self>) -> Element {
+        rsx! {
+            span { "default: {self.default_name}" }
+            input { oninput: move |e| state.name.set(e.value()) }
+            input { oninput: move |e| state.email.set(e.value()) }
+        }
+    }
+}
+````
+
+With a single function, we are able to express a value initializer, establish automatic value tracking, and handle changes to component properties. We can easily encapsulate shared behavior, queue side-effects, and compose modular primitives.
+# Reactive Signals
+
+In Dioxus, your app's UI is defined as a function of its current state. As the state changes, the components and effects that depend on that state will automatically re-run. Reactivity automatically *tracks* state and *derives* new state, making it easy to build large applications that are efficient and simple to reason about.
+
+Dioxus provides a single source of mutable state: the **Signal**.
+
+## State with Signals
+
+In Dioxus, mutable state is stored in Signals. Signals are *tracked* values that automatically update *reactive contexts* that watch them. They are the source of state from which all other state is derived from. Signals are modified directly by event handlers in response to user input or asynchronously in futures.
+
+You can create a signal with the `use_signal` hook:
+
+````rust
+let mut signal = use_signal(|| 0);
+````
+
+Once you have your signal, you can gain a reference to the signal's inner value by calling the `.read()`:
+
+````rust
+let mut signal = use_signal(|| 0);
+
+// use `.read()` to access the inner value
+let inner = signal.read();
+````
+
+For Signals whose inner can be cheaply cloneable, you can also use "function" syntax to get a direct `Clone` of the value.
+
+````rust
+let name = use_signal(|| "Bob".to_string());
+
+// Call the signal like a function
+let inner = name();
+
+// Or use `.cloned()`
+let inner = name.cloned();
+````
+
+Finally, you can set the value of the signal with the `.set()` method or get a mutable reference to the inner value with the `.write()` method:
+
+````rs@reactivity.rs
+// Set the value from the signal
+signal.set(1);
+
+// get a mutable reference to the inner value with the .write() method
+let mut value: &mut i32 = &mut signal.write();
+*value += 1;
+````
+
+A simple component that uses `.read()` and `.write()` to update its own state with signals may look like:
+
+````rust
+fn Demo() -> Element {
+    let mut count = use_signal(|| 0);
+
+    // read the current value
+    let current = count.read().clone();
+
+    rsx! {
+        button {
+            onclick: move |_| *count.write() = current,
+            "Increment ({current})"
+        }
+    }
+}
+````
+
+When assigning values to a `.write()` call, note that we use the [*dereference operator*](https://doc.rust-lang.org/std/ops/trait.DerefMut.html) which lets us write a value directly into the mutable reference.
+
+## Ergonomic Methods on Signals
+
+In some cases, wrapping your data in Signals can make accessing the inner state awkward. Mutable Signals implement two fundamental traits: `Readable` and `Writable`. These traits provide a number of automatic ergonomic improvements.
+
+* `Signal<T>` implements `Display` if `T` implements `Display`
+* `Signal<bool>` implements `fn toggle()`
+* `Signal<i32>` and other numbers implement math operators (+, -, /, etc)
+* `Signal<T>` where `T` implements `IntoIterator` implements `.iter()`
+* and many more!
+
+The `Display` extension enables using signals in formatting expressions:
+
+````rust
+let mut count = use_signal(|| 0);
+rsx! { "Count is: {count}" }
+````
+
+The toggle extension makes toggling boolean values simpler:
+
+````rust
+let mut enabled = use_signal(|| true);
+rsx! {
+    button {
+        onclick: move |_| enabled.toggle(),
+        if enabled() { "disable" } else { "enable" }
+    }
+}
+````
+
+Math operators simplify arithmetic operations:
+
+````rust
+fn app() -> Element {
+    let mut count = use_signal(|| 0);
+
+    rsx! {
+        h1 { "High-Five counter: {count}" }
+        button { onclick: move |_| count += 1, "Up high!" }
+        button { onclick: move |_| count -= 1, "Down low!" }
+    }
+}
+````
+
+The iterator extension makes iterating through collections easier:
+
+````rust
+fn app() -> Element {
+    let names = use_signal(|| vec!["bob", "bill", "jane", "doe"]);
+
+    rsx! {
+        ul {
+            for name in names.iter() {
+                li { "hello {name}" }
+            }
+        }
+    }
+}
+````
+
+You'll generally want to use the extension methods unless the inner state does *not* implement the required traits. There are several methods available not listed here, so peruse the docs reference for more information.
+
+## ReadSignal and WriteSignal
+
+Dioxus provides two variations of the base Signal type: `ReadSignal` and `WriteSignal`.
+
+* **`ReadSignal`**: a read-only version of the base Signal type
+* **`WriteSignal`**: a read-write version of the base Signal type, equivalent to `Signal` itself
+
+`ReadSignals` are reactive values that implement the `Readable` trait. `WriteSignals` are reactive values that implement the `Writable` trait.
+
+These two variations are useful when writing components that need to be generic over their input types. If a component only needs the `.read()` method and its extensions, then it can specify a `ReadSignal` as an argument.
+
+````rust
+fn app() -> Element {
+    let mut name: Signal<String> = use_signal(|| "abc".to_string());
+
+    rsx! {
+        // The rsx macro automatically converts the Signal into a ReadSignal
+        Name { name }
+    }
+}
+
+// We can accept anything that implements `Into<ReadSignal>`
+#[component]
+fn Name(name: ReadSignal<String>) {
+    rsx! { "{name}" }
+}
+````
+
+In Dioxus, `Signal` is not the only reactive type. The entire ecosystem is full of custom reactive types. Dioxus itself also provides additional reactive types like `Memo` and `Resource`. To integrate well with the broader ecosystem, it's best to prefer using `ReadSignal` and `WriteSignal` in your interfaces rather than specific reactive types.
+
+This ensures we can pass both `Signal` and `Memo` to the same function:
+
+````rust
+let name: Signal<String> = use_signal(|| "abc".to_string());
+let uppercase: Memo<String> = use_memo(move || name.to_uppercase());
+
+rsx! {
+    // The rsx macro automatically converts the Signal into ReadSignal
+    Name { name, uppercase }
+    // The rsx macro automatically converts the Memo into ReadSignal
+    Name { uppercase }
+}
+
+#[component]
+fn Name(name: ReadSignal<String>) {
+    rsx! { "{name}" }
+}
+````
+
+## Reactive Scopes
+
+A **Reactive Scope** is a block of Rust code that observes reads and writes of reactive values. Whenever `.write()` or `.set()` is called on a Signal, any active reactive scopes tracking that Signal run a callback as a side-effect.
+
+The simplest reactive scope is a component. During a component render, components automatically subscribe to signals where `.read()` is called. The `.read()` method can be called *implicitly* in many circumstances - notably, the extension methods provided by `Readable` use the underlying `.read()` method and thus *also* contribute to the current reactive scope. When a signal's value changes, components queue a side-effect to re-render the component using `dioxus::core::needs_update`.
+
+````rust
+let mut name = use_signal(|| "abc".to_string());
+
+rsx! {
+    // An explicit call to `.read()`
+    {name.read().to_string()}
+
+    // An implicit call via `Display`
+    "{name}"
+}
+````
+
+If a component does not call `.read()` on a Signal while rendering, it does not subscribe to that signal's value. This provides us "zero cost reactivity" where we can freely modify signal values without worrying about unnecessary re-renders. If a value is not observed, it won't cause unnecessary re-renders.
+
+````rust
+let mut loading = use_signal(|| false);
+
+rsx! {
+    button {
+        // Because we don't use "loading" in our markup, the component won't re-render!
+        onclick: move |_| async move {
+            if loading() {
+                return;
+            }
+            loading.set(true);
+            // .. do async work
+            loading.set(false);
+        }
+    }
+}
+````
+
+Calls to `.read()` access the current reactive scope, adding this scope to the list of subscribers to the Signal with a side effect that runs when that signal is changed. For components, the logic causes the component to queue a re-render side effect.
+
+![Component effects](/assets/07/component-effect.png)
+
+There are other uses of reactive scopes beyond component re-renders. Hooks like `use_effect`, `use_memo`, and `use_resource` all implement functionality by leveraging a reactive scope that exists *outside* the rendering lifecycle.
+
+## Automatic Batching
+
+All built in hooks batch updates if possible. Instead of running effects immediately, `.write()` calls queue an effect before the next "step" of your app. The runtime will try to wait until all writes in the current step are complete before running any effects. This provides automatic batching of `.write()` calls which is important both for performance and consistency in the UI.
+
+By batching `.write()` calls, Dioxus ensures that our example UI always displays one of two states:
+
+* **"loading?: false -> Complete"**
+* **"loading?: true -> Loading"**
+
+````rust
+let mut loading = use_signal(|| false);
+let mut text = use_signal(|| "Complete!");
+
+rsx! {
+    button {
+        onclick: move |_| async move {
+            // these writes are batched and side-effects are de-duplicated
+            text.set("Loading");
+            loading.set(true);
+
+            // awaiting a future allows the runtime to continue
+            do_async_work().await
+
+            // these writes are also batched - only one re-render is queued
+            text.set("Complete!");
+            loading.set(false);
+        },
+        "loading?: {loading:?} -> {text}"
+    }
+}
+````
+
+Dioxus uses `await` boundaries as barriers between steps. If state is modified during a step, Dioxus prefers to paint the new UI first before polling additional futures. This ensures changes are flushed as fast as possible and pending states aren't missed.
+
+While dioxus tries to batch writes, it prefers consistent state over batching when the two are in conflict. If you read the result of a memo directly after writing to a signal it depends on, the memo will be re-evaluated immediately to ensure you get the most up-to-date value. This ensures the memo is always equivalent to running the memo's function directly.
+
+````rust
+let mut count = use_signal(|| 0);
+let double = use_memo(|| *count() * 2);
+
+rsx! {
+    button {
+        onclick: move |_| async move {
+            // This queues a rerun of the memo and marks it as dirty
+            count += 1;
+            // This forces the memo to re-evaluate immediately
+            println!("double is now: {}", double());
+        },
+        "doubled: {double}"
+    }
+}
+````
+
+## Signals are Borrowed at Runtime
+
+In Rust, the `&T` and `&mut T` reference types statically assert that the underlying value is either immutable or mutable *at compile time*. This assertion brings a number of guarantees, enabling Rust to generate fast and correct code.
+
+Unfortunately, these static assertions do not mix well with asynchronous background tasks. If our `onclick` handler spawns a long-running Future that captures an `&mut T`, we can not safely handle any *other* events until that Future completes:
+
+![Mutability Over Time](/assets/07/mutable-diagram.png)
+
+At times, our UIs can be very concurrent. There *are* ways to re-orient how we concurrently access state that are compatible with Rust's static mutability assertions - unfortunately, they are not easy to program.
+
+Instead, Signals provide a `.write()` method that checks *at runtime* if the value is safe to access. If you're not careful, you can combine a `.read()` and a `.write()` in the same scope, leading to a runtime borrow failure (panic).
+
+This is most frequently encountered when holding `.read()` or `.write()` refs across await points:
+
+````rust
+let mut state = use_signal(|| 0);
+
+rsx! {
+    button {
+        // Clicking this button quickly will cause multiple `.write()` calls to be active
+        onclick: move |_| async move {
+            let mut writer = state.write();
+            sleep(Duration::from_millis(1000)).await;
+            *writer = 10;
+        }
+    }
+}
+````
+
+Fortunately, this code fails `cargo clippy` because the `writer` type should not be held across an await point.
+
+Thankfully, Signals guard against the "trivial" case because the `.write()` method takes an `&mut Signal`. While the `.write()` guard is active in a scope (block), no other `.read()` or `.write()` guards can be held:
+
+````rust, no_run
+let mut state = use_signal(|| 0);
+
+rsx! {
+    button {
+        // rust prevents this code from compiling since `.write()` takes `&mut T`
+        onclick: move |_| {
+            let cur = state.read();
+            *state.write() = *cur + 1;
+        }
+    }
+}
+````
+
+We get a very nice error from the Rust compiler explaining why this code does not compile:
+
+````text
+error[E0502]: cannot borrow `state` as mutable because it is also borrowed as immutable
+  --> examples/readme.rs:22:18
+   |
+21 |                 let cur = state.read();
+   |                           ----- immutable borrow occurs here
+22 |                 *state.write() = *cur + 1;
+   |                  ^^^^^^^^^^^^^ mutable borrow occurs here
+23 |             }
+   |             - immutable borrow might be used here, when `cur` is dropped and runs the destructor for type `GenerationalRef<Ref<'_, i32>>`
+````
+
+If we *do* want to read and write in the same scope, we need to stage our operations in the correct order such that the `.read()` and `.write()` guards do not overlap. Usually, this is done by deriving an owned value from the `.read()` operation to be used in the `.write()` operation.
+
+````rust
+let cur = state.read().clone(); // calling `.clone()` releases the `.read()` guard immediately.
+*state.write() = *cur + 1;
+````
+
+Note that Rust automatically drops items *at the end* of a scope, unless they are manually dropped sooner. We can use the `.read()` guard provided it's dropped before `.write()` is called.
+
+This is done either by creating a new, shorter scope to access the `.read()` guard -
+
+````rust
+// The .read() guard is only alive for a shorter scope
+let next = {
+    let cur = state.read();
+    println!("{cur}");
+    cur.clone() + 1
+};
+
+// we can assign `state` to `next` since `next` is not referencing `.read()`.
+*state.write() = next;
+````
+
+or, simply by calling `drop()` on the guard
+
+````rust
+let cur1 = state.read();
+let cur2 = *cur1 + 1;
+drop(cur1); // dropping early asserts we can `.write()` the signal safely
+*state.write() = cur2 + 1;
+````
+
+In very advanced use cases, you can make a copy of the signal or use the `read_unchecked` method to relax the borrowing rules:
+
+````rust
+match result.read_unchecked().as_ref() {
+    Ok(resp) => rsx! { "success! {resp}" }
+    Err(err) => rsx! { "err: {err:?}" },
+}
+````
+
+ > 
+ > Rust 2021 had issues with `.read()` in match statements, whereas Rust 2024 fixes this issue, meaning you no longer need to use `read_unchecked`
+
+While this might seem scary or error prone, you will *very rarely* run into these issues when building apps. The `.read()` and `.write()` guards respect Rust's ownership rules within a given scope and concurrent scopes are protected by the [Clippy `await_holding_refcell_ref` lint](https://rust-lang.github.io/rust-clippy/master/index.html#await_holding_refcell_ref).
+
+## Signals implement `Copy`
+
+If you've used Rust to build other projects - like a webserver or a command line tool - you might have encountered situations with closures, threads, and async tasks that required an `Arc` or `Rc` to satisfy the borrow checker.
+
+![Concurrent Access](/assets/07/concurrent-arc.png)
+
+If our data is used across several parallel threads, or even just held in a callback, we might need to wrap it in an `Arc` or `Rc` smart pointer and `.clone()` it. This can lead to cumbersome code where we constantly call `.clone()` to share data into callbacks and async tasks.
+
+````rust
+let state = Arc::new(123);
+
+// thread 1
+std::thread::spawn({
+    let state = state.clone();
+    move |_| println!("{state:?}"),
+})
+
+// thread 2
+std::thread::spawn({
+    let state = state.clone();
+    move |_| println!("{state:?}"),
+})
+````
+
+Unfortunately, UI code constantly encounters this problem - **this is why Rust does not have a great reputation for building GUI apps**!
+
+To solve this, we built the [generational-box crate](https://crates.io/crates/generational-box) that provides a `GenerationalBox` type that implements [Rust's `Copy` trait](https://doc.rust-lang.org/std/marker/trait.Copy.html). The `Copy` trait is very important: Rust automatically copies `Copy` types (when needed) on boundaries of scopes.
+
+````rust
+let state = GenerationalBox::new(123);
+
+// the `move` keyword automatically copies the GenerationalBox!
+std::thread::spawn(move |_| println!("{state:?}"));
+
+// we can easily share across threads with no `.clone()` noise
+std::thread::spawn(move |_| println!("{state:?}"));
+````
+
+Instead of copying the underlying value, the `GenerationalBox` simply copies a *handle* to the value. This handle is essentially a runtime-verified smart pointer. Accessing the contents of a signal is not as efficient as reading a pointer directly - there is an extra pointer indirection and lock - but we expect most code to not be bottlenecked by reading the contents of a `GenerationalBox`.
+
+Dioxus Signals are built directly on top of `GenerationalBox`. They share the same `Copy` semantics and ergonomics, but with the same tradeoffs.
+
+## Signals are Disposed
+
+Signals implementing `Copy` is a huge win for ergonomics. However, there is a tradeoff. The `GenerationalBox` type does not have automatic [RAII](https://doc.rust-lang.org/rust-by-example/scope/raii.html) support. This means when a `GenerationalBox` is dropped, its resources are **not immediately cleaned up**. It can be tricky to correctly use `GenerationalBox` directly. Dioxus manages the *resource* lifecycle by cleaning up resources using the *component* lifecycle.
+
+The Signal type is built on `GenerationalBox`. Whenever you call `use_signal`, we automatically:
+
+* Call `Signal::new()`
+* Register `signal.dispose()` on the component's `on_drop`
+
+Whenever a component is unmounted, its hooks are dropped. When you create Signals in a component, each Signal is registered with a Signal "owner" on that component. When the component is unmounted, the owner drops, and in its `Drop` implementation, it calls `.dispose()` on all Signals that were created in its scope.
+
+Effectively, we connected the `.dispose()` method of the Signals to the unmount of the component.
+
+Because the Signal is disposed when the component unmounts, reading it after will cause a runtime panic. This very rarely happens in practice, but *is* possible if you "save" the signal in a component higher up the tree. Doing so would violate the one-way-data flow pillar of reactivity, but is technically possible.
+
+![Concurrent Access](/assets/07/use-after-free.png)
+
+Reading a Signal after it's been disposed is similar to the "use-after-free" bug with pointers, but reading a Signal *is not* undefined behavior. In debug mode, the Signal will be hoisted to its reader and you'll receive a warning in the logs that a Signal is being read after it's been disposed.
+
+A similar issue can arise when you call `Signal::new()` directly. Dioxus creates an implicit Signal owner that is owned by the current component. The contents of this Signal will only be dropped when the current component is unmounted. Calling `Signal::new()` can lead to unbounded memory usage until the component is dropped. It's rare to do this in normal application code but can crop up in library development.
+
+````rust
+let mut users = use_signal(|| vec![]);
+
+rsx! {
+    button {
+        // the underlying strings won't be dropped until the component is unmounted, or you call `.dispose()` manually
+        onclick: move |_| {
+            users.write().push(Signal::new("bob".to_string()));
+        },
+        "Add a new user"
+    }
+}
+````
+
+When mapping Signals or creating them on-the-fly, it's best to prefer the built-in methods and reactive collections.
+
+## Effects, Memos, and More
+
+Signals are just one piece of the Dioxus reactivity system. Hooks like `use_effect` and `use_memo` are able to isolate their reactive scopes to just callbacks and futures. This means `.read()` and `.write()` in these scopes won't queue re-render side-effects in their containing component.
+
+We cover these hooks in more depth in a [later chapter](./effects.md).
+# Handling User Input
+
+It's time to make our app interactive! In Dioxus, user input is handled by attaching event listeners to elements. When an event listener is triggered, Dioxus runs the provided closure. In the closure, you can write to signals, log messages, make network requests, or take any action that makes the UI feel *alive*.
+
+````rust
+fn app() -> Element {
+    let mut count = use_signal(|| 0);
+
+    rsx! {
+        h1 { "High-Five counter: {count}" }
+        button { onclick: move |_| count += 1, "Up high!" }
+        button { onclick: move |_| count -= 1, "Down low!" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    readme::App {}
+}
+````
+
+## Event Handlers
+
+Event handlers are callbacks used to respond to user actions. Event handlers can capture dozens of different interactions: button clicks, page scrolls, mouse movements, text input, and more.
+
+Adding an event handler to an element is similar to adding an attribute with the `key: value` syntax. The handler name usually starts with `on` - and accepts a closure as the value. For example, to handle clicks on a button, we can add an `onclick` handler:
+
+````rs@event_click.rs
+rsx! {
+    button { width: "100%", height: "100%",
+        // This event handler will be called when the button is clicked
+        onclick: move |event| log!("Clicked! Event: {event:#?}"),
+        "click me!"
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    event_click::AppDemo {}
+}
+````
+
+There are many different event handlers available:
+
+* **Mouse Events**: `onclick`, `onmouseover`, `onmousedown`, `onmousemove`, etc.
+* **Keyboard Events**: `onkeydown`, `onkeyup`, `onkeypress`
+* **Form Events**: `onsubmit`, `oninput`, `onchange`, etc.
+* **Focus Events**: `onfocus`, `onblur`
+* **Drag-and-Drop Events**: `ondrag`, `ondrop`, `ondragover`, etc.
+* **UI Events**: `onscroll`, `onload`, `onscroll`, `onresize`
+
+The full list of event listeners is available in the [MDN docs](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Events).
+
+## The Event Object
+
+Event handlers receive an [`Event`](https://docs.rs/dioxus-core/latest/dioxus_core/struct.Event.html) object containing information about the event. Different types of events contain different types of data. For example, mouse-related events contain [`MouseData`](https://docs.rs/dioxus/latest/dioxus/events/struct.MouseData.html), which provides details like the mouse position and which mouse buttons were pressed.
+
+The event object is the first argument in the event handler callback:
+
+````rust
+rsx! {
+    button {
+        onclick: move |event| {   // <-- our `Event` object
+            //
+        }
+    }
+}
+````
+
+In the example above, this event data was logged to the terminal:
+
+````
+Clicked! Event: UiEvent { bubble_state: Cell { value: true }, data: MouseData { coordinates: Coordinates { screen: (242.0, 256.0), client: (26.0, 17.0), element: (16.0, 7.0), page: (26.0, 17.0) }, modifiers: (empty), held_buttons: EnumSet(), trigger_button: Some(Primary) } }
+Clicked! Event: UiEvent { bubble_state: Cell { value: true }, data: MouseData { coordinates: Coordinates { screen: (242.0, 256.0), client: (26.0, 17.0), element: (16.0, 7.0), page: (26.0, 17.0) }, modifiers: (empty), held_buttons: EnumSet(), trigger_button: Some(Primary) } }
+````
+
+ > 
+ > To learn what the different event types for HTML provide, read the [events module docs](https://docs.rs/dioxus-html/latest/dioxus_html/events/index.html).
+
+## Handling Common Events
+
+The most common action you'll take in an event handler is modifying the application's state. This might involve updating a filter, toggling a switch, or presenting feedback to text input.
+
+For components like toggles, we might use a boolean signal and a checkbox:
+
+````rust
+let mut upload_enabled = use_signal(|| true);
+rsx! {
+    input {
+        type: "checkbox",
+
+        // set the upload_enabled signal
+        oninput: move |evt| upload_enabled.set(evt.checked()),
+    }
+}
+````
+
+For components like filters, we might use the HTML `select` element:
+
+````rust
+let mut option = use_signal(|| None);
+rsx! {
+    select {
+        // set the signal to the select's `value`
+        oninput: move |evt| option.set(Some(evt.value())),
+
+        option { label: "Sedan", value: "sedan" }
+        option { label: "Suv", value: "suv" }
+        option { label: "Truck", value: "truck" }
+    }
+}
+````
+
+For text, we might use the `input` element:
+
+````rust
+let mut first_name = use_signal(|| "".to_string());
+rsx! {
+    input {
+        type: "text",
+        placeholder: "First Name…",
+
+        // Update the first_name signal on text input
+        oninput: move |e| first_name.set(e.value()),
+    }
+}
+````
+
+For forms, we might use a HashMap to hold the key-value pairs:
+
+````rust
+let mut values = use_signal(HashMap::new);
+
+rsx! {
+    form {
+        onsubmit: move |evt| {
+            // Prevent the default form submission navigation
+            evt.prevent_default();
+            values.set(evt.values());
+        },
+
+        label { for: "username", "Username" }
+        input { type: "text", name: "username" }
+    }
+}
+````
+
+Dioxus bridges the Rust-JavaScript boundary by adding ergonomic accessor methods on the `Event` object to make reading values from the DOM easier. These include:
+
+* A `.value()` method for input events to read the input contents
+* A `.values()` method for form events to read all the form values
+* A `.checked()` method on checkbox input events to read the `.checked` state
+* A `.files()` event to read any uploaded files
+* A `.key()` event to convert keydown events into a Rust `Key` enum
+* and many more methods!
+
+ > 
+ > We provide a large number of examples in the [Dioxus GitHub repository](https://github.com/DioxusLabs/dioxus/tree/main/examples). Be sure to also read the docs on [handling events in HTML](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Events).
+
+## Controlled vs Uncontrolled Inputs
+
+Dioxus provides two ways of handling the state of input elements:
+
+* **Uncontrolled mode**: the default where the input element handles its own state
+* **Controlled mode**: an alternative mode where you control the input element's state manually
+
+Controlled mode is useful if you plan to transform or programmatically modify the user's input.
+
+### Uncontrolled Inputs
+
+*Uncontrolled mode* is the default mode for input elements. In this mode, the input element itself manages its own state like the input value, cursor position, and focusing. We simply attach an event listener to the input and react to changes in the value:
+
+````rs@input_uncontrolled.rs
+pub fn App() -> Element {
+    rsx! {
+        form { onsubmit: move |event| { tracing::info!("Submitted! {event:?}") },
+            input { name: "name" }
+            input { name: "age" }
+            input { name: "date" }
+            input { r#type: "submit" }
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    input_uncontrolled::App {}
+}
+````
+
+````
+Submitted! UiEvent { data: FormData { value: "", values: {"age": "very old", "date": "1966", "name": "Fred"} } }
+````
+
+In this mode, we have no control over the actual value of the input. The user may enter any value and our code updates state in response.
+
+### Controlled Inputs
+
+*Controlled mode* as an alternative mode for input elements where you directly control the state of the input. If the user types invalid text in the input, you can reject it or overwrite it.
+
+To put an input element in controlled mode, we drive its `value` attribute directly:
+
+````rs@input_controlled.rs
+pub fn App() -> Element {
+    let mut name = use_signal(|| "bob".to_string());
+
+    rsx! {
+        input {
+            // we tell the component what to render
+            value: "{name().to_ascii_uppercase()}",
+            // and what to do when the value changes
+            oninput: move |event| name.set(event.value())
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    input_controlled::App {}
+}
+````
+
+Controlled inputs enable more control over the input element behavior. You can:
+
+* Transform the input as it's modified (e.g. to make sure it is upper case)
+* Validate the input, rejecting invalid inputs
+* Programmatically change the value (e.g. a "randomize" button that fills the input with nonsense)
+
+## Event Propagation
+
+When the user interacts with our app, their interactions might trigger multiple event listeners at once. In the simplest case, a `div` may contain a `button` - both with their own `onclick` listeners:
+
+![Multiple Listeners](/assets/07/multiple-listeners.png)
+
+In what order will the listeners fire? Event handling comes in two phases:
+
+* **Event Capturing**: Listeners are triggered as the event "descends" to the target.
+* **Event Bubbling**: Listeners are triggered as the event "bubbles" to the root.
+
+By default, Dioxus only captures the "bubbling" phase of the event, so the inner `button` will receive the `onclick` event before the `div`.
+
+![Bubbling Diagram](/assets/07/event-capturing.png)
+
+As the event bubbles to the root element (in this case, the document root), you have an opportunity to prevent any further listeners from being triggered. To stop the event from propagating upwards, you can call the `stop_propagation()` method on the event:
+
+````rs@event_nested.rs
+rsx! {
+    div { onclick: move |_event| {},
+        "outer"
+        button {
+            onclick: move |event| {
+                event.stop_propagation();
+            },
+            "inner"
+        }
+    }
+}
+````
+
+This ensures *only* the inner `button` will run its `onclick` handler - the `div` handler will not be triggered. This behavior can be useful when building advanced UI like drag-and-drop interactions and custom menus.
+
+ > 
+ > For more information about event propagation see [the MDN docs on event bubbling](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#event_bubbling)
+
+## Prevent Default
+
+Some events have a default behavior. For keyboard events, this might be entering the typed character. For mouse events, this might be selecting some text. For forms, this might be submitting the form and navigating the page.
+
+You can call the `prevent_default()` method on the event to stop this default behavior.
+
+````rs@event_prevent_default.rs
+rsx! {
+    a {
+        href: "https://example.com",
+        onclick: |evt| {
+            evt.prevent_default();
+            log!("link clicked")
+        },
+        "example.com"
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    event_prevent_default::AppDemo {}
+}
+````
+
+Event handlers will still be called, but the "default" behavior of the interaction will be cancelled. The `prevent_default()` method is frequently used in interactions like:
+
+* Capturing file drops
+* Preventing form navigations
+* Overriding the `a` link element behavior
+* Disallowing certain text input
+* Enabling drag-and-drop behavior for arbitrary elements
+
+ > 
+ > For more information about default behaviors, see the [MDN docs on preventDefault()](https://developer.mozilla.org/en-US/docs/Web/API/Event/preventDefault)
+
+## Downcasting to Native Events
+
+In some cases, the Dioxus `Event` type does not bridge enough of the Event's data. In these cases, we can directly access the platform-specific event type. Dioxus does not do this automatically since not all platforms share a consistent event interface with some platforms providing richer detail than others.
+
+To downcast the event, we can use `event.downcast::<T>()` where `T` is the type we are trying to downcast to. You'll mostly use this extension when building web applications to downcast into the underlying `web_sys` event:
+
+````rust
+rsx! {
+    button {
+        onclick: move |evt| {
+            let web_evt = evt.downcast::<web_sys::Event>().unwrap();
+            let target = web_evt.target().unwrap();
+            log!("target: {:?}", target);
+        },
+        "Click me!"
+    }
+}
+````
+
+## Asynchronous Handlers
+
+Event Handlers can either be synchronous or asynchronous. Dioxus automatically calls `spawn()` on the Futures produced by asynchronous event handlers:
+
+````rust
+rsx! {
+    button {
+        onclick: move |evt| async move {
+            let res = reqwest::get("https://dog.ceo/api/breeds/image/random/")
+                .await
+                .unwrap()
+                .json::<DogApi>()
+                .await;
+            log!("res: {:?}", res);
+        },
+        "Fetch a dog!"
+    }
+}
+````
+
+Dioxus won't cancel previous Tasks spawned by the onclick handler, so multiple rapid button clicks will start multiple concurrent fetches. Be careful to not mutate state in asynchronous handlers without synchronization first.
+
+## Handling files
+
+You can insert a file picker by using an input element of type `file`. This element supports the `multiple` attribute, to let you pick more files at the same time. You can select a folder by adding the `directory` attribute: Dioxus will map this attribute to browser specific attributes, because there is no standardized way to allow a directory to be selected.
+
+Extracting the selected files is a bit different from what you may typically use in Javascript.
+
+The `FormData` event contains a `files` field with data about the uploaded files. This field contains a `FileEngine` struct which lets you fetch the filenames selected by the user. This example saves the filenames of the selected files to a `Vec`:
+
+````rs@input_fileengine.rs
+pub fn App() -> Element {
+    let mut filenames: Signal<Vec<String>> = use_signal(Vec::new);
+    rsx! {
+        input {
+            // tell the input to pick a file
+            type: "file",
+            // list the accepted extensions
+            accept: ".txt,.rs",
+            // pick multiple files
+            multiple: true,
+            onchange: move |evt| {
+                for file in evt.files() {
+                    filenames.write().push(file.name());
+                }
+            }
+        }
+    }
+}
+````
+
+If you're planning to read the file content, you need to do it asynchronously, to keep the rest of the UI interactive. This example event handler loads the content of the selected files in an async closure:
+
+````rs@input_fileengine_async.rs
+onchange: move |evt| {
+    async move {
+        for file in evt.files() {
+            if let Ok(file) = file.read_string().await {
+                files_uploaded.write().push(file);
+            }
+        }
+    }
+}
+````
+
+Lastly, this example shows you how to select a folder, by setting the `directory` attribute to `true`.
+
+````rs@input_fileengine_folder.rs
+input {
+    type: "file",
+    // Select a folder by setting the directory attribute
+    directory: true,
+    onchange: move |evt| {
+        for file in evt.files() {
+            println!("{}", file.name());
+        }
+    }
+}
+````
+
+## Handler Props
+
+Sometimes, you might want to make a component that accepts an event handler. A simple example would be a `FancyButton` component, which accepts an `onclick` handler with the `EventHandler` type:
+
+````rs@event_handler_prop.rs
+#[derive(PartialEq, Clone, Props)]
+pub struct FancyButtonProps {
+    onclick: EventHandler<MouseEvent>,
+}
+
+pub fn FancyButton(props: FancyButtonProps) -> Element {
+    rsx! {
+        button {
+            class: "fancy-button",
+            onclick: move |evt| props.onclick.call(evt),
+            "Click me!"
+        }
+    }
+}
+````
+
+To actually call the event handler, you call it with the `.call()` method:
+
+````rs@event_handler_prop.rs
+onclick: move |evt| props.onclick.call(evt),
+````
+
+ > 
+ > Note: just like any other attribute, you can name the handlers anything you want! Any closure you pass in will automatically be turned into an `EventHandler`.
+
+## Custom Data
+
+Event Handlers are generic over the closure's first argument, so you can pass in any data, e.g:
+
+````rs@event_handler_prop.rs
+struct ComplexData(i32);
+
+#[derive(PartialEq, Clone, Props)]
+pub struct CustomFancyButtonProps {
+    onclick: EventHandler<ComplexData>,
+}
+
+pub fn CustomFancyButton(props: CustomFancyButtonProps) -> Element {
+    rsx! {
+        button {
+            class: "fancy-button",
+            onclick: move |_| props.onclick.call(ComplexData(0)),
+            "click me pls."
+        }
+    }
+}
+````
+
+The `EventHandler<T>` type is a subset of the base `Callback<Args, Ret>` type that allows you to return a value from the closure.
+
+## Returning a Value From an Event Handler
+
+If you want to accept a closure that returns a value, you can use the `Callback` type. The callback type accepts two generic arguments, `I`, the input type, and `O`, the output type. Just like `EventHandler`, `Callback` is automatically converted in props and can be easily copied anywhere in your component:
+
+````rs@event_handler_prop.rs
+#[derive(PartialEq, Clone, Props)]
+pub struct CounterProps {
+    modify: Callback<u32, u32>,
+}
+
+pub fn Counter(props: CounterProps) -> Element {
+    let mut count = use_signal(|| 1);
+
+    rsx! {
+        button {
+            onclick: move |_| count.set(props.modify.call(count())),
+            "double"
+        }
+        div { "count: {count}" }
+    }
+}
+````
+
+## Callbacks Carry the Runtime
+
+Many Dioxus runtime functions are "free functions" - you can freely call them without needing an explicit handle to the Dioxus runtime. This works by implicitly setting a thread-local called "current runtime", roughly equivalent to this pseudocode:
+
+````rust
+thread_local! {
+    static CURRENT_RUNTIME: Cell<Option<Runtime>> = Cell::new(None);
+}
+
+fn render_users_component(app: &Application) {
+    CURRENT_RUNTIME.set(app.runtime());
+    app.run_component();
+    CURRENT_RUNTIME.set(None);
+}
+````
+
+Whenever *your* code runs from within Dioxus, the runtime will always be set. However, plain closures do not automatically set the current runtime. Trying to call closures outside the app that reference state from within the app might cause a panic.
+
+Fortunately, the `EventHandler` and `Callback` types carry a handle to the Dioxus runtime, ensuring runtime methods succeed. When the callback is called, the closure sets the `CURRENT_RUNTIME` variable. This means you can pass the `EventHandler` and `Callback` types to APIs like file-system watchers and system IO where the Dioxus runtime is not usually active.
+# Async and Futures
+
+Not all actions complete immediately. Some actions, like a network request, require waiting for system input/output (IO). While waiting for network response, we want to provide status updates, add a loading spinner, and most importantly: avoid blocking the UI thread. Code that blocks the UI thread will prevent further user input, making the UI feel janky and unintuitive.
+
+Rust provides a built-in way of handling asynchronous work with its built-in async/await system. Dioxus provides a first-class integration with Rust's async/await system.
+
+## Future: Rust's Async Primitive
+
+The `Future` trait is the core of async Rust. A future represents a value that may not yet be ready. In other languages, this is sometimes called a *Promise* or *Task*. You can read more about Futures in the [Rust book](https://doc.rust-lang.org/book/ch17-00-async-await.html).
+
+We won't cover all the details of futures here, but there are a few important things to know before using them in Dioxus:
+
+* **Futures are lazy**: They do not do anything until you `await` them or `spawn` them.
+* **Futures are concurrent but not always parallel**: In Dioxus, all futures run on the main thread.
+* **Futures pause at await points**: You should not hold any locks across those await points.
+* **Futures can be cancelled before they complete**: Your futures need to be "cancel safe."
+
+Futures should be able to handle stopping at any time without panicking or leaving the application in an inconsistent state. They should also be careful not to run blocking operations that lock the main thread.
+
+The lifecycle of a future follows a consistent structure:
+
+* A callback calls an `async fn` or an async closure
+* The async function returns a Future
+* A `dioxus::spawn()` call submits the future to the Dioxus runtime, returning a `Task`
+* The Future is polled in the background until it returns a `Ready` value
+* If the Future is cancelled, Rust calls its `Drop` implementation
+
+![Future Diagram](/assets/07/future-diagram.png)
+
+## Lazy futures
+
+Unlike JavaScript's Promises, Rust futures are *lazy*. This means that they do not start executing until you call `.await` or start them in the background with `spawn`.
+
+This Future will never log "Ran" because it is never awaited:
+
+````rs@async_crash_course.rs
+let future = async {
+    println!("Ran");
+};
+````
+
+To run this Future, you can either await it in another Future or spawn it:
+
+````rs@async_crash_course.rs
+let future = async {
+    println!("Ran");
+};
+let other_future = async {
+    future.await;
+    println!("Ran Other");
+};
+spawn(other_future);
+````
+
+You can stop polling a Future any time or customize how a Future is polled using the [futures](https://crates.io/crates/futures) crate.
+
+## Running Futures with `spawn`
+
+The Dioxus [`spawn`](https://docs.rs/dioxus/0.7/dioxus/prelude/fn.spawn.html) function starts running a Future in the background and returns a `Task` that you can use to control the Future. It is the basis of all other async hooks in dioxus. You can use spawn to execute one-off tasks in event handlers, hooks or other Futures:
+
+````rs@asynchronous.rs
+let mut response = use_signal(|| "Click to start a request".to_string());
+
+rsx! {
+    button {
+        onclick: move |_| {
+            response.set("...".into());
+            // Spawn will start a task running in the background
+            spawn(async move {
+                let resp = reqwest::Client::new()
+                    .get("https://dioxuslabs.com")
+                    .send()
+                    .await;
+
+                if resp.is_ok() {
+                    response.set("dioxuslabs.com responded!".into());
+                } else  {
+                    response.set("failed to fetch response!".into());
+                }
+            });
+        },
+        "{response}"
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    asynchronous::SpawnButton {}
+}
+````
+
+Since spawning in event handlers is very common, Dioxus provides a more concise syntax. If you return a Future from an event handler, Dioxus will automatically `spawn` it:
+
+````rs@asynchronous.rs
+let mut response = use_signal(|| "Click to start a request".to_string());
+
+rsx! {
+    button {
+        // Async closures passed to event handlers are automatically spawned
+        onclick: move |_| async move {
+            response.set("...".into());
+            let resp = reqwest::Client::new()
+                .get("https://dioxuslabs.com")
+                .send()
+                .await;
+
+            if resp.is_ok() {
+                response.set("dioxuslabs.com responded!".into());
+            } else  {
+                response.set("failed to fetch response!".into());
+            }
+        },
+        "{response}"
+    }
+}
+````
+
+## Running Futures with `use_action`
+
+You'll frequently want to spawn an action in response to some user input and store the result. For rapid user input, you'll also want to cancel previous actions to prevent race conditions. Dioxus provides a built-in hook that simplifies this pattern with a function called `use_action`.
+
+The `use_action` hook combines signals and tasks into a single unified interface. Simply call `use_action` with a callback that returns a `Result<T>`:
+
+````rust
+// Whenever this action is called, it will re-run the future and return the result.
+let mut breed = use_action(move |breed| async move {
+    #[derive(Deserialize, Serialize, Debug, PartialEq)]
+    struct DogApi {
+        message: String,
+    }
+
+    reqwest::get(format!("https://dog.ceo/api/breed/{breed}/images/random"))
+        .await
+        .unwrap()
+        .json::<DogApi>()
+        .await
+});
+````
+
+You can call the action with `.call()`:
+
+````rust
+rsx! {
+    button {
+        onclick: move |_| {
+            breed.call(cur_breed.clone());
+        },
+        "{cur_breed}"
+    }
+}
+````
+
+And then, elsewhere in your component, you can read the result with `.value()`:
+
+````rust
+match breed.value() {
+    Some(Ok(res)) => rsx! {
+        img { src: "{res.read().message}" }
+    },
+    Some(Err(_e)) => rsx! {
+        div { "Failed to fetch a dog, please try again." }
+    },
+    None => rsx! {
+        div { "Click the button to fetch a dog!" }
+    },
+}
+````
+
+If an action is pending, calling `.call()` will cancel the current action's `Task`, replacing it with the new task.
+
+## Automatic Cancellation
+
+The Future you pass to the `spawn` will automatically be cancelled when the component is unmounted. If you need to keep the Future running until it is finished, you can use [`spawn_forever`](https://docs.rs/dioxus/0.7/dioxus/prelude/fn.spawn_forever.html) instead:
+
+````rs@asynchronous.rs
+// Spawn will start a task running in the background which will not be
+// cancelled when the component is unmounted
+dioxus::dioxus_core::spawn_forever(async move {
+   let resp = reqwest::Client::new()
+       .get("https://dioxuslabs.com")
+       .send()
+       .await;
+
+   if resp.is_ok() {
+       response.set("dioxuslabs.com responded!".into());
+   } else  {
+       response.set("failed to fetch response!".into());
+   }
+});
+````
+
+## Manual Cancellation
+
+If you want to cancel your future manually, you can call the `cancel` method on the `Task` returned by `spawn` or `spawn_forever`. This will stop the future from running and drop it.
+
+````rs@asynchronous.rs
+let mut response = use_signal(|| "Click to start a request".to_string());
+let mut task = use_signal(|| None);
+
+rsx! {
+    button {
+        onclick: move |_| {
+            response.set("...".into());
+            // Spawn will start a task running in the background
+            let new_task = spawn(async move {
+                let resp = reqwest::Client::new()
+                    .get("https://httpbin.org/delay/1")
+                    .send()
+                    .await;
+
+                if resp.is_ok() {
+                    response.set("httpbin.org responded!".into());
+                } else  {
+                    response.set("failed to fetch response!".into());
+                }
+            });
+            task.set(Some(new_task));
+        },
+        "{response}"
+    }
+    button {
+        onclick: move |_| {
+            // If the task is running, cancel it
+            if let Some(t) = task.take() {
+                t.cancel();
+                response.set("Request cancelled".into());
+            } else {
+                response.set("No request to cancel".into());
+            }
+        },
+        "Cancel Request"
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    asynchronous::CancelButton {}
+}
+````
+
+## Cancel Safety
+
+Async tasks can be cancelled at any time. The futures you spawn in dioxus may be canceled:
+
+1. When the component they were spawned in is unmounted.
+1. When the task is cancelled manually using the `cancel` method on the `Task` returned by `spawn` or `spawn_forever`.
+1. When a resource restarts
+
+This means that your futures need to be cancel safe. A cancel-safe future is one that can be stopped at any await point without causing issues. For example, if you are using a global state, you need to ensure that the state is restored when the future is dropped:
+
+````rs@asynchronous.rs
+static RESOURCES_RUNNING: GlobalSignal<HashSet<String>> = Signal::global(|| HashSet::new());
+let mut breed = use_signal(|| "hound".to_string());
+let dogs = use_resource(move || async move {
+    // Modify some global state
+    RESOURCES_RUNNING.write().insert(breed());
+
+    // Wait for a future to finish. The resource may cancel
+    // without warning if breed is changed while the future is running. If
+    // it does, then the breed pushed to RESOURCES_RUNNING will never be popped
+    let response = reqwest::Client::new()
+        .get(format!("https://dog.ceo/api/breed/{breed}/images"))
+        .send()
+        .await?
+        .json::<BreedResponse>()
+        .await;
+
+    // Restore some global state
+    RESOURCES_RUNNING.write().remove(&breed());
+
+    response
+});
+````
+
+````inject-dioxus
+DemoFrame {
+    asynchronous::NotCancelSafe {}
+}
+````
+
+You can mitigate issues with cancellation by cleaning up resources manually. For example, by making sure global state is restored when the future is dropped:
+
+````rs@asynchronous.rs
+static RESOURCES_RUNNING: GlobalSignal<HashSet<String>> = Signal::global(|| HashSet::new());
+let mut breed = use_signal(|| "hound".to_string());
+let dogs = use_resource(move || async move {
+    // Modify some global state
+    RESOURCES_RUNNING.write().insert(breed());
+
+    // Automatically restore the global state when the future is dropped, even if
+    // isn't finished
+    struct DropGuard(String);
+    impl Drop for DropGuard {
+        fn drop(&mut self) {
+            RESOURCES_RUNNING.write().remove(&self.0);
+        }
+    }
+    let _guard = DropGuard(breed());
+
+    // Wait for a future to finish. The resource may cancel
+    // without warning if breed is changed while the future is running. If
+    // it does, then it will be dropped and the breed will be popped
+    reqwest::Client::new()
+        .get(format!("https://dog.ceo/api/breed/{breed}/images"))
+        .send()
+        .await?
+        .json::<BreedResponse>()
+        .await
+});
+````
+
+````inject-dioxus
+DemoFrame {
+    asynchronous::CancelSafe {}
+}
+````
+
+Async methods will often mention if they are cancel safe in their documentation. Generally, most futures you'll encounter when building Dioxus apps *are* cancel safe.
+
+## Concurrency vs Parallelism
+
+Concurrency and parallelism are often confused, but the difference has important implications for how you write your applications. Multiple concurrent tasks may be in progress at the same time, but they don't necessarily run at the same time. In Rust, futures are concurrent. They can yield control to other tasks at await points, allowing other tasks to run while they wait for a value to become ready.
+
+![concurrent](/assets/07/async_concurrent.png)
+
+In contrast, multiple parallel tasks can run at exactly the same time on different threads. In Rust, you can spawn parallel tasks using the `std::thread` module or libraries like `rayon`.
+
+![parallel](/assets/07/async_parallel.png)
+
+Rust has multiple different async runtimes like `tokio` or `wasm-bindgen-futures`. Dioxus provides its own async runtime built on top of a platform specific runtime for each renderer. On desktop and mobile, we use Tokio to progress futures.
+
+The Dioxus runtime is single threaded which means futures can use `!Send` types, but they need to be careful to never block the thread.
+
+````rs@async_crash_course.rs
+spawn(async {
+    // This will block the main thread and make the UI unresponsive.
+    // Do not do this!
+    solve_for_the_answer_to_life_and_everything();
+    println!("Ran");
+});
+````
+
+If you have an expensive task you need to run, you should spawn it on a separate thread using [`std::thread::spawn`](https://doc.rust-lang.org/std/thread/fn.spawn.html) on desktop/mobile or use a [web worker](https://docs.rs/gloo-worker/latest/gloo_worker/) on the web. This will allow the main thread to continue running and keep the UI responsive.
+
+````rs@async_crash_course.rs
+std::thread::spawn(|| {
+    // This will run on a separate thread and not block the main thread.
+    solve_for_the_answer_to_life_and_everything();
+    println!("Ran");
+});
+````
+
+## Handling locks
+
+Futures will pause execution at `.await` points, allowing other tasks to run until the future is ready to continue. You should never hold `read`/`write` locks across `.await` points because another async task could try to use the value while the future is paused and the lock is still open. Instead, you need to ensure that locks are only held for the duration of the critical section and released before awaiting.
+
+![async locks](/assets/07/async_lock_await.png)
+
+## Long-lived Futures
+
+In some apps, you might want to include long-lived tasks that exist for the lifetime of the app. This might be a background sync engine or a thread listening to some system IO. For these use cases, we provide the `spawn_forever` function. This works exactly the same as `spawn`, but instead of spawning the future under the *current* component, the future is attached to the *root* component. Because the root component is never unmounted, the task continues until the app is closed.
+
+````rust
+use_hook(|| spawn_forever(async move {
+    println!("Starting a background task!");
+}));
+````
+
+This function does have its drawbacks and is meant for advanced use cases. If any resources like a Signal are used in this future, they must *also* be valid for the lifetime of the app. Using Signals after they have been dropped will lead to a panic and crash your app!
+# Data Fetching
+
+One of the most common asynchronous operations in applications is making network requests. This guide will cover how to fetch data in Dioxus, how to avoid waterfalls, and using libraries to manage caching and invalidating requests.
+
+The hooks and techniques we cover here are built on top of the Future and Signal primitives.
+
+## Library Dependencies
+
+While Dioxus does not provide a built-in HTTP client, you can use the popular [reqwest](https://docs.rs/reqwest/latest/reqwest/) library to make asynchronous network requests. We will be using the reqwest library throughout the examples in this page. Before we start, make sure to add the `reqwest` and `serde` libraries to your `Cargo.toml`:
+
+````sh
+cargo add reqwest --features json
+cargo add serde --features derive
+````
+
+Your Cargo.toml should have the reqwest and serde libraries:
+
+````toml
+[dependencies]
+# ... dioxus and other dependencies
+reqwest = { version = "*", features = ["json"] }
+serde = { version = "1", features = ["derive"] }
+````
+
+We are planning on eventually integrating a library like [dioxus-query](https://crates.io/crates/dioxus-query) directly into Dioxus for better integration with the app router.
+
+## Requests from Event Handlers
+
+The simplest way to request data is simply by attaching an async closure to an EventHandler.
+
+````rust
+#[derive(serde::Deserialize)]
+struct DogApi {
+    message: String,
+}
+
+let mut img_src = use_signal(|| "image.png".to_string());
+
+let fetch_new = move |_| async move {
+    let response = reqwest::get("https://dog.ceo/api/breeds/image/random")
+        .await
+        .unwrap()
+        .json::<DogApi>()
+        .await
+        .unwrap();
+
+    img_src.set(response.message);
+};
+
+rsx! {
+    img { src: img_src }
+    button { onclick: fetch_new, "Fetch a new dog!" }
+}
+````
+
+Whenever the user clicks the button, the `fetch_new` closure is fired, a new Future is spawned, and the network request is made. When the response is complete, we set `img_src` to the return value.
+
+Unfortunately, data fetching is not always quite this simple. If the user rapidly presses the fetch button, multiple requests will be made simultaneously, and the image source will overwritten multiple times. To mitigate this, we can add a "loading" Signal to prevent multiple requests:
+
+````rust
+let mut img_src = use_signal(|| "image.png".to_string());
+let mut loading = use_signal(|| false);
+
+let fetch_new = move |_| async move {
+    if loading() {
+        return;
+    }
+
+    loading.set(true);
+    let response = reqwest::get("https://dog.ceo/api/breeds/image/random")
+        .await
+        .unwrap()
+        .json::<DogApi>()
+        .await
+        .unwrap();
+
+    img_src.set(response.message);
+    loading.set(false);
+};
+
+// ...
+````
+
+Manually handling edge cases of data loading can be tedious, so we've built a more general solution for futures with `use_resource`.
+
+## Asynchronous State with `use_resource`
+
+The [`use_resource`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_resource.html) hook can be used to *derive* asynchronous state. This function accepts an async closure that returns a Future. As the future is polled, `use_resource` tracks `.read()` calls of any contained Signals. If another action calls `.write()` on the tracked signals, the `use_resource` immediately restarts.
+
+````rs@asynchronous.rs
+let mut breed = use_signal(|| "hound".to_string());
+let dogs = use_resource(move || async move {
+    reqwest::Client::new()
+        // Since breed is read inside the async closure, the resource will subscribe to the signal
+        // and rerun when the breed is written to
+        .get(format!("https://dog.ceo/api/breed/{breed}/images"))
+        .send()
+        .await?
+        .json::<BreedResponse>()
+        .await
+});
+
+rsx! {
+    input {
+        value: "{breed}",
+        // When the input is changed and the breed is set, the resource will rerun
+        oninput: move |evt| breed.set(evt.value()),
+    }
+
+    div {
+        display: "flex",
+        flex_direction: "row",
+        // You can read resource just like a signal. If the resource is still
+        // running, it will return None
+        if let Some(response) = &*dogs.read() {
+            match response {
+                Ok(urls) => rsx! {
+                    for image in urls.iter().take(3) {
+                        img {
+                            src: "{image}",
+                            width: "100px",
+                            height: "100px",
+                        }
+                    }
+                },
+                Err(err) => rsx! { "Failed to fetch response: {err}" },
+            }
+        } else {
+            "Loading..."
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    asynchronous::UseResource {}
+}
+````
+
+The `use_resource` hook might look similar to the `use_memo` hook. Unlike `use_memo`, the resource's output is not memoized with `PartialEq`. That means any components/reactive hooks that read the output will rerun if the future reruns even if the value it returns is the same:
+
+````rs@asynchronous.rs
+let mut number = use_signal(|| 0);
+
+// Resources rerun any time their dependencies change. They will
+// rerun any reactive scopes that read the resource when they finish
+// even if the value hasn't changed
+let halved_resource = use_resource(move || async move { number() / 2 });
+
+log!("Component reran");
+
+rsx! {
+    button {
+        onclick: move |_| number += 1,
+        "Increment"
+    }
+    p {
+        if let Some(halved) = halved_resource() {
+            "Halved: {halved}"
+        } else {
+            "Loading..."
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    asynchronous::UseResourceDemo {}
+}
+````
+
+ > 
+ > Note: The future you pass to `use_resource` must be cancel safe. Cancel safe futures are futures that can be stopped at any await point without causing causing issues. For example, this task is not cancel safe:
+ > 
+ > ````rs@asynchronous.rs
+ > static RESOURCES_RUNNING: GlobalSignal<HashSet<String>> = Signal::global(|| HashSet::new());
+ > let mut breed = use_signal(|| "hound".to_string());
+ > let dogs = use_resource(move || async move {
+ >     // Modify some global state
+ >     RESOURCES_RUNNING.write().insert(breed());
+ > 
+ >     // Wait for a future to finish. The resource may cancel
+ >     // without warning if breed is changed while the future is running. If
+ >     // it does, then the breed pushed to RESOURCES_RUNNING will never be popped
+ >     let response = reqwest::Client::new()
+ >         .get(format!("https://dog.ceo/api/breed/{breed}/images"))
+ >         .send()
+ >         .await?
+ >         .json::<BreedResponse>()
+ >         .await;
+ > 
+ >     // Restore some global state
+ >     RESOURCES_RUNNING.write().remove(&breed());
+ > 
+ >     response
+ > });
+ > ````
+ > 
+ > ````inject-dioxus
+ > DemoFrame {
+ >     asynchronous::NotCancelSafe {}
+ > }
+ > ````
+ > 
+ > It can be fixed by making sure the global state is restored when the future is dropped:
+ > 
+ > ````rs@asynchronous.rs
+ > static RESOURCES_RUNNING: GlobalSignal<HashSet<String>> = Signal::global(|| HashSet::new());
+ > let mut breed = use_signal(|| "hound".to_string());
+ > let dogs = use_resource(move || async move {
+ >     // Modify some global state
+ >     RESOURCES_RUNNING.write().insert(breed());
+ > 
+ >     // Automatically restore the global state when the future is dropped, even if
+ >     // isn't finished
+ >     struct DropGuard(String);
+ >     impl Drop for DropGuard {
+ >         fn drop(&mut self) {
+ >             RESOURCES_RUNNING.write().remove(&self.0);
+ >         }
+ >     }
+ >     let _guard = DropGuard(breed());
+ > 
+ >     // Wait for a future to finish. The resource may cancel
+ >     // without warning if breed is changed while the future is running. If
+ >     // it does, then it will be dropped and the breed will be popped
+ >     reqwest::Client::new()
+ >         .get(format!("https://dog.ceo/api/breed/{breed}/images"))
+ >         .send()
+ >         .await?
+ >         .json::<BreedResponse>()
+ >         .await
+ > });
+ > ````
+ > 
+ > ````inject-dioxus
+ > DemoFrame {
+ >     asynchronous::CancelSafe {}
+ > }
+ > ````
+ > 
+ > Async methods will often mention if they are cancel safe in their documentation.
+
+## Asynchronous State with `use_loader`
+
+The `use_resource` hook is great for loading arbitrary values. However, working with resources that return results can be a little cumbersome. In some cases, the `use_loader` hook is a better choice.
+
+The `use_loader` hook is designed to work with reactive futures that return `Result<T, E>`. Instead of returning a `Resource<T>`, like `use_resource`, the `use_loader` hook *actually* returns a `Result<Loader<T>, Loading>`. The `Loading` return type tightly integrates with Error Boundaries and Suspense - both of which are very useful in server-side-rendering (SSR).
+
+Because `use_loader` returns a Result, you can use the `?` syntax to early return if the resource is pending or errored:
+
+````rust
+// Fetch the list of breeds from the Dog API, using the `?` syntax to suspend or throw errors
+let breed_list = use_loader(move || async move {
+    reqwest::get("https://dog.ceo/api/breeds/list/all")
+        .await?
+        .json::<ListBreeds>()
+        .await
+})?;
+````
+
+Generally, we recommend using `use_resource` when doing client-side fetching and `use_loader` when doing hybrid client/server fetching.
+
+## Avoiding Waterfalls
+
+One common issue when fetching data is the "waterfall" effect, where requests run sequentially. This can lead to slow loading times and a poor user experience. To avoid waterfalls, you can hoist your data loading logic to a higher level in your component tree and avoid returning early before unrelated requests.
+
+Lets look at at an app that causes a waterfall effect:
+
+````rs@data_fetching.rs
+fn fetch_dog_image(
+    breed: impl Display,
+) -> impl Future<Output = dioxus::Result<String, CapturedError>> {
+    async move {
+        let response = reqwest::get(format!("https://dog.ceo/api/breed/{breed}/images/random"))
+            .await?
+            .json::<DogApi>()
+            .await?;
+        Ok(response.message)
+    }
+}
+
+#[component]
+fn DogView() -> Element {
+    let poodle_img = use_resource(|| fetch_dog_image("poodle"));
+
+    let poodle_img = match poodle_img() {
+        Some(Ok(src)) => src,
+        _ => {
+            return rsx! {
+                p { "Loading or error..." }
+            };
+        }
+    };
+
+    let golden_retriever_img = use_resource(|| fetch_dog_image("golden retriever"));
+
+    let golden_retriever_img = match golden_retriever_img() {
+        Some(Ok(src)) => src,
+        _ => {
+            return rsx! {
+                p { "Loading or error..." }
+            };
+        }
+    };
+
+    let pug_img = use_resource(|| fetch_dog_image("pug"));
+
+    let pug_img = match pug_img() {
+        Some(Ok(src)) => src,
+        _ => {
+            return rsx! {
+                p { "Loading or error..." }
+            };
+        }
+    };
+
+    rsx! {
+        div {
+            h1 { "Dog Images" }
+            img { src: "{poodle_img}" }
+            img { src: "{golden_retriever_img}" }
+            img { src: "{pug_img}" }
+        }
+    }
+}
+````
+
+In this example, we return early from the component when any of the requests are still loading. The request for the golden retriever and pug images will not start until the poodle image is loaded, causing a waterfall effect.
+
+![waterfall effect](/assets/07/waterfall_effect.png)
+
+We can avoid this issue by moving all of the early returns after the data fetching for all three images has started. This way, all requests will start at the same time which means they can execute in parallel:
+
+````rs@data_fetching.rs
+let poodle_img = use_resource(|| fetch_dog_image("poodle"));
+let golden_retriever_img = use_resource(|| fetch_dog_image("golden retriever"));
+let pug_img = use_resource(|| fetch_dog_image("pug"));
+
+let poodle_img = match poodle_img() {
+    Some(Ok(src)) => src,
+    _ => {
+        return rsx! {
+            p { "Loading or error..." }
+        };
+    }
+};
+let golden_retriever_img = match golden_retriever_img() {
+    Some(Ok(src)) => src,
+    _ => {
+        return rsx! {
+            p { "Loading or error..." }
+        };
+    }
+};
+let pug_img = match pug_img() {
+    Some(Ok(src)) => src,
+    _ => {
+        return rsx! {
+            p { "Loading or error..." }
+        };
+    }
+};
+
+rsx! {
+    div {
+        h1 { "Dog Images" }
+        img { src: "{poodle_img}" }
+        img { src: "{golden_retriever_img}" }
+        img { src: "{pug_img}" }
+    }
+}
+````
+
+![no waterfall effect](/assets/07/no_waterfall_effect.png)
+
+## Organizing Data Fetching
+
+While it might be tempting to place `use_resource` calls *everywhere* in your app, we strongly recommend limiting yourself to just a few sources of data fetching. It is generally easier to reason about centralized loading states rather than many fragmented sources.
+
+As we add more sources of data fetching, we also add a larger combination of loading states. If possible, it's better to load a users's "name" and "id" in *one* request, rather than two.
+
+## Libraries for Data Fetching
+
+`use_resource` is a great way to fetch data in dioxus, but it can be cumbersome to manage complex data fetching scenarios. Libraries like [Dioxus query](https://docs.rs/dioxus-query/latest/dioxus_query/) provide more advanced features for data fetching, such as caching, invalidation, and polling. We won't cover the api of these libraries in detail here, but you can check out the [dioxus awesome](https://dioxuslabs.com/awesome/) list for more libraries that can help you with data fetching.
+# Effects and Memos
+
+Signals provide a foundation for mutable state in Dioxus apps. Calls to `.read()` subscribe reactive scopes and calls to `.write()` queue side-effects.
+
+However, sometimes we want to run *our own* side-effects when a Signal's value changes. Other times, we want to isolate reactive scopes such that changes to a signal do not automatically queue a component to be re-rendered. In these cases, we reach for Memos with `use_memo` and Effects with `use_effect`.
+
+## Multiple Reactive Scopes
+
+To understand Effects and Memos, we need to first understand that a single Signal (or other reactive value) can be read in multiple reactive scopes simultaneously. For instance, a signal may be shared among several components via props. Each component that calls `.read()` on the signal value is automatically subscribed to any changes of the signal's value. When the signal value changes, it runs the re-render side-effect.
+
+Effects and Memos allow us to observe changes in reactive values without re-rendering components. We can isolate smaller units of reactivity with memos and then queue our own side-effects with effects.
+
+![Multiple Readers](/assets/07/multiple-scopes.png)
+
+Memos implement the `Readable` trait (but not the Writable trait!) and thus implement the same ergonomic extensions as signals. Both Memos and Effects are `Copy` and have the same lifecycle and Drop semantics as signals.
+
+## Derived State with Memo
+
+`use_memo` is a reactive primitive that lets you derive state from any tracked value. It takes a closure that computes the new state and returns a tracked value that contains the current state of the memo. When a dependency of the memo changes, the memo will rerun, and a new value will be calculated.
+
+The value returned from the closure will only cause the memo's value to update - and thus any side-effects - when they are not equal, determined by the `PartialEq` between the old and new value.
+
+````rs@reactivity.rs
+fn Memo() -> Element {
+    let mut count = use_signal(|| 0);
+
+    // use_memo creates a tracked value that is derived from count
+    // Since we read count inside the closure, it becomes a dependency of the memo
+    // Whenever count changes, the memo will rerun
+    let half_count = use_memo(move || count() / 2);
+
+    use_effect(move || {
+        // half_count is itself a tracked value
+        // When we read half_count, it becomes a dependency of the effect
+        // and the effect will rerun when half_count changes
+        log!("{half_count}");
+    });
+
+    rsx! {
+        button { onclick: move |_| count += 1, "Increment" }
+
+        div { "Count is {count}" }
+        div { "Half count is {half_count}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    reactivity::MemoDemo {}
+}
+````
+
+Memos can be useful to perform expensive computations outside the component's reactive scope, preventing re-renders when the inputs change. In this example, by performing our computation *inside* the memo, we prevent the component from re-rendering when either `loading` or `loading_text` changes. Instead, the component will only re-render when the computed memo value changes.
+
+````rust
+let mut loading = use_signal(|| false);
+let mut loading_text = use_signal(|| "loading".to_string());
+
+let subheading = use_memo(move || {
+    if loading() && loading_text() == "loading" {
+        return "The state is loading";
+    }
+
+    "The state is not loading"
+});
+
+rsx! {
+    h1 { "{subheading}" }
+}
+````
+
+## Derived Elements
+
+The `use_memo` hook is particularly powerful. In addition to primitive values, it can even memoize `Element` objects! We can break up large components into a series of smaller memos for a performance boost.
+
+In practice, you won't need to frequently use Element memoization, but it can be useful. Most commonly, we can transform the result of some expensive computation directly into an Element without needing to store the intermediate value:
+
+````rust
+let mut loading_text = use_signal(|| "loading".to_string());
+
+let loading_ui = use_memo(move || {
+    let num_chars = loading_text.read().chars().count();
+    rsx! { "there are {num_chars} characters!" }
+});
+
+rsx! {
+    h1 { "Demo" }
+    {loading_ui}
+}
+````
+
+Astute readers will recognize that memoized UI and components are essentially the same concept - components are simply functions of memoized state that return an Element.
+
+## Running Side-Effects
+
+By default, whenever a Tracked value changes, any reactive scopes observing the value with `.read()` will run side-effects. The classic example is a component: when a signal value changes, the component queues a side-effect that re-renders the component.
+
+![Component renders are effects](/assets/07/component-effect.png)
+
+We can attach our own side-effects to Signals and Memos using the `use_effect` hook. It creates a closure that is run any time a tracked value that is run inside the closure changes.
+
+Any value you read inside the closure will become a dependency of the effect. If the value changes, the effect will rerun.
+
+````rs@reactivity.rs
+fn Effect() -> Element {
+    // use_signal creates a tracked value called count
+    let mut count = use_signal(|| 0);
+
+    use_effect(move || {
+        // When we read count, it becomes a dependency of the effect
+        let current_count = count();
+        // Whenever count changes, the effect will rerun
+        log!("{current_count}");
+    });
+
+    rsx! {
+        button { onclick: move |_| count += 1, "Increment" }
+
+        div { "Count is {count}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    reactivity::EffectDemo {}
+}
+````
+
+## Prefer Actions over Side-Effects
+
+You might be wondering: "why should I ever run side-effects?" And, indeed, they should not be a frequently used tool in your toolbox. Side-effects can be difficult to reason about and are frequently misused when an action should be preferred.
+
+The classic example of a side-effect is to synchronize UI state with some external state. For example, we might have a `Title {}` component that sets the window's title whenever the title changes:
+
+````rust
+fn Title() -> Element {
+    let mut text = use_signal(|| "");
+
+    // attach an effect to modify the document title whenever title changes
+    use_effect(move || {
+        window().document().set_title(text());
+    });
+
+    rsx! {
+        input {
+            oninput: move |e| text.set(e.value()),
+            placeholder: "Set the document title"
+        }
+    }
+}
+````
+
+This is a valid use case for side-effects. Dioxus guarantees side-effects will be run *after* the UI has been painted to the screen. If we instead set the document title from the oninput handler, another change in state during the same step might cause the `Title {}` component to be unmounted. In this case, the document title will have been set even though the `Title {}` component is no longer present.
+
+However, some actions should *not* be effects. Effects are widely over-used in React and the source of many state headaches. If you can be reasonably sure that the `Title {}` component won't be unmounted, then it is better to set the document title directly in the handler:
+
+````rust
+fn Title() -> Element {
+    rsx! {
+        input {
+            oninput: move |e| {
+                window().document().set_title(e.value())
+            },
+            placeholder: "Set the document title"
+        }
+    }
+}
+````
+
+## Opting Out of Subscriptions
+
+In some situations, you may need to read a reactive value without subscribing to it. You can use the `peek` method to get a reference to the inner value without registering the value as a dependency of the current reactive context:
+
+````rs@reactivity.rs
+fn Peek() -> Element {
+    let mut count = use_signal(|| 0);
+
+    // The toggle signal is a tracked value
+    let mut toggle = use_signal(|| false);
+
+    use_effect(move || {
+        // When we read count, it becomes a dependency of the effect
+        let current_count = count();
+        log!("current_count is {current_count}");
+
+        if current_count % 4 == 0 {
+            // We peek at the value of toggle instead of reading it,
+            // so it does not become a dependency
+            let current_toggle = *toggle.peek();
+            // We didn't subscribe to toggle, so this will not cause
+            // the effect to rerun forever
+            toggle.set(!current_toggle);
+            log!("flipped toggle to {toggle}");
+        }
+    });
+
+    rsx! {
+        button { onclick: move |_| count += 1, "Change Signal" }
+
+        div { "Count is {count}" }
+        div { "Toggle is {toggle}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    reactivity::PeekDemo {}
+}
+````
+
+## Working with Untracked State
+
+Most of the state in your app will be tracked values. All built in hooks return tracked values, and we encourage custom hooks to do the same. However, there are times when you need to work with untracked state. For example, you may receive a raw untracked value in props. When you read an untracked value inside a reactive context, it will not subscribe to the value:
+
+````rs@reactivity.rs
+fn Component() -> Element {
+    let mut count = use_signal(|| 0);
+
+    rsx! {
+        button { onclick: move |_| count += 1, "Change Signal" }
+
+        Count { count: count() }
+    }
+}
+
+// The count reruns the component when it changes, but it is not a tracked value
+#[component]
+fn Count(count: i32) -> Element {
+    // When you read count inside the memo, it does not subscribe to the count signal
+    // because the value is not reactive
+    let double_count = use_memo(move || count * 2);
+
+    rsx! {
+        div { "Double count: {double_count}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    reactivity::NonReactiveDemo {}
+}
+````
+
+You can start tracking raw state with the `use_reactive` hook. This hook takes a tuple of dependencies and returns a reactive closure. When the closure is called in a reactive context, it will track subscribe to the dependencies and rerun the closure when the dependencies change.
+
+````rs@reactivity.rs
+#[component]
+fn Count(count: i32) -> Element {
+    // You can manually track a non-reactive value with the use_reactive hook
+    let double_count = use_memo(
+        // Use reactive takes a tuple of dependencies and returns a reactive closure
+        use_reactive!(|(count,)| count * 2),
+    );
+
+    rsx! {
+        div { "Double count: {double_count}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    reactivity::UseReactiveDemo {}
+}
+````
+
+## Making Props Reactive
+
+To avoid losing reactivity with props, we recommend you wrap any props you want to track in a `ReadSignal`. Dioxus will automatically convert `T` into `ReadSignal<T>` when you pass props to the component. This will ensure your props are tracked and rerun any state you derive in the component:
+
+````rs@reactivity.rs
+// You can track props by wrapping the type in a ReadOnlySignal
+// Dioxus will automatically convert T into ReadOnlySignal<T> when you pass
+// props to the component
+#[component]
+fn Count(count: ReadOnlySignal<i32>) -> Element {
+    // Then when you read count inside the memo, it subscribes to the count signal
+    let double_count = use_memo(move || count() * 2);
+
+    rsx! {
+        div { "Double count: {double_count}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    reactivity::MakingPropsReactiveDemo {}
+}
+````
+# Hoisting State
+
+You now have enough Dioxus knowledge to build large and complex apps! As your apps scale in size, you might want to refactor large components into a collection of smaller components. Alternatively, you might add a new component that needs to access state from a sibling component.
+
+In these cases, we need to "lift" up shared state to the nearest common ancestor. This technique of lifting common state up the tree is called *hoisting*.
+
+![Hoisting State](/assets/07/hoisting-state.png)
+
+## Hoisting Signals
+
+The most common items to hoist are signals and local state. As your apps grow in size, we split larger components into smaller components. However, your smaller child components still need to access the same state. In these cases, we pass state down the tree.
+
+We might start with a larger component that combines multiple sources of state - in this case, a user's name, email, and some validation in a Memo:
+
+````rust
+#[component]
+fn EmailAndName() -> Element {
+    let mut name = use_signal(|| "name".to_string());
+    let mut email = use_signal(|| "email".to_string());
+    let is_valid = use_memo(move || validate_name_and_email(name, email))
+    rsx! {
+        if !is_valid() { "Invalid name or email" }
+        input { oninput: move |e| name.set(e.value()) }
+        input { oninput: move |e| email.set(e.value()) }
+    }
+}
+````
+
+We might want to split out the validation UI into its own component. In this case, we can move the `Validator` markup into its own child component:
+
+````rust
+#[component]
+fn EmailAndName() -> Element {
+    let mut name = use_signal(|| "name".to_string());
+    let mut email = use_signal(|| "email".to_string());
+    rsx! {
+        Validator { name, email }
+        input { oninput: move |e| name.set(e.value()) }
+        input { oninput: move |e| email.set(e.value()) }
+    }
+}
+
+#[component]
+fn Validator(name: Signal<String>, email: Signal<String>) -> Element {
+    let is_valid = use_memo(move || validate_name_and_email(name, email));
+
+    rsx! {
+        if !is_valid() { "Invalid name or email" }
+    }
+}
+````
+
+As our app continues to grow in complexity, we might want to use the `is_valid` memo in other components. For example, we might want to style the input box differently if the input is invalid. In this case, need to *hoist* the `is_valid` memo out of the `Validator` component back into the `EmailAndName` component:
+
+````rust
+#[component]
+fn EmailAndName() -> Element {
+    let mut name = use_signal(|| "name".to_string());
+    let mut email = use_signal(|| "email".to_string());
+    let is_valid = use_memo(move || validate_name_and_email(name, email));
+
+    rsx! {
+        Validator { is_valid }
+        div { class: if !is_valid() { "border-red" },
+            input { oninput: move |e| name.set(e.value()) }
+            input { oninput: move |e| email.set(e.value()) }
+        }
+    }
+}
+
+#[component]
+fn Validator(is_valid: Memo<bool>) -> Element {
+    rsx! {
+        if !is_valid() { "Invalid name or email" }
+    }
+}
+````
+
+Now, our Validator component only depends on the memo of `name` and `email`, and not their contents. Notice how we started by splitting our UI *first* and *then* state. It's generally better to centralize our state primitives and pass down derived values where possible.
+
+## Decaying Readable Types to ReadSignal
+
+If you look closely at the `Validator` component, you might notice it currently takes a `Memo` type for an argument. Of course, that's the type `use_memo` returns! However, requiring the `Memo` type limits how we can use this component. Practically speaking, we don't *need* a Memo. Our `Validator` just wants a `bool`. And indeed, we can simply accept a bool:
+
+````rust
+#[component]
+fn Validator(is_valid: bool) -> Element {
+    rsx! {
+        if !is_valid { "Invalid name or email" }
+    }
+}
+````
+
+Unfortunately, Rust primitives are *not* reactive types. When you read or write to a primitive - or any other types that aren't reactive - reactive contexts can't subscribe to their changes. Only reactive types like Signal, Memo, Resource, and ReadSignal will participate in the Dioxus reactivity system.
+
+For example, an effect that logs whenever the validation state changes *won't fire* with the plain `is_valid` boolean as an argument.
+
+````rust
+// ❌ is_valid is untracked, and our effect won't work properly
+#[component]
+fn Validator(is_valid: bool) -> Element {
+    use_effect(move || log!("validity change: {is_valid}"));
+    rsx! {
+        if !is_valid { "Invalid name or email" }
+    }
+}
+````
+
+How should you define your component's props such that it accepts *any* reactive value?
+
+To solve this, Dioxus implements `Into<ReadSignal>` for all Readable reactive types. If a type allows you to `.read()` it, it will also automatically convert to a read-only handle of the inner value.
+
+To fix our `Validator` component, we simply wrap `is_valid` in a `ReadSignal`:
+
+````rust
+// ✅ is_valid is reactive!
+#[component]
+fn Validator(is_valid: ReadSignal<bool>) -> Element {
+    use_effect(move || log!("validity change: {is_valid}"));
+    rsx! {
+        if !is_valid { "Invalid name or email" }
+    }
+}
+````
+
+Now, parent components that use this child component can use any Readable reactive primitive as the value, allowing our original example to work properly.
+
+````rust
+// ✅ is_valid can be passed from a memo or a signal
+#[component]
+fn EmailAndName() -> Element {
+    let mut name = use_signal(|| "name".to_string());
+    let mut email = use_signal(|| "email".to_string());
+    let is_valid = use_memo(move || validate_name_and_email(name, email));
+
+    rsx! {
+        Validator { is_valid }
+        div { class: if !is_valid() { "border-red" },
+            input { oninput: move |e| name.set(e.value()) }
+            input { oninput: move |e| email.set(e.value()) }
+        }
+    }
+}
+````
+
+We call this process of converting a read-write type into a read-only type "decaying". The read-only handle is arguably less useful than a full read-write handle, but has wider compatibility and is easier to reason about.
+
+## Automatic Conversion to ReadSignal
+
+For our `Validator` component above, we showed how any Readable reactive type like `Signal` and `Memo` automatically "decay" into `ReadSignal`. However, what if we wanted to pass just a plain boolean value?
+
+````rust
+#[component]
+fn EmailAndName() -> Element {
+    rsx! {
+        Validator { is_valid: true }
+    }
+}
+````
+
+Again, `ReadSignal` saves the day! When using components, any untracked values passed as properties automatically implement `Into<ReadSignal>`. This is extremely powerful. We can upgrade plain primitive values into reactive values without boilerplate.
+
+````rust
+// ✅ this component accepts memos, signals, and even primitive values!
+#[component]
+fn Validator(is_valid: ReadSignal<bool>) -> Element {
+    rsx! {
+        if !is_valid { "Invalid name or email" }
+    }
+}
+````
+
+This super-power comes in most useful when doing computations in expressions at the callsite. For example, we might choose not to memoize the validator logic, and instead simply run it inline:
+
+````rust
+#[component]
+fn EmailAndName() -> Element {
+    let mut name = use_signal(|| "name".to_string());
+    let mut email = use_signal(|| "email".to_string());
+
+    rsx! {
+        Validator { is_valid: validate_name_and_email(name, email) }
+        input { oninput: move |e| name.set(e.value()) }
+        input { oninput: move |e| email.set(e.value()) }
+    }
+}
+````
+
+As a general rule, it's best to wrap every readable component property in a `ReadSignal`. This ensures every prop is automatically reactive and is maximally compatible with the rest of the Dioxus ecosystem.
+
+## Hoisting Callbacks
+
+In Dioxus, the `Signal` object is both a reader *and* a writer. We designed signals to be ergonomic and conceptually straightforward: to read the value, you use `.read()`, and to write the value, you use `.write()`. This makes the basic `Signal` type extremely powerful.
+
+If you're not careful with hoisting state, you might eventually try to build a component that takes a mutable signal as an argument:
+
+````rust
+// ❌ Mutable props are bad!
+#[component]
+fn Incrementer(mut sig: Signal<i32>) -> Element {
+    rsx! {
+        button {
+            onclick: move |_| sig += 1,
+            "Increment"
+        }
+    }
+}
+````
+
+While this may compile (with warnings!), we actively discourage the usage of mutable data in component props since it breaks the foundation of one-way data-flow.
+
+Instead, Dioxus gives you the ability to use callbacks instead, allowing the *caller* to handle updates to state, not the *callee*. Instead of mutating the count in the `Incrementer` component, you should expose an `onclick` callback and let the parent component handle updating state.
+
+````rust
+// ✅ Use callbacks instead!
+#[component]
+fn Parent() -> Element {
+    let mut count = use_signal(|| 0);
+    rsx! {
+        Incrementer {
+            onclick: move |_| count += 1,
+        }
+    }
+}
+
+#[component]
+fn Incrementer(onclick: EventHandler<MouseEvent>) -> Element {
+    rsx! {
+        button {
+            onclick: move |e| onclick.call(e),
+            "Increment!"
+        }
+    }
+}
+````
+
+To make hoisting callbacks even more ergonomic, Dioxus allows shorthand property declaration of element attributes and event listeners:
+
+````rust
+#[component]
+fn Incrementer(onclick: EventHandler<MouseEvent>) -> Element {
+    rsx! {
+        button { onclick, "Increment!" }
+    }
+}
+````
+
+In the case where your hoisted callback needs to return a value, you can use the `Callback` type directly which accepts both arguments and return value as generics:
+
+````rust
+#[component]
+fn CallbackChild(onclick: Callback<MouseEvent, String>) -> Element {
+    let mut current = use_signal(|| "".to_string());
+    rsx! {
+        // onclick.call() accepts a MouseEvent and returns a String
+        button {
+            onclick: move |e| current.set(onclick.call(e)),
+            "Set Value"
+        }
+    }
+}
+````
+
+By hoisting mutation as callbacks, our child components are naturally more modular and simple to reason about.
+# Global Context
+
+By now, you have the requisite knowledge to build large Dioxus apps! When your component tree grows to several layers deep, passing state through component props can be become tedious and repetitive.
+
+````rust
+fn app() -> Element {
+    let name = use_signal(|| "bob".to_string());
+    rsx! { Container { name } }
+}
+
+#[name]
+fn Container(name: Signal<String>) -> Element {
+    rsx! { Content { name } }
+}
+
+#[name]
+fn Content(name: Signal<String>) -> Element {
+    rsx! { Title { name } }
+}
+
+#[name]
+fn Title(name: Signal<String>) -> Element {
+    rsx! { h1 { "{name}" } }
+}
+````
+
+Passing state through several layers of component properties is called "prop drilling." Wouldn't it be great if we could pass the `name` signal from the app root *directly* to the Title component?
+
+This is where *global context* becomes useful. Components can insert values into the global context, allowing and any child components to "reach up" and read those values.
+
+![Context Tree](/assets/07/context-tree.png)
+
+Note that context is only available by "reaching up" the tree. Recall a fundamental pillar of reactivity: data flows down. In the one-way data-flow model, child components can freely read the state of their parent components. You can think of context as an invisible extra argument passed through the properties of each component from the root to every child.
+
+````rust
+fn Child(context: Context, ..props) -> Element { /* */ }
+````
+
+Context is roughly defined as a recursive definition of itself:
+
+````rust
+struct Context {
+    contexts: Vec<Rc<dyn Any>>
+    parent: Option<Context>,
+}
+````
+
+When we "reach up" through the tree, we first walk the current component's context list, and then check each parent recursively until the target context is found.
+
+## Providing and Consuming Context
+
+Before we can start reaching up the component tree, we first need to *provide* context to child components. Dioxus exposes the `provide_context` and `use_context_provider` functions. You typically place your state initializer in the `use_context_provider` hook like so:
+
+````rust
+fn app() -> Element {
+    // use_context_provider takes an initializer closure
+    use_context_provider(|| "Hello world!".to_string());
+
+    rsx! { Child {} }
+}
+````
+
+Now, to read the context, we pair the provider with a consumer. To do so, we call `use_context` and set the return type to be the same type as the context we provided. In the example above, we provided a `String` type object; therefore, we consume it with the `String` generic:
+
+````rust
+fn Child() -> Element {
+    let title = use_context::<String>();
+    rsx! { "{title}" }
+}
+````
+
+The `::<String>` syntax declares the return type of this use of `use_context`. In Dioxus, context objects are indexed by their [TypeId](https://doc.rust-lang.org/std/any/struct.TypeId.html). A type's TypeId is a  compile-time hash that uniquely identifies every Rust type. No two types will share the same TypeId unless the refer to the same underlying type declaration - ie, [type aliases](https://doc.rust-lang.org/reference/items/type-aliases.html) will share the same TypeId.
+
+When providing context objects, we should wrap the data we want to store in a custom type or [new type](https://doc.rust-lang.org/rust-by-example/generics/new_types.html). This ensures that we can store multiple `String` objects in the context tree and retrieve them by their wrapper type.
+
+Declaring a new type requires a new struct declaration:
+
+````rust
+#[derive(Clone)]
+struct Title(String);
+
+#[derive(Clone)]
+struct Subtitle(String);
+````
+
+Then, we can provide the context using our wrapper types:
+
+````rust
+use_context_provider(|| Title("Hello world!".to_string()));
+use_context_provider(|| Subtitle("Hello world!".to_string()));
+````
+
+To consume the context, we pass in the appropriate struct type:
+
+````rust
+let title = use_context::<Title>();
+let subtitle = use_context::<Subtitle>();
+````
+
+In practice, you don't need to wrap *every* field of your state in a newtype, usually just one struct to encapsulate a set of data is enough.
+
+````rust
+#[derive(Clone)]
+struct HeaderContext {
+    title: String,
+    subtitle: String
+}
+````
+
+## Context Provider Components
+
+Sometimes you don't want context to apply to *every* component in your tree - just a subset is fine. If you want to provide state to a scoped portion of the elements in your `rsx!` macro, you can create a new component that provides context to its children called a **Context Provider**.
+
+For example, we may write a `ThemeProvider` component that wraps its children and provides context:
+
+````rust
+#[component]
+fn ThemeProvider(children: Element, color: ThemeColor) -> Element {
+    use_context_provider(|| ThemeState::new(color));
+    children
+}
+````
+
+Then, we can use the context provider in our RSX multiple times, but with different parameters:
+
+````rust
+fn app() -> Element {
+    rsx! {
+        ThemeProvider {
+            color: ThemeColor::Red,
+            h1 { "Red theme!" }
+        }
+        ThemeProvider {
+            color: ThemeColor::Blue,
+            h1 { "Blue theme!" }
+        }
+    }
+}
+````
+
+## Dynamically Providing and Consuming Context
+
+Dioxus provides several different functions to provide and consume context. You do not necessarily need to use the `use_context` and `use_context_provider` hooks. Instead, you can dynamically provide and consume context *at runtime* with `provide_context` and `consume_context`.
+
+Being able to dynamically consume context is powerful. We can directly access context in event handlers and async tasks without an additional hook.
+
+````rust
+fn ToggleTheme() -> Element {
+    // no hooks required!
+    rsx! {
+        button {
+            onclick: move |_| consume_context::<ThemeProvider>().set_theme(ThemeColor::Red),
+            "Make Red"
+        }
+        button {
+            onclick: move |_| consume_context::<ThemeProvider>().set_theme(ThemeColor::Blue),
+            "Make Blue"
+        }
+    }
+}
+````
+
+Because the Dioxus runtime always sets the theme context when running handlers and polling futures, this even works in async tasks:
+
+````rust
+rsx! {
+    button {
+        onclick: move |_| async move {
+            let color = fetch_random_color().await;
+            consume_context::<ThemeProvider>().set_theme(color);
+        },
+        "Make Random Color"
+    }
+}
+````
+
+Note that we can also dynamically provide context too, though this is less useful. Whenever we dynamically provide context, the current component's context entry is replaced (if it existed).
+
+````rust
+use_context_provider(|| ThemeProvider::new());
+rsx! {
+    button {
+        onclick: move |_| dioxus::core::provide_context(ThemeProvider::reset()),
+        "Reset Theme Provider"
+    }
+}
+````
+
+Replacing context is *not* a reactive operation which inherently limits its usefulness.
+
+## Providing Signals
+
+So far, we've only demonstrated how to provide simple values like Strings. As mentioned above, dynamically replacing context is not a reactive operation, so we shouldn't use it to update state in our application.
+
+To make our context fully reactive, we should provide signals. Typically, you'll bundle a collection of signals together into a larger state object:
+
+````rust
+#[derive(Clone, Copy)]
+struct HeaderContext {
+    title: Signal<String>,
+    subtitle: Signal<String>
+}
+````
+
+Notice how our `HeaderContext` derives both `Clone` and `Copy`. For context to be shared throughout the component tree, each context entry must implement `Clone`. Dioxus signals are extremely ergonomic because they implement `Copy` too, which makes them easier to work with in async contexts. Similarly, our custom context structs can also implement `Copy` and gain the same ergonomic benefits.
+
+To construct our HeaderContext, we use one of two approaches. The first is to build a Provider component:
+
+````rust
+#[component]
+fn HeaderProvider(children: Element) -> Element {
+    // create signals with `use_signal`
+    let title = use_signal(|| "Title".to_string());
+    let subtitle = use_signal(|| "Subtitle".to_string());
+
+    // And then use them to build the HeaderContext directly
+    use_context_provider(|| HeaderContext { title, subtitle });
+
+    children
+}
+````
+
+The second approach is to use `Signal::new()` directly, either in a `HeaderContext::new()` method or a `use_header_provider` function. The advantage here is that users can provide `HeaderContext` without needing to wrap their RSX elements.
+
+````rust
+fn app() -> Element {
+    use_context_provider(|| HeaderContext::new());
+
+    // ...
+}
+
+impl HeaderContext {
+    fn new() -> HeaderContext {
+        HeaderContext {
+            title: Signal::new("Title")
+            subtitle: Signal::new("Subtitle")
+        }
+    }
+}
+````
+
+Using `new` methods is idiomatic Rust and lets us customize the initial parameters used to build the context.
+
+When we bundle signals in a struct, we can make working with state a bit easier by adding accessor and mutation methods.
+
+````rust
+impl HeaderContext {
+    pub fn reset(&mut self) {
+        self.title.set("".to_string());
+        self.subtitle.set("".to_string());
+    }
+
+    pub async fn fetch(&mut self) {
+        let data = api::fetch_header_info().await;
+        self.title.set(data.title);
+        self.subtitle.set(data.subtitle);
+    }
+
+    pub fn uppercase_title(&self) -> String {
+        self.title.cloned().to_ascii_uppercase()
+    }
+}
+````
+
+Now, when we want to interact with the header context, we use its methods:
+
+````rust
+let mut header = use_context::<HeaderContext>();
+
+rsx! {
+    h1 { "{header.uppercase_title()}" }
+    button { onclick: move |_| header.reset(), "Reset" }
+    button { onclick: move |_| header.fetch(), "Fetch New" }
+}
+````
+
+With context and signals, you should have all the tools required to architect large reactive Dioxus apps. These simple primitives compose into a complete first-party state solution. You can say goodbye to libraries like [Redux](https://redux.js.org) and [Mobx](https://mobx.js.org/README.html)!
+
+## Global Signals
+
+We're not done with global state *just* yet! Dioxus provides an enhancement to the "signals in context" pattern with **global signals**. Global signals are signals available to *every* component in your application. Global signals are automatically mounted to the root component of your app.
+
+Because the `GlobalSignalProvider` is automatically mounted to your app, you don't need to call `use_context_provider`. To create a new global signal, you use the `Signal::global` initializer in a `static`.
+
+````rs@guide_state.rs
+static SONG: GlobalSignal<String> = Signal::global(|| "Drift Away".to_string());
+````
+
+And then read and write to it from anywhere:
+
+````rs@guide_state.rs
+#[component]
+fn Player() -> Element {
+    rsx! {
+        h3 { "Now playing {SONG}" }
+        button {
+            onclick: move |_| *SONG.write() = "Vienna".to_string(),
+            "Shuffle"
+        }
+    }
+}
+````
+
+GlobalSignals are only global to one app - not the entire program. This means that in "multitenant" environments like server-side-rendering and multi-window desktop, every app gets its own *independent* global signal value.
+
+````rust
+// every separate instance of the app receive its own "COUNT" GlobalSignal
+static COUNT: GlobalSignal<i32> = Signal::global(|| 0);
+
+fn app() -> Element {
+    rsx! {
+        div { "{COUNT}" }
+        button { onclick: move |_| *COUNT.write() += 1 }
+    }
+}
+````
+
+While it may seem like `COUNT` is synchronized across *every* running app, it actually is just local to one app at a time. Global signals are roughly implemented as a HashMap of global signal key to value where the key is a unique compile-time identifier per instance.
+
+In addition to global signals, you can also have global memos with GlobalMemo. These are similar to regular memos, allowing you to incrementally compute new values as the inner reactive values are updated.
+
+````rust
+static COUNT: GlobalSignal<i32> = Signal::global(|| 0);
+static DOUBLE_COUNT: GlobalMemo<i32> = Memo::global(|| COUNT.cloned() * 2);
+
+fn app() -> Element {
+    rsx! {
+        div { "count: {COUNT}" }
+        div { "double: {DOUBLE_COUNT}" }
+        button { onclick: move |_| *COUNT.write() += 1 }
+    }
+}
+````
+
+Note that the types for GlobalSignal and GlobalMemo are actually `Global<Signal<T>>` and `Global<Memo<T>>` - if you implemented the required traits, you can make any custom reactive type globally available!
+# Reactive Stores and Collections
+
+The `Signal` object is great for making your application state reactive. So far, we've demonstrated how signals can make any type reactive simply by wrapping its initializer in a `use_signal` hook:
+
+````rust
+let mut count: Signal<i32> = use_signal(|| 0);
+````
+
+Whenever we call `.read()` or `.write()` on the signal, we can easily access and modify the underlying value and queue components to be re-rendered.
+
+As your data structures evolve, you might run into new challenges. Some questions you might ask:
+
+* "How do I add reactivity to types I don't own?"
+* "What exactly re-renders when I modify just *one* entry in a collection?"
+* "What if I can't wrap every value in my app in a signal?"
+
+As our apps become more interesting, we're more likely to pull in third-party libraries and organize our state into collections like HashMaps, BTrees, and Vectors. In these cases, we need to interact with data structures *we don't own.*
+
+To make working with structs and collections easier, Dioxus provides the **Store**.
+
+## Reactive Stores
+
+In Dioxus, reactive stores are types that isolate reactivity to just a path in a data structure. Stores allow us to "zoom in" on a smaller portion of our data, ignoring all other reads and writes.
+
+The simplest stores are structs that derive a `Store` trait:
+
+````rust
+#[derive(Store)]
+struct HeaderState {
+    title: String,
+    subtitle: String
+}
+````
+
+To use stores as state, we use the `use_store` hook:
+
+````rust
+let header = use_store(|| HeaderState {
+    title: "Hello, ".to_string(),
+    subtitle: "world!".to_string(),
+});
+````
+
+The `Store` derive macro generates additional methods on `Store<HeaderState>` that allow us to "zoom in" to fields of the struct. We access the fields by calling the field name like a method:
+
+````rust
+fn app() -> Element {
+    let header = use_store(|| HeaderState {
+        title: "Hello, ".to_string(),
+        subtitle: "world!".to_string(),
+    });
+
+    // we can "zoom in" with the generated `.title()` method.
+    let title = header.title();
+
+    rsx! { "{title}" }
+}
+````
+
+The `.title()` method returns an object called a "lens". Lenses are not unique to Dioxus -  they are common throughout functional programming and web development.
+
+### The `Store<Value, Lens>` type
+
+When we use the `.title()` method, we're creating a new `Store` object, but with an additional generic parameter that specifies how the lens "zooms in" on our state. Lenses are zero-cost, meaning that the cost of using the `.title()` method is the same as indexing the struct directly with `.title`. One side-effect is that the generic type can't be explicitly "named" or specified:
+
+````rust
+// the second generic is the unique type of the lens
+let title: Store<HeaderState, _> = header.title();
+````
+
+Notice how the default `Store` we get from `use_store` has an elided default generic argument:
+
+````rust
+let title: Store<HeaderState> = use_store(|| HeaderState::new());
+````
+
+Because the lens is "unnamable", we need to accept the lens as a generic in any functions that work with stores. If we only need to read the store, we can require the lens implements the `Readable` trait. If we need to write to the store, we can require the lens implements the `Writable` trait.
+
+````rust
+// This function works with any lens that can read the header state like ReadStore<HeaderState> or Store<HeaderState, _>
+fn get_title(state: Store<HeaderState, impl Readable<Target = HeaderState>>) -> String {
+    state.title().cloned()
+}
+
+// This function works with any lens that can write to the header state like Store<HeaderState> or Store<HeaderState, _>
+fn clear_title(state: Store<HeaderState, impl Writable<Target = HeaderState>>) {
+    state.title().take();
+}
+````
+
+On the component boundary, Stores are automatically boxed and converted to `ReadSignal` or `ReadStore` as needed so you don't need to worry about the lens type:
+
+````rust
+fn app() -> Element {
+    let header = use_store(|| HeaderState {
+        title: "Hello, ".to_string(),
+        subtitle: "world!".to_string(),
+    });
+
+    rsx! {
+        // the lens returned by `.title()` decays into a `ReadSignal` automatically!
+        Title { title: header.title() }
+        // the lens returned by `.subtitle()` decays into a `ReadStore` automatically!
+        Subtitle { subtitle: header.subtitle() }
+    }
+}
+
+#[component]
+fn Title(title: ReadSignal<String>) -> Element {
+    // ..
+}
+
+#[component]
+fn Subtitle(subtitle: ReadStore<String>) -> Element {
+    // ..
+}
+````
+
+### Stores are Readable and Writable
+
+The `Store` type implements the same `Readable` and `Writable` traits that signals implement, allowing us to use stores and lenses just like signals:
+
+````rust
+// we can use `.read()`
+let title = header.title().read();
+
+// we can use `.write()`
+*header.title().write() = "goodbye".to_string();
+
+// we can use `.set()`
+header.title().set("goodbye!".to_string());
+````
+
+Stores and lenses also implement the same `Readable` and `Writable` extension traits, allowing us to work with them like regular Rust values:
+
+````rust
+fn app() -> Element {
+    let mut header = use_store(|| HeaderState {
+        title: "Hello, ".to_string(),
+        subtitle: "world!".to_string(),
+    });
+
+    rsx! {
+        // Stores implement display
+        h3 { "{header.title()}" }
+
+        // They are `Copy`, making them easy to share between scopes
+        button { onclick: move |_| header.title().write().clear() }
+    }
+}
+````
+
+### Nested Stores
+
+Stores can also be nested, allowing lenses to "see through" multiple levels of datastructures:
+
+````rust
+#[derive(Store)]
+struct HeaderState {
+    title: String,
+    subtitle: String,
+    other: OtherHeaderState,
+}
+
+#[derive(Store)]
+struct OtherHeaderState {
+    title2: String,
+    subtitle2: String,
+}
+
+// now we can "zoom in" to nested fields:
+let title2 = header.other().title2();
+````
+
+The ability for a store to "zoom in" through nested datastructures is dependent on whether or not types also implement `Store`. If, for example, or nested structs *didn't* implement the `Store` trait, then we can't lens them:
+
+````rust
+#[derive(Store)]
+struct HeaderState {
+    title: String,
+    subtitle: String,
+    other: OtherHeaderState,
+}
+
+struct OtherHeaderState {
+    title2: String,
+    subtitle2: String,
+}
+
+// ❌ we *can't* lens the OtherHeaderState
+let title2 = header.other().title2();
+````
+
+It's important to know that stores can't lens through types that don't implement `Store`. When working with 3rd-party APIs and datastructures, foreign structs typically don't implement the `Store` trait, meaning we can't make them entirely reactive.
+
+### Result, Option, and enumerated Lenses
+
+Some fields of our store may be an enumerated value, like a [Result](https://doc.rust-lang.org/std/result/) or an [Option](https://doc.rust-lang.org/std/option/). Stores provide a few helpful extension methods that make working with the enum easier and make the enum itself reactive.
+
+We can update our header example to include both `Result` and `Option` types:
+
+````rust
+#[derive(Store)]
+struct HeaderState {
+    title: Result<String, String>,
+    subtitle: Option<String>,
+}
+````
+
+Just like regular `Result` and `Option`, store lenses also implement `.unwrap()` (and a number of utility methods).
+
+````rust
+let title = header.title().unwrap();
+let subtitle = header.subtitle().unwrap();
+````
+
+To properly gain access to the underlying `Option<String>` we can use one of two approaches:
+
+* The `.transpose()` method which converts `Store<Option<String>>` to `Option<Store<String>>`
+* Using `.read().as_ref()`
+
+The `.transpose()` approach is useful since we keep the lens, allowing us to "zoom in" to nested structs and collections.
+
+````rust
+let len = match header.subtitle().transpose() {
+    Some(subtitle) => subtitle.read().len(),
+    None => 0,
+};
+````
+
+Alternatively, we can use `.as_ref()` the lens to gain access to the underlying value, but we lose the ability to reactively "zoom in" further:
+
+````rust
+let len = match header.subtitle().as_ref() {
+    Some(subtitle) => subtitle.chars().count(),
+    None => 0,
+};
+````
+
+You can usually choose either approach - just know that using `.as_ref()` calls `.read()` internally, and the "reactivity zoom" might not be perfectly precise.
+
+## Reactive Collections
+
+You might be wondering: "what's the best way to handle HashMaps and Vectors in signals?" So far, we've only showcased simple state in signals, like strings and integers. Just like strings and integers, you can place collections directly into signals:
+
+````rust
+type UserId = i32;
+struct UserData {
+    name: String,
+    email: String,
+}
+
+let mut users = use_signal(|| HashMap::<UserId, UserData>::new());
+
+rsx! {
+    ul {
+        for (id, data) in users.read().iter() {
+            li { key: "{id}", "{data.name}" }
+        }
+    }
+}
+````
+
+For small apps, this is usually fine. However, we might eventually want to move the `li {}` element into its own component. Unfortunately, we'll immediately run into lifetime issues with the `GenerationalRef` guard returned by `.iter()`:
+
+````rust
+// ❌ This won't compile!
+fn app() -> Element {
+    let mut users = use_signal(|| HashMap::<UserId, UserData>::new());
+
+    rsx! {
+        // the lifetime here is is not `'static` won't pass to the ListItem component
+        for (id, user) in users.read().iter() {
+            ListItem { key: "{id}", user }
+        }
+    }
+}
+
+// `UserData` cannot be borrowed here
+#[component]
+fn ListItem(user: ReadSignal<UserData>) -> Element {
+    rsx! {
+        li { "{user.read().name}" }
+    }
+}
+````
+
+In these scenarios, we have a few options:
+
+* Deeply clone the `UserData` object, detaching its lifetime from the `for` loop
+* Clone individual fields of the `UserData` object
+* Use Stores and pass a Lens
+
+The first two options require us to perform potentially expensive clones when rendering our component. Instead, we can use stores and lenses to find a zero-cost solution, simply by converting our `use_signal` to a `use_store` call:
+
+````rust
+fn app() -> Element {
+    // switch to using `use_store`
+    let mut users = use_store(|| HashMap::<UserId, UserData>::new());
+
+    rsx! {
+        for (id, user) in users.iter() {
+            ListItem { key: "{id}", user }
+        }
+    }
+}
+
+// And now we can accept a `ReadSignal<UserData>` as a prop
+#[component]
+fn ListItem(user: ReadSignal<UserData>) -> Element {
+    rsx! {
+        li { "{user.read().name}" }
+    }
+}
+````
+
+The `Store<HashMap<K, V>>` type is a special type that implements reactivity on a per-entry basis. When we insert or remove values from the `users` store, only *one* re-render is queued. If we edit an individual entry in the HashMap, only a single `ListItem` will re-render.
+
+Alternatively, we could derive `Store` on our `UserData` type, and accept `ReadStore<UserData>` allowing us to further lens into specific fields of our UserData entry:
+
+````rust
+#[derive(Store)]
+struct UserData {
+    name: String,
+    email: String,
+}
+
+fn app() -> Element {
+    let users = use_store(|| HashMap::<UserId, UserData>::new());
+
+    rsx! {
+        for (id, user) in users.iter() {
+            ListItem { key: "{id}", user }
+        }
+    }
+}
+
+#[component]
+fn ListItem(user: ReadStore<UserData>) -> Element {
+    rsx! {
+        li { "{user.name()}" }
+    }
+}
+````
+
+## Extending Stores with Methods
+
+You can extend your store types with methods with the `#[store]` attribute macro. Methods inside the macro are converted into an extension trait that is automatically implemented for `Store<T, Lens>`. The macro will automatically add bounds to the `Lens` generic based on the self parameter of the method. If the method takes `&self`, the `Lens` will be bound by `Readable`. If the method takes `&mut self`, the `Lens` will be bound by `Writable`.
+
+````rust
+type MappedUserDataStore<Lens> = Store<String, MappedMutSignal<String, Lens, fn(&UserData) -> &String, fn(&mut UserData) -> &mut String>>;
+
+#[store]
+impl<Lens> Store<UserData, Lens> {
+    // This will automatically require `Readable` on the lens since it takes `&self`
+    fn user_email(&self) -> String {
+        self.email().cloned()
+    }
+
+    // This will automatically require `Writable` on the lens since it takes `&mut self`
+    fn clear_name(&mut self) {
+        self.name().take();
+    }
+
+    // This method does not require any bounds on the lens since it takes `self`
+    fn into_parts(self) -> (MappedUserDataStore<Lens>, MappedUserDataStore<Lens>) where Self: Copy {
+        (self.email(), self.name())
+    }
+}
+````
+
+## Making the Most of Stores
+
+Hopefully, the examples here highlight when stores might be useful in your applications. It might be tempting to use stores *everywhere*, but in many cases, signals and structs are good enough. Most apps won't run into performance issues where precise control over the reactivity of struct fields makes a huge difference.
+
+Stores are most useful when interfacing with foreign data types and optimizing huge collections - not something you need to do every day!
+# Error handling
+
+A major selling point of using Rust for web development its renowned reliability. A common sentiment by developers deploying Rust services:
+
+ > 
+ > "We deployed our Rust service and then forgot about it because it just kept running without any issues"
+
+Rust provides developers powerful tools to track where errors occur and easy ways to handle them. Similarly, in Dioxus, we provide additional tools like early returns, a special RenderError type, and ErrorBoundaries to help you handle errors in a declarative way.
+
+## Returning Errors from Components
+
+Recall that Dioxus components are functions that take props and return an `Element`. Astute observers might recognize that the `Element` type is actually a type alias for `Result<VNode, RenderError>`!
+
+The `RenderError` type can be created from an error type that implements `Error`. You can use `?` to bubble up any errors you encounter while rendering to the nearest error boundary:
+
+````rs@error_handling.rs
+#[component]
+fn ThrowsError() -> Element {
+    // You can return any type that implements `Error`
+    let number: i32 = use_hook(|| "1.234").parse()?;
+
+    todo!()
+}
+````
+
+The [`RenderError`](https://docs.rs/anyhow/latest/anyhow/) is special error type that is an enum of either `Error(CapturedError)` or `Suspended(SuspendedFuture)`. A `RenderError` automatically implements `From<CapturedError>` which implements `From<anyhow::Error>`.
+
+````rust
+/// An error that can occur while rendering a component
+#[derive(Debug, Clone, PartialEq)]
+pub enum RenderError {
+    /// The render function returned early due to an error.
+    ///
+    /// We captured the error, wrapped it in an Arc, and stored it here. You can no longer modify the error,
+    /// but you can cheaply pass it around.
+    Error(CapturedError),
+
+    /// The component was suspended
+    Suspended(SuspendedFuture),
+}
+````
+
+Because `RenderError` can be automatically coerced from an `anyhow::Error`, we can use anyhow's `Context` trait to bubble up any error while rendering:
+
+````rust
+fn Counter() -> Element {
+    let count = "123".parse::<i32>().context("Could not parse input")?;
+
+    // ...
+}
+````
+
+## CapturedError, RenderError, and anyhow::Error
+
+Through the entire stack, Dioxus has many different error types. The large quantity can lead to some confusion.
+
+### anyhow::Error
+
+Unlike many other libraries, Dioxus uses the `anyhow::Error` as its core error type. In many APIs that take user code - like callbacks, actions, and loaders - you can cleanly use anyhow's Error type:
+
+````rust
+let mut breed = use_action(move |breed| async move {
+    let res = reqwest::get(format!("https://dog.ceo/api/breed/{breed}/images/random"))
+        .await
+        .context("Failed to fetch")?
+        .json::<DogApi>()
+        .await
+        .context("Failed to deserialize")?;
+
+    anyhow::Ok(res)
+});
+````
+
+Many APIs also either take or return an anyhow error. You can use `anyhow::Result` as the result type for a server function:
+
+````rust
+#[get("/dogs")]
+async fn get_dogs() -> anyhow::Result<i32> {
+    Ok(123)
+}
+````
+
+The anyhow crate provides an ergonomic, dynamic error type that can ingest any errors that implement the `std::Error` trait. We chose to use anyhow's error type since it cleanly integrates with the broader Rust ecosystem. GUI apps can encounter many different types of errors along the way, and only a few are worth handling completely with a dedicated variant.
+
+If you need to downcast the anyhow error to a specific error type, you can use `.downcast_ref::<T>()`. Other utilities like `.context()`, `anyhow!()`, and `bail!()` work seamlessly with the rest of Dioxus
+
+### Captured Error
+
+A `CapturedError` is a transparent wrapper type around anyhow's Error that makes it implement the `Clone` trait. The implementation is quite simple:
+
+````rust
+#[derive(Debug, Clone)]
+pub struct CapturedError(pub Arc<anyhow::Error>);
+````
+
+The `CapturedError` type is useful when you need to call `.clone()` on the error, as is required by `use_resource`. The hook `use_resource` requires that the output by `Clone` - but the default `anyhow::Error` type is *not*.
+
+In cases where you need a concrete error type, like in loaders and actions, consider using `dioxus::Ok()` which will return a `Result<T, CapturedError>`:
+
+````rust
+let value = use_resource(|| async move {
+    let res = fetch("/dogs")?;
+    dioxus::Ok(res)
+});
+````
+
+## Capturing errors with ErrorBoundaries
+
+In JavaScript, you might have used `try` and `catch` to throw and catch errors in your code:
+
+````js
+try {
+    // Some code that might throw an error
+    let result = riskyOperation();
+    console.log(result);
+} catch (error) {
+    // Handle the error
+    console.error("Something went wrong:", error.message);
+}
+````
+
+In Dioxus, you can take a similar try/catch approach within the component tree with error boundaries. Error boundaries let you catch and handle errors produced while rendering our app.
+
+[Error Boundaries](/assets/07/error-boundaries.png)
+
+When you return an error from a component, it gets thrown to the nearest error boundary. That error boundary can then handle the error and render a fallback UI with the handle_error closure:
+
+````rs@error_handling.rs
+#[component]
+fn Parent() -> Element {
+    rsx! {
+        ErrorBoundary {
+            // The error boundary accepts a closure that will be rendered when an error is thrown in any
+            // of the children
+            handle_error: |_| {
+                rsx! { "Oops, we encountered an error. Please report this to the developer of this application" }
+            },
+            ThrowsError {}
+        }
+    }
+}
+````
+
+## Throwing Errors from Event Handlers
+
+In addition to components, you can throw errors from event handlers. If you throw an error from an event handler, it will bubble up to the nearest error boundary just like a component:
+
+````rs@error_handling.rs
+#[component]
+fn ThrowsError() -> Element {
+    rsx! {
+        button {
+            onclick: move |_| {
+                // Event handlers can return errors just like components
+                let number: i32 = "1...234".parse()?;
+
+                tracing::info!("Parsed number: {number}");
+
+                Ok(())
+            },
+            "Throw error"
+        }
+    }
+}
+````
+
+This is useful when handling async work or work that fails frequently.
+
+## Adding context to errors
+
+You can add additional context to your errors with anyhow's [`Context`](https://docs.rs/anyhow/latest/anyhow/trait.Context.html) trait. Calling `context` on a `Result` will add the context to the error variant of the `Result`:
+
+````rs@error_handling.rs
+#[component]
+fn ThrowsError() -> Element {
+    // You can call the context method on results to add more information to the error
+    let number: i32 = use_hook(|| "1.234")
+        .parse()
+        .context("Failed to parse name")?;
+
+    todo!()
+}
+````
+
+If you need to show some specific UI for the error, we recommend wrapping the error in a custom type and then downcasting when it's caught.
+
+## Downcasting Specific Errors
+
+When handling errors in Error Boundaries, you can match on specific types of errors, optionally choosing to capture the error and prevent it from bubbling.
+
+By default, errors are caught by the nearest Error Boundary. In some scenarios, we might not want to catch a specific type of error, like a NetworkError.
+
+In our handler code, we can use with `.error()` to get the current error and then re-throw it if necessary:
+
+````rust
+rsx! {
+    ErrorBoundary {
+        handle_error: |error: ErrorContext| {
+            // Network errors need to be handled by a different error boundary!
+            if let Some(err) = error.error() {
+                return Err(e.into())
+            }
+
+            // Otherwise, handle this error here
+            rsx! {
+                div { "Oops, we encountered an error" }
+            }
+        },
+        // ...
+    }
+}
+````
+
+## Local Error Handling
+
+If you need more fine-grained control over error states, you can store errors in reactive hooks and use them just like any other value. For example, if you need to show a phone number validation error, you can store the error in a memo and show it below the input field if it is invalid:
+
+````rs@error_handling.rs
+#[component]
+pub fn PhoneNumberValidation() -> Element {
+    let mut phone_number = use_signal(|| String::new());
+    let parsed_phone_number = use_memo(move || phone_number().parse::<PhoneNumber>());
+
+    rsx! {
+        input {
+            class: "border border-gray-300 rounded-md p-2 mb-4",
+            placeholder: "Phone number",
+            value: "{phone_number}",
+            oninput: move |e| {
+                phone_number.set(e.value());
+            },
+        }
+
+        match parsed_phone_number() {
+            Ok(phone_number) => rsx! {
+                div {
+                    "Parsed phone number: {phone_number}"
+                }
+            },
+            Err(error) => rsx! {
+                div {
+                    "Phone number is invalid: {error}"
+                }
+            }
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    error_handling::PhoneNumberValidation {}
+}
+````
+# Suspense
+
+[Resources](../basics/resources.md) let you load data asynchronously in Dioxus, but it can be cumbersome to handle the loading state of each resource individually. Dioxus provides a `SuspenseBoundary` component to group multiple asynchronous tasks and show a loading view while any of them are suspended.
+
+You can create a `SuspenseBoundary` with a loading closure and children. Then you can call `.suspend()?` on any resource inside the children to pause rendering of that component until the future is finished. The suspense boundary will show the loading view while any of its children are suspended. Once that suspense is resolved, it will show the children again.
+
+We can use a suspense boundary to show a grid of different breeds of dogs without handling each loading state individually:
+
+````rs@asynchronous.rs
+fn DogGrid() -> Element {
+    rsx! {
+        SuspenseBoundary {
+            // When any child components (like BreedGallery) are suspended, this closure will
+            // be called and the loading view will be rendered instead of the children
+            fallback: |_| rsx! {
+                div {
+                    width: "100%",
+                    height: "100%",
+                    display: "flex",
+                    align_items: "center",
+                    justify_content: "center",
+                    "Loading..."
+                }
+            },
+            div {
+                display: "flex",
+                flex_direction: "column",
+                BreedGallery {
+                    breed: "hound"
+                }
+                BreedGallery {
+                    breed: "poodle"
+                }
+                BreedGallery {
+                    breed: "beagle"
+                }
+            }
+        }
+    }
+}
+
+#[component]
+fn BreedGallery(breed: ReadSignal<String>) -> Element {
+    let response = use_resource(move || async move {
+        // Artificially slow down the request to make the loading indicator easier to seer
+        gloo_timers::future::TimeoutFuture::new(1000).await;
+        reqwest::Client::new()
+            .get(format!("https://dog.ceo/api/breed/{breed}/images"))
+            .send()
+            .await?
+            .json::<BreedResponse>()
+            .await
+    })
+    // Calling .suspend()? will suspend the component and return early while the future is running
+    .suspend()?;
+
+    // Then you can just handle the happy path with the resolved future
+    rsx! {
+        div {
+            display: "flex",
+            flex_direction: "row",
+            match &*response.read() {
+                Ok(urls) => rsx! {
+                    for image in urls.iter().take(3) {
+                        img {
+                            src: "{image}",
+                            width: "100px",
+                            height: "100px",
+                        }
+                    }
+                },
+                Err(err) => rsx! { "Failed to fetch response: {err}" },
+            }
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    asynchronous::DogGridView {}
+}
+````
+
+## Customizing the loading view from children
+
+If you need to change the loading view while a specific task is loading, you can provide a different loading view with the `with_loading_placeholder` method. The loading placeholder you return from the method will be passed to the suspense boundary and may choose to render it instead of the default loading view:
+
+````rs@asynchronous.rs
+fn DogGrid() -> Element {
+    rsx! {
+        SuspenseBoundary {
+            // The fallback closure accepts a SuspenseContext which contains
+            // information about the suspended component
+            fallback: |suspense_context: SuspenseContext| {
+                rsx! {
+                    div {
+                        width: "100%",
+                        height: "100%",
+                        display: "flex",
+                        align_items: "center",
+                        justify_content: "center",
+                        "Loading..."
+                    }
+                }
+            },
+            div {
+                display: "flex",
+                flex_direction: "column",
+                BreedGallery {
+                    breed: "hound"
+                }
+                BreedGallery {
+                    breed: "poodle"
+                }
+                BreedGallery {
+                    breed: "beagle"
+                }
+            }
+        }
+    }
+}
+
+#[component]
+fn BreedGallery(breed: ReadSignal<String>) -> Element {
+    let response = use_resource(move || async move {
+        gloo_timers::future::TimeoutFuture::new(breed().len() as u32 * 100).await;
+        reqwest::Client::new()
+            .get(format!("https://dog.ceo/api/breed/{breed}/images"))
+            .send()
+            .await?
+            .json::<BreedResponse>()
+            .await
+    })
+    .suspend()?;
+
+    // Then you can just handle the happy path with the resolved future
+    rsx! {
+        div {
+            display: "flex",
+            flex_direction: "row",
+            match &*response.read() {
+                Ok(urls) => rsx! {
+                    for image in urls.iter().take(3) {
+                        img {
+                            src: "{image}",
+                            width: "100px",
+                            height: "100px",
+                        }
+                    }
+                },
+                Err(err) => rsx! { "Failed to fetch response: {err}" },
+            }
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    asynchronous::DogGridViewWithLoadingPlaceholder {}
+}
+````
+
+## Suspense with Fullstack
+
+Dioxus fullstack will wait for suspended futures during server-side rendering. This means your async data loading starts sooner and search engines can see the resolved version of your page. However, using suspense in fullstack does require some changes for hydration compatibility.
+
+To use suspense in your fullstack application, you need to switch every suspended resource to the `use_server_future` hook. `use_server_future` handles serializing the result of the future on the server and deserializing that result on the client. It will also suspend automatically, so you don't need to call `.suspend()` on the resource.
+
+````rs@asynchronous.rs
+#[component]
+fn BreedGallery(breed: ReadOnlySignal<String>) -> Element {
+    // use_server_future is very similar to use_resource, but the value returned from the future
+    // must implement Serialize and Deserialize and it is automatically suspended
+    let response = use_server_future(move || async move {
+        // The future will run on the server during SSR and then get sent to the client
+        reqwest::Client::new()
+            .get(format!("https://dog.ceo/api/breed/{breed}/images"))
+            .send()
+            .await
+            // reqwest::Result does not implement Serialize, so we need to map it to a string which
+            // can be serialized
+            .map_err(|err| err.to_string())?
+            .json::<BreedResponse>()
+            .await
+            .map_err(|err| err.to_string())
+        // use_server_future calls `suspend` internally, so you don't need to call it manually, but you
+        // do need to bubble up the suspense variant with `?`
+    })?;
+
+    // If the future was still pending, it would have returned suspended with the `?` above
+    // we can unwrap the None case here to get the inner result
+    let response_read = response.read();
+    let response = response_read.as_ref().unwrap();
+
+    // Then you can just handle the happy path with the resolved future
+    rsx! {
+        div {
+            display: "flex",
+            flex_direction: "row",
+            match response {
+                Ok(urls) => rsx! {
+                    for image in urls.iter().take(3) {
+                        img {
+                            src: "{image}",
+                            width: "100px",
+                            height: "100px",
+                        }
+                    }
+                },
+                Err(err) => rsx! { "Failed to fetch response: {err}" },
+            }
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    asynchronous::DogGridFullstack {}
+}
+````
+
+Unlike `use_resource`, `use_server_future` is only reactive in the closure, not the future itself. If you need to subscribe to another reactive value, you need to read it in the closure before passing it to the future:
+
+````rs@asynchronous.rs
+let id = use_signal(|| 0);
+// ❌ The future inside of use_server_future is not reactive
+use_server_future(move || {
+    async move {
+        // But the future is not reactive which means that the future will not subscribe to any reads here
+        println!("{id}");
+    }
+});
+// ✅ The closure that creates the future for use_server_future is reactive
+use_server_future(move || {
+    // The closure itself is reactive which means the future will subscribe to any signals you read here
+    let cloned_id = id();
+    async move {
+        // But the future is not reactive which means that the future will not subscribe to any reads here
+        println!("{cloned_id}");
+    }
+});
+````
+
+### Streaming Suspense
+
+The default behavior for server side rendering is to wait for all suspended futures then send the fully resolved page. If you [enable](https://docs.rs/dioxus/0.7/dioxus/prelude/struct.ServeConfigBuilder.html#method.enable_out_of_order_streaming) out of order streaming, dioxus will send the finished HTML chunks to the client one at a time as they are resolved. This lets you show the loading views in your suspense boundaries while you are still waiting for other futures to resolve on the server:
+
+````rs@asynchronous.rs
+fn main() {
+    dioxus::LaunchBuilder::new()
+        .with_context(server_only! {
+            // Enable out of order streaming during SSR
+            dioxus::server::ServeConfig::builder().enable_out_of_order_streaming()
+        })
+        .launch(DogGrid);
+}
+````
+
+![Out of order streaming](/assets/06_docs/streaming_dogs.mp4)
+
+For more information on streaming, see the [streaming documentation](../../essentials/fullstack/streaming.md).

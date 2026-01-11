@@ -16,7 +16,7 @@ If you want to use a component from another component, then you must annotate th
 
 - Either start with a capital letter (`MyComponent`) or contain an underscore (`my_component`)
 - Take arguments that implement [`PartialEq`](https://doc.rust-lang.org/std/cmp/trait.PartialEq.html) and [`Clone`](https://doc.rust-lang.org/std/clone/trait.Clone.html)
-- Return an [`Element`](https://docs.rs/dioxus/latest/dioxus/prelude/type.Element.html)
+- Return an [`Element`](https://docs.rs/dioxus/~0.7/dioxus/prelude/type.Element.html)
 
 We call the arguments a component takes its **properties**. Properties are used to pass data into the component, similar to how you would pass arguments to a function.
 
@@ -137,7 +137,7 @@ let props = CardProps::builder().content("body".to_string()).build();
 
 ## The `#[component]` macro
 
-Properties can be modified to accept a wider variety of inputs than a normal function argument. We don't cover all of the details here, but you can find information in the [component macro](https://docs.rs/dioxus/latest/dioxus/prelude/attr.component.html) documentation.
+Properties can be modified to accept a wider variety of inputs than a normal function argument. We don't cover all of the details here, but you can find information in the [component macro](https://docs.rs/dioxus/~0.7/dioxus/prelude/attr.component.html) documentation.
 
 For example, the Dioxus Router `Link` component uses the modifiers extensively:
 
@@ -188,17 +188,17 @@ pub struct LinkProps {
 
 You can use the `#[props()]` attribute on each field to modify properties your component accepts:
 
-- [`#[props(default)]`](https://docs.rs/dioxus/latest/dioxus/prelude/attr.component.html#default-props) - Makes the field optional in the component and uses the default value if it is not set when creating the component.
-- [`#[props(!optional)]`](https://docs.rs/dioxus/latest/dioxus/prelude/attr.component.html#optional-props) - Makes a field with the type `Option<T>` required.
-- [`#[props(into)]`](https://docs.rs/dioxus/latest/dioxus/prelude/attr.component.html#converting-props) - Converts a field into the correct type by using the [`Into`] trait.
-- [`#[props(extends = GlobalAttributes)]`](https://docs.rs/dioxus/latest/dioxus/prelude/attr.component.html#extending-elements) - Extends the props with all the attributes from an element or the global element attributes.
+- [`#[props(default)]`](https://docs.rs/dioxus/~0.7/dioxus/prelude/attr.component.html#default-props) - Makes the field optional in the component and uses the default value if it is not set when creating the component.
+- [`#[props(!optional)]`](https://docs.rs/dioxus/~0.7/dioxus/prelude/attr.component.html#optional-props) - Makes a field with the type `Option<T>` required.
+- [`#[props(into)]`](https://docs.rs/dioxus/~0.7/dioxus/prelude/attr.component.html#converting-props) - Converts a field into the correct type by using the [`Into`] trait.
+- [`#[props(extends = GlobalAttributes)]`](https://docs.rs/dioxus/~0.7/dioxus/prelude/attr.component.html#extending-elements) - Extends the props with all the attributes from an element or the global element attributes.
 
 Props also act slightly differently when used with:
 
-- [`Option<T>`](https://docs.rs/dioxus/latest/dioxus/prelude/attr.component.html#optional-props) - The field is automatically optional with a default value of `None`.
-- [`ReadOnlySignal<T>`](https://docs.rs/dioxus/latest/dioxus/prelude/attr.component.html#reactive-props) - The props macro will automatically convert `T` into `ReadOnlySignal<T>` when it is passed as a prop.
-- [`String`](https://docs.rs/dioxus/latest/dioxus/prelude/attr.component.html#formatted-props) - The props macro will accept formatted strings for any prop field with the type `String`.
-- [`children: Element`](https://docs.rs/dioxus/latest/dioxus/prelude/attr.component.html#children-props) - The props macro will accept child elements if you include the `children` prop.
+- [`Option<T>`](https://docs.rs/dioxus/~0.7/dioxus/prelude/attr.component.html#optional-props) - The field is automatically optional with a default value of `None`.
+- [`ReadOnlySignal<T>`](https://docs.rs/dioxus/~0.7/dioxus/prelude/attr.component.html#reactive-props) - The props macro will automatically convert `T` into `ReadOnlySignal<T>` when it is passed as a prop.
+- [`String`](https://docs.rs/dioxus/~0.7/dioxus/prelude/attr.component.html#formatted-props) - The props macro will accept formatted strings for any prop field with the type `String`.
+- [`children: Element`](https://docs.rs/dioxus/~0.7/dioxus/prelude/attr.component.html#children-props) - The props macro will accept child elements if you include the `children` prop.
 - `EventHandler<T>` enforces closures
 
 Note that these attributes work both for struct-based property definitions as well as inline definitions:

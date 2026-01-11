@@ -80,7 +80,7 @@ pub fn Footer() -> Element {
 
             }
             div { class: "text-gray-400 text-sm text-center sm:text-left pb-2 mx-auto",
-                "© 2024 Dioxus Labs"
+                "© 2026 Dioxus Labs"
             }
         }
     }

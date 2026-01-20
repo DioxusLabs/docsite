@@ -1,0 +1,265 @@
+<SYSTEM>This is the developer documentation for Dioxus from /learn/0.7/migration/to_05/props.</SYSTEM>
+# Props Migration
+
+In dioxus 0.4, props are passed into the component through the scope. In dioxus 0.5, props are passed into the component through the props struct directly.
+
+## Owned Props
+
+The props were borrowed with the lifetime from the scope. The props are cloned every render, and passed into the component as an owned value.
+
+Dioxus 0.4:
+
+````rust
+#[component]
+fn Comp(cx: Scope, name: String) -> Element {
+    // You pass in an owned prop, but inside the component, it is borrowed (name is the type &String inside the function)
+    let owned_name: String = name.clone();
+
+    cx.render(rsx! {
+        "Hello {owned_name}"
+    })
+}
+````
+
+Dioxus 0.5:
+
+````rs@migration_props.rs
+// In dioxus 0.5, props are always owned. You pass in owned props and you get owned props in the body of the component
+#[component]
+fn Comp(name: String) -> Element {
+    // Name is owned here already (name is the type String inside the function)
+    let owned_name: String = name;
+
+    rsx! {"Hello {owned_name}"}
+}
+````
+
+Because props are cloned every render, making props Copy is recommended. You can easily make a field Copy by accepting `ReadOnlySignal<T>` instead of `T` in the props struct:
+
+````rs@migration_props.rs
+// In dioxus 0.5, props are always owned. You pass in owned props and you get owned props in the body of the component
+#[component]
+fn CopyPropsComp(name: ReadOnlySignal<String>) -> Element {
+    rsx! {
+        button {
+            // You can easily copy the value of a signal into a closure
+            onclick: move |_| {
+                println!("Hello {name}");
+                async move {
+                    println!("Hello {name}");
+                }
+            },
+            "Click me"
+        }
+    }
+}
+
+fn CopyPropsCompParent() -> Element {
+    rsx! { CopyPropsComp { name: "World" } }
+}
+````
+
+## Borrowed Props
+
+Borrowed props are removed in dioxus 0.5. Mapped signals can act similarly to borrowed props if your props are borrowed from state.
+
+Dioxus 0.4:
+
+````rust
+fn Parent(cx: Scope) -> Element {
+    let state = use_state(cx, || (1, "World".to_string()));
+    rsx! {
+        BorrowedComp {
+            name: &state.get().1
+        }
+    }
+}
+
+#[component]
+fn BorrowedComp<'a>(cx: Scope<'a>, name: &'a str) -> Element<'a> {
+    rsx! {
+        "Hello {name}"
+    }
+}
+````
+
+Dioxus 0.5:
+
+````rs@migration_props.rs
+fn Parent() -> Element {
+    let state = use_signal(|| (1, "World".to_string()));
+
+    rsx! { BorrowedComp { name: state.map(|s| &s.1) } }
+}
+
+#[component]
+fn BorrowedComp(name: MappedSignal<String>) -> Element {
+    rsx! {"Hello {name}"}
+}
+````
+
+## Manual Props
+
+Manual prop structs in dioxus 0.5 need to derive `Clone` in addition to `Props` and `PartialEq`:
+
+Dioxus 0.4:
+
+````rust
+#[derive(Props, PartialEq)]
+struct ManualProps {
+    name: String,
+}
+
+// Functions accept the props directly instead of the scope
+fn ManualPropsComponent(cx: Scope<ManualProps>) -> Element {
+    render! {
+        "Hello {cx.props.name}"
+    }
+}
+````
+
+Dioxus 0.5:
+
+````rs@migration_props.rs
+#[derive(Props, Clone, PartialEq)]
+struct ManualProps {
+    name: String,
+}
+
+// Functions accept the props directly instead of the component
+fn ManualPropsComponent(props: ManualProps) -> Element {
+    rsx! {"Hello {props.name}"}
+}
+````
+# Props Migration
+
+In dioxus 0.4, props are passed into the component through the scope. In dioxus 0.5, props are passed into the component through the props struct directly.
+
+## Owned Props
+
+The props were borrowed with the lifetime from the scope. The props are cloned every render, and passed into the component as an owned value.
+
+Dioxus 0.4:
+
+````rust
+#[component]
+fn Comp(cx: Scope, name: String) -> Element {
+    // You pass in an owned prop, but inside the component, it is borrowed (name is the type &String inside the function)
+    let owned_name: String = name.clone();
+
+    cx.render(rsx! {
+        "Hello {owned_name}"
+    })
+}
+````
+
+Dioxus 0.5:
+
+````rs@migration_props.rs
+// In dioxus 0.5, props are always owned. You pass in owned props and you get owned props in the body of the component
+#[component]
+fn Comp(name: String) -> Element {
+    // Name is owned here already (name is the type String inside the function)
+    let owned_name: String = name;
+
+    rsx! {"Hello {owned_name}"}
+}
+````
+
+Because props are cloned every render, making props Copy is recommended. You can easily make a field Copy by accepting `ReadOnlySignal<T>` instead of `T` in the props struct:
+
+````rs@migration_props.rs
+// In dioxus 0.5, props are always owned. You pass in owned props and you get owned props in the body of the component
+#[component]
+fn CopyPropsComp(name: ReadOnlySignal<String>) -> Element {
+    rsx! {
+        button {
+            // You can easily copy the value of a signal into a closure
+            onclick: move |_| {
+                println!("Hello {name}");
+                async move {
+                    println!("Hello {name}");
+                }
+            },
+            "Click me"
+        }
+    }
+}
+
+fn CopyPropsCompParent() -> Element {
+    rsx! { CopyPropsComp { name: "World" } }
+}
+````
+
+## Borrowed Props
+
+Borrowed props are removed in dioxus 0.5. Mapped signals can act similarly to borrowed props if your props are borrowed from state.
+
+Dioxus 0.4:
+
+````rust
+fn Parent(cx: Scope) -> Element {
+    let state = use_state(cx, || (1, "World".to_string()));
+    rsx! {
+        BorrowedComp {
+            name: &state.get().1
+        }
+    }
+}
+
+#[component]
+fn BorrowedComp<'a>(cx: Scope<'a>, name: &'a str) -> Element<'a> {
+    rsx! {
+        "Hello {name}"
+    }
+}
+````
+
+Dioxus 0.5:
+
+````rs@migration_props.rs
+fn Parent() -> Element {
+    let state = use_signal(|| (1, "World".to_string()));
+
+    rsx! { BorrowedComp { name: state.map(|s| &s.1) } }
+}
+
+#[component]
+fn BorrowedComp(name: MappedSignal<String>) -> Element {
+    rsx! {"Hello {name}"}
+}
+````
+
+## Manual Props
+
+Manual prop structs in dioxus 0.5 need to derive `Clone` in addition to `Props` and `PartialEq`:
+
+Dioxus 0.4:
+
+````rust
+#[derive(Props, PartialEq)]
+struct ManualProps {
+    name: String,
+}
+
+// Functions accept the props directly instead of the scope
+fn ManualPropsComponent(cx: Scope<ManualProps>) -> Element {
+    render! {
+        "Hello {cx.props.name}"
+    }
+}
+````
+
+Dioxus 0.5:
+
+````rs@migration_props.rs
+#[derive(Props, Clone, PartialEq)]
+struct ManualProps {
+    name: String,
+}
+
+// Functions accept the props directly instead of the component
+fn ManualPropsComponent(props: ManualProps) -> Element {
+    rsx! {"Hello {props.name}"}
+}
+````

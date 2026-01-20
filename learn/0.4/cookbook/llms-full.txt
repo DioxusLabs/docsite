@@ -1,0 +1,2007 @@
+<SYSTEM>This is the developer documentation for Dioxus at /learn/0.4/cookbook/publishing and all its subroutes.</SYSTEM>
+
+# Publishing
+
+After you have build your application, you will need to publish it somewhere. This reference will outline different methods of publishing your desktop or web application.
+
+## Web: Publishing with GitHub Pages
+
+Edit your `Dioxus.toml` to point your `out_dir` to the `docs` folder and the `base_path` to the name of your repo:
+
+````toml
+[application]
+# ...
+out_dir = "docs"
+
+[web.app]
+base_path = "your_repo"
+````
+
+Then build your app and publish it to Github:
+
+* Make sure GitHub Pages is set up for your repo to publish any static files in the docs directory
+* Build your app with:
+
+````sh
+dx build --release
+````
+
+* Add and commit with git
+* Push to GitHub
+
+## Desktop: Creating an installer
+
+Dioxus desktop app uses your operating system's WebView library, so it's portable to be distributed for other platforms.
+
+In this section, we'll cover how to bundle your app for macOS, Windows, and Linux.
+
+## Preparing your application for bundling
+
+Depending on your platform, you may need to add some additional code to your `main.rs` file to make sure your app is ready for bundling. On Windows, you'll need to add the `#![windows_subsystem = "windows"]` attribute to your `main.rs` file to hide the terminal window that pops up when you run your app. **If you're developing on Windows, only use this when bundling.** It will disable the terminal, so you will not get logs of any kind. You can gate it behind a feature, like so:
+
+````toml
+# Cargo.toml
+[features]
+bundle = []
+````
+
+And then your `main.rs`:
+
+````rust
+#![cfg_attr(feature = "bundle", windows_subsystem = "windows")]
+````
+
+## Install `dioxus CLI`
+
+The first thing we'll do is install the [dioxus-cli](https://github.com/DioxusLabs/dioxus/tree/master/packages/cli). This extension to cargo will make it very easy to package our app for the various platforms.
+
+To install, simply run
+
+`cargo install dioxus-cli`
+
+## Building
+
+To bundle your application you can simply run `dx bundle --release` (also add `--features bundle` if you're using that, see the [this](#preparing-your-application-for-bundling) for more) to produce a final app with all the optimizations and assets builtin.
+
+Once you've ran the command, your app should be accessible in `dist/bundle/`.
+
+For example, a macOS app would look like this:
+
+![Published App](/assets/static/publish.png)
+
+Nice! And it's only 4.8 Mb – extremely lean!! Because Dioxus leverages your platform's native WebView, Dioxus apps are extremely memory efficient and won't waste your battery.
+
+ > 
+ > Note: not all CSS works the same on all platforms. Make sure to view your app's CSS on each platform – or web browser (Firefox, Chrome, Safari) before publishing.
+# Antipatterns
+
+This example shows what not to do and provides a reason why a given pattern is considered an "AntiPattern". Most anti-patterns are considered wrong for performance or code re-usability reasons.
+
+## Unnecessarily Nested Fragments
+
+Fragments don't mount a physical element to the DOM immediately, so Dioxus must recurse into its children to find a physical DOM node. This process is called "normalization". This means that deeply nested fragments make Dioxus perform unnecessary work. Prefer one or two levels of fragments / nested components until presenting a true DOM element.
+
+Only Component and Fragment nodes are susceptible to this issue. Dioxus mitigates this with components by providing an API for registering shared state without the Context Provider pattern.
+
+````rs@anti_patterns.rs
+// ❌ Don't unnecessarily nest fragments
+let _ = cx.render(rsx!(
+    Fragment {
+        Fragment {
+            Fragment {
+                Fragment {
+                    Fragment {
+                        div { "Finally have a real node!" }
+                    }
+                }
+            }
+        }
+    }
+));
+
+// ✅ Render shallow structures
+cx.render(rsx!(
+    div { "Finally have a real node!" }
+))
+````
+
+## Incorrect Iterator Keys
+
+As described in the [dynamic rendering chapter](../reference/dynamic_rendering.md#the-key-attribute), list items must have unique keys that are associated with the same items across renders. This helps Dioxus associate state with the contained components and ensures good diffing performance. Do not omit keys, unless you know that the list will never change.
+
+````rs@anti_patterns.rs
+let data: &HashMap<_, _> = &cx.props.data;
+
+// ❌ No keys
+cx.render(rsx! {
+    ul {
+        data.values().map(|value| rsx!(
+            li { "List item: {value}" }
+        ))
+    }
+});
+
+// ❌ Using index as keys
+cx.render(rsx! {
+    ul {
+        cx.props.data.values().enumerate().map(|(index, value)| rsx!(
+            li { key: "{index}", "List item: {value}" }
+        ))
+    }
+});
+
+// ✅ Using unique IDs as keys:
+cx.render(rsx! {
+    ul {
+        cx.props.data.iter().map(|(key, value)| rsx!(
+            li { key: "{key}", "List item: {value}" }
+        ))
+    }
+})
+````
+
+## Avoid Interior Mutability in Props
+
+While it is technically acceptable to have a `Mutex` or a `RwLock` in the props, they will be difficult to use.
+
+Suppose you have a struct `User` containing the field `username: String`. If you pass a `Mutex<User>` prop to a `UserComponent` component, that component may wish to pass the username as a `&str` prop to a child component. However, it cannot pass that borrowed field down, since it only would live as long as the `Mutex`'s lock, which belongs to the `UserComponent` function. Therefore, the component will be forced to clone the `username` field.
+
+## Avoid Updating State During Render
+
+Every time you update the state, Dioxus needs to re-render the component – this is inefficient! Consider refactoring your code to avoid this.
+
+Also, if you unconditionally update the state during render, it will be re-rendered in an infinite loop.
+# Error handling
+
+A selling point of Rust for web development is the reliability of always knowing where errors can occur and being forced to handle them
+
+However, we haven't talked about error handling at all in this guide! In this chapter, we'll cover some strategies in handling errors to ensure your app never crashes.
+
+## The simplest – returning None
+
+Astute observers might have noticed that `Element` is actually a type alias for `Option<VNode>`. You don't need to know what a `VNode` is, but it's important to recognize that we could actually return nothing at all:
+
+````rust
+fn App(cx: Scope) -> Element {
+	None
+}
+````
+
+This lets us add in some syntactic sugar for operations we think *shouldn't* fail, but we're still not confident enough to "unwrap" on.
+
+ > 
+ > The nature of `Option<VNode>` might change in the future as the `try` trait gets upgraded.
+
+````rust
+fn App(cx: Scope) -> Element {
+	// immediately return "None"
+	let name = cx.use_hook(|_| Some("hi"))?;
+}
+````
+
+## Early return on result
+
+Because Rust can't accept both Options and Results with the existing try infrastructure, you'll need to manually handle Results. This can be done by converting them into Options or by explicitly handling them.
+
+````rust
+fn App(cx: Scope) -> Element {
+	// Convert Result to Option
+	let name = cx.use_hook(|_| "1.234").parse().ok()?;
+
+
+	// Early return
+	let count = cx.use_hook(|_| "1.234");
+	let val = match count.parse() {
+		Ok(val) => val
+		Err(err) => return cx.render(rsx!{ "Parsing failed" })
+	};
+}
+````
+
+Notice that while hooks in Dioxus do not like being called in conditionals or loops, they *are* okay with early returns. Returning an error state early is a completely valid way of handling errors.
+
+## Match results
+
+The next "best" way of handling errors in Dioxus is to match on the error locally. This is the most robust way of handling errors, though it doesn't scale to architectures beyond a single component.
+
+To do this, we simply have an error state built into our component:
+
+````rust
+let err = use_state(cx, || None);
+````
+
+Whenever we perform an action that generates an error, we'll set that error state. We can then match on the error in a number of ways (early return, return Element, etc).
+
+````rust
+fn Commandline(cx: Scope) -> Element {
+	let error = use_state(cx, || None);
+
+	cx.render(match *error {
+		Some(error) => rsx!(
+			h1 { "An error occurred" }
+		)
+		None => rsx!(
+			input {
+				oninput: move |_| error.set(Some("bad thing happened!")),
+			}
+		)
+	})
+}
+````
+
+## Passing error states through components
+
+If you're dealing with a handful of components with minimal nesting, you can just pass the error handle into child components.
+
+````rust
+fn Commandline(cx: Scope) -> Element {
+	let error = use_state(cx, || None);
+
+	if let Some(error) = **error {
+		return cx.render(rsx!{ "An error occurred" });
+	}
+
+	cx.render(rsx!{
+		Child { error: error.clone() }
+		Child { error: error.clone() }
+		Child { error: error.clone() }
+		Child { error: error.clone() }
+	})
+}
+````
+
+Much like before, our child components can manually set the error during their own actions. The advantage to this pattern is that we can easily isolate error states to a few components at a time, making our app more predictable and robust.
+
+## Going global
+
+A strategy for handling cascaded errors in larger apps is through signaling an error using global state. This particular pattern involves creating an "error" context, and then setting it wherever relevant. This particular method is not as "sophisticated" as React's error boundary, but it is more fitting for Rust.
+
+To get started, consider using a built-in hook like `use_context` and `use_context_provider` or Fermi. Of course, it's pretty easy to roll your own hook too.
+
+At the "top" of our architecture, we're going to want to explicitly declare a value that could be an error.
+
+````rust
+enum InputError {
+	None,
+	TooLong,
+	TooShort,
+}
+
+static INPUT_ERROR: Atom<InputError> = |_| InputError::None;
+````
+
+Then, in our top level component, we want to explicitly handle the possible error state for this part of the tree.
+
+````rust
+fn TopLevel(cx: Scope) -> Element {
+	let error = use_read(cx, INPUT_ERROR);
+
+	match error {
+		TooLong => return cx.render(rsx!{ "FAILED: Too long!" }),
+		TooShort => return cx.render(rsx!{ "FAILED: Too Short!" }),
+		_ => {}
+	}
+}
+````
+
+Now, whenever a downstream component has an error in its actions, it can simply just set its own error state:
+
+````rust
+fn Commandline(cx: Scope) -> Element {
+	let set_error = use_set(cx, INPUT_ERROR);
+
+	cx.render(rsx!{
+		input {
+			oninput: move |evt| {
+				if evt.value.len() > 20 {
+					set_error(InputError::TooLong);
+				}
+			}
+		}
+	})
+}
+````
+
+This approach to error handling is best in apps that have "well defined" error states. Consider using a crate like `thiserror` or `anyhow` to simplify the generation of the error types.
+
+This pattern is widely popular in many contexts and is particularly helpful whenever your code generates a non-recoverable error. You can gracefully capture these "global" error states without panicking or mucking up state.
+This section of the guide provides getting started guides for common tools used with Dioxus.
+
+* [Logging](./logging.md)
+* [Internationalization](./internationalization.md)
+# Logging
+
+Dioxus has a wide range of supported platforms, each with their own logging requirements. We'll discuss the different options available to you.
+
+#### The Log Crate
+
+The [Log](https://crates.io/crates/log) crate is the most universally recognized logging facade in Rust. It is also the easiest to work with in Dioxus; therefore we will be focusing on loggers that work with this crate.
+
+The log crate provides a variety of simple `println`-like macros with varying levels of severity.
+The available macros are as follows with the highest severity on the bottom:
+
+````rs
+fn main() {
+    log::trace!("trace");
+    log::debug!("debug");
+    log::info!("info");
+    log::warn!("warn");
+    log::error!("error");
+}
+````
+
+All the loggers provided on this page are, besides configuration and initialization, interfaced using these macros. Often you will also utilize the log crate's `LevelFilter` enum. This enum usually represents the lowest log severity you want your application to emit and can be loaded from a configuration file, environment variable, or other.
+
+For more information, visit log crate's [docs](https://docs.rs/log/latest/log/).
+
+## Dioxus Logger
+
+[Dioxus Logger](https://crates.io/crates/dioxus-logger) is a planned-to-be feature-rich logger that supports all of Dioxus' platforms. Currently only Desktop, Web, and any server-based targets work with Dioxus Logger.
+
+The easiest way to use Dioxus Logger is by calling the `init()` function:
+
+````rs
+use log::LevelFilter;
+
+fn main() {
+    // Init logger
+    dioxus_logger::init(LevelFilter::Info).expect("failed to init logger");
+    // Dioxus code
+}
+````
+
+The `dioxus_logger::init()` function initializes Dioxus Logger with the log crate using the default configuration and provided `LevelFilter`.
+
+#### Custom Format
+
+Dioxus Logger allows you more control with the ability to set a custom format using the `new` function on the `DioxusLogger` struct:
+
+````rs
+use log::LevelFilter;
+
+fn main() {
+    // Init logger
+    dioxus_logger::DioxusLogger::new(LevelFilter::Info)
+        .use_format("[{LEVEL}] {PATH} - {ARGS}")
+        .build()
+        .expect("failed to init logger");
+
+    // Dioxus code
+}
+````
+
+In this example, we are building a new `DioxusLogger` struct, providing the `LevelFilter`, calling the `use_format()` function, and initializing the logger with the `build()` function (acts as `init()` in the previous example).
+
+The key function call in this example is `use_format()`. This function takes a `&str` that specifies how you want your logs to be formatted. To specify a variable in the format, you wrap it's name in `{}`.
+
+The available variables are:
+
+* LEVEL     - The `LevelFilter` of the emitted log.
+* PATH      - The file path of where the log was emitted, or the crate name.
+* ARGS      - The arguments passed through the log macro.
+* TIMESTAMP - A timestamp of when the log was emitted. (Requires `timestamps` feature)
+
+#### Timestamps
+
+Another feature of Dioxus Logger is the ability to include timestamps with your logs. By default, this feature is disabled and has to be enabled by adding `timestamps` to your features section of the `dioxus-logger` dependency:
+
+````toml
+dioxus-logger = { version = "*", features = ["timestamps"] }
+````
+
+By enabling this feature, you gain access to the `TIMESTAMP` format variable.
+
+#### Dioxus Logger Platform Intricacies
+
+On web, Dioxus Logger will use [web-sys](https://crates.io/crates/web-sys) to interact with `console.log()` to output your logs to the browser's console. On Desktop and server-based targets, Dioxus Logger will output using `println()`.
+
+#### Final Notes
+
+Dioxus Logger is the preferred logger to use with Dioxus if it suites your needs. There are many more features to come and Dioxus Logger is planned to become an integral part of Dioxus. If there are any feature suggestions or issues with Dioxus Logger, feel free to reach out on the [Dioxus Discord Server](https://discord.gg/XgGxMSkvUM)!
+
+For more information, visit Dioxus Logger's [docs](https://docs.rs/dioxus-logger/latest/dioxus_logger/).
+
+## Desktop and Server
+
+For Dioxus' desktop and server targets, you can generally use the logger of your choice.
+
+Some popular options are:
+
+* [env_logger](https://crates.io/crates/env_logger)
+* [simple_logger](https://crates.io/crates/simple_logger)
+* [pretty_env_logger](https://crates.io/crates/pretty_env_logger)
+
+To keep this guide short, we will not be covering the usage of these loggers.
+
+For a full list of popular log-based logging crates, visit [this](https://docs.rs/log/latest/log/#available-logging-implementations) list in the log crate's docs.
+
+## Web
+
+[WASM Logger](https://crates.io/crates/wasm-logger) is a logging interface that can be used with Dioxus' web platform.
+
+The easiest way to use WASM Logger is with the `init` function:
+
+````rs
+fn main() {
+    // Init logger
+    wasm_logger::init(wasm_logger::Config::default());
+
+    // Dioxus code
+}
+````
+
+This starts WASM Logger with a `LevelFilter` of `Debug`.
+
+To specify a custom `LevelFilter`, build the `Config` struct:
+
+````rs
+use log::LevelFilter;
+
+fn main() {
+    // Init logger
+    let log_config = wasm_logger::Config::new(LevelFilter::Info);
+    wasm_logger::init(log_config);
+
+    // Dioxus code
+}
+````
+
+#### Wasm Logger Platform Intricacies
+
+WASM Logger also uses the [web-sys](https://crates.io/crates/web-sys) crate to output to the console.
+
+For more information, visit wasm-logger's [docs](https://docs.rs/wasm-logger/latest/wasm_logger/).
+
+## Android
+
+[Android Logger](https://crates.io/crates/android_logger) is a logging interface that can be used when targeting Android. Android Logger runs whenever an event `native_activity_create` is called by the Android system:
+
+````rs
+use log::LevelFilter;
+use android_logger::Config;
+
+fn native_activity_create() {
+    android_logger::init_once(
+        Config::default()
+            .with_max_level(LevelFilter::Info)
+            .with_tag("myapp");
+    );
+}
+````
+
+The `with_tag()` is what your app's logs will show as.
+
+#### Viewing Android Logs
+
+Android logs are sent to logcat. To use logcat through the Android debugger, run:
+
+````cmd
+adb -d logcat
+````
+
+Your Android device will need developer options/usb debugging enabled.
+
+For more information, visit android_logger's [docs](https://docs.rs/android_logger/latest/android_logger/).
+
+## iOS
+
+The current option for iOS is the [oslog](https://crates.io/crates/oslog) crate.
+
+````rs
+fn main() {
+    // Init logger
+    OsLogger::new("com.example.test")
+        .level_filter(LevelFilter::Debug)
+        .init()
+        .expect("failed to init logger");
+    // Dioxus code
+}
+````
+
+#### Viewing IOS Logs
+
+You can view the emitted logs in Xcode.
+
+For more information, visit [oslog](https://crates.io/crates/oslog).
+# Internationalization
+
+If your application supports multiple languages, the [Dioxus SDK](https://github.com/DioxusLabs/sdk) crate contains helpers to make working with translations in your application easier.
+
+## The full code for internationalization
+
+````rs@i18n.rs
+use dioxus::prelude::*;
+use dioxus_std::i18n::*;
+use dioxus_std::translate;
+use std::str::FromStr;
+
+fn main() {
+    dioxus_web::launch(app);
+}
+
+static EN_US: &str = r#"{
+    "id": "en-US",
+    "texts": {
+        "messages": {
+            "hello_world": "Hello World!"
+        },
+        "messages.hello": "Hello {name}"
+    }
+}"#;
+static ES_ES: &str = r#"{
+    "id": "es-ES",
+    "texts": {
+        "messages": {
+            "hello_world": "Hola Mundo!"
+        },
+        "messages.hello": "Hola {name}"
+    }
+}"#;
+
+#[allow(non_snake_case)]
+fn Body(cx: Scope) -> Element {
+    let i18 = use_i18(cx);
+
+    let change_to_english = move |_| i18.set_language("en-US".parse().unwrap());
+    let change_to_spanish = move |_| i18.set_language("es-ES".parse().unwrap());
+
+    render!(
+        button {
+            onclick: change_to_english,
+            label {
+                "English"
+            }
+        }
+        button {
+            onclick: change_to_spanish,
+            label {
+                "Spanish"
+            }
+        }
+        p { translate!(i18, "messages.hello_world") }
+        p { translate!(i18, "messages.hello", name: "Dioxus")  }
+    )
+}
+
+fn app(cx: Scope) -> Element {
+    use_init_i18n(
+        cx,
+        "en-US".parse().unwrap(),
+        "en-US".parse().unwrap(),
+        || {
+            let en_us = Language::from_str(EN_US).unwrap();
+            let es_es = Language::from_str(ES_ES).unwrap();
+            vec![en_us, es_es]
+        },
+    );
+
+    render!(Body {})
+}
+
+````
+# State Cookbook
+
+* [External State](external/index.md)
+* [Custom Hook](custom_hooks/index.md)
+# Working with External State
+
+This guide will help you integrate your Dioxus application with some external state like a different thread or a websocket connection.
+
+## Working with non-reactive State
+
+[Coroutines](../../../reference/use_coroutine.md) are great tool for dealing with non-reactive (state you don't render directly) state within your application.
+
+You can store your state inside the coroutine async block and communicate with the coroutine with messages from any child components.
+
+````rs@use_coroutine.rs
+// import futures::StreamExt to use the next() method
+use futures::StreamExt;
+let response_state = use_state(cx, || None);
+let tx = use_coroutine(cx, |mut rx| {
+    to_owned![response_state];
+    async move {
+        // Define your state before the loop
+        let mut state = reqwest::Client::new();
+        let mut cache: HashMap<String, String> = HashMap::new();
+        loop {
+            // Loop and wait for the next message
+            if let Some(request) = rx.next().await {
+                // Resolve the message
+                let response = if let Some(response) = cache.get(&request) {
+                    response.clone()
+                } else {
+                    let response = state
+                        .get(&request)
+                        .send()
+                        .await
+                        .unwrap()
+                        .text()
+                        .await
+                        .unwrap();
+                    cache.insert(request, response.clone());
+                    response
+                };
+                response_state.set(Some(response));
+            } else {
+                break;
+            }
+        }
+    }
+});
+// Send a message to the coroutine
+tx.send("https://example.com".to_string());
+// Get the current state of the coroutine
+let response = response_state.get();
+````
+
+## Making Reactive State External
+
+If you have some reactive state (state that is rendered), that you want to modify from another thread, you can use the [use_rw](https://github.com/DioxusLabs/dioxus-std/blob/master/src/utils/rw/use_rw.rs) hook in the [dioxus-std](https://github.com/DioxusLabs/dioxus-std) crate.
+
+The use_rw hook works like the use_ref hook, but it is Send + Sync which makes it possible to move the hook into another thread.
+# Custom Hooks
+
+Hooks are a great way to encapsulate business logic. If none of the existing hooks work for your problem, you can write your own.
+
+When writing your hook, you can make a function that accepts `cx: &ScopeState` as a parameter to accept a scope with any Props.
+
+## Composing Hooks
+
+To avoid repetition, you can encapsulate business logic based on existing hooks to create a new hook.
+
+For example, if many components need to access an `AppSettings` struct, you can create a "shortcut" hook:
+
+````rs@hooks_composed.rs
+fn use_settings(cx: &ScopeState) -> &UseSharedState<AppSettings> {
+    use_shared_state::<AppSettings>(cx).expect("App settings not provided")
+}
+````
+
+Or if you want to wrap a hook that persists reloads with the storage API, you can build on top of the use_ref hook to work with mutable state:
+
+````rs@hooks_composed.rs
+use gloo_storage::{LocalStorage, Storage};
+use serde::{de::DeserializeOwned, Serialize};
+
+/// A persistent storage hook that can be used to store data across application reloads.
+#[allow(clippy::needless_return)]
+pub fn use_persistent<T: Serialize + DeserializeOwned + Default + 'static>(
+    cx: &ScopeState,
+    // A unique key for the storage entry
+    key: impl ToString,
+    // A function that returns the initial value if the storage entry is empty
+    init: impl FnOnce() -> T,
+) -> &UsePersistent<T> {
+    // Use the use_ref hook to create a mutable state for the storage entry
+    let state = use_ref(cx, move || {
+        // This closure will run when the hook is created
+        let key = key.to_string();
+        let value = LocalStorage::get(key.as_str()).ok().unwrap_or_else(init);
+        StorageEntry { key, value }
+    });
+
+    // Wrap the state in a new struct with a custom API
+    // Note: We use use_hook here so that this hook is easier to use in closures in the rsx. Any values with the same lifetime as the ScopeState can be used in the closure without cloning.
+    cx.use_hook(|| UsePersistent {
+        inner: state.clone(),
+    })
+}
+
+struct StorageEntry<T> {
+    key: String,
+    value: T,
+}
+
+/// Storage that persists across application reloads
+pub struct UsePersistent<T: 'static> {
+    inner: UseRef<StorageEntry<T>>,
+}
+
+impl<T: Serialize + DeserializeOwned + Clone + 'static> UsePersistent<T> {
+    /// Returns a reference to the value
+    pub fn get(&self) -> T {
+        self.inner.read().value.clone()
+    }
+
+    /// Sets the value
+    pub fn set(&self, value: T) {
+        let mut inner = self.inner.write();
+        // Write the new value to local storage
+        LocalStorage::set(inner.key.as_str(), &value);
+        inner.value = value;
+    }
+}
+````
+
+## Custom Hook Logic
+
+You can use [`cx.use_hook`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.ScopeState.html#method.use_hook) to build your own hooks. In fact, this is what all the standard hooks are built on!
+
+`use_hook` accepts a single closure for initializing the hook. It will be only run the first time the component is rendered. The return value of that closure will be used as the value of the hook – Dioxus will take it, and store it for as long as the component is alive. On every render (not just the first one!), you will get a reference to this value.
+
+ > 
+ > Note: You can implement [`Drop`](https://doc.rust-lang.org/std/ops/trait.Drop.html) for your hook value – it will be dropped then the component is unmounted (no longer in the UI)
+
+Inside the initialization closure, you will typically make calls to other `cx` methods. For example:
+
+* The `use_state` hook tracks state in the hook value, and uses [`cx.schedule_update`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.ScopeState.html#method.schedule_update) to make Dioxus re-render the component whenever it changes.
+
+Here is a simplified implementation of the `use_state` hook:
+
+````rs@hooks_custom_logic.rs
+use std::cell::RefCell;
+use std::rc::Rc;
+use std::sync::Arc;
+
+#[derive(Clone)]
+struct UseState<T> {
+    value: Rc<RefCell<T>>,
+    update: Arc<dyn Fn()>,
+}
+
+fn my_use_state<T: 'static>(cx: &ScopeState, init: impl FnOnce() -> T) -> &UseState<T> {
+    cx.use_hook(|| {
+        // The update function will trigger a re-render in the component cx is attached to
+        let update = cx.schedule_update();
+        // Create the initial state
+        let value = Rc::new(RefCell::new(init()));
+
+        UseState { value, update }
+    })
+}
+
+impl<T: Clone> UseState<T> {
+    fn get(&self) -> T {
+        self.value.borrow().clone()
+    }
+
+    fn set(&self, value: T) {
+        // Update the state
+        *self.value.borrow_mut() = value;
+        // Trigger a re-render on the component the state is from
+        (self.update)();
+    }
+}
+````
+
+* The `use_context` hook calls [`cx.consume_context`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.ScopeState.html#method.consume_context) (which would be expensive to call on every render) to get some context from the scope
+
+Here is an implementation of the `use_context` and `use_context_provider` hooks:
+
+````rs@hooks_custom_logic.rs
+pub fn use_context<T: 'static + Clone>(cx: &ScopeState) -> Option<&T> {
+    cx.use_hook(|| cx.consume_context::<T>()).as_ref()
+}
+
+pub fn use_context_provider<T: 'static + Clone>(cx: &ScopeState, f: impl FnOnce() -> T) -> &T {
+    cx.use_hook(|| {
+        let val = f();
+        // Provide the context state to the scope
+        cx.provide_context(val.clone());
+        val
+    })
+}
+
+````
+
+## Hook Anti-Patterns
+
+When writing a custom hook, you should avoid the following anti-patterns:
+
+* !Clone Hooks: To allow hooks to be used within async blocks, the hooks must be Clone. To make a hook clone, you can wrap data in Rc or Arc and avoid lifetimes in hooks.
+
+This version of use_state may seem more efficient, but it is not cloneable:
+
+````rs@hooks_anti_patterns.rs
+use std::cell::RefCell;
+use std::rc::Rc;
+use std::sync::Arc;
+
+struct UseState<'a, T> {
+    value: &'a RefCell<T>,
+    update: Arc<dyn Fn()>,
+}
+
+fn my_use_state<T: 'static>(cx: &ScopeState, init: impl FnOnce() -> T) -> UseState<T> {
+    // The update function will trigger a re-render in the component cx is attached to
+    let update = cx.schedule_update();
+    // Create the initial state
+    let value = cx.use_hook(|| RefCell::new(init()));
+
+    UseState { value, update }
+}
+
+impl<T: Clone> UseState<'_, T> {
+    fn get(&self) -> T {
+        self.value.borrow().clone()
+    }
+
+    fn set(&self, value: T) {
+        // Update the state
+        *self.value.borrow_mut() = value;
+        // Trigger a re-render on the component the state is from
+        (self.update)();
+    }
+}
+````
+
+If we try to use this hook in an async block, we will get a compile error:
+
+````rust
+fn FutureComponent(cx: &ScopeState) -> Element {
+	let my_state = my_use_state(cx, || 0);
+	cx.spawn({
+		to_owned![my_state];
+		async move {
+			my_state.set(1);
+		}
+	});
+
+	todo!()
+}
+````
+
+But with the original version, we can use it in an async block:
+
+````rust
+fn FutureComponent(cx: &ScopeState) -> Element {
+	let my_state = use_state(cx, || 0);
+	cx.spawn({
+		to_owned![my_state];
+		async move {
+			my_state.set(1);
+		}
+	});
+
+	todo!()
+}
+````
+# Testing
+
+When building application or libraries with Dioxus, you may want to include some tests to check the behavior of parts of your application. This guide will teach you how to test different parts of your Dioxus application.
+
+## Component Testing
+
+You can use a combination of [pretty-assertions](https://docs.rs/pretty_assertions/latest/pretty_assertions/) and [dioxus-ssr](https://docs.rs/dioxus-ssr/latest/dioxus_ssr/) to check that two snippets of rsx are equal:
+
+````rs@component_test.rs
+use futures::FutureExt;
+use std::{cell::RefCell, sync::Arc};
+
+use dioxus::prelude::*;
+
+#[test]
+fn test() {
+    assert_rsx_eq(
+        rsx! {
+            div {
+                "Hello world"
+            }
+            div {
+                "Hello world"
+            }
+        },
+        rsx! {
+            for _ in 0..2 {
+                div {
+                    "Hello world"
+                }
+            }
+        },
+    )
+}
+
+fn assert_rsx_eq(first: LazyNodes<'static, 'static>, second: LazyNodes<'static, 'static>) {
+    let first = dioxus_ssr::render_lazy(first);
+    let second = dioxus_ssr::render_lazy(second);
+    pretty_assertions::assert_str_eq!(first, second);
+}
+
+````
+
+## Hook Testing
+
+When creating libraries around Dioxus, it can be helpful to make tests for your [custom hooks](./state/custom_hooks/index.md).
+
+Dioxus does not currently have a full hook testing library, but you can build a bespoke testing framework by manually driving the virtual dom.
+
+````rs@hook_test.rs
+use futures::FutureExt;
+use std::{cell::RefCell, sync::Arc};
+
+use dioxus::prelude::*;
+
+#[test]
+fn test() {
+    test_hook(
+        |cx| use_ref(cx, || 0).clone(),
+        |value, mut proxy| match proxy.generation {
+            0 => {
+                value.set(1);
+            }
+            1 => {
+                assert_eq!(*value.read(), 1);
+                value.set(2);
+            }
+            2 => {
+                proxy.rerun();
+            }
+            3 => {}
+            _ => todo!(),
+        },
+        |proxy| assert_eq!(proxy.generation, 4),
+    );
+}
+
+fn test_hook<V: 'static>(
+    initialize: impl FnMut(&ScopeState) -> V + 'static,
+    check: impl FnMut(V, MockProxy) + 'static,
+    mut final_check: impl FnMut(MockProxy) + 'static,
+) {
+    #[derive(Props)]
+    struct MockAppComponent<
+        I: FnMut(&ScopeState) -> V + 'static,
+        C: FnMut(V, MockProxy) + 'static,
+        V,
+    > {
+        hook: RefCell<I>,
+        check: RefCell<C>,
+    }
+
+    impl<I: FnMut(&ScopeState) -> V, C: FnMut(V, MockProxy), V> PartialEq
+        for MockAppComponent<I, C, V>
+    {
+        fn eq(&self, _: &Self) -> bool {
+            true
+        }
+    }
+
+    fn mock_app<I: FnMut(&ScopeState) -> V, C: FnMut(V, MockProxy), V>(
+        cx: Scope<MockAppComponent<I, C, V>>,
+    ) -> Element {
+        let value = cx.props.hook.borrow_mut()(cx);
+
+        cx.props.check.borrow_mut()(value, MockProxy::new(cx));
+
+        render! {
+            div {}
+        }
+    }
+
+    let mut vdom = VirtualDom::new_with_props(
+        mock_app,
+        MockAppComponent {
+            hook: RefCell::new(initialize),
+            check: RefCell::new(check),
+        },
+    );
+
+    let _ = vdom.rebuild();
+
+    while vdom.wait_for_work().now_or_never().is_some() {
+        let _ = vdom.render_immediate();
+    }
+
+    final_check(MockProxy::new(vdom.base_scope()));
+}
+
+struct MockProxy {
+    rerender: Arc<dyn Fn()>,
+    pub generation: usize,
+}
+
+impl MockProxy {
+    fn new(scope: &ScopeState) -> Self {
+        let generation = scope.generation();
+        let rerender = scope.schedule_update();
+
+        Self {
+            rerender,
+            generation,
+        }
+    }
+
+    pub fn rerun(&mut self) {
+        (self.rerender)();
+    }
+}
+
+````
+
+## End to End Testing
+
+You can use [Playwright](https://playwright.dev/) to create end to end tests for your dioxus application.
+
+In your `playwright.config.js`, you will need to run cargo run or dx serve instead of the default build command. Here is a snippet from the end to end web example:
+
+````js
+//...
+webServer: [
+    {
+        cwd: path.join(process.cwd(), 'playwright-tests', 'web'),
+        command: 'dx serve',
+        port: 8080,
+        timeout: 10 * 60 * 1000,
+        reuseExistingServer: !process.env.CI,
+        stdout: "pipe",
+    },
+],
+````
+
+* [Web example](https://github.com/DioxusLabs/dioxus/tree/master/playwright-tests/web)
+* [Liveview example](https://github.com/DioxusLabs/dioxus/tree/master/playwright-tests/liveview)
+* [Fullstack example](https://github.com/DioxusLabs/dioxus/tree/master/playwright-tests/fullstack)
+# Examples
+
+There's a *lot* of these, so if you're having trouble implementing something, or you just want to see cool things
+that you can do with Dioxus, make sure to give these a look!
+
+Each of the examples in the main repository also has a permalink attached, in case the main one doesn't work.
+However, permalinks lead to an older "archived" version, so if you're reading this a long time in the future in a galaxy far, far away...
+The examples in the permalinks might not work.
+
+* [Main list](https://github.com/DioxusLabs/dioxus/tree/master/examples) - [permalink](https://github.com/DioxusLabs/dioxus/tree/60ee82942c4decf67b6ad263f639553d9b7e28a9/examples) - This is the largest list.
+* Package-specific examples from the [main repository](https://github.com/DioxusLabs/dioxus/). To learn more about these packages, search them up on [crates.io](https://crates.io/), or navigate from the examples to the root of the package.
+  * [dioxus-web](https://github.com/DioxusLabs/dioxus/tree/master/packages/web/examples) - [permalink](https://github.com/DioxusLabs/dioxus/tree/60ee82942c4decf67b6ad263f639553d9b7e28a9/packages/web/examples)
+  * [dioxus-fullstack](https://github.com/DioxusLabs/dioxus/tree/master/packages/fullstack/examples) - [permalink](https://github.com/DioxusLabs/dioxus/tree/60ee82942c4decf67b6ad263f639553d9b7e28a9/packages/fullstack/examples)
+  * [dioxus-liveview](https://github.com/DioxusLabs/dioxus/tree/master/packages/liveview/examples) - [permalink](https://github.com/DioxusLabs/dioxus/tree/60ee82942c4decf67b6ad263f639553d9b7e28a9/packages/liveview/examples)
+  * [dioxus-router](https://github.com/DioxusLabs/dioxus/tree/master/packages/router/examples) - [permalink](https://github.com/DioxusLabs/dioxus/tree/60ee82942c4decf67b6ad263f639553d9b7e28a9/packages/router/examples)
+  * [dioxus-tui](https://github.com/DioxusLabs/dioxus/tree/master/packages/dioxus-tui/examples) - [permalink](https://github.com/DioxusLabs/dioxus/tree/60ee82942c4decf67b6ad263f639553d9b7e28a9/packages/dioxus-tui/examples)
+  * [plasmo ("rink" is the old name, it will be updated)](https://github.com/DioxusLabs/dioxus/tree/master/packages/rink/examples) - [permalink](https://github.com/DioxusLabs/dioxus/tree/60ee82942c4decf67b6ad263f639553d9b7e28a9/packages/rink/examples)
+  * [rsx-rosetta](https://github.com/DioxusLabs/dioxus/tree/master/packages/rsx-rosetta/examples) - [permalink](https://github.com/DioxusLabs/dioxus/tree/60ee82942c4decf67b6ad263f639553d9b7e28a9/packages/rsx-rosetta/examples)
+  * [native-core](https://github.com/DioxusLabs/dioxus/tree/master/packages/native-core/examples) - [permalink](https://github.com/DioxusLabs/dioxus/tree/60ee82942c4decf67b6ad263f639553d9b7e28a9/packages/native-core/examples)
+  * [signals](https://github.com/DioxusLabs/dioxus/tree/master/packages/signals/examples) - [permalink](https://github.com/DioxusLabs/dioxus/tree/60ee82942c4decf67b6ad263f639553d9b7e28a9/packages/signals/examples) - This is unreleased, but it's a very exciting project, so stay tuned!
+* The [example-projects](https://github.com/DioxusLabs/example-projects) repository. It might be deprecated/removed in the future though. See [\#25](https://github.com/DioxusLabs/example-projects/issues/25).
+# Tailwind
+
+You can style your Dioxus application with whatever CSS framework you choose, or just write vanilla CSS.
+
+One popular option for styling your Dioxus application is [Tailwind](https://tailwindcss.com/). Tailwind allows you to style your elements with CSS utility classes. This guide will show you how to setup tailwind CSS with your Dioxus application.
+
+## Setup
+
+1. Install the Dioxus CLI:
+   
+   ````bash
+   cargo install --git https://github.com/DioxusLabs/cli
+   ````
+
+1. Install npm: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
+
+1. Install the tailwind css cli: https://tailwindcss.com/docs/installation
+
+1. Initialize the tailwind css project:
+   
+   ````bash
+   npx tailwindcss init
+   ````
+   
+   This should create a `tailwind.config.js` file in the root of the project.
+
+1. Edit the `tailwind.config.js` file to include rust files:
+   
+   ````js
+   module.exports = {
+       mode: "all",
+       content: [
+           // include all rust, html and css files in the src directory
+           "./src/**/*.{rs,html,css}",
+           // include all html files in the output (dist) directory
+           "./dist/**/*.html",
+       ],
+       theme: {
+           extend: {},
+       },
+       plugins: [],
+   }
+   ````
+
+1. Create a `input.css` file with the following content:
+   
+   ````css
+   @tailwind base;
+   @tailwind components;
+   @tailwind utilities;
+   ````
+
+1. Create a `Dioxus.toml` file with the following content that links to the `tailwind.css` file:
+   
+   ````toml
+   [application]
+   
+   # App (Project) Name
+   name = "Tailwind CSS + Dioxus"
+   
+   # Dioxus App Default Platform
+   # desktop, web, mobile, ssr
+   default_platform = "web"
+   
+   # `build` & `serve` dist path
+   out_dir = "dist"
+   
+   # resource (public) file folder
+   asset_dir = "public"
+   
+   [web.app]
+   
+   # HTML title tag content
+   title = "dioxus | ⛺"
+   
+   [web.watcher]
+   
+   # when watcher trigger, regenerate the `index.html`
+   reload_html = true
+   
+   # which files or dirs will be watcher monitoring
+   watch_path = ["src", "public"]
+   
+   # uncomment line below if using Router
+   # index_on_404 = true
+   
+   # include `assets` in web platform
+   [web.resource]
+   
+   # CSS style file
+   style = ["/tailwind.css"]
+   
+   # Javascript code file
+   script = []
+   
+   [web.resource.dev]
+   
+   # serve: [dev-server] only
+   
+   # CSS style file
+   style = []
+   
+   # Javascript code file
+   script = []
+   ````
+
+### Bonus Steps
+
+1. Install the tailwind css vs code extension
+
+1. Go to the settings for the extension and find the experimental regex support section. Edit the setting.json file to look like this:
+   
+   ````json
+   "tailwindCSS.experimental.classRegex": ["class: \"(.*)\""],
+   "tailwindCSS.includeLanguages": {
+       "rust": "html"
+   },
+   ````
+
+## Development
+
+* Run the following command in the root of the project to start the tailwind css compiler:
+  
+  ````bash
+  npx tailwindcss -i ./input.css -o ./public/tailwind.css --watch
+  ````
+
+### Web
+
+* Run the following command in the root of the project to start the dioxus dev server:
+  
+  ````bash
+  dx serve --hot-reload
+  ````
+
+* Open the browser to [http://localhost:8080](http://localhost:8080).
+
+### Desktop
+
+* Add a custom head pointing to the generated tailwind CSS file in your `main`. It looks like:
+  
+  ````rust
+  dioxus_desktop::launch_cfg(
+    App,
+    dioxus_desktop::Config::new()
+      .with_custom_head(r#"<link rel="stylesheet" href="public/tailwind.css">"#.to_string()))
+  ````
+
+* Launch the dioxus desktop app:
+  
+  ````bash
+  cargo run
+  ````
+# Custom Renderer
+
+Dioxus is an incredibly portable framework for UI development. The lessons, knowledge, hooks, and components you acquire over time can always be used for future projects. However, sometimes those projects cannot leverage a supported renderer or you need to implement your own better renderer.
+
+Great news: the design of the renderer is entirely up to you! We provide suggestions and inspiration with the 1st party renderers, but only really require processing `Mutations` and sending `UserEvents`.
+
+## The specifics:
+
+Implementing the renderer is fairly straightforward. The renderer needs to:
+
+1. Handle the stream of edits generated by updates to the virtual DOM
+1. Register listeners and pass events into the virtual DOM's event system
+
+Essentially, your renderer needs to process edits and generate events to update the VirtualDOM. From there, you'll have everything needed to render the VirtualDOM to the screen.
+
+Internally, Dioxus handles the tree relationship, diffing, memory management, and the event system, leaving as little as possible required for renderers to implement themselves.
+
+For reference, check out the [javascript interpreter](https://github.com/DioxusLabs/dioxus/tree/master/packages/interpreter) or [tui renderer](https://github.com/DioxusLabs/dioxus/tree/master/packages/dioxus-tui) as a starting point for your custom renderer.
+
+## Templates
+
+Dioxus is built around the concept of [Templates](https://docs.rs/dioxus-core/latest/dioxus_core/prelude/struct.Template.html). Templates describe a UI tree known at compile time with dynamic parts filled at runtime. This is useful internally to make skip diffing static nodes, but it is also useful for the renderer to reuse parts of the UI tree. This can be useful for things like a list of items. Each item could contain some static parts and some dynamic parts. The renderer can use the template to create a static part of the UI once, clone it for each element in the list, and then fill in the dynamic parts.
+
+## Mutations
+
+The `Mutation` type is a serialized enum that represents an operation that should be applied to update the UI. The variants roughly follow this set:
+
+````rust
+enum Mutation {
+	AppendChildren,
+	AssignId,
+	CreatePlaceholder,
+	CreateTextNode,
+	HydrateText,
+	LoadTemplate,
+	ReplaceWith,
+	ReplacePlaceholder,
+	InsertAfter,
+	InsertBefore,
+	SetAttribute,
+	SetText,
+	NewEventListener,
+	RemoveEventListener,
+	Remove,
+	PushRoot,
+}
+````
+
+The Dioxus diffing mechanism operates as a [stack machine](https://en.wikipedia.org/wiki/Stack_machine) where the [LoadTemplate](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.LoadTemplate), [CreatePlaceholder](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.CreatePlaceholder), and [CreateTextNode](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.CreateTextNode) mutations pushes a new "real" DOM node onto the stack and [AppendChildren](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.AppendChildren), [InsertAfter](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.InsertAfter), [InsertBefore](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.InsertBefore), [ReplacePlaceholder](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.ReplacePlaceholder), and [ReplaceWith](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.ReplaceWith) all remove nodes from the stack.
+
+## Node storage
+
+Dioxus saves and loads elements with IDs. Inside the VirtualDOM, this is just tracked as as a u64.
+
+Whenever a `CreateElement` edit is generated during diffing, Dioxus increments its node counter and assigns that new element its current NodeCount. The RealDom is responsible for remembering this ID and pushing the correct node when id is used in a mutation. Dioxus reclaims the IDs of elements when removed. To stay in sync with Dioxus you can use a sparse Vec (Vec\<Option<T>\>) with possibly unoccupied items. You can use the ids as indexes into the Vec for elements, and grow the Vec when an id does not exist.
+
+### An Example
+
+For the sake of understanding, let's consider this example – a very simple UI declaration:
+
+````rust
+rsx!( h1 {"count: {x}"} )
+````
+
+#### Building Templates
+
+The above rsx will create a template that contains one static h1 tag and a placeholder for a dynamic text node. The template contains the static parts of the UI, and ids for the dynamic parts along with the paths to access them.
+
+The template will look something like this:
+
+````rust
+Template {
+	// Some id that is unique for the entire project
+	name: "main.rs:1:1:0",
+	// The root nodes of the template
+	roots: &[
+		TemplateNode::Element {
+			tag: "h1",
+			namespace: None,
+			attrs: &[],
+			children: &[
+				TemplateNode::DynamicText {
+					id: 0
+				},
+			],
+		}
+	],
+	// the path to each of the dynamic nodes
+	node_paths: &[
+		// the path to dynamic node with a id of 0
+		&[
+			// on the first root node
+			0,
+			// the first child of the root node
+			0,
+		]
+	],
+	// the path to each of the dynamic attributes
+	attr_paths: &'a [&'a [u8]],
+}
+````
+
+ > 
+ > For more detailed docs about the structure of templates see the [Template api docs](https://docs.rs/dioxus-core/latest/dioxus_core/prelude/struct.Template.html)
+
+This template will be sent to the renderer in the [list of templates](https://docs.rs/dioxus-core/latest/dioxus_core/struct.Mutations.html#structfield.templates) supplied with the mutations the first time it is used. Any time the renderer encounters a [LoadTemplate](https://docs.rs/dioxus-core/latest/dioxus_core/enum.Mutation.html#variant.LoadTemplate) mutation after this, it should clone the template and store it in the given id.
+
+For dynamic nodes and dynamic text nodes, a placeholder node should be created and inserted into the UI so that the node can be modified later.
+
+In HTML renderers, this template could look like this:
+
+````html
+<h1>""</h1>
+````
+
+#### Applying Mutations
+
+After the renderer has created all of the new templates, it can begin to process the mutations.
+
+When the renderer starts, it should contain the Root node on the stack and store the Root node with an id of 0. The Root node is the top-level node of the UI. In HTML, this is the `<div id="main">` element.
+
+````rust
+instructions: []
+stack: [
+	RootNode,
+]
+nodes: [
+	RootNode,
+]
+````
+
+The first mutation is a `LoadTemplate` mutation. This tells the renderer to load a root from the template with the given id. The renderer will then push the root node of the template onto the stack and store it with an id for later. In this case, the root node is an h1 element.
+
+````rust
+instructions: [
+	LoadTemplate {
+		// the id of the template
+		name: "main.rs:1:1:0",
+		// the index of the root node in the template
+		index: 0,
+		// the id to store
+		id: ElementId(1),
+	}
+]
+stack: [
+	RootNode,
+	<h1>""</h1>,
+]
+nodes: [
+	RootNode,
+	<h1>""</h1>,
+]
+````
+
+Next, Dioxus will create the dynamic text node. The diff algorithm decides that this node needs to be created, so Dioxus will generate the Mutation `HydrateText`. When the renderer receives this instruction, it will navigate to the placeholder text node in the template and replace it with the new text.
+
+````rust
+instructions: [
+	LoadTemplate {
+		name: "main.rs:1:1:0",
+		index: 0,
+		id: ElementId(1),
+	},
+	HydrateText {
+		// the id to store the text node
+		id: ElementId(2),
+		// the text to set
+		text: "count: 0",
+	}
+]
+stack: [
+	RootNode,
+	<h1>"count: 0"</h1>,
+]
+nodes: [
+	RootNode,
+	<h1>"count: 0"</h1>,
+	"count: 0",
+]
+````
+
+Remember, the h1 node is not attached to anything (it is unmounted) so Dioxus needs to generate an Edit that connects the h1 node to the Root. It depends on the situation, but in this case, we use `AppendChildren`. This pops the text node off the stack, leaving the Root element as the next element on the stack.
+
+````rust
+instructions: [
+	LoadTemplate {
+		name: "main.rs:1:1:0",
+		index: 0,
+		id: ElementId(1),
+	},
+	HydrateText {
+		id: ElementId(2),
+		text: "count: 0",
+	},
+	AppendChildren {
+		// the id of the parent node
+		id: ElementId(0),
+		// the number of nodes to pop off the stack and append
+		m: 1
+	}
+]
+stack: [
+	RootNode,
+]
+nodes: [
+	RootNode,
+	<h1>"count: 0"</h1>,
+	"count: 0",
+]
+````
+
+Over time, our stack looked like this:
+
+````rust
+[Root]
+[Root, <h1>""</h1>]
+[Root, <h1>"count: 0"</h1>]
+[Root]
+````
+
+Conveniently, this approach completely separates the Virtual DOM and the Real DOM. Additionally, these edits are serializable, meaning we can even manage UIs across a network connection. This little stack machine and serialized edits make Dioxus independent of platform specifics.
+
+Dioxus is also really fast. Because Dioxus splits the diff and patch phase, it's able to make all the edits to the RealDOM in a very short amount of time (less than a single frame) making rendering very snappy. It also allows Dioxus to cancel large diffing operations if higher priority work comes in while it's diffing.
+
+This little demo serves to show exactly how a Renderer would need to process a mutation stream to build UIs.
+
+## Event loop
+
+Like most GUIs, Dioxus relies on an event loop to progress the VirtualDOM. The VirtualDOM itself can produce events as well, so it's important for your custom renderer can handle those too.
+
+The code for the WebSys implementation is straightforward, so we'll add it here to demonstrate how simple an event loop is:
+
+````rust, ignore
+pub async fn run(&mut self) -> dioxus_core::error::Result<()> {
+	// Push the body element onto the WebsysDom's stack machine
+	let mut websys_dom = crate::new::WebsysDom::new(prepare_websys_dom());
+	websys_dom.stack.push(root_node);
+
+	// Rebuild or hydrate the virtualdom
+	let mutations = self.internal_dom.rebuild();
+	websys_dom.apply_mutations(mutations);
+
+	// Wait for updates from the real dom and progress the virtual dom
+	loop {
+		let user_input_future = websys_dom.wait_for_event();
+		let internal_event_future = self.internal_dom.wait_for_work();
+
+		match select(user_input_future, internal_event_future).await {
+			Either::Left((_, _)) => {
+				let mutations = self.internal_dom.work_with_deadline(|| false);
+				websys_dom.apply_mutations(mutations);
+			},
+			Either::Right((event, _)) => websys_dom.handle_event(event),
+		}
+
+		// render
+	}
+}
+````
+
+It's important to decode what the real events are for your event system into Dioxus' synthetic event system (synthetic meaning abstracted). This simply means matching your event type and creating a Dioxus `UserEvent` type. Right now, the virtual event system is modeled almost entirely around the HTML spec, but we are interested in slimming it down.
+
+````rust, ignore
+fn virtual_event_from_websys_event(event: &web_sys::Event) -> VirtualEvent {
+	match event.type_().as_str() {
+		"keydown" => {
+			let event: web_sys::KeyboardEvent = event.clone().dyn_into().unwrap();
+			UserEvent::KeyboardEvent(UserEvent {
+				scope_id: None,
+				priority: EventPriority::Medium,
+				name: "keydown",
+				// This should be whatever element is focused
+				element: Some(ElementId(0)),
+				data: Arc::new(KeyboardData{
+					char_code: event.char_code(),
+					key: event.key(),
+					key_code: event.key_code(),
+					alt_key: event.alt_key(),
+					ctrl_key: event.ctrl_key(),
+					meta_key: event.meta_key(),
+					shift_key: event.shift_key(),
+					location: event.location(),
+					repeat: event.repeat(),
+					which: event.which(),
+				})
+			})
+		}
+		_ => todo!()
+	}
+}
+````
+
+## Custom raw elements
+
+If you need to go as far as relying on custom elements/attributes for your renderer – you totally can. This still enables you to use Dioxus' reactive nature, component system, shared state, and other features, but will ultimately generate different nodes. All attributes and listeners for the HTML and SVG namespace are shuttled through helper structs that essentially compile away. You can drop in your elements any time you want, with little hassle. However, you must be sure your renderer can handle the new namespace.
+
+For more examples and information on how to create custom namespaces, see the [`dioxus_html` crate](https://github.com/DioxusLabs/dioxus/blob/master/packages/html/README.md#how-to-extend-it).
+
+# Native Core
+
+If you are creating a renderer in rust, the [native-core](https://github.com/DioxusLabs/dioxus/tree/master/packages/native-core) crate provides some utilities to implement a renderer. It provides an abstraction over Mutations and Templates and contains helpers that can handle the layout and text editing for you.
+
+## The RealDom
+
+The `RealDom` is a higher-level abstraction over updating the Dom. It uses an entity component system to manage the state of nodes. This system allows you to modify insert and modify arbitrary components on nodes. On top of this, the RealDom provides a way to manage a tree of nodes, and the State trait provides a way to automatically add and update these components when the tree is modified. It also provides a way to apply `Mutations` to the RealDom.
+
+### Example
+
+Let's build a toy renderer with borders, size, and text color.
+Before we start let's take a look at an example element we can render:
+
+````rust
+cx.render(rsx!{
+	div{
+		color: "red",
+		p{
+			border: "1px solid black",
+			"hello world"
+		}
+	}
+})
+````
+
+In this tree, the color depends on the parent's color. The layout depends on the children's layout, the current text, and the text size. The border depends on only the current node.
+
+In the following diagram arrows represent dataflow:
+
+[![](https://mermaid.ink/img/pako:eNqllV1vgjAUhv8K6W4wkQVa2QdLdrHsdlfukmSptEhjoaSWqTH-9xVwONAKst70g5739JzzlO5BJAgFAYi52EQJlsr6fAszS7d1sVhKnCdWJDJFt6peLVs5-9owohK7HFrVcFJ_pxnpmK8VVvRkTJikkWIiaxy1dhP23bUwW1WW5WbPrrqJ4ziR4EJ6dtVN2ls5y1ZztePUcrWZFCvqVEcPPDffvlyS1XoLIQnVgnVvVPR6FU9Zc-6dV453ojjOPbuetRJ57gIeXQR3cez7rjtteZyZQ2j5MqmjqwE0ZW0VKx9RKtgpFewp1aw3sXXFy6TWgiYlv8mfq1scD8ofbBCAfQg8_AMBOAyBxzEIwA4CxgQ99QbQkjnD2KT7_CfxGF8_9WXQEsq5sDZCcjICOXRCri4h6r3NA38Q6Jdi1EOx5w3DGDYYI6MUvJFjM3VoGHUeGoMd6mBnDmh2E3fo7O4Yhf0x4OkBmIKUyhQzol_GfbkcApXQlIYg0EOC5SoEYXbQ-3ChxHyXRSBQsqBTUOREx_7OsAY3BUGM-VqvUsKUkB_1U6vf05gtweEHTk4_HQ?type=png)](https://mermaid.live/edit#pako:eNqllV1vgjAUhv8K6W4wkQVa2QdLdrHsdlfukmSptEhjoaSWqTH-9xVwONAKst70g5739JzzlO5BJAgFAYi52EQJlsr6fAszS7d1sVhKnCdWJDJFt6peLVs5-9owohK7HFrVcFJ_pxnpmK8VVvRkTJikkWIiaxy1dhP23bUwW1WW5WbPrrqJ4ziR4EJ6dtVN2ls5y1ZztePUcrWZFCvqVEcPPDffvlyS1XoLIQnVgnVvVPR6FU9Zc-6dV453ojjOPbuetRJ57gIeXQR3cez7rjtteZyZQ2j5MqmjqwE0ZW0VKx9RKtgpFewp1aw3sXXFy6TWgiYlv8mfq1scD8ofbBCAfQg8_AMBOAyBxzEIwA4CxgQ99QbQkjnD2KT7_CfxGF8_9WXQEsq5sDZCcjICOXRCri4h6r3NA38Q6Jdi1EOx5w3DGDYYI6MUvJFjM3VoGHUeGoMd6mBnDmh2E3fo7O4Yhf0x4OkBmIKUyhQzol_GfbkcApXQlIYg0EOC5SoEYXbQ-3ChxHyXRSBQsqBTUOREx_7OsAY3BUGM-VqvUsKUkB_1U6vf05gtweEHTk4_HQ)
+
+To help in building a Dom, native-core provides the State trait and a RealDom struct. The State trait provides a way to describe how states in a node depend on other states in its relatives. By describing how to update a single node from its relations, native-core will derive a way to update the states of all nodes for you. Once you have a state you can provide it as a generic to RealDom. RealDom provides all of the methods to interact and update your new dom.
+
+Native Core cannot create all of the required methods for the State trait, but it can derive some of them. To implement the State trait, you must implement the following methods and let the `#[partial_derive_state]` macro handle the rest:
+
+````rs@custom_renderer.rs
+// All states must derive Component (https://docs.rs/shipyard/latest/shipyard/derive.Component.html)
+// They also must implement Default or provide a custom implementation of create in the State trait
+#[derive(Default, Component)]
+struct MyState;
+
+/// Derive some of the boilerplate for the State implementation
+#[partial_derive_state]
+impl State for MyState {
+    // The states of the parent nodes this state depends on
+    type ParentDependencies = ();
+
+    // The states of the child nodes this state depends on
+    type ChildDependencies = (Self,);
+
+    // The states of the current node this state depends on
+    type NodeDependencies = ();
+
+    // The parts of the current text, element, or placeholder node in the tree that this state depends on
+    const NODE_MASK: NodeMaskBuilder<'static> = NodeMaskBuilder::new();
+
+    // How to update the state of the current node based on the state of the parent nodes, child nodes, and the current node
+    // Returns true if the node was updated and false if the node was not updated
+    fn update<'a>(
+        &mut self,
+        // The view of the current node limited to the parts this state depends on
+        _node_view: NodeView<()>,
+        // The state of the current node that this state depends on
+        _node: <Self::NodeDependencies as Dependancy>::ElementBorrowed<'a>,
+        // The state of the parent nodes that this state depends on
+        _parent: Option<<Self::ParentDependencies as Dependancy>::ElementBorrowed<'a>>,
+        // The state of the child nodes that this state depends on
+        _children: Vec<<Self::ChildDependencies as Dependancy>::ElementBorrowed<'a>>,
+        // The context of the current node used to pass global state into the tree
+        _context: &SendAnyMap,
+    ) -> bool {
+        todo!()
+    }
+
+    // partial_derive_state will generate a default implementation of all the other methods
+}
+````
+
+Lets take a look at how to implement the State trait for a simple renderer.
+
+````rs@custom_renderer.rs
+struct FontSize(f64);
+
+// All states need to derive Component
+#[derive(Default, Debug, Copy, Clone, Component)]
+struct Size(f64, f64);
+
+/// Derive some of the boilerplate for the State implementation
+#[partial_derive_state]
+impl State for Size {
+    type ParentDependencies = ();
+
+    // The size of the current node depends on the size of its children
+    type ChildDependencies = (Self,);
+
+    type NodeDependencies = ();
+
+    // Size only cares about the width, height, and text parts of the current node
+    const NODE_MASK: NodeMaskBuilder<'static> = NodeMaskBuilder::new()
+        // Get access to the width and height attributes
+        .with_attrs(AttributeMaskBuilder::Some(&["width", "height"]))
+        // Get access to the text of the node
+        .with_text();
+
+    fn update<'a>(
+        &mut self,
+        node_view: NodeView<()>,
+        _node: <Self::NodeDependencies as Dependancy>::ElementBorrowed<'a>,
+        _parent: Option<<Self::ParentDependencies as Dependancy>::ElementBorrowed<'a>>,
+        children: Vec<<Self::ChildDependencies as Dependancy>::ElementBorrowed<'a>>,
+        context: &SendAnyMap,
+    ) -> bool {
+        let font_size = context.get::<FontSize>().unwrap().0;
+        let mut width;
+        let mut height;
+        if let Some(text) = node_view.text() {
+            // if the node has text, use the text to size our object
+            width = text.len() as f64 * font_size;
+            height = font_size;
+        } else {
+            // otherwise, the size is the maximum size of the children
+            width = children
+                .iter()
+                .map(|(item,)| item.0)
+                .reduce(|accum, item| if accum >= item { accum } else { item })
+                .unwrap_or(0.0);
+
+            height = children
+                .iter()
+                .map(|(item,)| item.1)
+                .reduce(|accum, item| if accum >= item { accum } else { item })
+                .unwrap_or(0.0);
+        }
+        // if the node contains a width or height attribute it overrides the other size
+        for a in node_view.attributes().into_iter().flatten() {
+            match &*a.attribute.name {
+                "width" => width = a.value.as_float().unwrap(),
+                "height" => height = a.value.as_float().unwrap(),
+                // because Size only depends on the width and height, no other attributes will be passed to the member
+                _ => panic!(),
+            }
+        }
+        // to determine what other parts of the dom need to be updated we return a boolean that marks if this member changed
+        let changed = (width != self.0) || (height != self.1);
+        *self = Self(width, height);
+        changed
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Default, Component)]
+struct TextColor {
+    r: u8,
+    g: u8,
+    b: u8,
+}
+
+#[partial_derive_state]
+impl State for TextColor {
+    // TextColor depends on the TextColor part of the parent
+    type ParentDependencies = (Self,);
+
+    type ChildDependencies = ();
+
+    type NodeDependencies = ();
+
+    // TextColor only cares about the color attribute of the current node
+    const NODE_MASK: NodeMaskBuilder<'static> =
+        // Get access to the color attribute
+        NodeMaskBuilder::new().with_attrs(AttributeMaskBuilder::Some(&["color"]));
+
+    fn update<'a>(
+        &mut self,
+        node_view: NodeView<()>,
+        _node: <Self::NodeDependencies as Dependancy>::ElementBorrowed<'a>,
+        parent: Option<<Self::ParentDependencies as Dependancy>::ElementBorrowed<'a>>,
+        _children: Vec<<Self::ChildDependencies as Dependancy>::ElementBorrowed<'a>>,
+        _context: &SendAnyMap,
+    ) -> bool {
+        // TextColor only depends on the color tag, so getting the first tag is equivalent to looking through all tags
+        let new = match node_view
+            .attributes()
+            .and_then(|mut attrs| attrs.next())
+            .and_then(|attr| attr.value.as_text())
+        {
+            // if there is a color tag, translate it
+            Some("red") => TextColor { r: 255, g: 0, b: 0 },
+            Some("green") => TextColor { r: 0, g: 255, b: 0 },
+            Some("blue") => TextColor { r: 0, g: 0, b: 255 },
+            Some(color) => panic!("unknown color {}", "red"),
+            // otherwise check if the node has a parent and inherit that color
+            None => match parent {
+                Some((parent,)) => *parent,
+                None => Self::default(),
+            },
+        };
+        // check if the member has changed
+        let changed = new != *self;
+        *self = new;
+        changed
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Default, Component)]
+struct Border(bool);
+
+#[partial_derive_state]
+impl State for Border {
+    // TextColor depends on the TextColor part of the parent
+    type ParentDependencies = (Self,);
+
+    type ChildDependencies = ();
+
+    type NodeDependencies = ();
+
+    // Border does not depended on any other member in the current node
+    const NODE_MASK: NodeMaskBuilder<'static> =
+        // Get access to the border attribute
+        NodeMaskBuilder::new().with_attrs(AttributeMaskBuilder::Some(&["border"]));
+
+    fn update<'a>(
+        &mut self,
+        node_view: NodeView<()>,
+        _node: <Self::NodeDependencies as Dependancy>::ElementBorrowed<'a>,
+        _parent: Option<<Self::ParentDependencies as Dependancy>::ElementBorrowed<'a>>,
+        _children: Vec<<Self::ChildDependencies as Dependancy>::ElementBorrowed<'a>>,
+        _context: &SendAnyMap,
+    ) -> bool {
+        // check if the node contains a border attribute
+        let new = Self(
+            node_view
+                .attributes()
+                .and_then(|mut attrs| attrs.next().map(|a| a.attribute.name == "border"))
+                .is_some(),
+        );
+        // check if the member has changed
+        let changed = new != *self;
+        *self = new;
+        changed
+    }
+}
+````
+
+Now that we have our state, we can put it to use in our RealDom. We can update the RealDom with apply_mutations to update the structure of the dom (adding, removing, and changing properties of nodes) and then update_state to update the States for each of the nodes that changed.
+
+````rs@custom_renderer.rs
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    fn app(cx: Scope) -> Element {
+        let count = use_state(cx, || 0);
+
+        use_future(cx, (count,), |(count,)| async move {
+            loop {
+                tokio::time::sleep(std::time::Duration::from_secs(1)).await;
+                count.set(*count + 1);
+            }
+        });
+
+        cx.render(rsx! {
+            div{
+                color: "red",
+                "{count}"
+            }
+        })
+    }
+
+    // create the vdom, the real_dom, and the binding layer between them
+    let mut vdom = VirtualDom::new(app);
+    let mut rdom: RealDom = RealDom::new([
+        Border::to_type_erased(),
+        TextColor::to_type_erased(),
+        Size::to_type_erased(),
+    ]);
+    let mut dioxus_intigration_state = DioxusState::create(&mut rdom);
+
+    let mutations = vdom.rebuild();
+    // update the structure of the real_dom tree
+    dioxus_intigration_state.apply_mutations(&mut rdom, mutations);
+    let mut ctx = SendAnyMap::new();
+    // set the font size to 3.3
+    ctx.insert(FontSize(3.3));
+    // update the State for nodes in the real_dom tree
+    let _to_rerender = rdom.update_state(ctx);
+
+    // we need to run the vdom in a async runtime
+    tokio::runtime::Builder::new_current_thread()
+        .enable_all()
+        .build()?
+        .block_on(async {
+            loop {
+                // wait for the vdom to update
+                vdom.wait_for_work().await;
+
+                // get the mutations from the vdom
+                let mutations = vdom.render_immediate();
+
+                // update the structure of the real_dom tree
+                dioxus_intigration_state.apply_mutations(&mut rdom, mutations);
+
+                // update the state of the real_dom tree
+                let mut ctx = SendAnyMap::new();
+                // set the font size to 3.3
+                ctx.insert(FontSize(3.3));
+                let _to_rerender = rdom.update_state(ctx);
+
+                // render...
+                rdom.traverse_depth_first(|node| {
+                    let indent = " ".repeat(node.height() as usize);
+                    let color = *node.get::<TextColor>().unwrap();
+                    let size = *node.get::<Size>().unwrap();
+                    let border = *node.get::<Border>().unwrap();
+                    let id = node.id();
+                    let node = node.node_type();
+                    let node_type = &*node;
+                    println!("{indent}{id:?} {color:?} {size:?} {border:?} {node_type:?}");
+                });
+            }
+        })
+}
+````
+
+## Layout
+
+For most platforms, the layout of the Elements will stay the same. The [layout_attributes](https://docs.rs/dioxus-native-core/latest/dioxus_native_core/layout_attributes/index.html) module provides a way to apply HTML attributes a [Taffy](https://docs.rs/taffy/latest/taffy/index.html) layout style.
+
+## Text Editing
+
+To make it easier to implement text editing in rust renderers, `native-core` also contains a renderer-agnostic cursor system. The cursor can handle text editing, selection, and movement with common keyboard shortcuts integrated.
+
+````rs@custom_renderer.rs
+fn text_editing() {
+    let mut cursor = Cursor::default();
+    let mut text = String::new();
+
+    // handle keyboard input with a max text length of 10
+    cursor.handle_input(
+        &Code::ArrowRight,
+        &Key::ArrowRight,
+        &Modifiers::empty(),
+        &mut text,
+        10,
+    );
+
+    // manually select text between characters 0-5 on the first line (this could be from dragging with a mouse)
+    cursor.start = Pos::new(0, 0);
+    cursor.end = Some(Pos::new(5, 0));
+
+    // delete the selected text and move the cursor to the start of the selection
+    cursor.delete_selection(&mut text);
+}
+````
+
+## Conclusion
+
+That should be it! You should have nearly all the knowledge required on how to implement your renderer. We're super interested in seeing Dioxus apps brought to custom desktop renderers, mobile renderers, video game UI, and even augmented reality! If you're interested in contributing to any of these projects, don't be afraid to reach out or join the [community](https://discord.gg/XgGxMSkvUM).
+# Optimizing
+
+*Note: This is written primarily for the web, but the main optimizations will work on other platforms too.*
+
+You might have noticed that Dioxus binaries are pretty big.
+The WASM binary of a [TodoMVC app](https://github.com/tigerros/dioxus-todo-app) weighs in at 2.36mb!
+Don't worry; we can get it down to a much more manageable 234kb.
+This will get obviously lower over time.
+For example, the new [event system](https://github.com/DioxusLabs/dioxus/pull/1402) will reduce the binary size of a hello world app to less than 100kb (with unstable features).
+
+We will also discuss ways to optimize your app for increased speed.
+
+However, certain optimizations will sacrifice speed for decreased binary size or the other way around.
+That's what you need to figure out yourself. Does your app perform performance-intensive tasks, such as graphical processing or tons of DOM manipulations?
+You could go for increased speed. In most cases, though, decreased binary size is the better choice, especially because Dioxus WASM binaries are quite large.
+
+To test binary sizes, we will use [this](https://github.com/tigerros/dioxus-todo-app) repository as a sample app.
+The `no-optimizations` package will serve as the base, which weighs 2.36mb as of right now.
+
+Additional resources:
+
+* [WASM book - Shrinking `.wasm` code size](https://rustwasm.github.io/docs/book/reference/code-size.html)
+* [min-sized-rust](https://github.com/johnthagen/min-sized-rust)
+
+## Building in release mode
+
+This is the best way to optimize. In fact, the 2.36mb figure at the start of the guide is with release mode.
+In debug mode, it's actually a whopping 32mb! It also increases the speed of your app.
+
+Thankfully, no matter what tool you're using to build your app, it will probably have a `--release` flag to do this.
+
+Using the [Dioxus CLI](https://dioxuslabs.com/learn/0.4/CLI) or [Trunk](https://trunkrs.dev/):
+
+* Dioxus CLI: `dx build --release`
+* Trunk: `trunk build --release`
+
+## UPX
+
+If you're not targeting web, you can use the [UPX](https://github.com/upx/upx) CLI tool to compress your executables.
+
+Setup:
+
+* Download a [release](https://github.com/upx/upx/releases) and extract the directory inside to a sensible location.
+* Add the executable located in the directory to your path variable.
+
+You can run `upx --help` to get the CLI options, but you should also view `upx-doc.html` for more detailed information.
+It's included in the extracted directory.
+
+An example command might be: `upx --best -o target/release/compressed.exe target/release/your-executable.exe`.
+
+## Build configuration
+
+*Note: Settings defined in `.cargo/config.toml` will override settings in `Cargo.toml`.*
+
+Other than the `--release` flag, this is the easiest way to optimize your projects, and also the most effective way,
+at least in terms of reducing binary size.
+
+### Stable
+
+This configuration is 100% stable and decreases the binary size from 2.36mb to 310kb.
+Add this to your `.cargo/config.toml`:
+
+````toml
+[profile.release]
+opt-level = "z"
+debug = false
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
+incremental = false
+````
+
+Links to the documentation of each value:
+
+* [`opt-level`](https://doc.rust-lang.org/rustc/codegen-options/index.html#opt-level)
+* [`debug`](https://doc.rust-lang.org/rustc/codegen-options/index.html#debuginfo)
+* [`lto`](https://doc.rust-lang.org/rustc/codegen-options/index.html#lto)
+* [`codegen-units`](https://doc.rust-lang.org/rustc/codegen-options/index.html#codegen-units)
+* [`panic`](https://doc.rust-lang.org/rustc/codegen-options/index.html#panic)
+* [`strip`](https://doc.rust-lang.org/rustc/codegen-options/index.html#strip)
+* [`incremental`](https://doc.rust-lang.org/rustc/codegen-options/index.html#incremental)
+
+### Unstable
+
+This configuration contains some unstable features, but it should work just fine.
+It decreases the binary size from 310kb to 234kb.
+Add this to your `.cargo/config.toml`:
+
+````toml
+[unstable]
+build-std = ["std", "panic_abort", "core", "alloc"]
+build-std-features = ["panic_immediate_abort"]
+
+[build]
+rustflags = [
+    "-Clto",
+    "-Zvirtual-function-elimination",
+    "-Zlocation-detail=none"
+]
+
+# Same as in the Stable section
+[profile.release]
+opt-level = "z"
+debug = false
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
+incremental = false
+````
+
+*Note: The omitted space in each flag (e.g., `-C<no space here>lto`) is intentional. It is not a typo.*
+
+The values in `[profile.release]` are documented in the [Stable](#stable) section. Links to the documentation of each value:
+
+* [`[build.rustflags]`](https://doc.rust-lang.org/cargo/reference/config.html#buildrustflags)
+* [`-C lto`](https://doc.rust-lang.org/rustc/codegen-options/index.html#lto)
+* [`-Z virtual-function-elimination`](https://doc.rust-lang.org/stable/unstable-book/compiler-flags/virtual-function-elimination.html)
+* [`-Z location-detail`](https://doc.rust-lang.org/stable/unstable-book/compiler-flags/location-detail.html)
+
+## wasm-opt
+
+*Note: In the future, `wasm-opt` will be supported natively through the [Dioxus CLI](https://crates.io/crates/dioxus-cli).*
+
+`wasm-opt` is a tool from the [binaryen](https://github.com/WebAssembly/binaryen) library that optimizes your WASM files.
+To use it, install a [binaryen release](https://github.com/WebAssembly/binaryen/releases) and run this command from the package directory:
+
+````
+wasm-opt dist/assets/dioxus/APP_NAME_bg.wasm -o dist/assets/dioxus/APP_NAME_bg.wasm -Oz
+````
+
+The `-Oz` flag specifies that `wasm-opt` should optimize for size. For speed, use `-O4`.
+
+## Improving Dioxus code
+
+Let's talk about how you can improve your Dioxus code to be more performant.
+
+It's important to minimize the number of dynamic parts in your `rsx`, like conditional rendering.
+When Dioxus is rendering your component, it will skip parts that are the same as the last render.
+That means that if you keep dynamic rendering to a minimum, your app will speed up, and quite a bit if it's not just hello world.
+To see an example of this, check out [Dynamic Rendering](../reference/dynamic_rendering.md).
+
+Also check out [Anti-patterns](antipatterns.md) for patterns that you should avoid.
+Obviously, not all of them are just about performance, but some of them are.
+
+## Bundling and minifying the output JS and HTML
+
+This will be added in [dioxus/#1369](https://github.com/DioxusLabs/dioxus/pull/1369).

@@ -1,0 +1,19 @@
+<SYSTEM>This is the developer documentation for Dioxus from /learn/0.7/essentials/advanced/.</SYSTEM>
+# Advanced Topics
+
+This section covers a variety of advanced topics you may find useful as your dioxus app grows. It covers topic from organizing your app with custom hooks to breaking out of dioxus with effects.
+
+## Table of Contents
+
+* [Custom hooks](./custom_hooks.md) In addition to the built-in hooks, Dioxus lets you create your own custom hooks to encapsulate logic you can use throughout your components.
+* [Component Lifecycle](./lifecycle.md) Every component in dioxus follows the same, mount, diff and drop lifecycle. This section covers how to hook into that lifecycle.
+* [Breaking Out](./breaking_out.md) Sometimes the apis provided by dioxus aren't enough. This section covers how to break out of dioxus and use your own apis to manipulate the DOM or call JS functions.
+# Advanced Topics
+
+This section covers a variety of advanced topics you may find useful as your dioxus app grows. It covers topic from organizing your app with custom hooks to breaking out of dioxus with effects.
+
+## Table of Contents
+
+* [Custom hooks](./custom_hooks.md) In addition to the built-in hooks, Dioxus lets you create your own custom hooks to encapsulate logic you can use throughout your components.
+* [Component Lifecycle](./lifecycle.md) Every component in dioxus follows the same, mount, diff and drop lifecycle. This section covers how to hook into that lifecycle.
+* [Breaking Out](./breaking_out.md) Sometimes the apis provided by dioxus aren't enough. This section covers how to break out of dioxus and use your own apis to manipulate the DOM or call JS functions.

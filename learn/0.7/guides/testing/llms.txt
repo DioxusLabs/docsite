@@ -1,0 +1,75 @@
+<SYSTEM>This is the developer documentation for Dioxus from /learn/0.7/guides/testing/.</SYSTEM>
+# Testing and Debugging
+
+Testing and debugging are essential parts of the development process. This guide covers the basics of testing dioxus applications and debugging issues.
+
+## Testing
+
+Testing can be broken down into several categories:
+
+* **Unit Testing**: Testing individual components or functions in isolation.
+* **End-to-End Testing**: Testing the entire application from start to finish.
+
+### Unit Testing
+
+Unit testing involves testing individual components or functions in isolation. Rust has built in support for testing using `cargo test`. You can annotate any function with the `#[test]` attribute to mark it as a test function. Here's an example of how to write a unit test for a simple function:
+
+````rust
+fn add(a: i32, b: i32) -> i32 {
+    a + b
+}
+
+#[test]
+fn test_add() {
+    assert_eq!(add(2, 3), 5);
+}
+````
+
+### End-to-End Testing
+
+End-to-end testing involves testing the entire application from start to finish. For dioxus applications, playwright can be used to automate the browser and test different aspects of your application. The [Web Testing](./web.md) guide provides more information on how to setup and use playwright with dioxus.
+
+## Avoiding Common Pitfalls
+
+While it is important to understand how to debug issues when they come up, avoiding issues altogether is even better. The [anti-patterns](../tips/antipatterns.md) guide walks through a couple of common pitfalls and how to avoid them.
+
+## Optimizing Builds
+
+Once you have ironed out all of the bugs in your application and are ready to deploy, its worth taking some time to get your application ready for production. The [Optimizing](../tips/optimizing.md) guide covers optimizing your build settings for production.
+# Testing and Debugging
+
+Testing and debugging are essential parts of the development process. This guide covers the basics of testing dioxus applications and debugging issues.
+
+## Testing
+
+Testing can be broken down into several categories:
+
+* **Unit Testing**: Testing individual components or functions in isolation.
+* **End-to-End Testing**: Testing the entire application from start to finish.
+
+### Unit Testing
+
+Unit testing involves testing individual components or functions in isolation. Rust has built in support for testing using `cargo test`. You can annotate any function with the `#[test]` attribute to mark it as a test function. Here's an example of how to write a unit test for a simple function:
+
+````rust
+fn add(a: i32, b: i32) -> i32 {
+    a + b
+}
+
+#[test]
+fn test_add() {
+    assert_eq!(add(2, 3), 5);
+}
+````
+
+### End-to-End Testing
+
+End-to-end testing involves testing the entire application from start to finish. For dioxus applications, playwright can be used to automate the browser and test different aspects of your application. The [Web Testing](./web.md) guide provides more information on how to setup and use playwright with dioxus.
+
+## Avoiding Common Pitfalls
+
+While it is important to understand how to debug issues when they come up, avoiding issues altogether is even better. The [anti-patterns](../tips/antipatterns.md) guide walks through a couple of common pitfalls and how to avoid them.
+
+## Optimizing Builds
+
+Once you have ironed out all of the bugs in your application and are ready to deploy, its worth taking some time to get your application ready for production. The [Optimizing](../tips/optimizing.md) guide covers optimizing your build settings for production.

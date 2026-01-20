@@ -1,0 +1,2643 @@
+<SYSTEM>This is the developer documentation for Dioxus at /learn/0.4/reference/rsx and all its subroutes.</SYSTEM>
+
+# Describing the UI
+
+Dioxus is a *declarative* framework. This means that instead of telling Dioxus what to do (e.g. to "create an element" or "set the color to red") we simply *declare* what we want the UI to look like using RSX.
+
+You have already seen a simple example of RSX syntax in the "hello world" application:
+
+````rs@hello_world_desktop.rs
+// define a component that renders a div with the text "Hello, world!"
+fn App(cx: Scope) -> Element {
+    cx.render(rsx! {
+        div {
+            "Hello, world!"
+        }
+    })
+}
+````
+
+Here, we use the `rsx!` macro to *declare* that we want a `div` element, containing the text `"Hello, world!"`. Dioxus takes the RSX and constructs a UI from it.
+
+## RSX Features
+
+RSX is very similar to HTML in that it describes elements with attributes and children. Here's an empty `div` element in RSX, as well as the resulting HTML:
+
+````rs@rsx_overview.rs
+cx.render(rsx!(div {
+    // attributes / listeners
+    // children
+}))
+````
+
+````inject-dioxus
+DemoFrame {
+	// old: rsx_overview::Empty {}
+	__interactive_04::Empty {}
+}
+````
+
+### Attributes
+
+Attributes (and [event handlers](event_handlers.md)) modify the behavior or appearance of the element they are attached to. They are specified inside the `{}` brackets, using the `name: value` syntax. You can provide the value as a literal in the RSX:
+
+````rs@rsx_overview.rs
+cx.render(rsx!(img {
+    src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4",
+    class: "primary_button",
+    width: "10px"
+}))
+````
+
+````inject-dioxus
+DemoFrame {
+	rsx_overview::Attributes {}
+}
+````
+
+ > 
+ > Note: All attributes defined in `dioxus-html` follow the snake_case naming convention. They transform their `snake_case` names to HTML's `camelCase` attributes.
+
+ > 
+ > Note: Styles can be used directly outside of the `style:` attribute. In the above example, `color: "red"` is turned into `style="color: red"`.
+
+#### Custom Attributes
+
+Dioxus has a pre-configured set of attributes that you can use. RSX is validated at compile time to make sure you didn't specify an invalid attribute. If you want to override this behavior with a custom attribute name, specify the attribute in quotes:
+
+````rs@rsx_overview.rs
+cx.render(rsx!(div {
+    "style": "width: 20px; height: 20px; background-color: red;",
+}))
+````
+
+````inject-dioxus
+DemoFrame {
+	rsx_overview::CustomAttributes {}
+}
+````
+
+### Special Attributes
+
+While most attributes are simply passed on to the HTML, some have special behaviors.
+
+#### The HTML Escape Hatch
+
+If you're working with pre-rendered assets, output from templates, or output from a JS library, then you might want to pass HTML directly instead of going through Dioxus. In these instances, reach for `dangerous_inner_html`.
+
+For example, shipping a markdown-to-Dioxus converter might significantly bloat your final application size. Instead, you'll want to pre-render your markdown to HTML and then include the HTML directly in your output. We use this approach for the [Dioxus homepage](https://dioxuslabs.com):
+
+````rs@dangerous_inner_html.rs
+// this should come from a trusted source
+let contents = "live <b>dangerously</b>";
+
+cx.render(rsx! {
+    div {
+        dangerous_inner_html: "{contents}",
+    }
+})
+````
+
+````inject-dioxus
+DemoFrame {
+	dangerous_inner_html::App {}
+}
+````
+
+ > 
+ > Note! This attribute is called "dangerous_inner_html" because it is **dangerous** to pass it data you don't trust. If you're not careful, you can easily expose [cross-site scripting (XSS)](https://en.wikipedia.org/wiki/Cross-site_scripting) attacks to your users.
+ > 
+ > If you're handling untrusted input, make sure to sanitize your HTML before passing it into `dangerous_inner_html` – or just pass it to a Text Element to escape any HTML tags.
+
+#### Boolean Attributes
+
+Most attributes, when rendered, will be rendered exactly as the input you provided. However, some attributes are considered "boolean" attributes and just their presence determines whether they affect the output. For these attributes, a provided value of `"false"` will cause them to be removed from the target element.
+
+So this RSX wouldn't actually render the `hidden` attribute:
+
+````rs@boolean_attribute.rs
+cx.render(rsx! {
+    div {
+        hidden: false,
+        "hello"
+    }
+})
+````
+
+````inject-dioxus
+DemoFrame {
+	boolean_attribute::App {}
+}
+````
+
+Not all attributes work like this however. *Only the following attributes* have this behavior:
+
+* `allowfullscreen`
+* `allowpaymentrequest`
+* `async`
+* `autofocus`
+* `autoplay`
+* `checked`
+* `controls`
+* `default`
+* `defer`
+* `disabled`
+* `formnovalidate`
+* `hidden`
+* `ismap`
+* `itemscope`
+* `loop`
+* `multiple`
+* `muted`
+* `nomodule`
+* `novalidate`
+* `open`
+* `playsinline`
+* `readonly`
+* `required`
+* `reversed`
+* `selected`
+* `truespeed`
+
+For any other attributes, a value of `"false"` will be sent directly to the DOM.
+
+### Interpolation
+
+Similarly to how you can [format](https://doc.rust-lang.org/rust-by-example/hello/print/fmt.html) Rust strings, you can also interpolate in RSX text. Use `{variable}` to Display the value of a variable in a string, or `{variable:?}` to use the Debug representation:
+
+````rs@rsx_overview.rs
+let coordinates = (42, 0);
+let country = "es";
+cx.render(rsx!(div {
+    class: "country-{country}",
+    left: "{coordinates.0:?}",
+    top: "{coordinates.1:?}",
+    // arbitrary expressions are allowed,
+    // as long as they don't contain `{}`
+    div {
+        "{country.to_uppercase()}"
+    },
+    div {
+        "{7*6}"
+    },
+    // {} can be escaped with {{}}
+    div {
+        "{{}}"
+    },
+}))
+````
+
+````inject-dioxus
+DemoFrame {
+	rsx_overview::Formatting {}
+}
+````
+
+### Children
+
+To add children to an element, put them inside the `{}` brackets after all attributes and listeners in the element. They can be other elements, text, or [components](components.md). For example, you could have an `ol` (ordered list) element, containing 3 `li` (list item) elements, each of which contains some text:
+
+````rs@rsx_overview.rs
+cx.render(rsx!(ol {
+    li {"First Item"}
+    li {"Second Item"}
+    li {"Third Item"}
+}))
+````
+
+````inject-dioxus
+DemoFrame {
+	rsx_overview::Children {}
+}
+````
+
+### Fragments
+
+You can render multiple elements at the top level of `rsx!` and they will be automatically grouped.
+
+````rs@rsx_overview.rs
+cx.render(rsx!(
+    p {"First Item"},
+    p {"Second Item"},
+))
+````
+
+````inject-dioxus
+DemoFrame {
+	rsx_overview::ManyRoots {}
+}
+````
+
+### Expressions
+
+You can include arbitrary Rust expressions as children within RSX that implements [IntoDynNode](https://docs.rs/dioxus-core/0.3/dioxus_core/trait.IntoDynNode.html). This is useful for displaying data from an [iterator](https://doc.rust-lang.org/stable/book/ch13-02-iterators.html#processing-a-series-of-items-with-iterators):
+
+````rs@rsx_overview.rs
+let text = "Dioxus";
+cx.render(rsx!(span {
+    text.to_uppercase(),
+    // create a list of text from 0 to 9
+    (0..10).map(|i| rsx!{ i.to_string() })
+}))
+````
+
+````inject-dioxus
+DemoFrame {
+	rsx_overview::Expression {}
+}
+````
+
+### Loops
+
+In addition to iterators you can also use for loops directly within RSX:
+
+````rs@rsx_overview.rs
+cx.render(rsx! {
+    // use a for loop where the body itself is RSX
+    div {
+        // create a list of text from 0 to 9
+        for i in 0..3 {
+            // NOTE: the body of the loop is RSX not a rust statement
+            div {
+                "{i}"
+            }
+        }
+    }
+    // iterator equivalent
+    div {
+        (0..3).map(|i| rsx!{ div { "{i}" } })
+    }
+})
+````
+
+````inject-dioxus
+DemoFrame {
+	rsx_overview::Loops {}
+}
+````
+
+### If statements
+
+You can also use if statements without an else branch within RSX:
+
+````rs@rsx_overview.rs
+cx.render(rsx! {
+    // use if statements without an else
+    if true {
+        rsx!(div { "true" })
+    }
+})
+````
+
+````inject-dioxus
+DemoFrame {
+	rsx_overview::IfStatements {}
+}
+````
+# Components
+
+Just like you wouldn't want to write a complex program in a single, long, `main` function, you shouldn't build a complex UI in a single `App` function. Instead, you should break down the functionality of an app in logical parts called components.
+
+A component is a Rust function, named in UpperCamelCase, that takes a `Scope` parameter and returns an `Element` describing the UI it wants to render. In fact, our `App` function is a component!
+
+````rs@hello_world_desktop.rs
+// define a component that renders a div with the text "Hello, world!"
+fn App(cx: Scope) -> Element {
+    cx.render(rsx! {
+        div {
+            "Hello, world!"
+        }
+    })
+}
+````
+
+ > 
+ > You'll probably want to add `#![allow(non_snake_case)]` to the top of your crate to avoid warnings about UpperCamelCase component names
+
+A Component is responsible for some rendering task – typically, rendering an isolated part of the user interface. For example, you could have an `About` component that renders a short description of Dioxus Labs:
+
+````rs@components.rs
+pub fn About(cx: Scope) -> Element {
+    cx.render(rsx!(p {
+        b {"Dioxus Labs"}
+        " An Open Source project dedicated to making Rust UI wonderful."
+    }))
+}
+````
+
+````inject-dioxus
+DemoFrame {
+	components::About {}
+}
+````
+
+Then, you can render your component in another component, similarly to how elements are rendered:
+
+````rs@components.rs
+pub fn App(cx: Scope) -> Element {
+    cx.render(rsx! {
+        About {},
+        About {},
+    })
+}
+````
+
+````inject-dioxus
+DemoFrame {
+	components::App {}
+}
+````
+
+ > 
+ > At this point, it might seem like components are nothing more than functions. However, as you learn more about the features of Dioxus, you'll see that they are actually more powerful!
+# Component Props
+
+Just like you can pass arguments to a function or attributes to an element, you can pass props to a component that customize its behavior! The components we've seen so far didn't accept any props – so let's write some components that do.
+
+## derive(Props)
+
+Component props are a single struct annotated with `#[derive(Props)]`. For a component to accept props, the type of its argument must be `Scope<YourPropsStruct>`. Then, you can access the value of the props using `cx.props`.
+
+There are 2 flavors of Props structs:
+
+* Owned props:
+  * Don't have an associated lifetime
+  * Implement `PartialEq`, allow for memoization (if the props don't change, Dioxus won't re-render the component)
+* Borrowed props:
+  * [Borrow](https://doc.rust-lang.org/beta/rust-by-example/scope/borrow.html) from a parent component
+  * Cannot be memoized due to lifetime constraints
+
+### Owned Props
+
+Owned Props are very simple – they don't borrow anything. Example:
+
+````rs@component_owned_props.rs
+// Remember: Owned props must implement `PartialEq`!
+#[derive(PartialEq, Props)]
+struct LikesProps {
+    score: i32,
+}
+
+fn Likes(cx: Scope<LikesProps>) -> Element {
+    cx.render(rsx! {
+        div {
+            "This post has ",
+            b { "{cx.props.score}" },
+            " likes"
+        }
+    })
+}
+````
+
+You can then pass prop values to the component the same way you would pass attributes to an element:
+
+````rs@component_owned_props.rs
+pub fn App(cx: Scope) -> Element {
+    cx.render(rsx! {
+        Likes {
+            score: 42,
+        },
+    })
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    component_owned_props::App {}
+}
+````
+
+### Borrowed Props
+
+Owned props work well if your props are easy to copy around – like a single number. But what if we need to pass a larger data type, like a String from an `App` Component to a `TitleCard` subcomponent? A naive solution might be to [`.clone()`](https://doc.rust-lang.org/std/clone/trait.Clone.html) the String, creating a copy of it for the subcomponent – but this would be inefficient, especially for larger Strings.
+
+Rust allows for something more efficient – borrowing the String as a `&str` – this is what Borrowed Props are for!
+
+````rs@component_borrowed_props.rs
+#[derive(Props)]
+struct TitleCardProps<'a> {
+    title: &'a str,
+}
+
+fn TitleCard<'a>(cx: Scope<'a, TitleCardProps<'a>>) -> Element {
+    cx.render(rsx! {
+        h1 { "{cx.props.title}" }
+    })
+}
+````
+
+We can then use the component like this:
+
+````rs@component_borrowed_props.rs
+pub fn App(cx: Scope) -> Element {
+    let hello = "Hello Dioxus!";
+
+    cx.render(rsx!(TitleCard { title: hello }))
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    // original: component_borrowed_props::App {}
+    __interactive_04::component_borrowed_props {}
+}
+````
+
+Borrowed props can be very useful, but they do not allow for memorization so they will *always* rerun when the parent scope is rerendered. Because of this Borrowed Props should be reserved for components that are cheap to rerun or places where cloning data is an issue. Using Borrowed Props everywhere will result in large parts of your app rerunning every interaction.
+
+## Prop Options
+
+The `#[derive(Props)]` macro has some features that let you customize the behavior of props.
+
+### Optional Props
+
+You can create optional fields by using the `Option<…>` type for a field:
+
+````rs@component_props_options.rs
+#[derive(Props)]
+struct OptionalProps<'a> {
+    title: &'a str,
+    subtitle: Option<&'a str>,
+}
+
+fn Title<'a>(cx: Scope<'a, OptionalProps>) -> Element<'a> {
+    cx.render(rsx!(h1{
+        "{cx.props.title}: ",
+        cx.props.subtitle.unwrap_or("No subtitle provided"),
+    }))
+}
+````
+
+Then, you can choose to either provide them or not:
+
+````rs@component_props_options.rs
+Title {
+title: "Some Title",
+},
+Title {
+title: "Some Title",
+subtitle: "Some Subtitle",
+},
+// Providing an Option explicitly won't compile though:
+// Title {
+//     title: "Some Title",
+//     subtitle: None,
+// },
+````
+
+### Explicitly Required `Option`s
+
+If you want to explicitly require an `Option`, and not an optional prop, you can annotate it with `#[props(!optional)]`:
+
+````rs@component_props_options.rs
+#[derive(Props)]
+struct ExplicitOptionProps<'a> {
+    title: &'a str,
+    #[props(!optional)]
+    subtitle: Option<&'a str>,
+}
+
+fn ExplicitOption<'a>(cx: Scope<'a, ExplicitOptionProps>) -> Element<'a> {
+    cx.render(rsx!(h1 {
+        "{cx.props.title}: ",
+        cx.props.subtitle.unwrap_or("No subtitle provided"),
+    }))
+}
+````
+
+Then, you have to explicitly pass either `Some("str")` or `None`:
+
+````rs@component_props_options.rs
+ExplicitOption {
+title: "Some Title",
+subtitle: None,
+},
+ExplicitOption {
+title: "Some Title",
+subtitle: Some("Some Title"),
+},
+// This won't compile:
+// ExplicitOption {
+//     title: "Some Title",
+// },
+````
+
+### Default Props
+
+You can use `#[props(default = 42)]` to make a field optional and specify its default value:
+
+````rs@component_props_options.rs
+#[derive(PartialEq, Props)]
+struct DefaultProps {
+    // default to 42 when not provided
+    #[props(default = 42)]
+    number: i64,
+}
+
+fn DefaultComponent(cx: Scope<DefaultProps>) -> Element {
+    cx.render(rsx!(h1 { "{cx.props.number}" }))
+}
+````
+
+Then, similarly to optional props, you don't have to provide it:
+
+````rs@component_props_options.rs
+DefaultComponent {
+number: 5,
+},
+DefaultComponent {},
+````
+
+### Automatic Conversion with `.into`
+
+It is common for Rust functions to accept `impl Into<SomeType>` rather than just `SomeType` to support a wider range of parameters. If you want similar functionality with props, you can use `#[props(into)]`. For example, you could add it on a `String` prop – and `&str` will also be automatically accepted, as it can be converted into `String`:
+
+````rs@component_props_options.rs
+#[derive(PartialEq, Props)]
+struct IntoProps {
+    #[props(into)]
+    string: String,
+}
+
+fn IntoComponent(cx: Scope<IntoProps>) -> Element {
+    cx.render(rsx!(h1 { "{cx.props.string}" }))
+}
+````
+
+Then, you can use it so:
+
+````rs@component_props_options.rs
+IntoComponent {
+string: "some &str",
+},
+````
+
+## The component macro
+
+So far, every Component function we've seen had a corresponding ComponentProps struct to pass in props. This was quite verbose... Wouldn't it be nice to have props as simple function arguments? Then we wouldn't need to define a Props struct, and instead of typing `cx.props.whatever`, we could just use `whatever` directly!
+
+`component` allows you to do just that. Instead of typing the "full" version:
+
+````rust, no_run
+#[derive(Props, PartialEq)]
+struct TitleCardProps {
+    title: String,
+}
+
+fn TitleCard(cx: Scope<TitleCardProps>) -> Element {
+    cx.render(rsx!{
+        h1 { "{cx.props.title}" }
+    })
+}
+````
+
+...you can define a function that accepts props as arguments. Then, just annotate it with `#[component]`, and the macro will turn it into a regular Component for you:
+
+````rust, no_run
+#[component]
+fn TitleCard(cx: Scope, title: String) -> Element {
+    cx.render(rsx!{
+        h1 { "{title}" }
+    })
+}
+````
+
+ > 
+ > While the new Component is shorter and easier to read, this macro should not be used by library authors since you have less control over Prop documentation.
+
+## Component Children
+
+In some cases, you may wish to create a component that acts as a container for some other content, without the component needing to know what that content is. To achieve this, create a prop of type `Element`:
+
+````rs@component_element_props.rs
+#[derive(Props)]
+struct ClickableProps<'a> {
+    href: &'a str,
+    body: Element<'a>,
+}
+
+fn Clickable<'a>(cx: Scope<'a, ClickableProps<'a>>) -> Element {
+    cx.render(rsx!(
+        a {
+            href: "{cx.props.href}",
+            class: "fancy-button",
+            &cx.props.body
+        }
+    ))
+}
+````
+
+Then, when rendering the component, you can pass in the output of `cx.render(rsx!(...))`:
+
+````rs@component_element_props.rs
+cx.render(rsx! {
+    Clickable {
+        href: "https://www.youtube.com/watch?v=C-M2hs3sXGo",
+        body: cx.render(rsx!("How to " i {"not"} " be seen")),
+    }
+})
+````
+
+ > 
+ > Note: Since `Element<'a>` is a borrowed prop, there will be no memoization.
+
+ > 
+ > Warning: While it may compile, do not include the same `Element` more than once in the RSX. The resulting behavior is unspecified.
+
+### The children field
+
+Rather than passing the RSX through a regular prop, you may wish to accept children similarly to how elements can have children. The "magic" `children` prop lets you achieve this:
+
+````rs@component_children.rs
+#[derive(Props)]
+struct ClickableProps<'a> {
+    href: &'a str,
+    children: Element<'a>,
+}
+
+fn Clickable<'a>(cx: Scope<'a, ClickableProps<'a>>) -> Element {
+    cx.render(rsx!(
+        a {
+            href: "{cx.props.href}",
+            class: "fancy-button",
+            &cx.props.children
+        }
+    ))
+}
+````
+
+This makes using the component much simpler: simply put the RSX inside the `{}` brackets – and there is no need for a `render` call or another macro!
+
+````rs@component_children.rs
+cx.render(rsx! {
+    Clickable {
+        href: "https://www.youtube.com/watch?v=C-M2hs3sXGo",
+        "How to " i {"not"} " be seen"
+    }
+})
+````
+
+````inject-dioxus
+DemoFrame {
+    component_children::App {}
+}
+````
+# Event Handlers
+
+Event handlers are used to respond to user actions. For example, an event handler could be triggered when the user clicks, scrolls, moves the mouse, or types a character.
+
+Event handlers are attached to elements. For example, we usually don't care about all the clicks that happen within an app, only those on a particular button.
+
+Event handlers are similar to regular attributes, but their name usually starts with `on`- and they accept closures as values. The closure will be called whenever the event it listens for is triggered and will be passed that event.
+
+For example, to handle clicks on an element, we can specify an `onclick` handler:
+
+````rs@event_click.rs
+cx.render(rsx! {
+    button {
+        onclick: move |event| log::info!("Clicked! Event: {event:?}"),
+        "click me!"
+    }
+})
+````
+
+````inject-dioxus
+DemoFrame {
+    event_click::App {}
+}
+````
+
+## The Event object
+
+Event handlers receive an [`Event`](https://docs.rs/dioxus-core/latest/dioxus_core/struct.Event.html) object containing information about the event. Different types of events contain different types of data. For example, mouse-related events contain [`MouseData`](https://docs.rs/dioxus/latest/dioxus/events/struct.MouseData.html), which tells you things like where the mouse was clicked and what mouse buttons were used.
+
+In the example above, this event data was logged to the terminal:
+
+````
+Clicked! Event: UiEvent { bubble_state: Cell { value: true }, data: MouseData { coordinates: Coordinates { screen: (242.0, 256.0), client: (26.0, 17.0), element: (16.0, 7.0), page: (26.0, 17.0) }, modifiers: (empty), held_buttons: EnumSet(), trigger_button: Some(Primary) } }
+Clicked! Event: UiEvent { bubble_state: Cell { value: true }, data: MouseData { coordinates: Coordinates { screen: (242.0, 256.0), client: (26.0, 17.0), element: (16.0, 7.0), page: (26.0, 17.0) }, modifiers: (empty), held_buttons: EnumSet(), trigger_button: Some(Primary) } }
+````
+
+To learn what the different event types for HTML provide, read the [events module docs](https://docs.rs/dioxus-html/latest/dioxus_html/events/index.html).
+
+### Event propagation
+
+Some events will trigger first on the element the event originated at upward. For example, a click event on a `button` inside a `div` would first trigger the button's event listener and then the div's event listener.
+
+ > 
+ > For more information about event propagation see [the mdn docs on event bubbling](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#event_bubbling)
+
+If you want to prevent this behavior, you can call `stop_propagation()` on the event:
+
+````rs@event_nested.rs
+cx.render(rsx! {
+    div {
+        onclick: move |_event| {},
+        "outer",
+        button {
+            onclick: move |event| {
+                // now, outer won't be triggered
+                event.stop_propagation();
+            },
+            "inner"
+        }
+    }
+})
+````
+
+## Prevent Default
+
+Some events have a default behavior. For keyboard events, this might be entering the typed character. For mouse events, this might be selecting some text.
+
+In some instances, might want to avoid this default behavior. For this, you can add the `prevent_default` attribute with the name of the handler whose default behavior you want to stop. This attribute can be used for multiple handlers using their name separated by spaces:
+
+````rs@event_prevent_default.rs
+cx.render(rsx! {
+    a {
+        href: "https://example.com",
+        prevent_default: "onclick",
+        onclick: |_| log::info!("link clicked"),
+        "example.com",
+    }
+})
+````
+
+````inject-dioxus
+DemoFrame {
+    event_prevent_default::App {}
+}
+````
+
+Any event handlers will still be called.
+
+ > 
+ > Normally, in React or JavaScript, you'd call "preventDefault" on the event in the callback. Dioxus does *not* currently support this behavior. Note: this means you cannot conditionally prevent default behavior based on the data in the event.
+
+## Handler Props
+
+Sometimes, you might want to make a component that accepts an event handler. A simple example would be a `FancyButton` component, which accepts an `on_click` handler:
+
+````rs@event_handler_prop.rs
+#[derive(Props)]
+pub struct FancyButtonProps<'a> {
+    on_click: EventHandler<'a, MouseEvent>,
+}
+
+pub fn FancyButton<'a>(cx: Scope<'a, FancyButtonProps<'a>>) -> Element<'a> {
+    cx.render(rsx!(button {
+        class: "fancy-button",
+        onclick: move |evt| cx.props.on_click.call(evt),
+        "click me pls."
+    }))
+}
+````
+
+Then, you can use it like any other handler:
+
+````rs@event_handler_prop.rs
+cx.render(rsx! {
+    FancyButton {
+        on_click: move |event| println!("Clicked! {event:?}")
+    }
+})
+````
+
+ > 
+ > Note: just like any other attribute, you can name the handlers anything you want! Though they must start with `on`, for the prop to be automatically turned into an `EventHandler` at the call site.
+
+## Custom Data
+
+Event Handlers are generic over any type, so you can pass in any data you want to them, e.g:
+
+````rs@event_handler_prop.rs
+struct ComplexData(i32);
+
+#[derive(Props)]
+pub struct CustomFancyButtonProps<'a> {
+    on_click: EventHandler<'a, ComplexData>,
+}
+
+pub fn CustomFancyButton<'a>(cx: Scope<'a, CustomFancyButtonProps<'a>>) -> Element<'a> {
+    cx.render(rsx!(button {
+        class: "fancy-button",
+        onclick: move |_| cx.props.on_click.call(ComplexData(0)),
+        "click me pls."
+    }))
+}
+````
+# Hooks and component state
+
+So far, our components have had no state like a normal Rust function. However, in a UI component, it is often useful to have stateful functionality to build user interactions. For example, you might want to track whether the user has opened a drop-down and render different things accordingly.
+
+Hooks allow us to create state in our components. Hooks are Rust functions that take a reference to [`ScopeState`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.ScopeState.html) (in a component, you can pass `cx`), and provide you with functionality and state.
+
+Dioxus provides many built-in hooks, but if those hooks don't fit your specific use case, you also can [create your own hook](../cookbook/state/custom_hooks/index.md)
+
+## use_state hook
+
+[`use_state`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_state.html) is one of the simplest hooks.
+
+* You provide a closure that determines the initial value: `let mut count = use_state(cx, || 0);`
+* `use_state` gives you the current value, and a way to update it by setting it to something else
+* When the value updates, `use_state` makes the component re-render (along with any other component that references it), and then provides you with the new value.
+
+For example, you might have seen the counter example, in which state (a number) is tracked using the `use_state` hook:
+
+````rs@hooks_counter.rs
+pub fn App(cx: Scope) -> Element {
+    // count will be initialized to 0 the first time the component is rendered
+    let mut count = use_state(cx, || 0);
+
+    cx.render(rsx!(
+        h1 { "High-Five counter: {count}" }
+        button {
+            onclick: move |_| {
+                // changing the count will cause the component to re-render
+                count += 1
+            },
+            "Up high!"
+        }
+        button {
+            onclick: move |_| {
+                // changing the count will cause the component to re-render
+                count -= 1
+            },
+            "Down low!"
+        }
+    ))
+}
+````
+
+````inject-dioxus
+DemoFrame {
+   hooks_counter::App {}
+}
+````
+
+Every time the component's state changes, it re-renders, and the component function is called, so you can describe what you want the new UI to look like. You don't have to worry about "changing" anything – describe what you want in terms of the state, and Dioxus will take care of the rest!
+
+ > 
+ > `use_state` returns your value wrapped in a smart pointer of type [`UseState`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.UseState.html). This is why you can both read the value and update it, even within an event handler.
+
+You can use multiple hooks in the same component if you want:
+
+````rs@hooks_counter_two_state.rs
+pub fn App(cx: Scope) -> Element {
+    let mut count_a = use_state(cx, || 0);
+    let mut count_b = use_state(cx, || 0);
+
+    cx.render(rsx!(
+        h1 { "Counter_a: {count_a}" }
+        button { onclick: move |_| count_a += 1, "a++" }
+        button { onclick: move |_| count_a -= 1, "a--" }
+        h1 { "Counter_b: {count_b}" }
+        button { onclick: move |_| count_b += 1, "b++" }
+        button { onclick: move |_| count_b -= 1, "b--" }
+    ))
+}
+````
+
+````inject-dioxus
+DemoFrame {
+  hooks_counter_two_state::App {}
+}
+````
+
+### Out-of-date UseState
+
+The value `UseState` dereferences to is only set when the use_state hook is called every render. This means that if you move the state into a future, or you write to the state and then immediately read the state, it may return an out-of-date value.
+
+````rs@hooks_out_of_date.rs
+pub fn App(cx: Scope) -> Element {
+    // count will be initialized to 0 the first time the component is rendered
+    let mut count = use_state(cx, || 0);
+    let first_count_read = use_state(cx, || 0);
+
+    // Increase the count
+    if *count == 0 {
+        count += 1;
+        first_count_read.set(**count);
+    }
+
+    cx.render(rsx!(
+        // This uses the deref value
+        h1 { "High-Five counter: {first_count_read}" }
+    ))
+}
+````
+
+````inject-dioxus
+DemoFrame {
+   // original: hooks_out_of_date::App {}
+   __interactive_04::hooks_out_of_date {}
+}
+````
+
+Instead of using deref to get the inner value from UseState, you can use the [`current`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.UseState.html#method.current) function. This function will always return the current value of the state.
+
+````rs@hooks_out_of_date.rs
+pub fn App(cx: Scope) -> Element {
+    let mut count = use_state(cx, || 0);
+    let first_count_read = use_state(cx, || 0);
+
+    // Increase the count
+    if *count == 0 {
+        count += 1;
+        first_count_read.set(*count.current());
+    }
+
+    cx.render(rsx!(
+        // Use .current to get the real current value
+        h1 { "High-Five counter: {first_count_read}" }
+    ))
+}
+````
+
+````inject-dioxus
+DemoFrame {
+   // original: hooks_out_of_date::fixed::App {}
+   __interactive_04::hooks_out_of_date_fixed {}
+}
+````
+
+## Rules of hooks
+
+The above example might seem a bit magic since Rust functions are typically not associated with state. Dioxus allows hooks to maintain state across renders through a reference to `ScopeState`, which is why you must pass `&cx` to them.
+
+But how can Dioxus differentiate between multiple hooks in the same component? As you saw in the second example, both `use_state` functions were called with the same parameters, so how come they can return different things when the counters are different?
+
+````rs@hooks_counter_two_state.rs
+let mut count_a = use_state(cx, || 0);
+let mut count_b = use_state(cx, || 0);
+````
+
+This is only possible because the two hooks are always called in the same order, so Dioxus knows which is which. Because the order you call hooks matters, you must follow certain rules when using hooks:
+
+1. Hooks may be only used in components or other hooks (we'll get to that later).
+1. On every call to a component function.
+1. The same hooks must be called (except in the case of early returns, as explained later in the [Error Handling chapter](../cookbook/error_handling.md)).
+1. In the same order.
+1. Hook names should start with `use_` so you don't accidentally confuse them with regular
+   functions (`use_state()`, `use_ref()`, `use_future()`, etc...).
+
+These rules mean that there are certain things you can't do with hooks:
+
+### No hooks in conditionals
+
+````rs@hooks_bad.rs
+// ❌ don't call hooks in conditionals!
+// We must ensure that the same hooks will be called every time
+// But `if` statements only run if the conditional is true!
+// So we might violate rule 2.
+if you_are_happy && you_know_it {
+    let something = use_state(cx, || "hands");
+    println!("clap your {something}")
+}
+
+// ✅ instead, *always* call use_state
+// You can put other stuff in the conditional though
+let something = use_state(cx, || "hands");
+if you_are_happy && you_know_it {
+    println!("clap your {something}")
+}
+````
+
+### No hooks in closures
+
+````rs@hooks_bad.rs
+// ❌ don't call hooks inside closures!
+// We can't guarantee that the closure, if used, will be called in the same order every time
+let _a = || {
+    let b = use_state(cx, || 0);
+    b.get()
+};
+
+// ✅ instead, move hook `b` outside
+let b = use_state(cx, || 0);
+let _a = || b.get();
+````
+
+### No hooks in loops
+
+````rs@hooks_bad.rs
+// `names` is a Vec<&str>
+
+// ❌ Do not use hooks in loops!
+// In this case, if the length of the Vec changes, we break rule 2
+for _name in &names {
+    let is_selected = use_state(cx, || false);
+    println!("selected: {is_selected}");
+}
+
+// ✅ Instead, use a hashmap with use_ref
+let selection_map = use_ref(cx, HashMap::<&str, bool>::new);
+
+for name in &names {
+    let is_selected = selection_map.read()[name];
+    println!("selected: {is_selected}");
+}
+````
+
+## use_ref hook
+
+`use_state` is great for tracking simple values. However, in the [`UseState` API](https://docs.rs/dioxus/latest/dioxus/hooks/struct.UseState.html), you may notice that the only way to modify its value is to replace it with something else (e.g., by calling `set`, or through one of the `+=`, `-=` operators). This works well when it is cheap to construct a value (such as any primitive). But what if you want to maintain more complex data in the component's state?
+
+For example, suppose we want to maintain a `Vec` of values. If we stored it with `use_state`, the
+only way to add a new value to the list would be to copy the existing `Vec`, add our value to it,
+and then replace the existing `Vec` in the state with it. This is expensive! We want to modify the
+existing `Vec` instead.
+
+Thankfully, there is another hook for that, `use_ref`! It is similar to `use_state`, but it lets you get a mutable reference to the contained data.
+
+Here's a simple example that keeps a list of events in a `use_ref`. We can acquire write access to the state with `.with_mut()`, and then just `.push` a new value to the state:
+
+````rs@hooks_use_ref.rs
+pub fn App(cx: Scope) -> Element {
+    let list = use_ref(cx, Vec::new);
+
+    cx.render(rsx!(
+        p { "Current list: {list.read():?}" }
+        button {
+            onclick: move |event| {
+                list.with_mut(|list| list.push(event));
+            },
+            "Click me!"
+        }
+    ))
+}
+````
+
+````inject-dioxus
+DemoFrame {
+   // original: hooks_use_ref::App {}
+   __interactive_04::hooks_use_ref {}
+}
+````
+
+ > 
+ > The return values of `use_state` and `use_ref` (
+ >  [`UseState`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.UseState.html) and
+ >  [`UseRef`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.UseRef.html), respectively) are in
+ >  some ways similar to [`Cell`](https://doc.rust-lang.org/std/cell/) and
+ >  [`RefCell`](https://doc.rust-lang.org/std/cell/struct.RefCell.html) – they provide interior
+ >  mutability. However, these Dioxus wrappers also ensure that the component gets re-rendered
+ >  whenever you change the state.
+
+## Additional resources
+
+* [dioxus_hooks API docs](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/)
+* [dioxus_hooks source code](https://github.com/DioxusLabs/dioxus/tree/master/packages/hooks)
+# User Input
+
+Interfaces often need to provide a way to input data: e.g. text, numbers, checkboxes, etc. In Dioxus, there are two ways you can work with user input.
+
+## Controlled Inputs
+
+With controlled inputs, you are directly in charge of the state of the input. This gives you a lot of flexibility, and makes it easy to keep things in sync. For example, this is how you would create a controlled text input:
+
+````rs@input_controlled.rs
+pub fn App(cx: Scope) -> Element {
+    let name = use_state(cx, || "bob".to_string());
+
+    cx.render(rsx! {
+        input {
+            // we tell the component what to render
+            value: "{name}",
+            // and what to do when the value changes
+            oninput: move |evt| name.set(evt.value.clone()),
+        }
+    })
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    input_controlled::App {}
+}
+````
+
+Notice the flexibility – you can:
+
+* Also display the same contents in another element, and they will be in sync
+* Transform the input every time it is modified (e.g. to make sure it is upper case)
+* Validate the input every time it changes
+* Have custom logic happening when the input changes (e.g. network request for autocompletion)
+* Programmatically change the value (e.g. a "randomize" button that fills the input with nonsense)
+
+## Uncontrolled Inputs
+
+As an alternative to controlled inputs, you can simply let the platform keep track of the input values. If we don't tell a HTML input what content it should have, it will be editable anyway (this is built into the browser). This approach can be more performant, but less flexible. For example, it's harder to keep the input in sync with another element.
+
+Since you don't necessarily have the current value of the uncontrolled input in state, you can access it either by listening to `oninput` events (similarly to controlled components), or, if the input is part of a form, you can access the form data in the form events (e.g. `oninput` or `onsubmit`):
+
+````rs@input_uncontrolled.rs
+pub fn App(cx: Scope) -> Element {
+    cx.render(rsx! {
+        form {
+            onsubmit: move |event| {
+                log::info!("Submitted! {event:?}")
+            },
+            input { name: "name", },
+            input { name: "age", },
+            input { name: "date", },
+            input { r#type: "submit", },
+        }
+    })
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    input_uncontrolled::App {}
+}
+````
+
+````
+Submitted! UiEvent { data: FormData { value: "", values: {"age": "very old", "date": "1966", "name": "Fred"} } }
+````
+
+## Handling files
+
+You can insert a file picker by using an input element of type `file`. This element supports the `multiple` attribute, to let you pick more files at the same time. You can select a folder by adding the `directory` attribute: Dioxus will map this attribute to browser specific attributes, because there is no standardized way to allow a directory to be selected.
+
+`type` is a Rust keyword, so when specifying the type of the input field, you have to write it as `r#type:"file"`.
+
+Extracting the selected files is a bit different from what you may typically use in Javascript.
+
+The `FormData` event contains a `files` field with data about the uploaded files. This field contains a `FileEngine` struct which lets you fetch the filenames selected by the user. This example saves the filenames of the selected files to a `Vec`:
+
+````rs@input_fileengine.rs
+pub fn App(cx: Scope) -> Element {
+    let filenames: &UseRef<Vec<String>> = use_ref(cx, Vec::new);
+    cx.render(rsx! {
+        input {
+            // tell the input to pick a file
+            r#type:"file",
+            // list the accepted extensions
+            accept: ".txt,.rs",
+            // pick multiple files
+            multiple: true,
+            onchange: move |evt| {
+                if let Some(file_engine) = &evt.files {
+                    let files = file_engine.files();
+                    for file_name in files {
+                        filenames.write().push(file_name);
+                    }
+                }
+            }
+        }
+    })
+}
+````
+
+If you're planning to read the file content, you need to do it asynchronously, to keep the rest of the UI interactive. This example event handler loads the content of the selected files in an async closure:
+
+````rs@input_fileengine_async.rs
+onchange: move |evt| {
+    // A helper macro to use hooks in async environments
+    to_owned![files_uploaded];
+    async move {
+        if let Some(file_engine) = &evt.files {
+            let files = file_engine.files();
+            for file_name in &files {
+                // Make sure to use async/await when doing heavy I/O operations,
+                // to not freeze the interface in the meantime
+                if let Some(file) = file_engine.read_file_to_string(file_name).await{
+                    files_uploaded.write().push(file);
+                }
+            }
+        }
+    }
+}
+````
+
+Lastly, this example shows you how to select a folder, by setting the `directory` attribute to `true`.
+
+````rs@input_fileengine_folder.rs
+input {
+    r#type:"file",
+    // Select a folder by setting the directory attribute
+    directory: true,
+    onchange: |evt| {
+        if let Some(file_engine) = &evt.files {
+            let files = file_engine.files();
+            for file_name in files {
+                println!("{}", file_name);
+                // Do something with the folder path
+            }
+        }
+    }
+}
+````
+# Sharing State
+
+Often, multiple components need to access the same state. Depending on your needs, there are several ways to implement this.
+
+## Lifting State
+
+One approach to share state between components is to "lift" it up to the nearest common ancestor. This means putting the `use_state` hook in a parent component, and passing the needed values down as props.
+
+Suppose we want to build a meme editor. We want to have an input to edit the meme caption, but also a preview of the meme with the caption. Logically, the meme and the input are 2 separate components, but they need access to the same state (the current caption).
+
+ > 
+ > Of course, in this simple example, we could write everything in one component – but it is better to split everything out in smaller components to make the code more reusable, maintainable, and performant (this is even more important for larger, complex apps).
+
+We start with a `Meme` component, responsible for rendering a meme with a given caption:
+
+````rs@meme_editor.rs
+#[component]
+fn Meme<'a>(cx: Scope<'a>, caption: &'a str) -> Element<'a> {
+    let container_style = r#"
+        position: relative;
+        width: fit-content;
+    "#;
+
+    let caption_container_style = r#"
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 16px 8px;
+    "#;
+
+    let caption_style = r"
+        font-size: 32px;
+        margin: 0;
+        color: white;
+        text-align: center;
+    ";
+
+    cx.render(rsx!(
+        div {
+            style: "{container_style}",
+            img {
+                src: "https://i.imgflip.com/2zh47r.jpg",
+                height: "500px",
+            },
+            div {
+                style: "{caption_container_style}",
+                p {
+                    style: "{caption_style}",
+                    "{caption}"
+                }
+            }
+        }
+    ))
+}
+````
+
+ > 
+ > Note that the `Meme` component is unaware where the caption is coming from – it could be stored in `use_state`, `use_ref`, or a constant. This ensures that it is very reusable – the same component can be used for a meme gallery without any changes!
+
+We also create a caption editor, completely decoupled from the meme. The caption editor must not store the caption itself – otherwise, how will we provide it to the `Meme` component? Instead, it should accept the current caption as a prop, as well as an event handler to delegate input events to:
+
+````rs@meme_editor.rs
+#[component]
+fn CaptionEditor<'a>(
+    cx: Scope<'a>,
+    caption: &'a str,
+    on_input: EventHandler<'a, FormEvent>,
+) -> Element<'a> {
+    let input_style = r"
+        border: none;
+        background: cornflowerblue;
+        padding: 8px 16px;
+        margin: 0;
+        border-radius: 4px;
+        color: white;
+    ";
+
+    cx.render(rsx!(input {
+        style: "{input_style}",
+        value: "{caption}",
+        oninput: move |event| on_input.call(event),
+    }))
+}
+````
+
+Finally, a third component will render the other two as children. It will be responsible for keeping the state and passing down the relevant props.
+
+````rs@meme_editor.rs
+fn MemeEditor(cx: Scope) -> Element {
+    let container_style = r"
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        margin: 0 auto;
+        width: fit-content;
+    ";
+
+    let caption = use_state(cx, || "me waiting for my rust code to compile".to_string());
+
+    cx.render(rsx! {
+        div {
+            style: "{container_style}",
+            h1 { "Meme Editor" },
+            Meme {
+                caption: caption,
+            },
+            CaptionEditor {
+                caption: caption,
+                on_input: move |event: FormEvent| {caption.set(event.value.clone());},
+            },
+        }
+    })
+}
+````
+
+![Meme Editor Screenshot: An old plastic skeleton sitting on a park bench. Caption: "me waiting for a language feature"](/assets/static/meme_editor_screenshot.png)
+
+## Using Shared State
+
+Sometimes, some state needs to be shared between multiple components far down the tree, and passing it down through props is very inconvenient.
+
+Suppose now that we want to implement a dark mode toggle for our app. To achieve this, we will make every component select styling depending on whether dark mode is enabled or not.
+
+ > 
+ > Note: we're choosing this approach for the sake of an example. There are better ways to implement dark mode (e.g. using CSS variables). Let's pretend CSS variables don't exist – welcome to 2013!
+
+Now, we could write another `use_state` in the top component, and pass `is_dark_mode` down to every component through props. But think about what will happen as the app grows in complexity – almost every component that renders any CSS is going to need to know if dark mode is enabled or not – so they'll all need the same dark mode prop. And every parent component will need to pass it down to them. Imagine how messy and verbose that would get, especially if we had components several levels deep!
+
+Dioxus offers a better solution than this "prop drilling" – providing context. The [`use_shared_state_provider`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_shared_state_provider.html) hook is similar to `use_ref`, but it makes it available through [`use_shared_state`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_shared_state.html) for all children components.
+
+First, we have to create a struct for our dark mode configuration:
+
+````rs@meme_editor_dark_mode.rs
+struct DarkMode(bool);
+````
+
+Now, in a top-level component (like `App`), we can provide the `DarkMode` context to all children components:
+
+````rs@meme_editor_dark_mode.rs
+use_shared_state_provider(cx, || DarkMode(false));
+````
+
+As a result, any child component of `App` (direct or not), can access the `DarkMode` context.
+
+````rs@meme_editor_dark_mode.rs
+let dark_mode_context = use_shared_state::<DarkMode>(cx);
+````
+
+ > 
+ > `use_shared_state` returns `Option<UseSharedState<DarkMode>>` here. If the context has been provided, the value is `Some(UseSharedState<DarkMode>)`, which you can call `.read` or `.write` on, similarly to `UseRef`. Otherwise, the value is `None`.
+
+For example, here's how we would implement the dark mode toggle, which both reads the context (to determine what color it should render) and writes to it (to toggle dark mode):
+
+````rs@meme_editor_dark_mode.rs
+pub fn DarkModeToggle(cx: Scope) -> Element {
+    let dark_mode = use_shared_state::<DarkMode>(cx).unwrap();
+
+    let style = if dark_mode.read().0 {
+        "color:white"
+    } else {
+        ""
+    };
+
+    cx.render(rsx!(label {
+        style: "{style}",
+        "Dark Mode",
+        input {
+            r#type: "checkbox",
+            oninput: move |event| {
+                let is_enabled = event.value == "true";
+                dark_mode.write().0 = is_enabled;
+            },
+        },
+    }))
+}
+````
+# Dynamic Rendering
+
+Sometimes you want to render different things depending on the state/props. With Dioxus, just describe what you want to see using Rust control flow – the framework will take care of making the necessary changes on the fly if the state or props change!
+
+## Conditional Rendering
+
+To render different elements based on a condition, you could use an `if-else` statement:
+
+````rs@conditional_rendering.rs
+if *is_logged_in {
+    cx.render(rsx! {
+        "Welcome!"
+        button {
+            onclick: move |_| on_log_out.call(()),
+            "Log Out",
+        }
+    })
+} else {
+    cx.render(rsx! {
+        button {
+            onclick: move |_| on_log_in.call(()),
+            "Log In",
+        }
+    })
+}
+````
+
+````inject-dioxus
+DemoFrame {
+  conditional_rendering::App {}
+}
+````
+
+ > 
+ > You could also use `match` statements, or any Rust function to conditionally render different things.
+
+### Improving the `if-else` Example
+
+You may have noticed some repeated code in the `if-else` example above. Repeating code like this is both bad for maintainability and performance. Dioxus will skip diffing static elements like the button, but when switching between multiple `rsx` calls it cannot perform this optimization. For this example either approach is fine, but for components with large parts that are reused between conditionals, it can be more of an issue.
+
+We can improve this example by splitting up the dynamic parts and inserting them where they are needed.
+
+````rs@conditional_rendering.rs
+cx.render(rsx! {
+    // We only render the welcome message if we are logged in
+    // You can use if statements in the middle of a render block to conditionally render elements
+    if *is_logged_in {
+        // Notice the body of this if statement is rsx code, not an expression
+        "Welcome!"
+    }
+    button {
+        // depending on the value of `is_logged_in`, we will call a different event handler
+        onclick: move |_| if *is_logged_in {
+            on_log_in.call(())
+        }
+        else{
+            on_log_out.call(())
+        },
+        if *is_logged_in {
+            // if we are logged in, the button should say "Log Out"
+            "Log Out"
+        } else {
+            // if we are not logged in, the button should say "Log In"
+            "Log In"
+        }
+    }
+})
+````
+
+````inject-dioxus
+DemoFrame {
+  conditional_rendering::LogInImprovedApp {}
+}
+````
+
+### Inspecting `Element` props
+
+Since `Element` is a `Option<VNode>`, components accepting `Element` as a prop can inspect its contents, and render different things based on that. Example:
+
+````rs@component_children_inspect.rs
+fn Clickable<'a>(cx: Scope<'a, ClickableProps<'a>>) -> Element {
+    match cx.props.children {
+        Some(VNode { dynamic_nodes, .. }) => {
+            todo!("render some stuff")
+        }
+        _ => {
+            todo!("render some other stuff")
+        }
+    }
+}
+````
+
+You can't mutate the `Element`, but if you need a modified version of it, you can construct a new one based on its attributes/children/etc.
+
+## Rendering Nothing
+
+To render nothing, you can return `None` from a component. This is useful if you want to conditionally hide something:
+
+````rs@conditional_rendering.rs
+if *is_logged_in {
+    return None;
+}
+
+cx.render(rsx! {
+    a {
+        "You must be logged in to comment"
+    }
+})
+````
+
+````inject-dioxus
+DemoFrame {
+  conditional_rendering::LogInWarningApp {}
+}
+````
+
+This works because the `Element` type is just an alias for `Option<VNode>`
+
+ > 
+ > Again, you may use a different method to conditionally return `None`. For example the boolean's [`then()`](https://doc.rust-lang.org/std/primitive.bool.html#method.then) function could be used.
+
+## Rendering Lists
+
+Often, you'll want to render a collection of components. For example, you might want to render a list of all comments on a post.
+
+For this, Dioxus accepts iterators that produce `Element`s. So we need to:
+
+* Get an iterator over all of our items (e.g., if you have a `Vec` of comments, iterate over it with `iter()`)
+* `.map` the iterator to convert each item into a `LazyNode` using `rsx!(...)`
+  * Add a unique `key` attribute to each iterator item
+* Include this iterator in the final RSX (or use it inline)
+
+Example: suppose you have a list of comments you want to render. Then, you can render them like this:
+
+````rs@rendering_lists.rs
+let comment_field = use_state(cx, String::new);
+let mut next_id = use_state(cx, || 0);
+let comments = use_ref(cx, Vec::<Comment>::new);
+
+let comments_lock = comments.read();
+let comments_rendered = comments_lock.iter().map(|comment| {
+    rsx!(CommentComponent {
+        key: "{comment.id}",
+        comment: comment.clone(),
+    })
+});
+
+cx.render(rsx!(
+    form {
+        onsubmit: move |_| {
+            comments.write().push(Comment {
+                content: comment_field.get().clone(),
+                id: *next_id.get(),
+            });
+            next_id += 1;
+
+            comment_field.set(String::new());
+        },
+        input {
+            value: "{comment_field}",
+            oninput: move |event| comment_field.set(event.value.clone()),
+        }
+        input {
+            r#type: "submit",
+        }
+    },
+    comments_rendered,
+))
+````
+
+````inject-dioxus
+DemoFrame {
+  rendering_lists::App {}
+}
+````
+
+### Inline for loops
+
+Because of how common it is to render a list of items, Dioxus provides a shorthand for this. Instead of using `.iter`, `.map`, and `rsx`, you can use a `for` loop with a body of rsx code:
+
+````rs@rendering_lists.rs
+let comment_field = use_state(cx, String::new);
+let mut next_id = use_state(cx, || 0);
+let comments = use_ref(cx, Vec::<Comment>::new);
+
+cx.render(rsx!(
+    form {
+        onsubmit: move |_| {
+            comments.write().push(Comment {
+                content: comment_field.get().clone(),
+                id: *next_id.get(),
+            });
+            next_id += 1;
+
+            comment_field.set(String::new());
+        },
+        input {
+            value: "{comment_field}",
+            oninput: move |event| comment_field.set(event.value.clone()),
+        }
+        input {
+            r#type: "submit",
+        }
+    },
+    for comment in &*comments.read() {
+        // Notice the body of this for loop is rsx code, not an expression
+        CommentComponent {
+            key: "{comment.id}",
+            comment: comment.clone(),
+        }
+    }
+))
+````
+
+````inject-dioxus
+DemoFrame {
+  rendering_lists::AppForLoop {}
+}
+````
+
+### The key Attribute
+
+Every time you re-render your list, Dioxus needs to keep track of which items go where to determine what updates need to be made to the UI.
+
+For example, suppose the `CommentComponent` had some state – e.g. a field where the user typed in a reply. If the order of comments suddenly changes, Dioxus needs to correctly associate that state with the same comment – otherwise, the user will end up replying to a different comment!
+
+To help Dioxus keep track of list items, we need to associate each item with a unique key. In the example above, we dynamically generated the unique key. In real applications, it's more likely that the key will come from e.g. a database ID. It doesn't matter where you get the key from, as long as it meets the requirements:
+
+* Keys must be unique in a list
+* The same item should always get associated with the same key
+* Keys should be relatively small (i.e. converting the entire Comment structure to a String would be a pretty bad key) so they can be compared efficiently
+
+You might be tempted to use an item's index in the list as its key. That’s what Dioxus will use if you don’t specify a key at all. This is only acceptable if you can guarantee that the list is constant – i.e., no re-ordering, additions, or deletions.
+
+ > 
+ > Note that if you pass the key to a component you've made, it won't receive the key as a prop. It’s only used as a hint by Dioxus itself. If your component needs an ID, you have to pass it as a separate prop.
+# Router
+
+In many of your apps, you'll want to have different "scenes". For a webpage, these scenes might be the different webpages with their own content. For a desktop app, these scenes might be different views in your app.
+
+To unify these platforms, Dioxus provides a first-party solution for scene management called Dioxus Router.
+
+## What is it?
+
+For an app like the Dioxus landing page (https://dioxuslabs.com), we want to have several different scenes:
+
+* Homepage
+* Blog
+
+Each of these scenes is independent – we don't want to render both the homepage and blog at the same time.
+
+The Dioxus router makes it easy to create these scenes. To make sure we're using the router, add the `dioxus-router` package to your `Cargo.toml`.
+
+````shell
+cargo add dioxus-router
+````
+
+## Using the router
+
+Unlike other routers in the Rust ecosystem, our router is built declaratively at compile time. This makes it possible to compose our app layout simply by defining an enum.
+
+````rust
+// All of our routes will be a variant of this Route enum
+enum Route {
+	// if the current location is "/home", render the Home component
+	#[route("/home")]
+	Home {},
+	// if the current location is "/blog", render the Blog component
+	#[route("/blog")]
+	Blog {},
+}
+````
+
+Whenever we visit this app, we will get either the Home component or the Blog component rendered depending on which route we enter at. If neither of these routes match the current location, then nothing will render.
+
+We can fix this one of two ways:
+
+* A fallback 404 page
+
+````rust
+enum Route {
+	#[route("/home")]
+	Home {},
+	#[route("/blog")]
+	Blog {},
+	//  if the current location doesn't match any of the above routes, render the NotFound component
+	#[route("/:..segments")]
+	NotFound { segments: Vec<String> },
+}
+````
+
+* Redirect 404 to home
+
+````rust
+enum Route {
+	#[route("/home")]
+	//  if the current location doesn't match any of the above routes, redirect to "/home"
+	#[redirect("/:..segments", |segments: Vec<String>| Route::Home {})]
+	Home {},
+	#[route("/blog")]
+	Blog {},
+	//  if the current location doesn't match any of the above routes, render the NotFound component
+	#[route("/:..segments")]
+	NotFound { segments: Vec<String> },
+}
+````
+
+## Links
+
+For our app to navigate these routes, we can provide clickable elements called Links. These simply wrap `<a>` elements that, when clicked, navigate the app to the given location. Because our route is an enum of valid routes, if you try to link to a page that doesn't exist, you will get a compiler error.
+
+````rust
+rsx! {
+	Link {
+		to: Route::Home {},
+		"Go home!"
+	}
+}
+````
+
+## More reading
+
+This page is just a very brief overview of the router. For more information, check out the [router book](../router/index.md) or some of the [router examples](https://github.com/DioxusLabs/dioxus/blob/master/examples/router.rs).
+# UseFuture
+
+[`use_future`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_future.html) lets you run an async closure, and provides you with its result.
+
+For example, we can make an API request (using [reqwest](https://docs.rs/reqwest/latest/reqwest/index.html)) inside `use_future`:
+
+````rs@use_future.rs
+let future = use_future(cx, (), |_| async move {
+    reqwest::get("https://dog.ceo/api/breeds/image/random")
+        .await
+        .unwrap()
+        .json::<ApiResponse>()
+        .await
+});
+````
+
+The code inside `use_future` will be submitted to the Dioxus scheduler once the component has rendered.
+
+We can use `.value()` to get the result of the future. On the first run, since there's no data ready when the component loads, its value will be `None`. However, once the future is finished, the component will be re-rendered and the value will now be `Some(...)`, containing the return value of the closure.
+
+We can then render that result:
+
+````rs@use_future.rs
+cx.render(match future.value() {
+    Some(Ok(response)) => rsx! {
+        button {
+            onclick: move |_| future.restart(),
+            "Click to fetch another doggo"
+        }
+        div {
+            img {
+                max_width: "500px",
+                max_height: "500px",
+                src: "{response.image_url}",
+            }
+        }
+    },
+    Some(Err(_)) => rsx! { div { "Loading dogs failed" } },
+    None => rsx! { div { "Loading dogs..." } },
+})
+````
+
+````inject-dioxus
+DemoFrame {
+    // original: use_future::App {}
+    __interactive_04::use_future_ {}
+}
+````
+
+## Restarting the Future
+
+The `UseFuture` handle provides a `restart` method. It can be used to execute the future again, producing a new value.
+
+## Dependencies
+
+Often, you will need to run the future again every time some value (e.g. a prop) changes. Rather than calling `restart` manually, you can provide a tuple of "dependencies" to the hook. It will automatically re-run the future when any of those dependencies change. Example:
+
+````rs@use_future.rs
+let future = use_future(cx, (breed,), |(breed,)| async move {
+    reqwest::get(format!("https://dog.ceo/api/breed/{breed}/images/random"))
+        .await
+        .unwrap()
+        .json::<ApiResponse>()
+        .await
+});
+````
+# Coroutines
+
+Another tool in your async toolbox are coroutines. Coroutines are futures that can have values sent to them.
+
+Like regular futures, code in a coroutine will run until the next `await` point before yielding. This low-level control over asynchronous tasks is quite powerful, allowing for infinitely looping tasks like WebSocket polling, background timers, and other periodic actions.
+
+## use_coroutine
+
+The `use_coroutine` hook allows you to create a coroutine. Most coroutines we write will be polling loops using await.
+
+````rs@use_coroutine_reference.rs
+use futures_util::StreamExt;
+
+fn app(cx: Scope) {
+    let ws: &Coroutine<()> = use_coroutine(cx, |rx| async move {
+        // Connect to some sort of service
+        let mut conn = connect_to_ws_server().await;
+
+        // Wait for data on the service
+        while let Some(msg) = conn.next().await {
+            // handle messages
+        }
+    });
+}
+````
+
+For many services, a simple async loop will handle the majority of use cases.
+
+## Yielding Values
+
+To yield values from a coroutine, simply bring in a `UseState` handle and set the value whenever your coroutine completes its work.
+
+The future must be `'static` – so any values captured by the task cannot carry any references to `cx`, such as a `UseState`.
+
+You can use [to_owned](https://doc.rust-lang.org/std/borrow/trait.ToOwned.html#tymethod.to_owned) to create a clone of the hook handle which can be moved into the async closure.
+
+````rs@use_coroutine_reference.rs
+let sync_status = use_state(cx, || Status::Launching);
+let sync_task = use_coroutine(cx, |rx: UnboundedReceiver<SyncAction>| {
+    let sync_status = sync_status.to_owned();
+    async move {
+        loop {
+            tokio::time::sleep(Duration::from_secs(1)).await;
+            sync_status.set(Status::Working);
+        }
+    }
+});
+````
+
+To make this a bit less verbose, Dioxus exports the `to_owned!` macro which will create a binding as shown above, which can be quite helpful when dealing with many values.
+
+````rs@use_coroutine_reference.rs
+let sync_status = use_state(cx, || Status::Launching);
+let load_status = use_state(cx, || Status::Launching);
+let sync_task = use_coroutine(cx, |rx: UnboundedReceiver<SyncAction>| {
+    to_owned![sync_status, load_status];
+    async move {
+        // ...
+    }
+});
+````
+
+## Sending Values
+
+You might've noticed the `use_coroutine` closure takes an argument called `rx`. What is that? Well, a common pattern in complex apps is to handle a bunch of async code at once. With libraries like Redux Toolkit, managing multiple promises at once can be challenging and a common source of bugs.
+
+With Coroutines, we can centralize our async logic. The `rx` parameter is an Channel that allows code external to the coroutine to send data *into* the coroutine. Instead of looping on an external service, we can loop on the channel itself, processing messages from within our app without needing to spawn a new future. To send data into the coroutine, we would call "send" on the handle.
+
+````rs@use_coroutine_reference.rs
+use futures_util::StreamExt;
+
+enum ProfileUpdate {
+    SetUsername(String),
+    SetAge(i32),
+}
+
+let profile = use_coroutine(cx, |mut rx: UnboundedReceiver<ProfileUpdate>| async move {
+    let mut server = connect_to_server().await;
+
+    while let Some(msg) = rx.next().await {
+        match msg {
+            ProfileUpdate::SetUsername(name) => server.update_username(name).await,
+            ProfileUpdate::SetAge(age) => server.update_age(age).await,
+        }
+    }
+});
+
+cx.render(rsx! {
+    button {
+        onclick: move |_| profile.send(ProfileUpdate::SetUsername("Bob".to_string())),
+        "Update username"
+    }
+})
+````
+
+ > 
+ > Note: In order to use/run the `rx.next().await` statement you will need to extend the \[`Stream`\] trait (used by \[`UnboundedReceiver`\]) by adding 'futures_util' as a dependency to your project and adding the `use futures_util::stream::StreamExt;`.
+
+For sufficiently complex apps, we could build a bunch of different useful "services" that loop on channels to update the app.
+
+````rs@use_coroutine_reference.rs
+let profile = use_coroutine(cx, profile_service);
+let editor = use_coroutine(cx, editor_service);
+let sync = use_coroutine(cx, sync_service);
+
+async fn profile_service(rx: UnboundedReceiver<ProfileCommand>) {
+    // do stuff
+}
+
+async fn sync_service(rx: UnboundedReceiver<SyncCommand>) {
+    // do stuff
+}
+
+async fn editor_service(rx: UnboundedReceiver<EditorCommand>) {
+    // do stuff
+}
+````
+
+We can combine coroutines with [Fermi](https://docs.rs/fermi/latest/fermi/index.html) to emulate Redux Toolkit's Thunk system with much less headache. This lets us store all of our app's state *within* a task and then simply update the "view" values stored in Atoms. It cannot be understated how powerful this technique is: we get all the perks of native Rust tasks with the optimizations and ergonomics of global state. This means your *actual* state does not need to be tied up in a system like Fermi or Redux – the only Atoms that need to exist are those that are used to drive the display/UI.
+
+````rs@use_coroutine_reference.rs
+static USERNAME: Atom<String> = Atom(|_| "default".to_string());
+
+fn app(cx: Scope) -> Element {
+    let atoms = use_atom_root(cx);
+
+    use_coroutine(cx, |rx| sync_service(rx, atoms.clone()));
+
+    cx.render(rsx! {
+        Banner {}
+    })
+}
+
+fn Banner(cx: Scope) -> Element {
+    let username = use_read(cx, &USERNAME);
+
+    cx.render(rsx! {
+        h1 { "Welcome back, {username}" }
+    })
+}
+````
+
+Now, in our sync service, we can structure our state however we want. We only need to update the view values when ready.
+
+````rs@use_coroutine_reference.rs
+
+````
+
+## Automatic injection into the Context API
+
+Coroutine handles are automatically injected through the context API. You can use the `use_coroutine_handle` hook with the message type as a generic to fetch a handle.
+
+````rs@use_coroutine_reference.rs
+fn Child(cx: Scope) -> Element {
+    let sync_task = use_coroutine_handle::<SyncAction>(cx).unwrap();
+
+    sync_task.send(SyncAction::SetUsername);
+
+    todo!()
+}
+````
+# Spawning Futures
+
+The `use_future` and `use_coroutine` hooks are useful if you want to unconditionally spawn the future. Sometimes, though, you'll want to only spawn a future in response to an event, such as a mouse click. For example, suppose you need to send a request when the user clicks a "log in" button. For this, you can use `cx.spawn`:
+
+````rs@spawn.rs
+let response = use_state(cx, || String::from("..."));
+
+let log_in = move |_| {
+    cx.spawn({
+        to_owned![response];
+
+        async move {
+            let resp = reqwest::Client::new()
+                .get("https://dioxuslabs.com")
+                .send()
+                .await;
+
+            match resp {
+                Ok(_data) => {
+                    log::info!("dioxuslabs.com responded!");
+                    response.set("dioxuslabs.com responded!".into());
+                }
+                Err(err) => {
+                    log::info!("Request failed with error: {err:?}")
+                }
+            }
+        }
+    });
+};
+
+render! {
+    button {
+        onclick: log_in,
+        "Response: {response}",
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    spawn::App {}
+}
+````
+
+ > 
+ > Note: `spawn` will always spawn a *new* future. You most likely don't want to call it on every render.
+
+Calling `spawn` will give you a `JoinHandle` which lets you cancel or pause the future.
+
+## Spawning Tokio Tasks
+
+Sometimes, you might want to spawn a background task that needs multiple threads or talk to hardware that might block your app code. In these cases, we can directly spawn a Tokio task from our future. For Dioxus-Desktop, your task will be spawned onto Tokio's Multithreaded runtime:
+
+````rs@spawn.rs
+cx.spawn(async {
+    let _ = tokio::spawn(async {}).await;
+
+    let _ = tokio::task::spawn_local(async {
+        // some !Send work
+    })
+    .await;
+});
+````
+# Desktop
+
+This guide will cover concepts specific to the Dioxus desktop renderer.
+
+## Running Javascript
+
+Dioxus provides some ergonomic wrappers over the browser API, but in some cases you may need to access parts of the browser API Dioxus does not expose.
+
+For these cases, Dioxus desktop exposes the use_eval hook that allows you to run raw Javascript in the webview:
+
+````rs@eval.rs
+use dioxus::prelude::*;
+
+fn main() {
+    dioxus_desktop::launch(app);
+}
+
+fn app(cx: Scope) -> Element {
+    // Use eval returns a function that can spawn eval instances
+    let create_eval = use_eval(cx);
+
+    // You can create as many eval instances as you want
+    let mut eval = create_eval(
+        r#"
+        // You can send messages from JavaScript to Rust with the dioxus.send function
+        dioxus.send("Hi from JS!");
+        // You can receive messages from Rust to JavaScript with the dioxus.recv function
+        let msg = await dioxus.recv();
+        console.log(msg);
+        "#,
+    )
+    .unwrap();
+
+    // You can send messages to JavaScript with the send method
+    eval.send("Hi from Rust!".into()).unwrap();
+
+    let future = use_future(cx, (), |_| {
+        to_owned![eval];
+        async move {
+            // You can receive any message from JavaScript with the recv method
+            eval.recv().await.unwrap()
+        }
+    });
+
+    match future.value() {
+        Some(v) => cx.render(rsx!(
+            p { "{v}" }
+        )),
+        _ => cx.render(rsx!(
+            p { "hello" }
+        )),
+    }
+}
+
+````
+
+## Custom Assets
+
+You can link to local assets in dioxus desktop instead of using a url:
+
+````rs@custom_assets.rs
+use dioxus::prelude::*;
+
+fn main() {
+    dioxus_desktop::launch(app);
+}
+
+fn app(cx: Scope) -> Element {
+    cx.render(rsx! {
+        div {
+            img { src: "examples/assets/logo.png" }
+        }
+    })
+}
+
+````
+
+## Integrating with Wry
+
+In cases where you need more low level control over your window, you can use wry APIs exposed through the [Desktop Config](https://docs.rs/dioxus-desktop/0.3.0/dioxus_desktop/struct.Config.html) and the [use_window hook](https://docs.rs/dioxus-desktop/0.4.0/dioxus_desktop/fn.use_window.html)
+# Web
+
+This guide will cover concepts specific to the Dioxus web renderer.
+
+## Running Javascript
+
+Dioxus provides some ergonomic wrappers over the browser API, but in some cases you may need to access parts of the browser API Dioxus does not expose.
+
+For these cases, Dioxus desktop exposes the use_eval hook that allows you to run raw Javascript in the webview:
+
+````rs@eval.rs
+use dioxus::prelude::*;
+
+fn main() {
+    dioxus_desktop::launch(app);
+}
+
+fn app(cx: Scope) -> Element {
+    // Use eval returns a function that can spawn eval instances
+    let create_eval = use_eval(cx);
+
+    // You can create as many eval instances as you want
+    let mut eval = create_eval(
+        r#"
+        // You can send messages from JavaScript to Rust with the dioxus.send function
+        dioxus.send("Hi from JS!");
+        // You can receive messages from Rust to JavaScript with the dioxus.recv function
+        let msg = await dioxus.recv();
+        console.log(msg);
+        "#,
+    )
+    .unwrap();
+
+    // You can send messages to JavaScript with the send method
+    eval.send("Hi from Rust!".into()).unwrap();
+
+    let future = use_future(cx, (), |_| {
+        to_owned![eval];
+        async move {
+            // You can receive any message from JavaScript with the recv method
+            eval.recv().await.unwrap()
+        }
+    });
+
+    match future.value() {
+        Some(v) => cx.render(rsx!(
+            p { "{v}" }
+        )),
+        _ => cx.render(rsx!(
+            p { "hello" }
+        )),
+    }
+}
+
+````
+
+If you are targeting web, but don't plan on targeting any other Dioxus renderer you can also use the generated wrappers in the [web-sys](https://rustwasm.github.io/wasm-bindgen/web-sys/index.html) and [gloo](https://gloo-rs.web.app/) crates.
+
+## Customizing Index Template
+
+Dioxus supports providing custom index.html templates. The index.html must include a `div` with the id `main` to be used. Hot Reload is still supported. An example
+is provided in the [PWA-Example](https://github.com/DioxusLabs/Dioxus/examples/PWA-example/index.html).
+# Server-Side Rendering
+
+For lower-level control over the rendering process, you can use the `dioxus-ssr` crate directly. This can be useful when integrating with a web framework that `dioxus-fullstack` does not support, or pre-rendering pages.
+
+## Setup
+
+For this guide, we're going to show how to use Dioxus SSR with [Axum](https://docs.rs/axum/latest/axum/).
+
+Make sure you have Rust and Cargo installed, and then create a new project:
+
+````shell
+cargo new --bin demo
+cd demo
+````
+
+Add Dioxus and the ssr renderer as dependencies:
+
+````shell
+cargo add dioxus
+cargo add dioxus-ssr
+````
+
+Next, add all the Axum dependencies. This will be different if you're using a different Web Framework
+
+````
+cargo add tokio --features full
+cargo add axum
+````
+
+Your dependencies should look roughly like this:
+
+````toml
+[dependencies]
+axum = "0.4.5"
+dioxus = { version = "*" }
+dioxus-ssr = { version = "*" }
+tokio = { version = "1.15.0", features = ["full"] }
+````
+
+Now, set up your Axum app to respond on an endpoint.
+
+````rust
+use axum::{response::Html, routing::get, Router};
+use dioxus::prelude::*;
+
+#[tokio::main]
+async fn main() {
+	let addr = std::net::SocketAddr::from(([127, 0, 0, 1], 3000));
+	println!("listening on http://{}", addr);
+
+	axum::Server::bind(&addr)
+		.serve(
+			Router::new()
+				.route("/", get(app_endpoint))
+				.into_make_service(),
+		)
+		.await
+		.unwrap();
+}
+````
+
+And then add our endpoint. We can either render `rsx!` directly:
+
+````rust
+async fn app_endpoint() -> Html<String> {
+	// render the rsx! macro to HTML
+	Html(dioxus_ssr::render_lazy(rsx! {
+		div { "hello world!" }
+	}))
+}
+````
+
+Or we can render VirtualDoms.
+
+````rust
+async fn app_endpoint() -> Html<String> {
+	// create a component that renders a div with the text "hello world"
+	fn app(cx: Scope) -> Element {
+		cx.render(rsx!(div { "hello world" }))
+	}
+	// create a VirtualDom with the app component
+	let mut app = VirtualDom::new(app);
+	// rebuild the VirtualDom before rendering
+	let _ = app.rebuild();
+
+	// render the VirtualDom to HTML
+	Html(dioxus_ssr::render_vdom(&app))
+}
+````
+
+## Multithreaded Support
+
+The Dioxus VirtualDom, sadly, is not currently `Send`. Internally, we use quite a bit of interior mutability which is not thread-safe.
+When working with web frameworks that require `Send`, it is possible to render a VirtualDom immediately to a String – but you cannot hold the VirtualDom across an await point. For retained-state SSR (essentially LiveView), you'll need to spawn a VirtualDom on its own thread and communicate with it via channels or create a pool of VirtualDoms.
+You might notice that you cannot hold the VirtualDom across an await point. Because Dioxus is currently not ThreadSafe, it *must* remain on the thread it started. We are working on loosening this requirement.
+# Liveview
+
+This guide will cover concepts specific to the Dioxus liveview renderer.
+
+## Router Integration
+
+Currently, the Dioxus router does not integrate with the browser history in the liveview renderer. If you are interested in contributing this feature to Dioxus this issue is tracked [here](https://github.com/DioxusLabs/dioxus/issues/1038).
+
+## Managing Latency
+
+Liveview makes it incredibly convenient to talk to your server from the client, but there are some downsides. Mainly in Dioxus Liveview every interaction goes through the server by default.
+
+Because of this, with the liveview renderer you need to be very deliberate about managing latency. Events that would be fast enough on other renderers like [controlled inputs](../reference/user_input.md), can be frustrating to use in the liveview renderer.
+
+To get around this issue you can inject bits of javascript in your liveview application. If you use a raw attribute as a listener, you can inject some javascript that will be run when the event is triggered:
+
+````rust
+render! {
+    div {
+        input {
+            "oninput": "console.log('input changed!')"
+        }
+    }
+}
+````
+# Fullstack development
+
+Dioxus Fullstack contains helpers for:
+
+* Incremental, static, and server side rendering
+* Hydrating your application on the Client
+* Communicating between a server and a client
+
+This guide will teach you everything you need to know about how to use the utilities in Dioxus fullstack to create amazing fullstack applications.
+
+ > 
+ > In addition to this guide, you can find more examples of full-stack apps and information about how to integrate with other frameworks and desktop renderers in the [dioxus-fullstack examples directory](https://github.com/DioxusLabs/dioxus/tree/master/packages/fullstack/examples).
+# Communicating with the server
+
+`dioxus-fullstack` provides server functions that allow you to call an automatically generated API on the server from the client as if it were a local function.
+
+To make a server function, simply add the `#[server(YourUniqueType)]` attribute to a function. The function must:
+
+* Be an async function
+* Have arguments and a return type that both implement serialize and deserialize (with [serde](https://serde.rs/)).
+* Return a `Result` with an error type of ServerFnError
+
+You must call `register` on the type you passed into the server macro in your main function before starting your server to tell Dioxus about the server function.
+
+Let's continue building on the app we made in the [getting started](../../getting_started/fullstack.md) guide. We will add a server function to our app that allows us to double the count on the server.
+
+First, add serde as a dependency:
+
+````shell
+cargo add serde
+````
+
+Next, add the server function to your `main.rs`:
+
+````rs@server_function.rs
+#![allow(non_snake_case)]
+
+use dioxus::prelude::*;
+use dioxus_fullstack::prelude::*;
+
+fn main() {
+    let config = LaunchBuilder::new(App);
+    #[cfg(feature = "ssr")]
+    let config = config.incremental(
+        IncrementalRendererConfig::default().invalidate_after(std::time::Duration::from_secs(120)),
+    );
+
+    config.launch();
+}
+
+fn App(cx: Scope) -> Element {
+    let mut count = use_state(cx, || 0);
+
+    cx.render(rsx! {
+        h1 { "High-Five counter: {count}" }
+        button { onclick: move |_| count += 1, "Up high!" }
+        button { onclick: move |_| count -= 1, "Down low!" }
+        button {
+            onclick: move |_| {
+                to_owned![count];
+                async move {
+                    // Call the server function just like a local async function
+                    if let Ok(new_count) = double_server(*count.current()).await {
+                        count.set(new_count);
+                    }
+                }
+            },
+            "Double"
+        }
+    })
+}
+
+#[server]
+async fn double_server(number: i32) -> Result<i32, ServerFnError> {
+    // Perform some expensive computation or access a database on the server
+    tokio::time::sleep(std::time::Duration::from_secs(1)).await;
+    let result = number * 2;
+    println!("server calculated {result}");
+    Ok(result)
+}
+
+````
+
+Now, build your client-side bundle with `dx build --features web` and run your server with `cargo run --features ssr`. You should see a new button that multiplies the count by 2.
+
+## Cached data fetching
+
+One common use case for server functions is fetching data from the server:
+
+````rs@server_data_fetch.rs
+#![allow(non_snake_case, unused)]
+
+use dioxus::prelude::*;
+use dioxus_fullstack::prelude::*;
+
+fn main() {
+    LaunchBuilder::new(app).launch();
+}
+
+fn app(cx: Scope) -> Element {
+    let mut count = use_future(cx, (), |_| async { get_server_data().await });
+
+    cx.render(rsx! {
+        "server data is {count.value():?}"
+    })
+}
+
+#[server]
+async fn get_server_data() -> Result<String, ServerFnError> {
+    // Access a database
+    tokio::time::sleep(std::time::Duration::from_millis(100)).await;
+    Ok("Hello from the server!".to_string())
+}
+
+````
+
+If you navigate to the site above, you will first see `server data is None`, then after the `WASM` has loaded and the request to the server has finished, you will see `server data is Some(Ok("Hello from the server!"))`.
+
+This approach works, but it can be slow. Instead of waiting for the client to load and send a request to the server, what if we could get all of the data we needed for the page on the server and send it down to the client with the initial HTML page?
+
+This is exactly what the `use_server_future` hook allows us to do! `use_server_future` is similar to the `use_future` hook, but it allows you to wait for a future on the server and send the result of the future down to the client.
+
+Let's change our data fetching to use `use_server_future`:
+
+````rs@server_data_prefetch.rs
+#![allow(non_snake_case, unused)]
+
+use dioxus::prelude::*;
+use dioxus_fullstack::prelude::*;
+
+fn main() {
+    LaunchBuilder::new(app).launch();
+}
+
+fn app(cx: Scope) -> Element {
+    let mut count = use_server_future(cx, (), |_| async { get_server_data().await })?;
+
+    cx.render(rsx! {
+        "server data is {count.value():?}"
+    })
+}
+
+#[server]
+async fn get_server_data() -> Result<String, ServerFnError> {
+    // Access a database
+    tokio::time::sleep(std::time::Duration::from_millis(100)).await;
+    Ok("Hello from the server!".to_string())
+}
+
+````
+
+ > 
+ > Notice the `?` after `use_server_future`. This is what tells Dioxus fullstack to wait for the future to resolve before continuing rendering. If you want to not wait for a specific future, you can just remove the ? and deal with the `Option` manually.
+
+Now when you load the page, you should see `server data is Ok("Hello from the server!")`. No need to wait for the `WASM` to load or wait for the request to finish!
+
+````inject-dioxus
+SandBoxFrame {
+	url: "https://codesandbox.io/p/sandbox/dioxus-fullstack-server-future-qwpp4p?file=/src/main.rs:3,24"
+}
+````
+
+## Running the client with dioxus-desktop
+
+The project presented so far makes a web browser interact with the server, but it is also possible to make a desktop program interact with the server in a similar fashion. (The full example code is available in the [Dioxus repo](https://github.com/DioxusLabs/dioxus/tree/master/packages/fullstack/examples/axum-desktop))
+
+First, we need to make two binary targets, one for the desktop program (the `client.rs` file), one for the server (the `server.rs` file). The client app and the server functions are written in a shared `lib.rs` file.
+
+The desktop and server targets have slightly different build configuration to enable additional dependencies or features.
+The Cargo.toml in the full example has more information, but the main points are:
+
+* the client.rs has to be run with the `desktop` feature, so that the optional `dioxus-desktop` dependency is included
+* the server.rs has to be run with the `ssr` features; this will generate the server part of the server functions and will include the `axum` dependency to run as a server.
+
+Once you create your project, you can run the server executable with:
+
+````bash
+cargo run --bin server --features ssr
+````
+
+and the client desktop executable with:
+
+````bash
+cargo run --bin client --features desktop
+````
+
+### Client code
+
+The client file is pretty straightforward. You only need to set the server url in the client code, so it knows where to send the network requests. Then, dioxus_desktop launches the app.
+
+For development, the example project runs the server on `localhost:8080`. **Before you release remember to update the url to your production url.**
+
+### Server code
+
+In the server code, first you have to set the network address and port where the server will listen to.
+
+````rs@server_function_desktop_client.rs
+let addr = std::net::SocketAddr::from(([127, 0, 0, 1], 8080));
+````
+
+Then, you have to register the types declared in the server function macros into the axum server.
+For example, consider this server function:
+
+````rs@server_function_desktop_client.rs
+#[server(GetServerData)]
+async fn get_server_data() -> Result<String, ServerFnError> {
+    Ok("Hello from the server!".to_string())
+}
+````
+
+The `GetServerData` type has to be registered in the axum server, which will add the corresponding route to the server.
+
+````rs@server_function_desktop_client.rs
+let _ = GetServerData::register_explicit();
+````
+
+Finally, the server is started and it begins responding to requests.
+# Extractors
+
+Server functions are an ergonomic way to call a function on the server. Server function work by registering an endpoint on the server and using requests on the client. Most of the time, you shouldn't need to worry about how server functions operate, but there are some times when you need to get some value from the request other than the data passed in the server function.
+
+For example, requests contain information about the user's browser (called the [user agent](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent)). We can use an extractor to retrieve that information.
+
+You can use the `extract` method within a server function to extract something from the request. You can extract any type that implements `FromServerContext` (or when axum is enabled, you can use axum extractors directly):
+
+````rs@server_function_extract.rs
+#[server]
+pub async fn log_user_agent() -> Result<(), ServerFnError> {
+    let axum::TypedHeader(user_agent): axum::TypedHeader<axum::headers::UserAgent> =
+        extract().await?;
+    log::info!("{:?}", user_agent);
+    Ok(())
+}
+````
+# Middleware
+
+Extractors allow you to wrap your server function in some code that changes either the request or the response. Dioxus fullstack integrates with [Tower](https://docs.rs/tower/latest/tower/index.html) to allow you to wrap your server functions in middleware.
+
+You can use the `#[middleware]` attribute to add a layer of middleware to your server function. Let's add a timeout middleware to a server function. This middleware will stop running the server function if it reaches a certain timeout:
+
+````rs@server_function_middleware.rs
+#[server]
+// Add a timeout middleware to the server function that will return an error if the function takes longer than 1 second to execute
+#[middleware(tower_http::timeout::TimeoutLayer::new(std::time::Duration::from_secs(1)))]
+pub async fn timeout() -> Result<(), ServerFnError> {
+    tokio::time::sleep(std::time::Duration::from_secs(2)).await;
+    Ok(())
+}
+````
+# Authentication
+
+You can use [extractors](./extractors.md) to integrate auth with your Fullstack application.
+
+You can create a custom extractors that extracts the auth session from the request. From that auth session, you can check if the user has the required privileges before returning the private data.
+
+A [full auth example](https://github.com/dioxuslabs/dioxus/blob/master/packages/fullstack/examples/axum-auth/src/main.rs) with the complete implementation is available in the fullstack examples.
+# Routing
+
+You can easily integrate your fullstack application with a client side router using the `launch_router` macro. The `launch_router` macro works the same as the `launch` macro except it accepts a Router instead of a Component:
+
+````rs@server_router.rs
+#![allow(non_snake_case)]
+
+use dioxus::prelude::*;
+use dioxus_fullstack::prelude::*;
+use serde::{Deserialize, Serialize};
+
+fn main() {
+    let config = LaunchBuilder::<FullstackRouterConfig<Route>>::router();
+    #[cfg(feature = "ssr")]
+    config
+        .incremental(
+            IncrementalRendererConfig::default()
+                .invalidate_after(std::time::Duration::from_secs(120)),
+        )
+        .launch();
+
+    #[cfg(not(feature = "ssr"))]
+    config.launch();
+}
+
+#[derive(Clone, Routable, Debug, PartialEq, Serialize, Deserialize)]
+enum Route {
+    #[route("/")]
+    Home {},
+    #[route("/blog/:id")]
+    Blog { id: i32 },
+}
+
+#[component]
+fn Blog(cx: Scope, id: i32) -> Element {
+    render! {
+        Link { to: Route::Home {}, "Go to counter" }
+        table {
+            tbody {
+                for _ in 0..*id {
+                    tr {
+                        for _ in 0..*id {
+                            td { "hello world!" }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+#[component]
+fn Home(cx: Scope) -> Element {
+    let mut count = use_state(cx, || 0);
+    let text = use_state(cx, || "...".to_string());
+
+    cx.render(rsx! {
+        Link {
+            to: Route::Blog {
+                id: *count.get()
+            },
+            "Go to blog"
+        }
+        div {
+            h1 { "High-Five counter: {count}" }
+            button { onclick: move |_| count += 1, "Up high!" }
+            button { onclick: move |_| count -= 1, "Down low!" }
+            button {
+                onclick: move |_| {
+                    to_owned![text];
+                    async move {
+                        if let Ok(data) = get_server_data().await {
+                            println!("Client received: {}", data);
+                            text.set(data.clone());
+                            post_server_data(data).await.unwrap();
+                        }
+                    }
+                },
+                "Run server function!"
+            }
+            "Server said: {text}"
+        }
+    })
+}
+
+#[server(PostServerData)]
+async fn post_server_data(data: String) -> Result<(), ServerFnError> {
+    println!("Server received: {}", data);
+
+    Ok(())
+}
+
+#[server(GetServerData)]
+async fn get_server_data() -> Result<String, ServerFnError> {
+    Ok("Hello from the server!".to_string())
+}
+
+````
+
+````inject-dioxus
+SandBoxFrame {
+	url: "https://codesandbox.io/p/sandbox/dioxus-fullstack-router-s75v5q?file=%2Fsrc%2Fmain.rs%3A7%2C1"
+}
+````

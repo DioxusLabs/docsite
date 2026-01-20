@@ -1,0 +1,2580 @@
+<SYSTEM>This is the developer documentation for Dioxus at /learn/0.7/essentials/ui/rsx and all its subroutes.</SYSTEM>
+
+# Introducing RSX
+
+Dioxus apps are comprised of small elements composed into components and then assembled into a tree. To construct our components, we use a combination of Rust code and a simplified dialect of Rust that we call "RSX".
+
+RSX is designed to look and feel like a blend between HTML and SwiftUI:
+
+````rust
+rsx! {
+    h1 { "Welcome to Dioxus!" }
+    h3 { "Brought to you by {author}" }
+    p { class: "main-content", {article.content} }
+}
+````
+
+Currently, RSX is the primary syntax that developers use to build Dioxus apps. There are other options, but RSX has the best developer tooling like instant hot-reloading, code-folding, and syntax highlighting.
+
+## The `rsx!` macro
+
+If you're familiar with libraries like React or Vue, you will likely be familiar with the JSX markup language. JSX is an alternative form of JavaScript that lets developers blend JavaScript code and XML in one file. These libraries rely on compiler plugins to transform the syntax into pure JavaScript code which then renders HTML.
+
+With Rust, we achieve a similar experience through the use of [procedural macros](https://doc.rust-lang.org/reference/procedural-macros.html) (proc macros). Proc macros are tiny compiler plugins that transform Rust tokens into Rust code. You can recognize that a function is a proc macro thanks to the `!` modifier. For example, the `rsx!` macro transforms RSX syntax into Rust code:
+
+````rust
+// This macro...
+rsx! {
+    div { "hello {world}!" }
+}
+
+// Expands to this template:
+static TEMPLATE: Template = Template {
+    nodes: [
+        ElementNode {
+            tag: div,
+            children: [
+                TextNode {
+                    contents: DynamicText(0)
+                }
+            ]
+        }
+    ]
+}
+TEMPLATE.render([
+    format!("hello {world}")
+])
+````
+
+RSX does a *lot* of heavy lifting for us, significantly cutting down on the verbosity of declaring UI. It also constructs our UIs in the *most* efficient representation, making rendering extremely fast.
+
+## Dioxus renders HTML and CSS
+
+We want to ensure Dioxus is easy to learn and extremely portable. Instead of inventing a new styling, layout, and markup system, we instead opted to simply rely on HTML and CSS everywhere. For the web, this is handy - websites are already built with HTML and CSS. On desktop and mobile, we ship a renderer that converts your HTML and CSS to native widgets automatically.
+
+Our hybrid HTML approach combines the best parts of frameworks like Flutter and React Native. Teams get maximum code-reuse, get to work with a familiar markup language, and AI tools are immediately helpful. Instead of building bespoke native apps for each platform, teams can simply write their components once and render them everywhere.
+
+Our rendering engine [Blitz](https://github.com/dioxuslabs/blitz) is open source and is often indistinguishable from browser-grade engines:
+
+![Blitz vs Safari](/assets/07/blitz-vs-safari.png)
+
+If you are not familiar with HTML, this guide will help you get started with the basics. For more detail, the [MDN docs](https://developer.mozilla.org/en-US/docs/Web/HTML) are a great resource. Many tools provide visual designers or AI assistance for constructing UI from HTML elements.
+
+## A Variety of Renderers
+
+Dioxus is extremely modular. Because the RSX representation is generic, you can even swap out the elements, choosing to render UI that is *not* made of HTML and CSS. While the Dioxus team intends to only maintain HTML/CSS-based renderers, third-party renderers exist that unlock extended functionality.
+
+For example, the [Freya](https://freyaui.dev) project renders the Dioxus tree using Google's Skia renderer. Skia has a CPU-only architecture, works across a wide range of devices, and enables deeper control over UI effects:
+
+![Example Freya App](/assets/07/freya-todo.webm)
+
+The Dioxus team maintains three first-party renderers:
+
+* Dioxus-Web: A web-compatible engine that renders directly to HTML DOM Nodes
+* Dioxus-Webview: A desktop and mobile engine that renders to the system webview
+* Dioxus-Native: A desktop and mobile engine that renders to native elements
+
+The Web and Webview renderers are the most mature engines while Dioxus-Native is still undergoing substantial improvements.
+# Elements and Text
+
+User interfaces are assembled by combining text and UI elements together in a useful and visually appealing tree. An example of some text and elements with RSX may look like:
+
+````rs@building_uis_with_rsx.rs
+let author = "Dioxus Labs";
+let content = "Build cool things ✌️";
+
+rsx! {
+    h1 { "Welcome to Dioxus!" }
+    h3 { "Brought to you by {author}" }
+    p { class: "main-content", {content} }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    building_uis_with_rsx::Basic {}
+}
+````
+
+## Text Nodes
+
+Any content surrounded by quotes is rendered as a text node in RSX:
+
+````rs@building_uis_with_rsx.rs
+rsx! { "Hello world" }
+````
+
+````inject-dioxus
+DemoFrame {
+    building_uis_with_rsx::Text {}
+}
+````
+
+Text nodes in Dioxus automatically implement the same rules as Rust's [`format!`](https://doc.rust-lang.org/std/macro.format.html) macro, including [Display](https://doc.rust-lang.org/std/fmt/trait.Display.html) and [Debug](https://doc.rust-lang.org/std/fmt/trait.Debug.html) printing.
+
+````rs@building_uis_with_rsx.rs
+let world = "earth";
+rsx! { "Hello {world}!" }
+````
+
+````inject-dioxus
+DemoFrame {
+    building_uis_with_rsx::SimpleFormattedText {}
+}
+````
+
+Unlike Rust's format macro, `rsx!` lets us embed entire Rust expressions which can be quite handy when working with complex objects or calling functions inline.
+
+````rs@building_uis_with_rsx.rs
+let user = use_signal(|| User {
+    name: "Dioxus".to_string(),
+});
+rsx! { "Hello {user.read().name}" }
+````
+
+````inject-dioxus
+DemoFrame {
+    building_uis_with_rsx::FormattedText {}
+}
+````
+
+## Elements
+
+The most basic building block of HTML is an element. In RSX, an element is declared with a name and then curly braces. One of the most common elements is the `input` element. The input element creates an interactive input box:
+
+````rs@building_uis_with_rsx.rs
+rsx! {
+    input {}
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    building_uis_with_rsx::Input {}
+}
+````
+
+Elements can take additional parameters called attributes that modify how the element is rendered. Attributes are added inline, similar to adding fields to a struct instantiation:
+
+````rs@building_uis_with_rsx.rs
+rsx! {
+    input { placeholder: "type something cool!" }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    building_uis_with_rsx::InputPlaceholder {}
+}
+````
+
+There are a huge number of HTML elements available, including, but not limited to:
+
+* Text and Content: `p`, `h1`, `span`, `div`, `a`, `pre`, etc.
+* Forms and Input: `form`, `input`, `textarea`, `select`, `button`, etc.
+* Media and Content: `img`, `video`, `audio`, `source`, `canvas`, `svg`, `iframe`, etc.
+* Tables: `table`, `thead`, `tbody`, `tfoot`, `tr`, `th`, `td`, etc.
+* Semantic Elements: `details`, `summary`, `dialog`, `progress`, `meter`, `time`, etc.
+
+Check the [HTML Element reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements) for the full list.
+
+## The `Element` type
+
+The `rsx!` macro returns an object with the type of `Element`. These objects can be assigned to variables, cheaply cloned, and stored in state.
+
+````rust
+let header: Element = rsx! {
+    div {
+        h1 { "Dioxus!" }
+    }
+}
+````
+
+We can even create functions that return an `Element`:
+
+````rust
+fn create_description(content: &str) -> Element {
+    rsx! {
+        span { class: "description", "{content}" }
+    }
+}
+````
+
+Under the hood, the `Element` type is actually an alias for `Result<VNode>`. In Rust, a [Result](https://doc.rust-lang.org/std/result/) is an enumerated value that can either be an `Ok(value)` or an `Err(error)`. This means we can match on an Element, or even throw errors while rendering it:
+
+````rust
+fn create_description(content: &str) -> Element {
+    if content.is_empty() {
+        return Err("Missing description".into());
+    }
+
+    rsx! {
+        span { class: "description", "{content}" }
+    }
+}
+````
+
+Dioxus defines its own error based on the [`anyhow`](https://docs.rs/anyhow/latest/anyhow/) error which then composes with other utilities like Error Boundaries and Server Functions.
+# Attributes
+
+While we could build a UI by assembling unstyled elements and text, we typically want to customize their appearance and behavior. This is where we use *element attributes*. Attributes provide extra information to the renderer on how to display the UI.
+
+You can specify attributes by adding the name of the attribute, a colon, and then the value to the body of an element. For example, we might want to style a div with a particular [class](https://www.w3schools.com/html/html_classes.asp) and [ID](https://www.w3schools.com/html/html_id.asp), which we add as attributes:
+
+````rust
+rsx! {
+    div {
+        class: "container",
+        id: "root-container"
+    }
+}
+````
+
+We can use an attribute to set the `type` of an input element. The default type is `text` which shows a text input box, but we can set it to `number` to only accept numbers:
+
+````rs@building_uis_with_rsx.rs
+rsx! {
+    input { type: "number" }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    building_uis_with_rsx::InputType {}
+}
+````
+
+Just like text nodes, attributes can include formatted segments. We can set the value of the input element to a signal to control it:
+
+````rs@building_uis_with_rsx.rs
+let mut value = use_signal(|| "Hello world".to_string());
+rsx! {
+    input { value: "{value}" }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    building_uis_with_rsx::InputValue {}
+}
+````
+
+## Attribute Scope
+
+Every element has two sets of attributes:
+
+* [Global Attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes): attributes which can be applied to *every* element
+* [Specific Attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes): attributes that only apply to one specific element
+
+For example, all elements support the `id` and `class` attributes, but only `video` elements support the `autoplay` attribute. For a full list of attributes, visit the relevant links above.
+
+## IDE Support
+
+RSX provides autocomplete and inline docs support for elements and their attributes. To get autocomplete suggestions, simply start typing in your editor:
+
+![Autocomplete](/assets/07/ide_autocomplete.png)
+
+We've documented every element with documentation pulled from the [Mozilla Developer Docs](https://developer.mozilla.org/en-US/docs/Web). Simply hover over the element with your cursor for more information:
+
+![Element Hover](/assets/07/ide_hover.png)
+
+The same docs apply for attributes as well:
+
+![Element Hover](/assets/07/ide_listener.png)
+
+## Non-Text Attributes
+
+Typically, you'll add attributes to your elements using formatted text. However, attributes can accept a wide range of value types, including:
+
+* `Text`: Formatted text, the `String` type, or anything that implements `Display`.
+* `Float`: Floating point numbers, typically on sliders and inputs.
+* `Int`: Integer numbers for discrete gradations.
+* `Bool`: A boolean value indicating true/false.
+* `Listener`: A Rust callback that will be executed when the attribute is triggered.
+* `Any`: A type-erased [`Rc<dyn Any>`](https://doc.rust-lang.org/std/any/index.html), typically used by 3rd-party renderers.
+* `None`: The attribute will be removed from the element entirely.
+
+Most commonly, you might use the `bool` attribute to set a boolean state:
+
+````rust
+rsx! {
+    input {
+        type: "checkbox",
+        checked: true
+    }
+}
+````
+
+Or the `Some`/`None` variant for setting an HTML Boolean Attribute:
+
+````rust
+rsx! {
+    div { itemscope: Some("scope") }
+}
+````
+
+Note that Dioxus automatically converts `false` for some attributes to `None` in order to match the behavior of the [HTML Boolean Attribute](https://developer.mozilla.org/en-US/docs/Glossary/Boolean/HTML).
+
+## Event Listeners
+
+While some attributes influence how an element is rendered, other attributes influence its interactive behavior. These attributes, called Event Listeners, allow you to respond to user input.
+
+In RSX, event handlers always start with `on`. The syntax is the same as normal attributes, but event handlers only accept a closure that responds to the event. We can attach an event listener to the `oninput` event of the input element to listen for changes to the input:
+
+````rs@building_uis_with_rsx.rs
+rsx! {
+    input {
+        oninput: move |event| {
+            println!("Input changed to: {}", event.value());
+        },
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    building_uis_with_rsx::OnInputSimple {}
+}
+````
+
+More information about event listeners including how events bubble and how to prevent default behavior can be found later in the [Event Handlers](../basics/event_handlers.md) of the Reactivity section.
+
+There are a wide range of event listeners available - see the full [HTML list](https://developer.mozilla.org/en-US/docs/Web/Events) for more details.
+
+## Spreading Attributes
+
+Occasionally, the set of attributes you want to pass to an element might either be dynamic or defined elsewhere in your application. In these cases, you can spread attribute lists into elements with the `..` syntax. Typically, lists of attributes will be passed into a component via its Properties, which we cover in a later chapter.
+
+````rust
+let attributes = vec![
+    Attribute {
+        name: "id",
+        namespace: None,
+        volatile: false,
+        value: "cool-button".into_value(),
+    }
+];
+
+rsx! {
+    button { ..attributes, "button" }
+}
+````
+
+Attributes lists will be merged in the order they appear, so later attributes in the list take precedence over earlier attributes. Attribute spreading becomes very useful when refactoring your UI into a reusable component libraries.
+
+## Special Attributes
+
+Most attributes in RSX are rendered verbatim, but there are a few exceptions. In some cases, RSX deviates from traditional HTML to simplify development or work better with the ecosystem tools.
+
+### Conditional Attributes
+
+You can conditionally set an attribute by setting the attribute value to an unterminated if statement. If the if statement evaluates to true, the attribute will be set:
+
+````rs@building_uis_with_rsx.rs
+let number_type = use_signal(|| false);
+rsx! {
+    input { type: if number_type() { "number" } }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    building_uis_with_rsx::InputDisabled {}
+}
+````
+
+### Style attributes
+
+In addition to the standard `style` attribute, each style can also be passed as a separate attribute. For example, we can set the `color` and `font-size` of an element using the `color` and `font_size` attributes:
+
+````rs@building_uis_with_rsx.rs
+rsx! {
+    div { style: "width: 20px; height: 20px; background-color: red; margin: 10px;" }
+    div {
+        width: "20px",
+        height: "20px",
+        background_color: "red",
+        margin: "10px",
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    building_uis_with_rsx::StyleAttributes {}
+}
+````
+
+### Class attribute
+
+Most attributes can only be defined once per element, but the `class` attribute can be defined multiple times. Each class will be added to the element's class list. This can be convenient when adding many optional classes to an element in a styling system like TailwindCSS:
+
+````rs@building_uis_with_rsx.rs
+rsx! {
+    span {
+        class: if red { "bg-red-500" },
+        class: if blue_border { "border border-blue-500" },
+        class: "w-4 h-4 block",
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    building_uis_with_rsx::ClassAttribute {}
+}
+````
+
+This feature is especially important when using TailwindCSS since the class compiler does not understand formatted Rust strings when collecting classes. By placing the dynamic class in a sibling attribute, the Tailwind compiler sees *both* class lists at compile time.
+
+### onresize and onvisible
+
+Dioxus provides two custom HTML attributes *not* found in the HTML specification.
+
+* onresize
+* onvisible
+
+Dioxus automatically constructs a cross-platform `IntersectionObserver` that emits the respective events for you.
+
+With onresize, you can watch for changes to an element's size and position:
+
+````rust
+fn app() -> Element {
+    let mut items = use_signal(|| 100);
+
+    rsx! {
+        // Adding a value will cause the `div` to be re-rendered with an extra div
+        button { onclick: move |_| items += 1, "Add one" }
+
+        div {
+            // This will be called when the `div` is resized
+            onresize: move |data| {
+                info!("resized to {:#?}", data.get_border_box_size().unwrap());
+            },
+
+            for x in 0..items() {
+                div { "{x}" }
+            }
+        }
+    }
+}
+````
+
+With `onvisible`, you can handle the cases when an element enters and exits the viewport. This is useful for implementing things like lazy loading, infinite scrolls, and virtual lists:
+
+````rust
+fn app() -> Element {
+    rsx! {
+        div {
+            onvisible: move |data| info!("visibility changed"),
+            "Hello world!"
+        }
+    }
+}
+````
+
+You can add rich scroll-aware animations to your app without needing to write custom JavaScript.
+
+![gif_of_visible_working.mp4](/assets/06assets/onvisible.mp4)
+
+### Custom Attributes
+
+Dioxus has a pre-configured set of attributes that are validated at compile time. If you surround the attribute name in quotes, you can use a custom attribute outside of the pre-defined set:
+
+````rs@building_uis_with_rsx.rs
+rsx! {
+    div { "style": "width: 20px; height: 20px; background-color: red;" }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+	building_uis_with_rsx::CustomAttributes {}
+}
+````
+
+Note that this works even with event listeners. We occasionally use this to insert small snippets of JavaScript into our apps when writing the corresponding web-sys code might be verbose:
+
+````rust
+rsx! {
+    button {
+        "onclick": "navigator.clipboard.writeText(window.document.title);",
+        "Copy to clipboard"
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+	building_uis_with_rsx::CustomAttributesEvents {}
+}
+````
+
+### The HTML Escape Hatch
+
+If you're working with pre-rendered assets, output from templates, or output from a JS library, then you might want to pass HTML directly instead of going through Dioxus. In these instances, reach for `dangerous_inner_html`.
+
+`dangerous_inner_html` sets the text content of the element to the provided value. This will overwrite any other attributes or children of the element.
+
+For example, shipping a markdown-to-Dioxus converter might significantly bloat your final application size. Instead, you'll want to pre-render your markdown to HTML and then include the HTML directly in your output. We use this approach for the [Dioxus homepage](https://dioxuslabs.com):
+
+````rs@dangerous_inner_html.rs
+// this should come from a trusted source
+let contents = "live <b>dangerously</b>";
+
+rsx! {
+    div { dangerous_inner_html: "{contents}" }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+	dangerous_inner_html::App {}
+}
+````
+
+ > 
+ > Note! This attribute is called "dangerous_inner_html" because it is **dangerous** to pass it data you don't trust. If you're not careful, you can easily expose [cross-site scripting (XSS)](https://en.wikipedia.org/wiki/Cross-site_scripting) attacks to your users.
+ > 
+ > If you're handling untrusted input, make sure to sanitize your HTML before passing it into `dangerous_inner_html` – or just pass it to a Text Element to escape any HTML tags.
+# Conditional Rendering
+
+Our user interfaces have been quite static so far. However, most apps we build with Dioxus usually contain lots of dynamic content. Our UIs will react to changes in buttons, form inputs, sliders, or external data sources like the network. Dioxus apps generally store this dynamic state in Hooks or Context.
+
+In this chapter, we're not going to dive too deep in how we store this state - future chapters cover state in depth.
+
+## Expressions
+
+Just like JSX, RSX allows you to easily compose `Element` objects together using plain Rust code. You can write Rust expressions directly within your RSX. As long as the expression evaluates to an `Element` or anything that implements `IntoDynNode`, you can simply wrap it in curly braces (`{}`):
+
+````rust
+let content = "world!";
+rsx! {
+    h1 {
+        "Hello"
+        {content}
+    }
+}
+````
+
+For example, we might need to create a string from some complex formatting functions:
+
+````rust
+rsx! {
+    span {
+        {
+            format!(
+                "The time is: {now}, your timezone is {zone}",
+                now = current_time(),
+                zone = current_timezone()
+            ).to_ascii_uppercase()
+        }
+    }
+}
+````
+
+Or, we might want to render some RSX dynamically and assign it to a variable:
+
+````rust
+let header = match current_timezone() {
+    TimeZone::PST => rsx! {
+        h1 { "Welcome home" }
+    },
+    _ => rsx! {
+        h1 { "Bon voyage!" }
+    },
+}
+
+rsx! {
+    div {
+        {header}
+    }
+}
+````
+
+Rust's expression system makes evaluation of RSX from `match` statements and `if` blocks quite nice. While in JavaScript you might use a ternary:
+
+````jsx
+let screen = authenticated ? renderApp() : renderLogin();
+
+return <div>{screen}</div>;
+````
+
+In Dioxus, you'd simply use an if/else statement:
+
+````rust
+let screen = if authenticated { render_app() } else { render_login() };
+rsx! {
+    div {
+        {screen}
+    }
+}
+````
+
+Rust's guards can be especially helpful in these scenarios, letting us select match arms with inline `if` statements.
+
+````rust
+let header = match current_timezone() {
+    TimeZone::PST => rsx! {
+        h1 { "Welcome home" }
+    },
+    _ if app.snoozed() => rsx! {
+        h1 { "snoozed..." }
+    },
+    _ => rsx! {
+        h1 { "Bon voyage!" }
+    },
+}
+
+rsx! {
+    div {
+        {header}
+    }
+}
+````
+
+## The IntoDynNode Trait
+
+Dioxus uses the [`IntoDynNode`](https://docs.rs/dioxus-core/latest/dioxus_core/trait.IntoDynNode.html) trait to determine if an expression can be used within RSX. The conversion will take a Rust expression and turn it into one of four `DynamicNode` variants:
+
+* Component: Functions that take Properties and render an Element
+* Text: The Rust `String` type
+* Placeholder: An optimized `None` value
+* List: A Vec of Elements
+
+Many things implement this trait. For example, empty expressions are valid:
+
+````rust
+rsx! {
+    div {
+        { /* empty.. */}
+    }
+}
+````
+
+Other Element objects are valid:
+
+````rust
+let inner = rsx! { "inner" };
+rsx! {
+    div {
+        {inner}
+    }
+}
+````
+
+All the string types (str, String, Arguments) are valid:
+
+````rust
+rsx! {
+    div {
+        // Strings
+        {"abc"}
+
+        // lazy formatting
+        {format_args!("lazy fmt -> {}", arg())}
+    }
+}
+````
+
+The Rust `Option` type is valid provided the inner type implements `IntoDynNode`:
+
+````rust
+let inner = Some(rsx! { "inner" });
+rsx! {
+    div {
+        {inner}
+    }
+}
+````
+
+And even iterators can become a VNode through the List variant:
+
+````rust
+let cards = (0..10).map(|i| rsx! {
+    li { "Card: {i}" }
+});
+
+rsx! {
+    ol {
+        {cards}
+    }
+}
+````
+
+Iterators are very interesting since IntoDynNode is implemented for anything that is an iterator. For example, we could build a custom iterator that returns an `Element`.
+
+````rust
+let mut count = 0;
+let cards = std::iter::from_fn(move || {
+    count += 1;
+    if count > 6 {
+        return None;
+    }
+
+    Some(rsx! { "card {count}" })
+})
+
+rsx! {
+    ol {
+        {cards}
+    }
+}
+````
+
+## Inline `If` Statements
+
+When rendering content derived from a boolean condition (eg, "active" or "inactive"), RSX provides some small "syntax sugar" that enables inline `if` statements in RSX.
+
+````rs@building_uis_with_rsx.rs
+let logged_in = use_signal(|| false);
+
+rsx! {
+    div {
+        if logged_in() {
+            "You are logged in"
+        } else {
+            "You are not logged in"
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    building_uis_with_rsx::IfStatement {}
+}
+````
+
+Note that the body of inline `if` statements *is* RSX, not Rust expressions. This syntax sugar helps keep RSX blocks tidy and idiomatic.
+
+````rust
+rsx! {
+    div {
+        if logged_in() {
+            LoggedInScreen {}
+        } else {
+            LoggedOutScreen {}
+        }
+    }
+}
+````
+
+Inline `if` statements deviate from Rust in one way: they still evaluate to an `Element` even without an `else` branch. If RSX doesn't find an `else` branch on your `if` statement, it automatically returns a placeholder element instead.
+
+````rust
+rsx! {
+    div {
+        if logged_out() {
+            span { "You should log in!" }
+        }
+    }
+}
+````
+
+## More syntax sugar?
+
+Syntax can be very subjective and syntax sugar like inline `if` and `for` blocks can open the door to inconsistent behavior. We don't plan to introduce any further syntax sugar to RSX. Our goal is to maintain similarity to React's JSX while slightly massaging ergonomics for Rust developers.
+
+The RSX syntax was carefully designed to work well with your normal development flow:
+
+* Typing an RSX element involves typing the name, and then a single curly
+* RSX does not require additional editor extensions for superb support
+* RSX follows Rust tokenization for automatic highlighting and code-folding
+
+Definitely spend some time with RSX to get a feel for it.
+# Rendering Lists
+
+## Iterators and inline `for`
+
+In the [Conditional Rendering](./conditional.md) chapter we showed how Rust expressions become Dynamic Nodes in RSX blocks.
+
+Any iterator that returns `Element` or an object that implements `IntoVnode` can be used inside RSX blocks to render lists:
+
+````rust
+rsx! {
+    // mapping existing iterators
+    {(0..10).map(|idx| rsx! { "item {idx}" })}
+
+    // or calling .iter()
+    {users.iter().map(|user| rsx!{ User { id: user.id } })}
+}
+````
+
+Dioxus provides a small amount of syntax sugar to make using iterators a bit nicer. Instead of wrapping your iterator in an expression, you can instead move it to an inline `for` block:
+
+````rust
+rsx! {
+    for idx in 0..10 {
+        "Item {idx}"
+    }
+
+    for user in users.iter() {
+        User { id: user.id }
+    }
+}
+````
+
+Just like inline `if` blocks, the bodies of `for` loops are RSX - not Rust expressions. If you need to create temporary variables or do some extra computation while iterating, you can use an inline expression:
+
+````rust
+rsx! {
+    for user in users.iter() {
+        {
+            let id = user.id();
+            rsx! {
+                User { id }
+            }
+        }
+    }
+}
+````
+
+If we're using iterators alongside wrapper types like a `Signal<T>`, we need to call `.iter()` first:
+
+````rs@building_uis_with_rsx.rs
+let mut items = use_signal(|| vec!["Hello", "Dioxus"]);
+
+rsx! {
+    ul {
+        for item in items.iter() {
+            li { "{item}" }
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    building_uis_with_rsx::ForLoop {}
+}
+````
+
+## Keys are Required
+
+Each item in your list should have unique value that is stable across rerenders called a key. Keys are used to identify how items move between renders. Without keys, it is easy to accidentally lose or move state when you reorder items in a list. We can add keys to our list items by using the `key` attribute:
+
+````rs@building_uis_with_rsx.rs
+let mut items = use_signal(|| vec!["Hello", "Dioxus"]);
+
+rsx! {
+    ul {
+        for item in items.iter() {
+            li { key: "{item}", "{item}" }
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    building_uis_with_rsx::KeyedForLoop {}
+}
+````
+
+You can usually find a suitable key from your state itself. Most data in your UI has some unique identifier that can be used to disambiguate it from other entries in the collection. For example, users typically have a unique ID, time samples have a unique timestamp, and emails have a unique sender address.
+
+````rust
+rsx! {
+    for user in users {
+        div { key: "{user.id}", "{user.name}" }
+    }
+}
+````
+
+Note that some fields might *seem* like a suitable unique ID, but are not. Two users might share the same name, two data points might share a timestamp, or not every entry actually has the required data present. In these cases, we recommend creating a unique ID for each item based on a global "generation" counter. Typically, a database might provide this, but we can also use state to manage this:
+
+````rust
+let mut generation = use_signal(|| 0);
+let mut items = use_signal(|| vec![]);
+
+let mut add_item = move |name| {
+    let id = generation();
+    generation.set(id + 1);
+    items.write().push(Item { id, name })
+};
+
+rsx! {
+    for item in items.iter() {
+        div { key: "{item.id}", "{item.name}" }
+    }
+    // ...
+}
+````
+
+The *worst* key to use is the index of the item in the collection. The index for an item will change as you mutate the list and almost certainly cause either performance issues or loss of state in components.
+
+````rust
+// ❌ do not do this!
+rsx! {
+    for (idx, user) in users.iter().enumerate() {
+        div { key: "{idx}", "{user.name}" }
+    }
+}
+````
+
+## The Fragment Component
+
+In some cases, your iterators might return multiple root elements. This doesn't give us a great location to place a key. RSX automatically uses the first element's key as iterator key, if it exists:
+
+````rust
+rsx! {
+    for item in items.iter() {
+        h1 { key: "{item.id}", "{item.name}" }
+        p { "content" }
+    }
+}
+````
+
+If there's no easy way to attach a key to the first element, you can use a `Fragment` component to wrap the elements and give that the key instead:
+
+````rust
+rsx! {
+    for item in items.iter() {
+        Fragment {
+            key: "{item.id}",
+            for child in item.children.iter() {
+                div { "{child}" }
+            }
+        }
+    }
+}
+````
+
+The `Fragment` component is nothing special. It is plainly a component that forwards its children as its body. However, RSX sees it as valid element syntax and is able to assign the key properly.
+
+````rust
+#[component]
+fn Fragment(children: Element) -> Element {
+    children
+}
+````
+
+## Borrowed State
+
+When rendering lists, you might want to borrow some of data contents into child components. The common Dioxus container, Signal, is not capable of providing references to child components.
+
+````rust
+let items = use_signal(|| vec![]);
+
+rsx! {
+    for item in items.iter() {
+        Card {
+            // ❌ not possible to forward a reference to the child.
+            content: item.name.as_str()
+        }
+    }
+}
+````
+
+While earlier versions of Dioxus did allow forwarding references, we eventually disabled this feature since it relied on some unsound Rust semantics. Instead, we recommend three strategies:
+
+* Use owned data and `clone` if its cheap to do so
+* Pass the collection *and* the index to the component
+* Use a `Store` to provide a reactive reference to a slice of data within the collection
+
+Stores make it possible to zoom into reactive state efficiently. They are covered in more detail in the [Stores](../basics/collections.md) chapter, but here's a quick preview of how to use them:
+
+````rust
+fn app() -> Element {
+    let mut vec = use_store(|| vec![]);
+
+    rsx! {
+        div {
+            // Iterating over a store provides references to reactive items within the store
+            // without cloning them.
+            for count in vec.iter() {
+                Child { count }
+            }
+        }
+    }
+}
+
+#[component]
+fn Child(count: ReadSignal<i32>) -> Element {
+    rsx! { "{count}" }
+}
+````
+
+For complex apps, we recommend using building a system around global context or using a Store.
+# Components and Properties
+
+In Dioxus, components are simple functions that encapsulate your UI's presentation, state, and interactions. As your apps grow in size, consider combining shared functionality into smaller reusable components. Modular components make working in large teams easier, prevent annoying bugs, and enable better code reuse across all platforms.
+
+## Defining Components
+
+In its simplest form, a component is a function that returns an Element. For example, the base `app` component:
+
+````rust
+fn app() -> Element {
+  rsx! { "hello world!" }
+}
+````
+
+If you want to use a component from another component, then you must annotate the function with the `#[component]` macro. This macro provides essential metadata to the RSX macro, allowing function arguments to become fields in the component's properties. Your function must meet the following requirements:
+
+* Either start with a capital letter (`MyComponent`) or contain an underscore (`my_component`)
+* Take arguments that implement [`PartialEq`](https://doc.rust-lang.org/std/cmp/trait.PartialEq.html) and [`Clone`](https://doc.rust-lang.org/std/clone/trait.Clone.html)
+* Return an [`Element`](https://docs.rs/dioxus/latest/dioxus/prelude/type.Element.html)
+
+We call the arguments a component takes its **properties**. Properties are used to pass data into the component, similar to how you would pass arguments to a function.
+
+For example, we can define a simple component that takes a `name` property and renders a greeting:
+
+````rs@components.rs
+#[component]
+pub fn MyComponent(name: String) -> Element {
+    rsx! {
+        div {
+            h3 { "Hello, {name}!" }
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+	components::MyComponent { name: "world" }
+}
+````
+
+## Using Components in RSX
+
+Once you have defined a component, you can use it in your RSX markup just like any other element:
+
+````rs@components.rs
+rsx! {
+    MyComponent { name: "World" }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+	components::MyComponentCall {}
+}
+````
+
+ > 
+ > Although components are defined as functions, they should not be called like
+ > regular functions. When you use a component in RSX, Dioxus will create
+ > a new instance of the component that controls its own state and lifecycle.
+
+## Component Properties
+
+A component's properties is the object passed to the component when it renders. These properties are similar to a function's arguments - this is why the property fields are defined as function arguments in components. In some cases, you might find it useful to extract the component properties to a separate struct. Instead of defining properties inline, we can simply use an argument named "props" and then define the props in an accompanying struct.
+
+````rust
+#[derive(PartialEq, Clone, Props)]
+struct CardProps {
+  title: String,
+  content: String
+}
+
+#[component]
+fn Card(props: CardProps) -> Element {
+  rsx! {
+      h1 { "{props.title}" }
+      span { "{props.content}" }
+    }
+}
+````
+
+When we extract properties into a struct, we need to make sure the struct implements three required traits:
+
+* `PartialEq`: used to identify if a component needs to be rerendered
+* `Clone`: on each render, the properties object is cloned
+* `Props`: derives the `Properties` trait which Dioxus uses for rendering and building
+
+Each of these bounds has implications for how we structure our component's properties.
+
+### PartialEq
+
+`PartialEq` is used by the Dioxus runtime to determine if a component's properties have changed due to some user action. Because components are called by other components, small changes to properties up the component tree can result in a cascade of work for the Dioxus runtime. The `PartialEq` implementation is used to minimize the amount of work the Dioxus runtime needs to do when reacting to these changes.
+
+For advanced use cases, it can be worth customizing a properties' `PartialEq` implementation for performance. For example, we might want to compare large datasets just by their ID, not their actual contents. In these cases, we'd manually implement the `PartialEq` trait to skip the dataset equality check:
+
+````rust
+#[derive(Clone, Props)]
+struct DatasetViewer {
+  id: Uuid,
+  contents: Vec<u8>
+}
+
+impl PartialEq for DatasetViewer {
+  fn eq(&self, other: &Self) -> bool {
+      self.id.eq(&other.id)
+  }
+}
+````
+
+Many Dioxus utilities use comparison-by-pointer instead of comparison-by-contents to improve performance.
+
+### Clone
+
+The `Clone` bound is a particularly interesting requirement for component properties. The Dioxus component tree architecture is designed around an idea called "unidirectional data flow." This is a design pattern that prevents components down the component tree from modifying their input properties. By preventing these accidental mutations, user interfaces generally have fewer bugs. Rust itself generally solves this problem its borrow checker system, but the borrow checker does not work well with asynchronous work which is quite prevalent in app development.
+
+Generally, it's fine to `.clone()` most component properties, but some objects might be too expensive to clone and negatively impact performance. In most cases, you can simply wrap the value in the \[`ReadSignal`\] wrapper type and the object will be automatically wrapped in a smart pointer:
+
+````rust
+// previously...
+struct CardProps {
+  content: String
+}
+
+// with ReadSignal:
+struct CardProps {
+  content: ReadSignal<String>
+}
+````
+
+Fortunately, there are no code changes required on the calling side:
+
+````rust
+rsx! {
+  CardProps {
+    content: query.content()
+  }
+}
+````
+
+Note that `ReadSignal` is not the only smart pointer available. The Rust smart pointers (Arc, Rc) also make clones cheaper as can a custom `Clone` implementation.
+
+### Props
+
+The `Props` derive macro implements the `Properties` trait for the properties object. This trait and its implementation are an implementation detail in Dioxus and not generally meant to be implemented manually. The `Props` derive is useful because it derives a strongly typed builder for the Properties. We can even use this builder outside RSX:
+
+````rust
+let props = CardProps::builder().content("body".to_string()).build();
+````
+
+## The `#[component]` macro
+
+Properties can be modified to accept a wider variety of inputs than a normal function argument. We don't cover all of the details here, but you can find information in the [component macro](https://docs.rs/dioxus/latest/dioxus/prelude/attr.component.html) documentation.
+
+For example, the Dioxus Router `Link` component uses the modifiers extensively:
+
+````rust
+/// The properties for a [`Link`].
+#[derive(Props, Clone, PartialEq)]
+pub struct LinkProps {
+    /// The class attribute for the `a` tag.
+    pub class: Option<String>,
+
+    /// A class to apply to the generate HTML anchor tag if the `target` route is active.
+    pub active_class: Option<String>,
+
+    /// The children to render within the generated HTML anchor tag.
+    pub children: Element,
+
+    /// When [`true`], the `target` route will be opened in a new tab.
+    ///
+    /// This does not change whether the [`Link`] is active or not.
+    #[props(default)]
+    pub new_tab: bool,
+
+    /// The onclick event handler.
+    pub onclick: Option<EventHandler<MouseEvent>>,
+
+    /// Whether the default behavior should be executed if an `onclick` handler is provided.
+    ///
+    /// 1. When `onclick` is [`None`] (default if not specified), `onclick_only` has no effect.
+    /// 2. If `onclick_only` is [`false`] (default if not specified), the provided `onclick` handler
+    ///    will be executed after the links regular functionality.
+    /// 3. If `onclick_only` is [`true`], only the provided `onclick` handler will be executed.
+    #[props(default)]
+    pub onclick_only: bool,
+
+    /// The rel attribute for the generated HTML anchor tag.
+    ///
+    /// For external `a`s, this defaults to `noopener noreferrer`.
+    pub rel: Option<String>,
+
+    /// The navigation target. Roughly equivalent to the href attribute of an HTML anchor tag.
+    #[props(into)]
+    pub to: NavigationTarget,
+
+    #[props(extends = GlobalAttributes)]
+    attributes: Vec<Attribute>,
+}
+````
+
+You can use the `#[props()]` attribute on each field to modify properties your component accepts:
+
+* [`#[props(default)]`](https://docs.rs/dioxus/latest/dioxus/prelude/attr.component.html#default-props) - Makes the field optional in the component and uses the default value if it is not set when creating the component.
+* [`#[props(!optional)]`](https://docs.rs/dioxus/latest/dioxus/prelude/attr.component.html#optional-props) - Makes a field with the type `Option<T>` required.
+* [`#[props(into)]`](https://docs.rs/dioxus/latest/dioxus/prelude/attr.component.html#converting-props) - Converts a field into the correct type by using the \[`Into`\] trait.
+* [`#[props(extends = GlobalAttributes)]`](https://docs.rs/dioxus/latest/dioxus/prelude/attr.component.html#extending-elements) - Extends the props with all the attributes from an element or the global element attributes.
+
+Props also act slightly differently when used with:
+
+* [`Option<T>`](https://docs.rs/dioxus/latest/dioxus/prelude/attr.component.html#optional-props) - The field is automatically optional with a default value of `None`.
+* [`ReadOnlySignal<T>`](https://docs.rs/dioxus/latest/dioxus/prelude/attr.component.html#reactive-props) - The props macro will automatically convert `T` into `ReadOnlySignal<T>` when it is passed as a prop.
+* [`String`](https://docs.rs/dioxus/latest/dioxus/prelude/attr.component.html#formatted-props) - The props macro will accept formatted strings for any prop field with the type `String`.
+* [`children: Element`](https://docs.rs/dioxus/latest/dioxus/prelude/attr.component.html#children-props) - The props macro will accept child elements if you include the `children` prop.
+* `EventHandler<T>` enforces closures
+
+Note that these attributes work both for struct-based property definitions as well as inline definitions:
+
+````rust
+#[component]
+fn Link(
+  /// When [`true`], the `target` route will be opened in a new tab.
+  #[props(default)]
+  new_tab: bool,
+
+  /// The navigation target. Roughly equivalent to the href attribute of an HTML anchor tag.
+  #[props(into)]
+  to: NavigationTarget,
+) -> Element {
+  // ...
+}
+````
+
+Because documentation comments are parsed by the `#[component]` macro, they become available as inline documentation when calling the component:
+
+![Doc Comment Fields](/assets/07/doc-comment-props.png)
+
+The docs on the component are also available when hovering its use:
+
+![Doc Comment Components](/assets/07/doc-comment-components.png)
+
+## Spreading Props
+
+For more composability, we can create a component's properties manually and then pass them directly using Rust's spread syntax with `..some_props`.
+
+````rust
+let props = CardProps::lorem_ipsum();
+rsx! {
+  Card { ..props }
+}
+````
+
+This mechanism behaves similar to Rust's struct spreading, allowing you to override various fields of the spread, enabling default and overrides:
+
+````rust
+let props = CardProps::lorem_ipsum();
+rsx! {
+  Card { title: "Chapter 1", ..props }
+}
+````
+
+## Children
+
+Properties have a special field called "children" that contain a component's child elements. For example, we can build a wrapper component that wraps its children in a red div. This component takes a special argument named "children" which is an Element that is used in RSX expressions.
+
+````rust
+#[component]
+fn RedDiv(children: Element) {
+  rsx! {
+    div {
+      background_color: "red",
+      {children}
+    }
+  }
+}
+````
+
+When calling the component, we can simply add nested children like an element:
+
+````rust
+rsx! {
+  RedDiv {
+    h1 { "Lorem Ipsum Dolor" }
+    p { "..." }
+  }
+}
+````
+# Reconciliation: How Components Render
+
+We've covered extensively how components and their properties are defined, but we haven't yet covered how they actually work. Dioxus components are *not* normal Rust functions. While technically possible to call them like regular Rust functions, components rely on an *active* Dioxus runtime to function properly.
+
+To use components properly, it's important to understand the fundamentals of how state flows, how elements are created, and how state is stored. We are going to outline how state works here, but state can be complex so we've given it its own [chapter](../basics/index.md).
+
+## Components Render
+
+In Dioxus, the term "rendering" refers to the process that Dioxus uses to call your component functions and draw elements to the screen. When you call `dioxus::launch`, Dioxus sets up the app's runtime and then calls the provided initial component to create the initial `Element`. This element declares styles, layouts, children, and event listeners. Dioxus converts your elements into draw calls and converts your event listeners into native event handlers.
+
+![Component Loop](/assets/07/render-calls.png)
+
+Because Dioxus uses a "virtual" tree, the elements in your RSX tree are not actual handles to "real" nodes in the renderer. For example, the Dioxus `Element` type is not a full [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement) object. When Dioxus receives your initial Element, it converts your virtual elements into real elements and draw calls using a platform-specific renderer.
+
+## Components Rerender
+
+Components will be rerun when the state they depend on changes. After the initial Element has been drawn with the platform-specific renderer, Dioxus listens for events on your elements. When an event is received, the corresponding event listeners are called, and your code has an opportunity to mutate state. Mutating state is the primary mechanism by which Dioxus knows to run your component functions again and look for changes in the tree.
+
+![Component Loop](/assets/07/render-loop.png)
+
+Dioxus considers state to have been changed in two situations:
+
+* The component's properties change, as determined its `PartialEq` implementation
+* Internal [state](../basics/index.md) the component depends on changes (e.g. `signal.write()`) and an "update" is scheduled
+
+````rs@components.rs
+// When the name property changes, the component will rerender
+#[component]
+fn Button(name: String) -> Element {
+    let mut count = use_signal(|| 0);
+    log!("Component rerendered with name: {name} count: {count}");
+
+    rsx! {
+        h3 { "Hello, {name}!" }
+        // MyComponent reads the `count` signal, so it will rerender
+        // whenever `count` changes.
+        "Count: {count}"
+        button {
+            // When the button is clicked, it increments the count signal
+            onclick: move |_| count += 1,
+            "Increment"
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    components::ButtonDemo {}
+}
+````
+
+After a component runs again, Dioxus will compare the old `Element` and the new `Element` to look for changes. The Dioxus runtime will identify the least amount of draw calls required to change the old UI to match your desired UI. This comparison process is called "diffing". Dioxus optimizes diffing by only comparing dynamic parts of the RSX, so static elements are not checked for changes (see this [blog post](https://dioxuslabs.com/blog/templates-diffing) for details). This entire loop - Render, Display, Listen, Mutate - is called "reconciliation" and Dioxus has one of the most performant implementations of any UI framework.
+
+## Components are Functions of State
+
+Components are a pure function of your current application state in the form `fn(State) -> Element`. They read state from various sources like props, [hooks](../basics/hooks.md), or [context](../basics/context.md) and return a view of the current UI as an `Element`.
+
+We have already seen how components map the props state into UI, but state can also come from the component itself in the form of hooks. For example, we can use a signal to keep track of a count in our component. The component defines the mapping from the current state of the signal to the UI that should be rendered:
+
+````rs@components.rs
+#[component]
+pub fn MyStatefulComponent() -> Element {
+    let mut count = use_signal(|| 0);
+
+    rsx! {
+        div {
+            h3 { "Count: {count}" }
+            button { onclick: move |_| count += 1, "Increment" }
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    components::MyStatefulComponent {}
+}
+````
+
+When building Dioxus apps, it's important to understand that your UI code is a declaration of what you want your UI to be - it does not contain any logic on how to update the UI to get there. Dioxus itself is responsible for making the UI match your desired input.
+
+## Components are Pure Functions
+
+The body of a component must be pure. Pure functions always return the same output for the same input and do not have side effects. For example, this double function is pure:
+
+````rs@components.rs
+fn double(x: i32) -> i32 {
+    x * 2
+}
+````
+
+If you call `double(2)`, it will always return `4`.
+
+However, this function is not pure because it modifies external state:
+
+````rs@components.rs
+static GLOBAL_COUNT: AtomicI32 = AtomicI32::new(0);
+
+fn increment_global_count() -> i32 {
+    GLOBAL_COUNT.fetch_add(1, Ordering::SeqCst)
+}
+````
+
+When you call `increment_global_count()` the first time, it will return `0`, but the next time you call it, it will return `1`. This function has side effects because it modifies the global state.
+
+In addition to global variables, context and hooks are also external state in components. Components shouldn't modify state from context or hooks while rendering:
+
+````rs@components.rs
+#[component]
+fn MyImpureComponent() -> Element {
+    let mut count = use_signal(|| 0);
+
+    // ❌ Modifying the count signal from a hook is a side effect.
+    // Dioxus may try to rerender the component with the new value,
+    // which can lead to unexpected behavior or infinite loops.
+    count += 1;
+
+    rsx! {
+        div {
+            h3 { "Count: {count}" }
+        }
+    }
+}
+````
+
+Side effects that modify state should be placed in event handlers or [effects](../advanced/breaking_out.md#synchronizing-dom-updates-with-use_effect) which run after the component has rendered. This ensures that the component's output is stable and predictable.
+
+````rs@components.rs
+#[component]
+fn MyPureComponent() -> Element {
+    let mut count = use_signal(|| 0);
+
+    rsx! {
+        div {
+            h3 { "Count: {count}" }
+            button {
+                // ✅ Event handlers can modify state and have side effects.
+                onclick: move |_| count += 1,
+                "Increment"
+            }
+        }
+    }
+}
+````
+
+If you find yourself writing components that *are not* pure, then you are likely misusing or misunderstanding the reactive paradigm. Mutations should be placed either in event handlers as a response to user input, or in long running async tasks as a response to background processing.
+
+## Similar to React
+
+If you're familiar with libraries like ReactJS, then this paradigm is familiar to you. Dioxus borrows many ideas from React and your existing knowledge will be extremely helpful. If anything here is confusing to you, check out the [React docs](https://react.dev/learn) or do some extra research on React's reactivity system.
+# Assets
+
+Assets are files that are included in the final build of the application. They can be images, fonts, stylesheets, or any other file that is not a source file. Dioxus includes first class support for assets, and provides a simple way to include them in your application and automatically optimize them for production.
+
+Assets in dioxus are also compatible with libraries! If you are building a library, you can include assets in your library and they will be automatically included in the final build of any application that uses your library.
+
+## Including images
+
+To include an image in your application, you can simply wrap the path to the asset in the `asset!` macro:
+
+````rs@assets.rs
+use dioxus::prelude::*;
+
+fn App() -> Element {
+    // You can link to assets that are relative to the package root or even link to an asset from a url
+    // These assets will automatically be picked up by the dioxus cli, optimized, and bundled with your final applications
+    let ferrous = asset!("/assets/static/ferrous_wave.png");
+
+    rsx! {
+        img { src: "{ferrous}" }
+    }
+}
+````
+
+The asset macro takes a path to the asset relative to the root of your app. The path is *not* absolute to your machine, making it possible to use the same asset paths across multiple machines.
+
+````rust
+// ❌ does not work!
+let ferrous = asset!("/Users/dioxus/Downloads/image.png");
+````
+
+The asset macro is `const`, meaning we can use it inline or as a static/const item:
+
+````rust
+// as a static item
+static FERROUS: Asset = asset!("/assets/static/ferrous_wave.png");
+
+// or inline
+rsx! {
+    img { src: asset!("/assets/static/ferrous_wave.png") }
+}
+````
+
+## Customizing Image Processing Options
+
+You can also optimize, resize, and preload images using the `asset!` macro. Choosing an optimized file type (like Avif) and a reasonable quality setting can significantly reduce the size of your images which helps your application load faster. For example, you can use the following code to include an optimized image in your application:
+
+````rs@assets.rs
+pub const ENUM_ROUTER_IMG: Asset = asset!(
+    "/assets/static/enum_router.png",
+    // You can pass a second argument to the asset macro to set up options for the asset
+    ImageAssetOptions::new()
+        // You can set the image size in pixels at compile time to send the smallest possible image to the client
+        .with_size(ImageSize::Manual {
+            width: 52,
+            height: 52
+        })
+        // You can also convert the image to a web friendly format at compile time. This can make your images significantly smaller
+        .with_format(ImageFormat::Avif)
+);
+
+fn EnumRouter() -> Element {
+    rsx! {
+        img { src: "{ENUM_ROUTER_IMG}" }
+    }
+}
+````
+
+## Including stylesheets
+
+You can include stylesheets in your application using the `asset!` macro. Stylesheets will automatically be minified as they are bundled to speed up load times. For example, you can use the following code to include a stylesheet in your application:
+
+````rs@assets.rs
+// You can also bundle stylesheets with your application
+// Any files that end with .css will be minified and bundled with your application even if you don't explicitly include them in your <head>
+const _: Asset = asset!("/assets/tailwind.css");
+````
+
+ > 
+ > The [tailwind guide](../../guides/utilities/tailwind.md) has more information on how to use tailwind with dioxus.
+
+## SCSS Support
+
+SCSS is also supported through the `asset!` macro. Include it the same way as a regular CSS file.
+
+You can read more about assets and all the options available to optimize your assets in the [manganis documentation](https://docs.rs/manganis/latest/manganis).
+
+## Including arbitrary files
+
+In dioxus desktop, you may want to include a file with data for your application. If you don't set any options for your asset and the file extension is not recognized, the asset will be copied without any changes. For example, you can use the following code to include a binary file in your application:
+
+````rs@assets.rs
+// You can also collect arbitrary files. Relative paths are resolved relative to the package root
+const PATH_TO_BUNDLED_CARGO_TOML: Asset = asset!("/Cargo.toml");
+````
+
+These files will be automatically included in the final build of your application, and you can use them in your application as you would any other file.
+
+## Asset Hashes
+
+The asset macro automatically attaches a hash to the name of the asset after it's bundled. This makes your app's bundled assets unique across time, allowing you to infinitely cache the asset in your webserver or on a [CDN](https://en.wikipedia.org/wiki/Content_delivery_network).
+
+````rust
+// prints "/assets/ferrous_wave-dxhx13xj2j.png"
+println!("{}", asset!("/assets/static/ferrous_wave.png"))
+````
+
+Asset hashes are an extremely powerful feature of the asset system. Hashes integrate with CDNs and can greatly speedup your application's load performance and save you money in infrastructure costs.
+
+However, you occasionally might want to disable them. We can customize the asset processing options with the `AssetOptions` builder:
+
+````rust
+let ferrous = asset!("/assets/static/ferrous_wave.png", AssetOptions::builder().with_hash_suffix(false));
+````
+
+## Linker-based Asset Bundling
+
+Unlike Rust's `include_bytes!` macro, the `asset!` macro *does not* copy the contents of the asset into your final application binary. Instead, it adds the asset path and options into the final binary's metadata. When you run `dx serve` or `dx build`, we automatically read that metadata and process the asset.
+
+![Asset Bundling](/assets/07/asset-pipeline-full.png)
+
+The metadata for each asset is automatically embedded in the final executable by serializing its path and properties using the [const-serialize](https://crates.io/crates/const-serialize) crate. When DX builds the executable, it then searches the output binary for asset metadata. After the build is complete, DX computes asset hashes and writes them back into the binary.
+
+````rust
+#[link_section = "dx-assets"]
+static SERIALIZED_ASSET_OPTIONS: &[u8] = r#"{"path": "/assets/main.css","minify":"true","hash":"dxh0000"}"#;
+````
+
+This means that assets are not permanently baked into your final executable. The final executable is smaller, loads faster, and asset loading is much more flexible. This is important on platforms like the browser where assets are fetched in parallel over the network.
+
+To dynamically load the asset's contents, you can use the [dioxus-asset-resolver](https://crates.io/crates/dioxus-asset-resolver) crate which properly understands the app's bundle format and loads an asset given its `Display` impl.
+
+````rust
+let contents = dioxus_asset_resolver::serve_asset(&asset!("/assets/main.css").to_string());
+````
+
+## Assets Must Be Used, Assets in Libraries
+
+Because Dioxus uses the program's linker to save asset metadata, the resulting asset must be used somewhere in your application. If you forget to use the returned Asset, the Rust compiler is free to optimize away the call, and the asset metadata won't end up in the final output:
+
+````rust
+let ferrous = asset!("/assets/static/ferrous_wave.png");
+rsx! {
+    // our ferrous png won't be included since we forgot to use it!
+    img { src: "..." }
+}
+````
+
+This is expected behavior. We designed the asset system to automatically prune unused assets, making it possible for 3rd party libraries to export their own assets as part of their public API. For example, we could write a library that includes multiple stylesheets:
+
+````rust
+// crate: cool_dioxus_library
+pub static GREEN_STYLES: Asset = asset!("/assets/red.css");
+pub static RED_STYLES: Asset = asset!("/assets/green.css");
+````
+
+When a user builds an application using our library, they just need to import the stylesheet they want to use:
+
+````rust
+fn main() {
+    dioxus::launch(|| rsx!{
+        link { href: cool_dioxus_library::GREEN_STYLES, rel: "stylesheet" }
+    })
+}
+````
+
+Because the `RED_STYLES` asset is never referenced by the user's application, it won't be bundled in the final output.
+
+However, you might want to include an asset even if you never reference it directly. Rust's [`#[used]`](https://doc.rust-lang.org/reference/abi.html#the-used-attribute) attribute is useful here, annotating to the compiler that asset *is* used, even if we can't prove so at compile time.
+
+````rust
+#[used]
+static CERTS: Asset = asset!("/assets/keys.cert");
+````
+
+## Including Folders
+
+The asset macro also supports importing entire folders of content! The folder itself won't be copied into the final bundle. Instead, you join the name of the files in the folder against the folder's path. For example, you might need to include a folder of 3rd-party JavaScript into your app and don't want to use an `asset!` call for every file in the folder.
+
+````rust
+let logging_js_path = format!("{}/logging.js", asset!("/assets/posthog-js"));
+````
+
+Note that we need to format the `Asset` returned by the `asset!()` macro here because the actual folder name will receive an asset hash.
+
+## Reading Assets
+
+When you use an asset in an element like the `img` tag, the browser automatically fetches the asset for you. However, sometimes you might want to read the contents of an asset directly in your application code. For example, you might want to read a JSON file and parse it into a data structure.
+
+To read assets at runtime, you can use the [`read_asset_bytes`](https://docs.rs/dioxus-asset-resolver/latest/dioxus_asset_resolver/fn.read_asset_bytes.html) from the [`asset_resolver`](https://docs.rs/dioxus-asset-resolver/latest/dioxus_asset_resolver/) module. This will either fetch the asset from the network (for the web target) or read it from the bundle (for native targets):
+
+````rs@assets.rs
+use dioxus::prelude::*;
+
+// Bundle the static JSON asset into the application
+static JSON_ASSET: Asset = asset!("assets/data.json");
+
+// Read the bytes of the JSON asset
+let bytes = dioxus::asset_resolver::read_asset_bytes(&JSON_ASSET)
+    .await
+    .unwrap();
+
+// Deserialize the JSON data
+let json: serde_json::Value = serde_json::from_slice(&bytes).unwrap();
+assert_eq!(json["key"].as_str(), Some("value"));
+````
+
+If you are targeting a platform like windows or macos where assets are bundled alongside the executable in the filesystem, you can also get the path to the asset using the `asset_path` function. Keep in mind this will not work in the browser or in android bundles since assets are not stored in the filesystem:
+
+````rs@assets.rs
+use dioxus::prelude::*;
+
+// Bundle the static JSON asset into the application
+static JSON_ASSET: Asset = asset!("assets/data.json");
+
+// Resolve the path of the asset. This will not work in web or Android bundles
+let path = dioxus::asset_resolver::asset_path(&JSON_ASSET).unwrap();
+
+println!("Asset path: {:?}", path);
+
+// Read the bytes of the JSON asset
+let bytes = std::fs::read(path).unwrap();
+
+// Deserialize the JSON data
+let json: serde_json::Value = serde_json::from_slice(&bytes).unwrap();
+assert_eq!(json["key"].as_str(), Some("value"));
+````
+
+## The Public folder
+
+If you're deploying your app to the web, then DX will automatically copy any files from your app's `/public` directory into the output `/public` directory.
+
+This can be useful to copy files like `robots.txt` into the output directory since they're not referenced by any code in your app.
+
+````
+├── assets
+├── src
+└── public
+    └── robots.txt
+````
+
+Note that this `/public` directory is *merged* into the output, allowing you to manually insert files into the output `/public/assets` directory.
+# Styling your app
+
+Dioxus uses standard HTML and CSS for styling, making it easy to leverage existing CSS frameworks, libraries, and knowledge. This chapter covers the various approaches to styling your Dioxus applications, from inline styles to CSS frameworks like TailwindCSS.
+
+## Dioxus uses CSS for Styling
+
+Unlike many other UI frameworks that introduce their own styling systems, Dioxus embraces the web's native styling approach: **HTML and CSS**. This means you can use all the CSS knowledge, tools, and frameworks you already know and love.
+
+CSS is by-far the most popular styling system and is extremely capable. For example, here's a screenshot of [ebou](https://github.com/terhechte/Ebou), a very beautiful Mastodon client built with Dioxus.
+
+![Ebou](/assets/06_docs/ebou-following.png)
+
+All 1st-party Dioxus renderers leverage CSS, but other renderers like [Freya](http://freyaui.dev) might use their own style system. Dioxus automatically converts your CSS to the appropriate native widget properties when applicable, though in some cases you might need to write platform-specific code to achieve your ideal native look and feel.
+
+## Inline CSS
+
+The simplest way to add styles to your elements is through inline CSS using the [HTML `style` attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/style). Simply write your CSS styles in an inline string:
+
+````rust
+use dioxus::prelude::*;
+
+fn App() -> Element {
+    rsx! {
+        div {
+            style: "background-color: blue; color: white; padding: 20px; border-radius: 8px;",
+            "This is a styled div!"
+        }
+    }
+}
+````
+
+For better ergonomics, Dioxus also allows you to set individual CSS properties directly as attributes. CSS property names are referenced via their snake_case variant:
+
+````rust
+fn App() -> Element {
+    rsx! {
+        div {
+            background_color: "blue",
+            color: "white",
+            padding: "20px",
+            border_radius: "8px",
+            "This is a styled div!"
+        }
+    }
+}
+````
+
+Because CSS properties are attributes, you can make them dynamic by using Rust expressions:
+
+````rust
+fn App() -> Element {
+    let mut is_dark = use_signal(|| false);
+
+    rsx! {
+        div {
+            background_color: if is_dark() { "black" } else { "white" },
+            color: if is_dark() { "white" } else { "black" },
+            padding: "20px",
+            onclick: move |_| is_dark.toggle(),
+            "Click to toggle theme"
+        }
+    }
+}
+````
+
+## Stylesheets
+
+For larger applications, it's better to organize your styles in separate CSS files. Dioxus provides excellent support for CSS stylesheets through the `asset!()` macro.
+
+### Including CSS Files
+
+Create a CSS file in your `assets` directory and include it using the `asset!()` macro. Dioxus provides two "document" elements - `document::Link` and `document::Stylesheet`:
+
+````rust
+use dioxus::prelude::*;
+
+// Define the CSS asset
+static MAIN_CSS: Asset = asset!("/assets/main.css");
+
+fn App() -> Element {
+    rsx! {
+        // Include the stylesheet in the document head
+        document::Stylesheet { href: MAIN_CSS }
+
+        div {
+            class: "my-component",
+            "Hello, styled world!"
+        }
+    }
+}
+````
+
+Note that a regular `<link>` element will work, though it won't be marked as pre-loadable when used with server-side-rendering:
+
+````rust
+rsx! {
+    link { href: asset!("/assets/main.css") }
+}
+````
+
+Your `assets/main.css` file might look like:
+
+````css
+.my-component {
+    background-color: #f0f9ff;
+    border: 2px solid #0ea5e9;
+    border-radius: 8px;
+    padding: 16px;
+    font-family: system-ui, sans-serif;
+}
+
+.my-component:hover {
+    background-color: #e0f2fe;
+    transform: translateY(-2px);
+    transition: all 0.2s ease;
+}
+````
+
+### CSS Selectors
+
+To use the style declarations from our stylesheet, we can use [class selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/Class_selectors) and [ID selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/ID_selectors):
+
+````css
+.my-component {
+    background-color: #f0f9ff;
+}
+#root-component {
+    font-weight: 500;
+}
+````
+
+````rust
+rsx! {
+    div {
+        id: "root-component",
+        class: "my-component"
+    }
+}
+````
+
+CSS provides several selectors that you can leverage in your stylesheets:
+
+* [**Element selectors**](https://developer.mozilla.org/en-US/docs/Web/CSS/Type_selectors) (`div`, `p`, `h1`): Target HTML elements by their tag name
+* [**Class selectors**](https://developer.mozilla.org/en-US/docs/Web/CSS/Class_selectors) (`.my-class`): Target elements with a specific class attribute
+* [**ID selectors**](https://developer.mozilla.org/en-US/docs/Web/CSS/ID_selectors) (`#my-id`): Target a single element with a specific ID attribute
+* [**Attribute selectors**](https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors) (`[type="text"]`): Target elements based on their attributes
+* [**Descendant selectors**](https://developer.mozilla.org/en-US/docs/Web/CSS/Descendant_combinator) (`div p`): Target elements that are descendants of another element
+* [**Child selectors**](https://developer.mozilla.org/en-US/docs/Web/CSS/Child_combinator) (`div > p`): Target direct children of an element
+* [**Adjacent sibling selectors**](https://developer.mozilla.org/en-US/docs/Web/CSS/Next-sibling_combinator) (`h1 + p`): Target elements immediately following another
+* [**General sibling selectors**](https://developer.mozilla.org/en-US/docs/Web/CSS/Subsequent-sibling_combinator) (`h1 ~ p`): Target elements that are siblings of another
+* [**Pseudo-class selectors**](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes) (`:hover`, `:focus`, `:nth-child()`): Target elements in specific states
+* [**Pseudo-element selectors**](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-elements) (`::before`, `::after`): Target virtual elements or parts of elements
+* [**Universal selector**](https://developer.mozilla.org/en-US/docs/Web/CSS/Universal_selectors) (`*`): Target all elements
+* [**Grouping selectors**](https://developer.mozilla.org/en-US/docs/Web/CSS/Selector_list) (`h1, h2, h3`): Apply styles to multiple selectors at once
+
+### Conditional Styles with Classes
+
+The [HTML `class` attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/class) supports conditional styling and can be defined multiple times on the same element:
+
+````rust
+fn App() -> Element {
+    let mut is_active = use_signal(|| false);
+    let mut is_large = use_signal(|| false);
+
+    rsx! {
+        button {
+            class: "btn",
+            class: if is_active() { "btn-active" },
+            class: if is_large() { "btn-large" },
+            onclick: move |_| is_active.toggle(),
+            "Toggle me!"
+        }
+    }
+}
+````
+
+In HTML, the `class` attribute specifies a list of CSS classes a particular element has. A corresponding CSS stylesheet might include several classes that your elements use:
+
+````css
+/* The base `btn` class the button uses */
+.btn {
+    background-color: #f3f4f6;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* The "active" class, added when `is_active()` is true */
+.btn-active {
+    background-color: #3b82f6;
+    color: white;
+    border-color: #2563eb;
+}
+
+/* The "large" class, added when `is_large()` is true */
+.btn-large {
+    padding: 12px 24px;
+    font-size: 16px;
+}
+````
+
+### CSS Custom Properties for Theming
+
+You can use CSS custom properties (variables) for consistent theming. This is generally preferred over using Rust variables since dynamic string formatting can be less efficient and harder to optimize.
+
+````css
+:root {
+    --color-primary: #3b82f6;
+    --color-primary-hover: #2563eb;
+    --color-text: #1f2937;
+    --color-background: #ffffff;
+    --border-radius: 6px;
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+}
+
+.button {
+    background: var(--color-primary);
+    color: var(--color-background);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius);
+    border: none;
+    cursor: pointer;
+}
+
+.button:hover {
+    background: var(--color-primary-hover);
+}
+````
+
+## SCSS
+
+Dioxus supports SCSS (Sass) files out of the box. Simply use the `asset!()` macro with `.scss` files:
+
+````rust
+static STYLES: Asset = asset!("/assets/styles.scss");
+````
+
+Your `assets/styles.scss` file can use all SCSS features:
+
+````css
+$primary-color: #3b82f6;
+$secondary-color: #64748b;
+$border-radius: 8px;
+
+.card {
+    background: white;
+    border-radius: $border-radius;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .header {
+        background: $primary-color;
+        color: white;
+        padding: 16px;
+        border-radius: $border-radius $border-radius 0 0;
+    }
+
+    .content {
+        padding: 16px;
+        color: $secondary-color;
+    }
+}
+````
+
+## Tailwind
+
+[Tailwind CSS](https://tailwindcss.com/) is a popular utility-first CSS framework that works excellently with Dioxus. It allows you to style elements using pre-defined utility classes. This very documentation site uses Tailwind! We can simply use tailwind classes in Dioxus:
+
+````rust
+rsx! {
+    div { class: "flex flex-col items-center p-7 rounded-2xl",
+        img { class: "size-48 shadow-xl rounded-md", src: "/img/cover.png" }
+        div { class: "flex",
+            span { "Class Warfare" }
+            span { "The Anti-Patterns" }
+            span { class: "flex",
+                span { "No. 4" }
+                span { "·" }
+                span { "2025" }
+            }
+        }
+    }
+}
+````
+
+As of Dioxus 0.7, DX automatically downloads and starts the TailwindCSS watcher for you. Whenever you build your project with DX, the Tailwind CLI collects your classes and generates an output file in `assets/tailwind.css`.
+
+![Tailwind Hotreload](/assets/07/tailwind-inline.mp4)
+
+DX automatically detects if your project is using TailwindCSS if it finds a file called "tailwind.css" at the root of your project. In this file, you declare the basic Tailwind import and an extra line to ensure the watcher searches Rust files:
+
+````css
+@import "tailwindcss";
+@source "./src/**/*.{rs,html,css}";
+````
+
+Note that we need to add the generated stylesheet to our app:
+
+````rust
+fn app() -> Element {
+    rsx! {
+        document::Stylesheet { href: asset!("/assets/tailwind.css") }
+    }
+}
+````
+
+Tailwind provides many [theme variables to configure](https://tailwindcss.com/docs/theme), which we can do by updating our `tailwind.css` file. For example, we can customize our document's font or define a custom color palette.
+
+````css
+@theme {
+    --color-dxblue: #00A8D6;
+    --color-ghmetal: #24292f;
+    --color-ghdarkmetal: #161b22;
+    --color-ideblack: #0e1116;
+    --font-sans: "Inter var", sans-serif;
+}
+````
+
+Tailwind works with Dioxus's multiple class attribute support:
+
+````rust
+fn Card() -> Element {
+    let mut is_hovered = use_signal(|| false);
+
+    rsx! {
+        div {
+            class: "bg-white rounded-lg shadow-md p-6 m-4",
+            class: if is_hovered() { "shadow-xl transform -translate-y-1" },
+            class: "transition-all duration-200",
+
+            onmouseenter: move |_| is_hovered.set(true),
+            onmouseleave: move |_| is_hovered.set(false),
+
+            h2 {
+                class: "text-xl font-bold text-gray-800 mb-2",
+                "Card Title"
+            }
+            p {
+                class: "text-gray-600",
+                "This is a beautiful card component styled with Tailwind CSS."
+            }
+        }
+    }
+}
+````
+
+### VSCode Integration
+
+For better Tailwind development experience, install the Tailwind CSS IntelliSense extension and add this to your VSCode settings:
+
+````json
+{
+    "tailwindCSS.experimental.classRegex": ["class: \"(.*)\""],
+    "tailwindCSS.includeLanguages": {
+        "rust": "html"
+    }
+}
+````
+
+## Laying out Elements
+
+If you're familiar with HTML and CSS, then you likely already know how to arrange the HTML elements to craft your desired UI. However, if HTML and CSS are new to you, then it's worth understanding the many ways you can lay out elements on the page. CSS supports several layout systems simultaneously:
+
+* **Normal Flow**: The default layout where elements stack vertically (block elements) or flow horizontally (inline elements)
+* **Flexbox**: One-dimensional layout system for arranging items in rows or columns with flexible sizing and alignment
+* **CSS Grid**: Two-dimensional layout system for creating complex grid-based layouts with rows and columns
+* **Float**: Legacy layout method that moves elements to the left or right, allowing text to wrap around them
+* **Positioning**: Allows precise control over element placement using `static`, `relative`, `absolute`, `fixed`, or `sticky` positioning
+* **Table Layout**: Displays elements as table cells, rows, and columns (can be used with non-table elements via `display: table`)
+* **Multi-column**: Splits content into multiple columns, similar to newspaper layouts
+
+Generally, you'll use either Flexbox or CSS Grid.
+
+### Flexbox Layout
+
+Flexbox is incredibly handy for building responsive user interfaces. As you adjust the document viewport, elements will automatically adjust their size and placement to fit their flex constraints. The [CSS-Tricks guide](https://css-tricks.com/snippets/css/a-guide-to-flexbox/) provides a very helpful tutorial on all the flex constraints you can use.
+
+![Flexbox Guide](/assets/07/flexbox-diagram.webp)
+
+### CSS Grid
+
+CSS Grid is another powerful layout system. You can leverage CSS stylesheets to declare named regions of your document, dividing them along fixed or flexible grid lines. Several online tools exist that provide a [graphical interface](https://grid.layoutit.com) for building grid layouts.
+
+### Fixed Position Layout
+
+![CSS Grid Guide](/assets/07/css-grid.svg)
+
+Occasionally you'll need to reach for [fixed-position layouts](https://developer.mozilla.org/en-US/docs/Web/CSS/position). These tend to be less flexible than CSS Grid and Flexbox, but make it possible to implement features like sticky headers and dynamically-positioned content.
+
+## Icons and SVG
+
+Dioxus supports several approaches for including icons and SVG graphics in your applications.
+
+### Inline SVG
+
+You can include SVG directly in your RSX:
+
+````rust
+fn IconButton() -> Element {
+    rsx! {
+        button {
+            class: "flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded",
+
+            // Inline SVG icon
+            svg {
+                width: "16",
+                height: "16",
+                viewBox: "0 0 24 24",
+                fill: "currentColor",
+                path {
+                    d: "M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                }
+            }
+
+            "Star"
+        }
+    }
+}
+````
+
+### SVG Assets
+
+For larger or reusable SVG files, you can store them in a separate file and import them with the `asset!()` macro.
+
+````rust
+fn Icon() -> Element {
+    rsx! {
+        img {
+            src: asset!("/assets/logo.svg"),
+            alt: "Logo",
+            class: "h-8 w-8"
+        }
+    }
+}
+````
+
+### Icon Libraries
+
+You can also use Rust crates that provide icon collections. Several libraries exist:
+
+* [Dioxus Free Icons](https://crates.io/crates/dioxus-free-icons) - The FreeIcons library for Dioxus
+* [Dioxus Material Icons](https://crates.io/crates/dioxus-material-icons) - Google's Material Icons library for Dioxus
+* [Dioxus Hero Icons](https://crates.io/crates/dioxus-heroicons) - The HeroIcons library for Dioxus
+
+````rust
+use dioxus_free_icons::{Icon, icons::fa_solid_icons};
+
+fn App() -> Element {
+    rsx! {
+        Icon {
+            width: 30,
+            height: 30,
+            fill: "blue",
+            icon: fa_solid_icons::FaHeart
+        }
+    }
+}
+````
+
+### Using `dangerous_inner_html`
+
+If you want to include icons from their raw HTML representation, you can use `dangerous_inner_html` which sets the content from a Rust string:
+
+````rust
+rsx! {
+    svg { dangerous_inner_html: r#"<path d="M256 352 128 160h256z" />"# }
+}
+````
+# Dioxus Hot-Reloading Reference
+
+The Dioxus Hot-Reload engine is incredibly powerful. When used properly, it provides the fastest development experience for building apps with Rust.
+
+ > 
+ > Dioxus 0.5 featured a limited form of hot-reloading, while Dioxus 0.6 drastically improved it.
+ > 
+ > **Dioxus 0.7 introduces experimental Rust hot-reloading**, making it the first Rust framework to support hot-reloading of actual Rust code. 🎉🎉
+
+Dioxus provides three forms of hotreloading.
+
+*Element hot-reloading:*
+
+![Element Hot-reloading](/assets/07/dog_app_hotreload.mp4)
+
+*Asset hot-reloading:*
+
+![Element Hot-reloading](/assets/07/css-hotreload.mp4)
+
+*Rust hot-reloading:*
+
+![Element Hot-reloading](/assets/07/subsecond-tui.mp4)
+
+We provide this text guide as a resource for the details of hot-reloading. This guide has an accompanying video as well:
+
+<iframe style="width: 100%" height="500px" class="centered-overflow" src="https://www.youtube.com/embed/Q4Xzz8OJEoc" title="Dioxus 0.6" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+## RSX Hot-Reload
+
+RSX hot-reloading is fundamental to the Dioxus development experience. It allows you to modify the structure, styling, and content of your user interface without recompiling your entire application.
+
+RSX hot-reload enables you to instantly add, remove, or modify an elements in an `rsx!` block. The RSX parser works both at compile time, and in our devtools, letting DX sidestep recompiling your Rust code entirely.
+
+````rust
+fn App() -> Element {
+    rsx! {
+        // You can add, remove, or modify any elements
+        div { class: "container" }
+        h1 { "My App" }
+        button { "Click me" }
+    }
+}
+````
+
+All string-based attributes support instant hot-reloading:
+
+````rust
+fn Button() -> Element {
+    rsx! {
+        button {
+            // All of these can be hot-reloaded instantly
+            class: "btn btn-primary",
+            id: "my-button",
+            title: "Click this button",
+            style: "background: blue; color: white;",
+
+            "Submit"
+        }
+    }
+}
+````
+
+Hot-reload supports modifying complex formatted strings anywhere in your RSX. While you cannot instantly hot-reload the interior Rust expressions, you *can* move existing expressions between formatted strings.
+
+````rust
+fn Counter() -> Element {
+    let count = use_signal(|| 0);
+
+    rsx! {
+        div {
+            // We can move this `count` variable from here
+            "Count: {count}"
+
+            button {
+                // ... to here, without a recompile!
+                "Increment ({count})"
+            }
+        }
+    }
+}
+````
+
+You can hot-reload simple Rust expressions passed as component props. If the attribute value is a [Rust "literal"](https://doc.rust-lang.org/reference/expressions/literal-expr.html) - a single "token" like a number, boolean, or string - DX will hot-reload it by re-parsing the new attribute and modifying the component's props in place.
+
+````rust
+fn App() -> Element {
+    rsx! {
+        MyButton {
+            text: "Click me", // try changing the text
+            enabled: true, // try changing true to false!
+            count: 123, // or changing the number value!
+        }
+    }
+}
+
+#[component]
+fn MyButton(text: String, enabled: bool, count: i32, color: String) -> Element {
+    rsx! {
+        button { disabled: !enabled, "{text} - {count}" }
+    }
+}
+````
+
+Hot-reloading works inside conditional blocks, loops, and component children. Note that the interior *expressions* don't support instant RSX hot-reload, but the interior *elements* and *markup* do.
+
+````rust
+fn TodoList() -> Element {
+    let todos = use_signal(|| vec!["Learn Dioxus", "Build an app"]);
+
+    rsx! {
+        ul {
+            // We can modify the *body*
+            for (i, todo) in todos().iter().enumerate() {
+                li {
+                    key: "{i}",
+                    class: "todo-item",
+                    "{todo}"
+                }
+            }
+        }
+
+        // Conditional blocks bodies are hot-reloadable too
+        if todos().len() > 5 {
+            div { class: "warning", "You have many todos!" }
+        }
+    }
+}
+````
+
+## What Requires a Full Rebuild (or a hot-patch!)
+
+While RSX hot-reloading is very capable, some changes still require a full application rebuild:
+
+* **New variables or expressions** not present in the last compilation.
+* **Logic changes** outside of RSX (function bodies, hooks, etc.).
+* **Component signatures** (adding/removing props).
+* **Import statements** and module structure.
+* **Complex Rust expressions** in attributes that involve function calls.
+
+When Rust hotpatching is enabled with the `--hotpatch` flag, DX will modify your app's assembly *in place* and not require a full rebuild. With hotpatching enabled, DX rarely issues full rebuilds. You can manually force a full rebuild of your app at any time by pressing the `r` key with the DX TUI open.
+
+## Experimental: Rust Hot-patching
+
+**New in Dioxus 0.7**, you can enable experimental Rust code hot-reloading using the `--hotpatch` flag. This feature is revolutionary - allowing you to modify Rust logic and see changes without rebuilding.
+
+To use Rust hot-reloading, run `dx serve --hotpatch`. The extra flag is required while hot-patching is still experimental, though we plan to make it default in the future.
+
+````bash
+dx serve --hotpatch
+````
+
+This system, named **Subsecond**, can reload most changes to Rust code. However, there are a few limitations:
+
+* You may add new globals at runtime, but their destructors will never be called.
+* Globals are tracked across patches, but will renames are observed as introducing a new global.
+* Changes to static initializers will not be observed.
+
+Also, most importantly, Rust hot-patching currently only tracks the "tip" crate in your project. If you edit code in any of your dependencies - which might be *your* crate in a workspace - DX does *not* register that change. While RSX hot-reloading works across a workspace, Subsecond currently does not.
+
+Subsecond also works outside Dioxus. Many projects have already adopted the Subsecond library for Rust hot-reloading. For example, Bevy and Iced already have Subsecond integrations:
+
+![Bevy Hot-patching](/assets/07/bevy-hotpatch.mp4)
+
+## Asset Hot-Reload
+
+Asset hot-reloading allows you to modify CSS, images, and other static files without rebuilding your application. This works seamlessly with the `asset!()` macro system.
+
+### CSS Hot-Reloading
+
+CSS files are automatically watched and hot-reloaded when changed:
+
+````rust
+fn App() -> Element {
+    rsx! {
+        // Editing this stylesheet will cause instant updates in the running app
+        Stylesheet { href: asset!("/assets/main.css") }
+        div { class: "my-component", "Hello World!" }
+    }
+}
+````
+
+````css
+/* In assets/main.css - changes here are instantly applied */
+.my-component {
+    background: blue;
+    color: white;
+    padding: 20px;
+    /* Change this to red and see instant updates! */
+}
+````
+
+SCSS files are automatically re-compiled on changes and the generated CSS will be hot-reloaded.
+
+### Image and Static Asset Hot-Reloading
+
+Static assets like images also support hot-reloading:
+
+````rust
+fn Header() -> Element {
+    rsx! {
+        img { src: asset!("/assets/logo.png") }
+    }
+}
+````
+
+When you edit `/assets/logo.png`, the change appears instantly in your running application.
+
+### Tailwind CSS Integration
+
+When you `serve` your app, DX automatically downloads and starts the Tailwind CLI in the background. If a `tailwind.css` file is detected in the project root, the Tailwind watcher will watch your Rust code for changes and then recompile the output `/assets/tailwind.css` file.
+
+![Inline Tailwind](/assets/07/tailwind-inline.mp4)
+
+You can manually customize the Tailwind input and output file locations using the `tailwind_input` and `tailwind_output` configuration fields in your project's Dioxus.toml.
+# Escaping RSX
+
+While RSX is extremely capable, *some* changes to the UI require low-level access to system widgets or an imperative programming approach. Dioxus provides a number of "escape hatches," letting you use alternative UI techniques that don't fit into the declarative RSX paradigm. Also, Dioxus is relatively young and might not expose support for *every* feature the platform-specific renderer has.
+
+## Custom Element Attributes
+
+Under the hood, Dioxus declares every element attribute as a set of constants that describe the attribute's static properties. The definition is roughly equivalent to this pseudocode:
+
+````rust
+struct video;
+impl video {
+    const src: AttributeDefinition = AttributeDefinition {
+        name: "src",
+        namespace: None,
+        type: String
+    };
+    const autoplay: AttributeDefinition = AttributeDefinition {
+        name: "controls",
+        namespace: None,
+        type: Boolean
+    };
+}
+
+//
+rsx! {
+    video { src: "...", autoplay: true }
+}
+````
+
+In some cases, an attribute declaration might be missing, or you need to use a custom name. RSX enables this with quote-wrapped attribute names. Simply wrap the name of the custom attribute with quotes and pass in any expression that evaluates to `IntoAttributeValue`:
+
+````rust
+rsx! {
+    div {
+        "data-my-button-id": 123
+    }
+}
+````
+
+Custom attributes can be extremely handy when using data attributes and custom CSS selectors.
+
+## Dangerous Inner HTML
+
+If you're working with pre-rendered assets, output from templates, or output from a JS library, then you might want to pass HTML directly instead of going through Dioxus. In these instances, reach for `dangerous_inner_html`. This attribute sets the HTML `textContent` field of the element to the provided value. This will overwrite any other attributes or children of the element.
+
+For example, shipping a markdown-to-Dioxus converter might significantly bloat your final application size. Instead, you'll want to pre-render your markdown to HTML and then include the HTML directly in your output. We use this approach for the [Dioxus homepage](https://dioxuslabs.com):
+
+````rs@dangerous_inner_html.rs
+// this should come from a trusted source
+let contents = "live <b>dangerously</b>";
+
+rsx! {
+    div { dangerous_inner_html: "{contents}" }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+	dangerous_inner_html::App {}
+}
+````
+
+ > 
+ > Note! This attribute is called "dangerous_inner_html" because it is **dangerous** to pass it data you don't trust. If you're not careful, you can easily expose [cross-site scripting (XSS)](https://en.wikipedia.org/wiki/Cross-site_scripting) attacks to your users.
+ > 
+ > If you're handling untrusted input, make sure to sanitize your HTML before passing it into `dangerous_inner_html` – or just pass it to a Text Element to escape any HTML tags.
+
+## Web Components
+
+While we generally suggest creating new components directly in Dioxus, a 3rd-party component might be distributed as a [*Web Component*](https://www.webcomponents.org). Web components provide a framework-agnostic way of building and distributing custom HTML elements.
+
+Any element with a dash in the name is a web component. Web components are rendered directly in dioxus without type checking. Generally, you'll be importing a web component *into* Dioxus. We therefore recommend wrapping web components in a type safe component to make them easier to use.
+
+````rs@building_uis_with_rsx.rs
+rsx! {
+    my-web-component {}
+}
+````
+
+Because web components are untyped, they have no default attributes. Each attribute name must be wrapped in quotes, hence why we suggest wrapping the web component in a Dioxus component:
+
+````rust
+// our dioxus component provides a strongly-typed wrapper around our stringly-typed web component
+#[component]
+fn MyWebComponent(name: String, age: i32) -> Element {
+    rsx! {
+        my-web-component {
+            "name": "hello, {name}",
+            "age": age + 10
+        }
+    }
+}
+````
+
+## Direct DOM Access
+
+As mentioned earlier, RSX is *declarative.* You compose your elements in an `rsx! {}` block and Dioxus does the rendering. Sometimes, you'll need lower-level access to DOM elements to build deeply interactive UI. This might involve rendering into a canvas element or performing a synchronous modification to an element's properties.
+
+To get direct access to the underlying [HTML DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction), Dioxus provides a few built-in mechanisms:
+
+* Running JavaScript through `eval`
+* Using [`web-sys`](https://docs.rs/web-sys/latest/web_sys/) to get element by ID
+* Using the `onmounted` event handler
+* Using the `onresize` and `onvisible` events
+
+### Eval
+
+Dioxus exposes an `eval` function that allows you to evaluate arbitrary JavaScript in the platform renderer. On the web, this uses [`web-sys`](https://docs.rs/web-sys/latest/web_sys/), and for the webview renderer, this uses the webview's native `eval` method.
+
+You can eval any valid JavaScript. Dioxus transforms the input source code into a `Function` declaration and then allows you to capture its result. To send custom data into JavaScript, we simply format the source code. To return data from JavaScript, we use `dioxus.send()` and the eval's `.recv()` method:
+
+````rust
+use dioxus::prelude::*;
+
+fn app() -> Element {
+    rsx! {
+        button {
+            onclick: move |_| async move {
+                // You can send values from rust to the JavaScript code by using the `send` method on the object returned by `eval`.
+                let mut eval = document::eval(
+                    r#"for(let i = 0; i < 10; i++) {
+                        // You can send values asynchronously with the `dioxus.send()` method.
+                        dioxus.send(i);
+                    }"#
+                );
+
+                // You can receive values from the JavaScript code with the `recv` method on the object returned by `eval`.
+                for _ in 0..10 {
+                    let value: i32 = eval.recv().await.unwrap();
+                    println!("Received {}", value);
+                }
+            },
+            "Log Count"
+        }
+    }
+}
+````
+
+### Using `web-sys` and Event Downcasting
+
+On the web, it's possible to use the [`web-sys`](https://docs.rs/web-sys/latest/web_sys/) crate to directly call JavaScript methods from Rust. This uses foreign-function-interfaces to bridge the gap between Rust and JavaScript. We don't necessarily suggest using web-sys in *all* cases since web-sys is currently not portable to the Dioxus Desktop and Mobile renderers.
+
+With web-sys, we can call most JavaScript methods with a strongly-typed Rust interface:
+
+````rust
+rsx! {
+    let alert_it = move |_| {
+        let window = web_sys::window().unwrap();
+        window.alert_with_message("Hello from Rust!");
+    };
+    button { onclick: alert_it, "Click to alert" }
+}
+````
+
+If you *need* to use web-sys on desktop and mobile, you might want to use [Dioxus with Tauri](#using-dioxus-in-tauri) instead.
+
+### Using `getElementById`
+
+When using either eval or web_sys, it can be useful to get a direct handle to an HTML Dom Node. Generally, we suggest creating an ID for a given element, and then using `getElementById` to reference that node later.
+
+````rust
+// Set a unique ID for the div
+let id = use_hook(|| Uuid::new_v4());
+
+// Reference it in our eval logic
+let set_div_contents = move |_| async move {
+    dioxus::document::eval(format!(r#" document.getElementById("{{div-{id}}}").innerText = "one-two-three" "#)).await;
+};
+
+rsx! {
+    // And then assign it on the element itself
+    div { id: "div-{id}" }
+    button { onclick:  set_div_contents, "Set Div Directly" }
+}
+````
+
+## Child Windows and Overlays
+
+Some apps require low-level access to the HTML [`canvas`](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/canvas) element. For example, computer-aided-design (CAD) apps, video games, photo editors, video editors, or anything relying on lots of multimedia might want to render GUI textures manually.
+
+When using the webview renderer, you can overlay your Dioxus HTML content *on top* of a native texture. This is an advanced escape hatch that unlocks the entire rendering pipeline - extremely powerful but also quite complex.
+
+![wgpu-windows.mp4](/assets/06assets/wgpu-windows.mp4)
+
+For more information, see the [accompanying example](https://github.com/DioxusLabs/dioxus/blob/main/examples/wgpu_child_window.rs).
+
+## Using Dioxus in Tauri
+
+If you *need* to use the `web-sys` crate on desktop and mobile platforms, then [Tauri](https://tauri.app) might be useful for you. Tauri is a framework that lets you combine a custom frontend across an IPC boundary with Rust code running natively. This is somewhat similar to Dioxus, but instead of your UI code running natively, it instead runs as WebAssembly *inside* the webview. This can be slower and harder to setup, but does enable direct DOM access across all platforms.
+
+Dioxus-Web is supported as a frontend option when creating a new Tauri app, so make sure to check out [their docs](https://tauri.app/start/).
+
+## Native Widgets
+
+The first-party Dioxus renderers currently only render HTML and CSS. This is either done via `HTMLDomElement` with `web-sys` or through a eval for the webview renderers. Sometimes, you want to render a platform-native widget. Internally, Dioxus uses this to open file dialogs, color pickers, and provide functionality where platform-consistency matters.
+
+![File Upload Dialog](/assets/07/file-upload.png)
+
+This is somewhat advanced and requires using FFI into Objective-C and Kotlin to use system libraries. See the [dioxus-desktop docs](https://crates.io/crates/dioxus-desktop) for more info.
+
+## Dioxus Native
+
+For *complete* control over the DOM, we've built the *Dioxus Native* renderer. This renderer combines platform-native widgets along with a stripped-down HTML/CSS renderer to paint the Dioxus widget tree directly to the screen. Currently, Dioxus Native supports a variety of backends based on the [Vello](https://github.com/linebender/vello) crate.
+
+Dioxus Native is nascent. We specifically built Dioxus Native to paint arbitrary GPU textures into canvas elements. Instead of using child windows and overlays, you can directly pump WGPU textures in HTML elements. Likewise, you can embed Dioxus into any existing WGPU application, like a Bevy game.
+
+![WGPU Native](/assets/07/wgpu-native-overlay.mp4)
+
+See the [dioxus-native crate](https://crates.io/crates/dioxus-native) for more information.

@@ -1,0 +1,1324 @@
+<SYSTEM>This is the developer documentation for Dioxus at /learn/0.4/guide/your_first_component and all its subroutes.</SYSTEM>
+
+# Your First Component
+
+This chapter will teach you how to create a [Component](../reference/components.md) that displays a link to a post on hackernews.
+
+First, let's define how to display a post. Dioxus is a *declarative* framework. This means that instead of telling Dioxus what to do (e.g. to "create an element" or "set the color to red") we simply *declare* how we want the UI to look.
+
+To declare what you want your UI to look like, you will need to use the `rsx` macro. Let's modify the rsx macro in the `App` function from the [getting started](../getting_started/index.md) to show information about our story:
+
+````rs@hackernews_post.rs
+pub fn App(cx: Scope) -> Element {
+    render! {
+        "story"
+    }
+}
+````
+
+If you run your application you should see something like this:
+
+````inject-dioxus
+DemoFrame {
+	hackernews_post::story_v1::App {}
+}
+````
+
+ > 
+ > RSX mirrors HTML. Because of this you will need to know some html to use Dioxus.
+ > 
+ > Here are some resources to help get you started learning HTML:
+ > 
+ > * [MDN HTML Guide](https://developer.mozilla.org/en-US/docs/Learn/HTML)
+ > * [W3 Schools HTML Tutorial](https://www.w3schools.com/html/default.asp)
+ > 
+ > In addition to HTML, Dioxus uses CSS to style applications. You can either use traditional CSS (what this guide uses) or use a tool like [tailwind CSS](https://tailwindcss.com/docs/installation):
+ > 
+ > * [MDN Traditional CSS Guide](https://developer.mozilla.org/en-US/docs/Learn/HTML)
+ > * [W3 Schools Traditional CSS Tutorial](https://www.w3schools.com/css/default.asp)
+ > * [Tailwind tutorial](https://tailwindcss.com/docs/installation) (used with the [Tailwind setup example](https://github.com/DioxusLabs/dioxus/tree/master/examples/tailwind))
+ > 
+ > If you have existing html code, you can use the [translate](../CLI/translate.md) command to convert it to RSX. Or if you prefer to write html, you can use the [html! macro](https://github.com/DioxusLabs/dioxus-html-macro) to write html directly in your code.
+
+## Dynamic Text
+
+Let's expand our `App` component to include the story title, author, score, time posted, and number of comments. We can insert dynamic text in the render macro by inserting variables inside `{}`s (this works similarly to the formatting in the [println!](https://doc.rust-lang.org/std/macro.println.html) macro):
+
+````rs@hackernews_post.rs
+pub fn App(cx: Scope) -> Element {
+    let title = "title";
+    let by = "author";
+    let score = 0;
+    let time = chrono::Utc::now();
+    let comments = "comments";
+
+    render! {
+        "{title} by {by} ({score}) {time} {comments}"
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+	hackernews_post::story_v2::App {}
+}
+````
+
+## Creating Elements
+
+Next, let's wrap our post description in a [`div`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/div). You can create HTML elements in Dioxus by putting a `{` after the element name and a `}` after the last child of the element:
+
+````rs@hackernews_post.rs
+pub fn App(cx: Scope) -> Element {
+    let title = "title";
+    let by = "author";
+    let score = 0;
+    let time = chrono::Utc::now();
+    let comments = "comments";
+
+    render! {
+        div {
+            "{title} by {by} ({score}) {time} {comments}"
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+	hackernews_post::story_v3::App {}
+}
+````
+
+ > 
+ > You can read more about elements in the [rsx reference](../reference/rsx.md).
+
+## Setting Attributes
+
+Next, let's add some padding around our post listing with an attribute.
+
+Attributes (and [listeners](../reference/event_handlers.md)) modify the behavior or appearance of the element they are attached to. They are specified inside the `{}` brackets before any children, using the `name: value` syntax. You can format the text in the attribute as you would with a text node:
+
+````rs@hackernews_post.rs
+pub fn App(cx: Scope) -> Element {
+    let title = "title";
+    let by = "author";
+    let score = 0;
+    let time = chrono::Utc::now();
+    let comments = "comments";
+
+    render! {
+        div {
+            padding: "0.5rem",
+            position: "relative",
+            "{title} by {by} ({score}) {time} {comments}"
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+	hackernews_post::story_v4::App {}
+}
+````
+
+ > 
+ > Note: All attributes defined in [`dioxus-html`](https://docs.rs/dioxus-html/latest/dioxus_html/) follow the snake_case naming convention. They transform their `snake_case` names to HTML's `camelCase` attributes.
+
+ > 
+ > Note: Styles can be used directly outside of the `style:` attribute. In the above example, `color: "red"` is turned into `style="color: red"`.
+
+ > 
+ > You can read more about elements in the [attribute reference](../reference/rsx.md)
+
+## Creating a Component
+
+Just like you wouldn't want to write a complex program in a single, long, `main` function, you shouldn't build a complex UI in a single `App` function. Instead, you should break down the functionality of an app in logical parts called components.
+
+A component is a Rust function, named in UpperCamelCase, that takes a `Scope` parameter and returns an `Element` describing the UI it wants to render. In fact, our `App` function is a component!
+
+Let's pull our story description into a new component:
+
+````rs@hackernews_post.rs
+fn StoryListing(cx: Scope) -> Element {
+    let title = "title";
+    let by = "author";
+    let score = 0;
+    let time = chrono::Utc::now();
+    let comments = "comments";
+
+    render! {
+        div {
+            padding: "0.5rem",
+            position: "relative",
+            "{title} by {by} ({score}) {time} {comments}"
+        }
+    }
+}
+````
+
+We can render our component like we would an element by putting `{}`s after the component name. Let's modify our `App` component to render our new StoryListing component:
+
+````rs@hackernews_post.rs
+pub fn App(cx: Scope) -> Element {
+    render! {
+        StoryListing {
+
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+	hackernews_post::story_v5::App {}
+}
+````
+
+ > 
+ > You can read more about elements in the [component reference](../reference/components.md)
+
+## Creating Props
+
+Just like you can pass arguments to a function or attributes to an element, you can pass props to a component that customize its behavior!
+
+We can define arguments that components can take when they are rendered (called `Props`) by adding the `#[component]` macro before our function definition and adding extra function arguments.
+
+Currently, our `StoryListing` component always renders the same story. We can modify it to accept a story to render as a prop.
+
+We will also define what a post is and include information for how to transform our post to and from a different format using [serde](https://serde.rs). This will be used with the hackernews API in a later chapter:
+
+````rs@hackernews_post.rs
+use chrono::{DateTime, Utc};
+use serde::{Deserialize, Serialize};
+
+// Define the Hackernews types
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub struct StoryPageData {
+    #[serde(flatten)]
+    pub item: StoryItem,
+    #[serde(default)]
+    pub comments: Vec<Comment>,
+}
+
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub struct Comment {
+    pub id: i64,
+    /// there will be no by field if the comment was deleted
+    #[serde(default)]
+    pub by: String,
+    #[serde(default)]
+    pub text: String,
+    #[serde(with = "chrono::serde::ts_seconds")]
+    pub time: DateTime<Utc>,
+    #[serde(default)]
+    pub kids: Vec<i64>,
+    #[serde(default)]
+    pub sub_comments: Vec<Comment>,
+    pub r#type: String,
+}
+
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub struct StoryItem {
+    pub id: i64,
+    pub title: String,
+    pub url: Option<String>,
+    pub text: Option<String>,
+    #[serde(default)]
+    pub by: String,
+    #[serde(default)]
+    pub score: i64,
+    #[serde(default)]
+    pub descendants: i64,
+    #[serde(with = "chrono::serde::ts_seconds")]
+    pub time: DateTime<Utc>,
+    #[serde(default)]
+    pub kids: Vec<i64>,
+    pub r#type: String,
+}
+
+#[component]
+fn StoryListing(cx: Scope, story: StoryItem) -> Element {
+    let StoryItem {
+        title,
+        by,
+        score,
+        time,
+        kids,
+        ..
+    } = story;
+
+    let comments = kids.len();
+
+    render! {
+        div {
+            padding: "0.5rem",
+            position: "relative",
+            "{title} by {by} ({score}) {time} {comments}"
+        }
+    }
+}
+````
+
+Now, let's modify the `App` component to pass the story to our `StoryListing` component like we would set an attribute on an element:
+
+````rs@hackernews_post.rs
+pub fn App(cx: Scope) -> Element {
+    render! {
+        StoryListing {
+            story: StoryItem {
+                id: 0,
+                title: "hello hackernews".to_string(),
+                url: None,
+                text: None,
+                by: "Author".to_string(),
+                score: 0,
+                descendants: 0,
+                time: chrono::Utc::now(),
+                kids: vec![],
+                r#type: "".to_string(),
+            }
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+	hackernews_post::story_v6::App {}
+}
+````
+
+ > 
+ > You can read more about Props in the [Props reference](../reference/component_props.md)
+
+## Cleaning Up Our Interface
+
+Finally, by combining elements and attributes, we can make our post listing much more appealing:
+
+Full code up to this point:
+
+````rs@hackernews_post.rs
+use dioxus::prelude::*;
+
+// Define the Hackernews types
+use chrono::{DateTime, Utc};
+use serde::{Deserialize, Serialize};
+
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub struct StoryPageData {
+    #[serde(flatten)]
+    pub item: StoryItem,
+    #[serde(default)]
+    pub comments: Vec<Comment>,
+}
+
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub struct Comment {
+    pub id: i64,
+    /// there will be no by field if the comment was deleted
+    #[serde(default)]
+    pub by: String,
+    #[serde(default)]
+    pub text: String,
+    #[serde(with = "chrono::serde::ts_seconds")]
+    pub time: DateTime<Utc>,
+    #[serde(default)]
+    pub kids: Vec<i64>,
+    #[serde(default)]
+    pub sub_comments: Vec<Comment>,
+    pub r#type: String,
+}
+
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub struct StoryItem {
+    pub id: i64,
+    pub title: String,
+    pub url: Option<String>,
+    pub text: Option<String>,
+    #[serde(default)]
+    pub by: String,
+    #[serde(default)]
+    pub score: i64,
+    #[serde(default)]
+    pub descendants: i64,
+    #[serde(with = "chrono::serde::ts_seconds")]
+    pub time: DateTime<Utc>,
+    #[serde(default)]
+    pub kids: Vec<i64>,
+    pub r#type: String,
+}
+
+pub fn App(cx: Scope) -> Element {
+    render! {
+        StoryListing {
+            story: StoryItem {
+                id: 0,
+                title: "hello hackernews".to_string(),
+                url: None,
+                text: None,
+                by: "Author".to_string(),
+                score: 0,
+                descendants: 0,
+                time: Utc::now(),
+                kids: vec![],
+                r#type: "".to_string(),
+            }
+        }
+    }
+}
+
+#[component]
+fn StoryListing(cx: Scope, story: StoryItem) -> Element {
+    let StoryItem {
+        title,
+        url,
+        by,
+        score,
+        time,
+        kids,
+        id,
+        ..
+    } = story;
+
+    let url = url.as_deref().unwrap_or_default();
+    let hostname = url
+        .trim_start_matches("https://")
+        .trim_start_matches("http://")
+        .trim_start_matches("www.");
+    let score = format!("{score} {}", if *score == 1 { " point" } else { " points" });
+    let comments = format!(
+        "{} {}",
+        kids.len(),
+        if kids.len() == 1 {
+            " comment"
+        } else {
+            " comments"
+        }
+    );
+    let time = time.format("%D %l:%M %p");
+
+    cx.render(rsx! {
+        div {
+            padding: "0.5rem",
+            position: "relative",
+            div {
+                font_size: "1.5rem",
+                a {
+                    href: url,
+                    "{title}"
+                }
+                a {
+                    color: "gray",
+                    href: "https://news.ycombinator.com/from?site={hostname}",
+                    text_decoration: "none",
+                    " ({hostname})"
+                }
+            }
+            div {
+                display: "flex",
+                flex_direction: "row",
+                color: "gray",
+                div {
+                    "{score}"
+                }
+                div {
+                    padding_left: "0.5rem",
+                    "by {by}"
+                }
+                div {
+                    padding_left: "0.5rem",
+                    "{time}"
+                }
+                div {
+                    padding_left: "0.5rem",
+                    "{comments}"
+                }
+            }
+        }
+    })
+}
+````
+
+````inject-dioxus
+DemoFrame {
+	hackernews_post::story_final::App {}
+}
+````
+# Interactivity
+
+In this chapter, we will add a preview for articles you hover over or links you focus on.
+
+## Creating a Preview
+
+First, let's split our app into a Stories component on the left side of the screen, and a preview component on the right side of the screen:
+
+````rs@hackernews_state.rs
+pub fn App(cx: Scope) -> Element {
+    cx.render(rsx! {
+        div {
+            display: "flex",
+            flex_direction: "row",
+            width: "100%",
+            div {
+                width: "50%",
+                Stories {}
+            }
+            div {
+                width: "50%",
+                Preview {}
+            }
+        }
+    })
+}
+
+// New
+fn Stories(cx: Scope) -> Element {
+    render! {
+        StoryListing {
+            story: StoryItem {
+                id: 0,
+                title: "hello hackernews".to_string(),
+                url: None,
+                text: None,
+                by: "Author".to_string(),
+                score: 0,
+                descendants: 0,
+                time: chrono::Utc::now(),
+                kids: vec![],
+                r#type: "".to_string(),
+            }
+        }
+    }
+}
+
+// New
+#[derive(Clone, Debug)]
+enum PreviewState {
+    Unset,
+    Loading,
+    Loaded(StoryPageData),
+}
+
+// New
+fn Preview(cx: Scope) -> Element {
+    let preview_state = PreviewState::Unset;
+    match preview_state {
+        PreviewState::Unset => render! {
+            "Hover over a story to preview it here"
+        },
+        PreviewState::Loading => render! {
+            "Loading..."
+        },
+        PreviewState::Loaded(story) => {
+            let title = &story.item.title;
+            let url = story.item.url.as_deref().unwrap_or_default();
+            let text = story.item.text.as_deref().unwrap_or_default();
+            render! {
+                div {
+                    padding: "0.5rem",
+                    div {
+                        font_size: "1.5rem",
+                        a {
+                            href: "{url}",
+                            "{title}"
+                        }
+                    }
+                    div {
+                        dangerous_inner_html: "{text}",
+                    }
+                    for comment in &story.comments {
+                        Comment { comment: comment.clone() }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// NEW
+#[component]
+fn Comment(cx: Scope, comment: Comment) -> Element<'a> {
+    render! {
+        div {
+            padding: "0.5rem",
+            div {
+                color: "gray",
+                "by {comment.by}"
+            }
+            div {
+                dangerous_inner_html: "{comment.text}"
+            }
+            for kid in &comment.sub_comments {
+                Comment { comment: kid.clone() }
+            }
+        }
+    }
+}
+
+````
+
+````inject-dioxus
+DemoFrame {
+    hackernews_state::app_v1::App {}
+}
+````
+
+## Event Handlers
+
+Next, we need to detect when the user hovers over a section or focuses a link. We can use an [event listener](../reference/event_handlers.md) to listen for the hover and focus events.
+
+Event handlers are similar to regular attributes, but their name usually starts with `on`- and they accept closures as values. The closure will be called whenever the event it listens for is triggered. When an event is triggered, information about the event is passed to the closure though the [Event](https://docs.rs/dioxus/latest/dioxus/prelude/struct.Event.html) structure.
+
+Let's create a [`onmouseenter`](https://docs.rs/dioxus/latest/dioxus/events/fn.onmouseenter.html) event listener in the `StoryListing` component:
+
+````rs@hackernews_state.rs
+cx.render(rsx! {
+    div {
+        padding: "0.5rem",
+        position: "relative",
+        onmouseenter: move |_| {
+            // NEW
+        },
+        div {
+            font_size: "1.5rem",
+            a {
+                href: url,
+                onfocus: move |_event| {
+                    // NEW
+                },
+                "{title}"
+            }
+            a {
+                color: "gray",
+                href: "https://news.ycombinator.com/from?site={hostname}",
+                text_decoration: "none",
+                " ({hostname})"
+            }
+        }
+        div {
+            display: "flex",
+            flex_direction: "row",
+            color: "gray",
+            div {
+                "{score}"
+            }
+            div {
+                padding_left: "0.5rem",
+                "by {by}"
+            }
+            div {
+                padding_left: "0.5rem",
+                "{time}"
+            }
+            div {
+                padding_left: "0.5rem",
+                "{comments}"
+            }
+        }
+    }
+})
+````
+
+ > 
+ > You can read more about Event Handlers in the [Event Handler reference](../reference/event_handlers.md)
+
+## State
+
+So far our components have had no state like normal rust functions. To make our application change when we hover over a link we need state to store the currently hovered link in the root of the application.
+
+You can create state in dioxus using hooks. Hooks are Rust functions that take a reference to `ScopeState` (in a component, you can pass `cx`), and provide you with functionality and state.
+
+In this case, we will use the `use_shared_state_provider` and `use_shared_state` hooks:
+
+* You can provide a closure to `use_shared_state_provider` that determines the initial value of the shared state and provides the value to all child components
+* You can then use the `use_shared_state` hook to read and modify that state in the `Preview` and `StoryListing` components
+* When the value updates, `use_shared_state` will make the component re-render, and provides you with the new value
+
+ > 
+ > Note: You should prefer local state hooks like use_state or use_ref when you only use state in one component. Because we use state in multiple components, we can use a [global state pattern](../reference/context.md)
+
+````rs@hackernews_state.rs
+pub fn App(cx: Scope) -> Element {
+    use_shared_state_provider(cx, || PreviewState::Unset);
+````
+
+````rs@hackernews_state.rs
+#[component]
+fn StoryListing(cx: Scope, story: StoryItem) -> Element {
+    // New
+    let preview_state = use_shared_state::<PreviewState>(cx).unwrap();
+    let StoryItem {
+        title,
+        url,
+        by,
+        score,
+        time,
+        kids,
+        ..
+    } = story;
+
+    let url = url.as_deref().unwrap_or_default();
+    let hostname = url
+        .trim_start_matches("https://")
+        .trim_start_matches("http://")
+        .trim_start_matches("www.");
+    let score = format!("{score} {}", if *score == 1 { " point" } else { " points" });
+    let comments = format!(
+        "{} {}",
+        kids.len(),
+        if kids.len() == 1 {
+            " comment"
+        } else {
+            " comments"
+        }
+    );
+    let time = time.format("%D %l:%M %p");
+
+    cx.render(rsx! {
+        div {
+            padding: "0.5rem",
+            position: "relative",
+            onmouseenter: move |_event| {
+                // NEW
+                // set the preview state to this story
+                *preview_state.write() = PreviewState::Loaded(StoryPageData {
+                    item: story.clone(),
+                    comments: vec![],
+                });
+            },
+            div {
+                font_size: "1.5rem",
+                a {
+                    href: url,
+                    onfocus: move |_event| {
+                        // NEW
+                        // set the preview state to this story
+                        *preview_state.write() = PreviewState::Loaded(StoryPageData {
+                            item: story.clone(),
+                            comments: vec![],
+                        });
+                    },
+````
+
+````rs@hackernews_state.rs
+fn Preview(cx: Scope) -> Element {
+    // New
+    let preview_state = use_shared_state::<PreviewState>(cx)?;
+
+    // New
+    match &*preview_state.read() {
+````
+
+````inject-dioxus
+DemoFrame {
+    hackernews_state::App {}
+}
+````
+
+ > 
+ > You can read more about Hooks in the [Hooks reference](../reference/hooks.md)
+
+### The Rules of Hooks
+
+Hooks are a powerful way to manage state in Dioxus, but there are some rules you need to follow to insure they work as expected. Dioxus uses the order you call hooks to differentiate between hooks. Because the order you call hooks matters, you must follow these rules:
+
+1. Hooks may be only used in components or other hooks (we'll get to that later)
+1. On every call to the component function
+   1. The same hooks must be called
+   1. In the same order
+1. Hooks name's should start with `use_` so you don't accidentally confuse them with regular functions
+
+These rules mean that there are certain things you can't do with hooks:
+
+#### No Hooks in Conditionals
+
+````rs@hooks_bad.rs
+// ❌ don't call hooks in conditionals!
+// We must ensure that the same hooks will be called every time
+// But `if` statements only run if the conditional is true!
+// So we might violate rule 2.
+if you_are_happy && you_know_it {
+    let something = use_state(cx, || "hands");
+    println!("clap your {something}")
+}
+
+// ✅ instead, *always* call use_state
+// You can put other stuff in the conditional though
+let something = use_state(cx, || "hands");
+if you_are_happy && you_know_it {
+    println!("clap your {something}")
+}
+````
+
+#### No Hooks in Closures
+
+````rs@hooks_bad.rs
+// ❌ don't call hooks inside closures!
+// We can't guarantee that the closure, if used, will be called in the same order every time
+let _a = || {
+    let b = use_state(cx, || 0);
+    b.get()
+};
+
+// ✅ instead, move hook `b` outside
+let b = use_state(cx, || 0);
+let _a = || b.get();
+````
+
+#### No Hooks in Loops
+
+````rs@hooks_bad.rs
+// `names` is a Vec<&str>
+
+// ❌ Do not use hooks in loops!
+// In this case, if the length of the Vec changes, we break rule 2
+for _name in &names {
+    let is_selected = use_state(cx, || false);
+    println!("selected: {is_selected}");
+}
+
+// ✅ Instead, use a hashmap with use_ref
+let selection_map = use_ref(cx, HashMap::<&str, bool>::new);
+
+for name in &names {
+    let is_selected = selection_map.read()[name];
+    println!("selected: {is_selected}");
+}
+````
+# Fetching Data
+
+In this chapter, we will fetch data from the hacker news API and use it to render the list of top posts in our application.
+
+## Defining the API
+
+First we need to create some utilities to fetch data from the hackernews API using [reqwest](https://docs.rs/reqwest/latest/reqwest/index.html):
+
+````rs@hackernews_async.rs
+// Define the Hackernews API
+use futures::future::join_all;
+
+pub static BASE_API_URL: &str = "https://hacker-news.firebaseio.com/v0/";
+pub static ITEM_API: &str = "item/";
+pub static USER_API: &str = "user/";
+const COMMENT_DEPTH: i64 = 2;
+
+pub async fn get_story_preview(id: i64) -> Result<StoryItem, reqwest::Error> {
+    let url = format!("{}{}{}.json", BASE_API_URL, ITEM_API, id);
+    reqwest::get(&url).await?.json().await
+}
+
+pub async fn get_stories(count: usize) -> Result<Vec<StoryItem>, reqwest::Error> {
+    let url = format!("{}topstories.json", BASE_API_URL);
+    let stories_ids = &reqwest::get(&url).await?.json::<Vec<i64>>().await?[..count];
+
+    let story_futures = stories_ids[..usize::min(stories_ids.len(), count)]
+        .iter()
+        .map(|&story_id| get_story_preview(story_id));
+    let stories = join_all(story_futures)
+        .await
+        .into_iter()
+        .filter_map(|story| story.ok())
+        .collect();
+    Ok(stories)
+}
+
+pub async fn get_story(id: i64) -> Result<StoryPageData, reqwest::Error> {
+    let url = format!("{}{}{}.json", BASE_API_URL, ITEM_API, id);
+    let mut story = reqwest::get(&url).await?.json::<StoryPageData>().await?;
+    let comment_futures = story.item.kids.iter().map(|&id| get_comment(id));
+    let comments = join_all(comment_futures)
+        .await
+        .into_iter()
+        .filter_map(|c| c.ok())
+        .collect();
+
+    story.comments = comments;
+    Ok(story)
+}
+
+#[async_recursion::async_recursion(?Send)]
+pub async fn get_comment_with_depth(id: i64, depth: i64) -> Result<Comment, reqwest::Error> {
+    let url = format!("{}{}{}.json", BASE_API_URL, ITEM_API, id);
+    let mut comment = reqwest::get(&url).await?.json::<Comment>().await?;
+    if depth > 0 {
+        let sub_comments_futures = comment
+            .kids
+            .iter()
+            .map(|story_id| get_comment_with_depth(*story_id, depth - 1));
+        comment.sub_comments = join_all(sub_comments_futures)
+            .await
+            .into_iter()
+            .filter_map(|c| c.ok())
+            .collect();
+    }
+    Ok(comment)
+}
+
+pub async fn get_comment(comment_id: i64) -> Result<Comment, reqwest::Error> {
+    let comment = get_comment_with_depth(comment_id, COMMENT_DEPTH).await?;
+    Ok(comment)
+}
+````
+
+## Working with Async
+
+[`use_future`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_future.html) is a [hook](./state.md) that lets you run an async closure, and provides you with its result.
+
+For example, we can make an API request (using [reqwest](https://docs.rs/reqwest/latest/reqwest/index.html)) inside `use_future`:
+
+````rs@hackernews_async.rs
+fn Stories(cx: Scope) -> Element {
+    // Fetch the top 10 stories on Hackernews
+    let stories = use_future(cx, (), |_| get_stories(10));
+
+    // check if the future is resolved
+    match stories.value() {
+        Some(Ok(list)) => {
+            // if it is, render the stories
+            render! {
+                div {
+                    // iterate over the stories with a for loop
+                    for story in list {
+                        // render every story with the StoryListing component
+                        StoryListing { story: story.clone() }
+                    }
+                }
+            }
+        }
+        Some(Err(err)) => {
+            // if there was an error, render the error
+            render! {"An error occurred while fetching stories {err}"}
+        }
+        None => {
+            // if the future is not resolved yet, render a loading message
+            render! {"Loading items"}
+        }
+    }
+}
+````
+
+The code inside `use_future` will be submitted to the Dioxus scheduler once the component has rendered.
+
+We can use `.value()` to get the result of the future. On the first run, since there's no data ready when the component loads, its value will be `None`.  However, once the future is finished, the component will be re-rendered and the value will now be `Some(...)`, containing the return value of the closure.
+
+We can then render the result by looping over each of the posts and rendering them with the `StoryListing` component.
+
+````inject-dioxus
+DemoFrame {
+	hackernews_async::fetch::App {}
+}
+````
+
+ > 
+ > You can read more about working with Async in Dioxus in the [Async reference](../reference/index.md)
+
+## Lazily Fetching Data
+
+Finally, we will lazily fetch the comments on each post as the user hovers over the post.
+
+We need to revisit the code that handles hovering over an item. Instead of passing an empty list of comments, we can fetch all the related comments when the user hovers over the item.
+
+We will cache the list of comments with a [use_ref](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_ref.html) hook. This hook allows you to store some state in a single component. When the user triggers fetching the comments we will check if the response has already been cached before fetching the data from the hackernews API.
+
+````rs@hackernews_async.rs
+// New
+async fn resolve_story(
+    full_story: UseRef<Option<StoryPageData>>,
+    preview_state: UseSharedState<PreviewState>,
+    story_id: i64,
+) {
+    if let Some(cached) = &*full_story.read() {
+        *preview_state.write() = PreviewState::Loaded(cached.clone());
+        return;
+    }
+
+    *preview_state.write() = PreviewState::Loading;
+    if let Ok(story) = get_story(story_id).await {
+        *preview_state.write() = PreviewState::Loaded(story.clone());
+        *full_story.write() = Some(story);
+    }
+}
+
+#[component]
+fn StoryListing(cx: Scope, story: StoryItem) -> Element {
+    let preview_state = use_shared_state::<PreviewState>(cx).unwrap();
+    let StoryItem {
+        title,
+        url,
+        by,
+        score,
+        time,
+        kids,
+        id,
+        ..
+    } = story;
+    // New
+    let full_story = use_ref(cx, || None);
+
+    let url = url.as_deref().unwrap_or_default();
+    let hostname = url
+        .trim_start_matches("https://")
+        .trim_start_matches("http://")
+        .trim_start_matches("www.");
+    let score = format!("{score} {}", if *score == 1 { " point" } else { " points" });
+    let comments = format!(
+        "{} {}",
+        kids.len(),
+        if kids.len() == 1 {
+            " comment"
+        } else {
+            " comments"
+        }
+    );
+    let time = time.format("%D %l:%M %p");
+
+    cx.render(rsx! {
+        div {
+            padding: "0.5rem",
+            position: "relative",
+            onmouseenter: move |_event| {
+                // New
+                // If you return a future from an event handler, it will be run automatically
+                resolve_story(full_story.clone(), preview_state.clone(), *id)
+            },
+            div {
+                font_size: "1.5rem",
+                a {
+                    href: url,
+                    onfocus: move |_event| {
+                        // New
+                        resolve_story(full_story.clone(), preview_state.clone(), *id)
+                    },
+                    // ...
+
+````
+
+````inject-dioxus
+DemoFrame {
+	hackernews_async::App {}
+}
+````
+# Conclusion
+
+Well done! You've completed the Dioxus guide and built a hackernews application in Dioxus.
+
+To continue your journey, you can attempt a challenge listed below, or look at the [Dioxus reference](../reference/index.md).
+
+## Challenges
+
+* Organize your components into separate files for better maintainability.
+* Give your app some style if you haven't already.
+* Integrate your application with the [Dioxus router](../router/index.md).
+
+## The full code for the hacker news project
+
+````rs@hackernews_complete.rs
+#![allow(non_snake_case)]
+use dioxus::prelude::*;
+
+pub fn App(cx: Scope) -> Element {
+    use_shared_state_provider(cx, || PreviewState::Unset);
+
+    cx.render(rsx! {
+        div {
+            display: "flex",
+            flex_direction: "row",
+            width: "100%",
+            div {
+                width: "50%",
+                Stories {}
+            }
+            div {
+                width: "50%",
+                Preview {}
+            }
+        }
+    })
+}
+
+fn Stories(cx: Scope) -> Element {
+    let story = use_future(cx, (), |_| get_stories(10));
+
+    match story.value() {
+        Some(Ok(list)) => render! {
+            div {
+                for story in list {
+                    StoryListing { story: story.clone() }
+                }
+            }
+        },
+        Some(Err(err)) => render! {"An error occurred while fetching stories {err}"},
+        None => render! {"Loading items"},
+    }
+}
+
+async fn resolve_story(
+    full_story: UseRef<Option<StoryPageData>>,
+    preview_state: UseSharedState<PreviewState>,
+    story_id: i64,
+) {
+    if let Some(cached) = &*full_story.read() {
+        *preview_state.write() = PreviewState::Loaded(cached.clone());
+        return;
+    }
+
+    *preview_state.write() = PreviewState::Loading;
+    if let Ok(story) = get_story(story_id).await {
+        *preview_state.write() = PreviewState::Loaded(story.clone());
+        *full_story.write() = Some(story);
+    }
+}
+
+#[component]
+fn StoryListing(cx: Scope, story: StoryItem) -> Element {
+    let preview_state = use_shared_state::<PreviewState>(cx).unwrap();
+    let StoryItem {
+        title,
+        url,
+        by,
+        score,
+        time,
+        kids,
+        id,
+        ..
+    } = story;
+    let full_story = use_ref(cx, || None);
+
+    let url = url.as_deref().unwrap_or_default();
+    let hostname = url
+        .trim_start_matches("https://")
+        .trim_start_matches("http://")
+        .trim_start_matches("www.");
+    let score = format!("{score} {}", if *score == 1 { " point" } else { " points" });
+    let comments = format!(
+        "{} {}",
+        kids.len(),
+        if kids.len() == 1 {
+            " comment"
+        } else {
+            " comments"
+        }
+    );
+    let time = time.format("%D %l:%M %p");
+
+    cx.render(rsx! {
+        div {
+            padding: "0.5rem",
+            position: "relative",
+            onmouseenter: move |_event| {
+                resolve_story(full_story.clone(), preview_state.clone(), *id)
+            },
+            div {
+                font_size: "1.5rem",
+                a {
+                    href: url,
+                    onfocus: move |_event| {
+                        resolve_story(full_story.clone(), preview_state.clone(), *id)
+                    },
+                    "{title}"
+                }
+                a {
+                    color: "gray",
+                    href: "https://news.ycombinator.com/from?site={hostname}",
+                    text_decoration: "none",
+                    " ({hostname})"
+                }
+            }
+            div {
+                display: "flex",
+                flex_direction: "row",
+                color: "gray",
+                div {
+                    "{score}"
+                }
+                div {
+                    padding_left: "0.5rem",
+                    "by {by}"
+                }
+                div {
+                    padding_left: "0.5rem",
+                    "{time}"
+                }
+                div {
+                    padding_left: "0.5rem",
+                    "{comments}"
+                }
+            }
+        }
+    })
+}
+
+#[derive(Clone, Debug)]
+enum PreviewState {
+    Unset,
+    Loading,
+    Loaded(StoryPageData),
+}
+
+fn Preview(cx: Scope) -> Element {
+    let preview_state = use_shared_state::<PreviewState>(cx)?;
+
+    match &*preview_state.read() {
+        PreviewState::Unset => render! {
+            "Hover over a story to preview it here"
+        },
+        PreviewState::Loading => render! {
+            "Loading..."
+        },
+        PreviewState::Loaded(story) => {
+            let title = &story.item.title;
+            let url = story.item.url.as_deref().unwrap_or_default();
+            let text = story.item.text.as_deref().unwrap_or_default();
+            render! {
+                div {
+                    padding: "0.5rem",
+                    div {
+                        font_size: "1.5rem",
+                        a {
+                            href: "{url}",
+                            "{title}"
+                        }
+                    }
+                    div {
+                        dangerous_inner_html: "{text}",
+                    }
+                    for comment in &story.comments {
+                        Comment { comment: comment.clone() }
+                    }
+                }
+            }
+        }
+    }
+}
+
+#[component]
+fn Comment(cx: Scope, comment: Comment) -> Element<'a> {
+    render! {
+        div {
+            padding: "0.5rem",
+            div {
+                color: "gray",
+                "by {comment.by}"
+            }
+            div {
+                dangerous_inner_html: "{comment.text}"
+            }
+            for kid in &comment.sub_comments {
+                Comment { comment: kid.clone() }
+            }
+        }
+    }
+}
+
+// Define the Hackernews API and types
+use chrono::{DateTime, Utc};
+use futures::future::join_all;
+use serde::{Deserialize, Serialize};
+
+pub static BASE_API_URL: &str = "https://hacker-news.firebaseio.com/v0/";
+pub static ITEM_API: &str = "item/";
+pub static USER_API: &str = "user/";
+const COMMENT_DEPTH: i64 = 2;
+
+pub async fn get_story_preview(id: i64) -> Result<StoryItem, reqwest::Error> {
+    let url = format!("{}{}{}.json", BASE_API_URL, ITEM_API, id);
+    reqwest::get(&url).await?.json().await
+}
+
+pub async fn get_stories(count: usize) -> Result<Vec<StoryItem>, reqwest::Error> {
+    let url = format!("{}topstories.json", BASE_API_URL);
+    let stories_ids = &reqwest::get(&url).await?.json::<Vec<i64>>().await?[..count];
+
+    let story_futures = stories_ids[..usize::min(stories_ids.len(), count)]
+        .iter()
+        .map(|&story_id| get_story_preview(story_id));
+    Ok(join_all(story_futures)
+        .await
+        .into_iter()
+        .filter_map(|story| story.ok())
+        .collect())
+}
+
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub struct StoryPageData {
+    #[serde(flatten)]
+    pub item: StoryItem,
+    #[serde(default)]
+    pub comments: Vec<Comment>,
+}
+
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub struct Comment {
+    pub id: i64,
+    /// there will be no by field if the comment was deleted
+    #[serde(default)]
+    pub by: String,
+    #[serde(default)]
+    pub text: String,
+    #[serde(with = "chrono::serde::ts_seconds")]
+    pub time: DateTime<Utc>,
+    #[serde(default)]
+    pub kids: Vec<i64>,
+    #[serde(default)]
+    pub sub_comments: Vec<Comment>,
+    pub r#type: String,
+}
+
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub struct StoryItem {
+    pub id: i64,
+    pub title: String,
+    pub url: Option<String>,
+    pub text: Option<String>,
+    #[serde(default)]
+    pub by: String,
+    #[serde(default)]
+    pub score: i64,
+    #[serde(default)]
+    pub descendants: i64,
+    #[serde(with = "chrono::serde::ts_seconds")]
+    pub time: DateTime<Utc>,
+    #[serde(default)]
+    pub kids: Vec<i64>,
+    pub r#type: String,
+}
+
+pub async fn get_story(id: i64) -> Result<StoryPageData, reqwest::Error> {
+    let url = format!("{}{}{}.json", BASE_API_URL, ITEM_API, id);
+    let mut story = reqwest::get(&url).await?.json::<StoryPageData>().await?;
+    let comment_futures = story.item.kids.iter().map(|&id| get_comment(id));
+    let comments = join_all(comment_futures)
+        .await
+        .into_iter()
+        .filter_map(|c| c.ok())
+        .collect();
+
+    story.comments = comments;
+    Ok(story)
+}
+
+#[async_recursion::async_recursion(?Send)]
+pub async fn get_comment_with_depth(id: i64, depth: i64) -> Result<Comment, reqwest::Error> {
+    let url = format!("{}{}{}.json", BASE_API_URL, ITEM_API, id);
+    let mut comment = reqwest::get(&url).await?.json::<Comment>().await?;
+    if depth > 0 {
+        let sub_comments_futures = comment
+            .kids
+            .iter()
+            .map(|story_id| get_comment_with_depth(*story_id, depth - 1));
+        comment.sub_comments = join_all(sub_comments_futures)
+            .await
+            .into_iter()
+            .filter_map(|c| c.ok())
+            .collect();
+    }
+    Ok(comment)
+}
+
+pub async fn get_comment(comment_id: i64) -> Result<Comment, reqwest::Error> {
+    get_comment_with_depth(comment_id, COMMENT_DEPTH).await
+}
+
+````

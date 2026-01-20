@@ -1,0 +1,229 @@
+<SYSTEM>This is the developer documentation for Dioxus from /learn/0.5/migration/state.</SYSTEM>
+# State Migration
+
+The `use_state` and `use_ref` hooks have been replaced with the `use_signal` hook. The `use_signal` hook is a more flexible and powerful version of the `use_ref` hook with smarter scopes that only subscribe to a signal if that signal is read within the scope.
+
+With `use_state`, if you had this code:
+
+````rust
+fn Parent(cx: Scope) -> Element {
+	let state = use_state(cx, || 0);
+
+	render! {
+		Child {
+			state: state.clone()
+		}
+	}
+}
+
+#[component]
+fn Child(cx: Scope, state: UseState<i32>) -> Element {
+	render! {
+		"{state}"
+	}
+}
+````
+
+Parent would re-render every time the state changed even though only the child component was using the state. With the new `use_signal` hook, the parent would only re-render if the state was changed within the parent component:
+
+````rs@migration_state.rs
+fn Parent() -> Element {
+    let state = use_signal(|| 0);
+
+    rsx! { Child { state } }
+}
+
+#[component]
+fn Child(state: Signal<i32>) -> Element {
+    rsx! {"{state}"}
+}
+````
+
+Only the child component will re-render when the state changes because only the child component is reading the state.
+
+## Context Based State
+
+The `use_shared_state_provider` and `use_shared_state` hooks have been replaced with using the `use_context_provider` and `use_context` hooks with a `Signal`:
+
+````rs@migration_state.rs
+fn Parent() -> Element {
+    // Create a new signal and provide it to the context API
+    let state = use_context_provider(|| Signal::new(0));
+
+    rsx! { Child {} }
+}
+
+fn Child() -> Element {
+    // Get the state from the context API
+    let state = use_context::<Signal<i32>>();
+
+    rsx! {"{state}"}
+}
+````
+
+Signals are smart enough to handle subscribing to the right scopes without a special shared state hook.
+
+## Opting Out of Subscriptions
+
+Some state hooks including `use_shared_state` and `use_ref` hooks had a function called `write_silent` in `0.4`. This function allowed you to update the state without triggering a re-render any subscribers. This function has been removed in `0.5`.
+
+Instead, you can use the `peek` function to read the current value of a signal without subscribing to it. This inverts the subscription model so that you can opt out of subscribing to a signal instead of opting all subscribers out of updates:
+
+````rs@migration_state.rs
+fn Parent() -> Element {
+    let state = use_signal(|| 0);
+
+    // Even though we are reading the state, we don't need to subscribe to it
+    let read_without_subscribing = state.peek();
+    println!("{}", state.peek());
+
+    rsx! { Child { state } }
+}
+
+#[component]
+fn Child(state: Signal<i32>) -> Element {
+    rsx! {
+        button { onclick: move |_| {
+                state += 1;
+            }, "count is {state}" }
+    }
+}
+````
+
+`peek` gives you more fine-grained control over when you want to subscribe to a signal. This can be useful for performance optimizations and for updating state without re-rendering components.
+
+## Global State
+
+In `0.4`, the fermi crate provided a separate global state API called atoms. In `0.5`, the `Signal` type has been extended to provide a global state API. You can use the `Signal::global` function to create a global signal:
+
+````rs@migration_state.rs
+static COUNT: GlobalSignal<i32> = Signal::global(|| 0);
+
+fn Parent() -> Element {
+    rsx! {
+        div { "{COUNT}" }
+        button {
+            onclick: move |_| {
+                *COUNT.write() += 1;
+            },
+            "Increment"
+        }
+    }
+}
+````
+
+You can read more about global signals in the [Fermi migration guide](fermi.md).
+# State Migration
+
+The `use_state` and `use_ref` hooks have been replaced with the `use_signal` hook. The `use_signal` hook is a more flexible and powerful version of the `use_ref` hook with smarter scopes that only subscribe to a signal if that signal is read within the scope.
+
+With `use_state`, if you had this code:
+
+````rust
+fn Parent(cx: Scope) -> Element {
+	let state = use_state(cx, || 0);
+
+	render! {
+		Child {
+			state: state.clone()
+		}
+	}
+}
+
+#[component]
+fn Child(cx: Scope, state: UseState<i32>) -> Element {
+	render! {
+		"{state}"
+	}
+}
+````
+
+Parent would re-render every time the state changed even though only the child component was using the state. With the new `use_signal` hook, the parent would only re-render if the state was changed within the parent component:
+
+````rs@migration_state.rs
+fn Parent() -> Element {
+    let state = use_signal(|| 0);
+
+    rsx! { Child { state } }
+}
+
+#[component]
+fn Child(state: Signal<i32>) -> Element {
+    rsx! {"{state}"}
+}
+````
+
+Only the child component will re-render when the state changes because only the child component is reading the state.
+
+## Context Based State
+
+The `use_shared_state_provider` and `use_shared_state` hooks have been replaced with using the `use_context_provider` and `use_context` hooks with a `Signal`:
+
+````rs@migration_state.rs
+fn Parent() -> Element {
+    // Create a new signal and provide it to the context API
+    let state = use_context_provider(|| Signal::new(0));
+
+    rsx! { Child {} }
+}
+
+fn Child() -> Element {
+    // Get the state from the context API
+    let state = use_context::<Signal<i32>>();
+
+    rsx! {"{state}"}
+}
+````
+
+Signals are smart enough to handle subscribing to the right scopes without a special shared state hook.
+
+## Opting Out of Subscriptions
+
+Some state hooks including `use_shared_state` and `use_ref` hooks had a function called `write_silent` in `0.4`. This function allowed you to update the state without triggering a re-render any subscribers. This function has been removed in `0.5`.
+
+Instead, you can use the `peek` function to read the current value of a signal without subscribing to it. This inverts the subscription model so that you can opt out of subscribing to a signal instead of opting all subscribers out of updates:
+
+````rs@migration_state.rs
+fn Parent() -> Element {
+    let state = use_signal(|| 0);
+
+    // Even though we are reading the state, we don't need to subscribe to it
+    let read_without_subscribing = state.peek();
+    println!("{}", state.peek());
+
+    rsx! { Child { state } }
+}
+
+#[component]
+fn Child(state: Signal<i32>) -> Element {
+    rsx! {
+        button { onclick: move |_| {
+                state += 1;
+            }, "count is {state}" }
+    }
+}
+````
+
+`peek` gives you more fine-grained control over when you want to subscribe to a signal. This can be useful for performance optimizations and for updating state without re-rendering components.
+
+## Global State
+
+In `0.4`, the fermi crate provided a separate global state API called atoms. In `0.5`, the `Signal` type has been extended to provide a global state API. You can use the `Signal::global` function to create a global signal:
+
+````rs@migration_state.rs
+static COUNT: GlobalSignal<i32> = Signal::global(|| 0);
+
+fn Parent() -> Element {
+    rsx! {
+        div { "{COUNT}" }
+        button {
+            onclick: move |_| {
+                *COUNT.write() += 1;
+            },
+            "Increment"
+        }
+    }
+}
+````
+
+You can read more about global signals in the [Fermi migration guide](fermi.md).

@@ -1,0 +1,293 @@
+<SYSTEM>This is the developer documentation for Dioxus from /learn/0.6/essentials/error_handling/.</SYSTEM>
+# Error handling
+
+A selling point of Rust for web development is the reliability of always knowing where errors can occur and being forced to handle them. Dioxus provides ErrorBoundarys to help you handle errors in a declarative way. This guide will teach you how to use ErrorBoundaries and other error handling strategies in Dioxus.
+
+## Returning Errors from Components
+
+Astute observers might have noticed that `Element` is actually a type alias for `Result<VNode, RenderError>`. The `RenderError` type can be created from an error type that implements `Error`. You can use `?` to bubble up any errors you encounter while rendering to the nearest error boundary:
+
+````rs@error_handling.rs
+#[component]
+fn ThrowsError() -> Element {
+    // You can return any type that implements `Error`
+    let number: i32 = use_hook(|| "1.234").parse()?;
+
+    todo!()
+}
+````
+
+## Capturing errors with ErrorBoundaries
+
+When you return an error from a component, it gets sent to the nearest error boundary. That error boundary can then handle the error and render a fallback UI with the handle_error closure:
+
+````rs@error_handling.rs
+#[component]
+fn Parent() -> Element {
+    rsx! {
+        ErrorBoundary {
+            // The error boundary accepts a closure that will be rendered when an error is thrown in any
+            // of the children
+            handle_error: |_| {
+                rsx! { "Oops, we encountered an error. Please report this to the developer of this application" }
+            },
+            ThrowsError {}
+        }
+    }
+}
+````
+
+## Throwing Errors from Event Handlers
+
+In addition to components, you can throw errors from event handlers. If you throw an error from an event handler, it will bubble up to the nearest error boundary just like a component:
+
+````rs@error_handling.rs
+#[component]
+fn ThrowsError() -> Element {
+    rsx! {
+        button {
+            onclick: move |_| {
+                // Event handlers can return errors just like components
+                let number: i32 = "1...234".parse()?;
+
+                tracing::info!("Parsed number: {number}");
+
+                Ok(())
+            },
+            "Throw error"
+        }
+    }
+}
+````
+
+## Adding context to errors
+
+You can add additional context to your errors with the [`Context`](https://docs.rs/dioxus/0.6/dioxus/prelude/trait.Context.html) trait. Calling `context` on a `Result` will add the context to the error variant of the `Result`:
+
+````rs@error_handling.rs
+#[component]
+fn ThrowsError() -> Element {
+    // You can call the context method on results to add more information to the error
+    let number: i32 = use_hook(|| "1.234")
+        .parse()
+        .context("Failed to parse name")?;
+
+    todo!()
+}
+````
+
+If you need some custom UI for the error message, you can call `show` on a result to attach an Element to the error variant. The parent error boundary can choose to render this element instead of the default error message:
+
+````rs@error_handling.rs
+#[component]
+fn Parent() -> Element {
+    rsx! {
+        ErrorBoundary {
+            // The error boundary accepts a closure that will be rendered when an error is thrown in any
+            // of the children
+            handle_error: |error: ErrorContext| {
+                if let Some(error_ui) = error.show() {
+                    rsx! {
+                        {error_ui}
+                    }
+                } else {
+                    rsx! {
+                        div {
+                            "Oops, we encountered an error. Please report this to the developer of this application"
+                        }
+                    }
+                }
+            },
+            ThrowsError {}
+        }
+    }
+}
+````
+
+## Local Error Handling
+
+If you need more fine-grained control over error states, you can store errors in reactive hooks and use them just like any other value. For example, if you need to show a phone number validation error, you can store the error in a memo and show it below the input field if it is invalid:
+
+````rs@error_handling.rs
+#[component]
+pub fn PhoneNumberValidation() -> Element {
+    let mut phone_number = use_signal(|| String::new());
+    let parsed_phone_number = use_memo(move || phone_number().parse::<PhoneNumber>());
+
+    rsx! {
+        input {
+            class: "border border-gray-300 rounded-md p-2 mb-4",
+            placeholder: "Phone number",
+            value: "{phone_number}",
+            oninput: move |e| {
+                phone_number.set(e.value());
+            },
+        }
+
+        match parsed_phone_number() {
+            Ok(phone_number) => rsx! {
+                div {
+                    "Parsed phone number: {phone_number}"
+                }
+            },
+            Err(error) => rsx! {
+                div {
+                    "Phone number is invalid: {error}"
+                }
+            }
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    error_handling::PhoneNumberValidation {}
+}
+````
+# Error handling
+
+A selling point of Rust for web development is the reliability of always knowing where errors can occur and being forced to handle them. Dioxus provides ErrorBoundarys to help you handle errors in a declarative way. This guide will teach you how to use ErrorBoundaries and other error handling strategies in Dioxus.
+
+## Returning Errors from Components
+
+Astute observers might have noticed that `Element` is actually a type alias for `Result<VNode, RenderError>`. The `RenderError` type can be created from an error type that implements `Error`. You can use `?` to bubble up any errors you encounter while rendering to the nearest error boundary:
+
+````rs@error_handling.rs
+#[component]
+fn ThrowsError() -> Element {
+    // You can return any type that implements `Error`
+    let number: i32 = use_hook(|| "1.234").parse()?;
+
+    todo!()
+}
+````
+
+## Capturing errors with ErrorBoundaries
+
+When you return an error from a component, it gets sent to the nearest error boundary. That error boundary can then handle the error and render a fallback UI with the handle_error closure:
+
+````rs@error_handling.rs
+#[component]
+fn Parent() -> Element {
+    rsx! {
+        ErrorBoundary {
+            // The error boundary accepts a closure that will be rendered when an error is thrown in any
+            // of the children
+            handle_error: |_| {
+                rsx! { "Oops, we encountered an error. Please report this to the developer of this application" }
+            },
+            ThrowsError {}
+        }
+    }
+}
+````
+
+## Throwing Errors from Event Handlers
+
+In addition to components, you can throw errors from event handlers. If you throw an error from an event handler, it will bubble up to the nearest error boundary just like a component:
+
+````rs@error_handling.rs
+#[component]
+fn ThrowsError() -> Element {
+    rsx! {
+        button {
+            onclick: move |_| {
+                // Event handlers can return errors just like components
+                let number: i32 = "1...234".parse()?;
+
+                tracing::info!("Parsed number: {number}");
+
+                Ok(())
+            },
+            "Throw error"
+        }
+    }
+}
+````
+
+## Adding context to errors
+
+You can add additional context to your errors with the [`Context`](https://docs.rs/dioxus/0.6/dioxus/prelude/trait.Context.html) trait. Calling `context` on a `Result` will add the context to the error variant of the `Result`:
+
+````rs@error_handling.rs
+#[component]
+fn ThrowsError() -> Element {
+    // You can call the context method on results to add more information to the error
+    let number: i32 = use_hook(|| "1.234")
+        .parse()
+        .context("Failed to parse name")?;
+
+    todo!()
+}
+````
+
+If you need some custom UI for the error message, you can call `show` on a result to attach an Element to the error variant. The parent error boundary can choose to render this element instead of the default error message:
+
+````rs@error_handling.rs
+#[component]
+fn Parent() -> Element {
+    rsx! {
+        ErrorBoundary {
+            // The error boundary accepts a closure that will be rendered when an error is thrown in any
+            // of the children
+            handle_error: |error: ErrorContext| {
+                if let Some(error_ui) = error.show() {
+                    rsx! {
+                        {error_ui}
+                    }
+                } else {
+                    rsx! {
+                        div {
+                            "Oops, we encountered an error. Please report this to the developer of this application"
+                        }
+                    }
+                }
+            },
+            ThrowsError {}
+        }
+    }
+}
+````
+
+## Local Error Handling
+
+If you need more fine-grained control over error states, you can store errors in reactive hooks and use them just like any other value. For example, if you need to show a phone number validation error, you can store the error in a memo and show it below the input field if it is invalid:
+
+````rs@error_handling.rs
+#[component]
+pub fn PhoneNumberValidation() -> Element {
+    let mut phone_number = use_signal(|| String::new());
+    let parsed_phone_number = use_memo(move || phone_number().parse::<PhoneNumber>());
+
+    rsx! {
+        input {
+            class: "border border-gray-300 rounded-md p-2 mb-4",
+            placeholder: "Phone number",
+            value: "{phone_number}",
+            oninput: move |e| {
+                phone_number.set(e.value());
+            },
+        }
+
+        match parsed_phone_number() {
+            Ok(phone_number) => rsx! {
+                div {
+                    "Parsed phone number: {phone_number}"
+                }
+            },
+            Err(error) => rsx! {
+                div {
+                    "Phone number is invalid: {error}"
+                }
+            }
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    error_handling::PhoneNumberValidation {}
+}
+````

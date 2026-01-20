@@ -1,0 +1,173 @@
+<SYSTEM>This is the developer documentation for Dioxus at /learn/0.7/guides/utilities/logging and all its subroutes.</SYSTEM>
+
+# Logging
+
+Dioxus has a wide range of supported platforms, each with their own logging requirements. We'll discuss the different options available for your projects.
+
+## Dioxus Logger
+
+Dioxus provides a first-party logger as part of `launch`. This sets up a tracing subscriber that cleanly integrates with the Dioxus CLI and platforms like Web and Mobile. In development mode, the `Debug` tracing level is set, and in release only the `Info` level is set.
+
+````rust
+use dioxus::prelude::*;
+
+fn main() {
+    dioxus::launch(|| {
+        // Will only log in "dev" mode
+        tracing::debug!("Rendering app!");
+
+        // Will log in dev and release
+        tracing::info!("Rendering app!");
+
+        rsx! {}
+    })
+}
+````
+
+To override the default or initialize the logger before `launch`, you can use the `init` function yourself:
+
+To use Dioxus Logger, call the `init()` function:
+
+````rs
+use tracing::Level;
+
+fn main() {
+    // Init logger
+    dioxus::logger::init(Level::INFO).expect("failed to init logger");
+
+    // Dioxus launch code
+    dioxus::launch(|| rsx! {})
+}
+````
+
+## The Tracing Crate
+
+The [Tracing](https://crates.io/crates/tracing) crate is the logging interface that the dioxus-logger uses. It is not required to use the Tracing crate, but you will not receive logs from the Dioxus library.
+
+The Tracing crate provides a variety of simple `println`-like macros with varying levels of severity.
+The available macros are as follows with the highest severity on the bottom:
+
+````rs
+fn main() {
+    tracing::trace!("trace");
+    tracing::debug!("debug");
+    tracing::info!("info");
+    tracing::warn!("warn");
+    tracing::error!("error");
+}
+````
+
+All the loggers provided on this page are, besides configuration and initialization, interfaced using these macros. Often you will also utilize the Tracing crate's `Level` enum. This enum usually represents the maximum log severity you want your application to emit and can be loaded from a variety of sources such as configuration file, environment variable, and more.
+
+For more information, visit the Tracing crate's [docs](https://docs.rs/tracing/latest/tracing/).
+
+## Platform Intricacies
+
+On web, Dioxus Logger will use [tracing-wasm](https://crates.io/crates/tracing-wasm). On Desktop and server-based targets, Dioxus Logger will use [tracing-subscriber](https://crates.io/crates/tracing-subscriber)'s `FmtSubscriber`.
+
+## Viewing Logs
+
+Android logs are sent to logcat. To use logcat through the Android debugger, run:
+
+````cmd
+adb -d logcat
+````
+
+Your Android device will need developer options/usb debugging enabled.
+
+For more information, visit android_logger's [docs](https://docs.rs/android_logger/latest/android_logger/).
+
+iOS logs are sent to oslog.
+
+For more information, visit [oslog](https://crates.io/crates/oslog).
+
+#### Final Notes
+
+Dioxus Logger is the preferred logger to use with Dioxus if it suites your needs. There are more features to come. If there are any feature suggestions or issues with Dioxus Logger, feel free to reach out on the [Dioxus Discord Server](https://discord.gg/XgGxMSkvUM)!
+
+For more information, visit Dioxus Logger's [docs](https://docs.rs/dioxus-logger/latest/dioxus_logger/).
+# Internationalization
+
+If your application supports multiple languages, the [dioxus-i18n](https://github.com/dioxus-community/dioxus-i18n) crate contains helpers to make working with translations in your application easier.
+
+You can find an example [here](https://github.com/dioxus-community/dioxus-i18n/blob/main/examples/dioxus-desktop.rs).
+# Tailwind
+
+You can style your Dioxus application with whatever CSS framework you choose, or just write vanilla CSS.
+
+One popular option for styling your Dioxus application is [Tailwind](https://tailwindcss.com/). Tailwind allows you to style your elements with CSS utility classes. This guide will show you how to setup Tailwind CSS with your Dioxus application.
+
+## Setup
+
+1. Install the Dioxus CLI:
+
+````bash
+cargo install dioxus-cli
+````
+
+2. Install NPM: [https://docs.npmjs.com/downloading-and-installing-node-js-and-npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+
+2. Install the Tailwind CSS CLI: [https://tailwindcss.com/docs/installation/tailwind-cli](https://tailwindcss.com/docs/installation/tailwind-cli)
+
+2. Create a `input.css` file in the root of your project with the following content:
+
+````css
+@import "tailwindcss";
+@source "./src/**/*.{rs,html,css}";
+````
+
+5. Create a link to the `tailwind.css` file using manganis somewhere in your rust code:
+
+````rs@tailwind.rs
+use dioxus::prelude::*;
+
+#[component]
+fn app() -> Element {
+    rsx! {
+        // The Stylesheet component inserts a style link into the head of the document
+        document::Stylesheet {
+            // Urls are relative to your Cargo.toml file
+            href: asset!("/assets/tailwind.css")
+        }
+    }
+}
+
+````
+
+### Bonus Steps
+
+1. Install the Tailwind CSS VSCode extension
+1. Go to the settings for the extension and find the experimental regex support section. Edit the setting.json file to look like this:
+
+````json
+"tailwindCSS.experimental.classRegex": ["class: \"(.*)\""],
+"tailwindCSS.includeLanguages": {
+    "rust": "html"
+},
+````
+
+## Development
+
+* Run the following command in the root of the project to start the Tailwind CSS compiler:
+
+````bash
+npx @tailwindcss/cli -i ./input.css -o ./assets/tailwind.css --watch
+````
+
+### Web
+
+* Run the following command in the root of the project to start the Dioxus dev server:
+
+````bash
+dx serve
+````
+
+* Open the browser to [http://localhost:8080](http://localhost:8080).
+
+### Desktop
+
+* Launch the Dioxus desktop app:
+
+````bash
+dx serve --desktop
+````

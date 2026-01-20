@@ -1,0 +1,113 @@
+<SYSTEM>This is the developer documentation for Dioxus from /learn/0.6/reference/components.</SYSTEM>
+# Components
+
+Just like you wouldn't want to write a complex program in a single, long, `main` function, you shouldn't build a complex UI in a single `App` function. Instead, you should break down the functionality of an app in logical parts called components.
+
+A component is a Rust function, named in [UpperCamelCase](https://en.wikipedia.org/wiki/Camel_case), that either takes no parameters or a properties struct and returns an `Element` describing the UI it wants to render.
+
+````rs@hello_world_desktop.rs
+// define a component that renders a div with the text "Hello, world!"
+fn App() -> Element {
+    rsx! {
+        div { "Hello, world!" }
+    }
+}
+````
+
+ > 
+ > You'll probably want to add `#![allow(non_snake_case)]` to the top of your crate to avoid warnings about `UpperCamelCase` component names
+
+A Component is responsible for some rendering task – typically, rendering an isolated part of the user interface. For example, you could have an `About` component that renders a short description of Dioxus Labs:
+
+````rs@components.rs
+pub fn About() -> Element {
+    rsx! {
+        p {
+            b { "Dioxus Labs" }
+            " An Open Source project dedicated to making Rust UI wonderful."
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+	components::About {}
+}
+````
+
+Then, you can render your component in another component, similarly to how elements are rendered:
+
+````rs@components.rs
+pub fn App() -> Element {
+    rsx! {
+        About {}
+        About {}
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+	components::App {}
+}
+````
+
+ > 
+ > At this point, it might seem like components are nothing more than functions. However, as you learn more about the features of Dioxus, you'll see that they are actually more powerful!
+# Components
+
+Just like you wouldn't want to write a complex program in a single, long, `main` function, you shouldn't build a complex UI in a single `App` function. Instead, you should break down the functionality of an app in logical parts called components.
+
+A component is a Rust function, named in [UpperCamelCase](https://en.wikipedia.org/wiki/Camel_case), that either takes no parameters or a properties struct and returns an `Element` describing the UI it wants to render.
+
+````rs@hello_world_desktop.rs
+// define a component that renders a div with the text "Hello, world!"
+fn App() -> Element {
+    rsx! {
+        div { "Hello, world!" }
+    }
+}
+````
+
+ > 
+ > You'll probably want to add `#![allow(non_snake_case)]` to the top of your crate to avoid warnings about `UpperCamelCase` component names
+
+A Component is responsible for some rendering task – typically, rendering an isolated part of the user interface. For example, you could have an `About` component that renders a short description of Dioxus Labs:
+
+````rs@components.rs
+pub fn About() -> Element {
+    rsx! {
+        p {
+            b { "Dioxus Labs" }
+            " An Open Source project dedicated to making Rust UI wonderful."
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+	components::About {}
+}
+````
+
+Then, you can render your component in another component, similarly to how elements are rendered:
+
+````rs@components.rs
+pub fn App() -> Element {
+    rsx! {
+        About {}
+        About {}
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+	components::App {}
+}
+````
+
+ > 
+ > At this point, it might seem like components are nothing more than functions. However, as you learn more about the features of Dioxus, you'll see that they are actually more powerful!

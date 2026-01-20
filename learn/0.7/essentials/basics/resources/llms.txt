@@ -1,0 +1,775 @@
+<SYSTEM>This is the developer documentation for Dioxus from /learn/0.7/essentials/basics/resources.</SYSTEM>
+# Data Fetching
+
+One of the most common asynchronous operations in applications is making network requests. This guide will cover how to fetch data in Dioxus, how to avoid waterfalls, and using libraries to manage caching and invalidating requests.
+
+The hooks and techniques we cover here are built on top of the Future and Signal primitives.
+
+## Library Dependencies
+
+While Dioxus does not provide a built-in HTTP client, you can use the popular [reqwest](https://docs.rs/reqwest/latest/reqwest/) library to make asynchronous network requests. We will be using the reqwest library throughout the examples in this page. Before we start, make sure to add the `reqwest` and `serde` libraries to your `Cargo.toml`:
+
+````sh
+cargo add reqwest --features json
+cargo add serde --features derive
+````
+
+Your Cargo.toml should have the reqwest and serde libraries:
+
+````toml
+[dependencies]
+# ... dioxus and other dependencies
+reqwest = { version = "*", features = ["json"] }
+serde = { version = "1", features = ["derive"] }
+````
+
+We are planning on eventually integrating a library like [dioxus-query](https://crates.io/crates/dioxus-query) directly into Dioxus for better integration with the app router.
+
+## Requests from Event Handlers
+
+The simplest way to request data is simply by attaching an async closure to an EventHandler.
+
+````rust
+#[derive(serde::Deserialize)]
+struct DogApi {
+    message: String,
+}
+
+let mut img_src = use_signal(|| "image.png".to_string());
+
+let fetch_new = move |_| async move {
+    let response = reqwest::get("https://dog.ceo/api/breeds/image/random")
+        .await
+        .unwrap()
+        .json::<DogApi>()
+        .await
+        .unwrap();
+
+    img_src.set(response.message);
+};
+
+rsx! {
+    img { src: img_src }
+    button { onclick: fetch_new, "Fetch a new dog!" }
+}
+````
+
+Whenever the user clicks the button, the `fetch_new` closure is fired, a new Future is spawned, and the network request is made. When the response is complete, we set `img_src` to the return value.
+
+Unfortunately, data fetching is not always quite this simple. If the user rapidly presses the fetch button, multiple requests will be made simultaneously, and the image source will overwritten multiple times. To mitigate this, we can add a "loading" Signal to prevent multiple requests:
+
+````rust
+let mut img_src = use_signal(|| "image.png".to_string());
+let mut loading = use_signal(|| false);
+
+let fetch_new = move |_| async move {
+    if loading() {
+        return;
+    }
+
+    loading.set(true);
+    let response = reqwest::get("https://dog.ceo/api/breeds/image/random")
+        .await
+        .unwrap()
+        .json::<DogApi>()
+        .await
+        .unwrap();
+
+    img_src.set(response.message);
+    loading.set(false);
+};
+
+// ...
+````
+
+Manually handling edge cases of data loading can be tedious, so we've built a more general solution for futures with `use_resource`.
+
+## Asynchronous State with `use_resource`
+
+The [`use_resource`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_resource.html) hook can be used to *derive* asynchronous state. This function accepts an async closure that returns a Future. As the future is polled, `use_resource` tracks `.read()` calls of any contained Signals. If another action calls `.write()` on the tracked signals, the `use_resource` immediately restarts.
+
+````rs@asynchronous.rs
+let mut breed = use_signal(|| "hound".to_string());
+let dogs = use_resource(move || async move {
+    reqwest::Client::new()
+        // Since breed is read inside the async closure, the resource will subscribe to the signal
+        // and rerun when the breed is written to
+        .get(format!("https://dog.ceo/api/breed/{breed}/images"))
+        .send()
+        .await?
+        .json::<BreedResponse>()
+        .await
+});
+
+rsx! {
+    input {
+        value: "{breed}",
+        // When the input is changed and the breed is set, the resource will rerun
+        oninput: move |evt| breed.set(evt.value()),
+    }
+
+    div {
+        display: "flex",
+        flex_direction: "row",
+        // You can read resource just like a signal. If the resource is still
+        // running, it will return None
+        if let Some(response) = &*dogs.read() {
+            match response {
+                Ok(urls) => rsx! {
+                    for image in urls.iter().take(3) {
+                        img {
+                            src: "{image}",
+                            width: "100px",
+                            height: "100px",
+                        }
+                    }
+                },
+                Err(err) => rsx! { "Failed to fetch response: {err}" },
+            }
+        } else {
+            "Loading..."
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    asynchronous::UseResource {}
+}
+````
+
+The `use_resource` hook might look similar to the `use_memo` hook. Unlike `use_memo`, the resource's output is not memoized with `PartialEq`. That means any components/reactive hooks that read the output will rerun if the future reruns even if the value it returns is the same:
+
+````rs@asynchronous.rs
+let mut number = use_signal(|| 0);
+
+// Resources rerun any time their dependencies change. They will
+// rerun any reactive scopes that read the resource when they finish
+// even if the value hasn't changed
+let halved_resource = use_resource(move || async move { number() / 2 });
+
+log!("Component reran");
+
+rsx! {
+    button {
+        onclick: move |_| number += 1,
+        "Increment"
+    }
+    p {
+        if let Some(halved) = halved_resource() {
+            "Halved: {halved}"
+        } else {
+            "Loading..."
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    asynchronous::UseResourceDemo {}
+}
+````
+
+ > 
+ > Note: The future you pass to `use_resource` must be cancel safe. Cancel safe futures are futures that can be stopped at any await point without causing causing issues. For example, this task is not cancel safe:
+ > 
+ > ````rs@asynchronous.rs
+ > static RESOURCES_RUNNING: GlobalSignal<HashSet<String>> = Signal::global(|| HashSet::new());
+ > let mut breed = use_signal(|| "hound".to_string());
+ > let dogs = use_resource(move || async move {
+ >     // Modify some global state
+ >     RESOURCES_RUNNING.write().insert(breed());
+ > 
+ >     // Wait for a future to finish. The resource may cancel
+ >     // without warning if breed is changed while the future is running. If
+ >     // it does, then the breed pushed to RESOURCES_RUNNING will never be popped
+ >     let response = reqwest::Client::new()
+ >         .get(format!("https://dog.ceo/api/breed/{breed}/images"))
+ >         .send()
+ >         .await?
+ >         .json::<BreedResponse>()
+ >         .await;
+ > 
+ >     // Restore some global state
+ >     RESOURCES_RUNNING.write().remove(&breed());
+ > 
+ >     response
+ > });
+ > ````
+ > 
+ > ````inject-dioxus
+ > DemoFrame {
+ >     asynchronous::NotCancelSafe {}
+ > }
+ > ````
+ > 
+ > It can be fixed by making sure the global state is restored when the future is dropped:
+ > 
+ > ````rs@asynchronous.rs
+ > static RESOURCES_RUNNING: GlobalSignal<HashSet<String>> = Signal::global(|| HashSet::new());
+ > let mut breed = use_signal(|| "hound".to_string());
+ > let dogs = use_resource(move || async move {
+ >     // Modify some global state
+ >     RESOURCES_RUNNING.write().insert(breed());
+ > 
+ >     // Automatically restore the global state when the future is dropped, even if
+ >     // isn't finished
+ >     struct DropGuard(String);
+ >     impl Drop for DropGuard {
+ >         fn drop(&mut self) {
+ >             RESOURCES_RUNNING.write().remove(&self.0);
+ >         }
+ >     }
+ >     let _guard = DropGuard(breed());
+ > 
+ >     // Wait for a future to finish. The resource may cancel
+ >     // without warning if breed is changed while the future is running. If
+ >     // it does, then it will be dropped and the breed will be popped
+ >     reqwest::Client::new()
+ >         .get(format!("https://dog.ceo/api/breed/{breed}/images"))
+ >         .send()
+ >         .await?
+ >         .json::<BreedResponse>()
+ >         .await
+ > });
+ > ````
+ > 
+ > ````inject-dioxus
+ > DemoFrame {
+ >     asynchronous::CancelSafe {}
+ > }
+ > ````
+ > 
+ > Async methods will often mention if they are cancel safe in their documentation.
+
+## Asynchronous State with `use_loader`
+
+The `use_resource` hook is great for loading arbitrary values. However, working with resources that return results can be a little cumbersome. In some cases, the `use_loader` hook is a better choice.
+
+The `use_loader` hook is designed to work with reactive futures that return `Result<T, E>`. Instead of returning a `Resource<T>`, like `use_resource`, the `use_loader` hook *actually* returns a `Result<Loader<T>, Loading>`. The `Loading` return type tightly integrates with Error Boundaries and Suspense - both of which are very useful in server-side-rendering (SSR).
+
+Because `use_loader` returns a Result, you can use the `?` syntax to early return if the resource is pending or errored:
+
+````rust
+// Fetch the list of breeds from the Dog API, using the `?` syntax to suspend or throw errors
+let breed_list = use_loader(move || async move {
+    reqwest::get("https://dog.ceo/api/breeds/list/all")
+        .await?
+        .json::<ListBreeds>()
+        .await
+})?;
+````
+
+Generally, we recommend using `use_resource` when doing client-side fetching and `use_loader` when doing hybrid client/server fetching.
+
+## Avoiding Waterfalls
+
+One common issue when fetching data is the "waterfall" effect, where requests run sequentially. This can lead to slow loading times and a poor user experience. To avoid waterfalls, you can hoist your data loading logic to a higher level in your component tree and avoid returning early before unrelated requests.
+
+Lets look at at an app that causes a waterfall effect:
+
+````rs@data_fetching.rs
+fn fetch_dog_image(
+    breed: impl Display,
+) -> impl Future<Output = dioxus::Result<String, CapturedError>> {
+    async move {
+        let response = reqwest::get(format!("https://dog.ceo/api/breed/{breed}/images/random"))
+            .await?
+            .json::<DogApi>()
+            .await?;
+        Ok(response.message)
+    }
+}
+
+#[component]
+fn DogView() -> Element {
+    let poodle_img = use_resource(|| fetch_dog_image("poodle"));
+
+    let poodle_img = match poodle_img() {
+        Some(Ok(src)) => src,
+        _ => {
+            return rsx! {
+                p { "Loading or error..." }
+            };
+        }
+    };
+
+    let golden_retriever_img = use_resource(|| fetch_dog_image("golden retriever"));
+
+    let golden_retriever_img = match golden_retriever_img() {
+        Some(Ok(src)) => src,
+        _ => {
+            return rsx! {
+                p { "Loading or error..." }
+            };
+        }
+    };
+
+    let pug_img = use_resource(|| fetch_dog_image("pug"));
+
+    let pug_img = match pug_img() {
+        Some(Ok(src)) => src,
+        _ => {
+            return rsx! {
+                p { "Loading or error..." }
+            };
+        }
+    };
+
+    rsx! {
+        div {
+            h1 { "Dog Images" }
+            img { src: "{poodle_img}" }
+            img { src: "{golden_retriever_img}" }
+            img { src: "{pug_img}" }
+        }
+    }
+}
+````
+
+In this example, we return early from the component when any of the requests are still loading. The request for the golden retriever and pug images will not start until the poodle image is loaded, causing a waterfall effect.
+
+![waterfall effect](/assets/07/waterfall_effect.png)
+
+We can avoid this issue by moving all of the early returns after the data fetching for all three images has started. This way, all requests will start at the same time which means they can execute in parallel:
+
+````rs@data_fetching.rs
+let poodle_img = use_resource(|| fetch_dog_image("poodle"));
+let golden_retriever_img = use_resource(|| fetch_dog_image("golden retriever"));
+let pug_img = use_resource(|| fetch_dog_image("pug"));
+
+let poodle_img = match poodle_img() {
+    Some(Ok(src)) => src,
+    _ => {
+        return rsx! {
+            p { "Loading or error..." }
+        };
+    }
+};
+let golden_retriever_img = match golden_retriever_img() {
+    Some(Ok(src)) => src,
+    _ => {
+        return rsx! {
+            p { "Loading or error..." }
+        };
+    }
+};
+let pug_img = match pug_img() {
+    Some(Ok(src)) => src,
+    _ => {
+        return rsx! {
+            p { "Loading or error..." }
+        };
+    }
+};
+
+rsx! {
+    div {
+        h1 { "Dog Images" }
+        img { src: "{poodle_img}" }
+        img { src: "{golden_retriever_img}" }
+        img { src: "{pug_img}" }
+    }
+}
+````
+
+![no waterfall effect](/assets/07/no_waterfall_effect.png)
+
+## Organizing Data Fetching
+
+While it might be tempting to place `use_resource` calls *everywhere* in your app, we strongly recommend limiting yourself to just a few sources of data fetching. It is generally easier to reason about centralized loading states rather than many fragmented sources.
+
+As we add more sources of data fetching, we also add a larger combination of loading states. If possible, it's better to load a users's "name" and "id" in *one* request, rather than two.
+
+## Libraries for Data Fetching
+
+`use_resource` is a great way to fetch data in dioxus, but it can be cumbersome to manage complex data fetching scenarios. Libraries like [Dioxus query](https://docs.rs/dioxus-query/latest/dioxus_query/) provide more advanced features for data fetching, such as caching, invalidation, and polling. We won't cover the api of these libraries in detail here, but you can check out the [dioxus awesome](https://dioxuslabs.com/awesome/) list for more libraries that can help you with data fetching.
+# Data Fetching
+
+One of the most common asynchronous operations in applications is making network requests. This guide will cover how to fetch data in Dioxus, how to avoid waterfalls, and using libraries to manage caching and invalidating requests.
+
+The hooks and techniques we cover here are built on top of the Future and Signal primitives.
+
+## Library Dependencies
+
+While Dioxus does not provide a built-in HTTP client, you can use the popular [reqwest](https://docs.rs/reqwest/latest/reqwest/) library to make asynchronous network requests. We will be using the reqwest library throughout the examples in this page. Before we start, make sure to add the `reqwest` and `serde` libraries to your `Cargo.toml`:
+
+````sh
+cargo add reqwest --features json
+cargo add serde --features derive
+````
+
+Your Cargo.toml should have the reqwest and serde libraries:
+
+````toml
+[dependencies]
+# ... dioxus and other dependencies
+reqwest = { version = "*", features = ["json"] }
+serde = { version = "1", features = ["derive"] }
+````
+
+We are planning on eventually integrating a library like [dioxus-query](https://crates.io/crates/dioxus-query) directly into Dioxus for better integration with the app router.
+
+## Requests from Event Handlers
+
+The simplest way to request data is simply by attaching an async closure to an EventHandler.
+
+````rust
+#[derive(serde::Deserialize)]
+struct DogApi {
+    message: String,
+}
+
+let mut img_src = use_signal(|| "image.png".to_string());
+
+let fetch_new = move |_| async move {
+    let response = reqwest::get("https://dog.ceo/api/breeds/image/random")
+        .await
+        .unwrap()
+        .json::<DogApi>()
+        .await
+        .unwrap();
+
+    img_src.set(response.message);
+};
+
+rsx! {
+    img { src: img_src }
+    button { onclick: fetch_new, "Fetch a new dog!" }
+}
+````
+
+Whenever the user clicks the button, the `fetch_new` closure is fired, a new Future is spawned, and the network request is made. When the response is complete, we set `img_src` to the return value.
+
+Unfortunately, data fetching is not always quite this simple. If the user rapidly presses the fetch button, multiple requests will be made simultaneously, and the image source will overwritten multiple times. To mitigate this, we can add a "loading" Signal to prevent multiple requests:
+
+````rust
+let mut img_src = use_signal(|| "image.png".to_string());
+let mut loading = use_signal(|| false);
+
+let fetch_new = move |_| async move {
+    if loading() {
+        return;
+    }
+
+    loading.set(true);
+    let response = reqwest::get("https://dog.ceo/api/breeds/image/random")
+        .await
+        .unwrap()
+        .json::<DogApi>()
+        .await
+        .unwrap();
+
+    img_src.set(response.message);
+    loading.set(false);
+};
+
+// ...
+````
+
+Manually handling edge cases of data loading can be tedious, so we've built a more general solution for futures with `use_resource`.
+
+## Asynchronous State with `use_resource`
+
+The [`use_resource`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_resource.html) hook can be used to *derive* asynchronous state. This function accepts an async closure that returns a Future. As the future is polled, `use_resource` tracks `.read()` calls of any contained Signals. If another action calls `.write()` on the tracked signals, the `use_resource` immediately restarts.
+
+````rs@asynchronous.rs
+let mut breed = use_signal(|| "hound".to_string());
+let dogs = use_resource(move || async move {
+    reqwest::Client::new()
+        // Since breed is read inside the async closure, the resource will subscribe to the signal
+        // and rerun when the breed is written to
+        .get(format!("https://dog.ceo/api/breed/{breed}/images"))
+        .send()
+        .await?
+        .json::<BreedResponse>()
+        .await
+});
+
+rsx! {
+    input {
+        value: "{breed}",
+        // When the input is changed and the breed is set, the resource will rerun
+        oninput: move |evt| breed.set(evt.value()),
+    }
+
+    div {
+        display: "flex",
+        flex_direction: "row",
+        // You can read resource just like a signal. If the resource is still
+        // running, it will return None
+        if let Some(response) = &*dogs.read() {
+            match response {
+                Ok(urls) => rsx! {
+                    for image in urls.iter().take(3) {
+                        img {
+                            src: "{image}",
+                            width: "100px",
+                            height: "100px",
+                        }
+                    }
+                },
+                Err(err) => rsx! { "Failed to fetch response: {err}" },
+            }
+        } else {
+            "Loading..."
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    asynchronous::UseResource {}
+}
+````
+
+The `use_resource` hook might look similar to the `use_memo` hook. Unlike `use_memo`, the resource's output is not memoized with `PartialEq`. That means any components/reactive hooks that read the output will rerun if the future reruns even if the value it returns is the same:
+
+````rs@asynchronous.rs
+let mut number = use_signal(|| 0);
+
+// Resources rerun any time their dependencies change. They will
+// rerun any reactive scopes that read the resource when they finish
+// even if the value hasn't changed
+let halved_resource = use_resource(move || async move { number() / 2 });
+
+log!("Component reran");
+
+rsx! {
+    button {
+        onclick: move |_| number += 1,
+        "Increment"
+    }
+    p {
+        if let Some(halved) = halved_resource() {
+            "Halved: {halved}"
+        } else {
+            "Loading..."
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    asynchronous::UseResourceDemo {}
+}
+````
+
+ > 
+ > Note: The future you pass to `use_resource` must be cancel safe. Cancel safe futures are futures that can be stopped at any await point without causing causing issues. For example, this task is not cancel safe:
+ > 
+ > ````rs@asynchronous.rs
+ > static RESOURCES_RUNNING: GlobalSignal<HashSet<String>> = Signal::global(|| HashSet::new());
+ > let mut breed = use_signal(|| "hound".to_string());
+ > let dogs = use_resource(move || async move {
+ >     // Modify some global state
+ >     RESOURCES_RUNNING.write().insert(breed());
+ > 
+ >     // Wait for a future to finish. The resource may cancel
+ >     // without warning if breed is changed while the future is running. If
+ >     // it does, then the breed pushed to RESOURCES_RUNNING will never be popped
+ >     let response = reqwest::Client::new()
+ >         .get(format!("https://dog.ceo/api/breed/{breed}/images"))
+ >         .send()
+ >         .await?
+ >         .json::<BreedResponse>()
+ >         .await;
+ > 
+ >     // Restore some global state
+ >     RESOURCES_RUNNING.write().remove(&breed());
+ > 
+ >     response
+ > });
+ > ````
+ > 
+ > ````inject-dioxus
+ > DemoFrame {
+ >     asynchronous::NotCancelSafe {}
+ > }
+ > ````
+ > 
+ > It can be fixed by making sure the global state is restored when the future is dropped:
+ > 
+ > ````rs@asynchronous.rs
+ > static RESOURCES_RUNNING: GlobalSignal<HashSet<String>> = Signal::global(|| HashSet::new());
+ > let mut breed = use_signal(|| "hound".to_string());
+ > let dogs = use_resource(move || async move {
+ >     // Modify some global state
+ >     RESOURCES_RUNNING.write().insert(breed());
+ > 
+ >     // Automatically restore the global state when the future is dropped, even if
+ >     // isn't finished
+ >     struct DropGuard(String);
+ >     impl Drop for DropGuard {
+ >         fn drop(&mut self) {
+ >             RESOURCES_RUNNING.write().remove(&self.0);
+ >         }
+ >     }
+ >     let _guard = DropGuard(breed());
+ > 
+ >     // Wait for a future to finish. The resource may cancel
+ >     // without warning if breed is changed while the future is running. If
+ >     // it does, then it will be dropped and the breed will be popped
+ >     reqwest::Client::new()
+ >         .get(format!("https://dog.ceo/api/breed/{breed}/images"))
+ >         .send()
+ >         .await?
+ >         .json::<BreedResponse>()
+ >         .await
+ > });
+ > ````
+ > 
+ > ````inject-dioxus
+ > DemoFrame {
+ >     asynchronous::CancelSafe {}
+ > }
+ > ````
+ > 
+ > Async methods will often mention if they are cancel safe in their documentation.
+
+## Asynchronous State with `use_loader`
+
+The `use_resource` hook is great for loading arbitrary values. However, working with resources that return results can be a little cumbersome. In some cases, the `use_loader` hook is a better choice.
+
+The `use_loader` hook is designed to work with reactive futures that return `Result<T, E>`. Instead of returning a `Resource<T>`, like `use_resource`, the `use_loader` hook *actually* returns a `Result<Loader<T>, Loading>`. The `Loading` return type tightly integrates with Error Boundaries and Suspense - both of which are very useful in server-side-rendering (SSR).
+
+Because `use_loader` returns a Result, you can use the `?` syntax to early return if the resource is pending or errored:
+
+````rust
+// Fetch the list of breeds from the Dog API, using the `?` syntax to suspend or throw errors
+let breed_list = use_loader(move || async move {
+    reqwest::get("https://dog.ceo/api/breeds/list/all")
+        .await?
+        .json::<ListBreeds>()
+        .await
+})?;
+````
+
+Generally, we recommend using `use_resource` when doing client-side fetching and `use_loader` when doing hybrid client/server fetching.
+
+## Avoiding Waterfalls
+
+One common issue when fetching data is the "waterfall" effect, where requests run sequentially. This can lead to slow loading times and a poor user experience. To avoid waterfalls, you can hoist your data loading logic to a higher level in your component tree and avoid returning early before unrelated requests.
+
+Lets look at at an app that causes a waterfall effect:
+
+````rs@data_fetching.rs
+fn fetch_dog_image(
+    breed: impl Display,
+) -> impl Future<Output = dioxus::Result<String, CapturedError>> {
+    async move {
+        let response = reqwest::get(format!("https://dog.ceo/api/breed/{breed}/images/random"))
+            .await?
+            .json::<DogApi>()
+            .await?;
+        Ok(response.message)
+    }
+}
+
+#[component]
+fn DogView() -> Element {
+    let poodle_img = use_resource(|| fetch_dog_image("poodle"));
+
+    let poodle_img = match poodle_img() {
+        Some(Ok(src)) => src,
+        _ => {
+            return rsx! {
+                p { "Loading or error..." }
+            };
+        }
+    };
+
+    let golden_retriever_img = use_resource(|| fetch_dog_image("golden retriever"));
+
+    let golden_retriever_img = match golden_retriever_img() {
+        Some(Ok(src)) => src,
+        _ => {
+            return rsx! {
+                p { "Loading or error..." }
+            };
+        }
+    };
+
+    let pug_img = use_resource(|| fetch_dog_image("pug"));
+
+    let pug_img = match pug_img() {
+        Some(Ok(src)) => src,
+        _ => {
+            return rsx! {
+                p { "Loading or error..." }
+            };
+        }
+    };
+
+    rsx! {
+        div {
+            h1 { "Dog Images" }
+            img { src: "{poodle_img}" }
+            img { src: "{golden_retriever_img}" }
+            img { src: "{pug_img}" }
+        }
+    }
+}
+````
+
+In this example, we return early from the component when any of the requests are still loading. The request for the golden retriever and pug images will not start until the poodle image is loaded, causing a waterfall effect.
+
+![waterfall effect](/assets/07/waterfall_effect.png)
+
+We can avoid this issue by moving all of the early returns after the data fetching for all three images has started. This way, all requests will start at the same time which means they can execute in parallel:
+
+````rs@data_fetching.rs
+let poodle_img = use_resource(|| fetch_dog_image("poodle"));
+let golden_retriever_img = use_resource(|| fetch_dog_image("golden retriever"));
+let pug_img = use_resource(|| fetch_dog_image("pug"));
+
+let poodle_img = match poodle_img() {
+    Some(Ok(src)) => src,
+    _ => {
+        return rsx! {
+            p { "Loading or error..." }
+        };
+    }
+};
+let golden_retriever_img = match golden_retriever_img() {
+    Some(Ok(src)) => src,
+    _ => {
+        return rsx! {
+            p { "Loading or error..." }
+        };
+    }
+};
+let pug_img = match pug_img() {
+    Some(Ok(src)) => src,
+    _ => {
+        return rsx! {
+            p { "Loading or error..." }
+        };
+    }
+};
+
+rsx! {
+    div {
+        h1 { "Dog Images" }
+        img { src: "{poodle_img}" }
+        img { src: "{golden_retriever_img}" }
+        img { src: "{pug_img}" }
+    }
+}
+````
+
+![no waterfall effect](/assets/07/no_waterfall_effect.png)
+
+## Organizing Data Fetching
+
+While it might be tempting to place `use_resource` calls *everywhere* in your app, we strongly recommend limiting yourself to just a few sources of data fetching. It is generally easier to reason about centralized loading states rather than many fragmented sources.
+
+As we add more sources of data fetching, we also add a larger combination of loading states. If possible, it's better to load a users's "name" and "id" in *one* request, rather than two.
+
+## Libraries for Data Fetching
+
+`use_resource` is a great way to fetch data in dioxus, but it can be cumbersome to manage complex data fetching scenarios. Libraries like [Dioxus query](https://docs.rs/dioxus-query/latest/dioxus_query/) provide more advanced features for data fetching, such as caching, invalidation, and polling. We won't cover the api of these libraries in detail here, but you can check out the [dioxus awesome](https://dioxuslabs.com/awesome/) list for more libraries that can help you with data fetching.

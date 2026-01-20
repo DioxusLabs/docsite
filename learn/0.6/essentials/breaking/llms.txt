@@ -1,0 +1,353 @@
+<SYSTEM>This is the developer documentation for Dioxus from /learn/0.6/essentials/breaking/.</SYSTEM>
+# Breaking Out of Dioxus
+
+Dioxus makes it easy to build reactive user interfaces. However, there are some cases where you may need to break out of the reactive paradigm to interact with the DOM directly.
+
+## Interacting with JavaScript with `eval` and `web-sys`
+
+Dioxus exposes a limited number of [web apis](https://developer.mozilla.org/en-US/docs/Web/API) with a nicer interface. If you need access to more APIs, you can use the `eval` function to run JavaScript in the browser.
+
+For example, you can use the eval function to read the domain of the current page:
+
+````rs@breaking_out.rs
+pub fn Eval() -> Element {
+    let mut domain = use_signal(String::new);
+    rsx! {
+        button {
+            // When you click the button, some javascript will run in the browser
+            // to read the domain and set the signal
+            onclick: move |_| async move {
+                domain.set(document::eval("return document.domain").await.unwrap().to_string());
+            },
+            "Read Domain"
+        }
+        "Current domain: {domain}"
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    breaking_out::Eval {}
+}
+````
+
+If you are only targeting web, you can also use the [`web-sys`](https://crates.io/crates/web-sys) crate for typed access to the web APIs. Here is what reading the domain looks like with web-sys:
+
+````rs@breaking_out.rs
+use ::web_sys::window;
+use wasm_bindgen::JsCast;
+pub fn WebSys() -> Element {
+    let mut domain = use_signal(String::new);
+    rsx! {
+        button {
+            // When you click the button, we use web-sys to read the domain and a signal
+            onclick: move |_| {
+                domain
+                    .set(
+                        window()
+                            .unwrap()
+                            .document()
+                            .unwrap()
+                            .dyn_into::<::web_sys::HtmlDocument>()
+                            .unwrap()
+                            .domain(),
+                    );
+            },
+            "Read Domain"
+        }
+        "Current domain: {domain}"
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    breaking_out::WebSys {}
+}
+````
+
+## Synchronizing DOM updates with `use_effect`
+
+If you do need to interact with the DOM directly, you should do so in a `use_effect` hook. This hook will run after the component is rendered and all of the Dioxus UI has been rendered. You can read or modify the DOM in this hook.
+
+For example, you can use the `use_effect` hook to write to a canvas element after it is created:
+
+````rs@breaking_out.rs
+pub fn Canvas() -> Element {
+    let mut count = use_signal(|| 0);
+
+    use_effect(move || {
+        // Effects are reactive like memos, and resources. If you read a value inside the effect, the effect will rerun when that value changes
+        let count = count.read();
+
+        // You can use the count value to update the DOM manually
+        document::eval(&format!(
+            r#"var c = document.getElementById("dioxus-canvas");
+var ctx = c.getContext("2d");
+ctx.clearRect(0, 0, c.width, c.height);
+ctx.font = "30px Arial";
+ctx.fillText("{count}", 10, 50);"#
+        ));
+    });
+
+    rsx! {
+        button {
+            // When you click the button, count will be incremented and the effect will rerun
+            onclick: move |_| count += 1,
+            "Increment"
+        }
+        canvas { id: "dioxus-canvas" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    breaking_out::Canvas {}
+}
+````
+
+## Getting access to elements with `onmounted`
+
+If you need a handle to an element that is rendered by dioxus, you can use the `onmounted` event. This event will fire after the element is first mounted to the DOM. It returns a live reference to the element with some methods to interact with it.
+
+You can use the onmounted event to do things like focus or scroll to an element after it is rendered:
+
+````rs@breaking_out.rs
+pub fn OnMounted() -> Element {
+    let mut input_element = use_signal(|| None);
+
+    rsx! {
+        div { height: "100px",
+            button {
+                class: "focus:outline-2 focus:outline-blue-600 focus:outline-dashed",
+                // The onmounted event will run the first time the button element is mounted
+                onmounted: move |element| input_element.set(Some(element.data())),
+                "First button"
+            }
+
+            button {
+                // When you click the button, if the button element has been mounted, we focus to that element
+                onclick: move |_| async move {
+                    if let Some(header) = input_element() {
+                        let _ = header.set_focus(true).await;
+                    }
+                },
+                "Focus first button"
+            }
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    breaking_out::OnMounted {}
+}
+````
+
+## Down casting web sys events
+
+Dioxus provides platform agnostic wrappers over each event type. These wrappers are often nicer to interact with than the raw event types, but they can be more limited. If you are targeting web, you can downcast the event with the `as_web_event` method to get the underlying web-sys event:
+
+````rs@breaking_out.rs
+pub fn Downcast() -> Element {
+    let mut event_text = use_signal(|| 0);
+
+    rsx! {
+        div {
+            onmousemove: move |event| {
+                #[cfg(feature = "web")]
+                {
+                    use dioxus::web::WebEventExt;
+                    event_text.set(event.as_web_event().movement_x());
+                }
+            },
+            "movement_x was {event_text}"
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    breaking_out::Downcast {}
+}
+````
+# Breaking Out of Dioxus
+
+Dioxus makes it easy to build reactive user interfaces. However, there are some cases where you may need to break out of the reactive paradigm to interact with the DOM directly.
+
+## Interacting with JavaScript with `eval` and `web-sys`
+
+Dioxus exposes a limited number of [web apis](https://developer.mozilla.org/en-US/docs/Web/API) with a nicer interface. If you need access to more APIs, you can use the `eval` function to run JavaScript in the browser.
+
+For example, you can use the eval function to read the domain of the current page:
+
+````rs@breaking_out.rs
+pub fn Eval() -> Element {
+    let mut domain = use_signal(String::new);
+    rsx! {
+        button {
+            // When you click the button, some javascript will run in the browser
+            // to read the domain and set the signal
+            onclick: move |_| async move {
+                domain.set(document::eval("return document.domain").await.unwrap().to_string());
+            },
+            "Read Domain"
+        }
+        "Current domain: {domain}"
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    breaking_out::Eval {}
+}
+````
+
+If you are only targeting web, you can also use the [`web-sys`](https://crates.io/crates/web-sys) crate for typed access to the web APIs. Here is what reading the domain looks like with web-sys:
+
+````rs@breaking_out.rs
+use ::web_sys::window;
+use wasm_bindgen::JsCast;
+pub fn WebSys() -> Element {
+    let mut domain = use_signal(String::new);
+    rsx! {
+        button {
+            // When you click the button, we use web-sys to read the domain and a signal
+            onclick: move |_| {
+                domain
+                    .set(
+                        window()
+                            .unwrap()
+                            .document()
+                            .unwrap()
+                            .dyn_into::<::web_sys::HtmlDocument>()
+                            .unwrap()
+                            .domain(),
+                    );
+            },
+            "Read Domain"
+        }
+        "Current domain: {domain}"
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    breaking_out::WebSys {}
+}
+````
+
+## Synchronizing DOM updates with `use_effect`
+
+If you do need to interact with the DOM directly, you should do so in a `use_effect` hook. This hook will run after the component is rendered and all of the Dioxus UI has been rendered. You can read or modify the DOM in this hook.
+
+For example, you can use the `use_effect` hook to write to a canvas element after it is created:
+
+````rs@breaking_out.rs
+pub fn Canvas() -> Element {
+    let mut count = use_signal(|| 0);
+
+    use_effect(move || {
+        // Effects are reactive like memos, and resources. If you read a value inside the effect, the effect will rerun when that value changes
+        let count = count.read();
+
+        // You can use the count value to update the DOM manually
+        document::eval(&format!(
+            r#"var c = document.getElementById("dioxus-canvas");
+var ctx = c.getContext("2d");
+ctx.clearRect(0, 0, c.width, c.height);
+ctx.font = "30px Arial";
+ctx.fillText("{count}", 10, 50);"#
+        ));
+    });
+
+    rsx! {
+        button {
+            // When you click the button, count will be incremented and the effect will rerun
+            onclick: move |_| count += 1,
+            "Increment"
+        }
+        canvas { id: "dioxus-canvas" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    breaking_out::Canvas {}
+}
+````
+
+## Getting access to elements with `onmounted`
+
+If you need a handle to an element that is rendered by dioxus, you can use the `onmounted` event. This event will fire after the element is first mounted to the DOM. It returns a live reference to the element with some methods to interact with it.
+
+You can use the onmounted event to do things like focus or scroll to an element after it is rendered:
+
+````rs@breaking_out.rs
+pub fn OnMounted() -> Element {
+    let mut input_element = use_signal(|| None);
+
+    rsx! {
+        div { height: "100px",
+            button {
+                class: "focus:outline-2 focus:outline-blue-600 focus:outline-dashed",
+                // The onmounted event will run the first time the button element is mounted
+                onmounted: move |element| input_element.set(Some(element.data())),
+                "First button"
+            }
+
+            button {
+                // When you click the button, if the button element has been mounted, we focus to that element
+                onclick: move |_| async move {
+                    if let Some(header) = input_element() {
+                        let _ = header.set_focus(true).await;
+                    }
+                },
+                "Focus first button"
+            }
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    breaking_out::OnMounted {}
+}
+````
+
+## Down casting web sys events
+
+Dioxus provides platform agnostic wrappers over each event type. These wrappers are often nicer to interact with than the raw event types, but they can be more limited. If you are targeting web, you can downcast the event with the `as_web_event` method to get the underlying web-sys event:
+
+````rs@breaking_out.rs
+pub fn Downcast() -> Element {
+    let mut event_text = use_signal(|| 0);
+
+    rsx! {
+        div {
+            onmousemove: move |event| {
+                #[cfg(feature = "web")]
+                {
+                    use dioxus::web::WebEventExt;
+                    event_text.set(event.as_web_event().movement_x());
+                }
+            },
+            "movement_x was {event_text}"
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    breaking_out::Downcast {}
+}
+````

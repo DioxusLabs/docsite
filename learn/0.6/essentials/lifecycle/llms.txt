@@ -1,0 +1,283 @@
+<SYSTEM>This is the developer documentation for Dioxus from /learn/0.6/essentials/lifecycle/.</SYSTEM>
+# Component Lifecycle
+
+## Initializing State with `use_hook`
+
+`use_hook` lets you create new state for your component. The closure you pass to `use_hook` will be called once the first time the component is rendered. Every time the component is re-rendered, the value that was created the first run will be re-used.
+
+````rs@component_lifecycle.rs
+fn UseHook() -> Element {
+    // The closure that is passed to use_hook will be called once the first time the component is rendered
+    let random_number = use_hook(|| {
+        let new_random_number = random_number();
+
+        log!("{new_random_number}");
+
+        new_random_number
+    });
+
+    rsx! {
+        div { "Random {random_number}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    component_lifecycle::UseHookDemo {}
+}
+````
+
+## Rerendering
+
+You can use [tracked values](../state/index.md) to re-render your component whenever a value changes.
+
+````rs@component_lifecycle.rs
+fn Rerenders() -> Element {
+    let mut count = use_signal(|| 0);
+
+    log!("Rerendering parent component with {}", *count.peek());
+
+    rsx! {
+        button { onclick: move |_| count += 1, "Increment" }
+        // Since we read count here, the component will rerender when count changes
+        Count { current_count: count() }
+    }
+}
+
+// If the count prop changes, the component will rerender
+#[component]
+fn Count(current_count: i32) -> Element {
+    log!("Rerendering child component with {current_count}");
+
+    rsx! {
+        div { "The count is {current_count}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    component_lifecycle::RerenderDemo {}
+}
+````
+
+### ⚠️ Don't mutate state in the body of a component
+
+You should avoid changing state in the body of a component. If you read and write to state in the body of a component, you can cause an infinite loop as the component tries to rerender because of the change which triggers another state change.
+
+````rs@component_lifecycle.rs
+fn Bad() -> Element {
+    let mut count = use_signal(|| 0);
+
+    // ❌ Don't mutate state in the body of the component.
+    // It can easily cause an infinite loop!
+    count += 1;
+
+    rsx! { "{count}" }
+}
+````
+
+Instead, derive state with `use_memo`, `use_resource`, or mutate state in a effect.
+
+## Using Effects
+
+You can use effects to run code whenever a component is rendered.
+
+````rs@component_lifecycle.rs
+fn Effect() -> Element {
+    // Effects run after the component is rendered
+    // You can use them to read or modify the rendered component
+    use_effect(|| {
+        log!("Effect ran");
+        document::eval(&format!(
+            "document.getElementById('effect-output').innerText = 'Effect ran'"
+        ));
+    });
+
+    rsx! {
+        div { id: "effect-output", "This will be changed by the effect" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    component_lifecycle::EffectDemo {}
+}
+````
+
+## Cleaning Up Components with Drop
+
+Before a component is dropped, it will drop all of its hooks. You can use this drop behavior to clean up any resources that your component is using. If you just need the drop effect, you can use the [`use_drop`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_drop.html) hook.
+
+````rs@component_lifecycle.rs
+fn TogglesChild() -> Element {
+    let mut show = use_signal(|| true);
+
+    rsx! {
+        button { onclick: move |_| show.toggle(), "Toggle" }
+        if show() {
+            Child {}
+        }
+    }
+}
+
+fn Child() -> Element {
+    // You can use the use_drop hook to clean up any resources
+    use_drop(|| {
+        log!("Child dropped");
+    });
+
+    rsx! {
+        div { "Child" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    component_lifecycle::DropDemo {}
+}
+````
+# Component Lifecycle
+
+## Initializing State with `use_hook`
+
+`use_hook` lets you create new state for your component. The closure you pass to `use_hook` will be called once the first time the component is rendered. Every time the component is re-rendered, the value that was created the first run will be re-used.
+
+````rs@component_lifecycle.rs
+fn UseHook() -> Element {
+    // The closure that is passed to use_hook will be called once the first time the component is rendered
+    let random_number = use_hook(|| {
+        let new_random_number = random_number();
+
+        log!("{new_random_number}");
+
+        new_random_number
+    });
+
+    rsx! {
+        div { "Random {random_number}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    component_lifecycle::UseHookDemo {}
+}
+````
+
+## Rerendering
+
+You can use [tracked values](../state/index.md) to re-render your component whenever a value changes.
+
+````rs@component_lifecycle.rs
+fn Rerenders() -> Element {
+    let mut count = use_signal(|| 0);
+
+    log!("Rerendering parent component with {}", *count.peek());
+
+    rsx! {
+        button { onclick: move |_| count += 1, "Increment" }
+        // Since we read count here, the component will rerender when count changes
+        Count { current_count: count() }
+    }
+}
+
+// If the count prop changes, the component will rerender
+#[component]
+fn Count(current_count: i32) -> Element {
+    log!("Rerendering child component with {current_count}");
+
+    rsx! {
+        div { "The count is {current_count}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    component_lifecycle::RerenderDemo {}
+}
+````
+
+### ⚠️ Don't mutate state in the body of a component
+
+You should avoid changing state in the body of a component. If you read and write to state in the body of a component, you can cause an infinite loop as the component tries to rerender because of the change which triggers another state change.
+
+````rs@component_lifecycle.rs
+fn Bad() -> Element {
+    let mut count = use_signal(|| 0);
+
+    // ❌ Don't mutate state in the body of the component.
+    // It can easily cause an infinite loop!
+    count += 1;
+
+    rsx! { "{count}" }
+}
+````
+
+Instead, derive state with `use_memo`, `use_resource`, or mutate state in a effect.
+
+## Using Effects
+
+You can use effects to run code whenever a component is rendered.
+
+````rs@component_lifecycle.rs
+fn Effect() -> Element {
+    // Effects run after the component is rendered
+    // You can use them to read or modify the rendered component
+    use_effect(|| {
+        log!("Effect ran");
+        document::eval(&format!(
+            "document.getElementById('effect-output').innerText = 'Effect ran'"
+        ));
+    });
+
+    rsx! {
+        div { id: "effect-output", "This will be changed by the effect" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    component_lifecycle::EffectDemo {}
+}
+````
+
+## Cleaning Up Components with Drop
+
+Before a component is dropped, it will drop all of its hooks. You can use this drop behavior to clean up any resources that your component is using. If you just need the drop effect, you can use the [`use_drop`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_drop.html) hook.
+
+````rs@component_lifecycle.rs
+fn TogglesChild() -> Element {
+    let mut show = use_signal(|| true);
+
+    rsx! {
+        button { onclick: move |_| show.toggle(), "Toggle" }
+        if show() {
+            Child {}
+        }
+    }
+}
+
+fn Child() -> Element {
+    // You can use the use_drop hook to clean up any resources
+    use_drop(|| {
+        log!("Child dropped");
+    });
+
+    rsx! {
+        div { "Child" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    component_lifecycle::DropDemo {}
+}
+````

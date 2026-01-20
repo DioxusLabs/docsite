@@ -1,0 +1,836 @@
+<SYSTEM>This is the developer documentation for Dioxus at /learn/0.3/interactivity/event_handlers and all its subroutes.</SYSTEM>
+
+# Event Handlers
+
+Event handlers are used to respond to user actions. For example, an event handler could be triggered when the user clicks, scrolls, moves the mouse, or types a character.
+
+Event handlers are attached to elements. For example, we usually don't care about all the clicks that happen within an app, only those on a particular button.
+
+Event handlers are similar to regular attributes, but their name usually starts with `on`- and they accept closures as values. The closure will be called whenever the event it listens for is triggered and will be passed that event.
+
+For example, to handle clicks on an element, we can specify an `onclick` handler:
+
+````rs@event_click.rs
+cx.render(rsx! {
+button {
+    onclick: move |event| println!("Clicked! Event: {event:?}"),
+    "click me!"
+}
+})
+````
+
+## The Event object
+
+Event handlers receive an [`Event`](https://docs.rs/dioxus-core/latest/dioxus_core/struct.Event.html) object containing information about the event. Different types of events contain different types of data. For example, mouse-related events contain [`MouseData`](https://docs.rs/dioxus/latest/dioxus/events/struct.MouseData.html), which tells you things like where the mouse was clicked and what mouse buttons were used.
+
+In the example above, this event data was logged to the terminal:
+
+````
+Clicked! Event: UiEvent { bubble_state: Cell { value: true }, data: MouseData { coordinates: Coordinates { screen: (242.0, 256.0), client: (26.0, 17.0), element: (16.0, 7.0), page: (26.0, 17.0) }, modifiers: (empty), held_buttons: EnumSet(), trigger_button: Some(Primary) } }
+Clicked! Event: UiEvent { bubble_state: Cell { value: true }, data: MouseData { coordinates: Coordinates { screen: (242.0, 256.0), client: (26.0, 17.0), element: (16.0, 7.0), page: (26.0, 17.0) }, modifiers: (empty), held_buttons: EnumSet(), trigger_button: Some(Primary) } }
+````
+
+To learn what the different event types for HTML provide, read the [events module docs](https://docs.rs/dioxus-html/latest/dioxus_html/events/index.html).
+
+### Event propagation
+
+Some events will trigger first on the element the event originated at upward. For example, a click event on a `button` inside a `div` would first trigger the button's event listener and then the div's event listener.
+
+ > 
+ > For more information about event propigation see [the mdn docs on event bubling](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#event_bubbling)
+
+If you want to prevent this behavior, you can call `stop_propogation()` on the event:
+
+````rs@event_nested.rs
+cx.render(rsx! {
+div {
+    onclick: move |_event| {},
+    "outer",
+    button {
+        onclick: move |event| {
+            // now, outer won't be triggered
+            event.stop_propagation();
+        },
+        "inner"
+    }
+}
+})
+````
+
+## Prevent Default
+
+Some events have a default behavior. For keyboard events, this might be entering the typed character. For mouse events, this might be selecting some text.
+
+In some instances, might want to avoid this default behavior. For this, you can add the `prevent_default` attribute with the name of the handler whose default behavior you want to stop. This attribute is special: you can attach it multiple times for multiple attributes:
+
+````rs@event_prevent_default.rs
+cx.render(rsx! {
+input {
+    prevent_default: "oninput",
+    prevent_default: "onclick",
+}
+})
+````
+
+Any event handlers will still be called.
+
+ > 
+ > Normally, in React or JavaScript, you'd call "preventDefault" on the event in the callback. Dioxus does *not* currently support this behavior. Note: this means you cannot conditionally prevent default behavior based on the data in the event.
+
+## Handler Props
+
+Sometimes, you might want to make a component that accepts an event handler. A simple example would be a `FancyButton` component, which accepts an `on_click` handler:
+
+````rs@event_handler_prop.rs
+#[derive(Props)]
+pub struct FancyButtonProps<'a> {
+    on_click: EventHandler<'a, MouseEvent>,
+}
+
+pub fn FancyButton<'a>(cx: Scope<'a, FancyButtonProps<'a>>) -> Element<'a> {
+    cx.render(rsx!(button {
+        class: "fancy-button",
+        onclick: move |evt| cx.props.on_click.call(evt),
+        "click me pls."
+    }))
+}
+````
+
+Then, you can use it like any other handler:
+
+````rs@event_handler_prop.rs
+cx.render(rsx! {
+    FancyButton {
+        on_click: move |event| println!("Clicked! {event:?}")
+    }
+})
+````
+
+ > 
+ > Note: just like any other attribute, you can name the handlers anything you want! Though they must start with `on`, for the prop to be automatically turned into an `EventHandler` at the call site.
+ > 
+ > You can also put custom data in the event, rather than e.g. `MouseData`
+# Hooks and Component State
+
+So far our components have had no state like a normal rust functions. However, in a UI component, it is often useful to have stateful functionality to build user interactions. For example, you might want to track whether the user has opened a drop-down, and render different things accordingly.
+
+Hooks allow us to create state in our components. Hooks are Rust functions that take a reference to `ScopeState` (in a component, you can pass `cx`), and provide you with functionality and state.
+
+## use_state Hook
+
+[`use_state`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_state.html) is one of the simplest hooks.
+
+* You provide a closure that determines the initial value
+* `use_state` gives you the current value, and a way to update it by setting it to something else
+* When the value updates, `use_state` makes the component re-render, and provides you with the new value
+
+For example, you might have seen the counter example, in which state (a number) is tracked using the `use_state` hook:
+
+````rs@hooks_counter.rs
+fn App(cx: Scope) -> Element {
+    // count will be initialized to 0 the first time the component is rendered
+    let mut count = use_state(cx, || 0);
+
+    cx.render(rsx!(
+        h1 { "High-Five counter: {count}" }
+        button {
+            onclick: move |_| {
+                // changing the count will cause the component to re-render
+                count += 1
+            },
+            "Up high!"
+        }
+        button {
+            onclick: move |_| {
+                // changing the count will cause the component to re-render
+                count -= 1
+            },
+            "Down low!"
+        }
+    ))
+}
+````
+
+![Screenshot: counter app](/assets/blog/release-03/counter.png)
+
+Every time the component's state changes, it re-renders, and the component function is called, so you can describe what you want the new UI to look like. You don't have to worry about "changing" anything – just describe what you want in terms of the state, and Dioxus will take care of the rest!
+
+ > 
+ > `use_state` returns your value wrapped in a smart pointer of type [`UseState`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.UseState.html). This is why you can both read the value and update it, even within an event handler.
+
+You can use multiple hooks in the same component if you want:
+
+````rs@hooks_counter_two_state.rs
+fn App(cx: Scope) -> Element {
+    let mut count_a = use_state(cx, || 0);
+    let mut count_b = use_state(cx, || 0);
+
+    cx.render(rsx!(
+        h1 { "Counter_a: {count_a}" }
+        button { onclick: move |_| count_a += 1, "a++" }
+        button { onclick: move |_| count_a -= 1, "a--" }
+        h1 { "Counter_b: {count_b}" }
+        button { onclick: move |_| count_b += 1, "b++" }
+        button { onclick: move |_| count_b -= 1, "b--" }
+    ))
+}
+````
+
+![Screenshot: app with two counters](/assets/blog/release-03/counter_two_state.png)
+
+## Rules of Hooks
+
+The above example might seem a bit magic, since Rust functions are typically not associated with state. Dioxus allows hooks to maintain state across renders through a reference to `ScopeState`, which is why you must pass `&cx` to them.
+
+But how can Dioxus differentiate between multiple hooks in the same component? As you saw in the second example, both `use_state` functions were called with the same parameters, so how come they can return different things when the counters are different?
+
+````rs@hooks_counter_two_state.rs
+let mut count_a = use_state(cx, || 0);
+let mut count_b = use_state(cx, || 0);
+````
+
+This is only possible because the two hooks are always called in the same order, so Dioxus knows which is which. Because the order you call hooks matters, you must follow certain rules when using hooks:
+
+1. Hooks may be only used in components or other hooks (we'll get to that later)
+1. On every call to the component function
+   1. The same hooks must be called
+   1. In the same order
+1. Hooks name's should start with `use_` so you don't accidentally confuse them with regular functions
+
+These rules mean that there are certain things you can't do with hooks:
+
+### No Hooks in Conditionals
+
+````rs@hooks_bad.rs
+// ❌ don't call hooks in conditionals!
+// We must ensure that the same hooks will be called every time
+// But `if` statements only run if the conditional is true!
+// So we might violate rule 2.
+if you_are_happy && you_know_it {
+let something = use_state(cx, || "hands");
+println!("clap your {something}")
+}
+
+// ✅ instead, *always* call use_state
+// You can put other stuff in the conditional though
+let something = use_state(cx, || "hands");
+if you_are_happy && you_know_it {
+println!("clap your {something}")
+}
+````
+
+### No Hooks in Closures
+
+````rs@hooks_bad.rs
+// ❌ don't call hooks inside closures!
+// We can't guarantee that the closure, if used, will be called in the same order every time
+let _a = || {
+let b = use_state(cx, || 0);
+b.get()
+};
+
+// ✅ instead, move hook `b` outside
+let b = use_state(cx, || 0);
+let _a = || b.get();
+````
+
+### No Hooks in Loops
+
+````rs@hooks_bad.rs
+// `names` is a Vec<&str>
+
+// ❌ Do not use hooks in loops!
+// In this case, if the length of the Vec changes, we break rule 2
+for _name in &names {
+let is_selected = use_state(cx, || false);
+println!("selected: {is_selected}");
+}
+
+// ✅ Instead, use a hashmap with use_ref
+let selection_map = use_ref(cx, HashMap::<&str, bool>::new);
+
+for name in &names {
+let is_selected = selection_map.read()[name];
+println!("selected: {is_selected}");
+}
+````
+
+## use_ref Hook
+
+`use_state` is great for tracking simple values. However, you may notice in the [`UseState` API](https://docs.rs/dioxus/latest/dioxus/hooks/struct.UseState.html) that the only way to modify its value is to replace it with something else (e.g., by calling `set`, or through one of the `+=`, `-=` operators). This works well when it is cheap to construct a value (such as any primitive). But what if you want to maintain more complex data in the components state?
+
+For example, suppose we want to maintain a `Vec` of values. If we stored it with `use_state`, the only way to add a new value to the list would be to create a new `Vec` with the additional value, and put it in the state. This is expensive! We want to modify the existing `Vec` instead.
+
+Thankfully, there is another hook for that, `use_ref`! It is similar to `use_state`, but it lets you get a mutable reference to the contained data.
+
+Here's a simple example that keeps a list of events in a `use_ref`. We can acquire write access to the state with `.with_mut()`, and then just `.push` a new value to the state:
+
+````rs@hooks_use_ref.rs
+fn App(cx: Scope) -> Element {
+    let list = use_ref(cx, Vec::new);
+
+    cx.render(rsx!(
+        p { "Current list: {list.read():?}" }
+        button {
+            onclick: move |event| {
+                list.with_mut(|list| list.push(event));
+            },
+            "Click me!"
+        }
+    ))
+}
+````
+
+ > 
+ > The return values of `use_state` and `use_ref` (`UseState` and `UseRef`, respectively) are in some ways similar to [`Cell`](https://doc.rust-lang.org/std/cell/) and [`RefCell`](https://doc.rust-lang.org/std/cell/struct.RefCell.html) – they provide interior mutability. However, these Dioxus wrappers also ensure that the component gets re-rendered whenever you change the state.
+# User Input
+
+Interfaces often need to provide a way to input data: e.g. text, numbers, checkboxes, etc. In Dioxus, there are two ways you can work with user input.
+
+## Controlled Inputs
+
+With controlled inputs, you are directly in charge of the state of the input. This gives you a lot of flexibility, and makes it easy to keep things in sync. For example, this is how you would create a controlled text input:
+
+````rs@input_controlled.rs
+fn App(cx: Scope) -> Element {
+    let name = use_state(cx, || "bob".to_string());
+
+    cx.render(rsx! {
+        input {
+            // we tell the component what to render
+            value: "{name}",
+            // and what to do when the value changes
+            oninput: move |evt| name.set(evt.value.clone()),
+        }
+    })
+}
+````
+
+Notice the flexibility – you can:
+
+* Also display the same contents in another element, and they will be in sync
+* Transform the input every time it is modified (e.g. to make sure it is upper case)
+* Validate the input every time it changes
+* Have custom logic happening when the input changes (e.g. network request for autocompletion)
+* Programmatically change the value (e.g. a "randomize" button that fills the input with nonsense)
+
+## Uncontrolled Inputs
+
+As an alternative to controlled inputs, you can simply let the platform keep track of the input values. If we don't tell a HTML input what content it should have, it will be editable anyway (this is built into the browser). This approach can be more performant, but less flexible. For example, it's harder to keep the input in sync with another element.
+
+Since you don't necessarily have the current value of the uncontrolled input in state, you can access it either by listening to `oninput` events (similarly to controlled components), or, if the input is part of a form, you can access the form data in the form events (e.g. `oninput` or `onsubmit`):
+
+````rs@input_uncontrolled.rs
+fn App(cx: Scope) -> Element {
+    cx.render(rsx! {
+        form {
+            onsubmit: move |event| {
+                println!("Submitted! {event:?}")
+            },
+            input { name: "name", },
+            input { name: "age", },
+            input { name: "date", },
+            input { r#type: "submit", },
+        }
+    })
+}
+````
+
+````
+Submitted! UiEvent { data: FormData { value: "", values: {"age": "very old", "date": "1966", "name": "Fred"} } }
+````
+# Sharing State
+
+Often, multiple components need to access the same state. Depending on your needs, there are several ways to implement this.
+
+## Lifting State
+
+One approach to share state between components is to "lift" it up to the nearest common ancestor. This means putting the `use_state` hook in a parent component, and passing the needed values down as props.
+
+Suppose we want to build a meme editor. We want to have an input to edit the meme caption, but also a preview of the meme with the caption. Logically, the meme and the input are 2 separate components, but they need access to the same state (the current caption).
+
+ > 
+ > Of course, in this simple example, we could write everything in one component – but it is better to split everything out in smaller components to make the code more reusable, maintainable, and performant (this is even more important for larger, complex apps).
+
+We start with a `Meme` component, responsible for rendering a meme with a given caption:
+
+````rs@meme_editor.rs
+#[inline_props]
+fn Meme<'a>(cx: Scope<'a>, caption: &'a str) -> Element<'a> {
+    let container_style = r#"
+        position: relative;
+        width: fit-content;
+    "#;
+
+    let caption_container_style = r#"
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 16px 8px;
+    "#;
+
+    let caption_style = r"
+        font-size: 32px;
+        margin: 0;
+        color: white;
+        text-align: center;
+    ";
+
+    cx.render(rsx!(
+        div {
+            style: "{container_style}",
+            img {
+                src: "https://i.imgflip.com/2zh47r.jpg",
+                height: "500px",
+            },
+            div {
+                style: "{caption_container_style}",
+                p {
+                    style: "{caption_style}",
+                    "{caption}"
+                }
+            }
+        }
+    ))
+}
+````
+
+ > 
+ > Note that the `Meme` component is unaware where the caption is coming from – it could be stored in `use_state`, `use_ref`, or a constant. This ensures that it is very reusable – the same component can be used for a meme gallery without any changes!
+
+We also create a caption editor, completely decoupled from the meme. The caption editor must not store the caption itself – otherwise, how will we provide it to the `Meme` component? Instead, it should accept the current caption as a prop, as well as an event handler to delegate input events to:
+
+````rs@meme_editor.rs
+#[inline_props]
+fn CaptionEditor<'a>(
+    cx: Scope<'a>,
+    caption: &'a str,
+    on_input: EventHandler<'a, FormEvent>,
+) -> Element<'a> {
+    let input_style = r"
+        border: none;
+        background: cornflowerblue;
+        padding: 8px 16px;
+        margin: 0;
+        border-radius: 4px;
+        color: white;
+    ";
+
+    cx.render(rsx!(input {
+        style: "{input_style}",
+        value: "{caption}",
+        oninput: move |event| on_input.call(event),
+    }))
+}
+````
+
+Finally, a third component will render the other two as children. It will be responsible for keeping the state and passing down the relevant props.
+
+````rs@meme_editor.rs
+fn MemeEditor(cx: Scope) -> Element {
+    let container_style = r"
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        margin: 0 auto;
+        width: fit-content;
+    ";
+
+    let caption = use_state(cx, || "me waiting for my rust code to compile".to_string());
+
+    cx.render(rsx! {
+        div {
+            style: "{container_style}",
+            h1 { "Meme Editor" },
+            Meme {
+                caption: caption,
+            },
+            CaptionEditor {
+                caption: caption,
+                on_input: move |event: FormEvent| {caption.set(event.value.clone());},
+            },
+        }
+    })
+}
+````
+
+![Meme Editor Screenshot: An old plastic skeleton sitting on a park bench. Caption: "me waiting for a language feature"](/assets/blog/release-03/meme_editor_screenshot.png)
+
+## Using Context
+
+Sometimes, some state needs to be shared between multiple components far down the tree, and passing it down through props is very inconvenient.
+
+Suppose now that we want to implement a dark mode toggle for our app. To achieve this, we will make every component select styling depending on whether dark mode is enabled or not.
+
+ > 
+ > Note: we're choosing this approach for the sake of an example. There are better ways to implement dark mode (e.g. using CSS variables). Let's pretend CSS variables don't exist – welcome to 2013!
+
+Now, we could write another `use_state` in the top component, and pass `is_dark_mode` down to every component through props. But think about what will happen as the app grows in complexity – almost every component that renders any CSS is going to need to know if dark mode is enabled or not – so they'll all need the same dark mode prop. And every parent component will need to pass it down to them. Imagine how messy and verbose that would get, especially if we had components several levels deep!
+
+Dioxus offers a better solution than this "prop drilling" – providing context. The [`use_context_provider`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context_provider.html) hook is similar to `use_ref`, but it makes it available through [`use_context`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context.html) for all children components.
+
+First, we have to create a struct for our dark mode configuration:
+
+````rs@meme_editor_dark_mode.rs
+struct DarkMode(bool);
+````
+
+Now, in a top-level component (like `App`), we can provide the `DarkMode` context to all children components:
+
+````rs@meme_editor_dark_mode.rs
+use_shared_state_provider(cx, || DarkMode(false));
+````
+
+As a result, any child component of `App` (direct or not), can access the `DarkMode` context.
+
+````rs@meme_editor_dark_mode.rs
+let dark_mode_context = use_shared_state::<DarkMode>(cx);
+````
+
+ > 
+ > `use_context` returns `Option<UseSharedState<DarkMode>>` here. If the context has been provided, the value is `Some(UseSharedState<DarkMode>)`, which you can call `.read` or `.write` on, similarly to `UseRef`. Otherwise, the value is `None`.
+
+For example, here's how we would implement the dark mode toggle, which both reads the context (to determine what color it should render) and writes to it (to toggle dark mode):
+
+````rs@meme_editor_dark_mode.rs
+pub fn DarkModeToggle(cx: Scope) -> Element {
+    let dark_mode = use_shared_state::<DarkMode>(cx).unwrap();
+
+    let style = if dark_mode.read().0 {
+        "color:white"
+    } else {
+        ""
+    };
+
+    cx.render(rsx!(label {
+        style: "{style}",
+        "Dark Mode",
+        input {
+            r#type: "checkbox",
+            oninput: move |event| {
+                let is_enabled = event.value == "true";
+                dark_mode.write().0 = is_enabled;
+            },
+        },
+    }))
+}
+````
+# Custom Hooks
+
+Hooks are a great way to encapsulate business logic. If none of the existing hooks work for your problem, you can write your own.
+
+## Composing Hooks
+
+To avoid repetition, you can encapsulate business logic based on existing hooks to create a new hook.
+
+For example, if many components need to access an `AppSettings` struct, you can create a "shortcut" hook:
+
+````rs@hooks_composed.rs
+fn use_settings(cx: &ScopeState) -> UseSharedState<AppSettings> {
+    use_shared_state::<AppSettings>(cx).expect("App settings not provided")
+}
+````
+
+## Custom Hook Logic
+
+You can use [`cx.use_hook`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.Scope.html#method.use_hook) to build your own hooks. In fact, this is what all the standard hooks are built on!
+
+`use_hook` accepts a single closure for initializing the hook. It will be only run the first time the component is rendered. The return value of that closure will be used as the value of the hook – Dioxus will take it, and store it for as long as the component is alive. On every render (not just the first one!), you will get a reference to this value.
+
+ > 
+ > Note: You can implement [`Drop`](https://doc.rust-lang.org/std/ops/trait.Drop.html) for your hook value – it will be dropped then the component is unmounted (no longer in the UI)
+
+Inside the initialization closure, you will typically make calls to other `cx` methods. For example:
+
+* The `use_state` hook tracks state in the hook value, and uses [`cx.schedule_update`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.Scope.html#method.schedule_update) to make Dioxus re-render the component whenever it changes.
+* The `use_context` hook calls [`cx.consume_context`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.Scope.html#method.consume_context) (which would be expensive to call on every render) to get some context from the scope
+# Dynamic Rendering
+
+Sometimes you want to render different things depending on the state/props. With Dioxus, just describe what you want to see using Rust control flow – the framework will take care of making the necessary changes on the fly if the state or props change!
+
+## Conditional Rendering
+
+To render different elements based on a condition, you could use an `if-else` statement:
+
+````rs@conditional_rendering.rs
+if *is_logged_in {
+cx.render(rsx! {
+    "Welcome!"
+    button {
+        onclick: move |_| on_log_out.call(()),
+        "Log Out",
+    }
+})
+} else {
+cx.render(rsx! {
+    button {
+        onclick: move |_| on_log_in.call(()),
+        "Log In",
+    }
+})
+}
+````
+
+ > 
+ > You could also use `match` statements, or any Rust function to conditionally render different things.
+
+### Improving the `if-else` Example
+
+You may have noticed some repeated code in the `if-else` example above. Repeating code like this is both bad for maintainability and performance. Dioxus will skip diffing static elements like the button, but when switching between multiple `rsx` calls it cannot perform this optimization. For this example either approach is fine, but for components with large parts that are reused between conditionals, it can be more of an issue.
+
+We can improve this example by splitting up the dynamic parts and inserting them where they are needed.
+
+````rs@conditional_rendering.rs
+cx.render(rsx! {
+// We only render the welcome message if we are logged in
+// You can use if statements in the middle of a render block to conditionally render elements
+if *is_logged_in {
+    // Notice the body of this if statment is rsx code, not an expression
+    "Welcome!"
+}
+button {
+    // depending on the value of `is_logged_in`, we will call a different event handler
+    onclick: move |_| if *is_logged_in {
+        on_log_in.call(())
+    }
+    else{
+        on_log_out.call(())
+    },
+    if *is_logged_in {
+        // if we are logged in, the button should say "Log Out"
+        "Log Out"
+    } else {
+        // if we are not logged in, the button should say "Log In"
+        "Log In"
+    }
+}
+})
+````
+
+### Inspecting `Element` props
+
+Since `Element` is a `Option<VNode>`, components accepting `Element` as a prop can inspect its contents, and render different things based on that. Example:
+
+````rs@component_children_inspect.rs
+fn Clickable<'a>(cx: Scope<'a, ClickableProps<'a>>) -> Element {
+    match cx.props.children {
+        Some(VNode { dynamic_nodes, .. }) => {
+            todo!("render some stuff")
+        }
+        _ => {
+            todo!("render some other stuff")
+        }
+    }
+}
+````
+
+You can't mutate the `Element`, but if you need a modified version of it, you can construct a new one based on its attributes/children/etc.
+
+## Rendering Nothing
+
+To render nothing, you can return `None` from a component. This is useful if you want to conditionally hide something:
+
+````rs@conditional_rendering.rs
+if *is_logged_in {
+return None;
+}
+
+cx.render(rsx! {
+a {
+    "You must be logged in to comment"
+}
+})
+````
+
+This works because the `Element` type is just an alias for `Option<VNode>`
+
+ > 
+ > Again, you may use a different method to conditionally return `None`. For example the boolean's [`then()`](https://doc.rust-lang.org/std/primitive.bool.html#method.then) function could be used.
+
+## Rendering Lists
+
+Often, you'll want to render a collection of components. For example, you might want to render a list of all comments on a post.
+
+For this, Dioxus accepts iterators that produce `Element`s. So we need to:
+
+* Get an iterator over all of our items (e.g., if you have a `Vec` of comments, iterate over it with `iter()`)
+* `.map` the iterator to convert each item into a `LazyNode` using `rsx!(...)`
+  * Add a unique `key` attribute to each iterator item
+* Include this iterator in the final RSX (or use it inline)
+
+Example: suppose you have a list of comments you want to render. Then, you can render them like this:
+
+````rs@rendering_lists.rs
+let comment_field = use_state(cx, String::new);
+let mut next_id = use_state(cx, || 0);
+let comments = use_ref(cx, Vec::<Comment>::new);
+
+let comments_lock = comments.read();
+let comments_rendered = comments_lock.iter().map(|comment| {
+rsx!(CommentComponent {
+    key: "{comment.id}",
+    comment: comment.clone(),
+})
+});
+
+cx.render(rsx!(
+form {
+    onsubmit: move |_| {
+        comments.write().push(Comment {
+            content: comment_field.get().clone(),
+            id: *next_id.get(),
+        });
+        next_id += 1;
+
+        comment_field.set(String::new());
+    },
+    input {
+        value: "{comment_field}",
+        oninput: |event| comment_field.set(event.value.clone()),
+    }
+    input {
+        r#type: "submit",
+    }
+},
+comments_rendered,
+))
+````
+
+### Inline for loops
+
+Because of how common it is to render a list of items, Dioxus provides a shorthand for this. Instead of using `.iter, `.map`, and `rsx`, you can use a `for\` loop with a body of rsx code:
+
+````rs@rendering_lists.rs
+let comment_field = use_state(cx, String::new);
+let mut next_id = use_state(cx, || 0);
+let comments = use_ref(cx, Vec::<Comment>::new);
+
+cx.render(rsx!(
+form {
+    onsubmit: move |_| {
+        comments.write().push(Comment {
+            content: comment_field.get().clone(),
+            id: *next_id.get(),
+        });
+        next_id += 1;
+
+        comment_field.set(String::new());
+    },
+    input {
+        value: "{comment_field}",
+        oninput: |event| comment_field.set(event.value.clone()),
+    }
+    input {
+        r#type: "submit",
+    }
+},
+for comment in &*comments.read() {
+    // Notice the body of this for loop is rsx code, not an expression
+    CommentComponent {
+        key: "{comment.id}",
+        comment: comment.clone(),
+    }
+}
+))
+````
+
+### The key Attribute
+
+Every time you re-render your list, Dioxus needs to keep track of which items go where to determine what updates need to be made to the UI.
+
+For example, suppose the `CommentComponent` had some state – e.g. a field where the user typed in a reply. If the order of comments suddenly changes, Dioxus needs to correctly associate that state with the same comment – otherwise, the user will end up replying to a different comment!
+
+To help Dioxus keep track of list items, we need to associate each item with a unique key. In the example above, we dynamically generated the unique key. In real applications, it's more likely that the key will come from e.g. a database ID. It doesn't matter where you get the key from, as long as it meets the requirements:
+
+* Keys must be unique in a list
+* The same item should always get associated with the same key
+* Keys should be relatively small (i.e. converting the entire Comment structure to a String would be a pretty bad key) so they can be compared efficiently
+
+You might be tempted to use an item's index in the list as its key. That’s what Dioxus will use if you don’t specify a key at all. This is only acceptable if you can guarantee that the list is constant – i.e., no re-ordering, additions, or deletions.
+
+ > 
+ > Note that if you pass the key to a component you've made, it won't receive the key as a prop. It’s only used as a hint by Dioxus itself. If your component needs an ID, you have to pass it as a separate prop.
+# Router
+
+In many of your apps, you'll want to have different "scenes". For a webpage, these scenes might be the different webpages with their own content. For a desktop app, these scenes might be different views in your app.
+
+To unify these platforms, Dioxus provides a first-party solution for scene management called Dioxus Router.
+
+## What is it?
+
+For an app like the Dioxus landing page (https://dioxuslabs.com), we want to have several different scenes:
+
+* Homepage
+* Blog
+
+Each of these scenes is independent – we don't want to render both the homepage and blog at the same time.
+
+The Dioxus router makes it easy to create these scenes. To make sure we're using the router, add the `dioxus-router` package to your `Cargo.toml`.
+
+````shell
+cargo add dioxus-router
+````
+
+## Using the router
+
+Unlike other routers in the Rust ecosystem, our router is built declaratively. This makes it possible to compose our app layout simply by arranging components.
+
+````rust
+rsx!{
+    // All of our routes will be rendered inside this Router component
+    Router {
+        // if the current location is "/home", render the Home component
+        Route { to: "/home", Home {} }
+        // if the current location is "/blog", render the Blog component
+        Route { to: "/blog", Blog {} }
+    }
+}
+````
+
+Whenever we visit this app, we will get either the Home component or the Blog component rendered depending on which route we enter at. If neither of these routes match the current location, then nothing will render.
+
+We can fix this one of two ways:
+
+* A fallback 404 page
+
+````rust
+rsx!{
+    Router {
+        Route { to: "/home", Home {} }
+        Route { to: "/blog", Blog {} }
+        //  if the current location doesn't match any of the above routes, render the NotFound component
+        Route { to: "", NotFound {} }
+    }
+}
+````
+
+* Redirect 404 to home
+
+````rust
+rsx!{
+    Router {
+        Route { to: "/home", Home {} }
+        Route { to: "/blog", Blog {} }
+        //  if the current location doesn't match any of the above routes, redirect to "/home"
+        Redirect { from: "", to: "/home" }
+    }
+}
+````
+
+## Links
+
+For our app to navigate these routes, we can provide clickable elements called Links. These simply wrap `<a>` elements that, when clicked, navigate the app to the given location.
+
+````rust
+rsx!{
+    Link {
+        to: "/home",
+        "Go home!"
+    }
+}
+````
+
+## More reading
+
+This page is just a very brief overview of the router. For more information, check out [the router book](https://dioxuslabs.com/router/guide/) or some of [the router examples](https://github.com/DioxusLabs/dioxus/blob/master/examples/router.rs).

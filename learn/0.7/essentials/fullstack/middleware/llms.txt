@@ -1,0 +1,389 @@
+<SYSTEM>This is the developer documentation for Dioxus from /learn/0.7/essentials/fullstack/middleware.</SYSTEM>
+# Middleware
+
+Middleware allows you to run code before a request is completed. Then, based on the incoming request, you can modify the response by rewriting, redirecting, modifying the request or response headers, or responding directly.
+
+Dioxus Fullstack provides two main ways of adding middleware to your app:
+
+* Imperatively using Axum's APIs on your Router in `dioxus::serve`
+* Declaratively by annotating individual endpoints with the `#[middleware]` attribute
+
+## What is Middleware?
+
+In web applications, middleware are functions that are called before and after the request is handled by your endpoint logic.
+
+The underlying web framework that Dioxus Fullstack is built on - Axum - does not define its own bespoke middleware system. Instead, it leans on the broader ecosystem, integrating with the more fundamental [`tower`](https://github.com/tower-rs/tower) and [`hyper`](https://github.com/hyperium/hyper) crates.
+
+Axum *does* provide a simple way of writing middleware with `middleware::from_fn`:
+
+````rust
+axum::middleware::from_fn(
+    |request: Request, next: Next| async move {
+        // Read and write the contents of the incoming request
+        println!("Headers: {:?}", request.headers());
+
+        // And then run the request, modifying and returning the response
+        next.run(request).await
+    },
+)
+````
+
+Middleware give you both *read* and *write* access to both the *request* and the *response* of the handler. This is extremely powerful!
+
+You can implements a wide range of functionality with middleware:
+
+* Logging and telemetry
+* Rate limiting
+* Validation
+* Compression
+* CORS, CSRF
+* Authentication and Authorization
+* Caching
+
+The broader Rust ecosystem has many different 3rd party crates for middleware.
+
+The two main crates to look for middleware are:
+
+* [Tower](https://docs.rs/tower/latest/tower/): The underlying library for networking
+* [Tower-HTTP](https://github.com/tower-rs/tower-http): A dedicated HTTP-specific middleware library
+
+## Middleware on the Router
+
+Because Dioxus is built on Axum, you can use many Axum APIs directly. Dioxus Fullstack does not provide any bespoke wrappers around Axum middleware - you can simply attach them to your router in `dioxus::serve`:
+
+````rust
+dioxus::serve(|| async move {
+    use axum::{extract::Request, middleware::Next};
+    use dioxus::server::axum;
+
+    Ok(dioxus::server::router(app)
+        // we can apply a layer to the entire router using axum's `.layer` method
+        .layer(axum::middleware::from_fn(
+            |request: Request, next: Next| async move {
+                // Read the incoming request
+                println!("Request: {} {}", request.method(), request.uri().path());
+
+                // Run the handler, returning the response
+                let res = next.run(request).await;
+
+                // Read/write the response
+                println!("Response: {}", res.status());
+
+                res
+            },
+        )))
+});
+````
+
+The Tower-HTTP crate provides a number of useful middleware layers to add to your app. The `ServiceBuilder` object can be used to efficiently assemble a `Service` which handles a wide range of middleware actions:
+
+````rust
+// Use tower's `ServiceBuilder` API to build a stack of tower middleware
+// wrapping our request handler.
+let middleware = ServiceBuilder::new()
+    // Mark the `Authorization` request header as sensitive so it doesn't show in logs
+    .layer(SetSensitiveRequestHeadersLayer::new(once(AUTHORIZATION)))
+    // High level logging of requests and responses
+    .layer(TraceLayer::new_for_http())
+    // Share an `Arc<State>` with all requests
+    .layer(AddExtensionLayer::new(Arc::new(state)))
+    // Compress responses
+    .layer(CompressionLayer::new())
+    // Propagate `X-Request-Id`s from requests to responses
+    .layer(PropagateHeaderLayer::new(HeaderName::from_static("x-request-id")))
+    // If the response has a known size set the `Content-Length` header
+    .layer(SetResponseHeaderLayer::overriding(CONTENT_TYPE, content_length_from_response))
+    // Authorize requests using a token
+    .layer(ValidateRequestHeaderLayer::bearer("passwordlol"))
+    // Accept only application/json, application/* and */* in a request's ACCEPT header
+    .layer(ValidateRequestHeaderLayer::accept("application/json"))
+    // Wrap a `Service` in our middleware stack
+    .service_fn(handler);
+````
+
+You can then attach this service as a layer to your router:
+
+````rust
+dioxus::serve(|| async move {
+    use axum::{extract::Request, middleware::Next};
+    use dioxus::server::axum;
+
+    // Assemble a middleware object from the ServiceBuilder
+    let middleware = ServiceBuilder::new()
+        .layer(/* */)
+        .layer(/* */)
+        .layer(/* */);
+
+    Ok(dioxus::server::router(app).layer(middleware))
+});
+````
+
+Axum recommend initializing multiple middleware on a `ServiceBuilder` object for maximum performance, but you can also attach layers directly onto the router:
+
+````rust
+dioxus::serve(|| async move {
+    use axum::{extract::Request, middleware::Next};
+    use dioxus::server::axum;
+
+    Ok(
+        dioxus::server::router(app)
+            .layer(/* */)
+            .layer(/* */)
+            .layer(/* */)
+    )
+});
+````
+
+## Middleware on individual Routes
+
+If you need to apply middleware to just a handful of specific routes, you can use the `#[middleware]` attribute. Unlike router-level middleware, route-level middleware will only be applied to a specific endpoint. Alternatively, you could register routes one-by-one on the axum router with dedicated calls `.layer()`.
+
+For example, we might want to add a "timeout" middleware to a specific server function. This middleware will stop running the server function if it reaches a certain timeout:
+
+````rs@server_function_middleware.rs
+#[cfg(feature = "server")]
+use {std::time::Duration, tower_http::timeout::TimeoutLayer};
+
+// Add a timeout middleware to the server function that will return an error if the function takes longer than 1 second to execute
+#[post("/api/timeout")]
+#[middleware(TimeoutLayer::new(Duration::from_secs(1)))]
+pub async fn timeout() -> Result<(), ServerFnError> {
+    tokio::time::sleep(Duration::from_secs(2)).await;
+    Ok(())
+}
+````
+
+Under the hood, Dioxus Fullstack creates a `MethodRouter` object and then attaches these layers with calls to `.layer()` automatically.
+
+## Caching and Middleware
+
+In the chapter on server-side-rendering, we discussed at length about how Dioxus Fullstack is architected around client-side-rendering, with SSR being an additional enhancement. One enhancement is the ability to add a `Cache-Control` header to HTML responses, letting our CDN and Reverse Proxy decrease the load on our server. When the `Cache-Control` header is present, the proxy is able to cache responses.
+
+ > 
+ > It's very important to note that middleware can "bust" the cache - even accidentally!
+
+If you're using middleware for session management or authentication, it can be easy to accidentally cache pages that shouldn't be cached. For example, a news site might want to cache its homepage:
+
+````rust
+dioxus::server::router(app)
+    .layer(axum::middleware::from_fn(
+        |request: Request, next: Next| async move {
+            // If the route is `/home`, cache the page
+            let is_home = request.uri() == "/home";
+
+            let res = next.run(request).await;
+
+            if is_home {
+                res.headers_mut().insert("Cache-Control", "max-age=10800")
+            }
+
+            res
+        }
+    ))
+````
+
+Eventually, we might add a feature that lets users customize their homepage. We might add a session layer to our router:
+
+````rust
+dioxus::server::router(app)
+    .layer(session_layer) // a new session layer
+    .layer(caching_layer)
+````
+
+If we're not careful, we might accidentally cache a *logged-in user's* homepage! Caching is typically based on the request's URL, but middleware also operate on headers. If we show dynamic content based on headers (like auth or sessions), we need to take care to only cache certain responses.
+
+Many reverse proxies have the ability to configure caching based on request headers. We suggest diving into our deploy platform's reverse proxy setup, or implementing a smarter caching middleware yourself.
+# Middleware
+
+Middleware allows you to run code before a request is completed. Then, based on the incoming request, you can modify the response by rewriting, redirecting, modifying the request or response headers, or responding directly.
+
+Dioxus Fullstack provides two main ways of adding middleware to your app:
+
+* Imperatively using Axum's APIs on your Router in `dioxus::serve`
+* Declaratively by annotating individual endpoints with the `#[middleware]` attribute
+
+## What is Middleware?
+
+In web applications, middleware are functions that are called before and after the request is handled by your endpoint logic.
+
+The underlying web framework that Dioxus Fullstack is built on - Axum - does not define its own bespoke middleware system. Instead, it leans on the broader ecosystem, integrating with the more fundamental [`tower`](https://github.com/tower-rs/tower) and [`hyper`](https://github.com/hyperium/hyper) crates.
+
+Axum *does* provide a simple way of writing middleware with `middleware::from_fn`:
+
+````rust
+axum::middleware::from_fn(
+    |request: Request, next: Next| async move {
+        // Read and write the contents of the incoming request
+        println!("Headers: {:?}", request.headers());
+
+        // And then run the request, modifying and returning the response
+        next.run(request).await
+    },
+)
+````
+
+Middleware give you both *read* and *write* access to both the *request* and the *response* of the handler. This is extremely powerful!
+
+You can implements a wide range of functionality with middleware:
+
+* Logging and telemetry
+* Rate limiting
+* Validation
+* Compression
+* CORS, CSRF
+* Authentication and Authorization
+* Caching
+
+The broader Rust ecosystem has many different 3rd party crates for middleware.
+
+The two main crates to look for middleware are:
+
+* [Tower](https://docs.rs/tower/latest/tower/): The underlying library for networking
+* [Tower-HTTP](https://github.com/tower-rs/tower-http): A dedicated HTTP-specific middleware library
+
+## Middleware on the Router
+
+Because Dioxus is built on Axum, you can use many Axum APIs directly. Dioxus Fullstack does not provide any bespoke wrappers around Axum middleware - you can simply attach them to your router in `dioxus::serve`:
+
+````rust
+dioxus::serve(|| async move {
+    use axum::{extract::Request, middleware::Next};
+    use dioxus::server::axum;
+
+    Ok(dioxus::server::router(app)
+        // we can apply a layer to the entire router using axum's `.layer` method
+        .layer(axum::middleware::from_fn(
+            |request: Request, next: Next| async move {
+                // Read the incoming request
+                println!("Request: {} {}", request.method(), request.uri().path());
+
+                // Run the handler, returning the response
+                let res = next.run(request).await;
+
+                // Read/write the response
+                println!("Response: {}", res.status());
+
+                res
+            },
+        )))
+});
+````
+
+The Tower-HTTP crate provides a number of useful middleware layers to add to your app. The `ServiceBuilder` object can be used to efficiently assemble a `Service` which handles a wide range of middleware actions:
+
+````rust
+// Use tower's `ServiceBuilder` API to build a stack of tower middleware
+// wrapping our request handler.
+let middleware = ServiceBuilder::new()
+    // Mark the `Authorization` request header as sensitive so it doesn't show in logs
+    .layer(SetSensitiveRequestHeadersLayer::new(once(AUTHORIZATION)))
+    // High level logging of requests and responses
+    .layer(TraceLayer::new_for_http())
+    // Share an `Arc<State>` with all requests
+    .layer(AddExtensionLayer::new(Arc::new(state)))
+    // Compress responses
+    .layer(CompressionLayer::new())
+    // Propagate `X-Request-Id`s from requests to responses
+    .layer(PropagateHeaderLayer::new(HeaderName::from_static("x-request-id")))
+    // If the response has a known size set the `Content-Length` header
+    .layer(SetResponseHeaderLayer::overriding(CONTENT_TYPE, content_length_from_response))
+    // Authorize requests using a token
+    .layer(ValidateRequestHeaderLayer::bearer("passwordlol"))
+    // Accept only application/json, application/* and */* in a request's ACCEPT header
+    .layer(ValidateRequestHeaderLayer::accept("application/json"))
+    // Wrap a `Service` in our middleware stack
+    .service_fn(handler);
+````
+
+You can then attach this service as a layer to your router:
+
+````rust
+dioxus::serve(|| async move {
+    use axum::{extract::Request, middleware::Next};
+    use dioxus::server::axum;
+
+    // Assemble a middleware object from the ServiceBuilder
+    let middleware = ServiceBuilder::new()
+        .layer(/* */)
+        .layer(/* */)
+        .layer(/* */);
+
+    Ok(dioxus::server::router(app).layer(middleware))
+});
+````
+
+Axum recommend initializing multiple middleware on a `ServiceBuilder` object for maximum performance, but you can also attach layers directly onto the router:
+
+````rust
+dioxus::serve(|| async move {
+    use axum::{extract::Request, middleware::Next};
+    use dioxus::server::axum;
+
+    Ok(
+        dioxus::server::router(app)
+            .layer(/* */)
+            .layer(/* */)
+            .layer(/* */)
+    )
+});
+````
+
+## Middleware on individual Routes
+
+If you need to apply middleware to just a handful of specific routes, you can use the `#[middleware]` attribute. Unlike router-level middleware, route-level middleware will only be applied to a specific endpoint. Alternatively, you could register routes one-by-one on the axum router with dedicated calls `.layer()`.
+
+For example, we might want to add a "timeout" middleware to a specific server function. This middleware will stop running the server function if it reaches a certain timeout:
+
+````rs@server_function_middleware.rs
+#[cfg(feature = "server")]
+use {std::time::Duration, tower_http::timeout::TimeoutLayer};
+
+// Add a timeout middleware to the server function that will return an error if the function takes longer than 1 second to execute
+#[post("/api/timeout")]
+#[middleware(TimeoutLayer::new(Duration::from_secs(1)))]
+pub async fn timeout() -> Result<(), ServerFnError> {
+    tokio::time::sleep(Duration::from_secs(2)).await;
+    Ok(())
+}
+````
+
+Under the hood, Dioxus Fullstack creates a `MethodRouter` object and then attaches these layers with calls to `.layer()` automatically.
+
+## Caching and Middleware
+
+In the chapter on server-side-rendering, we discussed at length about how Dioxus Fullstack is architected around client-side-rendering, with SSR being an additional enhancement. One enhancement is the ability to add a `Cache-Control` header to HTML responses, letting our CDN and Reverse Proxy decrease the load on our server. When the `Cache-Control` header is present, the proxy is able to cache responses.
+
+ > 
+ > It's very important to note that middleware can "bust" the cache - even accidentally!
+
+If you're using middleware for session management or authentication, it can be easy to accidentally cache pages that shouldn't be cached. For example, a news site might want to cache its homepage:
+
+````rust
+dioxus::server::router(app)
+    .layer(axum::middleware::from_fn(
+        |request: Request, next: Next| async move {
+            // If the route is `/home`, cache the page
+            let is_home = request.uri() == "/home";
+
+            let res = next.run(request).await;
+
+            if is_home {
+                res.headers_mut().insert("Cache-Control", "max-age=10800")
+            }
+
+            res
+        }
+    ))
+````
+
+Eventually, we might add a feature that lets users customize their homepage. We might add a session layer to our router:
+
+````rust
+dioxus::server::router(app)
+    .layer(session_layer) // a new session layer
+    .layer(caching_layer)
+````
+
+If we're not careful, we might accidentally cache a *logged-in user's* homepage! Caching is typically based on the request's URL, but middleware also operate on headers. If we show dynamic content based on headers (like auth or sessions), we need to take care to only cache certain responses.
+
+Many reverse proxies have the ability to configure caching based on request headers. We suggest diving into our deploy platform's reverse proxy setup, or implementing a smarter caching middleware yourself.

@@ -1,0 +1,529 @@
+<SYSTEM>This is the developer documentation for Dioxus from /learn/0.7/essentials/basics/suspense.</SYSTEM>
+# Suspense
+
+[Resources](../basics/resources.md) let you load data asynchronously in Dioxus, but it can be cumbersome to handle the loading state of each resource individually. Dioxus provides a `SuspenseBoundary` component to group multiple asynchronous tasks and show a loading view while any of them are suspended.
+
+You can create a `SuspenseBoundary` with a loading closure and children. Then you can call `.suspend()?` on any resource inside the children to pause rendering of that component until the future is finished. The suspense boundary will show the loading view while any of its children are suspended. Once that suspense is resolved, it will show the children again.
+
+We can use a suspense boundary to show a grid of different breeds of dogs without handling each loading state individually:
+
+````rs@asynchronous.rs
+fn DogGrid() -> Element {
+    rsx! {
+        SuspenseBoundary {
+            // When any child components (like BreedGallery) are suspended, this closure will
+            // be called and the loading view will be rendered instead of the children
+            fallback: |_| rsx! {
+                div {
+                    width: "100%",
+                    height: "100%",
+                    display: "flex",
+                    align_items: "center",
+                    justify_content: "center",
+                    "Loading..."
+                }
+            },
+            div {
+                display: "flex",
+                flex_direction: "column",
+                BreedGallery {
+                    breed: "hound"
+                }
+                BreedGallery {
+                    breed: "poodle"
+                }
+                BreedGallery {
+                    breed: "beagle"
+                }
+            }
+        }
+    }
+}
+
+#[component]
+fn BreedGallery(breed: ReadSignal<String>) -> Element {
+    let response = use_resource(move || async move {
+        // Artificially slow down the request to make the loading indicator easier to seer
+        gloo_timers::future::TimeoutFuture::new(1000).await;
+        reqwest::Client::new()
+            .get(format!("https://dog.ceo/api/breed/{breed}/images"))
+            .send()
+            .await?
+            .json::<BreedResponse>()
+            .await
+    })
+    // Calling .suspend()? will suspend the component and return early while the future is running
+    .suspend()?;
+
+    // Then you can just handle the happy path with the resolved future
+    rsx! {
+        div {
+            display: "flex",
+            flex_direction: "row",
+            match &*response.read() {
+                Ok(urls) => rsx! {
+                    for image in urls.iter().take(3) {
+                        img {
+                            src: "{image}",
+                            width: "100px",
+                            height: "100px",
+                        }
+                    }
+                },
+                Err(err) => rsx! { "Failed to fetch response: {err}" },
+            }
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    asynchronous::DogGridView {}
+}
+````
+
+## Customizing the loading view from children
+
+If you need to change the loading view while a specific task is loading, you can provide a different loading view with the `with_loading_placeholder` method. The loading placeholder you return from the method will be passed to the suspense boundary and may choose to render it instead of the default loading view:
+
+````rs@asynchronous.rs
+fn DogGrid() -> Element {
+    rsx! {
+        SuspenseBoundary {
+            // The fallback closure accepts a SuspenseContext which contains
+            // information about the suspended component
+            fallback: |suspense_context: SuspenseContext| {
+                rsx! {
+                    div {
+                        width: "100%",
+                        height: "100%",
+                        display: "flex",
+                        align_items: "center",
+                        justify_content: "center",
+                        "Loading..."
+                    }
+                }
+            },
+            div {
+                display: "flex",
+                flex_direction: "column",
+                BreedGallery {
+                    breed: "hound"
+                }
+                BreedGallery {
+                    breed: "poodle"
+                }
+                BreedGallery {
+                    breed: "beagle"
+                }
+            }
+        }
+    }
+}
+
+#[component]
+fn BreedGallery(breed: ReadSignal<String>) -> Element {
+    let response = use_resource(move || async move {
+        gloo_timers::future::TimeoutFuture::new(breed().len() as u32 * 100).await;
+        reqwest::Client::new()
+            .get(format!("https://dog.ceo/api/breed/{breed}/images"))
+            .send()
+            .await?
+            .json::<BreedResponse>()
+            .await
+    })
+    .suspend()?;
+
+    // Then you can just handle the happy path with the resolved future
+    rsx! {
+        div {
+            display: "flex",
+            flex_direction: "row",
+            match &*response.read() {
+                Ok(urls) => rsx! {
+                    for image in urls.iter().take(3) {
+                        img {
+                            src: "{image}",
+                            width: "100px",
+                            height: "100px",
+                        }
+                    }
+                },
+                Err(err) => rsx! { "Failed to fetch response: {err}" },
+            }
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    asynchronous::DogGridViewWithLoadingPlaceholder {}
+}
+````
+
+## Suspense with Fullstack
+
+Dioxus fullstack will wait for suspended futures during server-side rendering. This means your async data loading starts sooner and search engines can see the resolved version of your page. However, using suspense in fullstack does require some changes for hydration compatibility.
+
+To use suspense in your fullstack application, you need to switch every suspended resource to the `use_server_future` hook. `use_server_future` handles serializing the result of the future on the server and deserializing that result on the client. It will also suspend automatically, so you don't need to call `.suspend()` on the resource.
+
+````rs@asynchronous.rs
+#[component]
+fn BreedGallery(breed: ReadOnlySignal<String>) -> Element {
+    // use_server_future is very similar to use_resource, but the value returned from the future
+    // must implement Serialize and Deserialize and it is automatically suspended
+    let response = use_server_future(move || async move {
+        // The future will run on the server during SSR and then get sent to the client
+        reqwest::Client::new()
+            .get(format!("https://dog.ceo/api/breed/{breed}/images"))
+            .send()
+            .await
+            // reqwest::Result does not implement Serialize, so we need to map it to a string which
+            // can be serialized
+            .map_err(|err| err.to_string())?
+            .json::<BreedResponse>()
+            .await
+            .map_err(|err| err.to_string())
+        // use_server_future calls `suspend` internally, so you don't need to call it manually, but you
+        // do need to bubble up the suspense variant with `?`
+    })?;
+
+    // If the future was still pending, it would have returned suspended with the `?` above
+    // we can unwrap the None case here to get the inner result
+    let response_read = response.read();
+    let response = response_read.as_ref().unwrap();
+
+    // Then you can just handle the happy path with the resolved future
+    rsx! {
+        div {
+            display: "flex",
+            flex_direction: "row",
+            match response {
+                Ok(urls) => rsx! {
+                    for image in urls.iter().take(3) {
+                        img {
+                            src: "{image}",
+                            width: "100px",
+                            height: "100px",
+                        }
+                    }
+                },
+                Err(err) => rsx! { "Failed to fetch response: {err}" },
+            }
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    asynchronous::DogGridFullstack {}
+}
+````
+
+Unlike `use_resource`, `use_server_future` is only reactive in the closure, not the future itself. If you need to subscribe to another reactive value, you need to read it in the closure before passing it to the future:
+
+````rs@asynchronous.rs
+let id = use_signal(|| 0);
+// ❌ The future inside of use_server_future is not reactive
+use_server_future(move || {
+    async move {
+        // But the future is not reactive which means that the future will not subscribe to any reads here
+        println!("{id}");
+    }
+});
+// ✅ The closure that creates the future for use_server_future is reactive
+use_server_future(move || {
+    // The closure itself is reactive which means the future will subscribe to any signals you read here
+    let cloned_id = id();
+    async move {
+        // But the future is not reactive which means that the future will not subscribe to any reads here
+        println!("{cloned_id}");
+    }
+});
+````
+
+### Streaming Suspense
+
+The default behavior for server side rendering is to wait for all suspended futures then send the fully resolved page. If you [enable](https://docs.rs/dioxus/0.7/dioxus/prelude/struct.ServeConfigBuilder.html#method.enable_out_of_order_streaming) out of order streaming, dioxus will send the finished HTML chunks to the client one at a time as they are resolved. This lets you show the loading views in your suspense boundaries while you are still waiting for other futures to resolve on the server:
+
+````rs@asynchronous.rs
+fn main() {
+    dioxus::LaunchBuilder::new()
+        .with_context(server_only! {
+            // Enable out of order streaming during SSR
+            dioxus::server::ServeConfig::builder().enable_out_of_order_streaming()
+        })
+        .launch(DogGrid);
+}
+````
+
+![Out of order streaming](/assets/06_docs/streaming_dogs.mp4)
+
+For more information on streaming, see the [streaming documentation](../../essentials/fullstack/streaming.md).
+# Suspense
+
+[Resources](../basics/resources.md) let you load data asynchronously in Dioxus, but it can be cumbersome to handle the loading state of each resource individually. Dioxus provides a `SuspenseBoundary` component to group multiple asynchronous tasks and show a loading view while any of them are suspended.
+
+You can create a `SuspenseBoundary` with a loading closure and children. Then you can call `.suspend()?` on any resource inside the children to pause rendering of that component until the future is finished. The suspense boundary will show the loading view while any of its children are suspended. Once that suspense is resolved, it will show the children again.
+
+We can use a suspense boundary to show a grid of different breeds of dogs without handling each loading state individually:
+
+````rs@asynchronous.rs
+fn DogGrid() -> Element {
+    rsx! {
+        SuspenseBoundary {
+            // When any child components (like BreedGallery) are suspended, this closure will
+            // be called and the loading view will be rendered instead of the children
+            fallback: |_| rsx! {
+                div {
+                    width: "100%",
+                    height: "100%",
+                    display: "flex",
+                    align_items: "center",
+                    justify_content: "center",
+                    "Loading..."
+                }
+            },
+            div {
+                display: "flex",
+                flex_direction: "column",
+                BreedGallery {
+                    breed: "hound"
+                }
+                BreedGallery {
+                    breed: "poodle"
+                }
+                BreedGallery {
+                    breed: "beagle"
+                }
+            }
+        }
+    }
+}
+
+#[component]
+fn BreedGallery(breed: ReadSignal<String>) -> Element {
+    let response = use_resource(move || async move {
+        // Artificially slow down the request to make the loading indicator easier to seer
+        gloo_timers::future::TimeoutFuture::new(1000).await;
+        reqwest::Client::new()
+            .get(format!("https://dog.ceo/api/breed/{breed}/images"))
+            .send()
+            .await?
+            .json::<BreedResponse>()
+            .await
+    })
+    // Calling .suspend()? will suspend the component and return early while the future is running
+    .suspend()?;
+
+    // Then you can just handle the happy path with the resolved future
+    rsx! {
+        div {
+            display: "flex",
+            flex_direction: "row",
+            match &*response.read() {
+                Ok(urls) => rsx! {
+                    for image in urls.iter().take(3) {
+                        img {
+                            src: "{image}",
+                            width: "100px",
+                            height: "100px",
+                        }
+                    }
+                },
+                Err(err) => rsx! { "Failed to fetch response: {err}" },
+            }
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    asynchronous::DogGridView {}
+}
+````
+
+## Customizing the loading view from children
+
+If you need to change the loading view while a specific task is loading, you can provide a different loading view with the `with_loading_placeholder` method. The loading placeholder you return from the method will be passed to the suspense boundary and may choose to render it instead of the default loading view:
+
+````rs@asynchronous.rs
+fn DogGrid() -> Element {
+    rsx! {
+        SuspenseBoundary {
+            // The fallback closure accepts a SuspenseContext which contains
+            // information about the suspended component
+            fallback: |suspense_context: SuspenseContext| {
+                rsx! {
+                    div {
+                        width: "100%",
+                        height: "100%",
+                        display: "flex",
+                        align_items: "center",
+                        justify_content: "center",
+                        "Loading..."
+                    }
+                }
+            },
+            div {
+                display: "flex",
+                flex_direction: "column",
+                BreedGallery {
+                    breed: "hound"
+                }
+                BreedGallery {
+                    breed: "poodle"
+                }
+                BreedGallery {
+                    breed: "beagle"
+                }
+            }
+        }
+    }
+}
+
+#[component]
+fn BreedGallery(breed: ReadSignal<String>) -> Element {
+    let response = use_resource(move || async move {
+        gloo_timers::future::TimeoutFuture::new(breed().len() as u32 * 100).await;
+        reqwest::Client::new()
+            .get(format!("https://dog.ceo/api/breed/{breed}/images"))
+            .send()
+            .await?
+            .json::<BreedResponse>()
+            .await
+    })
+    .suspend()?;
+
+    // Then you can just handle the happy path with the resolved future
+    rsx! {
+        div {
+            display: "flex",
+            flex_direction: "row",
+            match &*response.read() {
+                Ok(urls) => rsx! {
+                    for image in urls.iter().take(3) {
+                        img {
+                            src: "{image}",
+                            width: "100px",
+                            height: "100px",
+                        }
+                    }
+                },
+                Err(err) => rsx! { "Failed to fetch response: {err}" },
+            }
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    asynchronous::DogGridViewWithLoadingPlaceholder {}
+}
+````
+
+## Suspense with Fullstack
+
+Dioxus fullstack will wait for suspended futures during server-side rendering. This means your async data loading starts sooner and search engines can see the resolved version of your page. However, using suspense in fullstack does require some changes for hydration compatibility.
+
+To use suspense in your fullstack application, you need to switch every suspended resource to the `use_server_future` hook. `use_server_future` handles serializing the result of the future on the server and deserializing that result on the client. It will also suspend automatically, so you don't need to call `.suspend()` on the resource.
+
+````rs@asynchronous.rs
+#[component]
+fn BreedGallery(breed: ReadOnlySignal<String>) -> Element {
+    // use_server_future is very similar to use_resource, but the value returned from the future
+    // must implement Serialize and Deserialize and it is automatically suspended
+    let response = use_server_future(move || async move {
+        // The future will run on the server during SSR and then get sent to the client
+        reqwest::Client::new()
+            .get(format!("https://dog.ceo/api/breed/{breed}/images"))
+            .send()
+            .await
+            // reqwest::Result does not implement Serialize, so we need to map it to a string which
+            // can be serialized
+            .map_err(|err| err.to_string())?
+            .json::<BreedResponse>()
+            .await
+            .map_err(|err| err.to_string())
+        // use_server_future calls `suspend` internally, so you don't need to call it manually, but you
+        // do need to bubble up the suspense variant with `?`
+    })?;
+
+    // If the future was still pending, it would have returned suspended with the `?` above
+    // we can unwrap the None case here to get the inner result
+    let response_read = response.read();
+    let response = response_read.as_ref().unwrap();
+
+    // Then you can just handle the happy path with the resolved future
+    rsx! {
+        div {
+            display: "flex",
+            flex_direction: "row",
+            match response {
+                Ok(urls) => rsx! {
+                    for image in urls.iter().take(3) {
+                        img {
+                            src: "{image}",
+                            width: "100px",
+                            height: "100px",
+                        }
+                    }
+                },
+                Err(err) => rsx! { "Failed to fetch response: {err}" },
+            }
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    asynchronous::DogGridFullstack {}
+}
+````
+
+Unlike `use_resource`, `use_server_future` is only reactive in the closure, not the future itself. If you need to subscribe to another reactive value, you need to read it in the closure before passing it to the future:
+
+````rs@asynchronous.rs
+let id = use_signal(|| 0);
+// ❌ The future inside of use_server_future is not reactive
+use_server_future(move || {
+    async move {
+        // But the future is not reactive which means that the future will not subscribe to any reads here
+        println!("{id}");
+    }
+});
+// ✅ The closure that creates the future for use_server_future is reactive
+use_server_future(move || {
+    // The closure itself is reactive which means the future will subscribe to any signals you read here
+    let cloned_id = id();
+    async move {
+        // But the future is not reactive which means that the future will not subscribe to any reads here
+        println!("{cloned_id}");
+    }
+});
+````
+
+### Streaming Suspense
+
+The default behavior for server side rendering is to wait for all suspended futures then send the fully resolved page. If you [enable](https://docs.rs/dioxus/0.7/dioxus/prelude/struct.ServeConfigBuilder.html#method.enable_out_of_order_streaming) out of order streaming, dioxus will send the finished HTML chunks to the client one at a time as they are resolved. This lets you show the loading views in your suspense boundaries while you are still waiting for other futures to resolve on the server:
+
+````rs@asynchronous.rs
+fn main() {
+    dioxus::LaunchBuilder::new()
+        .with_context(server_only! {
+            // Enable out of order streaming during SSR
+            dioxus::server::ServeConfig::builder().enable_out_of_order_streaming()
+        })
+        .launch(DogGrid);
+}
+````
+
+![Out of order streaming](/assets/06_docs/streaming_dogs.mp4)
+
+For more information on streaming, see the [streaming documentation](../../essentials/fullstack/streaming.md).

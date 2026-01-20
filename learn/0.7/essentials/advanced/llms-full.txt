@@ -1,0 +1,538 @@
+<SYSTEM>This is the developer documentation for Dioxus at /learn/0.7/essentials/advanced/custom_hooks and all its subroutes.</SYSTEM>
+
+# Custom Hooks
+
+Hooks are a great way to encapsulate business logic. If none of the existing hooks work for your problem, you can write your own.
+
+When writing your hook, you can make a function that starts with `use_` and takes any arguments you need. You can then use the `use_hook` method to create a hook that will be called the first time the component is rendered.
+
+## Composing Hooks
+
+To avoid repetition, you can encapsulate business logic based on existing hooks to create a new hook.
+
+For example, if many components need to access an `AppSettings` struct, you can create a "shortcut" hook:
+
+````rs@hooks_composed.rs
+fn use_settings() -> Signal<AppSettings> {
+    consume_context()
+}
+````
+
+Or if you want to wrap a hook that persists reloads with the storage API, you can build on top of the use_signal hook to work with mutable state:
+
+````rs@hooks_composed.rs
+use gloo_storage::{LocalStorage, Storage};
+use serde::{de::DeserializeOwned, Serialize};
+
+/// A persistent storage hook that can be used to store data across application reloads.
+#[allow(clippy::needless_return)]
+pub fn use_persistent<T: Serialize + DeserializeOwned + Default + 'static>(
+    // A unique key for the storage entry
+    key: impl ToString,
+    // A function that returns the initial value if the storage entry is empty
+    init: impl FnOnce() -> T,
+) -> UsePersistent<T> {
+    // Use the use_signal hook to create a mutable state for the storage entry
+    let state = use_signal(move || {
+        // This closure will run when the hook is created
+        let key = key.to_string();
+        let value = LocalStorage::get(key.as_str()).ok().unwrap_or_else(init);
+        StorageEntry { key, value }
+    });
+
+    // Wrap the state in a new struct with a custom API
+    UsePersistent { inner: state }
+}
+
+struct StorageEntry<T> {
+    key: String,
+    value: T,
+}
+
+/// Storage that persists across application reloads
+pub struct UsePersistent<T: 'static> {
+    inner: Signal<StorageEntry<T>>,
+}
+
+impl<T> Clone for UsePersistent<T> {
+    fn clone(&self) -> Self {
+        *self
+    }
+}
+
+impl<T> Copy for UsePersistent<T> {}
+
+impl<T: Serialize + DeserializeOwned + Clone + 'static> UsePersistent<T> {
+    /// Returns a reference to the value
+    pub fn get(&self) -> T {
+        self.inner.read().value.clone()
+    }
+
+    /// Sets the value
+    pub fn set(&mut self, value: T) {
+        let mut inner = self.inner.write();
+        // Write the new value to local storage
+        LocalStorage::set(inner.key.as_str(), &value);
+        inner.value = value;
+    }
+}
+````
+
+## Custom Hook Logic
+
+You can use [`use_hook`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_hook.html) to build your own hooks. In fact, this is what all the standard hooks are built on!
+
+`use_hook` accepts a single closure for initializing the hook. It will be only run the first time the component is rendered. The return value of that closure will be used as the value of the hook – Dioxus will take it, and store it for as long as the component is alive. On every render (not just the first one!), you will get a reference to this value.
+
+ > 
+ > Note: You can use the `use_on_destroy` hook to clean up any resources the hook uses when the component is destroyed.
+
+Inside the initialization closure, you will typically make calls to other dioxus runtime methods. For example:
+
+* The `use_signal` hook tracks state in the hook value, and uses [`ReactiveContext`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.ReactiveContext.html) to make Dioxus re-render any component that has observed it whenever the signal's value changes.
+
+Here is a simplified implementation of the `use_signal` hook:
+
+````rs@hooks_custom_logic.rs
+use std::cell::RefCell;
+use std::collections::HashSet;
+use std::rc::Rc;
+use std::sync::{Arc, Mutex};
+
+struct Signal<T> {
+    value: Rc<RefCell<T>>,
+    subscribers: Arc<Mutex<HashSet<ReactiveContext>>>,
+}
+
+impl<T> Clone for Signal<T> {
+    fn clone(&self) -> Self {
+        Self {
+            value: self.value.clone(),
+            subscribers: self.subscribers.clone(),
+        }
+    }
+}
+
+fn my_use_signal<T: 'static>(init: impl FnOnce() -> T) -> Signal<T> {
+    use_hook(|| {
+        // A set of subscribers to notify about changes to this signals value
+        let subscribers = Default::default();
+        // Create the initial state
+        let value = Rc::new(RefCell::new(init()));
+
+        Signal { value, subscribers }
+    })
+}
+
+impl<T: Clone> Signal<T> {
+    fn get(&self) -> T {
+        // Subscribe the context observing the signal (if any) to updates of its value.
+        if let Some(reactive_context) = ReactiveContext::current() {
+            reactive_context.subscribe(self.subscribers.clone());
+        }
+
+        self.value.borrow().clone()
+    }
+
+    fn set(&self, value: T) {
+        // Update the state
+        *self.value.borrow_mut() = value;
+        // Trigger a re-render of the components that observed the signal's previous value
+        let mut subscribers = std::mem::take(&mut *self.subscribers.lock().unwrap());
+        subscribers.retain(|reactive_context| reactive_context.mark_dirty());
+        // Extend the subscribers list instead of overwriting it in case a subscriber is added while reactive contexts are marked dirty
+        self.subscribers.lock().unwrap().extend(subscribers);
+    }
+}
+````
+
+* The `use_context` hook calls [`consume_context`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.consume_context.html) (which would be expensive to call on every render) to get some context from the component
+
+Here is an implementation of the `use_context` and `use_context_provider` hooks:
+
+````rs@hooks_custom_logic.rs
+pub fn use_context<T: 'static + Clone>() -> T {
+    use_hook(|| consume_context())
+}
+
+pub fn use_context_provider<T: 'static + Clone>(f: impl FnOnce() -> T) -> T {
+    use_hook(|| {
+        let val = f();
+        // Provide the context state to the component
+        provide_context(val.clone());
+        val
+    })
+}
+
+````
+
+## Building Reactive Hooks
+
+The `use_hook` primitive only provides a way to *store* a value. It does not directly integrate with the Dioxus runtime to allow *modifying* state or queueing effects.
+
+To queue a component to re-render, you can use the `dioxus::core::needs_update` primitive. This sends a message to the internal Dioxus scheduler to queue the current component to be re-rendered.
+
+````rust
+log!("Re-rendering!");
+
+rsx! {
+    // Clicking this button will force a re-render
+    button {
+        onclick: move |_| dioxus::core::needs_update(),
+        "Queue for re-rendering"
+    }
+}
+````
+
+We can combine `needs_update`, `use_hook`, and [interior mutability](https://doc.rust-lang.org/book/ch15-05-interior-mutability.html) to build hooks that work with the Dioxus reactivity system.
+
+````rust
+// We declare a new "ReactiveString" type that calls `needs_update` when modified
+#[derive(Default)]
+struct ReactiveString { inner: Rc<RefCell<String>> }
+impl ReactiveString {
+    fn get(&self) -> String {
+        self.inner.borrow().to_string()
+    }
+    fn set(&mut self, new: String) {
+        *self.inner.write() = new;
+        dioxus::core::needs_update();
+    }
+}
+
+// We store the ReactiveString in a hook
+fn use_reactive_string(init: impl FnOnce() -> String) -> ReactiveString {
+    let inner = use_hook(|| Rc::new(RefCell::new(init())));
+    ReactiveString { inner }
+}
+
+// And then when can use it in our component
+let mut name = use_reactive_string(|| "Jane".to_string());
+
+rsx! {
+    // Clicking the button will cause `needs_update` to be queue a re-render
+    button {
+        onclick: move |_| name.set("Bob".to_string()),
+        "Name: {name.get()}"
+    }
+}
+````
+
+In practice, you should never need to build state management primitives yourself. We provide these examples to help you understand how they work.
+# Component Lifecycle
+
+## Initializing State with `use_hook`
+
+`use_hook` lets you create new state for your component. The closure you pass to `use_hook` will be called once the first time the component is rendered. Every time the component is re-rendered, the value that was created the first run will be re-used.
+
+````rs@component_lifecycle.rs
+fn UseHook() -> Element {
+    // The closure that is passed to use_hook will be called once the first time the component is rendered
+    let random_number = use_hook(|| {
+        let new_random_number = random_number();
+
+        log!("{new_random_number}");
+
+        new_random_number
+    });
+
+    rsx! {
+        div { "Random {random_number}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    component_lifecycle::UseHookDemo {}
+}
+````
+
+## Rerendering
+
+You can use tracked values to re-render your component whenever a value changes.
+
+````rs@component_lifecycle.rs
+fn Rerenders() -> Element {
+    let mut count = use_signal(|| 0);
+
+    log!("Rerendering parent component with {}", *count.peek());
+
+    rsx! {
+        button { onclick: move |_| count += 1, "Increment" }
+        // Since we read count here, the component will rerender when count changes
+        Count { current_count: count() }
+    }
+}
+
+// If the count prop changes, the component will rerender
+#[component]
+fn Count(current_count: i32) -> Element {
+    log!("Rerendering child component with {current_count}");
+
+    rsx! {
+        div { "The count is {current_count}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    component_lifecycle::RerenderDemo {}
+}
+````
+
+### ⚠️ Don't mutate state in the body of a component
+
+You should avoid changing state in the body of a component. If you read and write to state in the body of a component, you can cause an infinite loop as the component tries to rerender because of the change which triggers another state change.
+
+````rs@component_lifecycle.rs
+fn Bad() -> Element {
+    let mut count = use_signal(|| 0);
+
+    // ❌ Don't mutate state in the body of the component.
+    // It can easily cause an infinite loop!
+    count += 1;
+
+    rsx! { "{count}" }
+}
+````
+
+Instead, derive state with `use_memo`, `use_resource`, or mutate state in a effect.
+
+## Using Effects
+
+You can use effects to run code whenever a component is rendered.
+
+````rs@component_lifecycle.rs
+fn Effect() -> Element {
+    // Effects run after the component is rendered
+    // You can use them to read or modify the rendered component
+    use_effect(|| {
+        log!("Effect ran");
+        document::eval(&format!(
+            "document.getElementById('effect-output').innerText = 'Effect ran'"
+        ));
+    });
+
+    rsx! {
+        div { id: "effect-output", "This will be changed by the effect" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    component_lifecycle::EffectDemo {}
+}
+````
+
+## Cleaning Up Components with Drop
+
+Before a component is dropped, it will drop all of its hooks. You can use this drop behavior to clean up any resources that your component is using. If you just need the drop effect, you can use the [`use_drop`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_drop.html) hook.
+
+````rs@component_lifecycle.rs
+fn TogglesChild() -> Element {
+    let mut show = use_signal(|| true);
+
+    rsx! {
+        button { onclick: move |_| show.toggle(), "Toggle" }
+        if show() {
+            Child {}
+        }
+    }
+}
+
+fn Child() -> Element {
+    // You can use the use_drop hook to clean up any resources
+    dioxus::core::use_drop(|| {
+        log!("Child dropped");
+    });
+
+    rsx! {
+        div { "Child" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    component_lifecycle::DropDemo {}
+}
+````
+# Breaking Out of Dioxus
+
+Dioxus makes it easy to build reactive user interfaces. However, there are some cases where you may need to break out of the reactive paradigm to interact with the DOM directly.
+
+## Interacting with JavaScript with `eval` and `web-sys`
+
+Dioxus exposes a limited number of [web apis](https://developer.mozilla.org/en-US/docs/Web/API) with a nicer interface. If you need access to more APIs, you can use the `eval` function to run JavaScript in the browser.
+
+For example, you can use the eval function to read the domain of the current page:
+
+````rs@breaking_out.rs
+pub fn Eval() -> Element {
+    let mut domain = use_signal(String::new);
+    rsx! {
+        button {
+            // When you click the button, some javascript will run in the browser
+            // to read the domain and set the signal
+            onclick: move |_| async move {
+                domain.set(document::eval("return document.domain").await.unwrap().to_string());
+            },
+            "Read Domain"
+        }
+        "Current domain: {domain}"
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    breaking_out::Eval {}
+}
+````
+
+If you are only targeting web, you can also use the [`web-sys`](https://crates.io/crates/web-sys) crate for typed access to the web APIs. Here is what reading the domain looks like with web-sys:
+
+````rs@breaking_out.rs
+use ::web_sys::window;
+use wasm_bindgen::JsCast;
+pub fn WebSys() -> Element {
+    let mut domain = use_signal(String::new);
+    rsx! {
+        button {
+            // When you click the button, we use web-sys to read the domain and a signal
+            onclick: move |_| {
+                domain
+                    .set(
+                        window()
+                            .unwrap()
+                            .document()
+                            .unwrap()
+                            .dyn_into::<::web_sys::HtmlDocument>()
+                            .unwrap()
+                            .domain(),
+                    );
+            },
+            "Read Domain"
+        }
+        "Current domain: {domain}"
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    breaking_out::WebSys {}
+}
+````
+
+## Synchronizing DOM updates with `use_effect`
+
+If you do need to interact with the DOM directly, you should do so in a `use_effect` hook. This hook will run after the component is rendered and all of the Dioxus UI has been rendered. You can read or modify the DOM in this hook.
+
+For example, you can use the `use_effect` hook to write to a canvas element after it is created:
+
+````rs@breaking_out.rs
+pub fn Canvas() -> Element {
+    let mut count = use_signal(|| 0);
+
+    use_effect(move || {
+        // Effects are reactive like memos, and resources. If you read a value inside the effect, the effect will rerun when that value changes
+        let count = count.read();
+
+        // You can use the count value to update the DOM manually
+        document::eval(&format!(
+            r#"var c = document.getElementById("dioxus-canvas");
+var ctx = c.getContext("2d");
+ctx.clearRect(0, 0, c.width, c.height);
+ctx.font = "30px Arial";
+ctx.fillText("{count}", 10, 50);"#
+        ));
+    });
+
+    rsx! {
+        button {
+            // When you click the button, count will be incremented and the effect will rerun
+            onclick: move |_| count += 1,
+            "Increment"
+        }
+        canvas { id: "dioxus-canvas" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    breaking_out::Canvas {}
+}
+````
+
+## Getting access to elements with `onmounted`
+
+If you need a handle to an element that is rendered by dioxus, you can use the `onmounted` event. This event will fire after the element is first mounted to the DOM. It returns a live reference to the element with some methods to interact with it.
+
+You can use the onmounted event to do things like focus or scroll to an element after it is rendered:
+
+````rs@breaking_out.rs
+pub fn OnMounted() -> Element {
+    let mut input_element = use_signal(|| None);
+
+    rsx! {
+        div { height: "100px",
+            button {
+                class: "focus:outline-2 focus:outline-blue-600 focus:outline-dashed",
+                // The onmounted event will run the first time the button element is mounted
+                onmounted: move |element| input_element.set(Some(element.data())),
+                "First button"
+            }
+
+            button {
+                // When you click the button, if the button element has been mounted, we focus to that element
+                onclick: move |_| async move {
+                    if let Some(header) = input_element() {
+                        let _ = header.set_focus(true).await;
+                    }
+                },
+                "Focus first button"
+            }
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    breaking_out::OnMounted {}
+}
+````
+
+## Down casting web sys events
+
+Dioxus provides platform agnostic wrappers over each event type. These wrappers are often nicer to interact with than the raw event types, but they can be more limited. If you are targeting web, you can downcast the event with the `as_web_event` method to get the underlying web-sys event:
+
+````rs@breaking_out.rs
+pub fn Downcast() -> Element {
+    let mut event_text = use_signal(|| 0);
+
+    rsx! {
+        div {
+            onmousemove: move |event| {
+                #[cfg(feature = "web")]
+                {
+                    use dioxus::web::WebEventExt;
+                    event_text.set(event.as_web_event().movement_x());
+                }
+            },
+            "movement_x was {event_text}"
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    breaking_out::Downcast {}
+}
+````

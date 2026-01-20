@@ -1,0 +1,303 @@
+<SYSTEM>This is the developer documentation for Dioxus from /learn/0.7/migration/to_07.</SYSTEM>
+# How to Upgrade to Dioxus 0.7
+
+This guide will outline the API changes between the 0.6 and 0.7 releases. The 0.7 release contains breaking changes to:
+
+* [`dioxus‑lib`](#dioxuslib-removed)
+* [Form submissions](#form-submission-behavior)
+* [Asset Options](#asset-options)
+* [Custom server function errors](#custom-server-function-error-type)
+* [dioxus::prelude](#items-removed-from-the-prelude)
+* [The default server function codec](#change-default-server-function-codec-to-json)
+* [Transitive dependency updates](#transitive-dependency-updates)
+* [Owned event listener type](#owned-event-listener-type-only-applies-to-custom-renderers)
+
+## `dioxus‑lib` removed
+
+`dioxus‑lib` crate was removed. You need to add dioxus as a dependency and adjust all references from `dioxus_lib` to use `dioxus` directly.
+
+````toml
+# Cargo.toml
+[dependencies]
+dioxus = { version = "0.7", default-features = false, features = ["lib"] }
+````
+
+````rust
+// src/main.rs
+use dioxus::prelude::*;
+````
+
+[PR #4438](https://github.com/DioxusLabs/dioxus/pull/4438)
+
+## Form submission behavior
+
+Before dioxus 0.7 form submissions were prevented by default in all renderers because it broke the page on desktop. If you called `prevent_default` on a form submission, it would invert the default behavior and allow the form to submit.
+
+In dioxus 0.7, the default behavior is to allow form submissions, and you need to call `prevent_default` to prevent them. The desktop renderer prevents all page navigation including form submissions separately.
+
+Dioxus 0.6:
+
+````rust
+rsx!(
+    form {
+        onsubmit: |e| {}, // Forms used to automatically not submit and reload the page
+        input { name: "username", type: "text" },
+        button { type: "submit", "Submit" }
+    }
+)
+````
+
+Dioxus 0.7:
+
+````rust
+rsx!(
+    form {
+        onsubmit: |e| e.prevent_default(), // In dioxus 0.7 you need to call prevent_default to prevent form submission
+        input { name: "username", type: "text" },
+        button { type: "submit", "Submit" }
+    }
+)
+````
+
+[PR #4422](https://github.com/DioxusLabs/dioxus/pull/4422)
+
+## Asset Options
+
+The asset options api for manganis was unified to use a single `AssetOptionsBuilder`. Instead of pulling in specific options like `ImageAssetOptions::new()`, you can now use `AssetOptions::image()` to create a builder for the asset variant you need.
+
+Dioxus 0.6:
+
+````rust
+use manganis::{ImageFormat, ImageAssetOptions, Asset, asset, ImageSize};
+
+pub const RESIZED_PNG_ASSET: Asset =
+    asset!("/assets/image.png", ImageAssetOptions::new().with_size(ImageSize::Manual { width: 52, height: 52 }));
+pub const AVIF_ASSET: Asset = asset!("/assets/image.png", ImageAssetOptions::new().with_format(ImageFormat::Avif));
+````
+
+Dioxus 0.7:
+
+````rust
+use manganis::{ImageFormat, ImageAssetOptions, Asset, asset, ImageSize};
+
+pub const RESIZED_PNG_ASSET: Asset =
+    asset!("/assets/image.png", AssetOptions::image().with_size(ImageSize::Manual { width: 52, height: 52 }));
+pub const AVIF_ASSET: Asset = asset!("/assets/image.png", AssetOptions::image().with_format(ImageFormat::Avif));
+````
+
+[PR #4312](https://github.com/DioxusLabs/dioxus/pull/4312)
+
+### Custom server function error type
+
+The `ServerFnError` type was changed from the generic server fn error type to a dioxus specific error type that can be easily converted into `dioxus::Error`. The type name is the same, but you may need to update your imports to use the dioxus type instead of the server fn type.
+
+[PR #4205](https://github.com/DioxusLabs/dioxus/pull/4205)
+
+### Items removed from the prelude
+
+Many items were removed from the prelude and now need to be imported explicitly. This includes:
+
+* `use_drop`
+* `Runtime`
+* `queue_effect`
+* `provide_root_context`
+
+[PR #4128](https://github.com/DioxusLabs/dioxus/pull/4128)
+
+### Change default server function codec to JSON
+
+Server functions used to encode arguments using URL‑encoded form data. Url encoding did not allow empty data structures or nested structures. The default codec is now JSON which supports many more types. Third‑party integrations that rely on the old form encoding format need to be updated to use the JSON codec or you need to explicitly set the protocol to `Http<PostUrl, Json>`.
+
+Dioxus 0.6:
+
+````rust
+#[server]
+async fn my_post_function(arg: MyStruct) -> ServerFnResult<MyResponse> {
+    // ...
+}
+
+#[server(protocol = Http<Json, Json>)]
+async fn my_json_function(arg: MyStruct) -> ServerFnResult<MyResponse> {
+    // ...
+}
+````
+
+Dioxus 0.7:
+
+````rust
+#[server(protocol = Http<GetUrl, Json>)]
+async fn my_post_function(arg: MyStruct) -> ServerFnResult<MyResponse> {
+    // ...
+}
+#[server]
+async fn my_json_function(arg: MyStruct) -> ServerFnResult<MyResponse> {
+    // ...
+}
+````
+
+[PR #3602](https://github.com/DioxusLabs/dioxus/pull/3602)
+
+### Transitive dependency updates
+
+Several crates dioxus exposes in public apis and re-exports were updated to the latest versions. If you rely on these crates, you may need to update your dependencies.
+
+* Wry was updated to 0.52: [PR #4255](https://github.com/DioxusLabs/dioxus/pull/4255)
+* Axum was updated to 0.8: [PR #3820](https://github.com/DioxusLabs/dioxus/pull/3820)
+* Server fn was updated to 0.7: [PR #3560](https://github.com/DioxusLabs/dioxus/pull/3560)
+
+## Owned event listener type (only applies to custom renderers)
+
+Dioxus html event handlers used to accept the same copy event handler that components use which complicates the drop logic in the VNode type. Event handlers now accept `impl ::dioxus_core::prelude::SuperInto<::dioxus_core::ListenerCallback<$data>, __Marker>` instead of `impl ::dioxus_core::prelude::SuperInto<::dioxus_core::prelude::EventHandler<::dioxus_core::Event<$data>>, __Marker>`. Custom renderers should be updated to accept the same type for consistency.
+
+[PR #4289](https://github.com/DioxusLabs/dioxus/pull/4289)
+# How to Upgrade to Dioxus 0.7
+
+This guide will outline the API changes between the 0.6 and 0.7 releases. The 0.7 release contains breaking changes to:
+
+* [`dioxus‑lib`](#dioxuslib-removed)
+* [Form submissions](#form-submission-behavior)
+* [Asset Options](#asset-options)
+* [Custom server function errors](#custom-server-function-error-type)
+* [dioxus::prelude](#items-removed-from-the-prelude)
+* [The default server function codec](#change-default-server-function-codec-to-json)
+* [Transitive dependency updates](#transitive-dependency-updates)
+* [Owned event listener type](#owned-event-listener-type-only-applies-to-custom-renderers)
+
+## `dioxus‑lib` removed
+
+`dioxus‑lib` crate was removed. You need to add dioxus as a dependency and adjust all references from `dioxus_lib` to use `dioxus` directly.
+
+````toml
+# Cargo.toml
+[dependencies]
+dioxus = { version = "0.7", default-features = false, features = ["lib"] }
+````
+
+````rust
+// src/main.rs
+use dioxus::prelude::*;
+````
+
+[PR #4438](https://github.com/DioxusLabs/dioxus/pull/4438)
+
+## Form submission behavior
+
+Before dioxus 0.7 form submissions were prevented by default in all renderers because it broke the page on desktop. If you called `prevent_default` on a form submission, it would invert the default behavior and allow the form to submit.
+
+In dioxus 0.7, the default behavior is to allow form submissions, and you need to call `prevent_default` to prevent them. The desktop renderer prevents all page navigation including form submissions separately.
+
+Dioxus 0.6:
+
+````rust
+rsx!(
+    form {
+        onsubmit: |e| {}, // Forms used to automatically not submit and reload the page
+        input { name: "username", type: "text" },
+        button { type: "submit", "Submit" }
+    }
+)
+````
+
+Dioxus 0.7:
+
+````rust
+rsx!(
+    form {
+        onsubmit: |e| e.prevent_default(), // In dioxus 0.7 you need to call prevent_default to prevent form submission
+        input { name: "username", type: "text" },
+        button { type: "submit", "Submit" }
+    }
+)
+````
+
+[PR #4422](https://github.com/DioxusLabs/dioxus/pull/4422)
+
+## Asset Options
+
+The asset options api for manganis was unified to use a single `AssetOptionsBuilder`. Instead of pulling in specific options like `ImageAssetOptions::new()`, you can now use `AssetOptions::image()` to create a builder for the asset variant you need.
+
+Dioxus 0.6:
+
+````rust
+use manganis::{ImageFormat, ImageAssetOptions, Asset, asset, ImageSize};
+
+pub const RESIZED_PNG_ASSET: Asset =
+    asset!("/assets/image.png", ImageAssetOptions::new().with_size(ImageSize::Manual { width: 52, height: 52 }));
+pub const AVIF_ASSET: Asset = asset!("/assets/image.png", ImageAssetOptions::new().with_format(ImageFormat::Avif));
+````
+
+Dioxus 0.7:
+
+````rust
+use manganis::{ImageFormat, ImageAssetOptions, Asset, asset, ImageSize};
+
+pub const RESIZED_PNG_ASSET: Asset =
+    asset!("/assets/image.png", AssetOptions::image().with_size(ImageSize::Manual { width: 52, height: 52 }));
+pub const AVIF_ASSET: Asset = asset!("/assets/image.png", AssetOptions::image().with_format(ImageFormat::Avif));
+````
+
+[PR #4312](https://github.com/DioxusLabs/dioxus/pull/4312)
+
+### Custom server function error type
+
+The `ServerFnError` type was changed from the generic server fn error type to a dioxus specific error type that can be easily converted into `dioxus::Error`. The type name is the same, but you may need to update your imports to use the dioxus type instead of the server fn type.
+
+[PR #4205](https://github.com/DioxusLabs/dioxus/pull/4205)
+
+### Items removed from the prelude
+
+Many items were removed from the prelude and now need to be imported explicitly. This includes:
+
+* `use_drop`
+* `Runtime`
+* `queue_effect`
+* `provide_root_context`
+
+[PR #4128](https://github.com/DioxusLabs/dioxus/pull/4128)
+
+### Change default server function codec to JSON
+
+Server functions used to encode arguments using URL‑encoded form data. Url encoding did not allow empty data structures or nested structures. The default codec is now JSON which supports many more types. Third‑party integrations that rely on the old form encoding format need to be updated to use the JSON codec or you need to explicitly set the protocol to `Http<PostUrl, Json>`.
+
+Dioxus 0.6:
+
+````rust
+#[server]
+async fn my_post_function(arg: MyStruct) -> ServerFnResult<MyResponse> {
+    // ...
+}
+
+#[server(protocol = Http<Json, Json>)]
+async fn my_json_function(arg: MyStruct) -> ServerFnResult<MyResponse> {
+    // ...
+}
+````
+
+Dioxus 0.7:
+
+````rust
+#[server(protocol = Http<GetUrl, Json>)]
+async fn my_post_function(arg: MyStruct) -> ServerFnResult<MyResponse> {
+    // ...
+}
+#[server]
+async fn my_json_function(arg: MyStruct) -> ServerFnResult<MyResponse> {
+    // ...
+}
+````
+
+[PR #3602](https://github.com/DioxusLabs/dioxus/pull/3602)
+
+### Transitive dependency updates
+
+Several crates dioxus exposes in public apis and re-exports were updated to the latest versions. If you rely on these crates, you may need to update your dependencies.
+
+* Wry was updated to 0.52: [PR #4255](https://github.com/DioxusLabs/dioxus/pull/4255)
+* Axum was updated to 0.8: [PR #3820](https://github.com/DioxusLabs/dioxus/pull/3820)
+* Server fn was updated to 0.7: [PR #3560](https://github.com/DioxusLabs/dioxus/pull/3560)
+
+## Owned event listener type (only applies to custom renderers)
+
+Dioxus html event handlers used to accept the same copy event handler that components use which complicates the drop logic in the VNode type. Event handlers now accept `impl ::dioxus_core::prelude::SuperInto<::dioxus_core::ListenerCallback<$data>, __Marker>` instead of `impl ::dioxus_core::prelude::SuperInto<::dioxus_core::prelude::EventHandler<::dioxus_core::Event<$data>>, __Marker>`. Custom renderers should be updated to accept the same type for consistency.
+
+[PR #4289](https://github.com/DioxusLabs/dioxus/pull/4289)

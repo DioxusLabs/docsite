@@ -330,8 +330,12 @@ pub fn CancelSafe() -> Element {
 
 pub fn UseResourceDemo() -> Element {
     rsx! {
-        ComponentWithLogs {
-            UseResourceMemo {}
+        // This renders differently based on the number of times we render the component
+        // which may be different on the client and server so we skip hydration
+        ClientOnly {
+            ComponentWithLogs {
+                UseResourceMemo {}
+            }
         }
     }
 }

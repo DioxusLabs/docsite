@@ -133,14 +133,13 @@ pub(crate) fn Hero() -> Element {
             // Subtle grid background
             div { class: "absolute inset-0 technical-grid" }
 
-            // Main hero content
+            // Title section - constrained width
             div { class: "relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8",
-                // Title section
                 div { class: "pt-20 sm:pt-24 md:pt-32 lg:pt-40 pb-16 md:pb-20",
                     // Main headline - clean sans-serif
                     h1 { class: "text-5xl sm:text-6xl md:text-7xl lg:text-7xl font-bold tracking-tight text-gray-900 dark:text-white leading-tight flex flex-row gap-4",
                         div { class: "leading-[1.1]", "One codebase." }
-                        div { class: "leading-[1.1] text-orange-500", "Every platform." }
+                        div { class: "leading-[1.1]", "Every platform." }
                     }
 
                     // Subheadline
@@ -150,8 +149,12 @@ pub(crate) fn Hero() -> Element {
 
                     // Quick actions
                     div { class: "mt-10 flex flex-wrap items-center gap-4",
-                        a {
-                            href: "/learn",
+                        Link {
+                            to: Route::Docs07 {
+                                child: dioxus_docs_07::BookRoute::GettingStartedIndex {
+                                    section: dioxus_docs_07::GettingStartedIndexSection::GettingStarted,
+                                },
+                            },
                             class: "inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-white bg-gray-900 dark:bg-white dark:text-gray-900 hover:bg-gray-700 dark:hover:bg-gray-200 transition-colors",
                             "Get Started"
                             svg {
@@ -179,9 +182,11 @@ pub(crate) fn Hero() -> Element {
                         }
                     }
                 }
+            }
 
-                // Editor section - hangs off viewport
-                div { class: "relative", InteractivePlayground {} }
+            // Editor section - wider than title, with slide-up animation
+            div { class: "relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 animate-slide-up",
+                InteractivePlayground {}
             }
 
             // Scroll indicator
@@ -369,6 +374,23 @@ fn InteractivePlayground() -> Element {
                             }
                             "Deploy"
                         }
+
+                        // Fullscreen Button
+                        button { class: "flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-orange-500 hover:bg-orange-600 transition-colors",
+                            svg {
+                                class: "w-3.5 h-3.5",
+                                fill: "none",
+                                stroke: "currentColor",
+                                view_box: "0 0 24 24",
+                                path {
+                                    stroke_linecap: "round",
+                                    stroke_linejoin: "round",
+                                    stroke_width: "2",
+                                    d: "M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12",
+                                }
+                            }
+                            "Playground"
+                        }
                     }
                 }
 
@@ -376,7 +398,7 @@ fn InteractivePlayground() -> Element {
                 div { class: "flex flex-col lg:flex-row",
                     // Left side - Code editor
                     div { class: "flex-1 lg:border-r border-gray-800",
-                        div { class: "relative h-[600px] lg:h-[700px]",
+                        div { class: "relative h-[600px] lg:h-[600px]",
                             // Line numbers
                             div { class: "absolute left-0 top-0 bottom-0 w-12 bg-[#0d1117] border-r border-gray-800/50 flex flex-col py-4 text-right pr-3 select-none overflow-hidden",
                                 for i in 1..=line_count {
@@ -395,9 +417,9 @@ fn InteractivePlayground() -> Element {
                     }
 
                     // Right side - Live preview with viewport frame
-                    div { class: "flex-1 bg-gray-100 dark:bg-[#0a0a0a] border-t lg:border-t-0 border-gray-800 overflow-hidden",
+                    div { class: "w-[540px] bg-gray-100 dark:bg-[#0a0a0a] border-t lg:border-t-0 border-gray-800 overflow-hidden",
                         div {
-                            class: "h-[600px] lg:h-[700px] p-4 flex items-center justify-center transition-all duration-200",
+                            class: "h-[600px] lg:h-[600px] p-4 flex items-center justify-center transition-all duration-200",
                             class: if animating() { "opacity-0 scale-95" } else { "opacity-100 scale-100" },
 
                             // Viewport frame
@@ -410,7 +432,7 @@ fn InteractivePlayground() -> Element {
                                         "transition-all duration-300 ease-out flex flex-col w-full h-full bg-white dark:bg-[#0d1117] border border-gray-200 dark:border-gray-800 shadow-lg overflow-hidden rounded-lg"
                                     }
                                     Viewport::Mobile => {
-                                        "transition-all duration-300 ease-out flex flex-col w-[320px] h-[640px] bg-white dark:bg-[#0d1117] border-4 border-gray-800 rounded-3xl shadow-2xl overflow-hidden relative"
+                                        "transition-all duration-300 ease-out flex flex-col w-[280px] h-[540px] bg-white dark:bg-[#0d1117] border-4 border-gray-800 rounded-3xl shadow-2xl overflow-hidden relative"
                                     }
                                 },
 

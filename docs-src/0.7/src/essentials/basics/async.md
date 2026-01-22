@@ -47,7 +47,7 @@ You can stop polling a Future any time or customize how a Future is polled using
 
 ## Running Futures with `spawn`
 
-The Dioxus [`spawn`](https://docs.rs/dioxus/0.7/dioxus/prelude/fn.spawn.html) function starts running a Future in the background and returns a `Task` that you can use to control the Future. It is the basis of all other async hooks in dioxus. You can use spawn to execute one-off tasks in event handlers, hooks or other Futures:
+The Dioxus [`spawn`](https://docs.rs/dioxus/~0.7/dioxus/prelude/fn.spawn.html) function starts running a Future in the background and returns a `Task` that you can use to control the Future. It is the basis of all other async hooks in dioxus. You can use spawn to execute one-off tasks in event handlers, hooks or other Futures:
 
 ```rust
 {{#include ../docs-router/src/doc_examples/asynchronous.rs:spawn}}
@@ -120,7 +120,7 @@ If an action is pending, calling `.call()` will cancel the current action's `Tas
 
 ## Automatic Cancellation
 
-The Future you pass to the `spawn` will automatically be cancelled when the component is unmounted. If you need to keep the Future running until it is finished, you can use [`spawn_forever`](https://docs.rs/dioxus/0.7/dioxus/prelude/fn.spawn_forever.html) instead:
+The Future you pass to the `spawn` will automatically be cancelled when the component is unmounted. If you need to keep the Future running until it is finished, you can use [`spawn_forever`](https://docs.rs/dioxus-core/~0.7/dioxus_core/fn.spawn_forever.html) instead:
 
 ```rust
 {{#include ../docs-router/src/doc_examples/asynchronous.rs:spawn_forever}}

@@ -195,7 +195,7 @@ DemoFrame {
 
 ### Expressions
 
-You can include arbitrary Rust expressions as children within RSX by surrounding your expression with `{}`s. Any expression that implements [IntoDynNode](https://docs.rs/dioxus-core/0.3/dioxus_core/trait.IntoDynNode.html) can be used within rsx. This is useful for displaying data from an [iterator](https://doc.rust-lang.org/stable/book/ch13-02-iterators.html#processing-a-series-of-items-with-iterators):
+You can include arbitrary Rust expressions as children within RSX by surrounding your expression with `{}`s. Any expression that implements [IntoDynNode](https://docs.rs/dioxus-core/~0.5/dioxus_core/trait.IntoDynNode.html) can be used within rsx. This is useful for displaying data from an [iterator](https://doc.rust-lang.org/stable/book/ch13-02-iterators.html#processing-a-series-of-items-with-iterators):
 
 ```rust, no_run
 {{#include ../docs-router/src/doc_examples/rsx_overview.rs:expression}}

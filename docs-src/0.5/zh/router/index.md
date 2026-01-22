@@ -35,4 +35,4 @@ into two sections:
    functionality.
 
 > Please note that this is not the only documentation for the Dioxus Router. You
-> can also check out the [API Docs](https://docs.rs/dioxus-router/).
+> can also check out the [API Docs](https://docs.rs/dioxus-router/~0.5).

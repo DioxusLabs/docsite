@@ -54,7 +54,7 @@ Unlike `use_resource`, `use_server_future` is only reactive in the closure, not 
 
 ### Streaming Suspense
 
-The default behavior for server side rendering is to wait for all suspended futures then send the fully resolved page. If you [enable](https://docs.rs/dioxus/0.7/dioxus/prelude/struct.ServeConfigBuilder.html#method.enable_out_of_order_streaming) out of order streaming, dioxus will send the finished HTML chunks to the client one at a time as they are resolved. This lets you show the loading views in your suspense boundaries while you are still waiting for other futures to resolve on the server:
+The default behavior for server side rendering is to wait for all suspended futures then send the fully resolved page. If you [enable](https://docs.rs/dioxus/~0.7/dioxus/prelude/struct.ServeConfig.html#method.enable_out_of_order_streaming) out of order streaming, dioxus will send the finished HTML chunks to the client one at a time as they are resolved. This lets you show the loading views in your suspense boundaries while you are still waiting for other futures to resolve on the server:
 
 ```rust
 {{#include ../docs-router/src/doc_examples/asynchronous.rs:use_server_future_streaming}}

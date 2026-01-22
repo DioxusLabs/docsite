@@ -6,7 +6,7 @@ Para lógica com estado, você pode usar _hooks_. _Hooks_ são funções Rust qu
 
 ## Hook `use_state`
 
-[`use_state`](https://docs.rs/dioxus/latest/dioxus/hooks/fn.use_state.html) é um dos _hooks_ mais simples.
+[`use_state`](https://docs.rs/dioxus/~0.3/dioxus/prelude/fn.use_state.html) é um dos _hooks_ mais simples.
 
 - Você fornece um fechamento que determina o valor inicial
 - `use_state` fornece o valor atual e uma maneira de atualizá-lo, definindo-o para outra coisa
@@ -22,7 +22,7 @@ Por exemplo, você pode ter visto o exemplo do contador, no qual o estado (um n�
 
 Toda vez que o estado do componente muda, ele é renderizado novamente e a função do componente é chamada, para que você possa descrever como deseja que a nova interface do usuário se pareça. Você não precisa se preocupar em "mudar" nada - apenas descreva o que você quer em termos de estado, e Dioxus cuidará do resto!
 
-> `use_state` retorna seu valor envolto em uma _smart pointer_ do tipo [`UseState`](https://docs.rs/dioxus/latest/dioxus/hooks/struct.UseState.html). É por isso que você pode ler o valor e atualizá-lo, mesmo dentro de um manipulador.
+> `use_state` retorna seu valor envolto em uma _smart pointer_ do tipo [`UseState`](https://docs.rs/dioxus/~0.3/dioxus/prelude/struct.UseState.html). É por isso que você pode ler o valor e atualizá-lo, mesmo dentro de um manipulador.
 
 Você pode usar vários _hooks_ no mesmo componente se quiser:
 
@@ -72,7 +72,7 @@ Essas regras significam que há certas coisas que você não pode fazer com _hoo
 
 ## Gancho `use_ref`
 
-`use_state` é ótimo para rastrear valores simples. No entanto, você pode notar na [`UseState` API](https://docs.rs/dioxus/latest/dioxus/hooks/struct.UseState.html) que a única maneira de modificar seu valor é substituí-lo por algo else (por exemplo, chamando `set`, ou através de um dos operadores `+=`, `-=`). Isso funciona bem quando é barato construir um valor (como qualquer primitivo). Mas e se você quiser manter dados mais complexos no estado dos componentes?
+`use_state` é ótimo para rastrear valores simples. No entanto, você pode notar na [`UseState` API](https://docs.rs/dioxus/~0.3/dioxus/prelude/struct.UseState.html) que a única maneira de modificar seu valor é substituí-lo por algo else (por exemplo, chamando `set`, ou através de um dos operadores `+=`, `-=`). Isso funciona bem quando é barato construir um valor (como qualquer primitivo). Mas e se você quiser manter dados mais complexos no estado dos componentes?
 
 Por exemplo, suponha que queremos manter um `Vec` de valores. Se o armazenamos com `use_state`, a única maneira de adicionar um novo valor à lista seria criar um novo `Vec` com o valor adicional e colocá-lo no estado. Isto é custoso! Queremos modificar o `Vec` existente.
 

@@ -42,7 +42,7 @@ Suponha agora que queremos implementar uma alternância de modo escuro para noss
 
 Agora, poderíamos escrever outro `use_state` no componente superior e passar `is_dark_mode` para cada componente através de _props_. Mas pense no que acontecerá à medida que o aplicativo crescer em complexidade – quase todos os componentes que renderizam qualquer CSS precisarão saber se o modo escuro está ativado ou não – para que todos precisem do mesmo suporte do modo escuro. E cada componente pai precisará passá-lo para eles. Imagine como isso ficaria confuso e verboso, especialmente se tivéssemos componentes com vários níveis de profundidade!
 
-A Dioxus oferece uma solução melhor do que esta "perfuração com hélice" – fornecendo contexto. O _hook_ [`use_context_provider`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context_provider.html) é semelhante ao `use_ref`, mas o torna disponível através do [`use_context`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context.html) para todos os componentes filhos.
+A Dioxus oferece uma solução melhor do que esta "perfuração com hélice" – fornecendo contexto. O _hook_ [`use_context_provider`](https://docs.rs/dioxus-hooks/~0.3/dioxus_hooks/fn.use_context_provider.html) é semelhante ao `use_ref`, mas o torna disponível através do [`use_context`](https://docs.rs/dioxus-hooks/~0.3/dioxus_hooks/fn.use_context.html) para todos os componentes filhos.
 
 Primeiro, temos que criar um _struct_ para nossa configuração de modo escuro:
 

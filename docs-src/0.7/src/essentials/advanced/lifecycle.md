@@ -62,3 +62,22 @@ DemoFrame {
     component_lifecycle::DropDemo {}
 }
 ```
+
+## Element Cleanup with `onmounted`
+
+While `use_drop` runs when a component is dropped, you can also run cleanup code when a specific element is removed from the DOM. Return a cleanup closure from your `onmounted` handler:
+
+```rust, no_run
+div {
+    onmounted: move |e| {
+        let el = e.data();
+        start_animation(el.clone());
+        // Return cleanup that runs when element is removed
+        move || stop_animation(el)
+    },
+}
+```
+
+This is useful when you need cleanup tied to a specific element's lifetime rather than the whole component. For example, stopping animations on individual elements when they're removed.
+
+See [Breaking Out - onmounted](./breaking_out.md#getting-access-to-elements-with-onmounted) for more details and a full example.

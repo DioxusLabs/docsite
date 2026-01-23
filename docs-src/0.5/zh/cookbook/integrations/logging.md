@@ -2,7 +2,7 @@
 Dioxus has a wide range of supported platforms, each with their own logging requirements. We'll discuss the different options available for your projects.
 
 #### The Tracing Crate
-The [Tracing](https://crates.io/crates/tracing) crate is the logging interface that the Dioxus library uses. It is not required to use the Tracing crate, but you will not recieve logs from the Dioxus library.
+The [Tracing](https://crates.io/crates/tracing) crate is the logging interface that the Dioxus library uses. It is not required to use the Tracing crate, but you will not receive logs from the Dioxus library.
 
 The Tracing crate provides a variety of simple `println`-like macros with varying levels of severity. 
 The available macros are as follows with the highest severity on the bottom:

@@ -65,7 +65,7 @@ pub fn Header(
                                     .push_error((
                                         "Share Failed",
                                         format!(
-                                            "An error occured while generating a share link: {error:?}",
+                                            "An error occurred while generating a share link: {error:?}",
                                         ),
                                     ));
                             }

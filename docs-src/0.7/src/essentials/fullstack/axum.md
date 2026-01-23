@@ -103,7 +103,7 @@ The [Axum documentation](https://docs.rs/axum/latest/axum/index.html) has more i
 
 ## Adding `Layers`
 
-Axum allows you to to attach middleware to many parts of your router:
+Axum allows you to attach middleware to many parts of your router:
 
 - To entire routers with [Router::layer](https://docs.rs/axum/latest/axum/struct.Router.html#method.layer) and [Router::route_layer](https://docs.rs/axum/latest/axum/struct.Router.html#method.route_layer).
 - To method routers with [MethodRouter::layer](https://docs.rs/axum/latest/axum/routing/method_routing/struct.MethodRouter.html#method.layer) and [MethodRouter::route_layer](https://docs.rs/axum/latest/axum/routing/method_routing/struct.MethodRouter.html#method.route_layer).

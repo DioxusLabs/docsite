@@ -43,7 +43,7 @@ pub fn attempt_hot_reload(mut hot_reload: HotReload, new_code: &str) {
         Err(HotReloadError::NeedsRebuild) => hot_reload.set_needs_rebuild(true),
         Err(e) => {
             hot_reload.set_needs_rebuild(true);
-            error!("hot reload error occured: {:?}", e);
+            error!("hot reload error occurred: {:?}", e);
         }
     }
 }

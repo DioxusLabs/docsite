@@ -97,7 +97,7 @@ One big advantage of this is the ability to open and close multiple windows from
 
 We’ve expanded what can be considered a component. Lowercase components are now accepted in the rsx macro provided that they either
 
-- Use the path syntax (ie `module::component`)
+- Use the path syntax (i.e., `module::component`)
 - Container an underscore character
 
 This is a similar restriction as found in other frameworks. Note that you still cannot define a one-word component without referencing it via path syntax. We’re hoping to resolve this soon, but it’s not a very easy problem to solve.

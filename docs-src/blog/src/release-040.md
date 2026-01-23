@@ -381,7 +381,7 @@ Another great contribution from the community: Dioxus desktop now provides funct
 ## Bidirectional Eval
 
 
-The use_eval hook allows you to run snippets of Javascript in your Dioxus application when needed. @doge has made some improvements that make this hook has significantly more powerful. The new version of the hook is compatible between the desktop, web, and Liveview renderers. It also allows you to send messages to and from Javascript asynchronously. This makes it possible to listen for Javascript events that Dioxus doesn’t officially support like the intersection observer API.
+The use_eval hook allows you to run snippets of Javascript in your Dioxus application when needed. @doge has made some improvements that make this hook significantly more powerful. The new version of the hook is compatible between the desktop, web, and Liveview renderers. It also allows you to send messages to and from Javascript asynchronously. This makes it possible to listen for Javascript events that Dioxus doesn’t officially support like the intersection observer API.
 
 ```rust
 use dioxus::prelude::*;

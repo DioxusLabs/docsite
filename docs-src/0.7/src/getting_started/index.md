@@ -8,7 +8,7 @@ Most editors support the [Rust-Analyzer LSP plugin](https://rust-analyzer.github
 
 ## Install Rust
 
-Head over to [https://rust-lang.org](http://rust-lang.org) and install the Rust compiler (preferably using `rustup`). Once installed, make sure you add the `stable` toolchain and any relevant toolchains (ie wasm32-unknown-unknown for web apps):
+Head over to [https://rust-lang.org](http://rust-lang.org) and install the Rust compiler (preferably using `rustup`). Once installed, make sure you add the `stable` toolchain and any relevant toolchains (i.e., wasm32-unknown-unknown for web apps):
 
 ```sh
 rustup toolchain install stable

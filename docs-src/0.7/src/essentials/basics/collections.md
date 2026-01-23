@@ -270,7 +270,7 @@ fn app() -> Element {
     let mut users = use_signal(|| HashMap::<UserId, UserData>::new());
 
     rsx! {
-        // the lifetime here is is not `'static` won't pass to the ListItem component
+        // the lifetime here is not `'static` and won't pass to the ListItem component
         for (id, user) in users.read().iter() {
             ListItem { key: "{id}", user }
         }

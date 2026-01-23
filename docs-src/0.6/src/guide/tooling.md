@@ -18,7 +18,7 @@ We covered the setup instructions in [Getting Started](../getting_started/index.
 
 Before proceeding, make sure you have the `dioxus-cli` installed and up-to-date.
 
-Verify the returned version matches this guide (eg 0.6) by running:
+Verify the returned version matches this guide (e.g., 0.6) by running:
 
 ```sh
 dx --version

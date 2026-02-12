@@ -193,5 +193,5 @@ We are overhauling the docs for Dioxus 0.7. Here is the current progress:
 </a>
 
 [dx]: https://github.com/DioxusLabs/dioxus/tree/main/packages/cli
-[section on contributing]: https://dioxuslabs.com/learn/0.6/contributing
+[section on contributing]: https://dioxuslabs.com/learn/0.7/beyond/contributing
 [issue tracker]: https://github.com/dioxuslabs/docsite/issues

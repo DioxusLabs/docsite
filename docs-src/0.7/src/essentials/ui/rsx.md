@@ -40,7 +40,7 @@ static TEMPLATE: Template = Template {
     ]
 }
 TEMPLATE.render([
-    format!("hello {world}")
+    format!("hello {world}!")
 ])
 ```
 

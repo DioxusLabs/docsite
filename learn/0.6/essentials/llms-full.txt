@@ -1,0 +1,1638 @@
+<SYSTEM>This is the developer documentation for Dioxus at /learn/0.6/essentials/rsx/ and all its subroutes.</SYSTEM>
+
+# Building UIs with RSX
+
+Dioxus renders to HTML, if you are not familiar with HTML, this guide will help you get started with the basics. For more detail, the [MDN docs](https://developer.mozilla.org/en-US/docs/Web/HTML) are a great resource.
+
+## Text Nodes
+
+Any content surrounded by quotes is rendered as a text node in rsx:
+
+````rs@building_uis_with_rsx.rs
+rsx! {
+    "Hello world"
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    building_uis_with_rsx::Text {}
+}
+````
+
+You can include formatted segments inside of the text just like the `format!` macro:
+
+````rs@building_uis_with_rsx.rs
+let user = use_signal(|| User {
+    name: "Dioxus".to_string(),
+});
+rsx! {
+    // Unlike the format macro, you can include many expressions inline in the formatted text
+    "Hello {user.read().name}"
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    building_uis_with_rsx::FormattedText {}
+}
+````
+
+## Elements
+
+The most basic building block of HTML is an element. In rsx, you can create elements with the name and then curly braces. One of the most common elements is the `input` element. The input element creates an interactive input box:
+
+````rs@building_uis_with_rsx.rs
+rsx! {
+    input {}
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    building_uis_with_rsx::Input {}
+}
+````
+
+ > 
+ > Bonus: web components
+ > Any element with a dash in the name is a web component. Web components are rendered directly in dioxus without type checking. We recommend wrapping web components in a type safe component to make them easier to use.
+ > 
+ > ````rs@building_uis_with_rsx.rs
+ > rsx! {
+ >     my-web-component {}
+ > }
+ > ````
+
+## Attributes
+
+Attributes provide extra information about an element. You can specify attributes in dioxus inside an element's braces by typing the name of the attribute, a colon, and then the value (typically a formatted string). We can use an attribute to set the `type` of an input element. The default type is `text` which shows a text input box, but we can set it to `number` to only accept numbers:
+
+````rs@building_uis_with_rsx.rs
+rsx! {
+    input { type: "number" }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    building_uis_with_rsx::InputType {}
+}
+````
+
+Just like text nodes, attributes can include formatted segments. We can set the value of the input element to a signal to control it:
+
+````rs@building_uis_with_rsx.rs
+let mut value = use_signal(|| "Hello world".to_string());
+rsx! {
+    input { value: "{value}" }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    building_uis_with_rsx::InputValue {}
+}
+````
+
+### Conditional Attributes
+
+You can conditionally set an attribute by setting the attribute value to an unterminated if statement. If the if statement evaluates to true, the attribute will be set:
+
+````rs@building_uis_with_rsx.rs
+let number_type = use_signal(|| false);
+rsx! {
+    input { type: if number_type() { "number" } }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    building_uis_with_rsx::InputDisabled {}
+}
+````
+
+## Event Listeners
+
+Event listeners allow you to respond to user input. In rsx, event handlers always start with `on`. The syntax is the same as normal attributes, but event handlers only accept a closure that responds to the event. We can attach an event listener to the `oninput` event of the input element to listen for changes to the input:
+
+````rs@building_uis_with_rsx.rs
+let mut value = use_signal(|| "Hello world".to_string());
+rsx! {
+    input {
+        oninput: move |event| value.set(event.value()),
+        value: "{value}"
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    building_uis_with_rsx::OnInput {}
+}
+````
+
+## Children
+
+You can add children to an element after all attributes and event listeners. Elements can accept text, components or other elements as children. We can add a `div` element around our input to center it:
+
+````rs@building_uis_with_rsx.rs
+rsx! {
+    div {
+        // display sets the layout mode of the element
+        display: "flex",
+        // justify-content centers the element horizontally
+        justify_content: "center",
+        input {
+            type: "number"
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    building_uis_with_rsx::InputChildren {}
+}
+````
+
+## Loops
+
+You can insert for loops directly in rsx. The body of the loop accepts any number of children that will be rendered with each iteration of the loop. The `ul` element in html renders an unordered list with any number of `li` (list item) elements. We can use those two elements to render a list of items in a loop:
+
+````rs@building_uis_with_rsx.rs
+let mut items = use_signal(|| vec!["Hello", "Dioxus"]);
+
+rsx! {
+    ul {
+        for item in items.iter() {
+            li { "{item}" }
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    building_uis_with_rsx::ForLoop {}
+}
+````
+
+Each item in your list should have unique value that is stable across rerenders called a key. Keys are used to identify how items move while diffing. Without keys, it is easy to accidentally lose or move state when you reorder items in a list. We can add keys to our list items by using the `key` attribute:
+
+````rs@building_uis_with_rsx.rs
+let mut items = use_signal(|| vec!["Hello", "Dioxus"]);
+
+rsx! {
+    ul {
+        for item in items.iter() {
+            li { key: "{item}", "{item}" }
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    building_uis_with_rsx::KeyedForLoop {}
+}
+````
+
+## If Statements
+
+You can also use if/else statements in rsx. Each branch of the if statement accepts child nodes that will be rendered if the condition is true. We can use the `if` statement to conditionally render a login screen:
+
+````rs@building_uis_with_rsx.rs
+let logged_in = use_signal(|| false);
+
+rsx! {
+    div {
+        if logged_in() {
+            "You are logged in"
+        } else {
+            "You are not logged in"
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    building_uis_with_rsx::IfStatement {}
+}
+````
+
+## Why RSX and not HTML ?
+
+If you've seen React's JSX or the `html!{}` Rust macro, you might be curious as to why Dioxus chose to use its own syntax instead of a syntax that looks more similar to HTML.
+
+A few reasons:
+
+* RSX gets token coloring and code-folding without additional tooling
+* RSX is faster to type since curly braces are auto-closed
+* Not all RSX is HTML - Dioxus can be used in non-HTML contexts
+* HTML is not valid Rust - not all HTML can be used in html!{}
+# Component Lifecycle
+
+## Initializing State with `use_hook`
+
+`use_hook` lets you create new state for your component. The closure you pass to `use_hook` will be called once the first time the component is rendered. Every time the component is re-rendered, the value that was created the first run will be re-used.
+
+````rs@component_lifecycle.rs
+fn UseHook() -> Element {
+    // The closure that is passed to use_hook will be called once the first time the component is rendered
+    let random_number = use_hook(|| {
+        let new_random_number = random_number();
+
+        log!("{new_random_number}");
+
+        new_random_number
+    });
+
+    rsx! {
+        div { "Random {random_number}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    component_lifecycle::UseHookDemo {}
+}
+````
+
+## Rerendering
+
+You can use [tracked values](../state/index.md) to re-render your component whenever a value changes.
+
+````rs@component_lifecycle.rs
+fn Rerenders() -> Element {
+    let mut count = use_signal(|| 0);
+
+    log!("Rerendering parent component with {}", *count.peek());
+
+    rsx! {
+        button { onclick: move |_| count += 1, "Increment" }
+        // Since we read count here, the component will rerender when count changes
+        Count { current_count: count() }
+    }
+}
+
+// If the count prop changes, the component will rerender
+#[component]
+fn Count(current_count: i32) -> Element {
+    log!("Rerendering child component with {current_count}");
+
+    rsx! {
+        div { "The count is {current_count}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    component_lifecycle::RerenderDemo {}
+}
+````
+
+### ⚠️ Don't mutate state in the body of a component
+
+You should avoid changing state in the body of a component. If you read and write to state in the body of a component, you can cause an infinite loop as the component tries to rerender because of the change which triggers another state change.
+
+````rs@component_lifecycle.rs
+fn Bad() -> Element {
+    let mut count = use_signal(|| 0);
+
+    // ❌ Don't mutate state in the body of the component.
+    // It can easily cause an infinite loop!
+    count += 1;
+
+    rsx! { "{count}" }
+}
+````
+
+Instead, derive state with `use_memo`, `use_resource`, or mutate state in a effect.
+
+## Using Effects
+
+You can use effects to run code whenever a component is rendered.
+
+````rs@component_lifecycle.rs
+fn Effect() -> Element {
+    // Effects run after the component is rendered
+    // You can use them to read or modify the rendered component
+    use_effect(|| {
+        log!("Effect ran");
+        document::eval(&format!(
+            "document.getElementById('effect-output').innerText = 'Effect ran'"
+        ));
+    });
+
+    rsx! {
+        div { id: "effect-output", "This will be changed by the effect" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    component_lifecycle::EffectDemo {}
+}
+````
+
+## Cleaning Up Components with Drop
+
+Before a component is dropped, it will drop all of its hooks. You can use this drop behavior to clean up any resources that your component is using. If you just need the drop effect, you can use the [`use_drop`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_drop.html) hook.
+
+````rs@component_lifecycle.rs
+fn TogglesChild() -> Element {
+    let mut show = use_signal(|| true);
+
+    rsx! {
+        button { onclick: move |_| show.toggle(), "Toggle" }
+        if show() {
+            Child {}
+        }
+    }
+}
+
+fn Child() -> Element {
+    // You can use the use_drop hook to clean up any resources
+    use_drop(|| {
+        log!("Child dropped");
+    });
+
+    rsx! {
+        div { "Child" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    component_lifecycle::DropDemo {}
+}
+````
+# Managing State
+
+In Dioxus, your app is defined as a function of the current state. As the state changes, the parts of your app that depend on that state will automatically re-run. Reactivity automatically tracks state and updates derived state in your application.
+
+## Creating State
+
+You can create mutable state in Dioxus with Signals. Signals are tracked values that automatically update your app when you change them. They form the skeleton of your app's state from which you can derive other state. Signals are often driven directly from user input through event handlers or async tasks.
+
+You can create a signal with the `use_signal` hook:
+
+````rs@reactivity.rs
+let mut signal = use_signal(|| 0);
+````
+
+Once you have your signal, you can clone it by calling the signal like a function or get a reference to the inner value with the `.read()` method:
+
+````rs@reactivity.rs
+// Call the signal like a function to clone the current value
+let value: i32 = signal();
+// get a reference to the inner value with the .read() method
+let value: &i32 = &signal.read();
+// or use one of the traits implemented for Signal like Display
+log!("{signal}");
+````
+
+Finally, you can set the value of the signal with the `.set()` method or get a mutable reference to the inner value with the `.write()` method:
+
+````rs@reactivity.rs
+// Set the value from the signal
+signal.set(1);
+
+// get a mutable reference to the inner value with the .write() method
+let mut value: &mut i32 = &mut signal.write();
+*value += 1;
+````
+
+### Reactive Scopes
+
+The simplest reactive primitive in Dioxus is the `use_effect` hook. It creates a closure that is run any time a tracked value that is run inside the closure changes.
+
+Any value you read inside the closure will become a dependency of the effect. If the value changes, the effect will rerun.
+
+````rs@reactivity.rs
+fn Effect() -> Element {
+    // use_signal creates a tracked value called count
+    let mut count = use_signal(|| 0);
+
+    use_effect(move || {
+        // When we read count, it becomes a dependency of the effect
+        let current_count = count();
+        // Whenever count changes, the effect will rerun
+        log!("{current_count}");
+    });
+
+    rsx! {
+        button { onclick: move |_| count += 1, "Increment" }
+
+        div { "Count is {count}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    reactivity::EffectDemo {}
+}
+````
+
+### Derived State
+
+`use_memo` is a reactive primitive that lets you derive state from any tracked value. It takes a closure that computes the new state and returns a tracked value with the current state of the memo. Any time a dependency of the memo changes, the memo will rerun.
+
+The value you return from the closure will only change when the output of the closure changes (`PartialEq` between the old and new value returns false).
+
+````rs@reactivity.rs
+fn Memo() -> Element {
+    let mut count = use_signal(|| 0);
+
+    // use_memo creates a tracked value that is derived from count
+    // Since we read count inside the closure, it becomes a dependency of the memo
+    // Whenever count changes, the memo will rerun
+    let half_count = use_memo(move || count() / 2);
+
+    use_effect(move || {
+        // half_count is itself a tracked value
+        // When we read half_count, it becomes a dependency of the effect
+        // and the effect will rerun when half_count changes
+        log!("{half_count}");
+    });
+
+    rsx! {
+        button { onclick: move |_| count += 1, "Increment" }
+
+        div { "Count is {count}" }
+        div { "Half count is {half_count}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    reactivity::MemoDemo {}
+}
+````
+
+### Derived Async State
+
+`use_resource` is a reactive primitive that lets you derive state from any async closure. It takes an async closure that computes the new state and returns a tracked value with the current state of the resource. Any time a dependency of the resource changes, the resource will rerun.
+
+The value you return from the closure will only change when the state of the future changes. Unlike `use_memo`, the resource's output is not memoized with `PartialEq`.
+
+````rs@reactivity.rs
+fn Resource() -> Element {
+    let mut count = use_signal(|| 0);
+
+    // use_resource creates a tracked value that is derived from count
+    // Since we read count inside the closure, it becomes a dependency of the resource
+    // Whenever count changes, the resource will rerun
+    let half_count = use_resource(move || async move {
+        // You can do async work inside resources
+        gloo_timers::future::TimeoutFuture::new(100).await;
+        count() / 2
+    });
+
+    use_effect(move || {
+        // half_count is itself a tracked value
+        // When we read half_count, it becomes a dependency of the effect
+        // and the effect will rerun when half_count changes
+        log!("{:?}", half_count());
+    });
+
+    rsx! {
+        button { onclick: move |_| count += 1, "Change Signal" }
+
+        div { "Count is {count}" }
+        div { "Half count is {half_count():?}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    reactivity::ResourceDemo {}
+}
+````
+
+### Derived UI
+
+Components are functions that return some UI. They memorize the output of the function just like memos. Components keep track of any dependencies you read inside the component and rerun when those dependencies change.
+
+````rs@reactivity.rs
+fn Component() -> Element {
+    let mut count = use_signal(|| 0);
+
+    rsx! {
+        button { onclick: move |_| count += 1, "Change Signal" }
+
+        // Since we read count inside Component, it becomes a dependency of Component
+        // Whenever count changes, Component will rerun
+        Count { count: count() }
+    }
+}
+
+// Components automatically memorize their props. If the props change, Count will rerun
+#[component]
+fn Count(count: i32) -> Element {
+    rsx! {
+        div { "Count: {count}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    reactivity::ComponentDemo {}
+}
+````
+
+### Working with Untracked State
+
+Most of the state in your app will be tracked values. All built in hooks return tracked values, and we encourage custom hooks to do the same. However, there are times when you need to work with untracked state. For example, you may receive a raw untracked value in props. When you read an untracked value inside a reactive scope, it will not subscribe to the value:
+
+````rs@reactivity.rs
+fn Component() -> Element {
+    let mut count = use_signal(|| 0);
+
+    rsx! {
+        button { onclick: move |_| count += 1, "Change Signal" }
+
+        Count { count: count() }
+    }
+}
+
+// The count reruns the component when it changes, but it is not a tracked value
+#[component]
+fn Count(count: i32) -> Element {
+    // When you read count inside the memo, it does not subscribe to the count signal
+    // because the value is not reactive
+    let double_count = use_memo(move || count * 2);
+
+    rsx! {
+        div { "Double count: {double_count}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    reactivity::NonReactiveDemo {}
+}
+````
+
+You can start tracking raw state with the `use_reactive` hook. This hook takes a tuple of dependencies and returns a reactive closure. When the closure is called in a reactive scope, it will track subscribe to the dependencies and rerun the closure when the dependencies change.
+
+````rs@reactivity.rs
+#[component]
+fn Count(count: i32) -> Element {
+    // You can manually track a non-reactive value with the use_reactive hook
+    let double_count = use_memo(
+        // Use reactive takes a tuple of dependencies and returns a reactive closure
+        use_reactive!(|(count,)| count * 2),
+    );
+
+    rsx! {
+        div { "Double count: {double_count}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    reactivity::UseReactiveDemo {}
+}
+````
+
+### Opting Out of Subscriptions
+
+In some situations, you may need to read a reactive value without subscribing to it. You can use the `peek` method to get a reference to the inner value without registering the value as a dependency of the current reactive scope:
+
+````rs@reactivity.rs
+fn Peek() -> Element {
+    let mut count = use_signal(|| 0);
+
+    // The toggle signal is a tracked value
+    let mut toggle = use_signal(|| false);
+
+    use_effect(move || {
+        // When we read count, it becomes a dependency of the effect
+        let current_count = count();
+        log!("current_count is {current_count}");
+
+        if current_count % 4 == 0 {
+            // We peek at the value of toggle instead of reading it,
+            // so it does not become a dependency
+            let current_toggle = *toggle.peek();
+            // We didn't subscribe to toggle, so this will not cause
+            // the effect to rerun forever
+            toggle.set(!current_toggle);
+            log!("flipped toggle to {toggle}");
+        }
+    });
+
+    rsx! {
+        button { onclick: move |_| count += 1, "Change Signal" }
+
+        div { "Count is {count}" }
+        div { "Toggle is {toggle}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    reactivity::PeekDemo {}
+}
+````
+
+### Making Props Reactive
+
+To avoid losing reactivity with props, we recommend you wrap any props you want to track in a `ReadOnlySignal`. Dioxus will automatically convert `T` into `ReadOnlySignal<T>` when you pass props to the component. This will ensure your props are tracked and rerun any state you derive in the component:
+
+````rs@reactivity.rs
+// You can track props by wrapping the type in a ReadOnlySignal
+// Dioxus will automatically convert T into ReadOnlySignal<T> when you pass
+// props to the component
+#[component]
+fn Count(count: ReadOnlySignal<i32>) -> Element {
+    // Then when you read count inside the memo, it subscribes to the count signal
+    let double_count = use_memo(move || count() * 2);
+
+    rsx! {
+        div { "Double count: {double_count}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    reactivity::MakingPropsReactiveDemo {}
+}
+````
+
+## Moving Around State
+
+As you create signals and derived state in your app, you will need to move around that state between components. Dioxus provides three different ways to pass around state:
+
+### Passing props
+
+You can pass your values through component [props](../../reference/component_props.md). This should be your default when passing around state. It is the most explicit and local to your component. Use this until it gets annoying to pass around the value:
+
+````rs@moving_state_around.rs
+pub fn ParentComponent() -> Element {
+    let count = use_signal(|| 0);
+
+    rsx! {
+        "Count is {count}"
+        IncrementButton {
+            count
+        }
+    }
+}
+
+#[component]
+fn IncrementButton(mut count: Signal<i32>) -> Element {
+    rsx! {
+        button {
+            onclick: move |_| count += 1,
+            "Increment"
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    moving_state_around::PassingProps {}
+}
+````
+
+### Passing context
+
+If you need a slightly more powerful way to pass around state, you can use the context API.
+
+The context API lets you pass state from a parent component to all children. This is useful if you want to share state between many components. You can insert a unique type into the context with the [`use_context_provider`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context_provider.html) hook in the parent component. Then you can access the context in any child component with the [`use_context`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context.html) hook.
+
+````rs@moving_state_around.rs
+#[derive(Clone, Copy)]
+struct MyState {
+    count: Signal<i32>,
+}
+
+pub fn ParentComponent() -> Element {
+    // Use context provider provides an unique type to all children of this component
+    let state = use_context_provider(|| MyState {
+        count: Signal::new(0),
+    });
+
+    rsx! {
+        "Count is {state.count}"
+        // IncrementButton will have access to the count without explicitly passing it through props
+        IncrementButton {}
+    }
+}
+
+#[component]
+fn IncrementButton() -> Element {
+    // Use context gets the value from a parent component
+    let mut count = use_context::<MyState>().count;
+
+    rsx! {
+        button {
+            onclick: move |_| count += 1,
+            "Increment"
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    moving_state_around::PassingContext {}
+}
+````
+
+This is slightly less explicit than passing it as a prop, but it is still local to the component. This is really great if you want state that is global to part of your app. It lets you create multiple global-ish states while still making state different when you reuse components. If I create a new `ParentComponent`, it will have a new `MyState`.
+
+### Using globals
+
+Finally, if you have truly global state, you can put your state in a `Global<T>` static. This is useful if you want to share state with your whole app:
+
+````rs@moving_state_around.rs
+use dioxus::prelude::*;
+// Globals are created the first time you access them with the closure you pass to Global::new
+static COUNT: GlobalSignal<i32> = Global::new(|| 0);
+
+pub fn ParentComponent() -> Element {
+    rsx! {
+        "Count is {COUNT}"
+        IncrementButton {}
+    }
+}
+
+fn IncrementButton() -> Element {
+    rsx! {
+        button {
+            // You don't need to pass anything around or get anything out of the context because COUNT is global
+            onclick: move |_| *COUNT.write() += 1,
+            "Increment"
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    moving_state_around::UsingGlobals {}
+}
+````
+
+Global state can be very ergonomic if your state is truly global, but you shouldn't use it if you need state to be different for different instances of your component. If I create another `IncrementButton` it will use the same `COUNT`. Libraries should generally avoid this to make components more reusable.
+
+ > 
+ > Note: Even though it is in a static, `COUNT` will be different for each app instance so you don't need to worry about state mangling when multiple instances of your app are running on the server
+# Handling Asynchronous Tasks
+
+Asynchronous tasks are a core part of any modern application. Dioxus provides a few different methods to handle asynchronous tasks. This guide will cover how to use each of them. If you already know what kind of asynchronous task you need, you can skip to the section for that task:
+
+* [spawn](#running-futures-with-spawn) is great for futures you need to run in the background that don't return a value
+* [use_resource](#asynchronous-state-with-use-resource) handles asynchronous state while retaining control of exactly what happens while the future is running
+* It can be combined with [Suspense](#unified-loading-views-with-suspense) to handle many pending tasks with the same loading view
+
+## Running Futures with `spawn`
+
+The [`spawn`](https://docs.rs/dioxus/0.6.2/dioxus/prelude/fn.spawn.html) method spawns a future in the background and returns a `Task` that you can use to cancel the future. Spawn is great for futures you want to start and then forget about like sending analytics data to a server:
+
+````rs@asynchronous.rs
+let mut response = use_signal(|| "Click to start a request".to_string());
+
+rsx! {
+    button {
+        onclick: move |_| {
+            response.set("...".into());
+            // Spawn will start a task running in the background
+            spawn(async move {
+                let resp = reqwest::Client::new()
+                    .get("https://dioxuslabs.com")
+                    .send()
+                    .await;
+
+                if resp.is_ok() {
+                    response.set("dioxuslabs.com responded!".into());
+                } else  {
+                    response.set("failed to fetch response!".into());
+                }
+            });
+        },
+        "{response}"
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    asynchronous::SpawnButton {}
+}
+````
+
+Since spawning in event handlers is very common, Dioxus provides a more concise syntax for async event handlers. If you return a future from an event handler, Dioxus will automatically `spawn` it:
+
+````rs@asynchronous.rs
+let mut response = use_signal(|| "Click to start a request".to_string());
+
+rsx! {
+    button {
+        // Async closures passed to event handlers are automatically spawned
+        onclick: move |_| async move {
+            response.set("...".into());
+            let resp = reqwest::Client::new()
+                .get("https://dioxuslabs.com")
+                .send()
+                .await;
+
+            if resp.is_ok() {
+                response.set("dioxuslabs.com responded!".into());
+            } else  {
+                response.set("failed to fetch response!".into());
+            }
+        },
+        "{response}"
+    }
+}
+````
+
+<div class="warning">
+
+The future you pass to the `spawn` will automatically be cancelled when the component is unmounted. If you need to keep the future running until it is finished, you can use [`spawn_forever`](https://docs.rs/dioxus/0.6.2/dioxus/prelude/fn.spawn_forever.html) instead.
+
+</div>
+
+## Asynchronous State with `use_resource`
+
+The [`use_resource`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_resource.html) can be used to derive asynchronous state. It takes an async closure to calculate the state and returns a tracked value with the current state of the future. Any time a dependency of the resource changes, the resource will rerun:
+
+````rs@asynchronous.rs
+let mut breed = use_signal(|| "hound".to_string());
+let dogs = use_resource(move || async move {
+    reqwest::Client::new()
+        // Since breed is read inside the async closure, the resource will subscribe to the signal
+        // and rerun when the breed is written to
+        .get(format!("https://dog.ceo/api/breed/{breed}/images"))
+        .send()
+        .await?
+        .json::<BreedResponse>()
+        .await
+});
+
+rsx! {
+    input {
+        value: "{breed}",
+        // When the input is changed and the breed is set, the resource will rerun
+        oninput: move |evt| breed.set(evt.value()),
+    }
+
+    div {
+        display: "flex",
+        flex_direction: "row",
+        // You can read resource just like a signal. If the resource is still
+        // running, it will return None
+        if let Some(response) = &*dogs.read() {
+            match response {
+                Ok(urls) => rsx! {
+                    for image in urls.iter().take(3) {
+                        img {
+                            src: "{image}",
+                            width: "100px",
+                            height: "100px",
+                        }
+                    }
+                },
+                Err(err) => rsx! { "Failed to fetch response: {err}" },
+            }
+        } else {
+            "Loading..."
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    asynchronous::UseResource {}
+}
+````
+
+The `use_resource` hook might look similar to the `use_memo` hook, but unlike `use_memo`, the resource's output is not memoized with `PartialEq`. That means any components/reactive hooks that read the output will rerun if the future reruns even if the value it returns is the same:
+
+````rs@asynchronous.rs
+let mut number = use_signal(|| 0);
+
+// Resources rerun any time their dependencies change. They will
+// rerun any reactive scopes that read the resource when they finish
+// even if the value hasn't changed
+let halved_resource = use_resource(move || async move { number() / 2 });
+
+log!("Component reran");
+
+rsx! {
+    button {
+        onclick: move |_| number += 1,
+        "Increment"
+    }
+    p {
+        if let Some(halved) = halved_resource() {
+            "Halved: {halved}"
+        } else {
+            "Loading..."
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    asynchronous::UseResourceDemo {}
+}
+````
+
+ > 
+ > Note: The future you pass to `use_resource` must be cancel safe. Cancel safe futures are futures that can be stopped at any point without causing issues. For example, this task is not cancel safe:
+ > 
+ > ````rs@asynchronous.rs
+ > static RESOURCES_RUNNING: GlobalSignal<HashSet<String>> = Signal::global(|| HashSet::new());
+ > let mut breed = use_signal(|| "hound".to_string());
+ > let dogs = use_resource(move || async move {
+ >     // Modify some global state
+ >     RESOURCES_RUNNING.write().insert(breed());
+ > 
+ >     // Wait for a future to finish. The resource may cancel
+ >     // without warning if breed is changed while the future is running. If
+ >     // it does, then the breed pushed to RESOURCES_RUNNING will never be popped
+ >     let response = reqwest::Client::new()
+ >         .get(format!("https://dog.ceo/api/breed/{breed}/images"))
+ >         .send()
+ >         .await?
+ >         .json::<BreedResponse>()
+ >         .await;
+ > 
+ >     // Restore some global state
+ >     RESOURCES_RUNNING.write().remove(&breed());
+ > 
+ >     response
+ > });
+ > ````
+ > 
+ > ````inject-dioxus
+ > DemoFrame {
+ >     asynchronous::NotCancelSafe {}
+ > }
+ > ````
+ > 
+ > It can be fixed by making sure the global state is restored when the future is dropped:
+ > 
+ > ````rs@asynchronous.rs
+ > static RESOURCES_RUNNING: GlobalSignal<HashSet<String>> = Signal::global(|| HashSet::new());
+ > let mut breed = use_signal(|| "hound".to_string());
+ > let dogs = use_resource(move || async move {
+ >     // Modify some global state
+ >     RESOURCES_RUNNING.write().insert(breed());
+ > 
+ >     // Automatically restore the global state when the future is dropped, even if
+ >     // isn't finished
+ >     struct DropGuard(String);
+ >     impl Drop for DropGuard {
+ >         fn drop(&mut self) {
+ >             RESOURCES_RUNNING.write().remove(&self.0);
+ >         }
+ >     }
+ >     let _guard = DropGuard(breed());
+ > 
+ >     // Wait for a future to finish. The resource may cancel
+ >     // without warning if breed is changed while the future is running. If
+ >     // it does, then it will be dropped and the breed will be popped
+ >     reqwest::Client::new()
+ >         .get(format!("https://dog.ceo/api/breed/{breed}/images"))
+ >         .send()
+ >         .await?
+ >         .json::<BreedResponse>()
+ >         .await
+ > });
+ > ````
+ > 
+ > ````inject-dioxus
+ > DemoFrame {
+ >     asynchronous::CancelSafe {}
+ > }
+ > ````
+ > 
+ > Async methods will often mention if they are cancel safe in their documentation.
+
+## Unified Loading Views with suspense
+
+`SuspenseBoundary` is a convenient way to bundle multiple async tasks into a single loading view. It accepts a loading closure and children. You can suspend tasks in children to pause rendering of that child until the future is finished. The suspense boundary will show the loading view instead of the children while any of its children are suspended. Once that suspense is resolved, it will show the children again.
+
+We can use a suspense boundary to show a grid of different breeds of dogs without handling each loading state individually:
+
+````rs@asynchronous.rs
+fn DogGrid() -> Element {
+    rsx! {
+        SuspenseBoundary {
+            // When any child components (like BreedGallery) are suspended, this closure will
+            // be called and the loading view will be rendered instead of the children
+            fallback: |_| rsx! {
+                div {
+                    width: "100%",
+                    height: "100%",
+                    display: "flex",
+                    align_items: "center",
+                    justify_content: "center",
+                    "Loading..."
+                }
+            },
+            div {
+                display: "flex",
+                flex_direction: "column",
+                BreedGallery {
+                    breed: "hound"
+                }
+                BreedGallery {
+                    breed: "poodle"
+                }
+                BreedGallery {
+                    breed: "beagle"
+                }
+            }
+        }
+    }
+}
+
+#[component]
+fn BreedGallery(breed: ReadOnlySignal<String>) -> Element {
+    let response = use_resource(move || async move {
+        // Artificially slow down the request to make the loading indicator easier to seer
+        gloo_timers::future::TimeoutFuture::new(1000).await;
+        reqwest::Client::new()
+            .get(format!("https://dog.ceo/api/breed/{breed}/images"))
+            .send()
+            .await?
+            .json::<BreedResponse>()
+            .await
+    })
+    // Calling .suspend()? will suspend the component and return early while the future is running
+    .suspend()?;
+
+    // Then you can just handle the happy path with the resolved future
+    rsx! {
+        div {
+            display: "flex",
+            flex_direction: "row",
+            match &*response.read() {
+                Ok(urls) => rsx! {
+                    for image in urls.iter().take(3) {
+                        img {
+                            src: "{image}",
+                            width: "100px",
+                            height: "100px",
+                        }
+                    }
+                },
+                Err(err) => rsx! { "Failed to fetch response: {err}" },
+            }
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    asynchronous::DogGridView {}
+}
+````
+
+If you need to change the loading view while a specific task is loading, you can provide a different loading view with the `with_loading_placeholder` method. The loading placeholder you return from the method will be passed to the suspense boundary and may choose to render it instead of the default loading view:
+
+````rs@asynchronous.rs
+fn DogGrid() -> Element {
+    rsx! {
+        SuspenseBoundary {
+            // The fallback closure accepts a SuspenseContext which contains
+            // information about the suspended component
+            fallback: |suspense_context: SuspenseContext| if let Some(view) = suspense_context.suspense_placeholder() {
+                view
+            } else {
+                rsx! {
+                    div {
+                        width: "100%",
+                        height: "100%",
+                        display: "flex",
+                        align_items: "center",
+                        justify_content: "center",
+                        "Loading..."
+                    }
+                }
+            },
+            div {
+                display: "flex",
+                flex_direction: "column",
+                BreedGallery {
+                    breed: "hound"
+                }
+                BreedGallery {
+                    breed: "poodle"
+                }
+                BreedGallery {
+                    breed: "beagle"
+                }
+            }
+        }
+    }
+}
+
+#[component]
+fn BreedGallery(breed: ReadOnlySignal<String>) -> Element {
+    let response = use_resource(move || async move {
+        gloo_timers::future::TimeoutFuture::new(breed().len() as u32 * 100).await;
+        reqwest::Client::new()
+            .get(format!("https://dog.ceo/api/breed/{breed}/images"))
+            .send()
+            .await?
+            .json::<BreedResponse>()
+            .await
+    })
+    .suspend()
+    // You can pass up a loading placeholder to the nearest SuspenseBoundary
+    // with the with_loading_placeholder method
+    .with_loading_placeholder(move || {
+        rsx! {
+            div {
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                align_items: "center",
+                justify_content: "center",
+                "Loading {breed}..."
+            }
+        }
+    })?;
+
+    // Then you can just handle the happy path with the resolved future
+    rsx! {
+        div {
+            display: "flex",
+            flex_direction: "row",
+            match &*response.read() {
+                Ok(urls) => rsx! {
+                    for image in urls.iter().take(3) {
+                        img {
+                            src: "{image}",
+                            width: "100px",
+                            height: "100px",
+                        }
+                    }
+                },
+                Err(err) => rsx! { "Failed to fetch response: {err}" },
+            }
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    asynchronous::DogGridViewWithLoadingPlaceholder {}
+}
+````
+
+## Suspense with Fullstack
+
+To use suspense in your fullstack application, you need to use the `use_server_future` hook instead of `use_resource`. `use_server_future` handles serialization of the result of the future for hydration. It will also suspend automatically, so you don't need to call `.suspend()` on the future.
+
+````rs@asynchronous.rs
+#[component]
+fn BreedGallery(breed: ReadOnlySignal<String>) -> Element {
+    // use_server_future is very similar to use_resource, but the value returned from the future
+    // must implement Serialize and Deserialize and it is automatically suspended
+    let response = use_server_future(move || async move {
+        // The future will run on the server during SSR and then get sent to the client
+        reqwest::Client::new()
+            .get(format!("https://dog.ceo/api/breed/{breed}/images"))
+            .send()
+            .await
+            // reqwest::Result does not implement Serialize, so we need to map it to a string which
+            // can be serialized
+            .map_err(|err| err.to_string())?
+            .json::<BreedResponse>()
+            .await
+            .map_err(|err| err.to_string())
+        // use_server_future calls `suspend` internally, so you don't need to call it manually, but you
+        // do need to bubble up the suspense variant with `?`
+    })?;
+
+    // If the future was still pending, it would have returned suspended with the `?` above
+    // we can unwrap the None case here to get the inner result
+    let response_read = response.read();
+    let response = response_read.as_ref().unwrap();
+
+    // Then you can just handle the happy path with the resolved future
+    rsx! {
+        div {
+            display: "flex",
+            flex_direction: "row",
+            match response {
+                Ok(urls) => rsx! {
+                    for image in urls.iter().take(3) {
+                        img {
+                            src: "{image}",
+                            width: "100px",
+                            height: "100px",
+                        }
+                    }
+                },
+                Err(err) => rsx! { "Failed to fetch response: {err}" },
+            }
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    asynchronous::DogGridFullstack {}
+}
+````
+
+Unlike `use_resource`, `use_server_future` is only reactive in the closure, not the future itself. If you need to subscribe to another reactive value, you need to read it in the closure before passing it to the future:
+
+````rs@asynchronous.rs
+let id = use_signal(|| 0);
+// ❌ The future inside of use_server_future is not reactive
+use_server_future(move || {
+    async move {
+        // But the future is not reactive which means that the future will not subscribe to any reads here
+        println!("{id}");
+    }
+});
+// ✅ The closure that creates the future for use_server_future is reactive
+use_server_future(move || {
+    // The closure itself is reactive which means the future will subscribe to any signals you read here
+    let cloned_id = id();
+    async move {
+        // But the future is not reactive which means that the future will not subscribe to any reads here
+        println!("{cloned_id}");
+    }
+});
+````
+
+When you use suspense with fullstack without streaming enabled, dioxus will wait until all suspended futures are resolved before sending the resolved html to the client. If you [enable](https://docs.rs/dioxus/0.6.2/dioxus/prelude/struct.ServeConfigBuilder.html#method.enable_out_of_order_streaming) out of order streaming, dioxus will send the finished HTML chunks to the client one at a time as they are resolved:
+
+````rs@asynchronous.rs
+fn main() {
+    dioxus::LaunchBuilder::new()
+        .with_cfg(server_only! {
+            // Enable out of order streaming during SSR
+            dioxus::fullstack::ServeConfig::builder().enable_out_of_order_streaming()
+        })
+        .launch(DogGrid);
+}
+````
+
+![Out of order streaming](/assets/06_docs/streaming_dogs.mp4)
+
+## Conclusion
+
+This guide has covered the basics of asynchronous tasks in Dioxus. More detailed documentation about specific hooks are available in docs.rs:
+
+* [use_resource](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_resource.html)
+* [use_server_future](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_server_future.html)
+* [SuspenseBoundary](https://docs.rs/dioxus/latest/dioxus/prelude/fn.SuspenseBoundary.html)
+* [spawn](https://docs.rs/dioxus/latest/dioxus/prelude/fn.spawn.html)
+* [spawn_forever](https://docs.rs/dioxus/latest/dioxus/prelude/fn.spawn_forever.html)
+
+More examples of futures and asynchronous tasks are available in the [example folder](https://github.com/DioxusLabs/dioxus/tree/v0.6/examples) in the dioxus repo.
+# Breaking Out of Dioxus
+
+Dioxus makes it easy to build reactive user interfaces. However, there are some cases where you may need to break out of the reactive paradigm to interact with the DOM directly.
+
+## Interacting with JavaScript with `eval` and `web-sys`
+
+Dioxus exposes a limited number of [web apis](https://developer.mozilla.org/en-US/docs/Web/API) with a nicer interface. If you need access to more APIs, you can use the `eval` function to run JavaScript in the browser.
+
+For example, you can use the eval function to read the domain of the current page:
+
+````rs@breaking_out.rs
+pub fn Eval() -> Element {
+    let mut domain = use_signal(String::new);
+    rsx! {
+        button {
+            // When you click the button, some javascript will run in the browser
+            // to read the domain and set the signal
+            onclick: move |_| async move {
+                domain.set(document::eval("return document.domain").await.unwrap().to_string());
+            },
+            "Read Domain"
+        }
+        "Current domain: {domain}"
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    breaking_out::Eval {}
+}
+````
+
+If you are only targeting web, you can also use the [`web-sys`](https://crates.io/crates/web-sys) crate for typed access to the web APIs. Here is what reading the domain looks like with web-sys:
+
+````rs@breaking_out.rs
+use ::web_sys::window;
+use wasm_bindgen::JsCast;
+pub fn WebSys() -> Element {
+    let mut domain = use_signal(String::new);
+    rsx! {
+        button {
+            // When you click the button, we use web-sys to read the domain and a signal
+            onclick: move |_| {
+                domain
+                    .set(
+                        window()
+                            .unwrap()
+                            .document()
+                            .unwrap()
+                            .dyn_into::<::web_sys::HtmlDocument>()
+                            .unwrap()
+                            .domain(),
+                    );
+            },
+            "Read Domain"
+        }
+        "Current domain: {domain}"
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    breaking_out::WebSys {}
+}
+````
+
+## Synchronizing DOM updates with `use_effect`
+
+If you do need to interact with the DOM directly, you should do so in a `use_effect` hook. This hook will run after the component is rendered and all of the Dioxus UI has been rendered. You can read or modify the DOM in this hook.
+
+For example, you can use the `use_effect` hook to write to a canvas element after it is created:
+
+````rs@breaking_out.rs
+pub fn Canvas() -> Element {
+    let mut count = use_signal(|| 0);
+
+    use_effect(move || {
+        // Effects are reactive like memos, and resources. If you read a value inside the effect, the effect will rerun when that value changes
+        let count = count.read();
+
+        // You can use the count value to update the DOM manually
+        document::eval(&format!(
+            r#"var c = document.getElementById("dioxus-canvas");
+var ctx = c.getContext("2d");
+ctx.clearRect(0, 0, c.width, c.height);
+ctx.font = "30px Arial";
+ctx.fillText("{count}", 10, 50);"#
+        ));
+    });
+
+    rsx! {
+        button {
+            // When you click the button, count will be incremented and the effect will rerun
+            onclick: move |_| count += 1,
+            "Increment"
+        }
+        canvas { id: "dioxus-canvas" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    breaking_out::Canvas {}
+}
+````
+
+## Getting access to elements with `onmounted`
+
+If you need a handle to an element that is rendered by dioxus, you can use the `onmounted` event. This event will fire after the element is first mounted to the DOM. It returns a live reference to the element with some methods to interact with it.
+
+You can use the onmounted event to do things like focus or scroll to an element after it is rendered:
+
+````rs@breaking_out.rs
+pub fn OnMounted() -> Element {
+    let mut input_element = use_signal(|| None);
+
+    rsx! {
+        div { height: "100px",
+            button {
+                class: "focus:outline-2 focus:outline-blue-600 focus:outline-dashed",
+                // The onmounted event will run the first time the button element is mounted
+                onmounted: move |element| input_element.set(Some(element.data())),
+                "First button"
+            }
+
+            button {
+                // When you click the button, if the button element has been mounted, we focus to that element
+                onclick: move |_| async move {
+                    if let Some(header) = input_element() {
+                        let _ = header.set_focus(true).await;
+                    }
+                },
+                "Focus first button"
+            }
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    breaking_out::OnMounted {}
+}
+````
+
+## Down casting web sys events
+
+Dioxus provides platform agnostic wrappers over each event type. These wrappers are often nicer to interact with than the raw event types, but they can be more limited. If you are targeting web, you can downcast the event with the `as_web_event` method to get the underlying web-sys event:
+
+````rs@breaking_out.rs
+pub fn Downcast() -> Element {
+    let mut event_text = use_signal(|| 0);
+
+    rsx! {
+        div {
+            onmousemove: move |event| {
+                #[cfg(feature = "web")]
+                {
+                    use dioxus::web::WebEventExt;
+                    event_text.set(event.as_web_event().movement_x());
+                }
+            },
+            "movement_x was {event_text}"
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    breaking_out::Downcast {}
+}
+````
+# Error handling
+
+A selling point of Rust for web development is the reliability of always knowing where errors can occur and being forced to handle them. Dioxus provides ErrorBoundarys to help you handle errors in a declarative way. This guide will teach you how to use ErrorBoundaries and other error handling strategies in Dioxus.
+
+## Returning Errors from Components
+
+Astute observers might have noticed that `Element` is actually a type alias for `Result<VNode, RenderError>`. The `RenderError` type can be created from an error type that implements `Error`. You can use `?` to bubble up any errors you encounter while rendering to the nearest error boundary:
+
+````rs@error_handling.rs
+#[component]
+fn ThrowsError() -> Element {
+    // You can return any type that implements `Error`
+    let number: i32 = use_hook(|| "1.234").parse()?;
+
+    todo!()
+}
+````
+
+## Capturing errors with ErrorBoundaries
+
+When you return an error from a component, it gets sent to the nearest error boundary. That error boundary can then handle the error and render a fallback UI with the handle_error closure:
+
+````rs@error_handling.rs
+#[component]
+fn Parent() -> Element {
+    rsx! {
+        ErrorBoundary {
+            // The error boundary accepts a closure that will be rendered when an error is thrown in any
+            // of the children
+            handle_error: |_| {
+                rsx! { "Oops, we encountered an error. Please report this to the developer of this application" }
+            },
+            ThrowsError {}
+        }
+    }
+}
+````
+
+## Throwing Errors from Event Handlers
+
+In addition to components, you can throw errors from event handlers. If you throw an error from an event handler, it will bubble up to the nearest error boundary just like a component:
+
+````rs@error_handling.rs
+#[component]
+fn ThrowsError() -> Element {
+    rsx! {
+        button {
+            onclick: move |_| {
+                // Event handlers can return errors just like components
+                let number: i32 = "1...234".parse()?;
+
+                tracing::info!("Parsed number: {number}");
+
+                Ok(())
+            },
+            "Throw error"
+        }
+    }
+}
+````
+
+## Adding context to errors
+
+You can add additional context to your errors with the [`Context`](https://docs.rs/dioxus/0.6/dioxus/prelude/trait.Context.html) trait. Calling `context` on a `Result` will add the context to the error variant of the `Result`:
+
+````rs@error_handling.rs
+#[component]
+fn ThrowsError() -> Element {
+    // You can call the context method on results to add more information to the error
+    let number: i32 = use_hook(|| "1.234")
+        .parse()
+        .context("Failed to parse name")?;
+
+    todo!()
+}
+````
+
+If you need some custom UI for the error message, you can call `show` on a result to attach an Element to the error variant. The parent error boundary can choose to render this element instead of the default error message:
+
+````rs@error_handling.rs
+#[component]
+fn Parent() -> Element {
+    rsx! {
+        ErrorBoundary {
+            // The error boundary accepts a closure that will be rendered when an error is thrown in any
+            // of the children
+            handle_error: |error: ErrorContext| {
+                if let Some(error_ui) = error.show() {
+                    rsx! {
+                        {error_ui}
+                    }
+                } else {
+                    rsx! {
+                        div {
+                            "Oops, we encountered an error. Please report this to the developer of this application"
+                        }
+                    }
+                }
+            },
+            ThrowsError {}
+        }
+    }
+}
+````
+
+## Local Error Handling
+
+If you need more fine-grained control over error states, you can store errors in reactive hooks and use them just like any other value. For example, if you need to show a phone number validation error, you can store the error in a memo and show it below the input field if it is invalid:
+
+````rs@error_handling.rs
+#[component]
+pub fn PhoneNumberValidation() -> Element {
+    let mut phone_number = use_signal(|| String::new());
+    let parsed_phone_number = use_memo(move || phone_number().parse::<PhoneNumber>());
+
+    rsx! {
+        input {
+            class: "border border-gray-300 rounded-md p-2 mb-4",
+            placeholder: "Phone number",
+            value: "{phone_number}",
+            oninput: move |e| {
+                phone_number.set(e.value());
+            },
+        }
+
+        match parsed_phone_number() {
+            Ok(phone_number) => rsx! {
+                div {
+                    "Parsed phone number: {phone_number}"
+                }
+            },
+            Err(error) => rsx! {
+                div {
+                    "Phone number is invalid: {error}"
+                }
+            }
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    error_handling::PhoneNumberValidation {}
+}
+````

@@ -1,0 +1,350 @@
+<SYSTEM>This is the developer documentation for Dioxus at /learn/0.4/reference/fullstack/server_functions and all its subroutes.</SYSTEM>
+
+# Communicating with the server
+
+`dioxus-fullstack` provides server functions that allow you to call an automatically generated API on the server from the client as if it were a local function.
+
+To make a server function, simply add the `#[server(YourUniqueType)]` attribute to a function. The function must:
+
+* Be an async function
+* Have arguments and a return type that both implement serialize and deserialize (with [serde](https://serde.rs/)).
+* Return a `Result` with an error type of ServerFnError
+
+You must call `register` on the type you passed into the server macro in your main function before starting your server to tell Dioxus about the server function.
+
+Let's continue building on the app we made in the [getting started](../../getting_started/fullstack.md) guide. We will add a server function to our app that allows us to double the count on the server.
+
+First, add serde as a dependency:
+
+````shell
+cargo add serde
+````
+
+Next, add the server function to your `main.rs`:
+
+````rs@server_function.rs
+#![allow(non_snake_case)]
+
+use dioxus::prelude::*;
+use dioxus_fullstack::prelude::*;
+
+fn main() {
+    let config = LaunchBuilder::new(App);
+    #[cfg(feature = "ssr")]
+    let config = config.incremental(
+        IncrementalRendererConfig::default().invalidate_after(std::time::Duration::from_secs(120)),
+    );
+
+    config.launch();
+}
+
+fn App(cx: Scope) -> Element {
+    let mut count = use_state(cx, || 0);
+
+    cx.render(rsx! {
+        h1 { "High-Five counter: {count}" }
+        button { onclick: move |_| count += 1, "Up high!" }
+        button { onclick: move |_| count -= 1, "Down low!" }
+        button {
+            onclick: move |_| {
+                to_owned![count];
+                async move {
+                    // Call the server function just like a local async function
+                    if let Ok(new_count) = double_server(*count.current()).await {
+                        count.set(new_count);
+                    }
+                }
+            },
+            "Double"
+        }
+    })
+}
+
+#[server]
+async fn double_server(number: i32) -> Result<i32, ServerFnError> {
+    // Perform some expensive computation or access a database on the server
+    tokio::time::sleep(std::time::Duration::from_secs(1)).await;
+    let result = number * 2;
+    println!("server calculated {result}");
+    Ok(result)
+}
+
+````
+
+Now, build your client-side bundle with `dx build --features web` and run your server with `cargo run --features ssr`. You should see a new button that multiplies the count by 2.
+
+## Cached data fetching
+
+One common use case for server functions is fetching data from the server:
+
+````rs@server_data_fetch.rs
+#![allow(non_snake_case, unused)]
+
+use dioxus::prelude::*;
+use dioxus_fullstack::prelude::*;
+
+fn main() {
+    LaunchBuilder::new(app).launch();
+}
+
+fn app(cx: Scope) -> Element {
+    let mut count = use_future(cx, (), |_| async { get_server_data().await });
+
+    cx.render(rsx! {
+        "server data is {count.value():?}"
+    })
+}
+
+#[server]
+async fn get_server_data() -> Result<String, ServerFnError> {
+    // Access a database
+    tokio::time::sleep(std::time::Duration::from_millis(100)).await;
+    Ok("Hello from the server!".to_string())
+}
+
+````
+
+If you navigate to the site above, you will first see `server data is None`, then after the `WASM` has loaded and the request to the server has finished, you will see `server data is Some(Ok("Hello from the server!"))`.
+
+This approach works, but it can be slow. Instead of waiting for the client to load and send a request to the server, what if we could get all of the data we needed for the page on the server and send it down to the client with the initial HTML page?
+
+This is exactly what the `use_server_future` hook allows us to do! `use_server_future` is similar to the `use_future` hook, but it allows you to wait for a future on the server and send the result of the future down to the client.
+
+Let's change our data fetching to use `use_server_future`:
+
+````rs@server_data_prefetch.rs
+#![allow(non_snake_case, unused)]
+
+use dioxus::prelude::*;
+use dioxus_fullstack::prelude::*;
+
+fn main() {
+    LaunchBuilder::new(app).launch();
+}
+
+fn app(cx: Scope) -> Element {
+    let mut count = use_server_future(cx, (), |_| async { get_server_data().await })?;
+
+    cx.render(rsx! {
+        "server data is {count.value():?}"
+    })
+}
+
+#[server]
+async fn get_server_data() -> Result<String, ServerFnError> {
+    // Access a database
+    tokio::time::sleep(std::time::Duration::from_millis(100)).await;
+    Ok("Hello from the server!".to_string())
+}
+
+````
+
+ > 
+ > Notice the `?` after `use_server_future`. This is what tells Dioxus fullstack to wait for the future to resolve before continuing rendering. If you want to not wait for a specific future, you can just remove the ? and deal with the `Option` manually.
+
+Now when you load the page, you should see `server data is Ok("Hello from the server!")`. No need to wait for the `WASM` to load or wait for the request to finish!
+
+````inject-dioxus
+SandBoxFrame {
+	url: "https://codesandbox.io/p/sandbox/dioxus-fullstack-server-future-qwpp4p?file=/src/main.rs:3,24"
+}
+````
+
+## Running the client with dioxus-desktop
+
+The project presented so far makes a web browser interact with the server, but it is also possible to make a desktop program interact with the server in a similar fashion. (The full example code is available in the [Dioxus repo](https://github.com/DioxusLabs/dioxus/tree/master/packages/fullstack/examples/axum-desktop))
+
+First, we need to make two binary targets, one for the desktop program (the `client.rs` file), one for the server (the `server.rs` file). The client app and the server functions are written in a shared `lib.rs` file.
+
+The desktop and server targets have slightly different build configuration to enable additional dependencies or features.
+The Cargo.toml in the full example has more information, but the main points are:
+
+* the client.rs has to be run with the `desktop` feature, so that the optional `dioxus-desktop` dependency is included
+* the server.rs has to be run with the `ssr` features; this will generate the server part of the server functions and will include the `axum` dependency to run as a server.
+
+Once you create your project, you can run the server executable with:
+
+````bash
+cargo run --bin server --features ssr
+````
+
+and the client desktop executable with:
+
+````bash
+cargo run --bin client --features desktop
+````
+
+### Client code
+
+The client file is pretty straightforward. You only need to set the server url in the client code, so it knows where to send the network requests. Then, dioxus_desktop launches the app.
+
+For development, the example project runs the server on `localhost:8080`. **Before you release remember to update the url to your production url.**
+
+### Server code
+
+In the server code, first you have to set the network address and port where the server will listen to.
+
+````rs@server_function_desktop_client.rs
+let addr = std::net::SocketAddr::from(([127, 0, 0, 1], 8080));
+````
+
+Then, you have to register the types declared in the server function macros into the axum server.
+For example, consider this server function:
+
+````rs@server_function_desktop_client.rs
+#[server(GetServerData)]
+async fn get_server_data() -> Result<String, ServerFnError> {
+    Ok("Hello from the server!".to_string())
+}
+````
+
+The `GetServerData` type has to be registered in the axum server, which will add the corresponding route to the server.
+
+````rs@server_function_desktop_client.rs
+let _ = GetServerData::register_explicit();
+````
+
+Finally, the server is started and it begins responding to requests.
+# Extractors
+
+Server functions are an ergonomic way to call a function on the server. Server function work by registering an endpoint on the server and using requests on the client. Most of the time, you shouldn't need to worry about how server functions operate, but there are some times when you need to get some value from the request other than the data passed in the server function.
+
+For example, requests contain information about the user's browser (called the [user agent](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent)). We can use an extractor to retrieve that information.
+
+You can use the `extract` method within a server function to extract something from the request. You can extract any type that implements `FromServerContext` (or when axum is enabled, you can use axum extractors directly):
+
+````rs@server_function_extract.rs
+#[server]
+pub async fn log_user_agent() -> Result<(), ServerFnError> {
+    let axum::TypedHeader(user_agent): axum::TypedHeader<axum::headers::UserAgent> =
+        extract().await?;
+    log::info!("{:?}", user_agent);
+    Ok(())
+}
+````
+# Middleware
+
+Extractors allow you to wrap your server function in some code that changes either the request or the response. Dioxus fullstack integrates with [Tower](https://docs.rs/tower/latest/tower/index.html) to allow you to wrap your server functions in middleware.
+
+You can use the `#[middleware]` attribute to add a layer of middleware to your server function. Let's add a timeout middleware to a server function. This middleware will stop running the server function if it reaches a certain timeout:
+
+````rs@server_function_middleware.rs
+#[server]
+// Add a timeout middleware to the server function that will return an error if the function takes longer than 1 second to execute
+#[middleware(tower_http::timeout::TimeoutLayer::new(std::time::Duration::from_secs(1)))]
+pub async fn timeout() -> Result<(), ServerFnError> {
+    tokio::time::sleep(std::time::Duration::from_secs(2)).await;
+    Ok(())
+}
+````
+# Authentication
+
+You can use [extractors](./extractors.md) to integrate auth with your Fullstack application.
+
+You can create a custom extractors that extracts the auth session from the request. From that auth session, you can check if the user has the required privileges before returning the private data.
+
+A [full auth example](https://github.com/dioxuslabs/dioxus/blob/master/packages/fullstack/examples/axum-auth/src/main.rs) with the complete implementation is available in the fullstack examples.
+# Routing
+
+You can easily integrate your fullstack application with a client side router using the `launch_router` macro. The `launch_router` macro works the same as the `launch` macro except it accepts a Router instead of a Component:
+
+````rs@server_router.rs
+#![allow(non_snake_case)]
+
+use dioxus::prelude::*;
+use dioxus_fullstack::prelude::*;
+use serde::{Deserialize, Serialize};
+
+fn main() {
+    let config = LaunchBuilder::<FullstackRouterConfig<Route>>::router();
+    #[cfg(feature = "ssr")]
+    config
+        .incremental(
+            IncrementalRendererConfig::default()
+                .invalidate_after(std::time::Duration::from_secs(120)),
+        )
+        .launch();
+
+    #[cfg(not(feature = "ssr"))]
+    config.launch();
+}
+
+#[derive(Clone, Routable, Debug, PartialEq, Serialize, Deserialize)]
+enum Route {
+    #[route("/")]
+    Home {},
+    #[route("/blog/:id")]
+    Blog { id: i32 },
+}
+
+#[component]
+fn Blog(cx: Scope, id: i32) -> Element {
+    render! {
+        Link { to: Route::Home {}, "Go to counter" }
+        table {
+            tbody {
+                for _ in 0..*id {
+                    tr {
+                        for _ in 0..*id {
+                            td { "hello world!" }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+#[component]
+fn Home(cx: Scope) -> Element {
+    let mut count = use_state(cx, || 0);
+    let text = use_state(cx, || "...".to_string());
+
+    cx.render(rsx! {
+        Link {
+            to: Route::Blog {
+                id: *count.get()
+            },
+            "Go to blog"
+        }
+        div {
+            h1 { "High-Five counter: {count}" }
+            button { onclick: move |_| count += 1, "Up high!" }
+            button { onclick: move |_| count -= 1, "Down low!" }
+            button {
+                onclick: move |_| {
+                    to_owned![text];
+                    async move {
+                        if let Ok(data) = get_server_data().await {
+                            println!("Client received: {}", data);
+                            text.set(data.clone());
+                            post_server_data(data).await.unwrap();
+                        }
+                    }
+                },
+                "Run server function!"
+            }
+            "Server said: {text}"
+        }
+    })
+}
+
+#[server(PostServerData)]
+async fn post_server_data(data: String) -> Result<(), ServerFnError> {
+    println!("Server received: {}", data);
+
+    Ok(())
+}
+
+#[server(GetServerData)]
+async fn get_server_data() -> Result<String, ServerFnError> {
+    Ok("Hello from the server!".to_string())
+}
+
+````
+
+````inject-dioxus
+SandBoxFrame {
+	url: "https://codesandbox.io/p/sandbox/dioxus-fullstack-router-s75v5q?file=%2Fsrc%2Fmain.rs%3A7%2C1"
+}
+````

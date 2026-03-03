@@ -1,0 +1,225 @@
+<SYSTEM>This is the developer documentation for Dioxus from /learn/0.7/essentials/fullstack/forms.</SYSTEM>
+# Forms and Multipart
+
+Dioxus natively supports HTML Forms and Multipart uploads.
+
+* HTML forms are collections of input elements represented as a list of key-value pairs
+* Multipart requests are requests that contain multiple bodies
+
+Many forms you'll build will be rather simple. Uploading them will only require a single request body. In some cases, as with file-uploads, you'll need a multi-part form data.
+
+## Forms
+
+Dioxus Fullstack supports form uploads through Axum's typed `Form<T>` type. Simply wrap a struct that implements `Serialize + Deserialize` and pass it as an argument to a server function:
+
+````rust
+// Our form payload
+#[derive(Deserialize, Serialize)]
+pub struct LoginForm {
+    username: String,
+    password: String,
+}
+
+// Our form endpoint
+#[post("/api/login")]
+async fn login(form: Form<LoginForm>) -> Result<()> {
+    // Verify the username and password.
+    // In a real application, you'd check these against a database.
+    if form.0.username == "admin" && form.0.password == "password" {
+        // ..
+    }
+}
+````
+
+The values from the form can be created manually by constructing the form body, or automatically by calling `.parsed_values()` on the `FormEvent` type created by `onsubmit`.
+
+````rust
+rsx! {
+    form {
+        onsubmit: move |evt: FormEvent| async move {
+            // Prevent the browser from navigating away.
+            evt.prevent_default();
+
+            // Extract the form values into our `LoginForm` struct. The `.parsed_values` method
+            // is provided by Dioxus and works with any form element that has `name` attributes.
+            let values: LoginForm = evt.parsed_values().unwrap();
+
+            // Call the login endpoint
+            login(Form(values)).await;
+        },
+        input { r#type: "text", id: "username", name: "username" }
+        label { "Username" }
+        input { r#type: "password", id: "password", name: "password" }
+        label { "Password" }
+        button { "Login" }
+    }
+}
+````
+
+Form elements must have a "name" attribute which will be used during the deserialization process to identify form fields.
+
+Note that `GET` requests will encode the form values in the request URL. This might not work for complex data structures, so it's best practice to use `POST` endpoints for handling form data.
+
+## Multipart
+
+With some forms, you'll need to handle multiple request bodies in a single request. For example, if your form has file inputs, the browser will automatically create a multi-part request with the form values in one body and then file uploads in another.
+
+Dioxus provides the `MultipartFormData` type which will automatically convert `FormEvent` objects into proper multi-part requests.
+
+On the client, you can convert the `FormEvent` with `.into()`:
+
+````
+rsx! {
+    form {
+        display: "flex",
+        flex_direction: "column",
+        gap: "8px",
+        onsubmit: move |evt| async move {
+            evt.prevent_default();
+
+            upload(evt.into()).await;
+        },
+        label { r#for: "headshot", "Photos" }
+        input { r#type: "file", name: "headshot", multiple: true, accept: ".png,.jpg,.jpeg" }
+        label { r#for: "resume", "Resume" }
+        input { r#type: "file", name: "resume", multiple: false, accept: ".pdf" }
+        label { r#for: "name", "Name" }
+        input { r#type: "text", name: "name", placeholder: "Name" }
+        label { r#for: "age", "Age" }
+        input { r#type: "number", name: "age", placeholder: "Age" }
+        input { r#type: "submit", name: "submit", value: "Submit your resume" }
+    }
+}
+````
+
+On the server, you can use an endpoint that takes `MultipartFormData` and then iterate through the fields using `next_field()`:
+
+````rust
+#[post("/api/upload-multipart")]
+async fn upload(mut form: MultipartFormData) -> Result<()> {
+    while let Ok(Some(field)) = form.next_field().await {
+        let name = field.name().unwrap_or("<none>").to_string();
+        let file_name = field.file_name().unwrap_or("<none>").to_string();
+        let content_type = field.content_type().unwrap_or("<none>").to_string();
+        let bytes = field.bytes().await;
+
+        // ...
+    }
+
+    Ok(())
+}
+````
+
+Currently Dioxus does not support typed `MultipartFormData` objects, but it *is* something we'd like to add in the future.
+# Forms and Multipart
+
+Dioxus natively supports HTML Forms and Multipart uploads.
+
+* HTML forms are collections of input elements represented as a list of key-value pairs
+* Multipart requests are requests that contain multiple bodies
+
+Many forms you'll build will be rather simple. Uploading them will only require a single request body. In some cases, as with file-uploads, you'll need a multi-part form data.
+
+## Forms
+
+Dioxus Fullstack supports form uploads through Axum's typed `Form<T>` type. Simply wrap a struct that implements `Serialize + Deserialize` and pass it as an argument to a server function:
+
+````rust
+// Our form payload
+#[derive(Deserialize, Serialize)]
+pub struct LoginForm {
+    username: String,
+    password: String,
+}
+
+// Our form endpoint
+#[post("/api/login")]
+async fn login(form: Form<LoginForm>) -> Result<()> {
+    // Verify the username and password.
+    // In a real application, you'd check these against a database.
+    if form.0.username == "admin" && form.0.password == "password" {
+        // ..
+    }
+}
+````
+
+The values from the form can be created manually by constructing the form body, or automatically by calling `.parsed_values()` on the `FormEvent` type created by `onsubmit`.
+
+````rust
+rsx! {
+    form {
+        onsubmit: move |evt: FormEvent| async move {
+            // Prevent the browser from navigating away.
+            evt.prevent_default();
+
+            // Extract the form values into our `LoginForm` struct. The `.parsed_values` method
+            // is provided by Dioxus and works with any form element that has `name` attributes.
+            let values: LoginForm = evt.parsed_values().unwrap();
+
+            // Call the login endpoint
+            login(Form(values)).await;
+        },
+        input { r#type: "text", id: "username", name: "username" }
+        label { "Username" }
+        input { r#type: "password", id: "password", name: "password" }
+        label { "Password" }
+        button { "Login" }
+    }
+}
+````
+
+Form elements must have a "name" attribute which will be used during the deserialization process to identify form fields.
+
+Note that `GET` requests will encode the form values in the request URL. This might not work for complex data structures, so it's best practice to use `POST` endpoints for handling form data.
+
+## Multipart
+
+With some forms, you'll need to handle multiple request bodies in a single request. For example, if your form has file inputs, the browser will automatically create a multi-part request with the form values in one body and then file uploads in another.
+
+Dioxus provides the `MultipartFormData` type which will automatically convert `FormEvent` objects into proper multi-part requests.
+
+On the client, you can convert the `FormEvent` with `.into()`:
+
+````
+rsx! {
+    form {
+        display: "flex",
+        flex_direction: "column",
+        gap: "8px",
+        onsubmit: move |evt| async move {
+            evt.prevent_default();
+
+            upload(evt.into()).await;
+        },
+        label { r#for: "headshot", "Photos" }
+        input { r#type: "file", name: "headshot", multiple: true, accept: ".png,.jpg,.jpeg" }
+        label { r#for: "resume", "Resume" }
+        input { r#type: "file", name: "resume", multiple: false, accept: ".pdf" }
+        label { r#for: "name", "Name" }
+        input { r#type: "text", name: "name", placeholder: "Name" }
+        label { r#for: "age", "Age" }
+        input { r#type: "number", name: "age", placeholder: "Age" }
+        input { r#type: "submit", name: "submit", value: "Submit your resume" }
+    }
+}
+````
+
+On the server, you can use an endpoint that takes `MultipartFormData` and then iterate through the fields using `next_field()`:
+
+````rust
+#[post("/api/upload-multipart")]
+async fn upload(mut form: MultipartFormData) -> Result<()> {
+    while let Ok(Some(field)) = form.next_field().await {
+        let name = field.name().unwrap_or("<none>").to_string();
+        let file_name = field.file_name().unwrap_or("<none>").to_string();
+        let content_type = field.content_type().unwrap_or("<none>").to_string();
+        let bytes = field.bytes().await;
+
+        // ...
+    }
+
+    Ok(())
+}
+````
+
+Currently Dioxus does not support typed `MultipartFormData` objects, but it *is* something we'd like to add in the future.

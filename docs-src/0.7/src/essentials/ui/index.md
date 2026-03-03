@@ -25,7 +25,7 @@ You can do anything in Dioxus that you could do with HTML and CSS alone.
 
 ## What HTML and CSS Gives You
 
-HTML and CSS are powerful technologies (albet, with lots of baggage) that make it easy to build beautiful UIs that work across billions of devices.
+HTML and CSS are powerful technologies (albeit, with lots of baggage) that make it easy to build beautiful UIs that work across billions of devices.
 
 HTML and CSS give you lots of tools:
 

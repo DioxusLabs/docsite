@@ -52,7 +52,7 @@ fn Demo() -> Element {
 
     rsx! {
         button {
-            onclick: move |_| *count.write() = current,
+            onclick: move |_| *count.write() = current + 1,
             "Increment ({current})"
         }
     }

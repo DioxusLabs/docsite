@@ -4,6 +4,7 @@ pub use eval::Eval;
 pub use onmounted_::OnMounted;
 pub use use_effect::Canvas;
 pub use web_sys::WebSys;
+pub use template_diffing::TemplateDiffing;
 
 mod eval {
     use super::*;
@@ -142,4 +143,31 @@ mod onmounted_ {
         }
     }
     // ANCHOR_END: onmounted
+}
+
+mod template_diffing {
+    use super::*;
+
+    // ANCHOR: template_diffing
+    pub fn TemplateDiffing() -> Element {
+        let mut signal = use_signal(|| false);
+
+        rsx! {
+            div { style: if *signal.read() { "background-color:lightcoral;" } else { "background-color:lightsteelblue;" },
+                "Only the style property of the parent div is relaced"
+            }
+            if *signal.read() {
+                div { style: "background-color:lightcoral;", "The entire parent div is replaced" }
+            } else {
+                div { style: "background-color:lightsteelblue;", "The entire parent div is replaced" }
+            }
+            button {
+                onclick: move |_| {
+                    signal.set(!signal());
+                },
+                "Click me and watch changes in the DOM with your browsers dev tools"
+            }
+        }
+    }
+    // ANCHOR_END: template_diffing
 }

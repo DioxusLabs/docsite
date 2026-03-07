@@ -68,7 +68,7 @@ or if you are using a custom axum server, you can pass the config into `serve_di
 
 Head elements can only be rendered in the initial HTML chunk that contains the `<head>` tag. You should include all of your `document::Link`, `document::Meta`, and `document::Title` elements in the first part of your page if possible. If you have any head elements that are not included in the first chunk, they will be rendered by the client after hydration instead, which will not be visible to any search engines or users without JavaScript enabled.
 
-The initial chunk of HTML is send after [commit_initial_chunk](https://docs.rs/dioxus-fullstack/0.7.0-alpha.1/dioxus_fullstack/prelude/fn.commit_initial_chunk.html) is called for the first time. If you are using the router, this will happen automatically when all suspense boundaries above the router are resolved. If you are not using the router, you can call `commit_initial_chunk` manually after all of your blocking head elements have been rendered.
+The initial chunk of HTML is send after [commit_initial_chunk](https://docs.rs/dioxus-fullstack/~0.7/dioxus_fullstack/prelude/fn.commit_initial_chunk.html) is called for the first time. If you are using the router, this will happen automatically when all suspense boundaries above the router are resolved. If you are not using the router, you can call `commit_initial_chunk` manually after all of your blocking head elements have been rendered.
 
 ```rust
 {{#include ../docs-router/src/doc_examples/streaming.rs:head_elements}}

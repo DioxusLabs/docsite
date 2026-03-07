@@ -52,7 +52,7 @@ DemoFrame {
 
 ## Cleaning Up Components with Drop
 
-Before a component is dropped, it will drop all of its hooks. You can use this drop behavior to clean up any resources that your component is using. If you just need the drop effect, you can use the [`use_drop`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_drop.html) hook.
+Before a component is dropped, it will drop all of its hooks. You can use this drop behavior to clean up any resources that your component is using. If you just need the drop effect, you can use the [`use_drop`](https://docs.rs/dioxus/~0.6/dioxus/prelude/fn.use_drop.html) hook.
 
 ```rust, no_run
 {{#include ../docs-router/src/doc_examples/untested_06/component_lifecycle.rs:drop}}

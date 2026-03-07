@@ -253,10 +253,8 @@ pub fn RightNav<R: AnyBookRoute>() -> Element {
     let page = R::use_route();
     let short_version = R::short_version();
 
-    let page_url = use_memo(move || page.to_string());
-
-    let edit_github_url = use_resource(move || async move {
-        let page = page_url();
+    let edit_github_url = use_resource(use_reactive!(|(page,)| async move {
+        let page = page.to_string();
         let page_without_hash = page.split_once("#").map(|(url, _)| url).unwrap_or(&page);
         let page_without_query = page_without_hash
             .split_once("?")
@@ -274,7 +272,7 @@ pub fn RightNav<R: AnyBookRoute>() -> Element {
         } else {
             format!("{GITHUB_EDIT_PAGE_EDIT_URL}{short_version}/src{page_without_query}.md")
         }
-    });
+    }));
 
     // That might be a naive approach, but it's the easiest
     rsx! {

@@ -173,7 +173,7 @@ struct OtherHeaderState {
 let title2 = header.other().title2();
 ```
 
-The ability for a store to "zoom in" through nested datastructures is dependent on whether or not types also implement `Store`. If, for example, or nested structs *didn't* implement the `Store` trait, then we can't lens them:
+The ability for a store to "zoom in" through nested datastructures is dependent on whether or not types also implement `Store`. If, for example, our nested structs *didn't* implement the `Store` trait, then we can't lens them:
 
 ```rust
 #[derive(Store)]

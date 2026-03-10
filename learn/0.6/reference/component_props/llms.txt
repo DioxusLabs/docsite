@@ -1,0 +1,507 @@
+<SYSTEM>This is the developer documentation for Dioxus from /learn/0.6/reference/component_props.</SYSTEM>
+# Component Props
+
+Just like you can pass arguments to a function or attributes to an element, you can pass props to a component that customize its behavior! The components we've seen so far didn't accept any props – so let's write some components that do.
+
+## derive(Props)
+
+Component props are a single struct annotated with `#[derive(PartialEq, Clone, Props)]`. For a component to accept props, the type of its argument must be `YourPropsStruct`.
+
+Example:
+
+````rs@component_owned_props.rs
+#[derive(PartialEq, Props, Clone)]
+struct LikesProps {
+    score: i32,
+}
+
+fn Likes(props: LikesProps) -> Element {
+    rsx! {
+        div {
+            "This post has "
+            b { "{props.score}" }
+            " likes"
+        }
+    }
+}
+````
+
+You can then pass prop values to the component the same way you would pass attributes to an element:
+
+````rs@component_owned_props.rs
+pub fn App() -> Element {
+    rsx! { Likes { score: 42 } }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    component_owned_props::App {}
+}
+````
+
+## Prop Options
+
+The `#[derive(Props)]` macro has some features that let you customize the behavior of props.
+
+### Optional Props
+
+You can create optional fields by using the `Option<…>` type for a field:
+
+````rs@component_props_options.rs
+#[derive(PartialEq, Clone, Props)]
+struct OptionalProps {
+    title: String,
+    subtitle: Option<String>,
+}
+
+fn Title(props: OptionalProps) -> Element {
+    rsx! {
+        h1 { "{props.title}: ", {props.subtitle.unwrap_or_else(|| "No subtitle provided".to_string())} }
+    }
+}
+````
+
+Then, you can choose to either provide them or not:
+
+````rs@component_props_options.rs
+Title { title: "Some Title" }
+Title { title: "Some Title", subtitle: "Some Subtitle" }
+// Providing an Option explicitly won't compile though:
+// Title {
+//     title: "Some Title",
+//     subtitle: None,
+// },
+````
+
+### Explicitly Required Option
+
+If you want to explicitly require an `Option`, and not an optional prop, you can annotate it with `#[props(!optional)]`:
+
+````rs@component_props_options.rs
+#[derive(PartialEq, Clone, Props)]
+struct ExplicitOptionProps {
+    title: String,
+    #[props(!optional)]
+    subtitle: Option<String>,
+}
+
+fn ExplicitOption(props: ExplicitOptionProps) -> Element {
+    rsx! {
+        h1 { "{props.title}: ", {props.subtitle.unwrap_or_else(|| "No subtitle provided".to_string())} }
+    }
+}
+````
+
+Then, you have to explicitly pass either `Some("str")` or `None`:
+
+````rs@component_props_options.rs
+ExplicitOption { title: "Some Title", subtitle: None }
+ExplicitOption { title: "Some Title", subtitle: Some("Some Title".to_string()) }
+// This won't compile:
+// ExplicitOption {
+//     title: "Some Title",
+// },
+````
+
+### Default Props
+
+You can use `#[props(default = 42)]` to make a field optional and specify its default value:
+
+````rs@component_props_options.rs
+#[derive(PartialEq, Props, Clone)]
+struct DefaultProps {
+    // default to 42 when not provided
+    #[props(default = 42)]
+    number: i64,
+}
+
+fn DefaultComponent(props: DefaultProps) -> Element {
+    rsx! { h1 { "{props.number}" } }
+}
+````
+
+Then, similarly to optional props, you don't have to provide it:
+
+````rs@component_props_options.rs
+DefaultComponent { number: 5 }
+DefaultComponent {}
+````
+
+### Automatic Conversion with into
+
+It is common for Rust functions to accept `impl Into<SomeType>` rather than just `SomeType` to support a wider range of parameters. If you want similar functionality with props, you can use `#[props(into)]`. For example, you could add it on a `String` prop – and `&str` will also be automatically accepted, as it can be converted into `String`:
+
+````rs@component_props_options.rs
+#[derive(PartialEq, Props, Clone)]
+struct IntoProps {
+    #[props(into)]
+    string: String,
+}
+
+fn IntoComponent(props: IntoProps) -> Element {
+    rsx! { h1 { "{props.string}" } }
+}
+````
+
+Then, you can use it so:
+
+````rs@component_props_options.rs
+IntoComponent { string: "some &str" }
+````
+
+## The component macro
+
+So far, every Component function we've seen had a corresponding ComponentProps struct to pass in props. This was quite verbose... Wouldn't it be nice to have props as simple function arguments? Then we wouldn't need to define a Props struct, and instead of typing `props.whatever`, we could just use `whatever` directly!
+
+`component` allows you to do just that. Instead of typing the "full" version:
+
+````rust, no_run
+#[derive(Props, Clone, PartialEq)]
+struct TitleCardProps {
+    title: String,
+}
+
+fn TitleCard(props: TitleCardProps) -> Element {
+    rsx!{
+        h1 { "{props.title}" }
+    }
+}
+````
+
+...you can define a function that accepts props as arguments. Then, just annotate it with `#[component]`, and the macro will turn it into a regular Component for you:
+
+````rust, no_run
+#[component]
+fn TitleCard(title: String) -> Element {
+    rsx!{
+        h1 { "{title}" }
+    }
+}
+````
+
+ > 
+ > While the new Component is shorter and easier to read, this macro should not be used by library authors since you have less control over Prop documentation.
+
+## Component Children
+
+In some cases, you may wish to create a component that acts as a container for some other content, without the component needing to know what that content is. To achieve this, create a prop of type `Element`:
+
+````rs@component_element_props.rs
+#[derive(PartialEq, Clone, Props)]
+struct ClickableProps {
+    href: String,
+    body: Element,
+}
+
+fn Clickable(props: ClickableProps) -> Element {
+    rsx! {
+        a { href: "{props.href}", class: "fancy-button", {props.body} }
+    }
+}
+````
+
+Then, when rendering the component, you can pass in the output of `rsx!{...}`:
+
+````rs@component_element_props.rs
+rsx! {
+    Clickable {
+        href: "https://www.youtube.com/watch?v=C-M2hs3sXGo",
+        body: rsx! {
+            "How to " i { "not" } " be seen"
+        }
+    }
+}
+````
+
+ > 
+ > Warning: While it may compile, do not include the same `Element` more than once in the RSX. The resulting behavior is unspecified.
+
+### The children field
+
+Rather than passing the RSX through a regular prop, you may wish to accept children similarly to how elements can have children. The "magic" `children` prop lets you achieve this:
+
+````rs@component_children.rs
+#[derive(PartialEq, Clone, Props)]
+struct ClickableProps {
+    href: String,
+    children: Element,
+}
+
+fn Clickable(props: ClickableProps) -> Element {
+    rsx! {
+        a { href: "{props.href}", class: "fancy-button", {props.children} }
+    }
+}
+````
+
+This makes using the component much simpler: simply put the RSX inside the `{}` brackets – and there is no need for a `render` call or another macro!
+
+````rs@component_children.rs
+rsx! {
+    Clickable { href: "https://www.youtube.com/watch?v=C-M2hs3sXGo",
+        "How to "
+        i { "not" }
+        " be seen"
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    component_children::App {}
+}
+````
+# Component Props
+
+Just like you can pass arguments to a function or attributes to an element, you can pass props to a component that customize its behavior! The components we've seen so far didn't accept any props – so let's write some components that do.
+
+## derive(Props)
+
+Component props are a single struct annotated with `#[derive(PartialEq, Clone, Props)]`. For a component to accept props, the type of its argument must be `YourPropsStruct`.
+
+Example:
+
+````rs@component_owned_props.rs
+#[derive(PartialEq, Props, Clone)]
+struct LikesProps {
+    score: i32,
+}
+
+fn Likes(props: LikesProps) -> Element {
+    rsx! {
+        div {
+            "This post has "
+            b { "{props.score}" }
+            " likes"
+        }
+    }
+}
+````
+
+You can then pass prop values to the component the same way you would pass attributes to an element:
+
+````rs@component_owned_props.rs
+pub fn App() -> Element {
+    rsx! { Likes { score: 42 } }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    component_owned_props::App {}
+}
+````
+
+## Prop Options
+
+The `#[derive(Props)]` macro has some features that let you customize the behavior of props.
+
+### Optional Props
+
+You can create optional fields by using the `Option<…>` type for a field:
+
+````rs@component_props_options.rs
+#[derive(PartialEq, Clone, Props)]
+struct OptionalProps {
+    title: String,
+    subtitle: Option<String>,
+}
+
+fn Title(props: OptionalProps) -> Element {
+    rsx! {
+        h1 { "{props.title}: ", {props.subtitle.unwrap_or_else(|| "No subtitle provided".to_string())} }
+    }
+}
+````
+
+Then, you can choose to either provide them or not:
+
+````rs@component_props_options.rs
+Title { title: "Some Title" }
+Title { title: "Some Title", subtitle: "Some Subtitle" }
+// Providing an Option explicitly won't compile though:
+// Title {
+//     title: "Some Title",
+//     subtitle: None,
+// },
+````
+
+### Explicitly Required Option
+
+If you want to explicitly require an `Option`, and not an optional prop, you can annotate it with `#[props(!optional)]`:
+
+````rs@component_props_options.rs
+#[derive(PartialEq, Clone, Props)]
+struct ExplicitOptionProps {
+    title: String,
+    #[props(!optional)]
+    subtitle: Option<String>,
+}
+
+fn ExplicitOption(props: ExplicitOptionProps) -> Element {
+    rsx! {
+        h1 { "{props.title}: ", {props.subtitle.unwrap_or_else(|| "No subtitle provided".to_string())} }
+    }
+}
+````
+
+Then, you have to explicitly pass either `Some("str")` or `None`:
+
+````rs@component_props_options.rs
+ExplicitOption { title: "Some Title", subtitle: None }
+ExplicitOption { title: "Some Title", subtitle: Some("Some Title".to_string()) }
+// This won't compile:
+// ExplicitOption {
+//     title: "Some Title",
+// },
+````
+
+### Default Props
+
+You can use `#[props(default = 42)]` to make a field optional and specify its default value:
+
+````rs@component_props_options.rs
+#[derive(PartialEq, Props, Clone)]
+struct DefaultProps {
+    // default to 42 when not provided
+    #[props(default = 42)]
+    number: i64,
+}
+
+fn DefaultComponent(props: DefaultProps) -> Element {
+    rsx! { h1 { "{props.number}" } }
+}
+````
+
+Then, similarly to optional props, you don't have to provide it:
+
+````rs@component_props_options.rs
+DefaultComponent { number: 5 }
+DefaultComponent {}
+````
+
+### Automatic Conversion with into
+
+It is common for Rust functions to accept `impl Into<SomeType>` rather than just `SomeType` to support a wider range of parameters. If you want similar functionality with props, you can use `#[props(into)]`. For example, you could add it on a `String` prop – and `&str` will also be automatically accepted, as it can be converted into `String`:
+
+````rs@component_props_options.rs
+#[derive(PartialEq, Props, Clone)]
+struct IntoProps {
+    #[props(into)]
+    string: String,
+}
+
+fn IntoComponent(props: IntoProps) -> Element {
+    rsx! { h1 { "{props.string}" } }
+}
+````
+
+Then, you can use it so:
+
+````rs@component_props_options.rs
+IntoComponent { string: "some &str" }
+````
+
+## The component macro
+
+So far, every Component function we've seen had a corresponding ComponentProps struct to pass in props. This was quite verbose... Wouldn't it be nice to have props as simple function arguments? Then we wouldn't need to define a Props struct, and instead of typing `props.whatever`, we could just use `whatever` directly!
+
+`component` allows you to do just that. Instead of typing the "full" version:
+
+````rust, no_run
+#[derive(Props, Clone, PartialEq)]
+struct TitleCardProps {
+    title: String,
+}
+
+fn TitleCard(props: TitleCardProps) -> Element {
+    rsx!{
+        h1 { "{props.title}" }
+    }
+}
+````
+
+...you can define a function that accepts props as arguments. Then, just annotate it with `#[component]`, and the macro will turn it into a regular Component for you:
+
+````rust, no_run
+#[component]
+fn TitleCard(title: String) -> Element {
+    rsx!{
+        h1 { "{title}" }
+    }
+}
+````
+
+ > 
+ > While the new Component is shorter and easier to read, this macro should not be used by library authors since you have less control over Prop documentation.
+
+## Component Children
+
+In some cases, you may wish to create a component that acts as a container for some other content, without the component needing to know what that content is. To achieve this, create a prop of type `Element`:
+
+````rs@component_element_props.rs
+#[derive(PartialEq, Clone, Props)]
+struct ClickableProps {
+    href: String,
+    body: Element,
+}
+
+fn Clickable(props: ClickableProps) -> Element {
+    rsx! {
+        a { href: "{props.href}", class: "fancy-button", {props.body} }
+    }
+}
+````
+
+Then, when rendering the component, you can pass in the output of `rsx!{...}`:
+
+````rs@component_element_props.rs
+rsx! {
+    Clickable {
+        href: "https://www.youtube.com/watch?v=C-M2hs3sXGo",
+        body: rsx! {
+            "How to " i { "not" } " be seen"
+        }
+    }
+}
+````
+
+ > 
+ > Warning: While it may compile, do not include the same `Element` more than once in the RSX. The resulting behavior is unspecified.
+
+### The children field
+
+Rather than passing the RSX through a regular prop, you may wish to accept children similarly to how elements can have children. The "magic" `children` prop lets you achieve this:
+
+````rs@component_children.rs
+#[derive(PartialEq, Clone, Props)]
+struct ClickableProps {
+    href: String,
+    children: Element,
+}
+
+fn Clickable(props: ClickableProps) -> Element {
+    rsx! {
+        a { href: "{props.href}", class: "fancy-button", {props.children} }
+    }
+}
+````
+
+This makes using the component much simpler: simply put the RSX inside the `{}` brackets – and there is no need for a `render` call or another macro!
+
+````rs@component_children.rs
+rsx! {
+    Clickable { href: "https://www.youtube.com/watch?v=C-M2hs3sXGo",
+        "How to "
+        i { "not" }
+        " be seen"
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    component_children::App {}
+}
+````

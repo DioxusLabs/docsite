@@ -1,0 +1,542 @@
+<SYSTEM>This is the developer documentation for Dioxus at /learn/0.6/router/reference/routes/ and all its subroutes.</SYSTEM>
+
+# Defining Routes
+
+When creating a \[`Routable`\] enum, we can define routes for our application using the `route("path")` attribute.
+
+## Route Segments
+
+Each route is made up of segments. Most segments are separated by `/` characters in the path.
+
+There are four fundamental types of segments:
+
+1. [Static segments](#static-segments) are fixed strings that must be present in the path.
+1. [Dynamic segments](#dynamic-segments) are types that can be parsed from a segment.
+1. [Catch-all segments](#catch-all-segments) are types that can be parsed from multiple segments.
+1. [Query segments](#query-segments) are types that can be parsed from the query string.
+
+Routes are matched:
+
+* First, from most specific to least specific (Static then Dynamic then Catch All) (Query is always matched)
+* Then, if multiple routes match the same path, the order in which they are defined in the enum is followed.
+
+## Static segments
+
+Fixed routes match a specific path. For example, the route `#[route("/about")]` will match the path `/about`.
+
+````rs@static_segments.rs
+#[derive(Routable, Clone)]
+#[rustfmt::skip]
+enum Route {
+    // Routes always start with a slash
+    #[route("/")]
+    Home {},
+    // You can have multiple segments in a route
+    #[route("/hello/world")]
+    HelloWorld {},
+}
+
+#[component]
+fn Home() -> Element {
+    todo!()
+}
+
+#[component]
+fn HelloWorld() -> Element {
+    todo!()
+}
+````
+
+## Dynamic Segments
+
+Dynamic segments are in the form of `:name` where `name` is
+the name of the field in the route variant. If the segment is parsed
+successfully then the route matches, otherwise the matching continues.
+
+The segment can be of any type that implements `FromStr`.
+
+````rs@dynamic_segments.rs
+#[derive(Routable, Clone)]
+#[rustfmt::skip]
+enum Route {
+    // segments that start with : are dynamic segments
+    #[route("/post/:name")]
+    BlogPost {
+        // You must include dynamic segments in child variants
+        name: String,
+    },
+
+    #[route("/document/:id")]
+    Document {
+        // You can use any type that implements FromStr
+        // If the segment can't be parsed, the route will not match
+        id: usize,
+    },
+}
+
+// Components must contain the same dynamic segments as their corresponding variant
+#[component]
+fn BlogPost(name: String) -> Element {
+    todo!()
+}
+
+#[component]
+fn Document(id: usize) -> Element {
+    todo!()
+}
+````
+
+## Catch All Segments
+
+Catch All segments are in the form of `:..name` where `name` is the name of the field in the route variant. If the segments are parsed successfully then the route matches, otherwise the matching continues.
+
+The segment can be of any type that implements `FromSegments`. (`Vec<String>` implements this by default)
+
+Catch All segments must be the *last route segment* in the path (query segments are not counted) and cannot be included in nests.
+
+````rs@catch_all_segments.rs
+#[derive(Routable, Clone)]
+#[rustfmt::skip]
+enum Route {
+    // segments that start with :.. are catch all segments
+    #[route("/blog/:..segments")]
+    BlogPost {
+        // You must include catch all segment in child variants
+        segments: Vec<String>,
+    },
+}
+
+// Components must contain the same catch all segments as their corresponding variant
+#[component]
+fn BlogPost(segments: Vec<String>) -> Element {
+    todo!()
+}
+````
+
+## Query Segments
+
+Query segments are in the form of `?:name&:othername` where `name` and `othername` are the names of fields in the route variant.
+
+Unlike [Dynamic Segments](#dynamic-segments) and [Catch All Segments](#catch-all-segments), parsing a Query segment must not fail.
+
+The segment can be of any type that implements `FromQueryArgument`.
+
+Query segments must be the *after all route segments* and cannot be included in nests.
+
+````rs@query_segments.rs
+#[derive(Routable, Clone)]
+#[rustfmt::skip]
+enum Route {
+    // segments that start with ?: are query segments
+    #[route("/blog?:name&:surname")]
+    BlogPost {
+        // You must include query segments in child variants
+        name: String,
+        surname: String,
+    },
+}
+
+#[component]
+fn BlogPost(name: String, surname: String) -> Element {
+    rsx! {
+        div { "This is your blogpost with a query segment:" }
+        div { "Name: {name}" }
+        div { "Surname: {surname}" }
+    }
+}
+
+fn App() -> Element {
+    rsx! { Router::<Route> {} }
+}
+
+fn main() {}
+````
+# Nested Routes
+
+When developing bigger applications we often want to nest routes within each
+other. As an example, we might want to organize a settings menu using this
+pattern:
+
+````plain
+└ Settings
+  ├ General Settings (displayed when opening the settings)
+  ├ Change Password
+  └ Privacy Settings
+````
+
+We might want to map this structure to these paths and components:
+
+````plain
+/settings		  -> Settings { GeneralSettings }
+/settings/password -> Settings { PWSettings }
+/settings/privacy  -> Settings { PrivacySettings }
+````
+
+Nested routes allow us to do this without repeating /settings in every route.
+
+## Nesting
+
+To nest routes, we use the `#[nest("path")]` and `#[end_nest]` attributes.
+
+The path in nest must not:
+
+1. Contain a [Catch All Segment](index.md#catch-all-segments)
+1. Contain a [Query Segment](index.md#query-segments)
+
+If you define a dynamic segment in a nest, it will be available to all child routes and layouts.
+
+To finish a nest, we use the `#[end_nest]` attribute or the end of the enum.
+
+````rs@nest.rs
+#[derive(Routable, Clone)]
+// Skipping formatting allows you to indent nests
+#[rustfmt::skip]
+enum Route {
+    // Start the /blog nest
+    #[nest("/blog")]
+        // You can nest as many times as you want
+        #[nest("/:id")]
+            #[route("/post")]
+            PostId {
+                // You must include parent dynamic segments in child variants
+                id: usize,
+            },
+        // End nests manually with #[end_nest]
+        #[end_nest]
+        #[route("/:id")]
+        // The absolute route of BlogPost is /blog/:name
+        BlogPost {
+            id: usize,
+        },
+    // Or nests are ended automatically at the end of the enum
+}
+
+#[component]
+fn BlogPost(id: usize) -> Element {
+    todo!()
+}
+
+#[component]
+fn PostId(id: usize) -> Element {
+    todo!()
+}
+````
+# Layouts
+
+Layouts allow you to wrap all child routes in a component. This can be useful when creating something like a header that will be used in many different routes.
+
+[`Outlet`] tells the router where to render content in layouts. In the following example,
+the Index will be rendered within the [`Outlet`].
+
+This page is built with Dioxus. It uses Layouts in several different places. Here is an outline of how layouts are used on the current page:
+
+````inject-dioxus
+LayoutsExplanation {}
+````
+
+Here is a more complete example of a layout wrapping the body of a page.
+
+````rs@outlet.rs
+#[derive(Routable, Clone)]
+#[rustfmt::skip]
+enum Route {
+    #[layout(Wrapper)]
+        #[route("/")]
+        Index {},
+}
+
+#[component]
+fn Wrapper() -> Element {
+    rsx! {
+        header { "header" }
+        // The index route will be rendered here
+        Outlet::<Route> {}
+        footer { "footer" }
+    }
+}
+
+#[component]
+fn Index() -> Element {
+    rsx! { h1 { "Index" } }
+}
+````
+
+The example above will output the following HTML (line breaks added for
+readability):
+
+````html
+<header>header</header>
+<h1>Index</h1>
+<footer>footer</footer>
+````
+
+## Layouts with dynamic segments
+
+You can combine layouts with [nested routes](./routes/nested.md) to create dynamic layouts with content that changes based on the current route.
+
+Just like routes, layouts components must accept a prop for each dynamic segment in the route. For example, if you have a route with a dynamic segment like `/:name`, your layout component must accept a `name` prop:
+
+````rs@outlet.rs
+#[derive(Routable, Clone)]
+#[rustfmt::skip]
+enum Route {
+    #[nest("/:name")]
+        #[layout(Wrapper)]
+            #[route("/")]
+            Index {
+                name: String,
+            },
+}
+
+#[component]
+fn Wrapper(name: String) -> Element {
+    rsx! {
+        header { "Welcome {name}!" }
+        // The index route will be rendered here
+        Outlet::<Route> {}
+        footer { "footer" }
+    }
+}
+
+#[component]
+fn Index(name: String) -> Element {
+    rsx! { h1 { "This is a homepage for {name}" } }
+}
+````
+
+Or to get the full route, you can use the `use_route` hook.
+
+````rs@outlet.rs
+#[derive(Routable, Clone)]
+#[rustfmt::skip]
+enum Route {
+    #[layout(Wrapper)]
+        #[route("/:name")]
+        Index {
+            name: String,
+        },
+}
+
+#[component]
+fn Wrapper() -> Element {
+    let full_route = use_route::<Route>();
+    rsx! {
+        header { "Welcome to {full_route}!" }
+        // The index route will be rendered here
+        Outlet::<Route> {}
+        footer { "footer" }
+    }
+}
+
+#[component]
+fn Index(name: String) -> Element {
+    rsx! { h1 { "This is a homepage for {name}" } }
+}
+````
+# Links & Navigation
+
+When we split our app into pages, we need to provide our users with a way to
+navigate between them. On regular web pages, we'd use an anchor element for that,
+like this:
+
+````html
+<a href="/other">Link to an other page</a>
+````
+
+However, we cannot do that when using the router for three reasons:
+
+1. Anchor tags make the browser load a new page from the server. This takes a
+   lot of time, and it is much faster to let the router handle the navigation
+   client-side.
+1. Navigation using anchor tags only works when the app is running inside a
+   browser. This means we cannot use them inside apps using Dioxus Desktop.
+1. Anchor tags cannot check if the target page exists. This means we cannot
+   prevent accidentally linking to non-existent pages.
+
+To solve these problems, the router provides us with a \[`Link`\] component we can
+use like this:
+
+````rs@links.rs
+#[component]
+fn NavBar() -> Element {
+    rsx! {
+        nav {
+            Link { to: Route::Home {}, "Home" }
+        }
+        Outlet::<Route> {}
+    }
+}
+````
+
+The `target` in the example above is similar to the `href` of a regular anchor
+element. However, it tells the router more about what kind of navigation it
+should perform. It accepts something that can be converted into a
+\[`NavigationTarget`\]:
+
+* The example uses a Internal route. This is the most common type of navigation.
+  It tells the router to navigate to a page within our app by passing a variant of a \[`Routable`\] enum. This type of navigation can never fail if the link component is used inside a router component.
+* \[`External`\] allows us to navigate to URLs outside of our app. This is useful
+  for links to external websites. NavigationTarget::External accepts an URL to navigate to. This type of navigation can fail if the URL is invalid.
+
+ > 
+ > The \[`Link`\] accepts several props that modify its behavior. See the API docs
+ > for more details.
+# Programmatic Navigation
+
+Sometimes we want our application to navigate to another page without having the
+user click on a link. This is called programmatic navigation.
+
+## Using a Navigator
+
+We can get a navigator with the [`navigator`] function which returns a [`Navigator`].
+
+We can use the [`Navigator`] to trigger four different kinds of navigation:
+
+* `push` will navigate to the target. It works like a regular anchor tag.
+* `replace` works like `push`, except that it replaces the current history entry
+  instead of adding a new one. This means the prior page cannot be restored with the browser's back button.
+* `Go back` works like the browser's back button.
+* `Go forward` works like the browser's forward button.
+
+````rs@navigator.rs
+#[component]
+fn Home() -> Element {
+    let nav = navigator();
+
+    // push
+    nav.push(Route::PageNotFound { route: vec![] });
+
+    // replace
+    nav.replace(Route::Home {});
+
+    // go back
+    nav.go_back();
+
+    // go forward
+    nav.go_forward();
+
+    rsx! { h1 { "Welcome to the Dioxus Blog!" } }
+}
+````
+
+You might have noticed that, like [`Link`], the [`Navigator`]s `push` and
+`replace` functions take a [`NavigationTarget`]. This means we can use either
+`Internal`, or `External` targets.
+
+## External Navigation Targets
+
+Unlike a [`Link`], the [`Navigator`] cannot rely on the browser (or webview) to
+handle navigation to external targets via a generated anchor element.
+
+This means, that under certain conditions, navigation to external targets can
+fail.
+# History Providers
+
+\[`HistoryProvider`\]s are used by the router to keep track of the navigation history
+and update any external state (e.g. the browser's URL).
+
+The router provides two \[`HistoryProvider`\]s, but you can also create your own.
+The two default implementations are:
+
+* The \[`MemoryHistory`\] is a custom implementation that works in memory.
+* The \[`LiveviewHistory`\] is a custom implementation that works with the liveview renderer.
+* The \[`WebHistory`\] integrates with the browser's URL.
+
+By default, the router uses the \[`MemoryHistory`\]. It might be changed to use
+\[`WebHistory`\] when the `web` feature is active, but that is not guaranteed.
+
+You can override the default history:
+
+````rs@history_provider.rs
+#[component]
+fn App() -> Element {
+    rsx! {
+        Router::<Route> { config: || RouterConfig::default() }
+    }
+}
+````
+# History Buttons
+
+Some platforms, like web browsers, provide users with an easy way to navigate
+through an app's history. They have UI elements or integrate with the OS.
+
+However, native platforms usually don't provide such amenities, which means that
+apps wanting users to have access to them, need to implement them. For this
+reason, the router comes with two components, which emulate a browser's back and
+forward buttons:
+
+* [`GoBackButton`]
+* [`GoForwardButton`]
+
+ > 
+ > If you want to navigate through the history programmatically, take a look at
+ > [`programmatic navigation`](./navigation/programmatic.md).
+
+````rs@history_buttons.rs
+fn HistoryNavigation() -> Element {
+    rsx! {
+        GoBackButton { "Back to the Past" }
+        GoForwardButton { "Back to the Future" }
+    }
+}
+````
+
+As you might know, browsers usually disable the back and forward buttons if
+there is no history to navigate to. The router's history buttons try to do that
+too, but depending on the \[history provider\] that might not be possible.
+
+Importantly, neither `WebHistory` supports that feature.
+This is due to limitations of the browser History API.
+
+However, in both cases, the router will just ignore button presses, if there is
+no history to navigate to.
+
+Also, when using `WebHistory`, the history buttons might
+navigate a user to a history entry outside your app.
+# Routing Update Callback
+
+In some cases, we might want to run custom code when the current route changes. For this reason, the [`RouterConfig`] exposes an `on_update` field.
+
+## How does the callback behave?
+
+The `on_update` is called whenever the current routing information changes. It is called after the router updated its internal state, but before dependent components and hooks are updated.
+
+If the callback returns a [`NavigationTarget`], the router will replace the current location with the specified target. It will not call the `on_update` again.
+
+If at any point the router encounters a navigation failure, it will go to the appropriate state without calling the `on_update`. It doesn't matter if the invalid target initiated the navigation, was found as a redirect target, or was returned by the `on_update` itself.
+
+## Code Example
+
+````rs@routing_update.rs
+#[derive(Routable, Clone, PartialEq)]
+enum Route {
+    #[route("/")]
+    Index {},
+    #[route("/home")]
+    Home {},
+}
+
+#[component]
+fn Home() -> Element {
+    rsx! { p { "Home" } }
+}
+
+#[component]
+fn Index() -> Element {
+    rsx! { p { "Index" } }
+}
+
+fn app() -> Element {
+    rsx! {
+        Router::<Route> {
+            config: || {
+                RouterConfig::default()
+                    .on_update(|state| {
+                        (state.current() == Route::Index {})
+                            .then_some(NavigationTarget::Internal(Route::Home {}))
+                    })
+            }
+        }
+    }
+}
+````

@@ -1,0 +1,117 @@
+<SYSTEM>This is the developer documentation for Dioxus from /learn/0.7/guides/platforms/.</SYSTEM>
+# Platform Support
+
+Most of your code in dioxus will work across all platforms. However, each platform has its own set of features and limitations. For example, the web platform supports calling JavaScript through wasm-bindgen, while the desktop platform supports customizing the appearance of the window around the application.
+
+## Platform specific code
+
+Before diving into platform-specific code, it's important to have a good understanding of features in rust. Features let you add code that will only be included in the build if a certain feature is enabled.
+
+Dioxus uses a different feature for each platform. For example, the web platform enables the `dioxus/web` feature, while the desktop platform enables the `dioxus/desktop` feature.
+
+In your `Cargo.toml` file, you should set up a feature for each platform you want to support. For example:
+
+````toml
+[features]
+default = []
+web = ["dioxus/web"] # This feature is enabled during web builds
+desktop = ["dioxus/desktop"] # This feature is enabled during desktop builds
+````
+
+Once you have your features set up, you can wrap your code in `#[cfg(feature = "web")]` or `#[cfg(feature = "desktop")]` to conditionally include code for each platform.
+
+````rust
+#[cfg(feature = "web")]
+fn web_specific_code() {
+    // Code specific to the web platform
+}
+
+#[cfg(feature = "desktop")]
+fn desktop_specific_code() {
+    // Code specific to the desktop platform
+}
+````
+
+## Platform-specific dependancies
+
+In addition to platform specific code, you may need to set up dependencies that are only included on specific platforms. For example, if you're building a web application, you may want to include a dependency on the `wasm-bindgen` crate to call JavaScript functions from Rust.
+
+You can add platform specific dependencies as optional in your `Cargo.toml` and enable them using the `features` table. For example:
+
+````toml
+# Since this dependency is optional, it isn't included in the build automatically
+wasm-bindgen = { version = "*", optional = true }
+
+[features]
+default = []
+# adding dep:wasm-bindgen enables the wasm-bindgen dependency only
+# in web builds
+web = ["dioxus/web", "dep:wasm-bindgen"]
+desktop = ["dioxus/desktop"]
+````
+
+## Table of Contents
+
+Each chapter in this guide covers a different platform:
+
+* [Web](web.md) The web platform lets you compile to wasm and render to the DOM in the browser
+* [Desktop](desktop.md) The desktop platform runs your code natively and renders using webview
+* [Mobile](mobile.md) The mobile platform has the same rendering engine as desktop, but requires additional setup for mobile devices/emulators
+# Platform Support
+
+Most of your code in dioxus will work across all platforms. However, each platform has its own set of features and limitations. For example, the web platform supports calling JavaScript through wasm-bindgen, while the desktop platform supports customizing the appearance of the window around the application.
+
+## Platform specific code
+
+Before diving into platform-specific code, it's important to have a good understanding of features in rust. Features let you add code that will only be included in the build if a certain feature is enabled.
+
+Dioxus uses a different feature for each platform. For example, the web platform enables the `dioxus/web` feature, while the desktop platform enables the `dioxus/desktop` feature.
+
+In your `Cargo.toml` file, you should set up a feature for each platform you want to support. For example:
+
+````toml
+[features]
+default = []
+web = ["dioxus/web"] # This feature is enabled during web builds
+desktop = ["dioxus/desktop"] # This feature is enabled during desktop builds
+````
+
+Once you have your features set up, you can wrap your code in `#[cfg(feature = "web")]` or `#[cfg(feature = "desktop")]` to conditionally include code for each platform.
+
+````rust
+#[cfg(feature = "web")]
+fn web_specific_code() {
+    // Code specific to the web platform
+}
+
+#[cfg(feature = "desktop")]
+fn desktop_specific_code() {
+    // Code specific to the desktop platform
+}
+````
+
+## Platform-specific dependancies
+
+In addition to platform specific code, you may need to set up dependencies that are only included on specific platforms. For example, if you're building a web application, you may want to include a dependency on the `wasm-bindgen` crate to call JavaScript functions from Rust.
+
+You can add platform specific dependencies as optional in your `Cargo.toml` and enable them using the `features` table. For example:
+
+````toml
+# Since this dependency is optional, it isn't included in the build automatically
+wasm-bindgen = { version = "*", optional = true }
+
+[features]
+default = []
+# adding dep:wasm-bindgen enables the wasm-bindgen dependency only
+# in web builds
+web = ["dioxus/web", "dep:wasm-bindgen"]
+desktop = ["dioxus/desktop"]
+````
+
+## Table of Contents
+
+Each chapter in this guide covers a different platform:
+
+* [Web](web.md) The web platform lets you compile to wasm and render to the DOM in the browser
+* [Desktop](desktop.md) The desktop platform runs your code natively and renders using webview
+* [Mobile](mobile.md) The mobile platform has the same rendering engine as desktop, but requires additional setup for mobile devices/emulators

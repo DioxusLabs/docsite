@@ -112,6 +112,15 @@ fn Head() -> Element {
         }
         Stylesheet { href: asset!("/assets/tailwind.css", CssAssetOptions::new().with_minify(false)) }
         Stylesheet { href: asset!("/assets/main.css") }
+        // <link
+        //   rel="preload"
+        //   href="/fonts/Keiner-Bold.woff2"
+        //   as="font"
+        //   type="font/woff2"
+        //   crossOrigin="anonymous"
+        // />
+        link { rel: "preload", href: asset!("/assets/GeneralSans-Variable.woff2", AssetOptions::builder().with_hash_suffix(false)), as: "font", type:"font/woff2", crossorigin: "anonymous" }
+
         // Stylesheet { href: "https://rsms.me/inter/inter.css" }
 
         // link { href: "https://fonts.googleapis.com", rel: "preconnect" }

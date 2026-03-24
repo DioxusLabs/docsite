@@ -1,135 +1,9 @@
 use crate::*;
 
-/// Sample app definition
-#[derive(Clone, Copy, PartialEq, Eq)]
-struct SampleApp {
-    name: &'static str,
-    code: &'static str,
-}
-
-const SAMPLE_APPS: &[SampleApp] = &[
-    SampleApp {
-        name: "Counter",
-        code: r#"use dioxus::prelude::*;
-
-fn main() {
-    dioxus::launch(app);
-}
-
-fn app() -> Element {
-    let mut count = use_signal(|| 0);
-
-    rsx! {
-        h1 { "Counter" }
-        p { "Count: {count}" }
-        button { onclick: move |_| count -= 1, "−" }
-        button { onclick: move |_| count += 1, "+" }
-    }
-}"#,
-    },
-    SampleApp {
-        name: "Todo List",
-        code: r#"use dioxus::prelude::*;
-
-fn main() {
-    dioxus::launch(app);
-}
-
-fn app() -> Element {
-    let mut todos = use_signal(|| vec!["Learn Rust", "Build app"]);
-    let mut input = use_signal(String::new);
-
-    rsx! {
-        h1 { "Todos" }
-        input {
-            value: "{input}",
-            oninput: move |e| input.set(e.value())
-        }
-        button { onclick: move |_| todos.push(input()), "Add" }
-        ul {
-            for todo in todos.read().iter() {
-                li { "{todo}" }
-            }
-        }
-    }
-}"#,
-    },
-    SampleApp {
-        name: "Fetch Data",
-        code: r#"use dioxus::prelude::*;
-
-fn main() {
-    dioxus::launch(app);
-}
-
-fn app() -> Element {
-    let mut data = use_resource(|| async move {
-        api::fetch_users().await
-    });
-
-    rsx! {
-        h1 { "Async Data" }
-        match data() {
-            Some(d) => rsx! { p { "{d}" } },
-            None => rsx! { p { "Loading..." } }
-        }
-    }
-}"#,
-    },
-    SampleApp {
-        name: "Server Fn",
-        code: r#"use dioxus::prelude::*;
-
-fn main() {
-    dioxus::launch(app);
-}
-
-fn app() -> Element {
-    let user = use_server_future(|| get_user(1))?;
-
-    rsx! {
-        h1 { "Server Functions" }
-        p { "User: {user}" }
-    }
-}
-
-#[get("/api/user/{id}")]
-async fn get_user(id: i32) -> Result<String> {
-    let user = db::get_user(id).await?;
-    Ok(user.name)
-}
-    "#,
-    },
-    SampleApp {
-        name: "Routing",
-        code: r#"use dioxus::prelude::*;
-
-fn main() {
-    dioxus::launch(rsx! { Router::<Route> {} });
-}
-
-#[derive(Routable, Clone)]
-enum Route {
-    #[route("/")]
-    Home {},
-
-    #[route("/about")]
-    About {},
-}
-
-fn Home() -> Element {
-    rsx! {
-        h1 { "Home" }
-        Link { to: Route::About {}, "About" }
-    }
-}"#,
-    },
-];
-
 pub(crate) fn Hero() -> Element {
     rsx! {
         // Hero section - full viewport height
-        section { class: "relative w-full min-h-screen bg-white dark:bg-gray-950 overflow-visible",
+        section { class: "relative w-full min-h-screen bg-white dark:bg-black overflow-visible",
             // Subtle grid background
             div { class: "absolute inset-0 technical-grid" }
 
@@ -138,13 +12,17 @@ pub(crate) fn Hero() -> Element {
                 div { class: "pt-20 sm:pt-24 md:pt-32 lg:pt-40 pb-16 md:pb-20",
                     // Main headline - clean sans-serif
                     h1 { class: "text-5xl sm:text-6xl md:text-7xl lg:text-7xl font-bold tracking-tight text-gray-900 dark:text-white leading-tight flex flex-row gap-4",
-                        div { class: "leading-[1.1]", "One codebase." }
-                        div { class: "leading-[1.1]", "Every platform." }
+                    // h1 { class: "text-5xl sm:text-6xl md:text-7xl lg:text-7xl font-bold tracking-tight text-gray-900 dark:text-white leading-tight flex flex-row gap-4",
+                        div { class: "leading-[1.1]", "The app framework for the future" }
+                        // div { class: "leading-[1.1]", "Every platform." }
                     }
 
                     // Subheadline
-                    p { class: "mt-8 text-xl md:text-2xl text-gray-500 dark:text-gray-400 max-w-xl",
-                        "Build native web, desktop, and mobile apps with Rust."
+                    p { class: "mt-8 text-xl md:text-2xl text-gray-500 dark:text-gray-400",
+                        "Build fullstack web, desktop, and mobile apps entirely in Rust."
+                    }
+                    p { class: "mt-2 text-xl md:text-2xl text-gray-500 dark:text-gray-400",
+                        "Iterate with hot-reload, add server functions, and ship everywhere in record time."
                     }
 
                     // Quick actions
@@ -169,17 +47,21 @@ pub(crate) fn Hero() -> Element {
                                 }
                             }
                         }
-                        a {
-                            href: "https://github.com/DioxusLabs/dioxus",
-                            class: "inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors",
-                            svg {
-                                class: "w-5 h-5",
-                                fill: "currentColor",
-                                view_box: "0 0 24 24",
-                                path { d: "M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" }
-                            }
-                            "Star on GitHub"
+                        button {
+                            class: "inline-flex text-left items-center gap-2 px-5 py-2.5 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors font-mono border cursor-pointer",
+                            "curl -sSL https://dioxus.dev/install.sh | bash"
                         }
+                        // a {
+                        //     href: "https://github.com/DioxusLabs/dioxus",
+                        //     class: "inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors",
+                        //     svg {
+                        //         class: "w-5 h-5",
+                        //         fill: "currentColor",
+                        //         view_box: "0 0 24 24",
+                        //         path { d: "M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" }
+                        //     }
+                        //     "Star on GitHub"
+                        // }
                     }
                 }
             }
@@ -822,3 +704,129 @@ fn TrustedBy() -> Element {
         }
     }
 }
+
+/// Sample app definition
+#[derive(Clone, Copy, PartialEq, Eq)]
+struct SampleApp {
+    name: &'static str,
+    code: &'static str,
+}
+
+const SAMPLE_APPS: &[SampleApp] = &[
+    SampleApp {
+        name: "Counter",
+        code: r#"use dioxus::prelude::*;
+
+fn main() {
+    dioxus::launch(app);
+}
+
+fn app() -> Element {
+    let mut count = use_signal(|| 0);
+
+    rsx! {
+        h1 { "Counter" }
+        p { "Count: {count}" }
+        button { onclick: move |_| count -= 1, "−" }
+        button { onclick: move |_| count += 1, "+" }
+    }
+}"#,
+    },
+    SampleApp {
+        name: "Todo List",
+        code: r#"use dioxus::prelude::*;
+
+fn main() {
+    dioxus::launch(app);
+}
+
+fn app() -> Element {
+    let mut todos = use_signal(|| vec!["Learn Rust", "Build app"]);
+    let mut input = use_signal(String::new);
+
+    rsx! {
+        h1 { "Todos" }
+        input {
+            value: "{input}",
+            oninput: move |e| input.set(e.value())
+        }
+        button { onclick: move |_| todos.push(input()), "Add" }
+        ul {
+            for todo in todos.read().iter() {
+                li { "{todo}" }
+            }
+        }
+    }
+}"#,
+    },
+    SampleApp {
+        name: "Fetch Data",
+        code: r#"use dioxus::prelude::*;
+
+fn main() {
+    dioxus::launch(app);
+}
+
+fn app() -> Element {
+    let mut data = use_resource(|| async move {
+        api::fetch_users().await
+    });
+
+    rsx! {
+        h1 { "Async Data" }
+        match data() {
+            Some(d) => rsx! { p { "{d}" } },
+            None => rsx! { p { "Loading..." } }
+        }
+    }
+}"#,
+    },
+    SampleApp {
+        name: "Server Fn",
+        code: r#"use dioxus::prelude::*;
+
+fn main() {
+    dioxus::launch(app);
+}
+
+fn app() -> Element {
+    let user = use_server_future(|| get_user(1))?;
+
+    rsx! {
+        h1 { "Server Functions" }
+        p { "User: {user}" }
+    }
+}
+
+#[get("/api/user/{id}")]
+async fn get_user(id: i32) -> Result<String> {
+    let user = db::get_user(id).await?;
+    Ok(user.name)
+}
+    "#,
+    },
+    SampleApp {
+        name: "Routing",
+        code: r#"use dioxus::prelude::*;
+
+fn main() {
+    dioxus::launch(rsx! { Router::<Route> {} });
+}
+
+#[derive(Routable, Clone)]
+enum Route {
+    #[route("/")]
+    Home {},
+
+    #[route("/about")]
+    About {},
+}
+
+fn Home() -> Element {
+    rsx! {
+        h1 { "Home" }
+        Link { to: Route::About {}, "About" }
+    }
+}"#,
+    },
+];

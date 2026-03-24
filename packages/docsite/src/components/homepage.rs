@@ -4,12 +4,13 @@ use crate::*;
 pub(crate) mod featured_examples;
 pub(crate) mod hero;
 pub(crate) mod snippets;
+use hero::Hero;
 
 #[component]
 pub(crate) fn Homepage() -> Element {
     rsx! {
         div { class: "w-full",
-            hero::Hero {}
+            Hero {}
             Features {}
             HotReloadShowcase {}
             PlatformShowcase {}
@@ -159,7 +160,12 @@ fn Features() -> Element {
 }
 
 #[component]
-fn FeatureCard(icon: Element, title: &'static str, description: &'static str, color: &'static str) -> Element {
+fn FeatureCard(
+    icon: Element,
+    title: &'static str,
+    description: &'static str,
+    color: &'static str,
+) -> Element {
     let icon_color = match color {
         "orange" => "text-orange-500",
         "blue" => "text-blue-400",

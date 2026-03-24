@@ -3,7 +3,7 @@
 @layer theme, base, components, utilities;
 @layer theme {
   :root, :host {
-    --font-sans: "Inter var",sans-serif;
+    --font-sans: "Keiner",sans-serif;
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
     monospace;
     --color-red-400: oklch(70.4% 0.191 22.216);
@@ -59,7 +59,6 @@
     --breakpoint-2xl: 96rem;
     --container-sm: 24rem;
     --container-lg: 32rem;
-    --container-xl: 36rem;
     --container-2xl: 42rem;
     --container-3xl: 48rem;
     --container-4xl: 56rem;
@@ -663,9 +662,6 @@
   .max-w-sm {
     max-width: var(--container-sm);
   }
-  .max-w-xl {
-    max-width: var(--container-xl);
-  }
   .min-w-6 {
     min-width: calc(var(--spacing) * 6);
   }
@@ -742,6 +738,9 @@
   }
   .animate-spin {
     animation: var(--animate-spin);
+  }
+  .cursor-pointer {
+    cursor: pointer;
   }
   .resize {
     resize: both;
@@ -2602,6 +2601,27 @@
       }
     }
   }
+}
+@font-face {
+  font-family: "General Sans";
+  font-style: normal;
+  font-weight: 200 700;
+  font-display: swap;
+  src: url("/assets/GeneralSans-Variable.woff2") format(woff2) tech(variations);
+}
+@font-face {
+  font-family: "Keiner";
+  font-style: normal;
+  font-weight: 200 700;
+  font-display: swap;
+  src: url("/fonts/Keiner-Regular.woff2") format(woff2) tech(variations);
+}
+@font-face {
+  font-family: "Berkeley Mono";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/assets/BerkeleyMonoVariable-Regular.woff2") format(woff2) tech(variations);
 }
 @property --tw-translate-x {
   syntax: "*";

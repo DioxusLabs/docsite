@@ -62,8 +62,8 @@ struct CardProps {
 #[component]
 fn Card(props: CardProps) -> Element {
   rsx! {
-      h1 { "{card.title}" }
-      span { "{card.content}" }
+      h1 { "{props.title}" }
+      span { "{props.content}" }
     }
 }
 ```

@@ -25,7 +25,7 @@ We've put a lot of care into making Dioxus syntax familiar and easy to understan
 Dioxus ships with its own build tool that leverages `cargo` to provide integrated hot-reloading, bundling, and development servers for web and mobile. You can download the prebuilt binary with the following command:
 
 ```sh
-curl -sSL http://dioxus.dev/install.sh | sh
+curl -sSL https://dioxus.dev/install.sh | bash
 ```
 
 You can also download with `cargo-binstall`:
@@ -84,7 +84,8 @@ sudo apt install libwebkit2gtk-4.1-dev \
   libxdo-dev \
   libssl-dev \
   libayatana-appindicator3-dev \
-  librsvg2-dev
+  librsvg2-dev \
+  lld
 ```
 
 For arch:

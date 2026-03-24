@@ -32,7 +32,7 @@ concurrency:
 
 jobs:
   check:
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: warp-ubuntu-latest-x64-4x
     steps:
       - uses: awalsh128/cache-apt-pkgs-action@latest
         with:
@@ -47,5 +47,6 @@ jobs:
           cache-all-crates: "true"
           cache-on-failure: "false"
           cache-directories: "target/dx"
+          cache-provider: "warpbuild"
       - name: Check
         run: cargo check --workspace --all-features

@@ -12,7 +12,7 @@ cargo binstall dioxus-cli
 
 ### Manual installation
 
-If you don't have cargo-binstall installed or we don't have a prebuilt binary for your platform, you can install the CLI with manually with cargo install:
+If you don't have cargo-binstall installed or we don't have a prebuilt binary for your platform, you can install the CLI with cargo install:
 
 ```bash
 cargo install dioxus-cli

@@ -252,7 +252,7 @@ Properties have a special field called "children" that contain a component's chi
 
 ```rust
 #[component]
-fn RedDiv(children: Element) {
+fn RedDiv(children: Element) -> Element {
   rsx! {
     div {
       background_color: "red",

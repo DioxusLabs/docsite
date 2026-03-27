@@ -145,7 +145,7 @@ fn app() -> Element {
 
 // We can accept anything that implements `Into<ReadSignal>`
 #[component]
-fn Name(name: ReadSignal<String>) {
+fn Name(name: ReadSignal<String>) -> Element {
     rsx! { "{name}" }
 }
 ```

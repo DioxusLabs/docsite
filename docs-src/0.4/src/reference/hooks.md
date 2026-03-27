@@ -2,13 +2,13 @@
 
 So far, our components have had no state like a normal Rust function. However, in a UI component, it is often useful to have stateful functionality to build user interactions. For example, you might want to track whether the user has opened a drop-down and render different things accordingly.
 
-Hooks allow us to create state in our components. Hooks are Rust functions that take a reference to [`ScopeState`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.ScopeState.html) (in a component, you can pass `cx`), and provide you with functionality and state.
+Hooks allow us to create state in our components. Hooks are Rust functions that take a reference to [`ScopeState`](https://docs.rs/dioxus/~0.4/dioxus/prelude/struct.ScopeState.html) (in a component, you can pass `cx`), and provide you with functionality and state.
 
 Dioxus provides many built-in hooks, but if those hooks don't fit your specific use case, you also can [create your own hook](../cookbook/state/custom_hooks/index.md)
 
 ## use_state hook
 
-[`use_state`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_state.html) is one of the simplest hooks.
+[`use_state`](https://docs.rs/dioxus/~0.4/dioxus/prelude/fn.use_state.html) is one of the simplest hooks.
 
 - You provide a closure that determines the initial value: `let mut count = use_state(cx, || 0);`
 - `use_state` gives you the current value, and a way to update it by setting it to something else
@@ -28,7 +28,7 @@ DemoFrame {
 
 Every time the component's state changes, it re-renders, and the component function is called, so you can describe what you want the new UI to look like. You don't have to worry about "changing" anything – describe what you want in terms of the state, and Dioxus will take care of the rest!
 
-> `use_state` returns your value wrapped in a smart pointer of type [`UseState`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.UseState.html). This is why you can both read the value and update it, even within an event handler.
+> `use_state` returns your value wrapped in a smart pointer of type [`UseState`](https://docs.rs/dioxus/~0.4/dioxus/prelude/struct.UseState.html). This is why you can both read the value and update it, even within an event handler.
 
 You can use multiple hooks in the same component if you want:
 
@@ -56,7 +56,7 @@ DemoFrame {
 }
 ```
 
-Instead of using deref to get the inner value from UseState, you can use the [`current`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.UseState.html#method.current) function. This function will always return the current value of the state.
+Instead of using deref to get the inner value from UseState, you can use the [`current`](https://docs.rs/dioxus/~0.4/dioxus/prelude/struct.UseState.html#method.current) function. This function will always return the current value of the state.
 
 ```rust
 {{#include ../docs-router/src/doc_examples/untested_04/hooks_out_of_date.rs:fixed}}
@@ -109,7 +109,7 @@ These rules mean that there are certain things you can't do with hooks:
 
 ## use_ref hook
 
-`use_state` is great for tracking simple values. However, in the [`UseState` API](https://docs.rs/dioxus/latest/dioxus/hooks/struct.UseState.html), you may notice that the only way to modify its value is to replace it with something else (e.g., by calling `set`, or through one of the `+=`, `-=` operators). This works well when it is cheap to construct a value (such as any primitive). But what if you want to maintain more complex data in the component's state?
+`use_state` is great for tracking simple values. However, in the [`UseState` API](https://docs.rs/dioxus/~0.4/dioxus/prelude/struct.UseState.html), you may notice that the only way to modify its value is to replace it with something else (e.g., by calling `set`, or through one of the `+=`, `-=` operators). This works well when it is cheap to construct a value (such as any primitive). But what if you want to maintain more complex data in the component's state?
 
 For example, suppose we want to maintain a `Vec` of values. If we stored it with `use_state`, the
 only way to add a new value to the list would be to copy the existing `Vec`, add our value to it,
@@ -133,8 +133,8 @@ DemoFrame {
 
 
 > The return values of `use_state` and `use_ref` (
-> &nbsp;[`UseState`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.UseState.html) and
-> &nbsp;[`UseRef`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.UseRef.html), respectively) are in
+> &nbsp;[`UseState`](https://docs.rs/dioxus/~0.4/dioxus/prelude/struct.UseState.html) and
+> &nbsp;[`UseRef`](https://docs.rs/dioxus/~0.4/dioxus/prelude/struct.UseRef.html), respectively) are in
 > &nbsp;some ways similar to [`Cell`](https://doc.rust-lang.org/std/cell/) and
 > &nbsp;[`RefCell`](https://doc.rust-lang.org/std/cell/struct.RefCell.html) – they provide interior
 > &nbsp;mutability. However, these Dioxus wrappers also ensure that the component gets re-rendered
@@ -142,5 +142,5 @@ DemoFrame {
 
 ## Additional resources
 
-- [dioxus_hooks API docs](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/)
+- [dioxus_hooks API docs](https://docs.rs/dioxus-hooks/~0.4/dioxus_hooks/)
 - [dioxus_hooks source code](https://github.com/DioxusLabs/dioxus/tree/master/packages/hooks)

@@ -67,4 +67,4 @@ Let's change our component to use a resource instead:
 
 Resources are very powerful: they integrate with Suspense, Streaming HTML, reactivity, and more.
 
-The details of the `Resource` API are not terribly important right now, but you'll be using Resources frequently in larger apps, so it's a good idea to [read the docs](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_resource.html).
+The details of the `Resource` API are not terribly important right now, but you'll be using Resources frequently in larger apps, so it's a good idea to [read the docs](https://docs.rs/dioxus-hooks/~0.7/dioxus_hooks/fn.use_resource.html).

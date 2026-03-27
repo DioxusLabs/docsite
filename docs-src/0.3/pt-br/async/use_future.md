@@ -1,6 +1,6 @@
 # UseFuture
 
-[`use_future`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_future.html) permite executar um encerramento assíncrono e fornece seu resultado.
+[`use_future`](https://docs.rs/dioxus-hooks/~0.3/dioxus_hooks/fn.use_future.html) permite executar um encerramento assíncrono e fornece seu resultado.
 
 Por exemplo, podemos fazer uma solicitação de API dentro de `use_future`:
 

@@ -145,7 +145,7 @@ fn app() -> Element {
 
 // We can accept anything that implements `Into<ReadSignal>`
 #[component]
-fn Name(name: ReadSignal<String>) {
+fn Name(name: ReadSignal<String>) -> Element {
     rsx! { "{name}" }
 }
 ```
@@ -160,13 +160,13 @@ let uppercase: Memo<String> = use_memo(move || name.to_uppercase());
 
 rsx! {
     // The rsx macro automatically converts the Signal into ReadSignal
-    Name { name, uppercase }
+    Name { name }
     // The rsx macro automatically converts the Memo into ReadSignal
-    Name { uppercase }
+    Name { name: uppercase }
 }
 
 #[component]
-fn Name(name: ReadSignal<String>) {
+fn Name(name: ReadSignal<String>) -> Element {
     rsx! { "{name}" }
 }
 ```

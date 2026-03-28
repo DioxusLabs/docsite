@@ -252,7 +252,7 @@ While dioxus tries to batch writes, it prefers consistent state over batching wh
 
 ```rust
 let mut count = use_signal(|| 0);
-let double = use_memo(|| *count() * 2);
+let double = use_memo(move || count() * 2);
 
 rsx! {
     button {

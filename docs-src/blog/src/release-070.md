@@ -4,41 +4,31 @@ Dioxus 0.7 delivers on a number of promises we made to improve Rust GUI, and mor
 
 In this release, we’re shipping some incredible features. The highlights of this release include:
 
-- Subsecond: Hot-patching of Rust code at runtime
-- Dioxus Native: WGPU-based HTML/CSS renderer for Dioxus
-- Fullstack: Revamp of Server Functions with full Axum integration
-- WASM-Split: Code splitting and lazy loading for WebAssembly
-- Stores: A new primitive for nested reactive state
-- Dioxus Primitives: first-party radix-primitives implementation for Dioxus
+- **[Subsecond](#rust-hot-patching-with-subsecond)**: Hot-patching of Rust code at runtime(!)
+- **[Dioxus Native](#dioxus-native-and-blitz)**: WGPU-based HTML/CSS renderer for Dioxus without webview
+- **[Fullstack](#dioxus-fullstack-overhaul)**: Rebuild of Server Functions around Axum, supporting websockets, error codes, and more.
+- **[WASM-Split](#wasm-bundle-splitting-and-lazy-loading)**: Code splitting and lazy loading for WebAssembly
+- **[Stores](#stores---a-new-primitive-for-nested-reactive-state)**: A new primitive for nested reactive state
+- **[Dioxus Primitives](#dioxus-primitives---a-collection-of-radix-ui-equivalents)**: first-party radix-primitives implementation for Dioxus
 
 Dioxus 0.7 also brings a number of other exciting new features:
 
-- Automatic tailwind: zero-setup tailwind support built-in!
-- LLMs.txt: first-party context file to supercharge AI coding models
-- Blitz: our modular HTML/CSS renderer powering Dioxus Native, available for everyone!
-- Fullstack WebSockets: websockets in a single line of code
-- Integrated Debugger Support: open CodeLLDB with a single keystroke
-- Fullstack error codes: Integration of status codes and custom errors in fullstack
-- Configurable Mobile Builds: Customize your AndroidManifest and Info.plist
+- **[Automatic tailwind](#automatic-tailwind)**: zero-setup tailwind support built-in!
+- **[LLMs.txt](#improvements-with-ai---llmstxt-and-vibe-coding)**: first-party context file to supercharge AI coding models
+- **[Blitz](#dioxus-native-and-blitz)**: our modular HTML/CSS renderer powering Dioxus Native, available for everyone!
+- **[Integrated Debugger Support](#integrated-debugger)**: open CodeLLDB with a single keystroke
+- **[Configurable Mobile Builds](#customize-androidmanifestxml-and-infoplist)**: Fully customize bundle options from dioxus.toml
 
 Plus, a number of quality-of-life upgrades:
 
-- one-line installer ( `curl https://dioxus.dev/install.sh | sh` )
-- `dx self-update` and update notifications
-- automatically open simulators
-- Improved log coloring
-- desktop and mobile toasts
-- HTML streaming now waits for the router to render
-- Axum 0.8 and Wry 52 upgrade
-- Android + iOS device support
-- More customization of iOS and Android projects
-- Hash Router Support for dioxus-web
-- Multi-package serve: `dx serve @client --package xyz @server --package xyz`
-- Support for dyib bundling
-- wasm32 support for fullstack
-- Hashless assets
-- /public dir
-- And many, many bugs fixed!
+- **[one-line installer](#improved-version-management-experience)** ( `curl https://dioxus.dev/install.sh | sh` )
+- **[`dx self-update`](#improved-version-management-experience)** and update notifications
+- **[automatically open simulators](#various-quality-of-life-upgrades)**
+- **[Improved log coloring](#various-quality-of-life-upgrades)**
+- **[desktop and mobile toasts](#various-quality-of-life-upgrades)**
+- **[Android + iOS device support](#adb-reverse-proxy-for-device-hot-reload)**
+- **[More customization of iOS and Android projects](#customize-androidmanifestxml-and-infoplist)**
+- **[Improved build and bundling]**: multi-package serve, automatic framework bundling, hashless assets, `/public` dir,wasm32 fullstack
 
 ## Rust Hot-patching with Subsecond
 
@@ -482,10 +472,16 @@ The new docsite also includes search results for rust items from [docs.rs](http:
 
 ![use_set_ search results with two results from crates.io](/assets/07/screenshot-7.avif)
 
-### New Office and Growing the Team
+## Improved Build and Bundling
 
-Dioxus has moved into a new office in San Francisco! If you’re interested in contributing to the future of app development and live in San Francisco, please reach out.
+Dioxus 0.7 includes a number of improvements to the build and bundling pipeline in `dx`.
 
-![sf office desktop setup](/assets/07/14aac481-e530-4e73-8903-377c39cbf248_1_105_c.avif)
+**Multi-package serve:** You can now serve multiple packages simultaneously with `dx serve @client --package xyz @server --package xyz`, making it easy to work on complex workspaces with separate client and server crates.
 
-1. Camera & Microphone File System Geolocation Push Notifications Biometric Authentication In-App Purchases. App Icon Badge. Battery & Power. Tray Icon & System Tray. Deep Linking & URL Schemes. File Open Dialogs. Auto-Update & Self-Patching. Background Processes. LocalStorage & Secure Storage. Drag & Drop. Device Motion & Sensors. Vibration. Clipboard. Titlebar & Menu & Multi-Window & Fullscreen Support. Paypal & Stripe. OAuth2. Gyroscope
+**Automatic dylib / framework bundling:** The CLI now automatically intercepts `-framework` flags in the linker and bundles frameworks properly. No more manually copying `.dylib` or `.framework` files into your app bundle -- `dx` handles it for you.
+
+**wasm32 support for fullstack:** Fullstack apps can now target `wasm32`, enabling deployment to platforms like Cloudflare Workers that run server-side WebAssembly.
+
+**Hashless assets:** You can now use `asset!()` without writing an asset hash, making it easier to reference assets in your code without dealing with content-hashed filenames.
+
+**`/public` directory:** Dioxus now supports a `/public` directory at the root of your project. Files placed here are merged into your final bundle as-is, making it easy to include things like `robots.txt`, `.well-known` files, favicons, and other static resources that need to live at a fixed path.

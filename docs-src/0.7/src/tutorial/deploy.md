@@ -87,8 +87,8 @@ RUN curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/ca
 RUN cargo binstall dioxus-cli --root /.cargo -y --force
 ENV PATH="/.cargo/bin:$PATH"
 
-# Create the final bundle folder. Bundle always executes in release mode with optimizations enabled
-RUN dx bundle --web
+# Create the final bundle folder. Bundle with release build profile to enable optimizations.
+RUN dx bundle --web --release
 ```
 
 Finally, we copy the built "web" folder to the "slim" runtime that serves our app.

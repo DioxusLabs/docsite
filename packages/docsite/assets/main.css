@@ -176,10 +176,13 @@ It's so unliklely anyone is copying text on mobile that we can just hide it
   max-width: 100%;
   /* max-width: min(1200px, 95vw); */
   width: auto;
-  margin-left: 50%;
-  transform: translateX(-50%);
   margin-bottom: 1rem;
   border-radius: 6px;
+}
+
+.centered-overflow {
+  margin-left: 50%;
+  transform: translateX(-50%);
 }
 
 .dioxus-blog-post h2 {

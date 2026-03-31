@@ -686,6 +686,10 @@ fn TrustedBy() -> Element {
                     }
                     img {
                         class: "h-8 dark:invert",
+                        src: asset!("/assets/static/cognition_white.png"),
+                    }
+                    img {
+                        class: "h-8 dark:invert",
                         src: asset!("/assets/static/yclogo.svg"),
                         alt: "Y Combinator",
                     }
@@ -693,11 +697,6 @@ fn TrustedBy() -> Element {
                         class: "h-8 dark:invert",
                         src: asset!("/assets/static/futurewei_bw.png"),
                         alt: "Futurewei",
-                    }
-                    img {
-                        class: "h-7 dark:invert",
-                        src: asset!("/assets/static/satellite.webp"),
-                        alt: "Satellite",
                     }
                 }
             }

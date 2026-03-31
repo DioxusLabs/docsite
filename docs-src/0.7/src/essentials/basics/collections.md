@@ -346,24 +346,30 @@ fn ListItem(user: ReadStore<UserData>) -> Element {
 
 ## Extending Stores with Methods
 
-You can extend your store types with methods with the `#[store]` attribute macro. Methods inside the macro are converted into an extension trait that is automatically implemented for `Store<T, Lens>`. The macro will automatically add bounds to the `Lens` generic based on the self parameter of the method. If the method takes `&self`, the `Lens` will be bound by `Readable`. If the method takes `&mut self`, the `Lens` will be bound by `Writable`.
+You can extend your store types with methods with the `#[store]` attribute macro. Methods inside the macro are converted into an extension trait that is automatically implemented for `Store<T, Lens>`. The macro will automatically add bounds to the `Lens` generic on a per-method basis depending on the self parameter of each method:
+
+- If the method takes `&self`, the `Lens` will be bound by `Readable` for that method only
+- If the method takes `&mut self`, the `Lens` will be bound by `Writable` for that method only
+- If the method takes `self` by value, no bounds are added
+
+This means each method can have different bounds on the `Lens` type, allowing you to mix read-only and write-capable methods in the same impl block.
 
 ```rust
 type MappedUserDataStore<Lens> = Store<String, MappedMutSignal<String, Lens, fn(&UserData) -> &String, fn(&mut UserData) -> &mut String>>;
 
 #[store]
 impl<Lens> Store<UserData, Lens> {
-    // This will automatically require `Readable` on the lens since it takes `&self`
+    // This method requires `Readable` on the lens since it takes `&self`
     fn user_email(&self) -> String {
         self.email().cloned()
     }
 
-    // This will automatically require `Writable` on the lens since it takes `&mut self`
+    // This method requires `Writable` on the lens since it takes `&mut self`
     fn clear_name(&mut self) {
         self.name().take();
     }
 
-    // This method does not require any bounds on the lens since it takes `self`
+    // This method does not require any bounds on the lens since it takes `self` by value
     fn into_parts(self) -> (MappedUserDataStore<Lens>, MappedUserDataStore<Lens>) where Self: Copy {
         (self.email(), self.name())
     }

@@ -1,6 +1,6 @@
 # Global Context
 
-By now, you have the requisite knowledge to build large Dioxus apps! When your component tree grows to several layers deep, passing state through component props can be become tedious and repetitive.
+By now, you have the requisite knowledge to build large Dioxus apps! When your component tree grows to several layers deep, passing state through component props can become tedious and repetitive.
 
 ```rust
 fn app() -> Element {
@@ -26,7 +26,7 @@ fn Title(name: Signal<String>) -> Element {
 
 Passing state through several layers of component properties is called "prop drilling." Wouldn't it be great if we could pass the `name` signal from the app root *directly* to the Title component?
 
-This is where *global context* becomes useful. Components can insert values into the global context, allowing and any child components to "reach up" and read those values.
+This is where *global context* becomes useful. Components can insert values into the global context, allowing any child components to "reach up" and read those values.
 
 ![Context Tree](/assets/07/context-tree.png)
 
@@ -69,7 +69,7 @@ fn Child() -> Element {
 }
 ```
 
-The `::<String>` syntax declares the return type of this use of `use_context`. In Dioxus, context objects are indexed by their [TypeId](https://doc.rust-lang.org/std/any/struct.TypeId.html). A type's TypeId is a  compile-time hash that uniquely identifies every Rust type. No two types will share the same TypeId unless the refer to the same underlying type declaration - ie, [type aliases](https://doc.rust-lang.org/reference/items/type-aliases.html) will share the same TypeId.
+The `::<String>` syntax declares the return type of this use of `use_context`. In Dioxus, context objects are indexed by their [TypeId](https://doc.rust-lang.org/std/any/struct.TypeId.html). A type's TypeId is a  compile-time hash that uniquely identifies every Rust type. No two types will share the same TypeId unless they refer to the same underlying type declaration - ie, [type aliases](https://doc.rust-lang.org/reference/items/type-aliases.html) will share the same TypeId.
 
 When providing context objects, we should wrap the data we want to store in a custom type or [new type](https://doc.rust-lang.org/rust-by-example/generics/new_types.html). This ensures that we can store multiple `String` objects in the context tree and retrieve them by their wrapper type.
 

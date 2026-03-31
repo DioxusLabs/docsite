@@ -112,7 +112,7 @@ Another perk of hooks: we don't need to declare the boilerplate that a struct-ba
 ```rust
 #[component]
 fn Card(default_name: String) -> Element {
-    let mut name = use_signal(|| default_name);
+    let mut name = use_signal(|| default_name.clone());
     let mut email = use_signal(|| "".to_string());
     rsx! {
         span { "default: {default_name}" }

@@ -2,7 +2,7 @@
 
 Now that you know how to create user interfaces in Dioxus, it's time to learn about creating and update your app's state.
 
-**Managaing state is, by far, the hardest part of building an app.**
+**Managing state is, by far, the hardest part of building an app.**
 
 This guide will walk you through the core principles of state management in Dioxus with an early emphasis on theory and then a shift into application.
 

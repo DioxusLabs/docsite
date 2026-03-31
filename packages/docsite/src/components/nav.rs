@@ -359,7 +359,7 @@ fn SearchResults(results: Signal<SearchItems>, search_text: Signal<String>) -> E
     //     })
     //     .collect::<Vec<_>>();
 
-    // use crate::docs::router_06::BookRoute;
+    use crate::docs::router_06::BookRoute;
 
     let default_searches = [
         (

@@ -359,42 +359,36 @@ fn SearchResults(results: Signal<SearchItems>, search_text: Signal<String>) -> E
     //     })
     //     .collect::<Vec<_>>();
 
-    use crate::docs::router_06::BookRoute;
+    use crate::docs::router_07::BookRoute;
 
     let default_searches = [
         (
             "Tutorial",
-            BookRoute::GuideIndex {
+            BookRoute::Index {
                 section: Default::default(),
             },
         ),
         (
             "Web",
-            BookRoute::GuidesWebIndex {
-                section: Default::default(),
-            },
-        ),
-        (
-            "Desktop",
-            BookRoute::GuidesDesktopIndex {
-                section: Default::default(),
-            },
-        ),
-        (
-            "Mobile",
-            BookRoute::GuidesMobileIndex {
+            BookRoute::GuidesPlatformsWeb {
                 section: Default::default(),
             },
         ),
         (
             "Fullstack",
-            BookRoute::GuidesFullstackIndex {
+            BookRoute::EssentialsFullstackIndex {
                 section: Default::default(),
             },
         ),
         (
-            "Typesafe Routing",
-            BookRoute::RouterReferenceIndex {
+            "Desktop",
+            BookRoute::GuidesPlatformsDesktop {
+                section: Default::default(),
+            },
+        ),
+        (
+            "Mobile",
+            BookRoute::GuidesPlatformsMobile {
                 section: Default::default(),
             },
         ),

@@ -84,6 +84,10 @@ pub(crate) fn Hero() -> Element {
                             class: "h-6 ",
                             src: asset!("/assets/static/ESA_logo.svg"),
                         }
+                        img {
+                            class: "h-6 ",
+                            src: asset!("/assets/static/cognition_white.png"),
+                        }
                         // img {
                         //     class: "h-6 ",
                         //     src: asset!("/assets/static/xailogo.svg"),
@@ -95,10 +99,6 @@ pub(crate) fn Hero() -> Element {
                         img {
                             class: "h-6 ",
                             src: asset!("/assets/static/futurewei_bw.png"),
-                        }
-                        img {
-                            class: "h-6 ",
-                            src: asset!("/assets/static/satellite.webp"),
                         }
                     }
                 }

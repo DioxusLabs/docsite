@@ -27,8 +27,8 @@ Plus, a number of quality-of-life upgrades:
 - **[Improved log coloring](#various-quality-of-life-upgrades)**
 - **[desktop and mobile toasts](#various-quality-of-life-upgrades)**
 - **[Android + iOS device support](#adb-reverse-proxy-for-device-hot-reload)**
-- **[More customization of iOS and Android projects](#customize-androidmanifestxml-and-infoplist)**
-- **[Improved build and bundling]**: multi-package serve, automatic framework bundling, hashless assets, `/public` dir,wasm32 fullstack
+- **[Fully customize iOS and Android projects](#customize-androidmanifestxml-and-infoplist)**
+- **[Improved build and bundling](#improved-build-and-bundling)**: multi-package serve, automatic framework bundling, hashless assets, `/public` dir,wasm32 fullstack
 
 ## Rust Hot-patching with Subsecond
 
@@ -157,111 +157,6 @@ Blitz also provides a pluggable layer for interactivity, supporting actions like
 
 Bear in mind that Blitz is still considered a “work in progress.” We have not focused on performance
 
-## Dioxus Primitives - a collection of Radix-UI equivalents
-
-You asked, we listened. Dioxus now has a first-party component library based on the popular JavaScript library, Radix-Primitives. Our library implements 28 foundational components that you can mix, match, customize, and restyle to fit your project. Each component comes unstyled and is fully equipped with keyboard-shortucts, ARIA accessibility, and is designed to work seamlessly across web, desktop and mobile.
-
-![component library calendar](/assets/07/screen-recording-2.mov)
-
-In addition to the unstyled primitives, the [components page](https://www.notion.so/Dioxus-0-7-Release-Post-1c5f1847ef8e80579ddae7e4320de518?pvs=21) includes a shadcn-style version of each primitive with css you can copy into your project to build a component library for your project. You can combine these primitives to create larger building blocks like cards, dashboards and forms.
-
-![component library homepage](/assets/07/screenshot-10.avif)
-
-The community has already started construction on new component variants with an exciting project called Lumenblocks built by the [Leaf Computer](https://leaf.computer/) team.
-
-![lumenblocks homepage](/assets/07/screenshot-13.avif)
-
-## Stores - a new primitive for nested reactive state
-
-We introduced signals in 0.5 to enable fine grained reactive updates in dioxus. Signals are great for atomic piece of state in a component like a string or number, but they are difficult to use with external or nested state. Stores are a powerful new primitive for nested reactive state in 0.7.
-
-With stores, you can derive a store trait on your data to let you zoom into specific parts of the state:
-
-```rust
-#[derive(Store)]
-struct Dir {
-    children: BTreeMap<String, Dir>,
-}
-
-// You can use the children method to get a reactive reference to just that field
-let mut children: Store<Vec<Dir>, _> = directory.children();
-```
-
-Stores also include implementations for common data structures like BTreeMap that mark only the changed items as dirty for each operation:
-
-```rust
-#[component]
-fn Directory(directory: Store<Dir>) -> Element {
-    // Create a temporary to reference just the reactive child field
-    let mut children = directory.children();
-    rsx! {
-        ul {
-            // Iterate through each reactive value in the children
-            for (i, dir) in children.iter().enumerate() {
-                li {
-                    key: "{dir.path()}",
-                    div {
-                        display: "flex",
-                        flex_direction: "row",
-                        "{dir.path()}",
-                        button {
-                            onclick: move |_| {
-                                children.remove(i);
-                            },
-                            "x"
-                        }
-                    }
-                    Directory { directory: dir }
-                }
-            }
-        }
-    }
-}
-
-```
-
-When we remove a directory from the store, it will only rerun the parent component that iterated over the BTreeMap and the child that was removed.
-
-![HTML tree of with photos div removed](/assets/07/untitled_(1).avif)
-
-## Automatic Tailwind
-
-The community has been asking for automatic Tailwind for a very long time. Finally in Dioxus 0.7,  `dx` detects if your project has a `tailwind.css` file at the root, and if it does, automatically starts a TailwindCSS watcher for you. You no longer need to manually start or download the Tailwind CLI - everything is handled for you seamlessly in the background:
-
-![tailwind hotreloading demo](/assets/07/tailwind-inline.mp4)
-
-We’ve updated our docs and examples to Tailwind V4, but we’ve also made sure the CLI can handle and autodetect both V3 and V4. Automatic Tailwind support is an amazing feature and we’re sorry for not having integrated it earlier!
-
-## Improvements with AI - LLMs.txt and “vibe-coding”
-
-If you’ve kept up with the news recently, it’s become obvious that AI and Large Language Models are taking over the world. The AI world moves quickly with new tools and improvements being released every week. While the reception of LLMs in the Rust community seems to be mixed, we don’t want Dioxus to be left behind!
-
-In Dioxus 0.7, we’re shipping our first step in the AI world with a first-party `llms.txt` automatically generated from the Dioxus documentation! LLMs can easily stay up to date on new Dioxus features and best practices, hopefully reducing hallucinations when integrating with tools like Copilot and Cursor.
-
-The latest version of the template also includes an optional set of prompts with context about the latest release of dioxus. The prompts provide condensed information about dioxus for tools that don’t have access to web search or llms.txt integration.
-
-Combined with the Subsecond hot-patching work, users can now more effectively “vibe code” their apps without rebuilding. While we don’t recommend “vibe coding” high-stakes parts of your app, modern AI tools are quite useful for quickly whipping up prototypes and UI.
-
-![rust vibe coding demo](/assets/07/vibe-code-2.mp4)
-
-## WASM Bundle Splitting and Lazy Loading
-
-![network tab of dioxuslabs homepage](/assets/07/bundle-split.mp4)
-
-## Integrated Debugger
-
-To date, debugging Rust apps with VSCode hasn’t been particularly easy. Each combination of launch targets, flags, and arguments required a new entry into your `vscode.json` With Dioxus 0.7, we wanted to improve debugging, so we’re shipping a debugger integration! While running `dx serve`, simply press `d` and the current LLDB instance will attach to currently running app. The new debugger integration currently only works with VSCode-based editor setups, but we’d happily accept contributions to expand our support to Neovim, Zed, etc.
-
-![vscode debugger with dioxus project](/assets/07/debugger-dx.mp4)
-
-The integrated debugger is particularly interesting since it works across the web, desktop, and mobile. Setting up an Android debugger from VSCode is particularly challenging, and the new integration makes it much easier.
-
-![vscode debugger with dioxus android project](/assets/07/debug-android-vscode.mp4)
-
-When launching for the web, we actually open a new Chrome instance with a debugger attached. Provided you download the DWARF symbols extension, Rust symbols will show up properly demangled in the debugger tab instead of confusing function addresses.
-
-![vscode debugger with dioxus web project](/assets/07/debugger-web.mp4)
-
 ## Dioxus Fullstack Overhaul
 
 We completely revamped Dioxus Fullstack, bringing in a new syntax and a whole host of new features.
@@ -351,6 +246,130 @@ fn app() -> Element {
 
 ![websocket demo](/assets/07/websocket-demo.mp4)
 
+## Dioxus Primitives - a collection of Radix-UI equivalents
+
+You asked, we listened. Dioxus now has a first-party component library based on the popular JavaScript library, Radix-Primitives. Our library implements 28 foundational components that you can mix, match, customize, and restyle to fit your project. Each component comes unstyled and is fully equipped with keyboard-shortucts, ARIA accessibility, and is designed to work seamlessly across web, desktop and mobile.
+
+![component library calendar](/assets/07/screen-recording-2.mov)
+
+In addition to the unstyled primitives, the [components page](https://www.notion.so/Dioxus-0-7-Release-Post-1c5f1847ef8e80579ddae7e4320de518?pvs=21) includes a shadcn-style version of each primitive with css you can copy into your project to build a component library for your project. You can combine these primitives to create larger building blocks like cards, dashboards and forms.
+
+![component library homepage](/assets/07/screenshot-10.avif)
+
+The community has already started construction on new component variants with an exciting project called Lumenblocks built by the [Leaf Computer](https://leaf.computer/) team.
+
+![lumenblocks homepage](/assets/07/screenshot-13.avif)
+
+## Stores - a new primitive for nested reactive state
+
+We introduced signals in 0.5 to enable fine grained reactive updates in dioxus. Signals are great for atomic piece of state in a component like a string or number, but they are difficult to use with external or nested state. Stores are a powerful new primitive for nested reactive state in 0.7.
+
+With stores, you can derive a store trait on your data to let you zoom into specific parts of the state:
+
+```rust
+#[derive(Store)]
+struct Dir {
+    children: BTreeMap<String, Dir>,
+}
+
+// You can use the children method to get a reactive reference to just that field
+let mut children: Store<Vec<Dir>, _> = directory.children();
+```
+
+Stores also include implementations for common data structures like BTreeMap that mark only the changed items as dirty for each operation:
+
+```rust
+#[component]
+fn Directory(directory: Store<Dir>) -> Element {
+    // Create a temporary to reference just the reactive child field
+    let mut children = directory.children();
+    rsx! {
+        ul {
+            // Iterate through each reactive value in the children
+            for (i, dir) in children.iter().enumerate() {
+                li {
+                    key: "{dir.path()}",
+                    div {
+                        display: "flex",
+                        flex_direction: "row",
+                        "{dir.path()}",
+                        button {
+                            onclick: move |_| {
+                                children.remove(i);
+                            },
+                            "x"
+                        }
+                    }
+                    Directory { directory: dir }
+                }
+            }
+        }
+    }
+}
+
+```
+
+When we remove a directory from the store, it will only rerun the parent component that iterated over the BTreeMap and the child that was removed.
+
+![HTML tree of with photos div removed](/assets/07/untitled_(1).avif)
+
+## Automatic Tailwind
+
+The community has been asking for automatic Tailwind for a very long time. Finally in Dioxus 0.7,  `dx` detects if your project has a `tailwind.css` file at the root, and if it does, automatically starts a TailwindCSS watcher for you. You no longer need to manually start or download the Tailwind CLI - everything is handled for you seamlessly in the background:
+
+![tailwind hotreloading demo](/assets/07/tailwind-inline.mp4)
+
+We’ve updated our docs and examples to Tailwind V4, but we’ve also made sure the CLI can handle and autodetect both V3 and V4. Automatic Tailwind support is an amazing feature and we’re sorry for not having integrated it earlier!
+
+## Improvements with AI - LLMs.txt and “vibe-coding”
+
+If you’ve kept up with the news recently, it’s become obvious that AI and Large Language Models are taking over the world. The AI world moves quickly with new tools and improvements being released every week. While the reception of LLMs in the Rust community seems to be mixed, we don’t want Dioxus to be left behind!
+
+In Dioxus 0.7, we’re shipping our first step in the AI world with a first-party `llms.txt` automatically generated from the Dioxus documentation! LLMs can easily stay up to date on new Dioxus features and best practices, hopefully reducing hallucinations when integrating with tools like Copilot and Cursor.
+
+The latest version of the template also includes an optional set of prompts with context about the latest release of dioxus. The prompts provide condensed information about dioxus for tools that don’t have access to web search or llms.txt integration.
+
+Combined with the Subsecond hot-patching work, users can now more effectively “vibe code” their apps without rebuilding. While we don’t recommend “vibe coding” high-stakes parts of your app, modern AI tools are quite useful for quickly whipping up prototypes and UI.
+
+![rust vibe coding demo](/assets/07/vibe-code-2.mp4)
+
+## WASM Bundle Splitting and Lazy Loading
+
+Dioxus 0.7 introduces automatic code splitting and lazy loading for WebAssembly apps. Instead of shipping a single monolithic `.wasm` binary to the browser, `dx` now splits your app into smaller chunks based on your router. Each route's code is loaded on-demand as the user navigates, dramatically reducing initial load times for larger apps.
+
+To enable bundle splitting, simply add `wasm_split` to your route:
+
+```rust
+#[derive(Routable, Clone, PartialEq)]
+enum Route {
+    #[route("/")]
+    Home,
+    #[wasm_split("/dashboard")]
+    Dashboard,
+    #[wasm_split("/settings")]
+    Settings,
+}
+```
+
+Routes marked with `#[wasm_split]` are split into separate `.wasm` files that are fetched only when the user navigates to that route. This works seamlessly with the Dioxus router -- users see a loading state while the chunk is fetched, then the route renders as normal.
+
+![network tab of dioxuslabs homepage](/assets/07/bundle-split.mp4)
+
+## Integrated Debugger
+
+To date, debugging Rust apps with VSCode hasn’t been particularly easy. Each combination of launch targets, flags, and arguments required a new entry into your `vscode.json` With Dioxus 0.7, we wanted to improve debugging, so we’re shipping a debugger integration! While running `dx serve`, simply press `d` and the current LLDB instance will attach to currently running app. The new debugger integration currently only works with VSCode-based editor setups, but we’d happily accept contributions to expand our support to Neovim, Zed, etc.
+
+![vscode debugger with dioxus project](/assets/07/debugger-dx.mp4)
+
+The integrated debugger is particularly interesting since it works across the web, desktop, and mobile. Setting up an Android debugger from VSCode is particularly challenging, and the new integration makes it much easier.
+
+![vscode debugger with dioxus android project](/assets/07/debug-android-vscode.mp4)
+
+When launching for the web, we actually open a new Chrome instance with a debugger attached. Provided you download the DWARF symbols extension, Rust symbols will show up properly demangled in the debugger tab instead of confusing function addresses.
+
+![vscode debugger with dioxus web project](/assets/07/debugger-web.mp4)
+
+
 ## Various Quality of Life Upgrades
 
 We’ve shipped a number of quality-of-life upgrades that don’t necessarily warrant their own section in the release notes.
@@ -419,7 +438,7 @@ When you try to use the dioxus-cli with an incompatible dioxus version, you’ll
 
 ## Customize AndroidManifest.xml and Info.plist
 
-You can now customize the Info.plist and AndroidManifest.xml files that Dioxus generates for your Android, iOS, and macOS projects. This makes it possible to add entitlements, update permissions, set splash screens, customize icons, and fully tweak your apps for deployment.
+Dioxus 0.7 ships with a unified interface in `dioxus.toml` to customize the entire mobile build process. You can set permissions, entitlements, and every field of `AndroidManifest.xml` and `Info.plist` directly from your config -- no need to manually edit platform-specific XML or plist files. This makes it easy to configure splash screens, customize icons, request camera or location permissions, set URL schemes, and fully tweak your apps for deployment, all from a single place.
 
 ### ADB Reverse Proxy for Device Hot-Reload
 
@@ -485,3 +504,26 @@ Dioxus 0.7 includes a number of improvements to the build and bundling pipeline 
 **Hashless assets:** You can now use `asset!()` without writing an asset hash, making it easier to reference assets in your code without dealing with content-hashed filenames.
 
 **`/public` directory:** Dioxus now supports a `/public` directory at the root of your project. Files placed here are merged into your final bundle as-is, making it easy to include things like `robots.txt`, `.well-known` files, favicons, and other static resources that need to live at a fixed path.
+
+## Upgrading from 0.6 to 0.7
+
+We've assembled a [migration guide](https://dioxuslabs.com/learn/0.7/migration/to_07) to help you upgrade your existing apps from Dioxus 0.6 to 0.7. For a full overview of the framework, check out the [updated documentation](https://dioxuslabs.com/learn/0.7/).
+
+## Conclusion
+
+That's it for Dioxus 0.7! This release represents over 350 pull requests merged and hundreds of issues closed. From hot-patching Rust code at runtime to a brand new GPU-powered native renderer, we've pushed the boundaries of what's possible for app development in Rust.
+
+Looking ahead, we're planning to focus on:
+
+- Native platform APIs (camera, geolocation, file system, push notifications, and more) in 0.8
+- `dx deploy` for one-command deployment to cloud platforms
+- Continued performance improvements for Blitz and Dioxus Native
+- More tutorial videos, starter templates, and documentation
+
+If you're interested in contributing, check out our [GitHub](https://github.com/DioxusLabs/dioxus), join our [Discord](https://discord.gg/XgGxMSkvUM), or follow us on [Twitter](https://twitter.com/dioxuslabs).
+
+## Thanks to the community!
+
+We want to extend a huge thank-you to everyone who helped test and improve this release. Dioxus 0.7 saw an incredible number of contributors fix bugs and add features. Special thanks to:
+
+[@3lpsy](https://github.com/3lpsy) - [@Andrew15-5](https://github.com/Andrew15-5) - [@arvidfm](https://github.com/arvidfm) - [@atty303](https://github.com/atty303) - [@avij1109](https://github.com/avij1109) - [@bananabit-dev](https://github.com/bananabit-dev) - [@brianmay](https://github.com/brianmay) - [@bwskin](https://github.com/bwskin) - [@carlosdp](https://github.com/carlosdp) - [@caseykneale](https://github.com/caseykneale) - [@chrivers](https://github.com/chrivers) - [@clouds56](https://github.com/clouds56) - [@conectado](https://github.com/conectado) - [@Craig-Macomber](https://github.com/Craig-Macomber) - [@created-by-varun](https://github.com/created-by-varun) - [@CristianCapsuna](https://github.com/CristianCapsuna) - [@CryZe](https://github.com/CryZe) - [@d-corler](https://github.com/d-corler) - [@dabrahams](https://github.com/dabrahams) - [@damccull](https://github.com/damccull) - [@danielkov](https://github.com/danielkov) - [@DanielWarloch](https://github.com/DanielWarloch) - [@davidB](https://github.com/davidB) - [@debanjanbasu](https://github.com/debanjanbasu) - [@DogeDark](https://github.com/DogeDark) - [@dowski](https://github.com/dowski) - [@DrewRidley](https://github.com/DrewRidley) - [@dsgallups](https://github.com/dsgallups) - [@dtolnay](https://github.com/dtolnay) - [@ealmloff](https://github.com/ealmloff) - [@emmanuel-ferdman](https://github.com/emmanuel-ferdman) - [@FalkWoldmann](https://github.com/FalkWoldmann) - [@fasterthanlime](https://github.com/fasterthanlime) - [@flba-eb](https://github.com/flba-eb) - [@fontlos](https://github.com/fontlos) - [@gammahead](https://github.com/gammahead) - [@gbutler69](https://github.com/gbutler69) - [@hackartists](https://github.com/hackartists) - [@Hasnep](https://github.com/Hasnep) - [@hecrj](https://github.com/hecrj) - [@Himmelschmidt](https://github.com/Himmelschmidt) - [@Jasper-Bekkers](https://github.com/Jasper-Bekkers) - [@javierEd](https://github.com/javierEd) - [@Jayllyz](https://github.com/Jayllyz) - [@jerome-caucat](https://github.com/jerome-caucat) - [@jjvn84](https://github.com/jjvn84) - [@Kbz-8](https://github.com/Kbz-8) - [@Kijewski](https://github.com/Kijewski) - [@Klemen2](https://github.com/Klemen2) - [@kristoff3r](https://github.com/kristoff3r) - [@ktechhydle](https://github.com/ktechhydle) - [@kyle-nweeia](https://github.com/kyle-nweeia) - [@laundmo](https://github.com/laundmo) - [@leo030303](https://github.com/leo030303) - [@LeWimbes](https://github.com/LeWimbes) - [@LilahTovMoon](https://github.com/LilahTovMoon) - [@luckybelcik](https://github.com/luckybelcik) - [@Makosai](https://github.com/Makosai) - [@marc2332](https://github.com/marc2332) - [@marcobergamin-videam](https://github.com/marcobergamin-videam) - [@mcmah309](https://github.com/mcmah309) - [@MintSoup](https://github.com/MintSoup) - [@mockersf](https://github.com/mockersf) - [@mohe2015](https://github.com/mohe2015) - [@mzdk100](https://github.com/mzdk100) - [@Nathy-bajo](https://github.com/Nathy-bajo) - [@navyansh007](https://github.com/navyansh007) - [@nicoburns](https://github.com/nicoburns) - [@nilswloewen](https://github.com/nilswloewen) - [@OlivierLemoine](https://github.com/OlivierLemoine) - [@omar-mohamed-khallaf](https://github.com/omar-mohamed-khallaf) - [@otgerrogla](https://github.com/otgerrogla) - [@pandarrr](https://github.com/pandarrr) - [@PhilTaken](https://github.com/PhilTaken) - [@Plebshot](https://github.com/Plebshot) - [@priezz](https://github.com/priezz) - [@pythoneer](https://github.com/pythoneer) - [@rennanpo](https://github.com/rennanpo) - [@rhaskia](https://github.com/rhaskia) - [@RickWong](https://github.com/RickWong) - [@RobertasJ](https://github.com/RobertasJ) - [@ryo33](https://github.com/ryo33) - [@s3bba](https://github.com/s3bba) - [@sebdotv](https://github.com/sebdotv) - [@sehnryr](https://github.com/sehnryr) - [@SilentVoid13](https://github.com/SilentVoid13) - [@snatvb](https://github.com/snatvb) - [@srghma-old](https://github.com/srghma-old) - [@stevelr](https://github.com/stevelr) - [@StudioLE](https://github.com/StudioLE) - [@tekacs](https://github.com/tekacs) - [@tgrushka](https://github.com/tgrushka) - [@Threated](https://github.com/Threated) - [@thyseus](https://github.com/thyseus) - [@Tumypmyp](https://github.com/Tumypmyp) - [@wdcocq](https://github.com/wdcocq) - [@wdjcodes](https://github.com/wdjcodes) - [@wheregmis](https://github.com/wheregmis) - [@windows-fryer](https://github.com/windows-fryer) - [@wiseaidev](https://github.com/wiseaidev) - [@wosienko](https://github.com/wosienko) - [@Yuhanawa](https://github.com/Yuhanawa) - [@yydcnjjw](https://github.com/yydcnjjw) - [@zhiyanzhaijie](https://github.com/zhiyanzhaijie)

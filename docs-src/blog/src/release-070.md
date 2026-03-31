@@ -6,6 +6,7 @@ In this release, we’re shipping some incredible features. The highlights of th
 
 - Subsecond: Hot-patching of Rust code at runtime
 - Dioxus Native: WGPU-based HTML/CSS renderer for Dioxus
+- Fullstack: Revamp of Server Functions with full Axum integration
 - WASM-Split: Code splitting and lazy loading for WebAssembly
 - Stores: A new primitive for nested reactive state
 - Dioxus Primitives: first-party radix-primitives implementation for Dioxus
@@ -16,68 +17,50 @@ Dioxus 0.7 also brings a number of other exciting new features:
 - LLMs.txt: first-party context file to supercharge AI coding models
 - Blitz: our modular HTML/CSS renderer powering Dioxus Native, available for everyone!
 - Fullstack WebSockets: websockets in a single line of code
-- Integrated Debugger Support: open CodeLLDB or Neovim DAP with a single keystroke
+- Integrated Debugger Support: open CodeLLDB with a single keystroke
 - Fullstack error codes: Integration of status codes and custom errors in fullstack
 - Configurable Mobile Builds: Customize your AndroidManifest and Info.plist
 
 Plus, a number of quality-of-life upgrades:
 
-- one-line installer ( curl [dioxus.dev/install.sh](http://dioxus.dev/install.sh) | sh )
+- one-line installer ( `curl https://dioxus.dev/install.sh | sh` )
 - `dx self-update` and update notifications
 - automatically open simulators
 - Improved log coloring
 - desktop and mobile toasts
 - HTML streaming now waits for the router to render
 - Axum 0.8 and Wry 52 upgrade
-- Android and iOS device support (—device)
+- Android + iOS device support
 - More customization of iOS and Android projects
 - Hash Router Support for dioxus-web
 - Multi-package serve: `dx serve @client --package xyz @server --package xyz`
 - Support for dyib bundling
 - wasm32 support for fullstack
 - Hashless assets
+- /public dir
 - And many, many bugs fixed!
-
-## Note from the author
-
-Dioxus 0.7 marks the second anniversary of me (Jonathan Kelley) going full time on Dioxus. How time flies! In the past two years we shipped so much:
-
-- Template Hot-Reloading and Autoformatting
-- Migration to Signals for state management
-- First-party Android and iOS tooling
-- Server Function integration
-- Linker-based asset system
-- and so much more!
-
-The road here has been long and frankly, lots of work. When we started out, the Rust ecosystem had very few good solutions to the basic problems in application development. Even now, the Rust hot-patching and native renderers - while incredible achievements on their own - are just “par for the course” for application development.
-
-With Dioxus 0.7, I feel like the Dioxus foundations are finally solid. We have excellent developer tools, lightning-fast hot-reload, a great asset system, a solid RPC solution, bundle splitting, automatic optimizations, autocomplete, auto-formatting, a capable state management solution, comprehensive docs, and funding for the foreseeable future.
-
-What of the future? I finally feel like we’re on the “other side” of the once-impossible problems. With hot-patching and the native renderer behind us, we’re quite free to work on smaller projects. We could definitely use better marketing, more tutorial videos, better starter templates, and more libraries (native APIs in 0.8!). Thanks for all the support so far!
 
 ## Rust Hot-patching with Subsecond
 
 The biggest feature of this release: Dioxus now supports hot-patching of Rust code at runtime! You can now edit your Rust code and see changes without losing your app’s state.
 
-< demo of hotpatching >
-
 We’ve been working on this feature for almost an *entire year,* so this is a very special release for us. The tool powering this hot-patching is called *Subsecond* and works across all major platforms: Web (WASM), Desktop (macOS, Linux, Windows), and even mobile (iOS, Android):
 
-![android hotpatching demo](./assets/07/hotpatch-android.mp4)
+![android hotpatching demo](/assets/07/hotpatch-android.mp4)
 
-![ios hotpatching demo](./assets/07/ios-binarypatch.mp4)
+![ios hotpatching demo](/assets/07/ios-binarypatch.mp4)
 
 You can now iterate on your app’s frontend and backend *simultaneously* without skipping a beat.
 
-![wasm hotpatching demo](./assets/07/hotpatch-wasm-complete.mp4)
+![wasm hotpatching demo](/assets/07/hotpatch-wasm-complete.mp4)
 
 Subsecond works in tandem with the Dioxus CLI to enable hot-patching for any Rust project. Simply run `dx serve` on your project and all `subsecond::call` sites will be hot-patched. For example, here’s Subsecond working with a Ratatui app:
 
-![ratatui hotpatching demo](./assets/07/subsecond-tui.mp4)
+![ratatui hotpatching demo](/assets/07/subsecond-tui.mp4)
 
 The infrastructure to support Subsecond is quite complex. Currently, we plan to only ship the Subsecond engine within the Dioxus CLI itself with a long-term plan to spin the engine out into its own crate. For now, we still want the ecosystem to experience the magic of Subsecond, so we’ve made the CLI compatible with non-dioxus projects and removed “dioxus” branding when not serving a dioxus project.
 
-![dx serve without dioxus branding](./assets/07/screenshot-6.avif)
+![dx serve without dioxus branding](/assets/07/screenshot-6.avif)
 
 Hot-patching Rust code is no simple feat. To achieve a segfault-free experience, we recommend framework authors to tie into Subsecond’s minimal runtime. For application developers, you can simply use `subsecond::call(some_fn)` at clean integration points to take advantage of hot-patching. If you use Dioxus, hot-patching comes directly integrated with components and server functions.
 
@@ -115,7 +98,7 @@ We expect folks to use Subsecond outside of Dioxus, namely in web development, s
 
 Subsecond has already made its way into popular projects like Bevy and Iced. Right now, you can `git pull` the latest Bevy and Iced repositories and start hot-patching with zero setup:
 
-![bevy hotpatching demo](./assets/07/bevy-hotpatch.mp4)
+![bevy hotpatching demo](/assets/07/bevy-hotpatch.mp4)
 
 Hot-patching covers nearly *every* case in Dioxus. Many tasks that were previously massively burdensome are now a breeze:
 
@@ -127,11 +110,7 @@ Hot-patching covers nearly *every* case in Dioxus. Many tasks that were previous
 - Loading resources and async values
 - Refactoring rsx into components
 
-Hotpatching also handles quite large projects - for example, our docsite at 25k LoC:
-
-< demo of editing the docsite landing page >
-
-Under the hood, we implemented a form of incremental linking / binary patching tailored for running apps. This is not too distant from the idea laid out by Andrew Kelley for Zig. We have yet to release an in-depth technical writeup about how Subsecond works, but if you’re really interested, come join us at the Seattle RustConf and learn about it during our talk!
+Under the hood, we implemented a form of incremental linking / binary patching tailored for running apps. This is not too distant from the idea laid out by Andrew Kelley for Zig.
 
 ## Dioxus Native and Blitz
 
@@ -154,37 +133,37 @@ Blitz combines a number of exciting projects to bring customizable HTML renderin
 
 - Taffy: our high-performance flexbox layout engine
 - Stylo: Firefox and Servo’s shared CSS resolution engine
-- Vello: Google’s GPU compute renderer
+- Vello: Linebender’s GPU compute renderer
 
 Blitz is an extremely capable renderer, often producing results indistinguishable from browsers like Chrome and Safari:
 
-![blitz vs safari comparison](./assets/07/blitzvssafari.avif)
+![blitz vs safari comparison](/assets/07/blitzvssafari.avif)
 
-Not every CSS feature is supported yet, with some bugs like incorrect writing direction or the occasional layout quirk. Our support matrix is here: [https://blitz-website.fly.dev/support-matrix](https://blitz-website.fly.dev/support-matrix)
+Not every CSS feature is supported yet, with some bugs like incorrect writing direction or the occasional layout quirk. Our support matrix is here: [https://blitz.is/status/css](https://blitz.is/status/css)
 
 The samples that Blitz can create are quite incredible. Servo’s website:
 
-![servo homepage rendered with blitz](./assets/07/image.avif)
+![servo homepage rendered with blitz](/assets/07/image.avif)
 
 Hackernews:
 
-![hackernews homepage rendered with blitz](./assets/07/image-1.avif)
+![hackernews homepage rendered with blitz](/assets/07/image-1.avif)
 
 The BBC:
 
-![bbc homepage rendered with blitz](./assets/07/screenshot-1.avif)
+![bbc homepage rendered with blitz](/assets/07/screenshot-1.avif)
 
 We even implemented basic `<form />` support, making it possible to search Wikipedia without a full browser:
 
-![form submission blitz demo](./assets/07/screen-recording-3.mov)
+![form submission blitz demo](/assets/07/screen-recording-3.mov)
 
 Do note that Blitz is still very young and doesn’t always produce the best outputs, especially on pages that require JavaScript to function properly or use less-popular CSS features:
 
-![blitz failing github render](./assets/07/screenshot-4.avif)
+![blitz failing github render](/assets/07/screenshot-4.avif)
 
 Blitz also provides a pluggable layer for interactivity, supporting actions like text inputs, pluggable widgets, form submissions, hover styling, and more. Here’s Dioxus-Motion working alongside our interactivity layer to provide high quality animations:
 
-![blitz dioxus-motion demo](./assets/07/screen-recording-1.mov)
+![blitz dioxus-motion demo](/assets/07/screen-recording-1.mov)
 
 Bear in mind that Blitz is still considered a “work in progress.” We have not focused on performance
 
@@ -192,15 +171,15 @@ Bear in mind that Blitz is still considered a “work in progress.” We have no
 
 You asked, we listened. Dioxus now has a first-party component library based on the popular JavaScript library, Radix-Primitives. Our library implements 28 foundational components that you can mix, match, customize, and restyle to fit your project. Each component comes unstyled and is fully equipped with keyboard-shortucts, ARIA accessibility, and is designed to work seamlessly across web, desktop and mobile.
 
-![component library calendar](./assets/07/screen-recording-2.mov)
+![component library calendar](/assets/07/screen-recording-2.mov)
 
 In addition to the unstyled primitives, the [components page](https://www.notion.so/Dioxus-0-7-Release-Post-1c5f1847ef8e80579ddae7e4320de518?pvs=21) includes a shadcn-style version of each primitive with css you can copy into your project to build a component library for your project. You can combine these primitives to create larger building blocks like cards, dashboards and forms.
 
-![component library homepage](./assets/07/screenshot-10.avif)
+![component library homepage](/assets/07/screenshot-10.avif)
 
 The community has already started construction on new component variants with an exciting project called Lumenblocks built by the [Leaf Computer](https://leaf.computer/) team.
 
-![lumenblocks homepage](./assets/07/screenshot-13.avif)
+![lumenblocks homepage](/assets/07/screenshot-13.avif)
 
 ## Stores - a new primitive for nested reactive state
 
@@ -253,13 +232,13 @@ fn Directory(directory: Store<Dir>) -> Element {
 
 When we remove a directory from the store, it will only rerun the parent component that iterated over the BTreeMap and the child that was removed.
 
-![HTML tree of with photos div removed](./assets/07/untitled_(1).avif)
+![HTML tree of with photos div removed](/assets/07/untitled_(1).avif)
 
 ## Automatic Tailwind
 
 The community has been asking for automatic Tailwind for a very long time. Finally in Dioxus 0.7,  `dx` detects if your project has a `tailwind.css` file at the root, and if it does, automatically starts a TailwindCSS watcher for you. You no longer need to manually start or download the Tailwind CLI - everything is handled for you seamlessly in the background:
 
-![tailwind hotreloading demo](./assets/07/tailwind-inline.mp4)
+![tailwind hotreloading demo](/assets/07/tailwind-inline.mp4)
 
 We’ve updated our docs and examples to Tailwind V4, but we’ve also made sure the CLI can handle and autodetect both V3 and V4. Automatic Tailwind support is an amazing feature and we’re sorry for not having integrated it earlier!
 
@@ -273,115 +252,114 @@ The latest version of the template also includes an optional set of prompts with
 
 Combined with the Subsecond hot-patching work, users can now more effectively “vibe code” their apps without rebuilding. While we don’t recommend “vibe coding” high-stakes parts of your app, modern AI tools are quite useful for quickly whipping up prototypes and UI.
 
-![rust vibe coding demo](./assets/07/vibe-code-2.mp4)
+![rust vibe coding demo](/assets/07/vibe-code-2.mp4)
 
 ## WASM Bundle Splitting and Lazy Loading
 
-![network tab of dioxuslabs homepage](./assets/07/bundle-split.mp4)
+![network tab of dioxuslabs homepage](/assets/07/bundle-split.mp4)
 
 ## Integrated Debugger
 
-To date, debugging Rust apps with VSCode hasn’t been particularly easy. Each combination of launch targets, flags, and arguments required a new entry into your `vscode.json` or `nvim.dap` file. With Dioxus 0.7, we wanted to improve debugging, so we’re shipping a debugger integration! While running `dx serve`, simply press `d` and the current LLDB / DAP instance will attach to currently running app. The new debugger integration currently only works with VSCode-based editor setups, but we’d happily accept contributions to expand our support to Neovim, Zed, etc.
+To date, debugging Rust apps with VSCode hasn’t been particularly easy. Each combination of launch targets, flags, and arguments required a new entry into your `vscode.json` With Dioxus 0.7, we wanted to improve debugging, so we’re shipping a debugger integration! While running `dx serve`, simply press `d` and the current LLDB instance will attach to currently running app. The new debugger integration currently only works with VSCode-based editor setups, but we’d happily accept contributions to expand our support to Neovim, Zed, etc.
 
-![vscode debugger with dioxus project](./assets/07/debugger-dx.mp4)
+![vscode debugger with dioxus project](/assets/07/debugger-dx.mp4)
 
 The integrated debugger is particularly interesting since it works across the web, desktop, and mobile. Setting up an Android debugger from VSCode is particularly challenging, and the new integration makes it much easier.
 
-![vscode debugger with dioxus android project](./assets/07/debug-android-vscode.mp4)
+![vscode debugger with dioxus android project](/assets/07/debug-android-vscode.mp4)
 
 When launching for the web, we actually open a new Chrome instance with a debugger attached. Provided you download the DWARF symbols extension, Rust symbols will show up properly demangled in the debugger tab instead of confusing function addresses.
 
-![vscode debugger with dioxus web project](./assets/07/debugger-web.mp4)
+![vscode debugger with dioxus web project](/assets/07/debugger-web.mp4)
 
-## Fullstack WebSockets, improved streaming, and custom Error types
+## Dioxus Fullstack Overhaul
 
-The new version of dioxus also includes several improvements to dioxus fullstack including improved streaming, custom error types and websocket support in server functions.
+We completely revamped Dioxus Fullstack, bringing in a new syntax and a whole host of new features.
 
-0.7 changes the behavior of streaming to partially resolve async data before the first chunk of html is sent to the browser. All [SuspenseBoundary](https://dioxuslabs.com/learn/0.7/essentials/advanced/suspense)s before the router is rendered will resolve and be sent in the initial http response. This makes it possible to do some data loading before you determine the status code or finish rendering the head elements:
+To start, we've introduced a new `dioxus::serve` entrypoint for server apps that enables hot-patching of axum routers:
+
+![fullstack hotpatching demo](/assets/07/fullstack-hotpatch.mp4)
+
+The new syntax upgrades makes it easy to declare stable endpoints with a syntax inspired by the popular Rocket library.
 
 ```rust
-#[derive(Clone, Routable, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
-enum Route {
-    // ... other routes
-    #[route("/blog/:id/")]
-    Blog { id: i32 },
-}
-
-#[component]
-fn Blog(id: i32) -> Element {
-    // This will always resolve in the initial response because it is in the same suspense
-    // boundary as the router
-    let title = use_server_future(move || blog_title(id))?;
-    rsx! {
-        // This will be rendered on the server since it is in the initial chunk and be visible
-        // to scrapers
-        document::Title { {title} }
-        // ... other blog content
-    }
+/// you can now encode query and path parameters in the macro!
+#[get("/api/{name}/?age")]
+async fn get_message(name: String, age: i32) -> Result<String> {
+    Ok(format!("Hello {}, you are {} years old!", name, age))
 }
 ```
 
-The new release of fullstack also bumps some major dependencies including axum and server functions. Thanks to a contribution from [ryo33](https://github.com/ryo33), the latest release of server functions includes support for fully custom error types. This lets you define strongly typed errors shared between your server and client:
+This revamp allows you to use any valid Axum handler as a Dioxus Server Function, greatly expanding what bodies are allowed. This introduces a number of useful utilities like:
+
+- Server Sent Events with `ServerEvents<T>` type
+- `Websocket` and `use_websocket` for long-lived bidirectional communication
+- `Streaming<T>` for arbitrary data streams
+- Typed `Form<T>` type and `MultipartFormData` for handling forms
+- `FileStream` for streaming uploads and downloads
+
+An example of the new APIs in example is this simple websocket handler:
 
 ```rust
-
-#[derive(Serialize, Deserialize, Debug)]
-enum MyCustomError {
-    /// Failed to connect to database
-    DatabaseConnectionError,
-    /// Communication failed
-    ServerFn(server_fn::error::ServerFnErrorErr),
-}
-
-impl FromServerFnError for MyCustomError {
-    type Encoder = JsonEncoding;
-
-    fn from_server_fn_error(err: server_fn::error::ServerFnErrorErr) -> Self {
-        MyCustomError::ServerFn(err)
-    }
-}
-
-#[server]
-async fn post_server_data(data: String) -> Result<(), MyCustomError> {
-    println!("Server received: {}", data);
-
-    Ok(())
-}
-```
-
-Errors now integrate with the status code system which means you get 500 or 404 errors from internal or routing errors automatically:
-
-![404 network error](./assets/07/screenshot-11.avif)
-![500 network error](./assets/07/screenshot-8.avif)
-
-We worked with the server function team to rework the protocol system for server functions in 0.7 to enable websockets. Websockets enable a whole new class of apps that need realtime communication between the server and the client. To enable websockets, you can simply set the protocol to `Websocket` with generics for the serialization schema for the input and output message types:
-
-```rust
-// Accept and output a stream of json messages with a websocket
-#[server(protocol = Websocket<JsonEncoding, JsonEncoding>)]
+#[get("/api/uppercase_ws?name&age")]
 async fn uppercase_ws(
-    mut input: BoxedStream<String, ServerFnError>,
-) -> ServerFnResult<BoxedStream<String, ServerFnError>> {
-    // Create a channel with the output of the websocket
-    let (mut tx, rx) = mpsc::channel(1);
+    name: String,
+    age: i32,
+    options: WebSocketOptions,
+) -> Result<Websocket<ClientEvent, ServerEvent, CborEncoding>> {
+    Ok(options.on_upgrade(move |mut socket| async move {
+        // send back a greeting message
+        _ = socket
+            .send(ServerEvent::Uppercase(format!(
+                "Fist message from server: Hello, {}! You are {} years old.",
+                name, age
+            )))
+            .await;
 
-    // Spawn a task that processes the input stream and sends any new messages to the output
-    tokio::spawn(async move {
-        while let Some(msg) = input.next().await {
-            if tx
-                .send(msg.map(|msg| msg.to_ascii_uppercase()))
-                .await
-                .is_err()
-            {
-                break;
-            }
+        // Loop and echo back uppercase messages
+        while let Ok(ClientEvent::TextInput(next)) = socket.recv().await {
+            _ = socket.send(ServerEvent::Uppercase(next)).await;
+        }
+    }))
+}
+```
+
+Paired with the `use_websocket` hook, you can easily send and receive messages directly from your frontend.
+
+```rust
+fn app() -> Element {
+    // Track the messages we've received from the server.
+    let mut messages = use_signal(std::vec::Vec::new);
+
+    // The `use_websocket` wraps the `WebSocket` connection and provides a reactive handle to easily
+    // send and receive messages and track the connection state.
+    let mut socket = use_websocket(|| uppercase_ws("John Doe".into(), 30, WebSocketOptions::new()));
+
+    // Calling `.recv()` automatically waits for the connection to be established and deserializes
+    // messages as they arrive.
+    use_future(move || async move {
+        while let Ok(msg) = socket.recv().await {
+            messages.push(msg);
         }
     });
 
-    // Return the output stream
-    Ok(rx.into())
+    rsx! {
+        h1 { "WebSocket Example" }
+        p { "Type a message and see it echoed back in uppercase!" }
+        p { "Connection status: {socket.status():?}" }
+        input {
+            placeholder: "Type a message",
+            oninput: move |e| async move { _ = socket.send(ClientEvent::TextInput(e.value())).await; },
+        }
+        button { onclick: move |_| messages.clear(), "Clear messages" }
+        for message in messages.read().iter().rev() {
+            pre { "{message:?}" }
+        }
+    }
 }
 ```
+
+![websocket demo](/assets/07/websocket-demo.mp4)
 
 ## Various Quality of Life Upgrades
 
@@ -389,15 +367,15 @@ We’ve shipped a number of quality-of-life upgrades that don’t necessarily wa
 
 Now, when you launch a mobile app, `dx` will automatically open the iOS and Android simulator:
 
-![ios simluator opening after dx build is done](./assets/07/auto-launch.mp4)
+![ios simluator opening after dx build is done](/assets/07/auto-launch.mp4)
 
 Desktop and mobile now have the same development-mode toasts:
 
-![rebuild toast on dioxus ios app](./assets/07/mobile-toast.mp4)
+![rebuild toast on dioxus ios app](/assets/07/mobile-toast.mp4)
 
 The log coloring of the CLI and help menus have been upgraded to match cargo and reflect error/warn/debug/info levels:
 
-![red compile error in dx console](./assets/07/screenshot-5.avif)
+![red compile error in dx console](/assets/07/screenshot-5.avif)
 
 ### DX Compatibility with *any* project
 
@@ -413,7 +391,7 @@ The dioxus CLI “dx” tooling is now usable with any Rust project, not just Di
 
 Notably, Bevy has already integrated support for Subsecond and works well with the new dx:
 
-![bevy project using subsecond](./assets/07/bevy-scad_(online-video-cutter.com).mp4)
+![bevy project using subsecond](/assets/07/bevy-scad_(online-video-cutter.com).mp4)
 
 We have big plans for `dx` and will improve it by adding support for more features:
 
@@ -443,17 +421,15 @@ Whenever the Dioxus team pushes new updates, the CLI will automatically give you
 dx self-update
 ```
 
-![dx self-update command](./assets/07/screenshot-9.avif)
+![dx self-update command](/assets/07/screenshot-9.avif)
 
 When you try to use the dioxus-cli with an incompatible dioxus version, you’ll receive a warning and some instructions on how to update.
 
-![dx serve error mismatching dx and dioxus versions](./assets/07/screenshot-12.avif)
+![dx serve error mismatching dx and dioxus versions](/assets/07/screenshot-12.avif)
 
 ## Customize AndroidManifest.xml and Info.plist
 
 You can now customize the Info.plist and AndroidManifest.xml files that Dioxus generates for your Android, iOS, and macOS projects. This makes it possible to add entitlements, update permissions, set splash screens, customize icons, and fully tweak your apps for deployment.
-
-![mobile app with open filepicker button](./assets/07/file-picker.mov)
 
 ### ADB Reverse Proxy for Device Hot-Reload
 
@@ -463,7 +439,7 @@ Thanks to community contributions, `dx serve --platform android` now supports An
 
 A small update - Dioxus now properly supports iPad devices! When you `dx serve --platform ios` with an iPad simulator open, your Dioxus app will properly scale and adapt to the iPadOS environment.
 
-![dioxus app on the ipad](./assets/07/screenshot-2.avif)
+![dioxus app on the ipad](/assets/07/screenshot-2.avif)
 
 ## Basic Telemetry
 
@@ -500,16 +476,16 @@ You can opt-out of telemetry by compiling the CLI with the `disable-telemetry` f
 
 We reorganized and expanded the documentation for core concepts in 0.7. The docs now go into more details about important concepts like reactivity, the rendering model of dioxus, and async state in dioxus. The new docs also come with a new look for the docsite with a wider panel that fits more documentation in the screen:
 
-![0.7 learn intro to reactivity](./assets/07/screenshot-3.avif)
+![0.7 learn intro to reactivity](/assets/07/screenshot-3.avif)
 
 The new docsite also includes search results for rust items from [docs.rs](http://docs.rs) for more specific apis:
 
-![use_set_ search results with two results from crates.io](./assets/07/screenshot-7.avif)
+![use_set_ search results with two results from crates.io](/assets/07/screenshot-7.avif)
 
 ### New Office and Growing the Team
 
 Dioxus has moved into a new office in San Francisco! If you’re interested in contributing to the future of app development and live in San Francisco, please reach out.
 
-![sf office desktop setup](./assets/07/14aac481-e530-4e73-8903-377c39cbf248_1_105_c.avif)
+![sf office desktop setup](/assets/07/14aac481-e530-4e73-8903-377c39cbf248_1_105_c.avif)
 
 1. Camera & Microphone File System Geolocation Push Notifications Biometric Authentication In-App Purchases. App Icon Badge. Battery & Power. Tray Icon & System Tray. Deep Linking & URL Schemes. File Open Dialogs. Auto-Update & Self-Patching. Background Processes. LocalStorage & Secure Storage. Drag & Drop. Device Motion & Sensors. Vibration. Clipboard. Titlebar & Menu & Multi-Window & Fullscreen Support. Paypal & Stripe. OAuth2. Gyroscope

@@ -38,7 +38,7 @@ jobs:
       - name: Build
         run: cd packages/docsite && dx build --verbose --trace --web --fullstack true --features fullstack,production --release --ssg
       - name: Generate search index
-        run: target/dx/dioxus_docs_site/release/web/dioxus_docs_site --generate-search-index
+        run: target/dx/dioxus_docs_site/release/web/server --generate-search-index
       - name: Copy output
         run: cp -r target/dx/dioxus_docs_site/release/web/public docs
       - name: Add gh pages 404

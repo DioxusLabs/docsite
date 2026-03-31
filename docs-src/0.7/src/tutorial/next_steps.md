@@ -14,7 +14,7 @@ The essentials section will guide you through key concepts in Dioxus:
 
 - [Managing State](../essentials/basics/index.md) guides you through how state works in Dioxus. It will teach you how to create state with `use_signal`, derive state with `use_memo`, and integrate state with asynchronous tasks with `use_resource`. Along the way, you will learn about how you can use reactivity to declaratively describe your UI.
 
-- [Advanced Reacitivty](../essentials/advanced/index.md) teaches you deeper concepts about Dioxus like building custom hooks, optimizing your app, and breaking out of the Dioxus framework.
+- [Advanced Reactivity](../essentials/advanced/index.md) teaches you deeper concepts about Dioxus like building custom hooks, optimizing your app, and breaking out of the Dioxus framework.
 
 ## Ideas for New Features
 

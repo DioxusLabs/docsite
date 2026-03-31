@@ -11,6 +11,7 @@ enum Route {
         // You must include dynamic segments in child variants
         name: String,
     },
+
     #[route("/document/:id")]
     Document {
         // You can use any type that implements FromStr

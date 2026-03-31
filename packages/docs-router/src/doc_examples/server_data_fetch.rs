@@ -1,15 +1,13 @@
-#![allow(non_snake_case, unused)]
-
 use dioxus::prelude::*;
 
 fn main() {
-    launch(app)
+    dioxus::launch(app)
 }
 
 fn app() -> Element {
     let mut count = use_resource(get_server_data);
 
-    rsx! {"server data is {count.value():?}"}
+    rsx! { "server data is {count.value():?}" }
 }
 
 #[server]

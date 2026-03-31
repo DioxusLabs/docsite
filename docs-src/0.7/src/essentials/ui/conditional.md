@@ -1,7 +1,5 @@
 # Conditional Rendering
 
-## Dynamic Content
-
 Our user interfaces have been quite static so far. However, most apps we build with Dioxus usually contain lots of dynamic content. Our UIs will react to changes in buttons, form inputs, sliders, or external data sources like the network. Dioxus apps generally store this dynamic state in Hooks or Context.
 
 In this chapter, we're not going to dive too deep in how we store this state - future chapters cover state in depth.
@@ -40,12 +38,18 @@ Or, we might want to render some RSX dynamically and assign it to a variable:
 
 ```rust
 let header = match current_timezone() {
-    TimeZone::PST => rsx! { h1 { "Welcome home" } },
-    _ => rsx! { h1 { "Bon voyage!" } },
+    TimeZone::PST => rsx! {
+        h1 { "Welcome home" }
+    },
+    _ => rsx! {
+        h1 { "Bon voyage!" }
+    },
 }
 
 rsx! {
-    div { {header} }
+    div {
+        {header}
+    }
 }
 ```
 
@@ -62,7 +66,9 @@ In Dioxus, you'd simply use an if/else statement:
 ```rust
 let screen = if authenticated { render_app() } else { render_login() };
 rsx! {
-    div { {screen} }
+    div {
+        {screen}
+    }
 }
 ```
 
@@ -70,13 +76,21 @@ Rust's guards can be especially helpful in these scenarios, letting us select ma
 
 ```rust
 let header = match current_timezone() {
-    TimeZone::PST => rsx! { h1 { "Welcome home" } },
-    _ if app.snoozed() => rsx! { h1 { "snoozed..." } },
-    _ => rsx! { h1 { "Bon voyage!" } },
+    TimeZone::PST => rsx! {
+        h1 { "Welcome home" }
+    },
+    _ if app.snoozed() => rsx! {
+        h1 { "snoozed..." }
+    },
+    _ => rsx! {
+        h1 { "Bon voyage!" }
+    },
 }
 
 rsx! {
-    div { {header} }
+    div {
+        {header}
+    }
 }
 ```
 
@@ -92,7 +106,9 @@ Dioxus uses the [`IntoDynNode`](https://docs.rs/dioxus-core/latest/dioxus_core/t
 Many things implement this trait. For example, empty expressions are valid:
 ```rust
 rsx! {
-    div { { /* empty.. */} }
+    div {
+        { /* empty.. */}
+    }
 }
 ```
 
@@ -101,7 +117,9 @@ Other Element objects are valid:
 ```rust
 let inner = rsx! { "inner" };
 rsx! {
-    div { {inner} }
+    div {
+        {inner}
+    }
 }
 ```
 
@@ -123,7 +141,9 @@ The Rust `Option` type is valid provided the inner type implements `IntoDynNode`
 ```rust
 let inner = Some(rsx! { "inner" });
 rsx! {
-    div { {inner} }
+    div {
+        {inner}
+    }
 }
 ```
 
@@ -135,11 +155,13 @@ let cards = (0..10).map(|i| rsx! {
 });
 
 rsx! {
-    ol { {cards} }
+    ol {
+        {cards}
+    }
 }
 ```
 
-Iterators are very interesting since IntoDynNode is implemented for anything that is an iterator. For exampe, we could build a custom iterator that returns an `Element`.
+Iterators are very interesting since IntoDynNode is implemented for anything that is an iterator. For example, we could build a custom iterator that returns an `Element`.
 
 ```rust
 let mut count = 0;
@@ -153,7 +175,9 @@ let cards = std::iter::from_fn(move || {
 })
 
 rsx! {
-    ol { {cards} }
+    ol {
+        {cards}
+    }
 }
 ```
 
@@ -184,7 +208,7 @@ rsx! {
 }
 ```
 
-Inline `if` statements deviate from Rust in one way: they still evaluate to an `Element` even without an `else` branch. If RSX doesn't find an `else` branch on your `if` statement, it automatically returns a placeholder element instead.a
+Inline `if` statements deviate from Rust in one way: they still evaluate to an `Element` even without an `else` branch. If RSX doesn't find an `else` branch on your `if` statement, it automatically returns a placeholder element instead.
 
 ```rust
 rsx! {
@@ -196,54 +220,9 @@ rsx! {
 }
 ```
 
-## Inline `for` loops
-
-Just like inline `if` chains, RSX supports some slight syntax sugar for iterators. In JSX you might be used to calling `map` on an iterable object. In RSX, we can do something similar with `.map` and `.iter()`
-
-```rust
-rsx! {
-    // mapping existing iterators
-    {(0..10).map(|idx| rsx! { "item {idx}" })}
-
-    // or calling .iter()
-    {users.iter().map(|user| rsx!{ User { id: user.id } })}
-}
-```
-
-Since iterators are so prevelant in UI code, Dioxus provides a small amount of syntax sugar to make using iterators a bit nicer. Instead of wrapping your iterator in an expression, you can instead move it to an inline `for` block:
-
-```rust
-rsx! {
-    for idx in 0..10 {
-        "Item {idx}"
-    }
-
-    for user in users.iter() {
-        User { id: user.id }
-    }
-}
-```
-
-Just like inline `if` blocks, the bodies of `for` loops are RSX - not Rust expressions. If you need to create temporary variables or do some extra computation while iterating, you can use an inline expression:
-
-```rust
-rsx! {
-    for user in users.iter() {
-        {
-            let id = user.id();
-            rsx! {
-                User { id }
-            }
-        }
-    }
-}
-```
-
-The transformation RSX applies is very straightforward with no special "magic" - it expands to the same iterator you would've written otherwise.
-
 ## More syntax sugar?
 
-Syntax can be very subjective and syntax sugar like inline `if` and `for` blocks can open the door to inconsistent behavior. We don't plan to introduce any further syntax sugar to RSX. Our goal is to maintain similiarity to React's JSX while slightly massaging ergonomics for Rust developers.
+Syntax can be very subjective and syntax sugar like inline `if` and `for` blocks can open the door to inconsistent behavior. We don't plan to introduce any further syntax sugar to RSX. Our goal is to maintain similarity to React's JSX while slightly massaging ergonomics for Rust developers.
 
 The RSX syntax was carefully designed to work well with your normal development flow:
 

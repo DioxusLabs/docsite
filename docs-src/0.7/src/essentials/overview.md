@@ -1,6 +1,6 @@
 # Core Concepts
 
-Dioxus is a Rust framework for building cross-platform apps with a single codebase. Every app leverages a user interface (UI) to display content and allow the user to take action. UI is built from small units like buttons, text, and images and then organized into components that encapsulate functionality. Dioxus apps are built by combining components into a larger interactive tree.
+Dioxus is a Rust framework for building cross-platform apps with a single codebase. Every app leverages a user interface (UI) to display content and allow the user to take action. The UI is built from small units like buttons, text, and images and then organized into components that encapsulate functionality. Dioxus apps are built by combining components into a larger interactive tree.
 
 ![Widget Tree](/assets/07/widget-tree.png)
 
@@ -18,14 +18,13 @@ Manually creating and modifying UI elements can be tedious and error prone. The 
 
 ## Table of Contents
 
-In the Core Concepts, we cover three important:
+In the Core Concepts, we cover three important topics:
 
-- [Building User Interfaces](./ui/index.md): Constructing UI by assembling text, elements, and components.
+- [Building User Interfaces](./ui/index.md): Constructing a UI by assembling text, elements, and components.
 - [The Basics](./basics/index.md): Making our UI interactive, responsive, and efficient.
-- [Advanced Reactivity](./advanced/index.md): Understanding Reactivity, Component Life-cycle, side effects, and more.
+- [Advanced](./advanced/index.md): Reactivity in depth, the Component Life-cycle, breaking out of dioxus, and more.
 
-We also cover three major topics which aren't necessarily essential to UI development, but are still essential to building great apps:
+We also cover two additional topics which aren't necessarily essential to UI development, but are still essential to building great apps:
 
 - [App Routing](./router/index.md): Adding multiple screens and routes for the users to visit.
 - [Fullstack](./fullstack/index.md): Integrating backend services, server-side-rendering, remote-procedure-calls, and more.
-- [Breaking Out](./advanced/breaking_out.md): Tips on how to "escape" the Dioxus framework for advanced functionality.

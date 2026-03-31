@@ -24,6 +24,7 @@ fn BlogPost(name: String, surname: String) -> Element {
         div { "Surname: {surname}" }
     }
 }
+// ANCHOR_END: route
 
 fn App() -> Element {
     rsx! { Router::<Route> {} }

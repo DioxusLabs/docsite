@@ -97,6 +97,7 @@ mod effects {
             local_storage.set_item("count", "1").unwrap();
             local_storage.get_item("count").unwrap()
         });
+
         // ✅ Changing the value inside of an effect is fine because effects run after hydration
         let mut storage = use_signal(|| None);
         use_effect(move || {
@@ -131,6 +132,7 @@ mod server_hook_side_effects {
         use_server_future(move || async move {
             storage.set(Some(server_future().await));
         })?;
+
         // ✅ The value returned from use_server_future will be serialized on the server and hydrated on the client
         let storage = use_server_future(|| async move { server_future().await })?;
         // ANCHOR_END: server_hook_side_effects

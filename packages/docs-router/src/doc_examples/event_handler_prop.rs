@@ -26,7 +26,9 @@ pub fn FancyButton(props: FancyButtonProps) -> Element {
     rsx! {
         button {
             class: "fancy-button",
+            // ANCHOR: call
             onclick: move |evt| props.onclick.call(evt),
+            // ANCHOR_END: call
             "Click me!"
         }
     }

@@ -24,7 +24,7 @@ thread_local! {
 
 // ANCHOR: save_dog
 #[server]
-async fn save_dog(image: String) -> Result<(), ServerFnError> {
+async fn save_dog(image: String) -> Result<()> {
     DB.with(|f| f.execute("INSERT INTO dogs (url) VALUES (?1)", &[&image]))?;
     Ok(())
 }

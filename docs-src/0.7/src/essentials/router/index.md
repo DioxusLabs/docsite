@@ -1,23 +1,44 @@
-# Adding the router to your application
+# Introduction
 
-In this chapter, we will learn how to add the router to our app. By itself, this
-is not very useful. However, it is a prerequisite for all the functionality
-described in the other chapters.
+As your app grows, it can be helpful to organize your app into multiple pages or views you can switch between. In web application, each view has an associated url that can be saved and shared. The Dioxus router helps you manage the URL state of your application. It provides a type safe interface that checks all routes at compile time to prevent runtime errors.
 
-> Make sure you added the `dioxus-router` dependency as explained in the
-> [introduction](../index.md).
+## Installing the router
 
-In most cases, we want to add the router to the root component of our app. This
-way, we can ensure that we have access to all its functionality everywhere.
+To get started, you can add the `router` feature to your `dioxus` dependency in your `Cargo.toml`:
 
-First, we define the router with the router macro:
-
-```rust
-{{#include ../docs-router/src/doc_examples/first_route.rs:router}}
+```toml
+[dependencies]
+dioxus = { version = "0.7", features = ["router"] }
 ```
 
-Then we render the router with the [`Router`] component.
+## Creating a Routable enum
+
+The core of the router is your `Routable` enum. You will use this enum throughout your application to navigate to different pages. Each variant of the enum is a single view page in your app handles:
+
+1. Parsing your route from a URL
+2. Displaying your route as a URL
+3. Rendering your route as a component
+
+To create a `Routable` enum, you will need to derive the `Routable` with a `#[route(..)]` attribute on each variant which describes the format of the route. You must have a component in scope that matches the name of each variant to render the route:
 
 ```rust
-{{#include ../docs-router/src/doc_examples/first_route.rs:app}}
+{{#include ../docs-router/src/doc_examples/router_introduction.rs:first_router}}
+```
+
+## Rendering the router
+
+Now that you have defined your routes, you can use the `Router` component to render them. The `Router` component takes your `Routable` enum as a generic argument to define handle parsing, and rendering routes.
+
+```rust
+{{#include ../docs-router/src/doc_examples/router_introduction.rs:launch_router}}
+```
+
+## Linking to your first route
+
+To navigate between routes, you can use the `Link` component provided by the router. The `Link` component takes a `to` prop which can be either a unchecked string route or a variant of your `Routable` enum:
+
+```rust
+// ...
+
+{{#include ../docs-router/src/doc_examples/router_introduction.rs:first_link}}
 ```

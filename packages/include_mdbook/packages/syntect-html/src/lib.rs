@@ -12,7 +12,7 @@ use syntect::highlighting::ThemeSet;
 use syntect::parsing::SyntaxSet;
 
 struct CodeBlock {
-    html: String,
+    dark_html: String,
 }
 
 impl Parse for CodeBlock {
@@ -23,6 +23,7 @@ impl Parse for CodeBlock {
             .parse::<LitStr>()
             .unwrap_or_else(|_| LitStr::new("rs", Span::call_site()));
         let _ = input.parse::<Token![,]>();
+
         let theme = input
             .parse::<LitStr>()
             .unwrap_or_else(|_| LitStr::new("base16-ocean.dark", Span::call_site()));
@@ -37,30 +38,33 @@ impl CodeBlock {
         let ts = ThemeSet::load_defaults();
 
         let maybe_theme = ts.themes.get(&theme);
+
         let theme = maybe_theme.ok_or_else(|| {
             syn::Error::new(Span::call_site(), format!("No theme found for {}", theme))
         })?;
+
         let syntax = ss.find_syntax_by_extension(&extension).ok_or_else(|| {
             syn::Error::new(
                 Span::call_site(),
                 format!("No syntax found for extension {}", extension),
             )
         })?;
-        let html = syntect::html::highlighted_html_for_string(&code, &ss, syntax, theme).map_err(
-            |err| {
+
+        let dark_html = syntect::html::highlighted_html_for_string(&code, &ss, syntax, theme)
+            .map_err(|err| {
                 syn::Error::new(
                     Span::call_site(),
                     format!("Error while generating HTML: {}", err),
                 )
-            },
-        )?;
-        Ok(CodeBlock { html })
+            })?;
+
+        Ok(CodeBlock { dark_html })
     }
 }
 
 impl ToTokens for CodeBlock {
     fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
-        let html = &self.html;
+        let html = &self.dark_html;
 
         tokens.extend(quote! {
             #html

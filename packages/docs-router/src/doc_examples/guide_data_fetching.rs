@@ -14,7 +14,7 @@ mod dog_view_reqwest {
     fn DogView() -> Element {
         let mut img_src = use_signal(|| "".to_string());
 
-        let fetch_new = move |_| async move {
+        let save = move |_| async move {
             let response = reqwest::get("https://dog.ceo/api/breeds/image/random")
                 .await
                 .unwrap()
@@ -33,7 +33,7 @@ mod dog_view_reqwest {
             }
             div { id: "buttons",
                 // ..
-                button { onclick: fetch_new, id: "save", "save!" }
+                button { onclick: save, id: "save", "save!" }
             }
         }
     }

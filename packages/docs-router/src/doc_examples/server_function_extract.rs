@@ -2,9 +2,9 @@
 use dioxus::prelude::*;
 
 // ANCHOR: server_function_extract
-#[server]
+// let headers: http::HeaderMap = extract().await?; // todo! bring back extract
+#[get("/log_headers", headers: http::HeaderMap)]
 pub async fn log_headers() -> Result<(), ServerFnError> {
-    let headers: http::HeaderMap = extract().await?;
     tracing::info!("{:?}", headers[http::header::USER_AGENT]);
     Ok(())
 }

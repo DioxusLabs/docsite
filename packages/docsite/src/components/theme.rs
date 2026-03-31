@@ -13,22 +13,29 @@ fn set_theme(dark_mode: bool) {
     ));
 }
 
+static SET_SYSTEM_THEME: &str = r#"
+    const query = window.matchMedia('(prefers-color-scheme: dark)');
+    if (query.matches) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+    }
+"#;
+
 #[component]
 pub(crate) fn DarkModeToggle(
     #[props(extends = GlobalAttributes)] attributes: Vec<Attribute>,
 ) -> Element {
     // Set the initial value based on the system preference
-    use_effect(move || {
-        spawn(async move {
-            let mut dark_theme = document::eval(
-                "const query = window.matchMedia('(prefers-color-scheme: dark)');
+    use_future(|| async move {
+        let mut dark_theme = document::eval(
+            "const query = window.matchMedia('(prefers-color-scheme: dark)');
                 dioxus.send(query.matches);
                 query.addEventListener('change', (e) => dioxus.send(e.matches));",
-            );
-            while let Ok(preference) = dark_theme.recv().await {
-                *DARK_MODE.write() = preference;
-            }
-        });
+        );
+        while let Ok(preference) = dark_theme.recv().await {
+            *DARK_MODE.write() = preference;
+        }
     });
 
     // Set the theme based on the signal
@@ -38,6 +45,9 @@ pub(crate) fn DarkModeToggle(
 
     // Toggle with a button
     rsx! {
+        script {
+            "{SET_SYSTEM_THEME}"
+        }
         button {
             onclick: move |_| {
                 let new_mode = !dark_mode();
@@ -48,9 +58,15 @@ pub(crate) fn DarkModeToggle(
             ..attributes,
 
             if dark_mode() {
-                DarkModeIcon {}
+                div {
+                    class: "dark:hidden",
+                    DarkModeIcon {}
+                }
             } else {
-                LightModeIcon {}
+                div {
+                    class: "hidden dark:hidden",
+                    LightModeIcon {}
+                }
             }
         }
     }

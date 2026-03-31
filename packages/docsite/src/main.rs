@@ -28,16 +28,11 @@ fn main() {
 
     dioxus::LaunchBuilder::new()
         .with_cfg(server_only! {
-            // Only in release do we SSG
-            let mut cfg = ServeConfig::builder();
-
-            cfg = cfg.incremental(
-                dioxus::fullstack::IncrementalRendererConfig::new()
+            ServeConfig::builder().incremental(
+                dioxus::server::IncrementalRendererConfig::new()
                     .static_dir(static_dir())
                     .clear_cache(false)
-            );
-
-            cfg.build().expect("Unable to build ServeConfig")
+            )
         })
         .launch(|| {
             rsx! {
@@ -115,10 +110,8 @@ fn Head() -> Element {
             r#type: "image/png",
             href: asset!("/assets/static/favicon.png"),
         }
-        Stylesheet { href: asset!("/assets/githubmarkdown.css") }
         Stylesheet { href: asset!("/assets/tailwind.css", CssAssetOptions::new().with_minify(false)) }
         Stylesheet { href: asset!("/assets/main.css") }
-        Stylesheet { href: asset!("/assets/material.css") }
         // Stylesheet { href: "https://rsms.me/inter/inter.css" }
 
         // link { href: "https://fonts.googleapis.com", rel: "preconnect" }
@@ -137,18 +130,6 @@ fn Head() -> Element {
             href: "https://fonts.gstatic.com",
             rel: "preconnect",
             crossorigin: "false",
-        }
-        Link {
-            rel: "stylesheet",
-            href: "https://fonts.googleapis.com/css2?family=Arimo:wght@100;400;600&display=swap",
-        }
-        Link {
-            href: "https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Lexend:wght@100;400&family=M+PLUS+1:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap",
-            rel: "stylesheet",
-        }
-        Link {
-            rel: "stylesheet",
-            href: "https://fonts.googleapis.com/icon?family=Material+Icons",
         }
         Meta {
             property: "og:title",
@@ -227,7 +208,10 @@ pub enum Route {
 
         #[layout(Learn)]
             #[nest("/learn")]
-                #[redirect("/", || Route::Docs06 { child: crate::docs::router_06::BookRoute::Index { section: Default::default() } })]
+                #[redirect("/", || Route::Docs07 { child: crate::docs::router_07::BookRoute::Index { section: Default::default() } })]
+                #[child("/0.7")]
+                Docs07 { child: crate::docs::router_07::BookRoute },
+
                 #[child("/0.6")]
                 Docs06 { child: crate::docs::router_06::BookRoute },
 
@@ -240,8 +224,7 @@ pub enum Route {
                 #[child("/0.3")]
                 Docs03 { child: crate::docs::router_03::BookRoute },
 
-                #[child("/0.7")]
-                Docs07 { child: crate::docs::router_07::BookRoute },
+
             #[end_nest]
         #[end_layout]
     #[end_nest]
@@ -278,7 +261,7 @@ impl Route {
     }
 
     fn is_latest_docs(&self) -> bool {
-        matches!(self, Route::Docs06 { .. })
+        matches!(self, Route::Docs07 { .. })
     }
 }
 

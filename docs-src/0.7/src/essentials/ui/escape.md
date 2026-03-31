@@ -11,12 +11,12 @@ struct video;
 impl video {
     const src: AttributeDefinition = AttributeDefinition {
         name: "src",
-        namepsace: None,
+        namespace: None,
         type: String
     };
     const autoplay: AttributeDefinition = AttributeDefinition {
         name: "controls",
-        namepsace: None,
+        namespace: None,
         type: Boolean
     };
 }
@@ -27,7 +27,7 @@ rsx! {
 }
 ```
 
-In some cases, an attribute declaration might be missing, or you need to use a custom name. RSX enables this with quote-wrapped attribute names. Simply wrap the name of the custom attribute with quotes and pass in any expression that evalutes to `IntoAttributeValue`:
+In some cases, an attribute declaration might be missing, or you need to use a custom name. RSX enables this with quote-wrapped attribute names. Simply wrap the name of the custom attribute with quotes and pass in any expression that evaluates to `IntoAttributeValue`:
 
 ```rust
 rsx! {
@@ -96,7 +96,7 @@ To get direct access to the underlying [HTML DOM](https://developer.mozilla.org/
 
 ### Eval
 
-Dioxus exposes an `eval` function that allows you to evaluate arbitary JavaScript in the platform renderer. On the web, this uses [`web-sys`](https://docs.rs/web-sys/latest/web_sys/), and for the webview renderer, this uses the webview's native `eval` method.
+Dioxus exposes an `eval` function that allows you to evaluate arbitrary JavaScript in the platform renderer. On the web, this uses [`web-sys`](https://docs.rs/web-sys/latest/web_sys/), and for the webview renderer, this uses the webview's native `eval` method.
 
 You can eval any valid JavaScript. Dioxus transforms the input source code into a `Function` declaration and then allows you to capture its result. To send custom data into JavaScript, we simply format the source code. To return data from JavaScript, we use `dioxus.send()` and the eval's `.recv()` method:
 
@@ -132,7 +132,8 @@ fn app() -> Element {
 On the web, it's possible to use the [`web-sys`](https://docs.rs/web-sys/latest/web_sys/) crate to directly call JavaScript methods from Rust. This uses foreign-function-interfaces to bridge the gap between Rust and JavaScript. We don't necessarily suggest using web-sys in *all* cases since web-sys is currently not portable to the Dioxus Desktop and Mobile renderers.
 
 With web-sys, we can call most JavaScript methods with a strongly-typed Rust interface:
-```
+
+```rust
 rsx! {
     let alert_it = move |_| {
         let window = web_sys::window().unwrap();
@@ -176,7 +177,7 @@ For more information, see the [accompanying example](https://github.com/DioxusLa
 
 ## Using Dioxus in Tauri
 
-If you *need* to use the `web-sys` crate on desktop and mobile platforms, then [Tauri](https://tauri.app) might be useful for you. Tauri is a framework that lets you combine a custom frontend across an IPC boundary with Rust code running natively. This is somewhat similar to Dioxus, but instead of your UI code running natively, it insteads runs as WebAssembly *inside* the webview. This can be slower and harder to setup, but does enable direct DOM access across all platforms.
+If you *need* to use the `web-sys` crate on desktop and mobile platforms, then [Tauri](https://tauri.app) might be useful for you. Tauri is a framework that lets you combine a custom frontend across an IPC boundary with Rust code running natively. This is somewhat similar to Dioxus, but instead of your UI code running natively, it instead runs as WebAssembly *inside* the webview. This can be slower and harder to setup, but does enable direct DOM access across all platforms.
 
 Dioxus-Web is supported as a frontend option when creating a new Tauri app, so make sure to check out [their docs](https://tauri.app/start/).
 

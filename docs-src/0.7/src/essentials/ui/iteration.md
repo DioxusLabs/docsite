@@ -1,4 +1,4 @@
-'#' Rendering Lists
+# Rendering Lists
 
 ## Iterators and inline `for`
 
@@ -26,6 +26,21 @@ rsx! {
 
     for user in users.iter() {
         User { id: user.id }
+    }
+}
+```
+
+Just like inline `if` blocks, the bodies of `for` loops are RSX - not Rust expressions. If you need to create temporary variables or do some extra computation while iterating, you can use an inline expression:
+
+```rust
+rsx! {
+    for user in users.iter() {
+        {
+            let id = user.id();
+            rsx! {
+                User { id }
+            }
+        }
     }
 }
 ```
@@ -87,7 +102,7 @@ rsx! {
 }
 ```
 
-The *worst* key to use is the index of the item in the collection. This is *guaranteed* to never be unique and almost certainly will cause either performance issues or loss of state in components.
+The *worst* key to use is the index of the item in the collection. The index for an item will change as you mutate the list and almost certainly cause either performance issues or loss of state in components.
 
 ```rust
 // ❌ do not do this!
@@ -117,7 +132,10 @@ If there's no easy way to attach a key to the first element, you can use a `Frag
 rsx! {
     for item in items.iter() {
         Fragment {
-            h1 { "Item {item.id}" }
+            key: "{item.id}",
+            for child in item.children.iter() {
+                div { "{child}" }
+            }
         }
     }
 }
@@ -126,6 +144,7 @@ rsx! {
 The `Fragment` component is nothing special. It is plainly a component that forwards its children as its body. However, RSX sees it as valid element syntax and is able to assign the key properly.
 
 ```rust
+#[component]
 fn Fragment(children: Element) -> Element {
     children
 }
@@ -153,28 +172,29 @@ While earlier versions of Dioxus did allow forwarding references, we eventually 
 
 - Use owned data and `clone` if its cheap to do so
 - Pass the collection *and* the index to the component
-- Use a `MappedSignal` to map the entry out of the collection
+- Use a `Store` to provide a reactive reference to a slice of data within the collection
 
-MappedSignals make it possible to map items out of collections using a key as index:
+Stores make it possible to zoom into reactive state efficiently. They are covered in more detail in the [Stores](../basics/collections.md) chapter, but here's a quick preview of how to use them:
 
 ```rust
 fn app() -> Element {
-    let mut vec = use_signal(|| vec![0]);
+    let mut vec = use_store(|| vec![]);
 
     rsx! {
         div {
-            for i in 0..vec.len() {
-                // we call `.map()` on the signal to create a MappedSignal
-                Child { count: vec.map(move |v| &v[i]) }
+            // Iterating over a store provides references to reactive items within the store
+            // without cloning them.
+            for count in vec.iter() {
+                Child { count }
             }
         }
     }
 }
 
 #[component]
-fn Child(count: MappedSignal<i32>) -> Element {
+fn Child(count: ReadSignal<i32>) -> Element {
     rsx! { "{count}" }
 }
 ```
 
-For complex apps, we recommend using building a system around global context or using a MappedSignal.
+For complex apps, we recommend using building a system around global context or using a Store.

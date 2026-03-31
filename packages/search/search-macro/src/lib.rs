@@ -7,7 +7,7 @@ use syn::LitStr;
 #[proc_macro]
 pub fn load_search_index(input: TokenStream) -> TokenStream {
     match syn::parse::<LitStr>(input) {
-        Ok(input) => generate_search_index(input).into(),
+        Ok(input) => generate_search_index(input),
         Err(err) => err.to_compile_error().into(),
     }
 }
@@ -19,7 +19,7 @@ fn generate_search_index(id: LitStr) -> TokenStream {
     let name = id.value();
     let index_path = PathBuf::from(format!("{}/dioxus_search/index_{}.bin", target_dir, name));
     let index_str = index_path.to_str().unwrap();
-    if index_path.exists() && std::fs::read(&index_path).unwrap().len() > 0 {
+    if index_path.exists() && !std::fs::read(&index_path).unwrap().is_empty() {
         quote!{
             {
                 const INDEX_BYTES: &[u8] = include_bytes!(#index_str);

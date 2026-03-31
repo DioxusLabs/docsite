@@ -20,11 +20,7 @@ enum Route {
 fn NavBar() -> Element {
     rsx! {
         nav {
-            ul {
-                li {
-                    Link { to: Route::Home {}, "Home" }
-                }
-            }
+            Link { to: Route::Home {}, "Home" }
         }
         Outlet::<Route> {}
     }

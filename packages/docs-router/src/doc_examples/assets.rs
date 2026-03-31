@@ -43,3 +43,42 @@ const PATH_TO_BUNDLED_CARGO_TOML: Asset = asset!("/Cargo.toml");
 // Any files that end with .css will be minified and bundled with your application even if you don't explicitly include them in your <head>
 const _: Asset = asset!("/assets/tailwind.css");
 // ANCHOR_END: style_sheets
+
+async fn read_assets() {
+    // ANCHOR: read_assets
+    use dioxus::prelude::*;
+
+    // Bundle the static JSON asset into the application
+    static JSON_ASSET: Asset = asset!("assets/data.json");
+
+    // Read the bytes of the JSON asset
+    let bytes = dioxus::asset_resolver::read_asset_bytes(&JSON_ASSET)
+        .await
+        .unwrap();
+
+    // Deserialize the JSON data
+    let json: serde_json::Value = serde_json::from_slice(&bytes).unwrap();
+    assert_eq!(json["key"].as_str(), Some("value"));
+    // ANCHOR_END: read_assets
+}
+
+fn resolve_assets() {
+    // ANCHOR: resolve_assets
+    use dioxus::prelude::*;
+
+    // Bundle the static JSON asset into the application
+    static JSON_ASSET: Asset = asset!("assets/data.json");
+
+    // Resolve the path of the asset. This will not work in web or Android bundles
+    let path = dioxus::asset_resolver::asset_path(&JSON_ASSET).unwrap();
+
+    println!("Asset path: {:?}", path);
+
+    // Read the bytes of the JSON asset
+    let bytes = std::fs::read(path).unwrap();
+
+    // Deserialize the JSON data
+    let json: serde_json::Value = serde_json::from_slice(&bytes).unwrap();
+    assert_eq!(json["key"].as_str(), Some("value"));
+    // ANCHOR_END: resolve_assets
+}

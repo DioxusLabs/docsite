@@ -9,7 +9,7 @@ fn main() {
 fn app() -> Element {
     let mut count = use_server_future(get_server_data)?;
 
-    rsx! {"server data is {count.value():?}"}
+    rsx! { "server data is {count.value():?}" }
 }
 
 #[server]

@@ -2,9 +2,9 @@
 
 So far, we've covered how to declare static user interfaces with RSX. Now, it's time to make our UI interactive. When the user clicks a button, moves their cursor, or inputs text, we want to update our UI in response.
 
-The act of reacting to a user input is called *reactivity*. Reactivity sits at the very heart of Dioxus. Everything from data fetching to routing is centered around reacting to user input.
+The act of reacting to a state changes is called *reactivity*. Reactivity sits at the very heart of Dioxus. Everything from data fetching to routing is centered around reacting to state changes.
 
-Similar to libraries like ReactJS, Dioxus provides an built-in reactivity system, saving you from manually queuing re-renders of components. If you're coming from web development, this should feel familiar. If you're mostly experienced with immediate-mode GUIs, this might seem foreign.
+Similar to libraries like ReactJS, Dioxus provides a built-in reactivity system, saving you from manually queuing re-renders of components. If you're coming from web development, this should feel familiar. If you're mostly experienced with immediate-mode GUIs, this might seem foreign.
 
 Reactivity systems enable larger, more modular, complex GUIs than is typically achievable with other approaches. To build UIs that effectively leverage reactivity, we follow three main pillars:
 
@@ -18,15 +18,15 @@ The first fundamental pillar of reactivity: data flows down. As our apps grow in
 
 To make our apps interactive, we follow a similar pattern. Components provide two items: *values* and *functions* to modify those values. These items are passed *down* the tree as properties. Dioxus does not provide a way for child components to "reach up" and modify the state of a parent.
 
-The functions we pass down tree are free to mutate state in the *current* component. However, a child component cannot *directly* modify its parent's state. This ensures all mutations to state are defined in the **same scope as the state itself**, making it easier to reason about our app's state at scale.
+The functions we pass down the tree are free to mutate state in the *current* component. However, a child component cannot *directly* modify its parent's state. This ensures all mutations to state are defined in the **same scope as the state itself**, making it easier to reason about our app's state at scale.
 
 ![Reactivity Tree](/assets/07/reactivity-tree.png)
 
 ## Pillar 2: Data is Tracked
 
-The second fundamental pillar of reactivity: data is tracked. When you use various state primitives in Dioxus, the Dioxus runtime *tracks* changes to underlying value. Whenever you call `.set()` or `.write()` on a *Reactive Value*, that operation is *observed* and *effects* are run.
+The second fundamental pillar of reactivity: data is tracked. When you use various state primitives in Dioxus, the Dioxus runtime *tracks* changes to the underlying value. Whenever you call `.set()` or `.write()` on a *Reactive Value*, that operation is *observed* and *effects* are run.
 
-The core Reactive Value in Dioxus is the Signal. When Signals are used in *reactive contexts*, their associated *reads* and *writes* are tracked. By default, every component is a reactive context. Whenever a Signal's value is modified, a *side-effect* is queued that re-renders any components that read the signal's value.
+The core Reactive Value in Dioxus is the Signal. When Signals are used in *reactive contexts*, their associated *reads* and *writes* are tracked. Every component is a reactive context. Whenever a Signal's value is modified, a *side-effect* is queued that re-reruns any reactive contexts that read the signal's value.
 
 ```rust
 #[component]
@@ -63,8 +63,3 @@ num_names.set(names.len());
 ```
 
 Hopefully, the fact that data should be *derived* is apparent. If we were to modify component state while rendering, we would inadvertently queue re-render side-effects, potentially leading to infinite loops.
-
-
-## The Big Picture
-
-These three pillars are essential to "thinking reactively" - a mindset required to understand the future chapters. By combining just a few primitives, we have a sophisticated reactivity system that automatically handles changes in our app's state.

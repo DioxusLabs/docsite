@@ -13,7 +13,7 @@ mod launch {
     pub fn main() {
         dioxus::LaunchBuilder::new()
             .with_cfg(server_only! {
-                dioxus::fullstack::ServeConfig::builder().enable_out_of_order_streaming()
+                dioxus::server::ServeConfig::builder().enable_out_of_order_streaming()
             })
             .launch(app);
     }
@@ -32,10 +32,7 @@ mod axum_entry_point {
         let router = axum::Router::new()
             // Server side render the application, serve static assets, and register server functions
             .serve_dioxus_application(
-                dioxus::fullstack::ServeConfig::builder()
-                    .enable_out_of_order_streaming()
-                    .build()
-                    .unwrap(),
+                dioxus::server::ServeConfig::builder().enable_out_of_order_streaming(),
                 app,
             )
             .into_make_service();

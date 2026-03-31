@@ -86,15 +86,9 @@ mod show {
                 // The error boundary accepts a closure that will be rendered when an error is thrown in any
                 // of the children
                 handle_error: |error: ErrorContext| {
-                    if let Some(error_ui) = error.show() {
-                        rsx! {
-                            {error_ui}
-                        }
-                    } else {
-                        rsx! {
-                            div {
-                                "Oops, we encountered an error. Please report this to the developer of this application"
-                            }
+                    rsx! {
+                        div {
+                            "Oops, we encountered an error. Please report this to the developer of this application"
                         }
                     }
                 },
@@ -106,15 +100,7 @@ mod show {
 
     #[component]
     fn ThrowsError() -> Element {
-        let number: i32 = use_hook(|| "1...234").parse().show(|error| {
-            rsx! {
-                div {
-                    background_color: "red",
-                    color: "white",
-                    "Error parsing number: {error}"
-                }
-            }
-        })?;
+        let number: i32 = use_hook(|| "1...234").parse()?;
 
         todo!()
     }

@@ -139,6 +139,7 @@ impl<R> SummaryItem<R> {
             _ => None,
         }
     }
+
     pub fn maybe_link(&self) -> Option<&Link<R>> {
         match *self {
             SummaryItem::Link(ref l) => Some(l),

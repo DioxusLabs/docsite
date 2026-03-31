@@ -1,197 +1,60 @@
 # dioxuslabs.com
 
-This repository contains the source code for the https://dioxuslabs.com website.
+Source code for [dioxuslabs.com](https://dioxuslabs.com) -- the Dioxus documentation, blog, and landing page.
 
-This website is written with Dioxus, pre-generated with `dioxus_ssr`, and then
-rehydrated with interactivity provided by `dioxus_web`.
+The site is built with Dioxus itself, pre-rendered with `dioxus_ssr`, and rehydrated on the client with `dioxus_web`.
 
-## Development
+## Getting started
 
-The documentation can be edited using any text editor. Most commonly used
-editors support syntax highlighting for the `markdown` format. To view your
-changes you can install the [`dx`][dx] tool locally, assuming you already have a
-working `Rust` setup:
+You'll need a working Rust toolchain. Install the Dioxus CLI:
 
-<!-- todo: switch to the installer -->
-<!-- # curl -fsSL https://raw.githubusercontent.com/DioxusLabs/dioxus/refs/heads/main/.github/install.sh | bash -->
 ```sh
-cargo binstall dioxus-cli@0.7.0-alpha.3 --force
+curl -fsSL https://dioxus.dev/install.sh | bash
 ```
 
-With [`dx`][dx] installed, you can use it to build and serve the documentation
-on your local system:
+Then serve the site locally:
 
 ```sh
 dx serve --package dioxus_docs_site --hotpatch
 ```
 
-This will start a local server that will be available on
-[localhost:8080](localhost:8080) and will automatically build and re-build the
-documentation when it changes.
+This starts a dev server at [localhost:8080](http://localhost:8080) with hot-reloading. TailwindCSS is included automatically with dx 0.7.
 
-We use TailwindCSS which is included automatically with dx 0.7.
-
-
-## Dioxus 0.7 Overhaul Progress
-We are overhauling the docs for Dioxus 0.7. Here is the current progress:
+## Repo structure
 
 ```
-✅ - [Core Concepts](essentials/index.md)
-❌   - [Setup]()
-❌     - [Tools]
-❌     - [Feature Flags]
-❌     - [Folder Structure]
+docs-src/           Markdown source files for all documentation
+  0.7/              Current version docs (guides, essentials, migration)
+  blog/             Blog post markdown (release notes, etc.)
+  0.3/ - 0.6/       Older version docs
 
-- [Project Setup](essentials/setup/index.md)
-  - [Create a New App](essentials/setup/tooling.md)
-  - [Integrated Devserver](essentials/setup/devserver.md)
-  - [File-system Layout](essentials/setup/structure.md)
-  - [Cross-platform Configuration](essentials/setup/configuration.md)
-
-✅   - [Building User Interfaces](essentials/ui/index.md)
-✅     - [Introducing RSX](essentials/ui/rsx.md)
-✅     - [Elements and Text](essentials/ui/elements.md)
-✅     - [Dynamic Attributes](essentials/ui/attributes.md)
-✅     - [Components and Properties](essentials/ui/components.md)
-✅     - [How Components Render](essentials/ui/render.md)
-✅     - [Conditional Rendering](essentials/ui/conditional.md)
-✅     - [Rendering Lists](essentials/ui/iteration.md)
-✅     - [Assets](essentials/ui/assets.md)
-✅     - [Styling](essentials/ui/styling.md)
-✅     - [Hot-Reload](essentials/ui/hotreload.md)
-✅     - [Escape Hatches](essentials/ui/escape.md)
-
-❌   - [User Interaction](essentials/state/index.md)
-✅     - [Intro to Reactivity]
-✅     - [Storing State in Hooks](essentials/state/hooks.md)
-✅     - Reactive Signals use_signal
-✅     - User Input and Events
-✅     - Futures (crash-course (lite), loop/spawn, onclick: move |_| async {})
-✅     - Fetching? (use_resource, network requests)
-✅     - Effects and Memos (use_memo + use_effect)
-✅     - Hoisting State (lifting state and refactoring)
-✅     - Global Context (context, global signals)
-✅     - Stores and Collections
-✅     - [Error Handling (+boundaries)](essentials/state/error_handling.md)
-
-
-❌   - [Advanced Reactivity](essentials/reactivity/index.md)
-❌     - The Outside World (sync signals, external callbacks, layout effects, onmounted)
-❌     - [Reactive Context](essentials/reactivity/reactivity.md)
-❌     - [Custom Hooks (schedule_update, use_hook)](essentials/state/custom_hooks.md)
-❌     - [Component Lifecycle](essentials/reactivity/lifecycle.md)
-❌     - [Side Effects](essentials/reactivity/effects.md)
-❌     - [Maintaing Purity](essentials/reactivity/purity.md)
-❌     - [Memoization](essentials/state/memoization.md)
-❌     - [Optimization](essentials/state/optimization.md)
-❌     - [Suspense](essentials/async/suspense.md)
-❌     - [Futures in Depth (+threads/workers)](essentials/async/crash_course.md)
-
-  <!-- - [Reactive Context](essentials/advanced/reactivity.md) -->
-  <!-- - [Side Effects](essentials/advanced/effects.md) -->
-  <!-- - [Maintaing Purity](essentials/advanced/purity.md) -->
-  <!-- - [Memoization](essentials/advanced/memoization.md) -->
-  <!-- - [Optimization](essentials/advanced/optimization.md) -->
-  <!-- - [Futures in Depth](essentials/advanced/futures.md) -->
-
-❌   - [Routing](essentials/router/index.md)
-✅     - [Defining Routes](essentials/router/routes.md)
-✅     - [Nested Routes](essentials/router/nested-routes.md)
-✅     - [Layouts](essentials/router/layouts.md)
-✅     - [Navigation](essentials/router/navigation/index.md)
-✅     - [Programmatic Navigation](essentials/router/programmatic-navigation.md)
-✅     - [History Providers](essentials/router/history-providers.md)
-✅     - [History Buttons](essentials/router/history-buttons.md)
-✅     - [Routing Update Callback](essentials/router/routing-update-callback.md)
-
-❌   - [Fullstack](essentials/fullstack/index.md)
-✅     - [Hydration](essentials/fullstack/hydration.md)
-✅     - [Managing Dependencies](essentials/fullstack/managing_dependencies.md)
-✅   	- [Server Functions](essentials/fullstack/server_functions.md)
-✅   	- [Extractors](essentials/fullstack/extractors.md)
-✅   	- [Middleware](essentials/fullstack/middleware.md)
-✅   	- [Authentication](essentials/fullstack/authentication.md)
-✅   	- [Routing](essentials/fullstack/routing.md)
-✅     - [Streaming](essentials/fullstack/streaming.md)
-✅     - [Static Site Generation](essentials/fullstack/static_site_generation.md)
-✅     - [Axum Integration](essentials/fullstack/axum.md)
-
----
-
-❌ - [Guides (digging deeper)](guides/index.md)
-❌   - [Tools](guides/tools/index.md)
-❌     - [Serve](guides/tools/serve.md)
-❌     - [Bundle](guides/tools/bundle.md)
-❌     - [Create a Project](guides/tools/creating.md)
-❌     - [Configure Project](guides/tools/configure.md)
-❌     - [Translate HTML](guides/tools/translate.md)
-❌     - [VSCode Extension](guides/tools/vscode.md)
-❌   - [APIs?](guides/platforms/index.md)
-❌     - feature overview
-❌     - window
-❌     - document
-❌     - history
-❌     - desktop/webview
-❌     - native
-❌     - components
-❌     - sdk
-❌   - [Platform Support](guides/platforms/index.md)
-❌     - [Web](guides/platforms/web.md)
-❌     - [Desktop](guides/platforms/desktop.md)
-❌     - [Mobile](guides/platforms/mobile.md)
-❌     - [Android](guides/tools/android.md)
-❌     - [iOS](guides/tools/ios.md)
-❌   - [Publishing](guides/deploy/index.md)
-❌     - [Web Apps](guides/deploy/web.md)
-❌     - [SSG](guides/deploy/ssg.md)
-❌     - [iOS Apps](guides/deploy/ios.md)
-❌     - [macOS Apps](guides/deploy/macos.md)
-❌     - [Linux Apps](guides/deploy/linux.md)
-❌     - [Windows Apps](guides/deploy/windows.md)
-❌     - [Android Apps](guides/deploy/android.md)
-❌     - [Bundle Config](guides/deploy/config.md)
-❌   - [Organizing your Project](guides/organization/index.md)
-❌     - [Single Files](guides/organization/single.md)
-❌     - [Workspaces](guides/organization/workspaces.md)
-❌     - [Shared Code](guides/organization/shared.md)
-❌   - [Testing and Debugging](guides/testing/index.md)
-❌     - [Web](guides/testing/web.md)
-❌     - [Desktop](guides/testing/desktop.md)
-❌     - [Debugging](guides/testing/debugging.md)
-❌     - [Continuous Integration](guides/testing/ci.md)
-❌     - [Docker](guides/testing/docker.md)
-❌     - [Optimizing](guides/tips/optimizing.md)
-❌     - [Anti-patterns](guides/tips/antipatterns.md)
-❌   - [Utilities](guides/utilities/index.md)
-❌     - [Logging](guides/utilities/logging.md)
-❌     - [Internationalization](guides/utilities/internationalization.md)
-❌     - [Tailwind](guides/utilities/tailwind.md)
-❌   - [In-Depth](guides/depth/index.md)
-❌     - [Asset Pipeline](guides/depth/assets.md)
-❌     - [Custom Renderer](guides/depth/custom_renderer.md)
-✅   - [Migration](migration/index.md)
-✅     - [To 0.7](migration/to_07.md)
-✅     - [To 0.6](migration/to_06.md)
-✅     - [To 0.5](migration/to_05/index.md)
-✅       - [Hooks](migration/to_05/hooks.md)
-✅         - [State](migration/to_05/state.md)
-✅       - [Fermi](migration/to_05/fermi.md)
-✅       - [Props](migration/to_05/props.md)
+packages/
+  docsite/          Main Dioxus app (components, routing, assets, styles)
+  docs-07/          Generated Rust code from 0.7 markdown
+  docs-blog/        Generated Rust code from blog markdown
+  search/           Search functionality
+  playground/       Interactive playground
+  include_mdbook/   Build script that converts markdown into Dioxus components
 ```
 
+The markdown in `docs-src/` is converted into Rust/Dioxus components at build time by the `include_mdbook` crate. You don't need to touch the generated code in `packages/docs-*` -- just edit the markdown.
+
+## Editing docs
+
+The docs live in `docs-src/0.7/`. Edit the markdown files directly and the dev server will pick up changes.
+
+Each docs version has a `SUMMARY.md` that defines the sidebar structure. If you're adding a new page, make sure to add it there.
+
+## Writing blog posts
+
+Blog posts live in `docs-src/blog/src/`. See existing posts (like `release-070.md`) for formatting conventions. The blog `SUMMARY.md` controls which posts appear and in what order.
 
 ## Contributing
 
-- Check out the website [section on contributing]
-- Report issues on our [issue tracker]
-- Join the discord and ask questions!
+- Report issues on the [issue tracker](https://github.com/dioxuslabs/docsite/issues)
+- Check out the [contributing guide](https://dioxuslabs.com/learn/0.7/beyond/contributing)
+- Join the [Discord](https://discord.gg/XgGxMSkvUM) and ask questions
 
 <a href="https://github.com/dioxuslabs/docsite/graphs/contributors">
-  <img
-    src="https://contrib.rocks/image?repo=dioxuslabs/docsite&max=30&columns=10"
-  />
+  <img src="https://contrib.rocks/image?repo=dioxuslabs/docsite&max=30&columns=10" />
 </a>
-
-[dx]: https://github.com/DioxusLabs/dioxus/tree/main/packages/cli
-[section on contributing]: https://dioxuslabs.com/learn/0.6/contributing
-[issue tracker]: https://github.com/dioxuslabs/docsite/issues

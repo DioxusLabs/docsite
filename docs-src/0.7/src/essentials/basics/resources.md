@@ -16,7 +16,7 @@ cargo add serde --features derive
 Your Cargo.toml should have the reqwest and serde libraries:
 ```toml
 [dependencies]
-# .... dioxus and other dependencies
+# ... dioxus and other dependencies
 reqwest = { version = "*", features = ["json"] }
 serde = { version = "1", features = ["derive"] }
 ```
@@ -28,9 +28,14 @@ We are planning on eventually integrating a library like [dioxus-query](https://
 The simplest way to request data is simply by attaching an async closure to an EventHandler.
 
 ```rust
+#[derive(serde::Deserialize)]
+struct DogApi {
+    message: String,
+}
+
 let mut img_src = use_signal(|| "image.png".to_string());
 
-let mut fetch_new = move |_| async move {
+let fetch_new = move |_| async move {
     let response = reqwest::get("https://dog.ceo/api/breeds/image/random")
         .await
         .unwrap()
@@ -43,7 +48,7 @@ let mut fetch_new = move |_| async move {
 
 rsx! {
     img { src: img_src }
-    button { onclick: fetch_neq, "Fetch a new dog!" }
+    button { onclick: fetch_new, "Fetch a new dog!" }
 }
 ```
 
@@ -55,7 +60,7 @@ Unfortunately, data fetching is not always quite this simple. If the user rapidl
 let mut img_src = use_signal(|| "image.png".to_string());
 let mut loading = use_signal(|| false);
 
-let mut fetch_new = move |_| async move {
+let fetch_new = move |_| async move {
     if loading() {
         return;
     }
@@ -129,31 +134,25 @@ DemoFrame {
 >
 > Async methods will often mention if they are cancel safe in their documentation.
 
-## Network Requests with `use_resource`
+## Asynchronous State with `use_loader`
 
-The `use_resource` hook is extremely useful for making a network request. For example, we can fetch a dog from the Dog API:
+The `use_resource` hook is great for loading arbitrary values. However, working with resources that return results can be a little cumbersome. In some cases, the `use_loader` hook is a better choice.
 
-```rust
-{{#include ../docs-router/src/doc_examples/data_fetching.rs:fetch_resource}}
-```
+The `use_loader` hook is designed to work with reactive futures that return `Result<T, E>`. Instead of returning a `Resource<T>`, like `use_resource`, the `use_loader` hook *actually* returns a `Result<Loader<T>, Loading>`. The `Loading` return type tightly integrates with Error Boundaries and Suspense - both of which are very useful in server-side-rendering (SSR).
 
-```inject-dioxus
-DemoFrame {
-    data_fetching::DogViewResource {}
-}
-```
-
-Most requests will depend on state in your application. Because `use_resource` is reactive, it will automatically rerun when the dependencies change. For example, if we read the breed signal inside of the resource, the resource will rerun whenever the breed changes:
+Because `use_loader` returns a Result, you can use the `?` syntax to early return if the resource is pending or errored:
 
 ```rust
-{{#include ../docs-router/src/doc_examples/data_fetching.rs:fetch_resource_reactive}}
+// Fetch the list of breeds from the Dog API, using the `?` syntax to suspend or throw errors
+let breed_list = use_loader(move || async move {
+    reqwest::get("https://dog.ceo/api/breeds/list/all")
+        .await?
+        .json::<ListBreeds>()
+        .await
+})?;
 ```
 
-```inject-dioxus
-DemoFrame {
-    data_fetching::DogViewResourceReactive {}
-}
-```
+Generally, we recommend using `use_resource` when doing client-side fetching and `use_loader` when doing hybrid client/server fetching.
 
 ## Avoiding Waterfalls
 

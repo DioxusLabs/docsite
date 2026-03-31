@@ -16,7 +16,7 @@ Whenever you edit *Rust* code, then `dx` will automatically force a "full rebuil
 
 ![Dog App Hotreloading](/assets/06_docs/dog_app_hotreload.mp4)
 
-For an in-depth guide in what can and can't be hot-reloaded, check the [hot-reload guide](../reference/hotreload.md) in the reference.
+For an in-depth guide on what can and can't be hot-reloaded, check the [hot-reload guide](../reference/hotreload.md) in the reference.
 
 ## RSX is just HTML
 

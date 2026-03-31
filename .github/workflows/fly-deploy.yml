@@ -14,10 +14,12 @@ concurrency:
 jobs:
   deploy:
     name: Deploy app
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: warp-ubuntu-latest-x64-4x
     concurrency: deploy-group # optional: ensure only one action runs at a time
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: "recursive"
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - run: flyctl deploy --remote-only
         env:

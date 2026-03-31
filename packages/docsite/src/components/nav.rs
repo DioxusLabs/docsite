@@ -136,11 +136,11 @@ fn CurrentStarCount() -> Element {
 
 static LINKS: &[(&str, &str)] = &[
     // while developing, the `learn` link should point to the latest version of the docs. makes our lives a bit easier
-    ("Learn", if cfg!(debug_assertions) { "/learn/0.7/" } else { "/learn/0.6/" }),
+    ("Learn", "/learn/0.7/"),
     // ("SDK", "/sdk"),
     // ("Playground", "/playground"),
     ("Components", "/components"),
-    ("Awesome", "/awesome"),
+    // ("Awesome", "/awesome"),
     ("Blog", "/blog"),
 ];
 
@@ -220,7 +220,7 @@ fn SearchModal() -> Element {
             Route::Docs05 { .. } => "0_5",
             Route::Docs04 { .. } => "0_4",
             Route::Docs03 { .. } => "0_3",
-            _ => "0_6",
+            _ => "0_7",
         };
 
         let docsrs_url = format!("{url_base}/index_docsrs_{docs_index_version}.bin");
@@ -342,8 +342,24 @@ fn SearchResults(results: Signal<SearchItems>, search_text: Signal<String>) -> E
 
     let _results = results.read();
     let results = _results.deref().as_ref().unwrap();
+    // let cur_route = use_route::<Route>();
+    // let results = results
+    //     .iter()
+    //     .filter(|route| match route.route {
+    //         Route::Docs03 { .. } => matches!(cur_route, Route::Docs03 { .. }),
+    //         Route::Docs04 { .. } => matches!(cur_route, Route::Docs04 { .. }),
+    //         Route::Docs05 { .. } => matches!(cur_route, Route::Docs05 { .. }),
+    //         Route::Docs06 { .. } => matches!(cur_route, Route::Docs06 { .. }),
+    //         _ => {
+    //             !matches!(cur_route, Route::Docs03 { .. })
+    //                 && !matches!(cur_route, Route::Docs04 { .. })
+    //                 && !matches!(cur_route, Route::Docs05 { .. })
+    //                 && !matches!(cur_route, Route::Docs06 { .. })
+    //         }
+    //     })
+    //     .collect::<Vec<_>>();
 
-    use crate::docs::router_06::BookRoute;
+    // use crate::docs::router_06::BookRoute;
 
     let default_searches = [
         (

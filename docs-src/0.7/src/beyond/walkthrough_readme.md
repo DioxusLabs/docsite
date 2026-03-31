@@ -9,7 +9,7 @@ The core crate roughly works like this:
 
 ## The Source File
 
-We start will a hello world program. This program renders a desktop app with the text "Hello World" in a webview.
+We will start with a hello world program. This program renders a desktop app with the text "Hello World" in a webview.
 
 ```rust, no_run
 {{#include ../docs-router/src/doc_examples/readme.rs}}

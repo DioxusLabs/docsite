@@ -4,7 +4,7 @@ Signals provide a foundation for mutable state in Dioxus apps. Calls to `.read()
 
 However, sometimes we want to run *our own* side-effects when a Signal's value changes. Other times, we want to isolate reactive scopes such that changes to a signal do not automatically queue a component to be re-rendered. In these cases, we reach for Memos with `use_memo` and Effects with `use_effect`.
 
-## Multiple Reactive Readers
+## Multiple Reactive Scopes
 
 To understand Effects and Memos, we need to first understand that a single Signal (or other reactive value) can be read in multiple reactive scopes simultaneously. For instance, a signal may be shared among several components via props. Each component that calls `.read()` on the signal value is automatically subscribed to any changes of the signal's value. When the signal value changes, it runs the re-render side-effect.
 
@@ -12,7 +12,7 @@ Effects and Memos allow us to observe changes in reactive values without re-rend
 
 ![Multiple Readers](/assets/07/multiple-scopes.png)
 
-Memos and Effects implement the `Readable` trait (but not the Writable trait!) and thus implement the same ergonomic extensions as signals. They are also `Copy` and have the same lifecycle and Drop semantics.
+Memos implement the `Readable` trait (but not the Writable trait!) and thus implement the same ergonomic extensions as signals. Both Memos and Effects are `Copy` and have the same lifecycle and Drop semantics as signals.
 
 ## Derived State with Memo
 
@@ -39,7 +39,7 @@ let mut loading_text = use_signal(|| "loading".to_string());
 let subheading = use_memo(move || {
     if loading() && loading_text() == "loading" {
         return "The state is loading";
-    };
+    }
 
     "The state is not loading"
 });
@@ -93,7 +93,7 @@ DemoFrame {
 
 ## Prefer Actions over Side-Effects
 
-You might be wondering: "why should I ever run side-effects?" And, indeed, they should not be a frequently used tool in your toolbox. Side-effects can be difficult to reason about and are frequently misused when an should be preferred.
+You might be wondering: "why should I ever run side-effects?" And, indeed, they should not be a frequently used tool in your toolbox. Side-effects can be difficult to reason about and are frequently misused when an action should be preferred.
 
 The classic example of a side-effect is to synchronize UI state with some external state. For example, we might have a `Title {}` component that sets the window's title whenever the title changes:
 
@@ -103,7 +103,7 @@ fn Title() -> Element {
 
     // attach an effect to modify the document title whenever title changes
     use_effect(move || {
-        window().docment().set_title(text());
+        window().document().set_title(text());
     });
 
     rsx! {
@@ -175,7 +175,7 @@ DemoFrame {
 
 ## Making Props Reactive
 
-To avoid losing reactivity with props, we recommend you wrap any props you want to track in a `ReadOnlySignal`. Dioxus will automatically convert `T` into `ReadOnlySignal<T>` when you pass props to the component. This will ensure your props are tracked and rerun any state you derive in the component:
+To avoid losing reactivity with props, we recommend you wrap any props you want to track in a `ReadSignal`. Dioxus will automatically convert `T` into `ReadSignal<T>` when you pass props to the component. This will ensure your props are tracked and rerun any state you derive in the component:
 
 ```rust
 {{#include ../docs-router/src/doc_examples/untested_06/reactivity.rs:making_props_reactive}}

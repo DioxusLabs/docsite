@@ -4,11 +4,7 @@ Congratulations! You built your first fully-functional Dioxus app, completely lo
 
 Let's get your app bundled for multiple platforms and then ready to deploy.
 
-## Testing on Desktop and Mobile
-
-So far, we've been testing our app in a simple web browser. Let's actually build and test our app for mobile platforms.
-
-### Testing on iOS
+## Testing on iOS
 
 To test iOS, your development environment needs to be setup to build iOS apps. This involves a few steps:
 
@@ -25,7 +21,7 @@ Simply run run `dx serve --ios` and your app should load in the iOS Simulator.
 
 Fantastic - our app works seamlessly with no changes.
 
-### Testing on Android
+## Testing on Android
 
 Setting up your environment for Android development takes time, so make sure to read the [mobile tooling guide](../guides/platforms/mobile.md).
 
@@ -46,7 +42,7 @@ dx serve --android
 
 ## Testing on Desktop
 
-HotDog also works on macOS, Windows, and Linux! We can use `dx serve --webview` to serve our app as a desktop app.
+HotDog also works on macOS, Windows, and Linux! We can use `dx serve --desktop` to serve our app as a desktop app.
 
 ![HotDogDesktop](/assets/06_docs/hotdog-desktop.png)
 
@@ -105,20 +101,20 @@ When bundling installable apps, there are many distribution formats to choose fr
 You can specify package types like so:
 
 ```sh
-dx bundle --webview \
+dx bundle --desktop \
     --package-types "macos" \
     --package-types "dmg"
 ```
 
-Note that not all package-types are compatible with each platform - eg. only `.exe` can be built when specifying `--webview`.
+Note that not all package-types are compatible with each platform - eg. only `.exe` can be built when specifying `--desktop`.
 
 We should see the outputs in our terminal:
 
 ```sh
 18.252s  INFO Bundled app successfully!
 18.252s  INFO App produced 2 outputs:
-18.252s  INFO app - [/Users/jonkelley/Development/Tinkering/06-demos/hot_dog/target/dx/hot_dog/bundle/macos/bundle/macos/HotDog.app]
-18.252s  INFO dmg - [/Users/jonkelley/Development/Tinkering/06-demos/hot_dog/target/dx/hot_dog/bundle/macos/bundle/dmg/HotDog_0.1.0_aarch64.dmg]
+18.252s  INFO app - [./target/dx/hot_dog/bundle/macos/bundle/macos/HotDog.app]
+18.252s  INFO dmg - [./target/dx/hot_dog/bundle/macos/bundle/dmg/HotDog_0.1.0_aarch64.dmg]
 ```
 
 Generally, you can distribute desktop apps without needing an app store. However, some platforms like macOS might require you to sign and notarize your application to be considered "safe" for your users to open.
@@ -168,7 +164,7 @@ This mode is not particular friendly to humans, but does contain more informatio
 JSON mode works with all `dx` commands. However, it is most useful with `dx build` and `dx bundle`. The CLI always guarantees that the last emitted line is the result of the command. To collect the list of bundles from the `dx bundle` command, we can use `tail -1` and simple jq.
 
 ```sh
-dx bundle --webview \
+dx bundle --desktop \
     --json-output \
     --verbose \
     | tail -1 \
@@ -177,6 +173,6 @@ dx bundle --webview \
 
 This returns the list of bundles:
 ```
-/Users/jonkelley/Development/Tinkering/06-demos/hot_dog/target/dx/hot_dog/bundle/macos/bundle/macos/HotDog.app
-/Users/jonkelley/Development/Tinkering/06-demos/hot_dog/target/dx/hot_dog/bundle/macos/bundle/dmg/HotDog_0.1.0_aarch64.dmg
+./target/dx/hot_dog/bundle/macos/bundle/macos/HotDog.app
+./target/dx/hot_dog/bundle/macos/bundle/dmg/HotDog_0.1.0_aarch64.dmg
 ```

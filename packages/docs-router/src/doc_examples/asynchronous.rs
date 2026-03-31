@@ -330,8 +330,12 @@ pub fn CancelSafe() -> Element {
 
 pub fn UseResourceDemo() -> Element {
     rsx! {
-        ComponentWithLogs {
-            UseResourceMemo {}
+        // This renders differently based on the number of times we render the component
+        // which may be different on the client and server so we skip hydration
+        ClientOnly {
+            ComponentWithLogs {
+                UseResourceMemo {}
+            }
         }
     }
 }
@@ -433,7 +437,7 @@ mod suspense_boundary {
     }
 
     #[component]
-    fn BreedGallery(breed: ReadOnlySignal<String>) -> Element {
+    fn BreedGallery(breed: ReadSignal<String>) -> Element {
         let response = use_resource(move || async move {
             // Artificially slow down the request to make the loading indicator easier to seer
             gloo_timers::future::TimeoutFuture::new(1000).await;
@@ -497,9 +501,7 @@ mod suspense_boundary_with_loading_placeholder {
             SuspenseBoundary {
                 // The fallback closure accepts a SuspenseContext which contains
                 // information about the suspended component
-                fallback: |suspense_context: SuspenseContext| if let Some(view) = suspense_context.suspense_placeholder() {
-                    view
-                } else {
+                fallback: |suspense_context: SuspenseContext| {
                     rsx! {
                         div {
                             width: "100%",
@@ -529,7 +531,7 @@ mod suspense_boundary_with_loading_placeholder {
     }
 
     #[component]
-    fn BreedGallery(breed: ReadOnlySignal<String>) -> Element {
+    fn BreedGallery(breed: ReadSignal<String>) -> Element {
         let response = use_resource(move || async move {
             gloo_timers::future::TimeoutFuture::new(breed().len() as u32 * 100).await;
             reqwest::Client::new()
@@ -539,21 +541,7 @@ mod suspense_boundary_with_loading_placeholder {
                 .json::<BreedResponse>()
                 .await
         })
-        .suspend()
-        // You can pass up a loading placeholder to the nearest SuspenseBoundary
-        // with the with_loading_placeholder method
-        .with_loading_placeholder(move || {
-            rsx! {
-                div {
-                    width: "100%",
-                    height: "100%",
-                    display: "flex",
-                    align_items: "center",
-                    justify_content: "center",
-                    "Loading {breed}..."
-                }
-            }
-        })?;
+        .suspend()?;
 
         // Then you can just handle the happy path with the resolved future
         rsx! {
@@ -712,7 +700,7 @@ mod use_server_future_streaming {
         dioxus::LaunchBuilder::new()
             .with_context(server_only! {
                 // Enable out of order streaming during SSR
-                dioxus::fullstack::ServeConfig::builder().enable_out_of_order_streaming()
+                dioxus::server::ServeConfig::builder().enable_out_of_order_streaming()
             })
             .launch(DogGrid);
     }

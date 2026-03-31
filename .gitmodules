@@ -1,0 +1,9 @@
+[submodule "packages/include_mdbook/packages/mdbook-gen/sublime_toml_highlighting"]
+	path = packages/include_mdbook/packages/mdbook-gen/sublime_toml_highlighting
+	url = https://github.com/jasonwilliams/sublime_toml_highlighting
+[submodule "packages/include_mdbook/packages/mdbook-gen/Packages"]
+	path = packages/include_mdbook/packages/mdbook-gen/Packages
+	url = https://github.com/sublimehq/Packages.git
+[submodule "packages/include_mdbook/packages/mdbook-gen/rust-enhanced"]
+	path = packages/include_mdbook/packages/mdbook-gen/rust-enhanced
+	url = https://github.com/rust-lang/rust-enhanced

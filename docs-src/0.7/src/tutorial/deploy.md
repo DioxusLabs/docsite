@@ -74,7 +74,7 @@ COPY . .
 RUN cargo chef prepare --recipe-path recipe.json
 ```
 
-In the second phase, we use cargo chef to load cached dependencies and preform the build:
+In the second phase, we use cargo chef to load cached dependencies and perform the build:
 
 ```dockerfile
 FROM chef AS builder
@@ -87,8 +87,8 @@ RUN curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/ca
 RUN cargo binstall dioxus-cli --root /.cargo -y --force
 ENV PATH="/.cargo/bin:$PATH"
 
-# Create the final bundle folder. Bundle always executes in release mode with optimizations enabled
-RUN dx bundle --web
+# Create the final bundle folder. Bundle with release build profile to enable optimizations.
+RUN dx bundle --web --release
 ```
 
 Finally, we copy the built "web" folder to the "slim" runtime that serves our app.
@@ -191,7 +191,7 @@ To make server functions maintain a stable endpoint, we can manually name them w
 
 Let's re-deploy our web app with `fly deploy`. This deploy should complete faster thanks to `cargo chef` caching our build.
 
-Now, with `dx serve --webview`, we should be able to interact with the same backend across web and desktop.
+Now, with `dx serve --desktop`, we should be able to interact with the same backend across web and desktop.
 
 Amazing! Our startup is coming along nicely.
 

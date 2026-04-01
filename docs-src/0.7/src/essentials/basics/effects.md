@@ -99,11 +99,11 @@ The classic example of a side-effect is to synchronize UI state with some extern
 
 ```rust
 fn Title() -> Element {
-    let mut text = use_signal(|| "");
+    let mut text = use_signal(|| "".to_string());
 
     // attach an effect to modify the document title whenever title changes
     use_effect(move || {
-        window().document().set_title(text());
+        window().unwrap().document().unwrap().set_title(&text());
     });
 
     rsx! {

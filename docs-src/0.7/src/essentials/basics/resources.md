@@ -160,6 +160,9 @@ One common issue when fetching data is the "waterfall" effect, where requests ru
 
 Lets look at at an app that causes a waterfall effect:
 
+I can't find the reference for "../docs-router/src/doc_examples/data_fetching.rs", but I see:
+fetch_dog_image("golden retriever") in the following code doesn't work, it should be changed to fetch_dog_image("retriever/golden")
+
 ```rust
 {{#include ../docs-router/src/doc_examples/data_fetching.rs:waterfall_effect}}
 ```

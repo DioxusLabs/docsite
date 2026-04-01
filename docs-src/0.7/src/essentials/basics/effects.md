@@ -125,7 +125,7 @@ fn Title() -> Element {
     rsx! {
         input {
             oninput: move |e| {
-                window().document().set_title(e.value())
+                window().unwrap().document().unwrap().set_title(&e.value())
             },
             placeholder: "Set the document title"
         }

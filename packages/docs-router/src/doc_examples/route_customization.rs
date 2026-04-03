@@ -92,8 +92,8 @@ mod custom_catch_all {
         }
     }
 
-    /// Any type that implements FromIterator<String> gets FromRouteSegments
-    /// automatically. For custom parsing, implement FromRouteSegments directly.
+    /// For custom catch-all types, implement both FromRouteSegments (for parsing
+    /// URLs into your type) and ToRouteSegments (for serializing back to a URL).
     impl dioxus::router::routable::FromRouteSegments for DocPath {
         type Err = String;
 
@@ -105,6 +105,19 @@ mod custom_catch_all {
                 .to_string();
             let sections = iter.map(|s| s.to_string()).collect();
             Ok(DocPath { locale, sections })
+        }
+    }
+
+    impl dioxus::router::routable::ToRouteSegments for DocPath {
+        fn display_route_segments(
+            &self,
+            f: &mut std::fmt::Formatter<'_>,
+        ) -> std::fmt::Result {
+            write!(f, "/{}", self.locale)?;
+            for section in &self.sections {
+                write!(f, "/{section}")?;
+            }
+            Ok(())
         }
     }
 

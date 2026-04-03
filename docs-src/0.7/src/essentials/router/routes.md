@@ -69,7 +69,7 @@ Catch All segments must be the _last route segment_ in the path (query segments 
 <details>
 <summary>Parsing your own catch-all segment types</summary>
 
-By default, `Vec<String>` collects catch-all segments. You can implement [`FromRouteSegments`](https://docs.rs/dioxus-router/latest/dioxus_router/routable/trait.FromRouteSegments.html) directly to parse the segments into a structured type:
+By default, `Vec<String>` collects catch-all segments. You can implement [`FromRouteSegments`](https://docs.rs/dioxus-router/latest/dioxus_router/routable/trait.FromRouteSegments.html) and [`ToRouteSegments`](https://docs.rs/dioxus-router/latest/dioxus_router/routable/trait.ToRouteSegments.html) directly to parse the segments into a structured type and serialize them back into a URL:
 
 ```rust
 {{#include ../docs-router/src/doc_examples/route_customization.rs:custom_catch_all}}

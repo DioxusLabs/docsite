@@ -252,6 +252,8 @@ fn SidebarChapter<R: AnyBookRoute>(chapter: &'static SummaryItem<R>, nest: usize
 pub fn RightNav<R: AnyBookRoute>() -> Element {
     let page = R::use_route();
     let short_version = R::short_version();
+    let llms_url = format!("{}/llms.txt", page.global_route().to_string().trim_end_matches('/'));
+    let mut copied = use_signal(|| false);
 
     let edit_github_url = use_resource(use_reactive!(|(page,)| async move {
         let page = page.to_string();
@@ -300,7 +302,49 @@ pub fn RightNav<R: AnyBookRoute>() -> Element {
                     }
                 }
             }
-            h2 { class: "py-4 ",
+            h2 { class: "pt-4 pb-2",
+                button {
+                    class: "hover:text-sky-500 dark:hover:text-sky-400 flex flex-row items-center gap-x-1 cursor-pointer",
+                    onclick: {
+                        let llms_url = llms_url.clone();
+                        move |_| {
+                            let llms_url = llms_url.clone();
+                            let mut copied = copied;
+                            async move {
+                                let js = format!(
+                                    r#"const res = await fetch("{}");
+                                    const text = await res.text();
+                                    await navigator.clipboard.writeText(text);
+                                    dioxus.send(true);"#,
+                                    llms_url
+                                );
+                                let mut eval = document::eval(&js);
+                                if eval.recv::<bool>().await.is_ok() {{
+                                    copied.set(true);
+                                    gloo_timers::future::TimeoutFuture::new(2000).await;
+                                    copied.set(false);
+                                }}
+                            }
+                        }
+                    },
+                    if copied() {
+                        "Copied!"
+                    } else {
+                        "Copy as Markdown"
+                    }
+                    icons::Copy {}
+                }
+            }
+            h2 { class: "pb-2",
+                a {
+                    class: "hover:text-sky-500 dark:hover:text-sky-400 flex flex-row items-center gap-x-1",
+                    href: "{llms_url}",
+                    target: "_blank",
+                    "Raw Markdown"
+                    icons::ExternalLinkIcon2 {}
+                }
+            }
+            h2 { class: "pb-4",
                 if let Some(url) = edit_github_url.cloned() {
                     a {
                         class: "hover:text-sky-500 dark:hover:text-sky-400 flex flex-row items-center gap-x-1",

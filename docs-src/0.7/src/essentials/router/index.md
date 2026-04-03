@@ -25,6 +25,17 @@ To create a `Routable` enum, you will need to derive the `Routable` with a `#[ro
 {{#include ../docs-router/src/doc_examples/router_introduction.rs:first_router}}
 ```
 
+<details>
+<summary>Using a different component name</summary>
+
+By default, each variant renders a component with the same name. You can specify a different component as the second argument to `#[route]`:
+
+```rust
+{{#include ../docs-router/src/doc_examples/route_customization.rs:custom_component}}
+```
+
+</details>
+
 ## Rendering the router
 
 Now that you have defined your routes, you can use the `Router` component to render them. The `Router` component takes your `Routable` enum as a generic argument to define handle parsing, and rendering routes.

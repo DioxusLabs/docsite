@@ -39,6 +39,21 @@ The segment can be of any type that implements `FromStr`.
 {{#include ../docs-router/src/doc_examples/dynamic_segments.rs:route}}
 ```
 
+<details>
+<summary>Custom parsing with your own types</summary>
+
+Any type that implements `FromStr` + `Display` can be used as a dynamic segment. If parsing fails, the route won't match and the router moves on to the next candidate. This lets you restrict which URLs match a route — for example, only accepting known locales:
+
+```rust
+{{#include ../docs-router/src/doc_examples/route_customization.rs:custom_dynamic_segment}}
+```
+
+With this route, `/en/about` and `/fr/about` will match, but `/xyz/about` will not.
+
+See [`FromRouteSegment`](https://docs.rs/dioxus-router/latest/dioxus_router/routable/trait.FromRouteSegment.html) on docs.rs for the full trait definition.
+
+</details>
+
 ## Catch All Segments
 
 Catch All segments are in the form of `:..name` where `name` is the name of the field in the route variant. If the segments are parsed successfully then the route matches, otherwise the matching continues.
@@ -50,6 +65,17 @@ Catch All segments must be the _last route segment_ in the path (query segments 
 ```rust
 {{#include ../docs-router/src/doc_examples/catch_all_segments.rs:route}}
 ```
+
+<details>
+<summary>Custom parsing for catch-all segments</summary>
+
+By default, `Vec<String>` collects catch-all segments. You can implement [`FromRouteSegments`](https://docs.rs/dioxus-router/latest/dioxus_router/routable/trait.FromRouteSegments.html) directly to parse the segments into a structured type:
+
+```rust
+{{#include ../docs-router/src/doc_examples/route_customization.rs:custom_catch_all}}
+```
+
+</details>
 
 ## Query Segments
 
@@ -65,6 +91,25 @@ Query segments must be the _after all route segments_ and cannot be included in 
 {{#include ../docs-router/src/doc_examples/query_segments.rs:route}}
 ```
 
+<details>
+<summary>Custom query parameter parsing</summary>
+
+Individual query parameters use the [`FromQueryArgument`](https://docs.rs/dioxus-router/latest/dioxus_router/routable/trait.FromQueryArgument.html) trait, which is auto-implemented for any `FromStr + Default` type. If the parameter is missing or fails to parse, `Default::default()` is used instead of failing the route.
+
+You can use your own types as query parameters by implementing `FromStr`, `Default`, and `Display`:
+
+```rust
+{{#include ../docs-router/src/doc_examples/route_customization.rs:custom_single_query}}
+```
+
+If you need full control over the entire query string — for example, to handle dynamic keys or custom serialization — you can capture it into one type using the spread syntax `?:..field`. The type must implement [`From<&str>`](https://docs.rs/dioxus-router/latest/dioxus_router/routable/trait.FromQuery.html) and `Display`:
+
+```rust
+{{#include ../docs-router/src/doc_examples/route_customization.rs:custom_spread_query}}
+```
+
+</details>
+
 ## Hash Segments
 
 Hash segments are in the form of `#:field` where `field` is a field in the route variant.
@@ -79,6 +124,18 @@ Hash fragments must be the _after all route segments and any query segments_ and
 {{#include ../docs-router/src/doc_examples/hash_fragments.rs:route}}
 ```
 
+<details>
+<summary>Custom parsing for hash fragments</summary>
+
+The [`FromHashFragment`](https://docs.rs/dioxus-router/latest/dioxus_router/routable/trait.FromHashFragment.html) trait is auto-implemented for any `FromStr + Default` type. Parsing failures return `Default::default()` instead of causing the route to fail.
+
+You can use a custom type to parse structured data from the hash fragment:
+
+```rust
+{{#include ../docs-router/src/doc_examples/route_customization.rs:custom_hash}}
+```
+
+</details>
 
 ## Nested Routes
 

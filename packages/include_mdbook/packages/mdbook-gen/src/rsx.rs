@@ -158,7 +158,13 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
             pulldown_cmark::Event::Start(start) => {
                 self.start_element(start)?;
             }
-            pulldown_cmark::Event::End(_) => self.end_node(),
+            pulldown_cmark::Event::End(tag_end) => {
+                // HtmlBlock Start doesn't push a node, so don't pop for its End either.
+                // Our <details> handling pushes via Html events instead.
+                if !matches!(tag_end, pulldown_cmark::TagEnd::HtmlBlock) {
+                    self.end_node();
+                }
+            }
             pulldown_cmark::Event::Text(text) => {
                 let text = escape_text(&text);
                 self.create_node(BodyNode::Text(parse_quote!(#text)));
@@ -172,13 +178,28 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                 })
             }
             pulldown_cmark::Event::Html(node) | pulldown_cmark::Event::InlineHtml(node) => {
-                let code = escape_text(&node);
-                self.create_node(parse_quote! {
-                    p {
-                        class: "inline-html-block",
-                        dangerous_inner_html: #code,
-                    }
-                })
+                let trimmed = node.trim();
+                if trimmed == "<details>" {
+                    self.start_node(parse_quote! {
+                        details {}
+                    });
+                } else if trimmed == "</details>" {
+                    self.end_node();
+                } else if trimmed.starts_with("<summary>") && trimmed.ends_with("</summary>") {
+                    let inner = &trimmed["<summary>".len()..trimmed.len() - "</summary>".len()];
+                    let inner = escape_text(inner);
+                    self.create_node(parse_quote! {
+                        summary { #inner }
+                    });
+                } else {
+                    let code = escape_text(&node);
+                    self.create_node(parse_quote! {
+                        p {
+                            class: "inline-html-block",
+                            dangerous_inner_html: #code,
+                        }
+                    })
+                }
             }
             pulldown_cmark::Event::FootnoteReference(_) => {}
             pulldown_cmark::Event::SoftBreak => {}

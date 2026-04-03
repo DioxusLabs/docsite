@@ -40,7 +40,7 @@ The segment can be of any type that implements `FromStr`.
 ```
 
 <details>
-<summary>Custom parsing with your own types</summary>
+<summary>Parsing your own dynamic segment types</summary>
 
 Any type that implements `FromStr` + `Display` can be used as a dynamic segment. If parsing fails, the route won't match and the router moves on to the next candidate. This lets you restrict which URLs match a route — for example, only accepting known locales:
 
@@ -67,7 +67,7 @@ Catch All segments must be the _last route segment_ in the path (query segments 
 ```
 
 <details>
-<summary>Custom parsing for catch-all segments</summary>
+<summary>Parsing your own catch-all segment types</summary>
 
 By default, `Vec<String>` collects catch-all segments. You can implement [`FromRouteSegments`](https://docs.rs/dioxus-router/latest/dioxus_router/routable/trait.FromRouteSegments.html) directly to parse the segments into a structured type:
 
@@ -92,7 +92,7 @@ Query segments must be the _after all route segments_ and cannot be included in 
 ```
 
 <details>
-<summary>Custom query parameter parsing</summary>
+<summary>Parsing your own query parameter types</summary>
 
 Individual query parameters use the [`FromQueryArgument`](https://docs.rs/dioxus-router/latest/dioxus_router/routable/trait.FromQueryArgument.html) trait, which is auto-implemented for any `FromStr + Default` type. If the parameter is missing or fails to parse, `Default::default()` is used instead of failing the route.
 
@@ -125,7 +125,7 @@ Hash fragments must be the _after all route segments and any query segments_ and
 ```
 
 <details>
-<summary>Custom parsing for hash fragments</summary>
+<summary>Parsing your own hash fragment types</summary>
 
 The [`FromHashFragment`](https://docs.rs/dioxus-router/latest/dioxus_router/routable/trait.FromHashFragment.html) trait is auto-implemented for any `FromStr + Default` type. Parsing failures return `Default::default()` instead of causing the route to fail.
 

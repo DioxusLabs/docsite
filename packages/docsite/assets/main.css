@@ -235,3 +235,531 @@ It's so unliklely anyone is copying text on mobile that we can just hide it
 .markdown-body .header {
   color: inherit;
 }
+
+/* ============================================
+   HOMEPAGE STYLES - Technical/CAD Aesthetic
+   ============================================ */
+
+/* Technical grid background - blueprint style */
+.technical-grid {
+  background-color: transparent;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(rgba(0, 0, 0, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.015) 1px, transparent 1px);
+  background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+}
+
+[data-theme="dark"] .technical-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+}
+
+/* Serif font for headlines */
+.font-serif {
+  font-family: 'Instrument Serif', 'Times New Roman', Times, Georgia, serif;
+}
+
+/* Tabular numbers for counters */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Animate ping for notification dot */
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.animate-ping {
+  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* Pulse animation */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Feature card hover effect */
+.group:hover .group-hover\:opacity-100 {
+  opacity: 1;
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Code block styling improvements */
+pre code {
+  font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* Orange color utilities for Tailwind */
+.bg-orange-500 {
+  background-color: #f97316;
+}
+
+.bg-orange-500\/10 {
+  background-color: rgba(249, 115, 22, 0.1);
+}
+
+.bg-orange-500\/20 {
+  background-color: rgba(249, 115, 22, 0.2);
+}
+
+.hover\:bg-orange-600:hover {
+  background-color: #ea580c;
+}
+
+.text-orange-400 {
+  color: #fb923c;
+}
+
+.text-orange-500 {
+  color: #f97316;
+}
+
+.text-orange-600 {
+  color: #ea580c;
+}
+
+.bg-orange-600 {
+  background-color: #ea580c;
+}
+
+.hover\:bg-orange-500:hover {
+  background-color: #f97316;
+}
+
+.hover\:bg-orange-400:hover {
+  background-color: #fb923c;
+}
+
+.border-orange-500 {
+  border-color: #f97316;
+}
+
+.border-orange-600 {
+  border-color: #ea580c;
+}
+
+.bg-green-900\/30 {
+  background-color: rgba(20, 83, 45, 0.3);
+}
+
+.border-green-700 {
+  border-color: #15803d;
+}
+
+.border-orange-500\/20 {
+  border-color: rgba(249, 115, 22, 0.2);
+}
+
+.border-orange-500\/50 {
+  border-color: rgba(249, 115, 22, 0.5);
+}
+
+.shadow-orange-500\/25 {
+  --tw-shadow-color: rgba(249, 115, 22, 0.25);
+}
+
+.shadow-orange-500\/40 {
+  --tw-shadow-color: rgba(249, 115, 22, 0.4);
+}
+
+.hover\:shadow-orange-500\/40:hover {
+  --tw-shadow-color: rgba(249, 115, 22, 0.4);
+}
+
+.from-orange-500 {
+  --tw-gradient-from: #f97316;
+}
+
+.from-orange-500\/20 {
+  --tw-gradient-from: rgba(249, 115, 22, 0.2);
+}
+
+.from-orange-500\/5 {
+  --tw-gradient-from: rgba(249, 115, 22, 0.05);
+}
+
+.to-pink-500 {
+  --tw-gradient-to: #ec4899;
+}
+
+.to-pink-500\/20 {
+  --tw-gradient-to: rgba(236, 72, 153, 0.2);
+}
+
+.to-pink-500\/5 {
+  --tw-gradient-to: rgba(236, 72, 153, 0.05);
+}
+
+/* Pink color utilities */
+.bg-pink-500\/10 {
+  background-color: rgba(236, 72, 153, 0.1);
+}
+
+.text-pink-500 {
+  color: #ec4899;
+}
+
+.border-pink-500\/20 {
+  border-color: rgba(236, 72, 153, 0.2);
+}
+
+/* Purple color utilities */
+.bg-purple-400 {
+  background-color: #c084fc;
+}
+
+.bg-purple-500\/10 {
+  background-color: rgba(168, 85, 247, 0.1);
+}
+
+.text-purple-400 {
+  color: #c084fc;
+}
+
+.text-purple-500 {
+  color: #a855f7;
+}
+
+.border-purple-500\/20 {
+  border-color: rgba(168, 85, 247, 0.2);
+}
+
+/* Additional blue shades */
+.text-blue-400 {
+  color: #60a5fa;
+}
+
+/* Yellow shades */
+.text-yellow-400 {
+  color: #facc15;
+}
+
+.bg-yellow-500 {
+  background-color: #eab308;
+}
+
+/* Orange text shades */
+.text-orange-300 {
+  color: #fdba74;
+}
+
+/* Additional green for code */
+.text-green-400 {
+  color: #4ade80;
+}
+
+.bg-green-500 {
+  background-color: #22c55e;
+}
+
+.bg-green-500\/10 {
+  background-color: rgba(34, 197, 94, 0.1);
+}
+
+.border-green-500\/20 {
+  border-color: rgba(34, 197, 94, 0.2);
+}
+
+/* Red button colors */
+.bg-red-500 {
+  background-color: #ef4444;
+}
+
+.bg-red-500\/10 {
+  background-color: rgba(239, 68, 68, 0.1);
+}
+
+.text-red-500 {
+  color: #ef4444;
+}
+
+.border-red-500\/20 {
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+.bg-red-500\/80 {
+  background-color: rgba(239, 68, 68, 0.8);
+}
+
+.bg-yellow-500\/80 {
+  background-color: rgba(234, 179, 8, 0.8);
+}
+
+.bg-green-500\/80 {
+  background-color: rgba(34, 197, 94, 0.8);
+}
+
+/* Gray scale additions */
+.bg-gray-950 {
+  background-color: #030712;
+}
+
+.border-gray-700\/50 {
+  border-color: rgba(55, 65, 81, 0.5);
+}
+
+.bg-gray-800\/50 {
+  background-color: rgba(31, 41, 55, 0.5);
+}
+
+.bg-gray-800\/80 {
+  background-color: rgba(31, 41, 55, 0.8);
+}
+
+/* Blur utilities */
+.blur-lg {
+  filter: blur(16px);
+}
+
+.blur-2xl {
+  filter: blur(40px);
+}
+
+/* Rounded 2xl */
+.rounded-2xl {
+  border-radius: 1rem;
+}
+
+.rounded-3xl {
+  border-radius: 1.5rem;
+}
+
+/* Shadow 2xl */
+.shadow-2xl {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Gap utilities */
+.gap-1\.5 {
+  gap: 0.375rem;
+}
+
+/* Translate utilities */
+.hover\:-translate-y-0\.5:hover {
+  transform: translateY(-0.125rem);
+}
+
+.group-hover\:translate-x-1:hover {
+  transform: translateX(0.25rem);
+}
+
+/* Pointer events */
+.pointer-events-none {
+  pointer-events: none;
+}
+
+/* Max width utilities */
+.max-w-7xl {
+  max-width: 80rem;
+}
+
+.max-w-4xl {
+  max-width: 56rem;
+}
+
+.max-w-3xl {
+  max-width: 48rem;
+}
+
+.max-w-2xl {
+  max-width: 42rem;
+}
+
+/* Inset utility */
+.-inset-1 {
+  inset: -0.25rem;
+}
+
+.-inset-4 {
+  inset: -1rem;
+}
+
+/* Leading relaxed */
+.leading-relaxed {
+  line-height: 1.625;
+}
+
+/* Text sizes */
+.text-4xl {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+}
+
+/* Grayscale filter */
+.grayscale {
+  filter: grayscale(100%);
+}
+
+/* Rotate utilities for dropdown */
+.rotate-180 {
+  transform: rotate(180deg);
+}
+
+/* Transition for SVG icons */
+svg {
+  transition: transform 0.2s ease;
+}
+
+/* Scale utilities for animations */
+.scale-95 {
+  transform: scale(0.95);
+}
+
+.scale-100 {
+  transform: scale(1);
+}
+
+/* Spin animation for loading */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Disabled state */
+.disabled\:opacity-50:disabled {
+  opacity: 0.5;
+}
+
+/* Min width utility */
+.min-w-40 {
+  min-width: 10rem;
+}
+
+/* Linear gradient (Tailwind v4 syntax) */
+.bg-linear-to-br {
+  background-image: linear-gradient(to bottom right, var(--tw-gradient-from), var(--tw-gradient-to));
+}
+
+.from-orange-400 {
+  --tw-gradient-from: #fb923c;
+}
+
+.to-pink-500 {
+  --tw-gradient-to: #ec4899;
+}
+
+/* Textarea utilities */
+.resize-none {
+  resize: none;
+}
+
+/* Additional rounded utilities */
+.rounded-3xl {
+  border-radius: 1.5rem;
+}
+
+.rounded-b-2xl {
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+}
+
+/* Border width */
+.border-4 {
+  border-width: 4px;
+}
+
+/* Width fractions and lg: utilities */
+@media (min-width: 1024px) {
+  .lg\:w-3\/5 {
+    width: 60%;
+  }
+
+  .lg\:w-2\/5 {
+    width: 40%;
+  }
+
+  .lg\:flex {
+    display: flex;
+  }
+}
+
+/* Duration utility */
+.duration-300 {
+  transition-duration: 300ms;
+}
+
+/* Ease out */
+.ease-out {
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* Max width */
+.max-w-md {
+  max-width: 28rem;
+}
+
+.max-w-sm {
+  max-width: 24rem;
+}
+
+/* Border width 3 */
+.border-3 {
+  border-width: 3px;
+}
+
+/* Rounded lg */
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+
+/* Space-y-5 */
+.space-y-5 > * + * {
+  margin-top: 1.25rem;
+}
+
+/* Space-y-3 */
+.space-y-3 > * + * {
+  margin-top: 0.75rem;
+}
+
+/* Extra wide max-width for hero editor */
+.max-w-360 {
+  max-width: 90rem;
+}
+
+/* Slide up animation for hero editor */
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.8s ease-out forwards;
+  animation-delay: 0.2s;
+  opacity: 0;
+}

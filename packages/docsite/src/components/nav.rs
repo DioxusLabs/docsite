@@ -1,3 +1,4 @@
+use crate::awesome::StarsResponse;
 use crate::docs::AnyBookRoute;
 use crate::*;
 use dioxus::html::input_data::keyboard_types::Key;
@@ -12,7 +13,7 @@ pub(crate) fn Nav() -> Element {
     rsx! {
         SearchModal {}
         header { class: "sticky top-0 z-30 bg-opacity-80 dark:text-gray-200 dark:bg-opacity-80 border-b border-stone-300 dark:border-stone-700 h-16 backdrop-blur-sm",
-            div { class: "py-2 px-4 sm:px-6 md:px-8 max-w-screen-2xl mx-auto flex items-center justify-between text-sm leading-6 h-16",
+            div { class: "py-2 px-4 sm:px-6 md:px-8 max-w-screen-xl mx-auto flex items-center justify-between text-sm leading-6 h-16",
                 div { class: "flex z-50 flex-1", LinkList {} }
                 div { class: "flex h-full justify-end ml-2 items-center gap-3 py-2",
                     button {
@@ -116,22 +117,21 @@ pub(crate) fn Nav() -> Element {
 
 fn CurrentStarCount() -> Element {
     let num_stars = use_resource(move || async move {
-        use crate::awesome::StarsResponse;
-        let username = "DioxusLabs";
-        let repo = "dioxus";
-        let res = reqwest::get(format!("https://api.github.com/repos/{username}/{repo}")).await;
-        let res = res.ok()?.json::<StarsResponse>().await.ok()?;
-        Some(res.stargazers_count as usize)
+        dioxus::Ok(
+            reqwest::get("https://api.github.com/repos/dioxuslabs/dioxus")
+                .await?
+                .json::<StarsResponse>()
+                .await?,
+        )
     });
 
     let mut rendered_stars = 24.5;
 
-    if let Some(Some(loaded)) = num_stars.value()() {
-        let as_float = loaded as f64;
-        rendered_stars = as_float.round() / 1000.0;
+    if let Some(Ok(loaded)) = num_stars.value()() {
+        rendered_stars = (loaded.stargazers_count as f64).round() / 1000.0;
     }
 
-    rsx! { "{rendered_stars:.1}k" }
+    rsx! { "{rendered_stars:.0}k" }
 }
 
 static LINKS: &[(&str, &str)] = &[
@@ -213,13 +213,11 @@ fn SearchModal() -> Element {
 
     let search = move || {
         let query = &search_text.read();
-        let mut results = search_index
+        search_index
             .value()
             .as_ref()
             .and_then(|search| search.as_ref().map(|s| s.search(query)))
-            .unwrap_or_else(|| Ok(vec![]));
-
-        results
+            .unwrap_or_else(|| Ok(vec![]))
     };
 
     let mut results = use_signal(search);

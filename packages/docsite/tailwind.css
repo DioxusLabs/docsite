@@ -11,7 +11,9 @@
 
     /* --font-sans: "Space Grotesk", sans-serif;
     --font-mono: "Space Mono", monospace; */
-    --font-sans: "Inter var",sans-serif;
+    --font-sans: "Keiner",sans-serif;
+    /* --font-sans: "General Sans",sans-serif; */
+    /* --font-sans: "Inter var",sans-serif; */
 
     --bodx-shadow-3xl: 0 35px 60px -15px rgb(0 0 0 / 0.5);
     --bodx-shadow-cutesy: 0px 0px 40px -5px rgb(255 255 255 / 0.2);
@@ -31,3 +33,26 @@
     --my-grid-cols: auto 1fr auto;
 }
 
+@font-face {
+    font-family: "General Sans";
+    font-style: normal;
+    font-weight: 200 700;
+    font-display: swap;
+    src: url("/assets/GeneralSans-Variable.woff2") format(woff2) tech(variations);
+}
+
+@font-face {
+    font-family: "Keiner";
+    font-style: normal;
+    font-weight: 200 700;
+    font-display: swap;
+    src: url("/fonts/Keiner-Regular.woff2") format(woff2) tech(variations);
+}
+
+@font-face {
+    font-family: "Berkeley Mono";
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url("/assets/BerkeleyMonoVariable-Regular.woff2") format(woff2) tech(variations);
+}

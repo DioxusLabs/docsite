@@ -65,7 +65,7 @@ impl Display for Category {
     }
 }
 
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone, PartialEq)]
 pub struct StarsResponse {
     pub stargazers_count: u64,
 }

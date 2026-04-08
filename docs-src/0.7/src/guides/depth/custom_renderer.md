@@ -50,7 +50,7 @@ The Dioxus diffing mechanism operates as a [stack machine](https://en.wikipedia.
 
 ## Node storage
 
-Dioxus saves and loads elements with IDs. Inside the VirtualDOM, this is just tracked as as a u64.
+Dioxus saves and loads elements with IDs. Inside the VirtualDOM, this is just tracked as a u64.
 
 Whenever a `CreateElement` edit is generated during diffing, Dioxus increments its node counter and assigns that new element its current NodeCount. The RealDom is responsible for remembering this ID and pushing the correct node when id is used in a mutation. Dioxus reclaims the IDs of elements when removed. To stay in sync with Dioxus you can use a sparse Vec (Vec<Option<T>>) with possibly unoccupied items. You can use the ids as indexes into the Vec for elements, and grow the Vec when an id does not exist.
 

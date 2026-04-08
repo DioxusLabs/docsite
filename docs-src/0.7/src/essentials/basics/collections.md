@@ -173,7 +173,7 @@ struct OtherHeaderState {
 let title2 = header.other().title2();
 ```
 
-The ability for a store to "zoom in" through nested datastructures is dependent on whether or not types also implement `Store`. If, for example, or nested structs *didn't* implement the `Store` trait, then we can't lens them:
+The ability for a store to "zoom in" through nested datastructures is dependent on whether or not types also implement `Store`. If, for example, our nested structs *didn't* implement the `Store` trait, then we can't lens them:
 
 ```rust
 #[derive(Store)]
@@ -270,7 +270,7 @@ fn app() -> Element {
     let mut users = use_signal(|| HashMap::<UserId, UserData>::new());
 
     rsx! {
-        // the lifetime here is is not `'static` won't pass to the ListItem component
+        // the lifetime here is not `'static` and won't pass to the ListItem component
         for (id, user) in users.read().iter() {
             ListItem { key: "{id}", user }
         }

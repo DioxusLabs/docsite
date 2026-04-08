@@ -13,7 +13,7 @@ pub use components::*;
 
 fn main() {
     let _class = rsx! {
-        div { class: "mx-2 mx-4" }
+        div { class: "mx-2 mx-4 mx-6" }
     };
 
     // If we are just building the search index, we don't need to launch the app

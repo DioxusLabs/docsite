@@ -4,29 +4,26 @@ pub(crate) fn Hero() -> Element {
     rsx! {
         // Hero section - full viewport height
         section { class: "relative w-full min-h-screen bg-white dark:bg-black overflow-visible",
-            // Subtle grid background
-            div { class: "absolute inset-0 technical-grid" }
+            // Subtle grid background (disabled for now)
+            // div { class: "absolute inset-0 technical-grid" }
 
             // Title section - constrained width
             div { class: "relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8",
-                div { class: "pt-20 sm:pt-24 md:pt-32 lg:pt-40 pb-16 md:pb-20",
+                div { class: "pt-8 sm:pt-10 md:pt-14 lg:pt-16 pb-14 sm:pb-16 md:pb-20 lg:pb-24",
                     // Main headline - clean sans-serif
-                    h1 { class: "text-5xl sm:text-6xl md:text-7xl lg:text-7xl font-bold tracking-tight text-gray-900 dark:text-white leading-tight flex flex-row gap-4",
+                    h1 { class: "text-4xl sm:text-5xl md:text-6xl lg:text-6xl font-bold tracking-tight text-gray-900 dark:text-white leading-tight",
                     // h1 { class: "text-5xl sm:text-6xl md:text-7xl lg:text-7xl font-bold tracking-tight text-gray-900 dark:text-white leading-tight flex flex-row gap-4",
-                        div { class: "leading-[1.1]", "The app framework for the future" }
+                        div { class: "leading-[1.1]", "Build fullstack web, desktop, and mobile apps in Rust" }
                         // div { class: "leading-[1.1]", "Every platform." }
                     }
 
                     // Subheadline
-                    p { class: "mt-8 text-xl md:text-2xl text-gray-500 dark:text-gray-400",
-                        "Build fullstack web, desktop, and mobile apps entirely in Rust."
-                    }
-                    p { class: "mt-2 text-xl md:text-2xl text-gray-500 dark:text-gray-400",
-                        "Iterate with hot-reload, add server functions, and ship everywhere in record time."
-                    }
+                    // p { class: "mt-5 text-base sm:text-lg md:text-xl text-gray-500 dark:text-gray-400 max-w-4xl",
+                    //     "Dioxus is the most advanced app framework for Rust teams shipping web, desktop, and mobile from one codebase."
+                    // }
 
                     // Quick actions
-                    div { class: "mt-10 flex flex-wrap items-center gap-4",
+                    div { class: "mt-7 sm:mt-8 flex flex-wrap items-center gap-4",
                         Link {
                             to: Route::Docs07 {
                                 child: dioxus_docs_07::BookRoute::GettingStartedIndex {
@@ -67,7 +64,7 @@ pub(crate) fn Hero() -> Element {
             }
 
             // Editor section - wider than title, with slide-up animation
-            div { class: "relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 animate-slide-up",
+            div { class: "relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-1 sm:mt-2 animate-slide-up",
                 InteractivePlayground {}
             }
 
@@ -98,6 +95,45 @@ enum Viewport {
     Desktop,
     Web,
     Mobile,
+}
+
+const DX_SERVE_LOG: &[&str] = &[
+    "❯ dx serve --hotpatch --package dioxus_docs_site",
+    "15:05:33 [dev] -----------------------------------------------------------------",
+    "                Serving your app: dioxus_docs_site! 🚀",
+    "                • Press `ctrl+c` to exit the server",
+    "                • Press `r` to rebuild the app",
+    "                • Press `p` to toggle automatic rebuilds",
+    "                • Press `v` to toggle verbose logging",
+    "                • Press `/` for more commands and shortcuts",
+    "                Learn more at https://dioxuslabs.com/learn/0.7/getting_started",
+    "               ----------------------------------------------------------------",
+    "15:05:59 [dev] Build completed successfully in 18.67s, launching app! 💫",
+    "╭──────────────────────────────────────────────────────────────────────────────── /:more ╮",
+    "│  App:     ━━━━━━━━━━━━━━━━━━━━━━━━━━  🎉 18.8s     Platform: Web                       │",
+    "│  Bundle:  ━━━━━━━━━━━━━━━━━━━━━━━━━━  🎉 7.8s      Features: [\"web\"]                   │",
+    "│  Status:  Serving dioxus_docs_site 🚀 26.6s        Serving at: http://127.0.0.1:8080   │",
+    "╰────────────────────────────────────────────────────────────────────────────────────────╯",
+];
+
+fn terminal_line_class(line: &str) -> &'static str {
+    if line.starts_with("❯") {
+        "text-sky-300"
+    } else if line.contains("Build completed successfully") {
+        "text-green-300"
+    } else if line.contains("Hotreloading") {
+        "text-yellow-300"
+    } else if line.starts_with("15:") {
+        "text-cyan-300"
+    } else if line.starts_with("│") || line.starts_with("╭") || line.starts_with("╰") {
+        "text-gray-400"
+    } else if line.contains("Serving your app") || line.contains("Serving at:") {
+        "text-orange-300"
+    } else if line.contains("Press `") || line.contains("Learn more") {
+        "text-gray-300"
+    } else {
+        "text-gray-400"
+    }
 }
 
 #[component]
@@ -131,23 +167,23 @@ fn InteractivePlayground() -> Element {
             // Editor window
             div { class: "bg-[#0d1117] border border-gray-800 shadow-2xl overflow-hidden",
                 // Window header
-                div { class: "flex items-center justify-between px-4 py-3 bg-[#161b22] border-b border-gray-800",
-                    div { class: "flex items-center gap-3",
+                div { class: "flex items-center justify-between px-4 py-2 bg-ghdarkmetal border-b border-gray-800",
+                    div { class: "flex items-center gap-2.5",
                         // Traffic lights
-                        div { class: "flex items-center gap-1.5",
-                            div { class: "w-3 h-3 rounded-full bg-[#ff5f57]" }
-                            div { class: "w-3 h-3 rounded-full bg-[#febc2e]" }
-                            div { class: "w-3 h-3 rounded-full bg-[#28c840]" }
+                        div { class: "flex items-center gap-1",
+                            div { class: "w-2.5 h-2.5 rounded-full bg-[#ff5f57]" }
+                            div { class: "w-2.5 h-2.5 rounded-full bg-[#febc2e]" }
+                            div { class: "w-2.5 h-2.5 rounded-full bg-[#28c840]" }
                         }
 
                         // Dropdown for selecting sample
                         div { class: "relative ml-3",
                             button {
-                                class: "flex items-center gap-2 text-sm text-gray-400 hover:text-gray-200 transition-colors",
+                                class: "flex items-center gap-1.5 text-xs text-gray-400 hover:text-gray-200 transition-colors",
                                 onclick: move |_| dropdown_open.toggle(),
                                 span { "{selected_app.name}.rs" }
                                 svg {
-                                    class: "w-4 h-4",
+                                    class: "w-3.5 h-3.5",
                                     class: if dropdown_open() { "rotate-180" } else { "" },
                                     fill: "none",
                                     stroke: "currentColor",
@@ -178,17 +214,17 @@ fn InteractivePlayground() -> Element {
                     }
 
                     // Action buttons
-                    div { class: "flex items-center gap-2",
+                    div { class: "flex items-center gap-1.5",
                         // Viewport toggle
-                        div { class: "hidden lg:flex items-center gap-1 p-1 bg-gray-800/50 border border-gray-700",
+                        div { class: "hidden lg:flex items-center gap-1 p-0.5 bg-gray-800/50 border border-gray-700",
                             button {
-                                class: "p-1.5 transition-colors",
+                                class: "p-1 transition-colors",
                                 class: if viewport() == Viewport::Desktop { "text-orange-400 bg-gray-700" } else { "text-gray-500 hover:text-gray-300" },
                                 onclick: move |_| viewport.set(Viewport::Desktop),
                                 title: "Desktop",
                                 // Desktop icon (monitor with stand)
                                 svg {
-                                    class: "w-4 h-4",
+                                    class: "w-3.5 h-3.5",
                                     fill: "none",
                                     stroke: "currentColor",
                                     view_box: "0 0 24 24",
@@ -201,13 +237,13 @@ fn InteractivePlayground() -> Element {
                                 }
                             }
                             button {
-                                class: "p-1.5 transition-colors",
+                                class: "p-1 transition-colors",
                                 class: if viewport() == Viewport::Web { "text-orange-400 bg-gray-700" } else { "text-gray-500 hover:text-gray-300" },
                                 onclick: move |_| viewport.set(Viewport::Web),
                                 title: "Web",
                                 // Globe icon
                                 svg {
-                                    class: "w-4 h-4",
+                                    class: "w-3.5 h-3.5",
                                     fill: "none",
                                     stroke: "currentColor",
                                     view_box: "0 0 24 24",
@@ -220,13 +256,13 @@ fn InteractivePlayground() -> Element {
                                 }
                             }
                             button {
-                                class: "p-1.5 transition-colors",
+                                class: "p-1 transition-colors",
                                 class: if viewport() == Viewport::Mobile { "text-orange-400 bg-gray-700" } else { "text-gray-500 hover:text-gray-300" },
                                 onclick: move |_| viewport.set(Viewport::Mobile),
                                 title: "Mobile",
                                 // Mobile icon
                                 svg {
-                                    class: "w-4 h-4",
+                                    class: "w-3.5 h-3.5",
                                     fill: "none",
                                     stroke: "currentColor",
                                     view_box: "0 0 24 24",
@@ -240,10 +276,10 @@ fn InteractivePlayground() -> Element {
                             }
                         }
 
-                        // Deploy button
-                        button { class: "flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-orange-500 hover:bg-orange-600 transition-colors",
+                        // Edit Button
+                        button { class: "flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-white bg-orange-500 hover:bg-orange-600 transition-colors",
                             svg {
-                                class: "w-3.5 h-3.5",
+                                class: "w-3 h-3",
                                 fill: "none",
                                 stroke: "currentColor",
                                 view_box: "0 0 24 24",
@@ -254,24 +290,7 @@ fn InteractivePlayground() -> Element {
                                     d: "M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12",
                                 }
                             }
-                            "Deploy"
-                        }
-
-                        // Fullscreen Button
-                        button { class: "flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-orange-500 hover:bg-orange-600 transition-colors",
-                            svg {
-                                class: "w-3.5 h-3.5",
-                                fill: "none",
-                                stroke: "currentColor",
-                                view_box: "0 0 24 24",
-                                path {
-                                    stroke_linecap: "round",
-                                    stroke_linejoin: "round",
-                                    stroke_width: "2",
-                                    d: "M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12",
-                                }
-                            }
-                            "Playground"
+                            "Edit"
                         }
                     }
                 }
@@ -280,7 +299,7 @@ fn InteractivePlayground() -> Element {
                 div { class: "flex flex-col lg:flex-row",
                     // Left side - Code editor
                     div { class: "flex-1 lg:border-r border-gray-800",
-                        div { class: "relative h-[600px] lg:h-[600px]",
+                        div { class: "relative h-[520px] lg:h-[520px]",
                             // Line numbers
                             div { class: "absolute left-0 top-0 bottom-0 w-12 bg-[#0d1117] border-r border-gray-800/50 flex flex-col py-4 text-right pr-3 select-none overflow-hidden",
                                 for i in 1..=line_count {
@@ -301,7 +320,7 @@ fn InteractivePlayground() -> Element {
                     // Right side - Live preview with viewport frame
                     div { class: "w-[540px] bg-gray-100 dark:bg-[#0a0a0a] border-t lg:border-t-0 border-gray-800 overflow-hidden",
                         div {
-                            class: "h-[600px] lg:h-[600px] p-4 flex items-center justify-center transition-all duration-200",
+                            class: "h-[520px] lg:h-[520px] p-4 flex items-center justify-center transition-all duration-200",
                             class: if animating() { "opacity-0 scale-95" } else { "opacity-100 scale-100" },
 
                             // Viewport frame
@@ -416,6 +435,45 @@ fn InteractivePlayground() -> Element {
                                 }
                             }
                         }
+                    }
+                }
+
+                // Terminal output
+                div { class: "border-t border-gray-800 bg-[#0a0f15]",
+                    div { class: "flex items-center justify-between px-4 py-2 border-b border-gray-800",
+                        div { class: "flex items-center gap-2",
+                            div { class: "w-2 h-2 rounded-full bg-green-400" }
+                            span { class: "text-[11px] font-semibold tracking-wide text-gray-400 uppercase",
+                                "Terminal"
+                            }
+                        }
+                        span { class: "text-[11px] font-mono text-gray-500",
+                            "dx serve --hotpatch --package dioxus_docs_site"
+                        }
+                    }
+                    div { class: "h-44 overflow-y-auto px-4 py-3 font-mono text-[11px] leading-5 whitespace-pre",
+                        for line in DX_SERVE_LOG {
+                            div { class: terminal_line_class(line),
+                                "{line}"
+                            }
+                        }
+                    }
+                }
+
+                // VS Code-style status bar
+                div { class: "flex items-center justify-between px-3 py-1.5 bg-ghdarkmetal text-gray-400 text-[10px] font-medium border-t border-gray-800",
+                    div { class: "flex items-center gap-3",
+                        span { class: "font-mono", "⎇ main*" }
+                        span { "⚠ 0  ✕ 0" }
+                        span { "$(sync) Hot Reload" }
+                        span { class: "hidden md:inline", "dioxus_docs_site" }
+                    }
+                    div { class: "flex items-center gap-3",
+                        span { class: "hidden sm:inline", "Rust" }
+                        span { class: "hidden sm:inline", "UTF-8" }
+                        span { class: "hidden md:inline", "LF" }
+                        span { "Web" }
+                        span { class: "font-mono", "127.0.0.1:8080" }
                     }
                 }
             }

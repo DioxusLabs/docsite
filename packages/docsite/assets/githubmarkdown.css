@@ -336,8 +336,24 @@
   padding: 0;
 }
 
+.markdown-body details {
+  border-left: 2px solid var(--color-border-default);
+  padding: 0.25em 1em;
+  transition: border-color 0.15s ease;
+}
+
+.markdown-body details:hover {
+  border-left-color: var(--color-fg-muted);
+}
+
 .markdown-body details summary {
   cursor: pointer;
+  font-weight: 500;
+  padding: 0.25em 0;
+}
+
+.markdown-body details[open] summary {
+  margin-bottom: 0.5em;
 }
 
 .markdown-body details:not([open]) > :not(summary) {

@@ -243,7 +243,7 @@ If your server is simple enough, then option 1 can be a decent option since it a
 However, if you choose to have a dedicated server binary, then you'll need to use the `@client` and `@server` modifiers to use a different binary:
 
 ```sh
-dx serve @client --bin dog-app @server --bin pet-api
+dx serve @client --package dog-app @server --package pet-api
 ```
 
 The built-in "Workspace" Dioxus Template can serve as a good starting point for workspace setups.

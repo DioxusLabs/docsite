@@ -12,7 +12,7 @@ pub(crate) fn Components() -> Element {
             .map(|dark_mode| format!("dark_mode={}", dark_mode))
             .unwrap_or_default();
         format!(
-            "https://dioxuslabs.github.io/components/{segments}?iframe=true&{dark_mode}&{query}"
+            "https://dioxuslabs.github.io/dioxus-components/{segments}?iframe=true&{dark_mode}&{query}"
         )
     }
 

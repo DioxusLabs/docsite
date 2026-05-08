@@ -22,7 +22,6 @@ members = [
     "packages/include_mdbook/packages/mdbook-macro",
     "packages/include_mdbook/packages/use-mdbook",
     "packages/include_mdbook/packages/mdbook-shared",
-    "packages/include_mdbook/packages/syntect-html",
     "packages/include_mdbook/packages/mdbook-gen",
     "packages/include_mdbook/packages/mdbook-gen-example",
 
@@ -50,7 +49,6 @@ stork-lib = { git = "https://github.com/dioxuslabs/stork", default-features = fa
 mdbook-gen = { path = "packages/include_mdbook/packages/mdbook-gen" }
 use-mdbook = { path = "packages/include_mdbook/packages/use-mdbook" }
 mdbook-shared = { path = "packages/include_mdbook/packages/mdbook-shared" }
-syntect-html = { path = "packages/include_mdbook/packages/syntect-html" }
 
 # playground
 model = { path = "packages/playground/model" }
@@ -81,6 +79,7 @@ dioxus-rsx-rosetta = "0.7.0"
 dioxus-autofmt = "0.7.0"
 dioxus-dx-wire-format = "0.7.0"
 dioxus-logger = "0.7.0"
+dioxus-code = { version = "0.1.1", default-features = false }
 
 # 3rd-party dioxus
 # dioxus-sdk = { version = "0.6", default-features = false }

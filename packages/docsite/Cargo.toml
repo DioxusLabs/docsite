@@ -20,7 +20,7 @@ dioxus-docs-blog = { workspace = true }
 dioxus-docs-examples = { workspace = true }
 
 # dioxus-material-icons = { version = "3.0.0" }
-syntect-html = { workspace = true }
+dioxus-code = { workspace = true, features = ["macro"] }
 mdbook-shared = { workspace = true }
 use-mdbook = { workspace = true }
 dioxus-search = { workspace = true }

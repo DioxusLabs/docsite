@@ -12,9 +12,6 @@ use dioxus_rsx::{BodyNode, CallBody, TemplateBody};
 use pulldown_cmark::{Alignment, CodeBlockKind, Event, Options, Parser, Tag};
 use syn::{parse_quote, parse_str, Ident};
 
-use syntect::highlighting::ThemeSet;
-use syntect::parsing::SyntaxSet;
-
 use crate::{
     path_to_route_enum, path_to_route_enum_with_section, to_upper_camel_case_for_ident,
     EmptyIdentError,
@@ -364,17 +361,8 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                 if lang.as_deref() == Some("inject-dioxus") {
                     self.start_node(parse_str::<BodyNode>(&raw_code).unwrap());
                 } else {
-                    // syntect doesn't seem to detect by name properly, so we transform some common names
-                    // to their extension
-                    let lang = match lang.as_deref() {
-                        Some("shell") => "sh",
-                        Some("javascript") => "js",
-                        Some(res) => res,
-                        None => "txt",
-                    };
-
-                    let dark_html = build_codeblock(&raw_code, lang, true);
-                    let light_html = build_codeblock(&raw_code, lang, false);
+                    let language = normalize_code_language(lang.as_deref());
+                    let source = highlighted_source_tokens(raw_code.trim_end(), &language);
 
                     let fname = if let Some(fname) = fname {
                         quote! { name: #fname.to_string() }
@@ -384,8 +372,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
 
                     self.start_node(parse_quote! {
                         CodeBlock {
-                            contents: #dark_html,
-                            light_contents: #light_html,
+                            source: #source,
                             #fname
                         }
                     });
@@ -763,77 +750,124 @@ impl<'a, I: Iterator<Item = Event<'a>>> Iterator for ResolveCodeBlock<'a, I> {
     }
 }
 
-fn build_codeblock(code: &str, lang: &str, is_dark: bool) -> String {
-    static DARK_THEME: once_cell::sync::Lazy<syntect::highlighting::Theme> =
-        once_cell::sync::Lazy::new(|| {
-            let raw = include_str!("../themes/MonokaiDark.thTheme").to_string();
-            let mut reader = std::io::Cursor::new(raw.clone());
-            ThemeSet::load_from_reader(&mut reader).unwrap()
-        });
+fn normalize_code_language(lang: Option<&str>) -> String {
+    let lang = lang
+        .unwrap_or_default()
+        .trim()
+        .split(|ch: char| ch.is_whitespace() || ch == ',')
+        .next()
+        .unwrap_or_default()
+        .to_ascii_lowercase();
 
-    static LIGHT_THEME: once_cell::sync::Lazy<syntect::highlighting::Theme> =
-        once_cell::sync::Lazy::new(|| {
-            let raw = include_str!("../themes/Base16.thTheme").to_string();
-            let mut reader = std::io::Cursor::new(raw.clone());
-            ThemeSet::load_from_reader(&mut reader).unwrap()
-        });
-    // once_cell::sync::Lazy::new(|| ThemeSet::load_defaults().themes["InspiredGitHub"].clone());
-    // once_cell::sync::Lazy::new(|| ThemeSet::load_defaults().themes["InspiredGitHub"].clone());
-
-    let lang = if lang.to_ascii_lowercase() == "rust" {
-        "rs"
-    } else {
-        lang
-    };
-
-    let ss = modern_syntax_set();
-    let syntax = ss.find_syntax_by_name(lang).unwrap_or_else(|| {
-        ss.find_syntax_by_extension(lang).unwrap_or_else(|| {
-            ss.find_syntax_by_extension("txt").unwrap_or_else(|| {
-                panic!("Failed to find syntax for {lang} from {:#?}", ss.syntaxes())
-            })
-        })
-    });
-
-    let html = syntect::html::highlighted_html_for_string(
-        code.trim_end(),
-        &ss,
-        syntax,
-        if is_dark { &DARK_THEME } else { &LIGHT_THEME },
-    )
-    .unwrap();
-
-    escape_text(&html)
+    match lang.as_str() {
+        "bash" | "sh" | "shell" => "bash",
+        "cmd" => "batch",
+        "js" => "javascript",
+        "jsx" => "tsx",
+        "plain" | "text" | "txt" => "",
+        "rs" => "rust",
+        "yml" => "yaml",
+        language => language,
+    }
+    .to_string()
 }
 
-// This is an updated set of syntaxes with support for toml
-fn modern_syntax_set() -> SyntaxSet {
-    static SYNTAX_SET: once_cell::sync::Lazy<SyntaxSet> = once_cell::sync::Lazy::new(|| {
-        use syntect::parsing::SyntaxSetBuilder;
-        let mut builder = SyntaxSetBuilder::new();
-        builder
-            .add_from_folder(
-                PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("sublime_toml_highlighting"),
-                true,
-            )
-            .unwrap();
-        builder
-            .add_from_folder(
-                PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("Packages"),
-                true,
-            )
-            .unwrap();
-        builder
-            .add_from_folder(
-                PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("rust-enhanced"),
-                true,
-            )
-            .unwrap();
-        builder.add_plain_text_syntax();
-        builder.build()
+fn highlighted_source_tokens(code: &str, language: &str) -> TokenStream2 {
+    let code = code.to_string();
+    let spans = if language.is_empty() {
+        Vec::new()
+    } else {
+        let mut highlighter = arborium::Highlighter::new();
+        highlighter
+            .highlight_spans(language, &code)
+            .map(normalize_highlight_spans)
+            .unwrap_or_default()
+    };
+
+    let spans = spans.into_iter().map(|span| {
+        let start = span.start;
+        let end = span.end;
+        let tag = span.tag;
+        quote! {
+            use_mdbook::HighlightSpan::new(#start..#end, #tag)
+        }
     });
 
-    SYNTAX_SET.clone()
+    quote! {{
+        static SPANS: &[use_mdbook::HighlightSpan] = &[#(#spans),*];
+        use_mdbook::HighlightedSource::from_static_parts(
+            #code,
+            use_mdbook::Language::Rust,
+            SPANS,
+        )
+    }}
+}
+
+struct NormalizedHighlightSpan {
+    start: u32,
+    end: u32,
+    tag: &'static str,
+}
+
+struct RawHighlightSpan {
+    start: u32,
+    end: u32,
+    tag: Option<&'static str>,
+    pattern_index: u32,
+}
+
+fn normalize_highlight_spans(spans: Vec<arborium::advanced::Span>) -> Vec<NormalizedHighlightSpan> {
+    use std::collections::HashMap;
+
+    let mut deduped: HashMap<(u32, u32), RawHighlightSpan> = HashMap::new();
+    for span in spans {
+        let span = RawHighlightSpan {
+            start: span.start,
+            end: span.end,
+            tag: arborium_theme::tag_for_capture(&span.capture),
+            pattern_index: span.pattern_index,
+        };
+        let key = (span.start, span.end);
+
+        if let Some(existing) = deduped.get(&key) {
+            let should_replace = match (span.tag.is_some(), existing.tag.is_some()) {
+                (true, false) => true,
+                (false, true) => false,
+                _ => span.pattern_index >= existing.pattern_index,
+            };
+            if should_replace {
+                deduped.insert(key, span);
+            }
+        } else {
+            deduped.insert(key, span);
+        }
+    }
+
+    let mut spans: Vec<_> = deduped
+        .into_values()
+        .filter_map(|span| {
+            Some(NormalizedHighlightSpan {
+                start: span.start,
+                end: span.end,
+                tag: span.tag?,
+            })
+        })
+        .collect();
+
+    spans.sort_by_key(|span| (span.start, span.end));
+
+    let mut coalesced: Vec<NormalizedHighlightSpan> = Vec::with_capacity(spans.len());
+    for span in spans {
+        if let Some(last) = coalesced.last_mut() {
+            if span.tag == last.tag && span.start <= last.end {
+                last.end = last.end.max(span.end);
+                continue;
+            }
+        }
+        coalesced.push(span);
+    }
+
+    coalesced
 }
 
 fn transform_code_block(

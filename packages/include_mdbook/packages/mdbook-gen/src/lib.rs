@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 use std::path::Path;
 use std::path::PathBuf;
 
@@ -70,7 +70,7 @@ pub fn generate_router_as_file(
 pub fn generate_router(mdbook_dir: PathBuf, book: mdbook_shared::MdBook<PathBuf>) -> TokenStream2 {
     let mdbook = write_book_with_routes(&book);
 
-    let mut page_markdown_map = HashMap::new();
+    let mut page_markdown_map = BTreeMap::new();
 
     let book_pages = book.pages().iter().map(|(_, page)| {
         let name = path_to_route_variant(&page.url).unwrap();

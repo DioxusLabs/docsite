@@ -4573,13 +4573,8 @@ name = "mdbook-gen-example"
 version = "0.0.0"
 dependencies = [
  "dioxus",
- "dioxus-autofmt",
  "dioxus-code",
- "mdbook-gen",
- "mdbook-shared",
- "prettyplease",
  "serde",
- "syn 2.0.117",
  "use-mdbook",
 ]
 

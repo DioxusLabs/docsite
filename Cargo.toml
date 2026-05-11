@@ -79,7 +79,21 @@ dioxus-rsx-rosetta = "0.7.0"
 dioxus-autofmt = "0.7.0"
 dioxus-dx-wire-format = "0.7.0"
 dioxus-logger = "0.7.0"
-dioxus-code = { version = "0.1.1", default-features = false }
+dioxus-code = { version = "0.1.2", default-features = false, features = [
+    "macro",
+    "lang-bash",
+    "lang-batch",
+    "lang-css",
+    "lang-dockerfile",
+    "lang-html",
+    "lang-javascript",
+    "lang-json",
+    "lang-lua",
+    "lang-powershell",
+    "lang-toml",
+    "lang-tsx",
+    "lang-yaml",
+] }
 
 # 3rd-party dioxus
 # dioxus-sdk = { version = "0.6", default-features = false }

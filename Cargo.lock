@@ -1580,21 +1580,22 @@ dependencies = [
 
 [[package]]
 name = "dioxus-code"
-version = "0.1.1"
+version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "28fcba1b18d2caec11fe1ff2db089c75353c5dd011fe8fc06913d58cd7fba7f1"
+checksum = "859cbf40e5da690df269d4d1ab01b4ec9921b408cec4cabce2dd1620cc15670e"
 dependencies = [
  "arborium",
  "arborium-theme",
+ "arborium-tree-sitter",
  "dioxus",
  "dioxus-code-macro",
 ]
 
 [[package]]
 name = "dioxus-code-macro"
-version = "0.1.0"
+version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fa8a99cabf9a5b47d492f6d6c9c7291ec1bb739af67a06895a1dd7c5a044dfa2"
+checksum = "8654ef9b81bb051546b772cfd709401055a1460b3e8fb26d7847b040498354d0"
 dependencies = [
  "arborium",
  "arborium-theme",
@@ -1755,6 +1756,7 @@ name = "dioxus-docs-03"
 version = "0.0.0"
 dependencies = [
  "dioxus",
+ "dioxus-code",
  "dioxus-docs-examples",
  "mdbook-gen",
  "mdbook-shared",
@@ -1767,6 +1769,7 @@ name = "dioxus-docs-04"
 version = "0.0.0"
 dependencies = [
  "dioxus",
+ "dioxus-code",
  "dioxus-docs-examples",
  "mdbook-gen",
  "mdbook-shared",
@@ -1779,6 +1782,7 @@ name = "dioxus-docs-05"
 version = "0.0.0"
 dependencies = [
  "dioxus",
+ "dioxus-code",
  "dioxus-docs-examples",
  "mdbook-gen",
  "mdbook-shared",
@@ -1791,6 +1795,7 @@ name = "dioxus-docs-06"
 version = "0.0.0"
 dependencies = [
  "dioxus",
+ "dioxus-code",
  "dioxus-docs-examples",
  "mdbook-gen",
  "mdbook-shared",
@@ -1803,6 +1808,7 @@ name = "dioxus-docs-07"
 version = "0.0.0"
 dependencies = [
  "dioxus",
+ "dioxus-code",
  "dioxus-docs-examples",
  "mdbook-gen",
  "mdbook-shared",
@@ -1815,6 +1821,7 @@ name = "dioxus-docs-blog"
 version = "0.0.0"
 dependencies = [
  "dioxus",
+ "dioxus-code",
  "dioxus-docs-examples",
  "mdbook-gen",
  "mdbook-shared",
@@ -4544,8 +4551,6 @@ name = "mdbook-gen"
 version = "0.0.0"
 dependencies = [
  "anyhow",
- "arborium",
- "arborium-theme",
  "convert_case 0.6.0",
  "dioxus-autofmt",
  "dioxus-rsx",
@@ -4569,6 +4574,7 @@ version = "0.0.0"
 dependencies = [
  "dioxus",
  "dioxus-autofmt",
+ "dioxus-code",
  "mdbook-gen",
  "mdbook-shared",
  "prettyplease",
@@ -4936,7 +4942,7 @@ version = "0.7.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ff32365de1b6743cb203b710788263c44a03de03802daf96092f2da4fe6ba4d7"
 dependencies = [
- "proc-macro-crate 2.0.0",
+ "proc-macro-crate 3.5.0",
  "proc-macro2",
  "quote",
  "syn 2.0.117",
@@ -7686,7 +7692,6 @@ name = "use-mdbook"
 version = "0.1.0"
 dependencies = [
  "dioxus",
- "dioxus-code",
  "dioxus-router",
  "lazy_static",
  "mdbook-macro",

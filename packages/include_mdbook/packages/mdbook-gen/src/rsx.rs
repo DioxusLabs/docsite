@@ -773,101 +773,42 @@ fn normalize_code_language(lang: Option<&str>) -> String {
 }
 
 fn highlighted_source_tokens(code: &str, language: &str) -> TokenStream2 {
-    let code = code.to_string();
-    let spans = if language.is_empty() {
-        Vec::new()
-    } else {
-        let mut highlighter = arborium::Highlighter::new();
-        highlighter
-            .highlight_spans(language, &code)
-            .map(normalize_highlight_spans)
-            .unwrap_or_default()
+    let Some(variant) = language_variant_ident(language) else {
+        return quote! {{
+            ::dioxus_code::advanced::HighlightedSource::from_static_parts(
+                #code,
+                ::dioxus_code::Language::Rust,
+                &[],
+            )
+        }};
     };
-
-    let spans = spans.into_iter().map(|span| {
-        let start = span.start;
-        let end = span.end;
-        let tag = span.tag;
-        quote! {
-            use_mdbook::HighlightSpan::new(#start..#end, #tag)
-        }
-    });
-
+    let variant_ident = Ident::new(variant, Span::call_site());
     quote! {{
-        static SPANS: &[use_mdbook::HighlightSpan] = &[#(#spans),*];
-        use_mdbook::HighlightedSource::from_static_parts(
+        ::dioxus_code::code_str!(
             #code,
-            use_mdbook::Language::Rust,
-            SPANS,
+            ::dioxus_code::CodeOptions::builder()
+                .with_language(::dioxus_code::Language::#variant_ident)
         )
     }}
 }
 
-struct NormalizedHighlightSpan {
-    start: u32,
-    end: u32,
-    tag: &'static str,
-}
-
-struct RawHighlightSpan {
-    start: u32,
-    end: u32,
-    tag: Option<&'static str>,
-    pattern_index: u32,
-}
-
-fn normalize_highlight_spans(spans: Vec<arborium::advanced::Span>) -> Vec<NormalizedHighlightSpan> {
-    use std::collections::HashMap;
-
-    let mut deduped: HashMap<(u32, u32), RawHighlightSpan> = HashMap::new();
-    for span in spans {
-        let span = RawHighlightSpan {
-            start: span.start,
-            end: span.end,
-            tag: arborium_theme::tag_for_capture(&span.capture),
-            pattern_index: span.pattern_index,
-        };
-        let key = (span.start, span.end);
-
-        if let Some(existing) = deduped.get(&key) {
-            let should_replace = match (span.tag.is_some(), existing.tag.is_some()) {
-                (true, false) => true,
-                (false, true) => false,
-                _ => span.pattern_index >= existing.pattern_index,
-            };
-            if should_replace {
-                deduped.insert(key, span);
-            }
-        } else {
-            deduped.insert(key, span);
-        }
-    }
-
-    let mut spans: Vec<_> = deduped
-        .into_values()
-        .filter_map(|span| {
-            Some(NormalizedHighlightSpan {
-                start: span.start,
-                end: span.end,
-                tag: span.tag?,
-            })
-        })
-        .collect();
-
-    spans.sort_by_key(|span| (span.start, span.end));
-
-    let mut coalesced: Vec<NormalizedHighlightSpan> = Vec::with_capacity(spans.len());
-    for span in spans {
-        if let Some(last) = coalesced.last_mut() {
-            if span.tag == last.tag && span.start <= last.end {
-                last.end = last.end.max(span.end);
-                continue;
-            }
-        }
-        coalesced.push(span);
-    }
-
-    coalesced
+fn language_variant_ident(slug: &str) -> Option<&'static str> {
+    Some(match slug {
+        "bash" => "Bash",
+        "batch" => "Batch",
+        "css" => "Css",
+        "dockerfile" => "Dockerfile",
+        "html" => "Html",
+        "javascript" => "JavaScript",
+        "json" => "Json",
+        "lua" => "Lua",
+        "powershell" => "PowerShell",
+        "rust" => "Rust",
+        "toml" => "Toml",
+        "tsx" => "Tsx",
+        "yaml" => "Yaml",
+        _ => return None,
+    })
 }
 
 fn transform_code_block(

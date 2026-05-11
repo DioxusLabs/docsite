@@ -4,6 +4,7 @@ version = "0.0.0"
 edition = "2021"
 
 [dependencies]
+dioxus-code = { workspace = true }
 serde = {version = "1.0.163", features = ["derive"]}
 use-mdbook = { workspace = true }
 dioxus = { workspace = true, features = ["router"] }

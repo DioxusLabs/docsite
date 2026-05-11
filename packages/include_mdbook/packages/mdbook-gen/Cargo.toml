@@ -4,22 +4,6 @@ version = "0.0.0"
 edition = "2021"
 
 [dependencies]
-arborium = { version = "2.16.0", default-features = false, features = [
-    "lang-bash",
-    "lang-batch",
-    "lang-css",
-    "lang-dockerfile",
-    "lang-html",
-    "lang-javascript",
-    "lang-json",
-    "lang-lua",
-    "lang-powershell",
-    "lang-rust",
-    "lang-toml",
-    "lang-tsx",
-    "lang-yaml",
-] }
-arborium-theme = "2.16.0"
 proc-macro2 = { version = "1.0" }
 quote = "1.0"
 syn = { workspace = true }

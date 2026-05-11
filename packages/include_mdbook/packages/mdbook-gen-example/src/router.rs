@@ -21,14 +21,14 @@ impl BookRoute {
     /// Get the markdown for a page by its ID
     pub const fn page_markdown(id: use_mdbook::mdbook_shared::PageId) -> &'static str {
         match id.0 {
+            0usize => {
+                "# Liveview\n\nLiveview allows apps to *run* on the server and *render* in the browser. It uses WebSockets to communicate between the server and the browser.\n\nExamples:\n\n* [Axum Example](https://github.com/DioxusLabs/dioxus/tree/master/packages/liveview/examples/axum.rs)\n* [Salvo Example](https://github.com/DioxusLabs/dioxus/tree/master/packages/liveview/examples/salvo.rs)\n* [Warp Example](https://github.com/DioxusLabs/dioxus/tree/master/packages/liveview/examples/warp.rs)\n\n## Support\n\nLiveview is currently limited in capability when compared to the Web platform. Liveview apps run on the server in a native thread. This means that browser APIs are not available, so rendering WebGL, Canvas, etc is not as easy as the Web. However, native system APIs are accessible, so streaming, WebSockets, filesystem, etc are all viable APIs.\n\n## Setup\n\nFor this guide, we're going to show how to use Dioxus Liveview with [Axum](https://docs.rs/axum/latest/axum/).\n\nMake sure you have Rust and Cargo installed, and then create a new project:\n\n````shell\ncargo new --bin demo\ncd app\n````\n\nAdd Dioxus and the liveview renderer with the Axum feature as dependencies:\n\n````shell\ncargo add dioxus\ncargo add dioxus-liveview --features axum\n````\n\nNext, add all the Axum dependencies. This will be different if you're using a different Web Framework\n\n````\ncargo add tokio --features full\ncargo add axum\n````\n\nYour dependencies should look roughly like this:\n\n````toml\n[dependencies]\naxum = \"0.4.5\"\ndioxus = { version = \"*\" }\ndioxus-liveview = { version = \"*\", features = [\"axum\"] }\ntokio = { version = \"1.15.0\", features = [\"full\"] }\n````\n\n````rs@included_example.rs\nfn it_works() {}\n\n````\n\n````sh\n{\"timestamp\":\"   9.927s\",\"level\":\"INFO\",\"message\":\"Bundled app successfully!\",\"target\":\"dx::cli::bundle\"}\n{\"timestamp\":\"   9.927s\",\"level\":\"INFO\",\"message\":\"App produced 2 outputs:\",\"target\":\"dx::cli::bundle\"}\n{\"timestamp\":\"   9.927s\",\"level\":\"INFO\",\"message\":\"app - [target/dx/hot_dog/bundle/macos/bundle/macos/HotDog.app]\",\"target\":\"dx::cli::bundle\"}\n{\"timestamp\":\"   9.927s\",\"level\":\"INFO\",\"message\":\"dmg - [target/dx/hot_dog/bundle/macos/bundle/dmg/HotDog_0.1.0_aarch64.dmg]\",\"target\":\"dx::cli::bundle\"}\n{\"timestamp\":\"   9.927s\",\"level\":\"DEBUG\",\"json\":\"{\\\"BundleOutput\\\":{\\\"bundles\\\":[\\\"target/dx/hot_dog/bundle/macos/bundle/macos/HotDog.app\\\"]}}\"}\n````"
+            }
             2usize => {
                 "# Assets\n\nSome assets:\n![some_external](https://avatars.githubusercontent.com/u/79236386?s=200&v=4)\n![some_local](/example-book/assets/logo.png)\n![some_local1](/example-book/assets/logo1.png)\n![some_local2](/example-book/assets/logo2.png)"
             }
             1usize => {
                 "# Roadmap & Feature-set\n\nThis feature set and roadmap can help you decide if what Dioxus can do today works for you.\n\nIf a feature that you need doesn't exist or you want to contribute to projects on the roadmap, feel free to get involved by [joining the discord](https://discord.gg/XgGxMSkvUM).\n\nGenerally, here's the status of each platform:\n\n* **Web**: Dioxus is a great choice for pure web-apps – especially for CRUD/complex apps. However, it does lack the ecosystem of React, so you might be missing a component library or some useful hook.\n\n* **SSR**: Dioxus is a great choice for pre-rendering, hydration, and rendering HTML on a web endpoint. Be warned – the VirtualDom is not (currently) `Send + Sync`.\n\n* **Desktop**: You can build very competent single-window desktop apps right now. However, multi-window apps require support from Dioxus core and are not ready.\n\n* **Mobile**: Mobile support is very young. You'll be figuring things out as you go and there are not many support crates for peripherals.\n\n* **LiveView**: LiveView support is very young. You'll be figuring things out as you go. Thankfully, none of it is too hard and any work can be upstreamed into Dioxus.\n\n````rust\nfn main() {\n  dioxus_rocks;\n}\n````\n\n## Features\n\n---\n\n|Feature|Status|Description|\n|-------|------|-----------|\n|Conditional Rendering|✅|if/then to hide/show component|\n|Map, Iterator|✅|map/filter/reduce to produce rsx!|\n|Keyed Components|✅|advanced diffing with keys|\n|Web|✅|renderer for web browser|\n|Desktop (webview)|✅|renderer for desktop|\n|Shared State (Context)|✅|share state through the tree|\n|Hooks|✅|memory cells in components|\n|SSR|✅|render directly to string|\n|Component Children|✅|cx.children() as a list of nodes|\n|Headless components|✅|components that don't return real elements|\n|Fragments|✅|multiple elements without a real root|\n|Manual Props|✅|Manually pass in props with spread syntax|\n|Controlled Inputs|✅|stateful wrappers around inputs|\n|CSS/Inline Styles|✅|syntax for inline styles/attribute groups|\n|Custom elements|✅|Define new element primitives|\n|Suspense|✅|schedule future render from future/promise|\n|Integrated error handling|✅|Gracefully handle errors with ? syntax|\n|NodeRef|✅|gain direct access to nodes|\n|Re-hydration|✅|Pre-render to HTML to speed up first contentful paint|\n|Jank-Free Rendering|✅|Large diffs are segmented across frames for silky-smooth transitions|\n|Effects|✅|Run effects after a component has been committed to render|\n|Portals|🛠|Render nodes outside of the traditional tree structure|\n|Cooperative Scheduling|🛠|Prioritize important events over non-important events|\n|Server Components|🛠|Hybrid components for SPA and Server|\n|Bundle Splitting|👀|Efficiently and asynchronously load the app|\n|Lazy Components|👀|Dynamically load the new components as the page is loaded|\n|1st class global state|✅|redux/recoil/mobx on top of context|\n|Runs natively|✅|runs as a portable binary w/o a runtime (Node)|\n|Subtree Memoization|✅|skip diffing static element subtrees|\n|High-efficiency templates|✅|rsx! calls are translated to templates on the DOM's side|\n|Compile-time correct|✅|Throw errors on invalid template layouts|\n|Heuristic Engine|✅|track component memory usage to minimize future allocations|\n|Fine-grained reactivity|👀|Skip diffing for fine-grain updates|\n\n* ✅ = implemented and working\n* 🛠 = actively being worked on\n* 👀 = not yet implemented or being worked on\n\n## Roadmap\n\nThese Features are planned for the future of Dioxus:\n\n### Core\n\n* [x] Release of Dioxus Core\n* [x] Upgrade documentation to include more theory and be more comprehensive\n* [x] Support for HTML-side templates for lightning-fast dom manipulation\n* [ ] Support for multiple renderers for same virtualdom (subtrees)\n* [ ] Support for ThreadSafe (Send + Sync)\n* [ ] Support for Portals\n\n### SSR\n\n* [x] SSR Support + Hydration\n* [ ] Integrated suspense support for SSR\n\n### Desktop\n\n* [ ] Declarative window management\n* [ ] Templates for building/bundling\n* [ ] Access to Canvas/WebGL context natively\n\n### Mobile\n\n* [ ] Mobile standard library\n  * [ ] GPS\n  * [ ] Camera\n  * [ ] filesystem\n  * [ ] Biometrics\n  * [ ] WiFi\n  * [ ] Bluetooth\n  * [ ] Notifications\n  * [ ] Clipboard\n* [ ] Animations\n\n### Bundling (CLI)\n\n* [x] Translation from HTML into RSX\n* [x] Dev server\n* [x] Live reload\n* [x] Translation from JSX into RSX\n* [ ] Hot module replacement\n* [ ] Code splitting\n* [ ] Asset macros\n* [ ] Css pipeline\n* [ ] Image pipeline\n\n### Essential hooks\n\n* [x] Router\n* [x] Global state management\n* [ ] Resize observer\n\n## Work in Progress\n\n### Build Tool\n\nWe are currently working on our own build tool called [Dioxus CLI](https://github.com/DioxusLabs/dioxus/tree/master/packages/cli) which will support:\n\n* an interactive TUI\n* on-the-fly reconfiguration\n* hot CSS reloading\n* two-way data binding between browser and source code\n* an interpreter for `rsx!`\n* ability to publish to github/netlify/vercel\n* bundling for iOS/Desktop/etc\n\n### Server Component Support\n\nWhile not currently fully implemented, the expectation is that LiveView apps can be a hybrid between Wasm and server-rendered where only portions of a page are \"live\" and the rest of the page is either server-rendered, statically generated, or handled by the host SPA.\n\n### Native rendering\n\nWe are currently working on a native renderer for Dioxus using WGPU called [Blitz](https://github.com/DioxusLabs/blitz/). This will allow you to build apps that are rendered natively for iOS, Android, and Desktop.\n\n## Internal Links\n\nInternal links like [this](./chapter_1.md) are typechecked and will fail to compile if the file is not found."
-            }
-            0usize => {
-                "# Liveview\n\nLiveview allows apps to *run* on the server and *render* in the browser. It uses WebSockets to communicate between the server and the browser.\n\nExamples:\n\n* [Axum Example](https://github.com/DioxusLabs/dioxus/tree/master/packages/liveview/examples/axum.rs)\n* [Salvo Example](https://github.com/DioxusLabs/dioxus/tree/master/packages/liveview/examples/salvo.rs)\n* [Warp Example](https://github.com/DioxusLabs/dioxus/tree/master/packages/liveview/examples/warp.rs)\n\n## Support\n\nLiveview is currently limited in capability when compared to the Web platform. Liveview apps run on the server in a native thread. This means that browser APIs are not available, so rendering WebGL, Canvas, etc is not as easy as the Web. However, native system APIs are accessible, so streaming, WebSockets, filesystem, etc are all viable APIs.\n\n## Setup\n\nFor this guide, we're going to show how to use Dioxus Liveview with [Axum](https://docs.rs/axum/latest/axum/).\n\nMake sure you have Rust and Cargo installed, and then create a new project:\n\n````shell\ncargo new --bin demo\ncd app\n````\n\nAdd Dioxus and the liveview renderer with the Axum feature as dependencies:\n\n````shell\ncargo add dioxus\ncargo add dioxus-liveview --features axum\n````\n\nNext, add all the Axum dependencies. This will be different if you're using a different Web Framework\n\n````\ncargo add tokio --features full\ncargo add axum\n````\n\nYour dependencies should look roughly like this:\n\n````toml\n[dependencies]\naxum = \"0.4.5\"\ndioxus = { version = \"*\" }\ndioxus-liveview = { version = \"*\", features = [\"axum\"] }\ntokio = { version = \"1.15.0\", features = [\"full\"] }\n````\n\n````rs@included_example.rs\nfn it_works() {}\n\n````\n\n````sh\n{\"timestamp\":\"   9.927s\",\"level\":\"INFO\",\"message\":\"Bundled app successfully!\",\"target\":\"dx::cli::bundle\"}\n{\"timestamp\":\"   9.927s\",\"level\":\"INFO\",\"message\":\"App produced 2 outputs:\",\"target\":\"dx::cli::bundle\"}\n{\"timestamp\":\"   9.927s\",\"level\":\"INFO\",\"message\":\"app - [target/dx/hot_dog/bundle/macos/bundle/macos/HotDog.app]\",\"target\":\"dx::cli::bundle\"}\n{\"timestamp\":\"   9.927s\",\"level\":\"INFO\",\"message\":\"dmg - [target/dx/hot_dog/bundle/macos/bundle/dmg/HotDog_0.1.0_aarch64.dmg]\",\"target\":\"dx::cli::bundle\"}\n{\"timestamp\":\"   9.927s\",\"level\":\"DEBUG\",\"json\":\"{\\\"BundleOutput\\\":{\\\"bundles\\\":[\\\"target/dx/hot_dog/bundle/macos/bundle/macos/HotDog.app\\\"]}}\"}\n````"
             }
             _ => panic!("Invalid page ID:"),
         }
@@ -312,118 +312,121 @@ pub fn Chapter1(section: Chapter1Section) -> Element {
         "For this guide, we're going to show how to use Dioxus Liveview with " Link { to
         : "https://docs.rs/axum/latest/axum/", "Axum" } "." } p {
         "Make sure you have Rust and Cargo installed, and then create a new project:" }
-        CodeBlock { source : { static SPANS : & [use_mdbook::HighlightSpan] = &
-        [use_mdbook::HighlightSpan::new(0u32..5u32, "f"),
-        use_mdbook::HighlightSpan::new(10u32..15u32, "co"),
-        use_mdbook::HighlightSpan::new(21u32..23u32, "f"),];
-        use_mdbook::HighlightedSource::from_static_parts("cargo new --bin demo\ncd app",
-        use_mdbook::Language::Rust, SPANS,) }, } p {
+        CodeBlock { source : { static SPANS : & [::dioxus_code::advanced::HighlightSpan]
+        = & [::dioxus_code::advanced::HighlightSpan::new(0u32..5u32, "f"),
+        ::dioxus_code::advanced::HighlightSpan::new(10u32..15u32, "co"),
+        ::dioxus_code::advanced::HighlightSpan::new(21u32..23u32, "f"),];
+        ::dioxus_code::advanced::HighlightedSource::from_static_parts("cargo new --bin demo\ncd app",
+        ::dioxus_code::Language::Rust, SPANS,) }, } p {
         "Add Dioxus and the liveview renderer with the Axum feature as dependencies:" }
-        CodeBlock { source : { static SPANS : & [use_mdbook::HighlightSpan] = &
-        [use_mdbook::HighlightSpan::new(0u32..5u32, "f"),
-        use_mdbook::HighlightSpan::new(17u32..22u32, "f"),
-        use_mdbook::HighlightSpan::new(43u32..53u32, "co"),];
-        use_mdbook::HighlightedSource::from_static_parts("cargo add dioxus\ncargo add dioxus-liveview --features axum",
-        use_mdbook::Language::Rust, SPANS,) }, } p {
+        CodeBlock { source : { static SPANS : & [::dioxus_code::advanced::HighlightSpan]
+        = & [::dioxus_code::advanced::HighlightSpan::new(0u32..5u32, "f"),
+        ::dioxus_code::advanced::HighlightSpan::new(17u32..22u32, "f"),
+        ::dioxus_code::advanced::HighlightSpan::new(43u32..53u32, "co"),];
+        ::dioxus_code::advanced::HighlightedSource::from_static_parts("cargo add dioxus\ncargo add dioxus-liveview --features axum",
+        ::dioxus_code::Language::Rust, SPANS,) }, } p {
         "Next, add all the Axum dependencies. This will be different if you're using a different Web Framework"
-        } CodeBlock { source : { static SPANS : & [use_mdbook::HighlightSpan] = & [];
-        use_mdbook::HighlightedSource::from_static_parts("cargo add tokio --features full\ncargo add axum",
-        use_mdbook::Language::Rust, SPANS,) }, } p {
+        } CodeBlock { source : { static SPANS : &
+        [::dioxus_code::advanced::HighlightSpan] = & [];
+        ::dioxus_code::advanced::HighlightedSource::from_static_parts("cargo add tokio --features full\ncargo add axum",
+        ::dioxus_code::Language::Rust, SPANS,) }, } p {
         "Your dependencies should look roughly like this:" } CodeBlock { source : {
-        static SPANS : & [use_mdbook::HighlightSpan] = &
-        [use_mdbook::HighlightSpan::new(0u32..1u32, "p"),
-        use_mdbook::HighlightSpan::new(1u32..13u32, "pr"),
-        use_mdbook::HighlightSpan::new(13u32..14u32, "p"),
-        use_mdbook::HighlightSpan::new(15u32..19u32, "pr"),
-        use_mdbook::HighlightSpan::new(20u32..21u32, "o"),
-        use_mdbook::HighlightSpan::new(22u32..29u32, "s"),
-        use_mdbook::HighlightSpan::new(30u32..36u32, "pr"),
-        use_mdbook::HighlightSpan::new(37u32..38u32, "o"),
-        use_mdbook::HighlightSpan::new(39u32..40u32, "p"),
-        use_mdbook::HighlightSpan::new(41u32..48u32, "pr"),
-        use_mdbook::HighlightSpan::new(49u32..50u32, "o"),
-        use_mdbook::HighlightSpan::new(51u32..54u32, "s"),
-        use_mdbook::HighlightSpan::new(55u32..56u32, "p"),
-        use_mdbook::HighlightSpan::new(57u32..72u32, "pr"),
-        use_mdbook::HighlightSpan::new(73u32..74u32, "o"),
-        use_mdbook::HighlightSpan::new(75u32..76u32, "p"),
-        use_mdbook::HighlightSpan::new(77u32..84u32, "pr"),
-        use_mdbook::HighlightSpan::new(85u32..86u32, "o"),
-        use_mdbook::HighlightSpan::new(87u32..90u32, "s"),
-        use_mdbook::HighlightSpan::new(90u32..91u32, "p"),
-        use_mdbook::HighlightSpan::new(92u32..100u32, "pr"),
-        use_mdbook::HighlightSpan::new(101u32..102u32, "o"),
-        use_mdbook::HighlightSpan::new(103u32..104u32, "p"),
-        use_mdbook::HighlightSpan::new(104u32..110u32, "s"),
-        use_mdbook::HighlightSpan::new(110u32..111u32, "p"),
-        use_mdbook::HighlightSpan::new(112u32..113u32, "p"),
-        use_mdbook::HighlightSpan::new(114u32..119u32, "pr"),
-        use_mdbook::HighlightSpan::new(120u32..121u32, "o"),
-        use_mdbook::HighlightSpan::new(122u32..123u32, "p"),
-        use_mdbook::HighlightSpan::new(124u32..131u32, "pr"),
-        use_mdbook::HighlightSpan::new(132u32..133u32, "o"),
-        use_mdbook::HighlightSpan::new(134u32..142u32, "s"),
-        use_mdbook::HighlightSpan::new(142u32..143u32, "p"),
-        use_mdbook::HighlightSpan::new(144u32..152u32, "pr"),
-        use_mdbook::HighlightSpan::new(153u32..154u32, "o"),
-        use_mdbook::HighlightSpan::new(155u32..156u32, "p"),
-        use_mdbook::HighlightSpan::new(156u32..162u32, "s"),
-        use_mdbook::HighlightSpan::new(162u32..163u32, "p"),
-        use_mdbook::HighlightSpan::new(164u32..165u32, "p"),];
-        use_mdbook::HighlightedSource::from_static_parts("[dependencies]\naxum = \"0.4.5\"\ndioxus = { version = \"*\" }\ndioxus-liveview = { version = \"*\", features = [\"axum\"] }\ntokio = { version = \"1.15.0\", features = [\"full\"] }",
-        use_mdbook::Language::Rust, SPANS,) }, } CodeBlock { source : { static SPANS : &
-        [use_mdbook::HighlightSpan] = & [use_mdbook::HighlightSpan::new(0u32..2u32, "k"),
-        use_mdbook::HighlightSpan::new(3u32..11u32, "f"),
-        use_mdbook::HighlightSpan::new(11u32..13u32, "p"),
-        use_mdbook::HighlightSpan::new(14u32..16u32, "p"),];
-        use_mdbook::HighlightedSource::from_static_parts("fn it_works() {}",
-        use_mdbook::Language::Rust, SPANS,) }, name : "included_example.rs".to_string(),
-        } CodeBlock { source : { static SPANS : & [use_mdbook::HighlightSpan] = &
-        [use_mdbook::HighlightSpan::new(1u32..12u32, "s"),
-        use_mdbook::HighlightSpan::new(1u32..105u32, "f"),
-        use_mdbook::HighlightSpan::new(13u32..24u32, "s"),
-        use_mdbook::HighlightSpan::new(25u32..32u32, "s"),
-        use_mdbook::HighlightSpan::new(33u32..39u32, "s"),
-        use_mdbook::HighlightSpan::new(40u32..49u32, "s"),
-        use_mdbook::HighlightSpan::new(50u32..77u32, "s"),
-        use_mdbook::HighlightSpan::new(78u32..86u32, "s"),
-        use_mdbook::HighlightSpan::new(87u32..104u32, "s"),
-        use_mdbook::HighlightSpan::new(107u32..118u32, "s"),
-        use_mdbook::HighlightSpan::new(107u32..209u32, "f"),
-        use_mdbook::HighlightSpan::new(119u32..130u32, "s"),
-        use_mdbook::HighlightSpan::new(131u32..138u32, "s"),
-        use_mdbook::HighlightSpan::new(139u32..145u32, "s"),
-        use_mdbook::HighlightSpan::new(146u32..155u32, "s"),
-        use_mdbook::HighlightSpan::new(156u32..181u32, "s"),
-        use_mdbook::HighlightSpan::new(182u32..190u32, "s"),
-        use_mdbook::HighlightSpan::new(191u32..208u32, "s"),
-        use_mdbook::HighlightSpan::new(211u32..222u32, "s"),
-        use_mdbook::HighlightSpan::new(211u32..352u32, "f"),
-        use_mdbook::HighlightSpan::new(223u32..234u32, "s"),
-        use_mdbook::HighlightSpan::new(235u32..242u32, "s"),
-        use_mdbook::HighlightSpan::new(243u32..249u32, "s"),
-        use_mdbook::HighlightSpan::new(250u32..259u32, "s"),
-        use_mdbook::HighlightSpan::new(260u32..324u32, "s"),
-        use_mdbook::HighlightSpan::new(325u32..333u32, "s"),
-        use_mdbook::HighlightSpan::new(334u32..351u32, "s"),
-        use_mdbook::HighlightSpan::new(354u32..365u32, "s"),
-        use_mdbook::HighlightSpan::new(354u32..507u32, "f"),
-        use_mdbook::HighlightSpan::new(366u32..377u32, "s"),
-        use_mdbook::HighlightSpan::new(378u32..385u32, "s"),
-        use_mdbook::HighlightSpan::new(386u32..392u32, "s"),
-        use_mdbook::HighlightSpan::new(393u32..402u32, "s"),
-        use_mdbook::HighlightSpan::new(403u32..479u32, "s"),
-        use_mdbook::HighlightSpan::new(480u32..488u32, "s"),
-        use_mdbook::HighlightSpan::new(489u32..506u32, "s"),
-        use_mdbook::HighlightSpan::new(509u32..520u32, "s"),
-        use_mdbook::HighlightSpan::new(509u32..652u32, "f"),
-        use_mdbook::HighlightSpan::new(521u32..532u32, "s"),
-        use_mdbook::HighlightSpan::new(533u32..540u32, "s"),
-        use_mdbook::HighlightSpan::new(541u32..548u32, "s"),
-        use_mdbook::HighlightSpan::new(549u32..555u32, "s"),
-        use_mdbook::HighlightSpan::new(556u32..651u32, "s"),];
-        use_mdbook::HighlightedSource::from_static_parts("{\"timestamp\":\"   9.927s\",\"level\":\"INFO\",\"message\":\"Bundled app successfully!\",\"target\":\"dx::cli::bundle\"}\n{\"timestamp\":\"   9.927s\",\"level\":\"INFO\",\"message\":\"App produced 2 outputs:\",\"target\":\"dx::cli::bundle\"}\n{\"timestamp\":\"   9.927s\",\"level\":\"INFO\",\"message\":\"app - [target/dx/hot_dog/bundle/macos/bundle/macos/HotDog.app]\",\"target\":\"dx::cli::bundle\"}\n{\"timestamp\":\"   9.927s\",\"level\":\"INFO\",\"message\":\"dmg - [target/dx/hot_dog/bundle/macos/bundle/dmg/HotDog_0.1.0_aarch64.dmg]\",\"target\":\"dx::cli::bundle\"}\n{\"timestamp\":\"   9.927s\",\"level\":\"DEBUG\",\"json\":\"{\\\"BundleOutput\\\":{\\\"bundles\\\":[\\\"target/dx/hot_dog/bundle/macos/bundle/macos/HotDog.app\\\"]}}\"}",
-        use_mdbook::Language::Rust, SPANS,) }, }
+        static SPANS : & [::dioxus_code::advanced::HighlightSpan] = &
+        [::dioxus_code::advanced::HighlightSpan::new(0u32..1u32, "p"),
+        ::dioxus_code::advanced::HighlightSpan::new(1u32..13u32, "pr"),
+        ::dioxus_code::advanced::HighlightSpan::new(13u32..14u32, "p"),
+        ::dioxus_code::advanced::HighlightSpan::new(15u32..19u32, "pr"),
+        ::dioxus_code::advanced::HighlightSpan::new(20u32..21u32, "o"),
+        ::dioxus_code::advanced::HighlightSpan::new(22u32..29u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(30u32..36u32, "pr"),
+        ::dioxus_code::advanced::HighlightSpan::new(37u32..38u32, "o"),
+        ::dioxus_code::advanced::HighlightSpan::new(39u32..40u32, "p"),
+        ::dioxus_code::advanced::HighlightSpan::new(41u32..48u32, "pr"),
+        ::dioxus_code::advanced::HighlightSpan::new(49u32..50u32, "o"),
+        ::dioxus_code::advanced::HighlightSpan::new(51u32..54u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(55u32..56u32, "p"),
+        ::dioxus_code::advanced::HighlightSpan::new(57u32..72u32, "pr"),
+        ::dioxus_code::advanced::HighlightSpan::new(73u32..74u32, "o"),
+        ::dioxus_code::advanced::HighlightSpan::new(75u32..76u32, "p"),
+        ::dioxus_code::advanced::HighlightSpan::new(77u32..84u32, "pr"),
+        ::dioxus_code::advanced::HighlightSpan::new(85u32..86u32, "o"),
+        ::dioxus_code::advanced::HighlightSpan::new(87u32..90u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(90u32..91u32, "p"),
+        ::dioxus_code::advanced::HighlightSpan::new(92u32..100u32, "pr"),
+        ::dioxus_code::advanced::HighlightSpan::new(101u32..102u32, "o"),
+        ::dioxus_code::advanced::HighlightSpan::new(103u32..104u32, "p"),
+        ::dioxus_code::advanced::HighlightSpan::new(104u32..110u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(110u32..111u32, "p"),
+        ::dioxus_code::advanced::HighlightSpan::new(112u32..113u32, "p"),
+        ::dioxus_code::advanced::HighlightSpan::new(114u32..119u32, "pr"),
+        ::dioxus_code::advanced::HighlightSpan::new(120u32..121u32, "o"),
+        ::dioxus_code::advanced::HighlightSpan::new(122u32..123u32, "p"),
+        ::dioxus_code::advanced::HighlightSpan::new(124u32..131u32, "pr"),
+        ::dioxus_code::advanced::HighlightSpan::new(132u32..133u32, "o"),
+        ::dioxus_code::advanced::HighlightSpan::new(134u32..142u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(142u32..143u32, "p"),
+        ::dioxus_code::advanced::HighlightSpan::new(144u32..152u32, "pr"),
+        ::dioxus_code::advanced::HighlightSpan::new(153u32..154u32, "o"),
+        ::dioxus_code::advanced::HighlightSpan::new(155u32..156u32, "p"),
+        ::dioxus_code::advanced::HighlightSpan::new(156u32..162u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(162u32..163u32, "p"),
+        ::dioxus_code::advanced::HighlightSpan::new(164u32..165u32, "p"),];
+        ::dioxus_code::advanced::HighlightedSource::from_static_parts("[dependencies]\naxum = \"0.4.5\"\ndioxus = { version = \"*\" }\ndioxus-liveview = { version = \"*\", features = [\"axum\"] }\ntokio = { version = \"1.15.0\", features = [\"full\"] }",
+        ::dioxus_code::Language::Rust, SPANS,) }, } CodeBlock { source : { static SPANS :
+        & [::dioxus_code::advanced::HighlightSpan] = &
+        [::dioxus_code::advanced::HighlightSpan::new(0u32..2u32, "k"),
+        ::dioxus_code::advanced::HighlightSpan::new(3u32..11u32, "f"),
+        ::dioxus_code::advanced::HighlightSpan::new(11u32..13u32, "p"),
+        ::dioxus_code::advanced::HighlightSpan::new(14u32..16u32, "p"),];
+        ::dioxus_code::advanced::HighlightedSource::from_static_parts("fn it_works() {}",
+        ::dioxus_code::Language::Rust, SPANS,) }, name : "included_example.rs"
+        .to_string(), } CodeBlock { source : { static SPANS : &
+        [::dioxus_code::advanced::HighlightSpan] = &
+        [::dioxus_code::advanced::HighlightSpan::new(1u32..12u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(1u32..105u32, "f"),
+        ::dioxus_code::advanced::HighlightSpan::new(13u32..24u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(25u32..32u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(33u32..39u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(40u32..49u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(50u32..77u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(78u32..86u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(87u32..104u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(107u32..118u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(107u32..209u32, "f"),
+        ::dioxus_code::advanced::HighlightSpan::new(119u32..130u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(131u32..138u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(139u32..145u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(146u32..155u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(156u32..181u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(182u32..190u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(191u32..208u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(211u32..222u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(211u32..352u32, "f"),
+        ::dioxus_code::advanced::HighlightSpan::new(223u32..234u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(235u32..242u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(243u32..249u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(250u32..259u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(260u32..324u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(325u32..333u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(334u32..351u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(354u32..365u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(354u32..507u32, "f"),
+        ::dioxus_code::advanced::HighlightSpan::new(366u32..377u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(378u32..385u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(386u32..392u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(393u32..402u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(403u32..479u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(480u32..488u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(489u32..506u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(509u32..520u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(509u32..652u32, "f"),
+        ::dioxus_code::advanced::HighlightSpan::new(521u32..532u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(533u32..540u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(541u32..548u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(549u32..555u32, "s"),
+        ::dioxus_code::advanced::HighlightSpan::new(556u32..651u32, "s"),];
+        ::dioxus_code::advanced::HighlightedSource::from_static_parts("{\"timestamp\":\"   9.927s\",\"level\":\"INFO\",\"message\":\"Bundled app successfully!\",\"target\":\"dx::cli::bundle\"}\n{\"timestamp\":\"   9.927s\",\"level\":\"INFO\",\"message\":\"App produced 2 outputs:\",\"target\":\"dx::cli::bundle\"}\n{\"timestamp\":\"   9.927s\",\"level\":\"INFO\",\"message\":\"app - [target/dx/hot_dog/bundle/macos/bundle/macos/HotDog.app]\",\"target\":\"dx::cli::bundle\"}\n{\"timestamp\":\"   9.927s\",\"level\":\"INFO\",\"message\":\"dmg - [target/dx/hot_dog/bundle/macos/bundle/dmg/HotDog_0.1.0_aarch64.dmg]\",\"target\":\"dx::cli::bundle\"}\n{\"timestamp\":\"   9.927s\",\"level\":\"DEBUG\",\"json\":\"{\\\"BundleOutput\\\":{\\\"bundles\\\":[\\\"target/dx/hot_dog/bundle/macos/bundle/macos/HotDog.app\\\"]}}\"}",
+        ::dioxus_code::Language::Rust, SPANS,) }, }
     }
 }
 #[derive(
@@ -515,15 +518,16 @@ pub fn Chapter2(section: Chapter2Section) -> Element {
         ": Mobile support is very young. You'll be figuring things out as you go and there are not many support crates for peripherals."
         } } li { p { strong { "LiveView" }
         ": LiveView support is very young. You'll be figuring things out as you go. Thankfully, none of it is too hard and any work can be upstreamed into Dioxus."
-        } } } CodeBlock { source : { static SPANS : & [use_mdbook::HighlightSpan] = &
-        [use_mdbook::HighlightSpan::new(0u32..2u32, "k"),
-        use_mdbook::HighlightSpan::new(3u32..7u32, "f"),
-        use_mdbook::HighlightSpan::new(7u32..9u32, "p"),
-        use_mdbook::HighlightSpan::new(10u32..11u32, "p"),
-        use_mdbook::HighlightSpan::new(26u32..27u32, "p"),
-        use_mdbook::HighlightSpan::new(28u32..29u32, "p"),];
-        use_mdbook::HighlightedSource::from_static_parts("fn main() {\n  dioxus_rocks;\n}",
-        use_mdbook::Language::Rust, SPANS,) }, } h2 { id : "features", Link { to :
+        } } } CodeBlock { source : { static SPANS : &
+        [::dioxus_code::advanced::HighlightSpan] = &
+        [::dioxus_code::advanced::HighlightSpan::new(0u32..2u32, "k"),
+        ::dioxus_code::advanced::HighlightSpan::new(3u32..7u32, "f"),
+        ::dioxus_code::advanced::HighlightSpan::new(7u32..9u32, "p"),
+        ::dioxus_code::advanced::HighlightSpan::new(10u32..11u32, "p"),
+        ::dioxus_code::advanced::HighlightSpan::new(26u32..27u32, "p"),
+        ::dioxus_code::advanced::HighlightSpan::new(28u32..29u32, "p"),];
+        ::dioxus_code::advanced::HighlightedSource::from_static_parts("fn main() {\n  dioxus_rocks;\n}",
+        ::dioxus_code::Language::Rust, SPANS,) }, } h2 { id : "features", Link { to :
         BookRoute::Chapter2 { section : Chapter2Section::Features, }, class : "header",
         "Features" } } hr {} table { thead { th { "Feature" } th { "Status" } th {
         "Description" } } tr { th { "Conditional Rendering" } th { "✅" } th {

@@ -361,8 +361,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                 if lang.as_deref() == Some("inject-dioxus") {
                     self.start_node(parse_str::<BodyNode>(&raw_code).unwrap());
                 } else {
-                    let language = normalize_code_language(lang.as_deref());
-                    let source = highlighted_source_tokens(raw_code.trim_end(), &language);
+                    let source = highlighted_source_tokens(raw_code.trim_end(), lang.as_deref());
 
                     let fname = if let Some(fname) = fname {
                         quote! { name: #fname.to_string() }
@@ -750,30 +749,11 @@ impl<'a, I: Iterator<Item = Event<'a>>> Iterator for ResolveCodeBlock<'a, I> {
     }
 }
 
-fn normalize_code_language(lang: Option<&str>) -> String {
-    let lang = lang
-        .unwrap_or_default()
-        .trim()
-        .split(|ch: char| ch.is_whitespace() || ch == ',')
-        .next()
-        .unwrap_or_default()
-        .to_ascii_lowercase();
-
-    match lang.as_str() {
-        "bash" | "sh" | "shell" => "bash",
-        "cmd" => "batch",
-        "js" => "javascript",
-        "jsx" => "tsx",
-        "plain" | "text" | "txt" => "",
-        "rs" => "rust",
-        "yml" => "yaml",
-        language => language,
-    }
-    .to_string()
-}
-
-fn highlighted_source_tokens(code: &str, language: &str) -> TokenStream2 {
-    let Some(variant) = language_variant_ident(language) else {
+fn highlighted_source_tokens(code: &str, lang: Option<&str>) -> TokenStream2 {
+    let Some(variant) = language_variant_ident(lang) else {
+        // Unknown/plain text: emit empty highlight spans so no tokens are styled.
+        // `Language` has no `PlainText` variant; the tag is unused when spans are empty,
+        // so we pick `Rust` arbitrarily as the metadata placeholder.
         return quote! {{
             ::dioxus_code::advanced::HighlightedSource::from_static_parts(
                 #code,
@@ -782,33 +762,39 @@ fn highlighted_source_tokens(code: &str, language: &str) -> TokenStream2 {
             )
         }};
     };
-    let variant_ident = Ident::new(variant, Span::call_site());
     quote! {{
         ::dioxus_code::code_str!(
             #code,
             ::dioxus_code::CodeOptions::builder()
-                .with_language(::dioxus_code::Language::#variant_ident)
+                .with_language(::dioxus_code::Language::#variant)
         )
     }}
 }
 
-fn language_variant_ident(slug: &str) -> Option<&'static str> {
-    Some(match slug {
-        "bash" => "Bash",
-        "batch" => "Batch",
+fn language_variant_ident(lang: Option<&str>) -> Option<Ident> {
+    let lang = lang?
+        .trim()
+        .split(|ch: char| ch.is_whitespace() || ch == ',')
+        .next()?
+        .to_ascii_lowercase();
+
+    let variant = match lang.as_str() {
+        "bash" | "sh" | "shell" => "Bash",
+        "batch" | "cmd" => "Batch",
         "css" => "Css",
         "dockerfile" => "Dockerfile",
         "html" => "Html",
-        "javascript" => "JavaScript",
+        "javascript" | "js" => "JavaScript",
         "json" => "Json",
         "lua" => "Lua",
         "powershell" => "PowerShell",
-        "rust" => "Rust",
+        "rs" | "rust" => "Rust",
         "toml" => "Toml",
-        "tsx" => "Tsx",
-        "yaml" => "Yaml",
+        "jsx" | "tsx" => "Tsx",
+        "yaml" | "yml" => "Yaml",
         _ => return None,
-    })
+    };
+    Some(Ident::new(variant, Span::call_site()))
 }
 
 fn transform_code_block(

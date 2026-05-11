@@ -328,4 +328,3 @@ pub(crate) fn path_to_route_enum_with_section(
         }
     })
 }
-

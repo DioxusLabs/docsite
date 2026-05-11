@@ -252,7 +252,10 @@ fn SidebarChapter<R: AnyBookRoute>(chapter: &'static SummaryItem<R>, nest: usize
 pub fn RightNav<R: AnyBookRoute>() -> Element {
     let page = R::use_route();
     let short_version = R::short_version();
-    let llms_url = format!("{}/llms.txt", page.global_route().to_string().trim_end_matches('/'));
+    let llms_url = format!(
+        "{}/llms.txt",
+        page.global_route().to_string().trim_end_matches('/')
+    );
     let mut copied = use_signal(|| false);
 
     let edit_github_url = use_resource(use_reactive!(|(page,)| async move {

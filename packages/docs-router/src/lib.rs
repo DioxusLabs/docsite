@@ -1,7 +1,7 @@
 #![allow(unused)]
 
 use dioxus::prelude::*;
-use dioxus_code::{advanced::HighlightedSource, Code, CodeTheme, Theme};
+use dioxus_code::{Code, CodeTheme, Theme, advanced::HighlightedSource};
 
 pub mod doc_examples;
 pub use doc_examples::*;

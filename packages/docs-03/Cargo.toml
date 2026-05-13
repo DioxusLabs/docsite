@@ -8,6 +8,7 @@ publish = false
 
 [dependencies]
 dioxus = { workspace = true, features = ["router"] }
+dioxus-code = { workspace = true }
 dioxus-docs-examples = { workspace = true }
 mdbook-shared = { workspace = true }
 use-mdbook = { workspace = true }
@@ -16,5 +17,4 @@ serde = { workspace = true, features = ["derive"] }
 [build-dependencies]
 mdbook-gen = { workspace = true, features = ["manganis"]}
 mdbook-shared = { workspace = true }
-
 

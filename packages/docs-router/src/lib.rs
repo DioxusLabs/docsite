@@ -1,6 +1,7 @@
 #![allow(unused)]
 
 use dioxus::prelude::*;
+use dioxus_code::{Code, CodeTheme, Theme, advanced::HighlightedSource};
 
 pub mod doc_examples;
 pub use doc_examples::*;
@@ -128,11 +129,15 @@ pub enum Route {{\n\t"
 }
 
 #[component]
-pub fn CodeBlock(contents: String, light_contents: String, name: Option<String>) -> Element {
+pub fn CodeBlock(source: HighlightedSource, name: Option<String>) -> Element {
     let mut copied = use_signal(|| false);
+    let theme = CodeTheme::system(Theme::GITHUB_LIGHT, Theme::GITHUB_DARK);
+    let theme_classes = theme.classes();
 
     rsx! {
-        div { class: "border overflow-hidden rounded-md border-stone-200 dark:border-gray-700 my-4",
+        div {
+            class: "border overflow-hidden rounded-md border-stone-200 dark:border-gray-700 my-4",
+            "data-codeblock": "true",
             div { class: "w-full bg-red flex-row justify-between border-b border-stone-200 dark:border-gray-700 py-1 px-2 text-xs items-center bg-gray-100 dark:bg-ideblack",
                 display: if name.is_some() { "flex" } else { "none" },
                 div { class: "font-mono",
@@ -143,7 +148,7 @@ pub fn CodeBlock(contents: String, light_contents: String, name: Option<String>)
                 button {
                     class: "hover:text-blue-600 flex flex-row items-center gap-1",
                     class: if copied() { "text-green-600" },
-                    "onclick": "navigator.clipboard.writeText(this.parentNode.parentNode.lastChild.innerText);",
+                    "onclick": "navigator.clipboard.writeText(this.closest('[data-codeblock]').querySelector('pre').innerText);",
                     onclick: move |_| copied.set(true),
                     if copied() {
                         "Copied!"
@@ -161,8 +166,9 @@ pub fn CodeBlock(contents: String, light_contents: String, name: Option<String>)
                     }
                 }
             }
-            div { class: "codeblock hidden dark:block", dangerous_inner_html: contents }
-            div { class: "codeblock dark:hidden", dangerous_inner_html: light_contents }
+            div { class: "codeblock {theme_classes}",
+                Code { src: source, theme }
+            }
         }
     }
 }

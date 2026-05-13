@@ -1,43 +1,44 @@
 use dioxus::prelude::*;
-use syntect_html::syntect_html_fs;
+use dioxus_code::{advanced::HighlightedSource, code, Code, CodeTheme, Theme};
 
-#[derive(PartialEq, Eq, Debug)]
 pub(crate) struct Snippet {
     pub(crate) title: &'static str,
     pub(crate) filename: &'static str,
-    pub(crate) html: &'static str,
+    pub(crate) source: fn() -> HighlightedSource,
 }
 
 pub(crate) static SNIPPETS: &[Snippet] = &[
     Snippet {
         title: "Hello world",
         filename: "readme.rs",
-        html: syntect_html_fs!("./src/snippets/readme.rs"),
+        source: || code!("/src/snippets/readme.rs"),
     },
     Snippet {
         title: "Components",
         filename: "components.rs",
-        html: syntect_html_fs!("./src/snippets/components.rs"),
+        source: || code!("/src/snippets/components.rs"),
     },
     Snippet {
         title: "Async",
         filename: "async.rs",
-        html: syntect_html_fs!("./src/snippets/async_.rs"),
+        source: || code!("/src/snippets/async_.rs"),
     },
     Snippet {
         title: "Server",
         filename: "server.rs",
-        html: syntect_html_fs!("./src/snippets/server.rs"),
+        source: || code!("/src/snippets/server.rs"),
     },
     Snippet {
         title: "Global State",
         filename: "global.rs",
-        html: syntect_html_fs!("./src/snippets/global.rs"),
+        source: || code!("/src/snippets/global.rs"),
     },
 ];
 
 pub(crate) fn Snippets() -> Element {
     let mut selected_snippet = use_signal(|| 0);
+    let theme = CodeTheme::system(Theme::GITHUB_LIGHT, Theme::GITHUB_DARK);
+    let theme_classes = theme.classes();
 
     rsx! {
         section { class: "dark:text-white mt-4 -mx-4 sm:mx-0 lg:mt-0 lg:col-span-7 xl:col-span-6",
@@ -66,11 +67,13 @@ pub(crate) fn Snippets() -> Element {
                     for (id , snippet) in SNIPPETS.iter().enumerate() {
                         div {
                             key: "{snippet.title}",
-                            class: "w-full min-h-0 p-4",
+                            class: "homepage-codeblock {theme_classes} w-full min-h-0 p-4",
                             // Instead of hiding/showing, we just render all the code blocks at once and hide them with css instead
                             class: if selected_snippet() == id { "block" } else { "hidden" },
-                            background_color: "#000000",
-                            dangerous_inner_html: "{snippet.html}",
+                            Code {
+                                src: (snippet.source)(),
+                                theme,
+                            }
                         }
                     }
                 }

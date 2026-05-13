@@ -68,6 +68,22 @@ html {
   font-weight: 400;
 }
 
+.codeblock.dxc-system,
+.homepage-codeblock.dxc-system {
+  --docsite-codeblock-bg: var(--dxc-light-on, var(--dxc-light-background, #ffffff)) var(--dxc-dark-on, var(--dxc-dark-background, #0d1117));
+  background: var(--docsite-codeblock-bg);
+}
+
+html[data-theme="light"] .dxc-system {
+  --dxc-light-on: initial;
+  --dxc-dark-on: ;
+}
+
+html[data-theme="dark"] .dxc-system {
+  --dxc-light-on: ;
+  --dxc-dark-on: initial;
+}
+
 .codeblock > pre {
   /* &:where([data-theme="light"], [data-theme="light"] *) {
     background-color: rgb(37, 36, 36) !important;
@@ -77,6 +93,11 @@ html {
 .codeblock > pre {
   border-radius: 0px 0px 0px 0px;
   margin-bottom: 0px !important;
+}
+
+.codeblock > pre.dxc,
+.homepage-codeblock > pre.dxc {
+  background: var(--docsite-codeblock-bg) !important;
 }
 
 .markdown-body {

@@ -10,9 +10,9 @@ dioxus-ssr = { workspace = true, optional = true }
 dioxus-desktop = { workspace = true, optional = true }
 dioxus-cli-config = { workspace = true, optional = true }
 dioxus-liveview = { workspace = true, features = ["axum"], optional = true }
+dioxus-code = { workspace = true }
 
 # dioxus-material-icons = { version = "3.0.0" }
-syntect-html = { workspace = true }
 mdbook-shared = { workspace = true }
 use-mdbook = { workspace = true }
 
@@ -84,4 +84,3 @@ doc_test = [
     "dep:rusqlite"
 ]
 production = []
-

@@ -12,9 +12,6 @@ use dioxus_rsx::{BodyNode, CallBody, TemplateBody};
 use pulldown_cmark::{Alignment, CodeBlockKind, Event, Options, Parser, Tag};
 use syn::{parse_quote, parse_str, Ident};
 
-use syntect::highlighting::ThemeSet;
-use syntect::parsing::SyntaxSet;
-
 use crate::{
     path_to_route_enum, path_to_route_enum_with_section, to_upper_camel_case_for_ident,
     EmptyIdentError,
@@ -364,17 +361,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                 if lang.as_deref() == Some("inject-dioxus") {
                     self.start_node(parse_str::<BodyNode>(&raw_code).unwrap());
                 } else {
-                    // syntect doesn't seem to detect by name properly, so we transform some common names
-                    // to their extension
-                    let lang = match lang.as_deref() {
-                        Some("shell") => "sh",
-                        Some("javascript") => "js",
-                        Some(res) => res,
-                        None => "txt",
-                    };
-
-                    let dark_html = build_codeblock(&raw_code, lang, true);
-                    let light_html = build_codeblock(&raw_code, lang, false);
+                    let source = highlighted_source_tokens(raw_code.trim_end(), lang.as_deref());
 
                     let fname = if let Some(fname) = fname {
                         quote! { name: #fname.to_string() }
@@ -384,8 +371,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
 
                     self.start_node(parse_quote! {
                         CodeBlock {
-                            contents: #dark_html,
-                            light_contents: #light_html,
+                            source: #source,
                             #fname
                         }
                     });
@@ -763,77 +749,52 @@ impl<'a, I: Iterator<Item = Event<'a>>> Iterator for ResolveCodeBlock<'a, I> {
     }
 }
 
-fn build_codeblock(code: &str, lang: &str, is_dark: bool) -> String {
-    static DARK_THEME: once_cell::sync::Lazy<syntect::highlighting::Theme> =
-        once_cell::sync::Lazy::new(|| {
-            let raw = include_str!("../themes/MonokaiDark.thTheme").to_string();
-            let mut reader = std::io::Cursor::new(raw.clone());
-            ThemeSet::load_from_reader(&mut reader).unwrap()
-        });
-
-    static LIGHT_THEME: once_cell::sync::Lazy<syntect::highlighting::Theme> =
-        once_cell::sync::Lazy::new(|| {
-            let raw = include_str!("../themes/Base16.thTheme").to_string();
-            let mut reader = std::io::Cursor::new(raw.clone());
-            ThemeSet::load_from_reader(&mut reader).unwrap()
-        });
-    // once_cell::sync::Lazy::new(|| ThemeSet::load_defaults().themes["InspiredGitHub"].clone());
-    // once_cell::sync::Lazy::new(|| ThemeSet::load_defaults().themes["InspiredGitHub"].clone());
-
-    let lang = if lang.to_ascii_lowercase() == "rust" {
-        "rs"
-    } else {
-        lang
+fn highlighted_source_tokens(code: &str, lang: Option<&str>) -> TokenStream2 {
+    let Some(variant) = language_variant_ident(lang) else {
+        // Unknown/plain text: emit empty highlight spans so no tokens are styled.
+        // `Language` has no `PlainText` variant; the tag is unused when spans are empty,
+        // so we pick `Rust` arbitrarily as the metadata placeholder.
+        return quote! {{
+            ::dioxus_code::advanced::HighlightedSource::from_static_parts(
+                #code,
+                ::dioxus_code::Language::Rust,
+                &[],
+            )
+        }};
     };
-
-    let ss = modern_syntax_set();
-    let syntax = ss.find_syntax_by_name(lang).unwrap_or_else(|| {
-        ss.find_syntax_by_extension(lang).unwrap_or_else(|| {
-            ss.find_syntax_by_extension("txt").unwrap_or_else(|| {
-                panic!("Failed to find syntax for {lang} from {:#?}", ss.syntaxes())
-            })
-        })
-    });
-
-    let html = syntect::html::highlighted_html_for_string(
-        code.trim_end(),
-        &ss,
-        syntax,
-        if is_dark { &DARK_THEME } else { &LIGHT_THEME },
-    )
-    .unwrap();
-
-    escape_text(&html)
+    quote! {{
+        ::dioxus_code::code_str!(
+            #code,
+            ::dioxus_code::CodeOptions::builder()
+                .with_language(::dioxus_code::Language::#variant)
+        )
+    }}
 }
 
-// This is an updated set of syntaxes with support for toml
-fn modern_syntax_set() -> SyntaxSet {
-    static SYNTAX_SET: once_cell::sync::Lazy<SyntaxSet> = once_cell::sync::Lazy::new(|| {
-        use syntect::parsing::SyntaxSetBuilder;
-        let mut builder = SyntaxSetBuilder::new();
-        builder
-            .add_from_folder(
-                PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("sublime_toml_highlighting"),
-                true,
-            )
-            .unwrap();
-        builder
-            .add_from_folder(
-                PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("Packages"),
-                true,
-            )
-            .unwrap();
-        builder
-            .add_from_folder(
-                PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("rust-enhanced"),
-                true,
-            )
-            .unwrap();
-        builder.add_plain_text_syntax();
-        builder.build()
-    });
+fn language_variant_ident(lang: Option<&str>) -> Option<Ident> {
+    let lang = lang?
+        .trim()
+        .split(|ch: char| ch.is_whitespace() || ch == ',')
+        .next()?
+        .to_ascii_lowercase();
 
-    SYNTAX_SET.clone()
+    let variant = match lang.as_str() {
+        "bash" | "sh" | "shell" => "Bash",
+        "batch" | "cmd" => "Batch",
+        "css" => "Css",
+        "dockerfile" => "Dockerfile",
+        "html" => "Html",
+        "javascript" | "js" => "JavaScript",
+        "json" => "Json",
+        "lua" => "Lua",
+        "powershell" => "PowerShell",
+        "rs" | "rust" => "Rust",
+        "toml" => "Toml",
+        "jsx" | "tsx" => "Tsx",
+        "yaml" | "yml" => "Yaml",
+        _ => return None,
+    };
+    Some(Ident::new(variant, Span::call_site()))
 }
 
 fn transform_code_block(

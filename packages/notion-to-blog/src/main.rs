@@ -88,7 +88,11 @@ async fn process_markdown_file(
         .and_then(|s| s.to_str())
         .unwrap_or("assets");
     let input_assets_folder = md_path.parent().unwrap().join(assets_folder_name);
-    let output_assets_folder = output_md_path.parent().unwrap().join("assets").join(output_name);
+    let output_assets_folder = output_md_path
+        .parent()
+        .unwrap()
+        .join("assets")
+        .join(output_name);
 
     // Process images if assets folder exists
     let mut image_mapping = HashMap::new();

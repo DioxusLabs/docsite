@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 use std::path::Path;
 use std::path::PathBuf;
 
@@ -8,7 +8,6 @@ use mdbook_shared::MdBook;
 use proc_macro2::Ident;
 use proc_macro2::Span;
 use proc_macro2::TokenStream as TokenStream2;
-use quote::format_ident;
 use quote::quote;
 use quote::ToTokens;
 use syn::LitStr;
@@ -24,7 +23,6 @@ pub fn make_docs_from_ws(version: &str) {
     let mut out = generate_router_build_script(mdbook_dir);
     out.push_str("use dioxus_docs_examples::*;\n");
     out.push_str("use dioxus::prelude::*;\n");
-    let version_flattened = version.replace(".", "");
     let filename = format!("docsgen.rs");
     std::fs::write(out_dir.join(filename), out).unwrap();
 }
@@ -70,7 +68,7 @@ pub fn generate_router_as_file(
 pub fn generate_router(mdbook_dir: PathBuf, book: mdbook_shared::MdBook<PathBuf>) -> TokenStream2 {
     let mdbook = write_book_with_routes(&book);
 
-    let mut page_markdown_map = HashMap::new();
+    let mut page_markdown_map = BTreeMap::new();
 
     let book_pages = book.pages().iter().map(|(_, page)| {
         let name = path_to_route_variant(&page.url).unwrap();
@@ -329,21 +327,4 @@ pub(crate) fn path_to_route_enum_with_section(
             section: #section::#section_variant
         }
     })
-}
-
-fn rustfmt_via_cli(input: &str) -> String {
-    let tmpfile = std::env::temp_dir().join(format!("mdbook-gen-{}.rs", std::process::id()));
-    std::fs::write(&tmpfile, input).unwrap();
-
-    let file = std::fs::File::open(&tmpfile).unwrap();
-    let output = std::process::Command::new("rustfmt")
-        .arg("--edition=2021")
-        .stdin(file)
-        .stdout(std::process::Stdio::piped())
-        .output()
-        .unwrap();
-
-    _ = std::fs::remove_file(tmpfile);
-
-    String::from_utf8(output.stdout).unwrap()
 }

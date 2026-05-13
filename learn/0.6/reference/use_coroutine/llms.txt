@@ -1,0 +1,347 @@
+<SYSTEM>This is the developer documentation for Dioxus from /learn/0.6/reference/use_coroutine.</SYSTEM>
+# Coroutines
+
+Another tool in your async toolbox are coroutines. Coroutines are futures that can have values sent to them.
+
+Like regular futures, code in a coroutine will run until the next `await` point before yielding. This low-level control over asynchronous tasks is quite powerful, allowing for infinitely looping tasks like WebSocket polling, background timers, and other periodic actions.
+
+## use_coroutine
+
+The `use_coroutine` hook allows you to create a coroutine. Most coroutines we write will be polling loops using await.
+
+````rs@use_coroutine_reference.rs
+use futures_util::StreamExt;
+
+fn app() {
+    let ws: Coroutine<()> = use_coroutine(|rx| async move {
+        // Connect to some sort of service
+        let mut conn = connect_to_ws_server().await;
+
+        // Wait for data on the service
+        while let Some(msg) = conn.next().await {
+            // handle messages
+        }
+    });
+}
+````
+
+For many services, a simple async loop will handle the majority of use cases.
+
+## Yielding Values
+
+To yield values from a coroutine, simply bring in a `Signal` handle and set the value whenever your coroutine completes its work.
+
+The future must be `'static` – so any values captured by the task cannot carry any references to `cx`, such as a `Signal`.
+
+You can use [to_owned](https://doc.rust-lang.org/std/borrow/trait.ToOwned.html#tymethod.to_owned) to create a clone of the hook handle which can be moved into the async closure.
+
+````rs@use_coroutine_reference.rs
+let mut sync_status = use_signal(|| Status::Launching);
+let sync_task = use_coroutine(move |rx: UnboundedReceiver<SyncAction>| async move {
+    loop {
+        tokio::time::sleep(Duration::from_secs(1)).await;
+        sync_status.set(Status::Working);
+    }
+});
+````
+
+To make this a bit less verbose, Dioxus exports the `to_owned!` macro which will create a binding as shown above, which can be quite helpful when dealing with many values.
+
+````rs@use_coroutine_reference.rs
+let sync_status = use_signal(|| Status::Launching);
+let load_status = use_signal(|| Status::Launching);
+let sync_task = use_coroutine(|rx: UnboundedReceiver<SyncAction>| {
+    async move {
+        // ...
+    }
+});
+````
+
+## Sending Values
+
+You might've noticed the `use_coroutine` closure takes an argument called `rx`. What is that? Well, a common pattern in complex apps is to handle a bunch of async code at once. With libraries like Redux Toolkit, managing multiple promises at once can be challenging and a common source of bugs.
+
+With Coroutines, we can centralize our async logic. The `rx` parameter is an Channel that allows code external to the coroutine to send data *into* the coroutine. Instead of looping on an external service, we can loop on the channel itself, processing messages from within our app without needing to spawn a new future. To send data into the coroutine, we would call "send" on the handle.
+
+````rs@use_coroutine_reference.rs
+use futures_util::StreamExt;
+
+enum ProfileUpdate {
+    SetUsername(String),
+    SetAge(i32),
+}
+
+let profile = use_coroutine(|mut rx: UnboundedReceiver<ProfileUpdate>| async move {
+    let mut server = connect_to_server().await;
+
+    while let Some(msg) = rx.next().await {
+        match msg {
+            ProfileUpdate::SetUsername(name) => server.update_username(name).await,
+            ProfileUpdate::SetAge(age) => server.update_age(age).await,
+        }
+    }
+});
+
+rsx! {
+    button { onclick: move |_| profile.send(ProfileUpdate::SetUsername("Bob".to_string())),
+        "Update username"
+    }
+}
+````
+
+ > 
+ > Note: In order to use/run the `rx.next().await` statement you will need to extend the \[`Stream`\] trait (used by \[`UnboundedReceiver`\]) by adding 'futures_util' as a dependency to your project and adding the `use futures_util::stream::StreamExt;`.
+
+For sufficiently complex apps, we could build a bunch of different useful "services" that loop on channels to update the app.
+
+````rs@use_coroutine_reference.rs
+let profile = use_coroutine(profile_service);
+let editor = use_coroutine(editor_service);
+let sync = use_coroutine(sync_service);
+
+async fn profile_service(rx: UnboundedReceiver<ProfileCommand>) {
+    // do stuff
+}
+
+async fn sync_service(rx: UnboundedReceiver<SyncCommand>) {
+    // do stuff
+}
+
+async fn editor_service(rx: UnboundedReceiver<EditorCommand>) {
+    // do stuff
+}
+````
+
+We can combine coroutines with Global State to emulate Redux Toolkit's Thunk system with much less headache. This lets us store all of our app's state *within* a task and then simply update the "view" values stored in Atoms. It cannot be understated how powerful this technique is: we get all the perks of native Rust tasks with the optimizations and ergonomics of global state. This means your *actual* state does not need to be tied up in a system like `Signal::global` or Redux – the only Atoms that need to exist are those that are used to drive the display/UI.
+
+````rs@use_coroutine_reference.rs
+static USERNAME: GlobalSignal<String> = Signal::global(|| "default".to_string());
+
+fn app() -> Element {
+    use_coroutine(sync_service);
+
+    rsx! {
+        Banner {}
+    }
+}
+
+fn Banner() -> Element {
+    rsx! {
+        h1 { "Welcome back, {USERNAME}" }
+    }
+}
+````
+
+Now, in our sync service, we can structure our state however we want. We only need to update the view values when ready.
+
+````rs@use_coroutine_reference.rs
+use futures_util::StreamExt;
+
+static USERNAME: GlobalSignal<String> = Signal::global(|| "default".to_string());
+static ERRORS: GlobalSignal<Vec<String>> = Signal::global(|| Vec::new());
+
+enum SyncAction {
+    SetUsername(String),
+}
+
+async fn sync_service(mut rx: UnboundedReceiver<SyncAction>) {
+    while let Some(msg) = rx.next().await {
+        match msg {
+            SyncAction::SetUsername(name) => {
+                if set_name_on_server(&name).await.is_ok() {
+                    *USERNAME.write() = name;
+                } else {
+                    *ERRORS.write() = vec!["Failed to set username".to_string()];
+                }
+            }
+        }
+    }
+}
+````
+
+## Automatic injection into the Context API
+
+Coroutine handles are automatically injected through the context API. You can use the `use_coroutine_handle` hook with the message type as a generic to fetch a handle.
+
+````rs@use_coroutine_reference.rs
+fn Child() -> Element {
+    let sync_task = use_coroutine_handle::<SyncAction>();
+
+    sync_task.send(SyncAction::SetUsername);
+
+    todo!()
+}
+````
+# Coroutines
+
+Another tool in your async toolbox are coroutines. Coroutines are futures that can have values sent to them.
+
+Like regular futures, code in a coroutine will run until the next `await` point before yielding. This low-level control over asynchronous tasks is quite powerful, allowing for infinitely looping tasks like WebSocket polling, background timers, and other periodic actions.
+
+## use_coroutine
+
+The `use_coroutine` hook allows you to create a coroutine. Most coroutines we write will be polling loops using await.
+
+````rs@use_coroutine_reference.rs
+use futures_util::StreamExt;
+
+fn app() {
+    let ws: Coroutine<()> = use_coroutine(|rx| async move {
+        // Connect to some sort of service
+        let mut conn = connect_to_ws_server().await;
+
+        // Wait for data on the service
+        while let Some(msg) = conn.next().await {
+            // handle messages
+        }
+    });
+}
+````
+
+For many services, a simple async loop will handle the majority of use cases.
+
+## Yielding Values
+
+To yield values from a coroutine, simply bring in a `Signal` handle and set the value whenever your coroutine completes its work.
+
+The future must be `'static` – so any values captured by the task cannot carry any references to `cx`, such as a `Signal`.
+
+You can use [to_owned](https://doc.rust-lang.org/std/borrow/trait.ToOwned.html#tymethod.to_owned) to create a clone of the hook handle which can be moved into the async closure.
+
+````rs@use_coroutine_reference.rs
+let mut sync_status = use_signal(|| Status::Launching);
+let sync_task = use_coroutine(move |rx: UnboundedReceiver<SyncAction>| async move {
+    loop {
+        tokio::time::sleep(Duration::from_secs(1)).await;
+        sync_status.set(Status::Working);
+    }
+});
+````
+
+To make this a bit less verbose, Dioxus exports the `to_owned!` macro which will create a binding as shown above, which can be quite helpful when dealing with many values.
+
+````rs@use_coroutine_reference.rs
+let sync_status = use_signal(|| Status::Launching);
+let load_status = use_signal(|| Status::Launching);
+let sync_task = use_coroutine(|rx: UnboundedReceiver<SyncAction>| {
+    async move {
+        // ...
+    }
+});
+````
+
+## Sending Values
+
+You might've noticed the `use_coroutine` closure takes an argument called `rx`. What is that? Well, a common pattern in complex apps is to handle a bunch of async code at once. With libraries like Redux Toolkit, managing multiple promises at once can be challenging and a common source of bugs.
+
+With Coroutines, we can centralize our async logic. The `rx` parameter is an Channel that allows code external to the coroutine to send data *into* the coroutine. Instead of looping on an external service, we can loop on the channel itself, processing messages from within our app without needing to spawn a new future. To send data into the coroutine, we would call "send" on the handle.
+
+````rs@use_coroutine_reference.rs
+use futures_util::StreamExt;
+
+enum ProfileUpdate {
+    SetUsername(String),
+    SetAge(i32),
+}
+
+let profile = use_coroutine(|mut rx: UnboundedReceiver<ProfileUpdate>| async move {
+    let mut server = connect_to_server().await;
+
+    while let Some(msg) = rx.next().await {
+        match msg {
+            ProfileUpdate::SetUsername(name) => server.update_username(name).await,
+            ProfileUpdate::SetAge(age) => server.update_age(age).await,
+        }
+    }
+});
+
+rsx! {
+    button { onclick: move |_| profile.send(ProfileUpdate::SetUsername("Bob".to_string())),
+        "Update username"
+    }
+}
+````
+
+ > 
+ > Note: In order to use/run the `rx.next().await` statement you will need to extend the \[`Stream`\] trait (used by \[`UnboundedReceiver`\]) by adding 'futures_util' as a dependency to your project and adding the `use futures_util::stream::StreamExt;`.
+
+For sufficiently complex apps, we could build a bunch of different useful "services" that loop on channels to update the app.
+
+````rs@use_coroutine_reference.rs
+let profile = use_coroutine(profile_service);
+let editor = use_coroutine(editor_service);
+let sync = use_coroutine(sync_service);
+
+async fn profile_service(rx: UnboundedReceiver<ProfileCommand>) {
+    // do stuff
+}
+
+async fn sync_service(rx: UnboundedReceiver<SyncCommand>) {
+    // do stuff
+}
+
+async fn editor_service(rx: UnboundedReceiver<EditorCommand>) {
+    // do stuff
+}
+````
+
+We can combine coroutines with Global State to emulate Redux Toolkit's Thunk system with much less headache. This lets us store all of our app's state *within* a task and then simply update the "view" values stored in Atoms. It cannot be understated how powerful this technique is: we get all the perks of native Rust tasks with the optimizations and ergonomics of global state. This means your *actual* state does not need to be tied up in a system like `Signal::global` or Redux – the only Atoms that need to exist are those that are used to drive the display/UI.
+
+````rs@use_coroutine_reference.rs
+static USERNAME: GlobalSignal<String> = Signal::global(|| "default".to_string());
+
+fn app() -> Element {
+    use_coroutine(sync_service);
+
+    rsx! {
+        Banner {}
+    }
+}
+
+fn Banner() -> Element {
+    rsx! {
+        h1 { "Welcome back, {USERNAME}" }
+    }
+}
+````
+
+Now, in our sync service, we can structure our state however we want. We only need to update the view values when ready.
+
+````rs@use_coroutine_reference.rs
+use futures_util::StreamExt;
+
+static USERNAME: GlobalSignal<String> = Signal::global(|| "default".to_string());
+static ERRORS: GlobalSignal<Vec<String>> = Signal::global(|| Vec::new());
+
+enum SyncAction {
+    SetUsername(String),
+}
+
+async fn sync_service(mut rx: UnboundedReceiver<SyncAction>) {
+    while let Some(msg) = rx.next().await {
+        match msg {
+            SyncAction::SetUsername(name) => {
+                if set_name_on_server(&name).await.is_ok() {
+                    *USERNAME.write() = name;
+                } else {
+                    *ERRORS.write() = vec!["Failed to set username".to_string()];
+                }
+            }
+        }
+    }
+}
+````
+
+## Automatic injection into the Context API
+
+Coroutine handles are automatically injected through the context API. You can use the `use_coroutine_handle` hook with the message type as a generic to fetch a handle.
+
+````rs@use_coroutine_reference.rs
+fn Child() -> Element {
+    let sync_task = use_coroutine_handle::<SyncAction>();
+
+    sync_task.send(SyncAction::SetUsername);
+
+    todo!()
+}
+````

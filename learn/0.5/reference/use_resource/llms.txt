@@ -1,0 +1,157 @@
+<SYSTEM>This is the developer documentation for Dioxus from /learn/0.5/reference/use_resource.</SYSTEM>
+# Resource
+
+[`use_resource`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_resource.html) lets you run an async closure, and provides you with its result.
+
+For example, we can make an API request (using [reqwest](https://docs.rs/reqwest/latest/reqwest/index.html)) inside `use_resource`:
+
+````rs@use_resource.rs
+let mut future = use_resource(|| async move {
+    reqwest::get("https://dog.ceo/api/breeds/image/random")
+        .await
+        .unwrap()
+        .json::<ApiResponse>()
+        .await
+});
+````
+
+The code inside `use_resource` will be submitted to the Dioxus scheduler once the component has rendered.
+
+We can use `.read()` to get the result of the future. On the first run, since there's no data ready when the component loads, its value will be `None`. However, once the future is finished, the component will be re-rendered and the value will now be `Some(...)`, containing the return value of the closure.
+
+We can then render that result:
+
+````rs@use_resource.rs
+match &*future.read_unchecked() {
+    Some(Ok(response)) => rsx! {
+        button { onclick: move |_| future.restart(), "Click to fetch another doggo" }
+        div {
+            img {
+                max_width: "500px",
+                max_height: "500px",
+                src: "{response.image_url}",
+            }
+        }
+    },
+    Some(Err(_)) => rsx! {
+        div { "Loading dogs failed" }
+    },
+    None => rsx! {
+        div { "Loading dogs..." }
+    },
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    use_resource::App {}
+}
+````
+
+## Restarting the Future
+
+The `Resource` handle provides a `restart` method. It can be used to execute the future again, producing a new value.
+
+## Dependencies
+
+Often, you will need to run the future again every time some value (e.g. a state) changes. Rather than calling `restart` manually, you can read a signal inside of the future. It will automatically re-run the future when any of the states you read inside the future change. Example:
+
+````rs@use_resource.rs
+let future = use_resource(move || async move {
+    reqwest::get(format!("https://dog.ceo/api/breed/{breed}/images/random"))
+        .await
+        .unwrap()
+        .json::<ApiResponse>()
+        .await
+});
+
+// You can also add non-reactive state to the resource hook with the use_reactive method
+let non_reactive_state = "poodle";
+use_resource(use_reactive!(|(non_reactive_state,)| async move {
+    reqwest::get(format!(
+        "https://dog.ceo/api/breed/{non_reactive_state}/images/random"
+    ))
+    .await
+    .unwrap()
+    .json::<ApiResponse>()
+    .await
+}));
+````
+# Resource
+
+[`use_resource`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_resource.html) lets you run an async closure, and provides you with its result.
+
+For example, we can make an API request (using [reqwest](https://docs.rs/reqwest/latest/reqwest/index.html)) inside `use_resource`:
+
+````rs@use_resource.rs
+let mut future = use_resource(|| async move {
+    reqwest::get("https://dog.ceo/api/breeds/image/random")
+        .await
+        .unwrap()
+        .json::<ApiResponse>()
+        .await
+});
+````
+
+The code inside `use_resource` will be submitted to the Dioxus scheduler once the component has rendered.
+
+We can use `.read()` to get the result of the future. On the first run, since there's no data ready when the component loads, its value will be `None`. However, once the future is finished, the component will be re-rendered and the value will now be `Some(...)`, containing the return value of the closure.
+
+We can then render that result:
+
+````rs@use_resource.rs
+match &*future.read_unchecked() {
+    Some(Ok(response)) => rsx! {
+        button { onclick: move |_| future.restart(), "Click to fetch another doggo" }
+        div {
+            img {
+                max_width: "500px",
+                max_height: "500px",
+                src: "{response.image_url}",
+            }
+        }
+    },
+    Some(Err(_)) => rsx! {
+        div { "Loading dogs failed" }
+    },
+    None => rsx! {
+        div { "Loading dogs..." }
+    },
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    use_resource::App {}
+}
+````
+
+## Restarting the Future
+
+The `Resource` handle provides a `restart` method. It can be used to execute the future again, producing a new value.
+
+## Dependencies
+
+Often, you will need to run the future again every time some value (e.g. a state) changes. Rather than calling `restart` manually, you can read a signal inside of the future. It will automatically re-run the future when any of the states you read inside the future change. Example:
+
+````rs@use_resource.rs
+let future = use_resource(move || async move {
+    reqwest::get(format!("https://dog.ceo/api/breed/{breed}/images/random"))
+        .await
+        .unwrap()
+        .json::<ApiResponse>()
+        .await
+});
+
+// You can also add non-reactive state to the resource hook with the use_reactive method
+let non_reactive_state = "poodle";
+use_resource(use_reactive!(|(non_reactive_state,)| async move {
+    reqwest::get(format!(
+        "https://dog.ceo/api/breed/{non_reactive_state}/images/random"
+    ))
+    .await
+    .unwrap()
+    .json::<ApiResponse>()
+    .await
+}));
+````

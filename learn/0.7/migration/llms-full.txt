@@ -1,0 +1,1220 @@
+<SYSTEM>This is the developer documentation for Dioxus at /learn/0.7/migration/to_07 and all its subroutes.</SYSTEM>
+
+# How to Upgrade to Dioxus 0.7
+
+This guide will outline the API changes between the 0.6 and 0.7 releases. The 0.7 release contains breaking changes to:
+
+* [`dioxus‑lib`](#dioxuslib-removed)
+* [Form submissions](#form-submission-behavior)
+* [Asset Options](#asset-options)
+* [Custom server function errors](#custom-server-function-error-type)
+* [dioxus::prelude](#items-removed-from-the-prelude)
+* [The default server function codec](#change-default-server-function-codec-to-json)
+* [Transitive dependency updates](#transitive-dependency-updates)
+* [Owned event listener type](#owned-event-listener-type-only-applies-to-custom-renderers)
+
+## `dioxus‑lib` removed
+
+`dioxus‑lib` crate was removed. You need to add dioxus as a dependency and adjust all references from `dioxus_lib` to use `dioxus` directly.
+
+````toml
+# Cargo.toml
+[dependencies]
+dioxus = { version = "0.7", default-features = false, features = ["lib"] }
+````
+
+````rust
+// src/main.rs
+use dioxus::prelude::*;
+````
+
+[PR #4438](https://github.com/DioxusLabs/dioxus/pull/4438)
+
+## Form submission behavior
+
+Before dioxus 0.7 form submissions were prevented by default in all renderers because it broke the page on desktop. If you called `prevent_default` on a form submission, it would invert the default behavior and allow the form to submit.
+
+In dioxus 0.7, the default behavior is to allow form submissions, and you need to call `prevent_default` to prevent them. The desktop renderer prevents all page navigation including form submissions separately.
+
+Dioxus 0.6:
+
+````rust
+rsx!(
+    form {
+        onsubmit: |e| {}, // Forms used to automatically not submit and reload the page
+        input { name: "username", type: "text" },
+        button { type: "submit", "Submit" }
+    }
+)
+````
+
+Dioxus 0.7:
+
+````rust
+rsx!(
+    form {
+        onsubmit: |e| e.prevent_default(), // In dioxus 0.7 you need to call prevent_default to prevent form submission
+        input { name: "username", type: "text" },
+        button { type: "submit", "Submit" }
+    }
+)
+````
+
+[PR #4422](https://github.com/DioxusLabs/dioxus/pull/4422)
+
+## Asset Options
+
+The asset options api for manganis was unified to use a single `AssetOptionsBuilder`. Instead of pulling in specific options like `ImageAssetOptions::new()`, you can now use `AssetOptions::image()` to create a builder for the asset variant you need.
+
+Dioxus 0.6:
+
+````rust
+use manganis::{ImageFormat, ImageAssetOptions, Asset, asset, ImageSize};
+
+pub const RESIZED_PNG_ASSET: Asset =
+    asset!("/assets/image.png", ImageAssetOptions::new().with_size(ImageSize::Manual { width: 52, height: 52 }));
+pub const AVIF_ASSET: Asset = asset!("/assets/image.png", ImageAssetOptions::new().with_format(ImageFormat::Avif));
+````
+
+Dioxus 0.7:
+
+````rust
+use manganis::{ImageFormat, ImageAssetOptions, Asset, asset, ImageSize};
+
+pub const RESIZED_PNG_ASSET: Asset =
+    asset!("/assets/image.png", AssetOptions::image().with_size(ImageSize::Manual { width: 52, height: 52 }));
+pub const AVIF_ASSET: Asset = asset!("/assets/image.png", AssetOptions::image().with_format(ImageFormat::Avif));
+````
+
+[PR #4312](https://github.com/DioxusLabs/dioxus/pull/4312)
+
+### Custom server function error type
+
+The `ServerFnError` type was changed from the generic server fn error type to a dioxus specific error type that can be easily converted into `dioxus::Error`. The type name is the same, but you may need to update your imports to use the dioxus type instead of the server fn type.
+
+[PR #4205](https://github.com/DioxusLabs/dioxus/pull/4205)
+
+### Items removed from the prelude
+
+Many items were removed from the prelude and now need to be imported explicitly. This includes:
+
+* `use_drop`
+* `Runtime`
+* `queue_effect`
+* `provide_root_context`
+
+[PR #4128](https://github.com/DioxusLabs/dioxus/pull/4128)
+
+### Change default server function codec to JSON
+
+Server functions used to encode arguments using URL‑encoded form data. Url encoding did not allow empty data structures or nested structures. The default codec is now JSON which supports many more types. Third‑party integrations that rely on the old form encoding format need to be updated to use the JSON codec or you need to explicitly set the protocol to `Http<PostUrl, Json>`.
+
+Dioxus 0.6:
+
+````rust
+#[server]
+async fn my_post_function(arg: MyStruct) -> ServerFnResult<MyResponse> {
+    // ...
+}
+
+#[server(protocol = Http<Json, Json>)]
+async fn my_json_function(arg: MyStruct) -> ServerFnResult<MyResponse> {
+    // ...
+}
+````
+
+Dioxus 0.7:
+
+````rust
+#[server(protocol = Http<GetUrl, Json>)]
+async fn my_post_function(arg: MyStruct) -> ServerFnResult<MyResponse> {
+    // ...
+}
+#[server]
+async fn my_json_function(arg: MyStruct) -> ServerFnResult<MyResponse> {
+    // ...
+}
+````
+
+[PR #3602](https://github.com/DioxusLabs/dioxus/pull/3602)
+
+### Transitive dependency updates
+
+Several crates dioxus exposes in public apis and re-exports were updated to the latest versions. If you rely on these crates, you may need to update your dependencies.
+
+* Wry was updated to 0.52: [PR #4255](https://github.com/DioxusLabs/dioxus/pull/4255)
+* Axum was updated to 0.8: [PR #3820](https://github.com/DioxusLabs/dioxus/pull/3820)
+* Server fn was updated to 0.7: [PR #3560](https://github.com/DioxusLabs/dioxus/pull/3560)
+
+## Owned event listener type (only applies to custom renderers)
+
+Dioxus html event handlers used to accept the same copy event handler that components use which complicates the drop logic in the VNode type. Event handlers now accept `impl ::dioxus_core::prelude::SuperInto<::dioxus_core::ListenerCallback<$data>, __Marker>` instead of `impl ::dioxus_core::prelude::SuperInto<::dioxus_core::prelude::EventHandler<::dioxus_core::Event<$data>>, __Marker>`. Custom renderers should be updated to accept the same type for consistency.
+
+[PR #4289](https://github.com/DioxusLabs/dioxus/pull/4289)
+# How to Upgrade to Dioxus 0.6
+
+This guide will outline the API changes between the `0.5` and `0.6` releases. The `0.6` release contains breaking changes to:
+
+* The `Element` type
+* Prevent default
+* Assets with Manganis
+* `dioxus_logger` integration with `dioxus`
+* The `launch` function
+* The `eval` function
+* The `dioxus-fullstack` crate
+* The router crate
+* The `derive(Props)` macro
+* The `dioxus-core` crate
+* Custom renderer API
+* Global state management
+
+## Element
+
+The element type has changed from `Option<VNode>` to `Result<VNode, RenderError>`. This makes it possible to bubble up errors while rendering with the `?` operator, but it does remove the ability to return `None` from a component. Instead of returning `None`, you can return `VNode::empty()` or an empty `rsx!` macro.
+
+Dioxus 0.5:
+
+````rust
+use dioxus::prelude::*;
+
+fn app() -> Element {
+    let number = use_signal(|| -1);
+
+    if number() < 0 {
+        // ❌ In dioxus 0.6, the element type is a result, so None values cannot be returned directly
+        return None;
+    }
+
+    rsx! {
+        "Positive number: {number}"
+    }
+}
+````
+
+Dioxus 0.6:
+
+````rs@migration.rs
+use dioxus::prelude::*;
+
+fn app() -> Element {
+    let number = use_signal(|| -1);
+
+    if number() < 0 {
+        // ✅ You can return VNode::empty() instead
+        return VNode::empty();
+    }
+    if number() < 0 {
+        // ✅ Or an empty rsx! macro
+        return rsx! {};
+    }
+
+    rsx! {
+        "Positive number: {number}"
+    }
+}
+````
+
+## Prevent Default
+
+Dioxus 0.1-0.5 used the `prevent_default` attribute to prevent default behavior of event handlers for every event. Dioxus 0.6 introduces more fine-grained control over preventing default behavior with the `prevent_default` function on the event type. Instead of setting the `prevent_default` attribute for all events you want to prevent, you can create event handlers that call `event.prevent_default()`.
+
+Dioxus 0.5:
+
+````rs@migration.rs
+use dioxus::prelude::*;
+
+fn app() -> Element {
+    rsx! {
+        a {
+            href: "https://dioxuslabs.com",
+            // ❌ The prevent default attribute is deprecated in dioxus 0.6
+            prevent_default: "onclick",
+            "Don't navigate to dioxuslabs.com"
+        }
+    }
+}
+````
+
+Dioxus 0.6:
+
+````rs@migration.rs
+use dioxus::prelude::*;
+
+fn app() -> Element {
+    rsx! {
+        a {
+            href: "https://dioxuslabs.com",
+            // ✅ Instead, you can call event.prevent_default() inside the event handler
+            onclick: move |event| event.prevent_default(),
+            "Don't navigate to dioxuslabs.com"
+        }
+    }
+}
+````
+
+ > 
+ > Note: Since event handlers run on the server in Liveview, events cannot be prevented quickly inside the event handler. Because of this, the new `prevent_default` method does not prevent default behavior in Liveview.
+ > 
+ > Instead you can use javascript inside the `onclick` handler to prevent default behavior.
+ > 
+ > ````rs@migration.rs
+ > use dioxus::prelude::*;
+ > 
+ > fn app() -> Element {
+ >     rsx! {
+ >         a {
+ >             href: "https://dioxuslabs.com",
+ >             // ✅ In liveview, you can use javascript to prevent default behavior
+ >             "onclick": "event.preventDefault()",
+ >             "Don't navigate to dioxuslabs.com"
+ >         }
+ >     }
+ > }
+ > ````
+
+## Assets
+
+The syntax of the `asset!` macro has changed in Dioxus 0.6. Instead of accepting a single argument with both the path and the configuration for the asset, you can now pass in the path as the first argument and the configuration as a optional second argument.
+
+The path the `asset!` macro accepts has also changed. Previously, the macro used to accept absolute and relative paths where relative paths were relative to the current crate directory. Now the macro only accepts absolute paths which are resolved relative to the root of the crate.
+
+Dioxus 0.5:
+
+````rust
+use dioxus::prelude::*;
+
+fn app() -> Element {
+    rsx! {
+        img {
+            src: asset!(image("./assets/static/bundle.png").size(100, 100))
+        }
+    }
+}
+````
+
+Dioxus 0.6:
+
+````rs@migration.rs
+use dioxus::prelude::*;
+
+fn app() -> Element {
+    rsx! {
+        img {
+            src: asset!("/assets/static/bundle.png", ImageAssetOptions::new().with_size(ImageSize::Manual { width: 100, height: 100 }))
+        }
+    }
+}
+````
+
+## Logging
+
+Dioxus 0.6 brings the `dioxus-logger` crate directly into dioxus itself.
+
+Previously, you needed to add `dioxus-logger` to your Cargo.toml and then call its init function:
+
+````rs
+// cargo.toml:
+// dioxus-logger = "0.5"
+
+use dioxus::prelude::*;
+use tracing::Level;
+
+fn main() {
+    // Init logger
+    dioxus_logger::init(Level::INFO).expect("failed to init logger");
+
+    // Dioxus launch code
+    dioxus::launch(app)
+}
+````
+
+Now, in Dioxus 0.6, the logger is implicit with `launch`. Simply call launch and the logger is initialized to a default log level. In development mode, the `Debug` tracing level is set, and in release only the `Info` level is set.
+
+````rust
+use dioxus::prelude::*;
+
+fn main() {
+    dioxus::launch(app);
+}
+````
+
+If you still need to set the level manually or configure a custom subscriber, do that before `launch`. We expose the `initialize_default` function in case you need additional logging before your `launch` call:
+
+````rust
+use dioxus::prelude::*;
+
+fn main() {
+    dioxus::logger::initialize_default();
+
+    tracing::info!("Logs received!");
+
+    dioxus::launch(app);
+}
+````
+
+## Launch
+
+The `launch` function was removed from the prelude. You must now import the launch method from `dioxus` or use it by its full path:
+
+````rust
+use dioxus::prelude::*;
+
+fn main() {
+    // ❌ launch(app);
+    dioxus::launch(app); // ✅
+}
+````
+
+See <https://github.com/DioxusLabs/dioxus/pull/2967> for more details.
+
+## Eval
+
+* `eval` was moved from the prelude to the `document` module. You must now call it with `document::eval` instead of `eval`:
+
+````rust
+use dioxus::prelude::*;
+
+fn app() -> Element {
+    // ❌ use_effect(|| eval("console.log(1)"));
+    use_effect(|| document::eval("console.log(1)")); // ✅
+
+    rsx! {}
+}
+````
+
+* The `eval` feature flag was removed from the `dioxus-html` crate and the functionality of `EvalProvider` was moved to the new `dioxus-document` crate. Custom renderers must now provide a `Rc<dyn Document>` context to the application to make `eval` and head elements work correctly. See <https://github.com/DioxusLabs/dioxus/pull/2635> for more details.
+* `Eval::recv` and `Eval::join` now returns any value that implements `DeserializeOwned` instead of `serde_json::Value`. `Eval::send` now accepts any value that implements `Serialize`. See <https://github.com/DioxusLabs/dioxus/pull/3035> for more details
+
+## Fullstack
+
+* The feature `dioxus/axum` was renamed to `dioxus/server`
+
+````toml
+[features]
+default = []
+# ❌ server = ["dioxus/axum"]
+server = ["dioxus/server"] # ✅
+web = ["dioxus/web"]
+````
+
+See <https://github.com/DioxusLabs/dioxus/pull/3186> for more details
+
+* The `fullstack::Config` item was removed. You can now pass the platform configs into the `LaunchBuilder` directly. For example, if you want to set the rootname on each platform, you can set the root name in each config:
+
+````rust
+LaunchBuilder::new()
+    // Only set the server config if the server feature is enabled
+    .with_cfg(server_only! {
+        ServeConfigBuilder::default().root_id("app")
+    })
+    // You also need to set the root id in your web config
+    .with_cfg(web! {
+        dioxus::web::Config::default().rootname("app")
+    })
+    // And desktop config
+    .with_cfg(desktop! {
+        dioxus::desktop::Config::default().with_root_name("app")
+    })
+    .launch(app);
+````
+
+See <https://github.com/DioxusLabs/dioxus/pull/2967> for more details.
+
+* The dioxus-cli now proxies fullstack applications at a port behind a reverse proxy. If you have a custom axum server, you must serve your application at the port returned by `dioxus_cli_config::server_port` and the address returned by `dioxus_cli_config::server_ip` or the complete address returned by `dioxus_cli_config::fullstack_address_or_localhost` during development:
+
+````rust
+#[cfg(feature = "server")]
+#[tokio::main]
+async fn main() {
+    // Get the address the server should run on. If the CLI is running, the CLI proxies fullstack into the main address
+    // and we use the generated address the CLI gives us
+    let address = dioxus_cli_config::fullstack_address_or_localhost();
+
+    // Launch the fullstack application on the address the CLI is proxying
+    let router = axum::Router::new()
+        .serve_dioxus_application(ServeConfigBuilder::default(), App);
+
+    let router = router.into_make_service();
+    let listener = tokio::net::TcpListener::bind(address).await.unwrap();
+    axum::serve(listener, router).await.unwrap();
+}
+````
+
+See <https://github.com/DioxusLabs/dioxus/pull/2258> for more details.
+
+* `serve_dioxus_application` was changed to accept a component directly instead of a virtual dom factory. See <https://github.com/DioxusLabs/dioxus/pull/2515> for more details.
+* `register_server_fns` was renamed to `register_server_functions`. See <https://github.com/DioxusLabs/dioxus/pull/2515> for more details.
+* `RenderHandleState::new` accepts a new `ServeConfig` argument. See <https://github.com/DioxusLabs/dioxus/pull/2862> for more details.
+* `ServeConfigBuilder::build` returns a result. It may fail during desktop builds if no `index.html` file is found. This error is fine to ignore in desktop builds. You can pass the builder directly to `serve_dioxus_application` to only serve the index.html file if it exists. See <https://github.com/DioxusLabs/dioxus/pull/2862> for more details.
+* `dioxus_fullstack::Config::addr` was removed. You can now export the `PORT` and `IP` environment variables to set the address the `launch` method uses for the server.
+
+## Router
+
+* The `Routable` derive macro no longer accepts fields that are not present in the `route("/route")` if the web feature is enabled. See <https://github.com/DioxusLabs/dioxus/pull/2159> for more details.
+* The `ToRouteSegments` trait in the router was changed from accepting `self` to accepting `&self`. This means you can now implement it for `T` directly instead of `&T`. See <https://github.com/DioxusLabs/dioxus/pull/2283> for more details.
+
+## derive(Props)
+
+* `#[props(into)]` is ignore on any String props. String props already accept `impl ToString` which is implemented for many of the same types, but if you implement `Into<String>` for a specific type, your code may require some changes. See <https://github.com/DioxusLabs/dioxus/pull/2501> for more details
+* Properties that start with an uppercase letter are no longer accepted. This allows us to autocomplete Components. See <https://github.com/DioxusLabs/dioxus/pull/2652> for more details.
+
+## State Management
+
+* `use_coroutine` now accepts `impl FnMut` instead of `impl FnOnce`. This was required to support restarting the coroutine without rerunning the component. See <https://github.com/DioxusLabs/dioxus/pull/3005> for more details.
+* `Signal::global_memo` now requires `T: PartialEq` just like `use_memo`. See <https://github.com/DioxusLabs/dioxus/pull/2851> for more details.
+* `GlobalMemo<T>` is now a trait alias for `Global<Memo<T>, T>` and `GlobalSignal<T>` is now a trait alias for `Global<Signal<T>, T>`. To get the underlying `Memo` or `Signal`, you can now use the `resolve` method instead of `signal` or `memo`. See <https://github.com/DioxusLabs/dioxus/pull/2851> for more details.
+* The `Readable` trait in dioxus signals now requires a `try_peek_unchecked` method instead of `peek_unchecked`. See <https://github.com/DioxusLabs/dioxus/pull/2714> for more details.
+* The `check_generation` feature flag was removed from the `generational-box` crate. See <https://github.com/DioxusLabs/dioxus/pull/2638> for more details.
+
+## Core changes
+
+* The `Template::name` field was removed. See <https://github.com/DioxusLabs/dioxus/pull/2799> for more details.
+* `Properties::into_vcomponent` now accepts only the `render_fn` instead of the `render_fn` and `component_name`. This change fixes the name of re-exported components. Fixes <https://github.com/DioxusLabs/dioxus/pull/2744>
+* The field `VNode::template` is now `Template` instead of `Cell<Template>`. See <https://github.com/DioxusLabs/dioxus/pull/2705> for more details
+* `Mutations::sanitize` was renamed to `Mutations::sanitize`. See <https://github.com/DioxusLabs/dioxus/pull/2653> for more details.
+* The variant `AttributeValue::Any` now contains `Rc<dyn AnyValue>` instead of `Box<dyn AnyValue>` to make `AttributeValue` `Clone`. See <https://github.com/DioxusLabs/dioxus/pull/2705> for more details
+
+## Custom Renderers
+
+If you are building a custom renderer, there were some breaking changes to hot reloading and rsx that you should be aware of:
+
+* The CLI hot reloading format changed significantly. Custom renderers must switch from `dioxus-hot-reload` to `dioxus_devtools`. Renderers can connect to the hot reloading engine with the \[connect\](<https://docs.rs/dioxus>-devtools/0.6.0/dioxus_devtools/fn.connect.html) function. See <https://github.com/DioxusLabs/dioxus/pull/2258> for more details.
+* The format of custom elements was changed to improve autocomplete. The `dioxus_elements` namespace must now contain each element as a module with a TAG_NAME and NAME_SPACE constant inside that module. Each attribute should be another constant in that module. The top-level `dioxus_elements` module should contain a `completions` module with a `CompleteWithBraces` enum that re-exports each element the namespace supports for braces autocomplete. See <https://github.com/DioxusLabs/dioxus/pull/2421> for more details.
+* The format for custom event handlers changed include `eventname::call_with_explicit_closure` to provide better type inference for inline closures. See <https://github.com/DioxusLabs/dioxus/pull/2437> for more details
+
+If you are also using dioxus-html, there are a few more breaking changes:
+
+* A `file_size` method was added to the `FileEngine` trait. Any custom renderers must implement this method. See <https://github.com/DioxusLabs/dioxus/pull/2323/files> for more details.
+* `HtmlEventConverter` has a new `convert_resize_data` method which must be implemented by any custom renderers that use dioxus-html. See <https://github.com/DioxusLabs/dioxus/pull/2479> for more details
+* The web and native features were removed from the `dioxus-html` crate. See <https://github.com/DioxusLabs/dioxus/pull/3006> for more details.
+* `dioxus_html::AttributeDescription ` was renamed to `dioxus_html::AttributeDescription`. See <https://github.com/DioxusLabs/dioxus/pull/2653> for more details.
+
+## Minor Breaking Changes
+
+There were several more minor breaking changes in Dioxus 0.6:
+
+* Many implicit features from dioxus crates were removed. These features were automatically generated by cargo and generally not functional. See <https://github.com/DioxusLabs/dioxus/pull/2512> for more details.
+* `dioxus_autofmt::write_block_out` accepts `&CallBody` instead of `CallBody`. See <https://github.com/DioxusLabs/dioxus/pull/2573> for more details.
+* The `panic_hook` feature which provides a console panic message for wasm panics was moved from the `dioxus-web` crate to the `dioxus-logger` crate. The handler is still provided by default. See <https://github.com/DioxusLabs/dioxus/pull/3302> for more details.
+# How to Upgrade to Dioxus 0.5
+
+This guide will outline the API changes between the `0.4` and `0.5` releases.
+
+`0.5` includes significant changes to hooks, props, and global state.
+
+## Cheat Sheet
+
+Here is a quick cheat sheet for the changes:
+
+### Scope
+
+Dioxus 0.4:
+
+````rust
+fn app(cx: Scope) -> Element {
+    cx.use_hook(|| {
+        /*...*/
+    });
+    cx.provide_context({
+        /*...*/
+    });
+    cx.spawn(async move {
+        /*...*/
+    });
+    cx.render(rsx! {
+        /*...*/
+    })
+}
+````
+
+Dioxus 0.5:
+
+````rs@migration.rs
+use dioxus::prelude::*;
+
+// In dioxus 0.5, the scope is no longer passed as an argument to the function
+fn app() -> Element {
+    // Hooks, context, and spawn are now called directly
+    use_hook(|| { /*...*/ });
+    provide_context({ /*...*/ });
+    spawn(async move { /*...*/ });
+    rsx! {
+        /*...*/
+    }
+}
+````
+
+### Props
+
+Dioxus 0.4:
+
+````rust
+#[component]
+fn Comp(cx: Scope, name: String) -> Element {
+    // You pass in an owned prop, but inside the component, it is borrowed (name is the type &String inside the function)
+    let owned_name: String = name.clone();
+
+    cx.render(rsx! {
+        "Hello {owned_name}"
+        BorrowedComp {
+            "{name}"
+        }
+        ManualPropsComponent {
+            name: name
+        }
+    })
+}
+
+#[component]
+fn BorrowedComp<'a>(cx: Scope<'a>, name: &'a str) -> Element<'a> {
+    cx.render(rsx! {
+        "Hello {name}"
+    })
+}
+
+#[derive(Props, PartialEq)]
+struct ManualProps {
+    name: String
+}
+
+fn ManualPropsComponent(cx: Scope<ManualProps>) -> Element {
+    cx.render(rsx! {
+        "Hello {cx.props.name}"
+    })
+}
+````
+
+Dioxus 0.5:
+
+````rs@migration.rs
+use dioxus::prelude::*;
+
+// In dioxus 0.5, props are always owned. You pass in owned props and you get owned props in the body of the component
+#[component]
+fn Comp(name: String) -> Element {
+    // Name is owned here already (name is the type String inside the function)
+    let owned_name: String = name;
+
+    rsx! {
+        "Hello {owned_name}"
+        BorrowedComp {
+            name: "other name"
+        }
+        ManualPropsComponent {
+            name: "other name 2"
+        }
+    }
+}
+
+// Borrowed props are removed in dioxus 0.5. Mapped signals can act similarly to borrowed props if your props are borrowed from state
+// ReadOnlySignal is a copy wrapper over a state that will be automatically converted to
+#[component]
+fn BorrowedComp(name: ReadOnlySignal<String>) -> Element {
+    rsx! {
+        "Hello {name}"
+    }
+}
+
+// In dioxus 0.5, props need to implement Props, Clone, and PartialEq
+#[derive(Props, Clone, PartialEq)]
+struct ManualProps {
+    name: String,
+}
+
+// Functions accept the props directly instead of the scope
+fn ManualPropsComponent(props: ManualProps) -> Element {
+    rsx! {
+        "Hello {props.name}"
+    }
+}
+````
+
+You can read more about the new props API in the [Props Migration](props.md) guide.
+
+### Futures
+
+Dioxus 0.4:
+
+````rust
+use_future((dependency1, dependency2,), move |(dependency1, dependency2,)| async move {
+	/*use dependency1 and dependency2*/
+});
+````
+
+Dioxus 0.5:
+
+````rs@migration.rs
+// dependency1 and dependency2 must be Signal-like types like Signal, ReadOnlySignal, GlobalSignal, or another Resource
+use_resource(|| async move { /*use dependency1 and dependency2*/ });
+
+let non_reactive_state = 0;
+// You can also add non-reactive state to the resource hook with the use_reactive macro
+use_resource(use_reactive!(|(non_reactive_state,)| async move {
+    tokio::time::sleep(std::time::Duration::from_secs(1)).await;
+    non_reactive_state + 1
+}));
+````
+
+Read more about the `use_resource` hook in the [Hook Migration](hooks.md) guide.
+
+### State Hooks
+
+Dioxus 0.4:
+
+````rust
+let copy_state = use_state(cx, || 0);
+let clone_local_state = use_ref(cx, || String::from("Hello"));
+use_shared_state_provider(cx, || String::from("Hello"));
+let clone_shared_state = use_shared_state::<String>(cx);
+
+let copy_state_value = **copy_state;
+let clone_local_state_value = clone_local_state.read();
+let clone_shared_state_value = clone_shared_state.read();
+
+cx.render(rsx!{
+	"{copy_state_value}"
+	"{clone_shared_state_value}"
+	"{clone_local_state_value}"
+	button {
+		onclick: move |_| {
+			copy_state.set(1);
+			*clone_local_state.write() = "World".to_string();
+			*clone_shared_state.write() = "World".to_string();
+		},
+		"Set State"
+	}
+})
+````
+
+Dioxus 0.5:
+
+````rs@migration.rs
+// You can now use signals for local copy state, local clone state, and shared state with the same API
+let mut copy_state = use_signal(|| 0);
+let mut clone_shared_state = use_context_provider(|| Signal::new(String::from("Hello")));
+let mut clone_local_state = use_signal(|| String::from("Hello"));
+
+// Call the signal like a function to clone the current value
+let copy_state_value = copy_state();
+// Or use the read method to borrow the current value
+let clone_local_state_value = clone_local_state.read();
+let clone_shared_state_value = clone_shared_state.read();
+
+rsx! {
+    "{copy_state_value}"
+    "{clone_shared_state_value}"
+    "{clone_local_state_value}"
+    button {
+        onclick: move |_| {
+            // All three states have the same API for updating the state
+            copy_state.set(1);
+            clone_shared_state.set("World".to_string());
+            clone_local_state.set("World".to_string());
+        },
+        "Set State"
+    }
+}
+````
+
+Read more about the `use_signal` hook in the [State Migration](state.md) guide.
+
+### Fermi
+
+Dioxus 0.4:
+
+````rust
+use dioxus::prelude::*;
+use fermi::*;
+
+static NAME: Atom<String> = Atom(|_| "world".to_string());
+
+fn app(cx: Scope) -> Element {
+    use_init_atom_root(cx);
+    let name = use_read(cx, &NAME);
+
+    cx.render(rsx! {
+        div { "hello {name}!" }
+        Child {}
+        ChildWithRef {}
+    })
+}
+
+fn Child(cx: Scope) -> Element {
+    let set_name = use_set(cx, &NAME);
+
+    cx.render(rsx! {
+        button {
+            onclick: move |_| set_name("dioxus".to_string()),
+            "reset name"
+        }
+    })
+}
+
+static NAMES: AtomRef<Vec<String>> = AtomRef(|_| vec!["world".to_string()]);
+
+fn ChildWithRef(cx: Scope) -> Element {
+    let names = use_atom_ref(cx, &NAMES);
+
+    cx.render(rsx! {
+        div {
+            ul {
+                names.read().iter().map(|f| rsx!{
+                    li { "hello: {f}" }
+                })
+            }
+            button {
+                onclick: move |_| {
+                    let names = names.clone();
+                    cx.spawn(async move {
+                        names.write().push("asd".to_string());
+                    })
+                },
+                "Add name"
+            }
+        }
+    })
+}
+````
+
+Dioxus 0.5:
+
+````rs@migration.rs
+use dioxus::prelude::*;
+
+// Atoms and AtomRefs have been replaced with GlobalSignals
+static NAME: GlobalSignal<String> = Signal::global(|| "world".to_string());
+
+fn app() -> Element {
+    rsx! {
+        // You can use global state directly without the use_read or use_set hooks
+        div { "hello {NAME}!" }
+        Child {}
+        ChildWithRef {}
+    }
+}
+
+fn Child() -> Element {
+    rsx! {
+        button {
+            onclick: move |_| *NAME.write() = "dioxus".to_string(),
+            "reset name"
+        }
+    }
+}
+
+// Atoms and AtomRefs have been replaced with GlobalSignals
+static NAMES: GlobalSignal<Vec<String>> = Signal::global(|| vec!["world".to_string()]);
+
+fn ChildWithRef() -> Element {
+    rsx! {
+        div {
+            ul {
+                for name in NAMES.read().iter() {
+                    li { "hello: {name}" }
+                }
+            }
+            button {
+                onclick: move |_| {
+                    // No need to clone the signal into futures, you can use it directly
+                    async move {
+                        NAMES.write().push("asd".to_string());
+                    }
+                },
+                "Add name"
+            }
+        }
+    }
+}
+````
+
+You can read more about global signals in the [Fermi migration guide](fermi.md).
+# Hooks
+
+Dioxus now uses signals as the backing for its state management. Signals are a smarter, more flexible version of the `use_ref` hook. Signals now back many hooks in dioxus to provide a more consistent and flexible API.
+
+### State Hooks
+
+State hooks are now backed by signals. `use_state`, `use_ref`, and `use_shared_state` have been replaced with the `use_signal` hook. The `use_signal` hook is a more flexible and powerful version of the `use_ref` hook with smarter scopes that only subscribe to a signal if that signal is read within the scope. You can read more about the `use_signal` hook in the [State Migration](state.md) guide.
+
+### Async Hooks
+
+The `use_future` hook has been replaced with the `use_resource` hook. `use_resource` automatically subscribes to any signals that are read within the closure instead of using a tuple of dependencies.
+
+Dioxus 0.4:
+
+````rust
+fn MyComponent(cx: Scope) -> Element {
+	let state = use_state(cx, || 0);
+	let my_resource = use_future(cx, (**state,), |(state,)| async move {
+		// start a request that depends on the state
+		println!("{state}");
+	});
+	render! {
+		"{state}"
+	}
+}
+````
+
+Dioxus 0.5:
+
+````rs@migration_hooks.rs
+fn MyComponent() -> Element {
+    let state = use_signal(|| 0);
+    // No need to manually set the dependencies, the use_resource hook will automatically detect signal dependencies
+    let my_resource = use_resource(move || async move {
+        // start a request that depends on the state
+        // Because we read from the state signal, this future will be re-run whenever the state changes
+        println!("{state}");
+    });
+    rsx! {"{state}"}
+}
+````
+
+### Dependencies
+
+Some hooks including `use_effect` and `use_resource` now take a single closure with automatic subscriptions instead of a tuple of dependencies. You can read more about the `use_resource` hook in the [Hook Migration](hooks.md) guide.
+
+Dioxus 0.4:
+
+````rust
+fn HasDependencies(cx: Scope) -> Element {
+	let state = use_state(cx, || 0);
+	let my_resource = use_resource(cx, (**state,), |(state,)| async move {
+		println!("{state}");
+	});
+	let state_plus_one = use_memo(cx, (**state,), |(state,)| {
+		state() + 1
+	});
+	render! {
+		"{state_plus_one}"
+	}
+}
+````
+
+Dioxus 0.5:
+
+````rs@migration_hooks.rs
+fn HasDependencies() -> Element {
+    let state = use_signal(|| 0);
+    // No need to manually set the dependencies, the use_resource hook will automatically detect signal dependencies
+    let my_resource = use_resource(move || async move {
+        // Because we read from the state signal, this future will be re-run whenever the state changes
+        println!("{state}");
+    });
+    let state_plus_one = use_memo(move || {
+        // Because we read from the state signal, this future will be re-run whenever the state changes
+        state() + 1
+    });
+    rsx! {"{state_plus_one}"}
+}
+````
+# State Migration
+
+The `use_state` and `use_ref` hooks have been replaced with the `use_signal` hook. The `use_signal` hook is a more flexible and powerful version of the `use_ref` hook with smarter scopes that only subscribe to a signal if that signal is read within the scope.
+
+With `use_state`, if you had this code:
+
+````rust
+fn Parent(cx: Scope) -> Element {
+	let state = use_state(cx, || 0);
+
+	render! {
+		Child {
+			state: state.clone()
+		}
+	}
+}
+
+#[component]
+fn Child(cx: Scope, state: UseState<i32>) -> Element {
+	render! {
+		"{state}"
+	}
+}
+````
+
+Parent would re-render every time the state changed even though only the child component was using the state. With the new `use_signal` hook, the parent would only re-render if the state was changed within the parent component:
+
+````rs@migration_state.rs
+fn Parent() -> Element {
+    let state = use_signal(|| 0);
+
+    rsx! { Child { state } }
+}
+
+#[component]
+fn Child(state: Signal<i32>) -> Element {
+    rsx! {"{state}"}
+}
+````
+
+Only the child component will re-render when the state changes because only the child component is reading the state.
+
+## Context Based State
+
+The `use_shared_state_provider` and `use_shared_state` hooks have been replaced with using the `use_context_provider` and `use_context` hooks with a `Signal`:
+
+````rs@migration_state.rs
+fn Parent() -> Element {
+    // Create a new signal and provide it to the context API
+    let state = use_context_provider(|| Signal::new(0));
+
+    rsx! { Child {} }
+}
+
+fn Child() -> Element {
+    // Get the state from the context API
+    let state = use_context::<Signal<i32>>();
+
+    rsx! {"{state}"}
+}
+````
+
+Signals are smart enough to handle subscribing to the right scopes without a special shared state hook.
+
+## Opting Out of Subscriptions
+
+Some state hooks including `use_shared_state` and `use_ref` hooks had a function called `write_silent` in `0.4`. This function allowed you to update the state without triggering a re-render any subscribers. This function has been removed in `0.5`.
+
+Instead, you can use the `peek` function to read the current value of a signal without subscribing to it. This inverts the subscription model so that you can opt out of subscribing to a signal instead of opting all subscribers out of updates:
+
+````rs@migration_state.rs
+fn Parent() -> Element {
+    let state = use_signal(|| 0);
+
+    // Even though we are reading the state, we don't need to subscribe to it
+    let read_without_subscribing = state.peek();
+    println!("{}", state.peek());
+
+    rsx! { Child { state } }
+}
+
+#[component]
+fn Child(state: Signal<i32>) -> Element {
+    rsx! {
+        button { onclick: move |_| {
+                state += 1;
+            }, "count is {state}" }
+    }
+}
+````
+
+`peek` gives you more fine-grained control over when you want to subscribe to a signal. This can be useful for performance optimizations and for updating state without re-rendering components.
+
+## Global State
+
+In `0.4`, the fermi crate provided a separate global state API called atoms. In `0.5`, the `Signal` type has been extended to provide a global state API. You can use the `Signal::global` function to create a global signal:
+
+````rs@migration_state.rs
+static COUNT: GlobalSignal<i32> = Signal::global(|| 0);
+
+fn Parent() -> Element {
+    rsx! {
+        div { "{COUNT}" }
+        button {
+            onclick: move |_| {
+                *COUNT.write() += 1;
+            },
+            "Increment"
+        }
+    }
+}
+````
+
+You can read more about global signals in the [Fermi migration guide](fermi.md).
+# Fermi
+
+In dioxus 0.5, fermi atoms have been replaced with global signals and included in the main dioxus library.
+
+The new global signals can be used directly without hooks and include additional functionality like global memos.
+
+Dioxus 0.4:
+
+````rust
+use dioxus::prelude::*;
+use fermi::*;
+
+static NAME: Atom<String> = Atom(|_| "world".to_string());
+static NAMES: AtomRef<Vec<String>> = AtomRef(|_| vec!["world".to_string()]);
+
+fn app(cx: Scope) -> Element {
+    use_init_atom_root(cx);
+    let set_name = use_set(cx, &NAME);
+	let names = use_atom_ref(cx, &NAMES);
+
+    cx.render(rsx! {
+        button {
+			onclick: move |_| set_name("dioxus".to_string()),
+			"reset name"
+		}
+		"{names.read():?}"
+    })
+}
+````
+
+Dioxus 0.5:
+
+````rs@migration_fermi.rs
+use dioxus::prelude::*;
+
+static NAME: GlobalSignal<String> = Signal::global(|| "world".to_string());
+// Global signals work for copy and clone types in the same way
+static NAMES: GlobalSignal<Vec<String>> = Signal::global(|| vec!["world".to_string()]);
+
+fn app() -> Element {
+    // No need to use use_init_atom_root, use_set, or use_atom_ref. Just use the global signal directly
+    rsx! {
+        button { onclick: move |_| *NAME.write() = "reset name".to_string(), "reset name" }
+        "{NAMES:?}"
+    }
+}
+````
+
+## Memos
+
+Dioxus 0.5 introduces global memos which can be used to store computed values globally.
+
+````rs@migration_fermi.rs
+static COUNT: GlobalSignal<u32> = Signal::global(|| 0);
+static MEMO: GlobalMemo<u32> = Signal::global_memo(|| COUNT() + 1);
+
+fn GlobalMemo() -> Element {
+    rsx! {
+        button { onclick: move |_| *COUNT.write() += 1, "increment" }
+        // Global memos can be used like signals
+        "{MEMO}"
+    }
+}
+````
+# Props Migration
+
+In dioxus 0.4, props are passed into the component through the scope. In dioxus 0.5, props are passed into the component through the props struct directly.
+
+## Owned Props
+
+The props were borrowed with the lifetime from the scope. The props are cloned every render, and passed into the component as an owned value.
+
+Dioxus 0.4:
+
+````rust
+#[component]
+fn Comp(cx: Scope, name: String) -> Element {
+    // You pass in an owned prop, but inside the component, it is borrowed (name is the type &String inside the function)
+    let owned_name: String = name.clone();
+
+    cx.render(rsx! {
+        "Hello {owned_name}"
+    })
+}
+````
+
+Dioxus 0.5:
+
+````rs@migration_props.rs
+// In dioxus 0.5, props are always owned. You pass in owned props and you get owned props in the body of the component
+#[component]
+fn Comp(name: String) -> Element {
+    // Name is owned here already (name is the type String inside the function)
+    let owned_name: String = name;
+
+    rsx! {"Hello {owned_name}"}
+}
+````
+
+Because props are cloned every render, making props Copy is recommended. You can easily make a field Copy by accepting `ReadOnlySignal<T>` instead of `T` in the props struct:
+
+````rs@migration_props.rs
+// In dioxus 0.5, props are always owned. You pass in owned props and you get owned props in the body of the component
+#[component]
+fn CopyPropsComp(name: ReadOnlySignal<String>) -> Element {
+    rsx! {
+        button {
+            // You can easily copy the value of a signal into a closure
+            onclick: move |_| {
+                println!("Hello {name}");
+                async move {
+                    println!("Hello {name}");
+                }
+            },
+            "Click me"
+        }
+    }
+}
+
+fn CopyPropsCompParent() -> Element {
+    rsx! { CopyPropsComp { name: "World" } }
+}
+````
+
+## Borrowed Props
+
+Borrowed props are removed in dioxus 0.5. Mapped signals can act similarly to borrowed props if your props are borrowed from state.
+
+Dioxus 0.4:
+
+````rust
+fn Parent(cx: Scope) -> Element {
+    let state = use_state(cx, || (1, "World".to_string()));
+    rsx! {
+        BorrowedComp {
+            name: &state.get().1
+        }
+    }
+}
+
+#[component]
+fn BorrowedComp<'a>(cx: Scope<'a>, name: &'a str) -> Element<'a> {
+    rsx! {
+        "Hello {name}"
+    }
+}
+````
+
+Dioxus 0.5:
+
+````rs@migration_props.rs
+fn Parent() -> Element {
+    let state = use_signal(|| (1, "World".to_string()));
+
+    rsx! { BorrowedComp { name: state.map(|s| &s.1) } }
+}
+
+#[component]
+fn BorrowedComp(name: MappedSignal<String>) -> Element {
+    rsx! {"Hello {name}"}
+}
+````
+
+## Manual Props
+
+Manual prop structs in dioxus 0.5 need to derive `Clone` in addition to `Props` and `PartialEq`:
+
+Dioxus 0.4:
+
+````rust
+#[derive(Props, PartialEq)]
+struct ManualProps {
+    name: String,
+}
+
+// Functions accept the props directly instead of the scope
+fn ManualPropsComponent(cx: Scope<ManualProps>) -> Element {
+    render! {
+        "Hello {cx.props.name}"
+    }
+}
+````
+
+Dioxus 0.5:
+
+````rs@migration_props.rs
+#[derive(Props, Clone, PartialEq)]
+struct ManualProps {
+    name: String,
+}
+
+// Functions accept the props directly instead of the component
+fn ManualPropsComponent(props: ManualProps) -> Element {
+    rsx! {"Hello {props.name}"}
+}
+````

@@ -29,6 +29,7 @@ members = [
     "packages/search/search",
     "packages/search/search-macro",
     "packages/search/search-shared",
+    "packages/docsrs-search",
 
     # Utilities
     "packages/notion-to-blog",

@@ -17,9 +17,13 @@ pub mod building_uis_with_rsx;
 #[cfg(not(feature = "doc_test"))]
 pub mod component_children;
 #[cfg(not(feature = "doc_test"))]
+pub mod component_extending_elements;
+#[cfg(not(feature = "doc_test"))]
 pub mod component_lifecycle;
 #[cfg(not(feature = "doc_test"))]
 pub mod component_owned_props;
+#[cfg(not(feature = "doc_test"))]
+pub mod component_reactive_props;
 #[cfg(not(feature = "doc_test"))]
 pub mod components;
 #[cfg(not(feature = "doc_test"))]

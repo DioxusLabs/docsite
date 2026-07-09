@@ -360,7 +360,7 @@ For better Tailwind development experience, install the Tailwind CSS IntelliSens
 
 ```json
 {
-    "tailwindCSS.experimental.classRegex": ["class: \"(.*)\""],
+    "tailwindCSS.experimental.classRegex": ["(?<!\/\/ ?)class: .*\"(.*)\".*,"],
     "tailwindCSS.includeLanguages": {
         "rust": "html"
     }

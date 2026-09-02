@@ -30,6 +30,9 @@ cargo install dioxus-cli
 
 ### Bonus Steps
 
+<details>
+    <summary>VSCode</summary>
+
 1. Install the Tailwind CSS VSCode extension
 2. Go to the settings for the extension and find the experimental regex support section. Edit the setting.json file to look like this:
 
@@ -39,6 +42,56 @@ cargo install dioxus-cli
     "rust": "html"
 },
 ```
+
+</details>
+
+<details>
+    <summary>Neovim</summary>
+
+1. Create new file **`~/.local/nvim/lua/custom/dioxus-tailwind.lua`**:
+
+```lua
+local paths_to_check = { '/', '/../', '/../../' }
+local is_dx = false
+local cwd = vim.fn.getcwd()
+
+-- detect dioxus project
+for _, value in pairs(paths_to_check) do
+  if vim.uv.fs_stat(cwd .. value .. 'Dioxus.toml') then 
+    is_dx = true
+    break
+  end
+end
+
+-- this configuration causes regular html to not work anymore
+-- so we only apply it if we're actually in a dioxus project
+if is_dx then
+  vim.notify("dioxus project detected; altering tailwind LSP config...")
+  vim.lsp.config("tailwindcss", {
+    filetypes = {'rust'},
+    settings = {
+      tailwindCSS = {
+        includeLanguages = { rust = "html", },
+        experimental = {
+          classRegex = {
+            -- if this option gets removed, bob help you
+            'class: "(.*)"',
+          }
+        }
+      }
+    }
+  })
+  vim.lsp.enable("tailwindcss")
+end
+```
+
+2. Add to **`~/.local/nvim/init.lua`**
+
+```lua
+require('custom.dioxus-tailwind')
+```
+
+</details>
 
 ## Development
 

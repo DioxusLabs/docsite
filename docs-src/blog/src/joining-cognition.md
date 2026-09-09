@@ -2,6 +2,8 @@ Today, we are announcing that the Dioxus team is joining Cognition to accelerate
 
 In addition to helping advance Devin, the Dioxus team will also continue to work on Dioxus, Blitz, Taffy, and Subsecond, and to maintain our wide array of open source projects for the benefit of the community.
 
+<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1225356356?h=b143628652&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Welcoming Dioxus to Cognition"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
+
 ## What got us here
 
 Late in 2025, we noticed that LLM code generation got really, really good at writing Rust. This caught us off guard: the models, seemingly from improvements in reinforcement learning, could finally emit passable Rust code. We saw this in downloads too; more and more users were now picking up Rust and Dioxus to build their apps. The biggest ask from users was, and still is, a more comprehensive ecosystem of Rust crates for things like camera, Bluetooth, and storage.

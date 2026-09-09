@@ -9,4 +9,4 @@
 - [Dioxus 0.5 $ Release Notes $ March 21, 2024 $ A signal rewrite, zero unsafe, no lifetimes, unified launch, and more!](release-050.md)
 - [Dioxus 0.6 $ Release Notes $ December 9, 2024 $ Massive Tooling Improvements: Mobile Simulators, Magical Hot-Reloading, Interactive CLI, and more!](release-060.md)
 - [Dioxus 0.7 $ Release Notes $ Sep 8, 2025 $ Hot-Patching, Native Renderer, Bundle Splitting, Radix-UI, more!](release-070.md)
-- [Dioxus Labs is joining Cognition $ Announcement $ September 9, 2026 $ The Dioxus team is joining Cognition to accelerate Devin, and will keep building Dioxus, Blitz, Taffy, and Subsecond.](joining-cognition.md)
+- [Dioxus Labs is joining Cognition [draft] $ Announcement $ September 9, 2026 $ The Dioxus team is joining Cognition to accelerate Devin, and will keep building Dioxus, Blitz, Taffy, and Subsecond.](joining-cognition.md)

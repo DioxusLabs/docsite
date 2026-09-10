@@ -1,0 +1,847 @@
+<SYSTEM>This is the developer documentation for Dioxus from /learn/0.6/essentials/state/.</SYSTEM>
+# Managing State
+
+In Dioxus, your app is defined as a function of the current state. As the state changes, the parts of your app that depend on that state will automatically re-run. Reactivity automatically tracks state and updates derived state in your application.
+
+## Creating State
+
+You can create mutable state in Dioxus with Signals. Signals are tracked values that automatically update your app when you change them. They form the skeleton of your app's state from which you can derive other state. Signals are often driven directly from user input through event handlers or async tasks.
+
+You can create a signal with the `use_signal` hook:
+
+````rs@reactivity.rs
+let mut signal = use_signal(|| 0);
+````
+
+Once you have your signal, you can clone it by calling the signal like a function or get a reference to the inner value with the `.read()` method:
+
+````rs@reactivity.rs
+// Call the signal like a function to clone the current value
+let value: i32 = signal();
+// get a reference to the inner value with the .read() method
+let value: &i32 = &signal.read();
+// or use one of the traits implemented for Signal like Display
+log!("{signal}");
+````
+
+Finally, you can set the value of the signal with the `.set()` method or get a mutable reference to the inner value with the `.write()` method:
+
+````rs@reactivity.rs
+// Set the value from the signal
+signal.set(1);
+
+// get a mutable reference to the inner value with the .write() method
+let mut value: &mut i32 = &mut signal.write();
+*value += 1;
+````
+
+### Reactive Scopes
+
+The simplest reactive primitive in Dioxus is the `use_effect` hook. It creates a closure that is run any time a tracked value that is run inside the closure changes.
+
+Any value you read inside the closure will become a dependency of the effect. If the value changes, the effect will rerun.
+
+````rs@reactivity.rs
+fn Effect() -> Element {
+    // use_signal creates a tracked value called count
+    let mut count = use_signal(|| 0);
+
+    use_effect(move || {
+        // When we read count, it becomes a dependency of the effect
+        let current_count = count();
+        // Whenever count changes, the effect will rerun
+        log!("{current_count}");
+    });
+
+    rsx! {
+        button { onclick: move |_| count += 1, "Increment" }
+
+        div { "Count is {count}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    reactivity::EffectDemo {}
+}
+````
+
+### Derived State
+
+`use_memo` is a reactive primitive that lets you derive state from any tracked value. It takes a closure that computes the new state and returns a tracked value with the current state of the memo. Any time a dependency of the memo changes, the memo will rerun.
+
+The value you return from the closure will only change when the output of the closure changes (`PartialEq` between the old and new value returns false).
+
+````rs@reactivity.rs
+fn Memo() -> Element {
+    let mut count = use_signal(|| 0);
+
+    // use_memo creates a tracked value that is derived from count
+    // Since we read count inside the closure, it becomes a dependency of the memo
+    // Whenever count changes, the memo will rerun
+    let half_count = use_memo(move || count() / 2);
+
+    use_effect(move || {
+        // half_count is itself a tracked value
+        // When we read half_count, it becomes a dependency of the effect
+        // and the effect will rerun when half_count changes
+        log!("{half_count}");
+    });
+
+    rsx! {
+        button { onclick: move |_| count += 1, "Increment" }
+
+        div { "Count is {count}" }
+        div { "Half count is {half_count}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    reactivity::MemoDemo {}
+}
+````
+
+### Derived Async State
+
+`use_resource` is a reactive primitive that lets you derive state from any async closure. It takes an async closure that computes the new state and returns a tracked value with the current state of the resource. Any time a dependency of the resource changes, the resource will rerun.
+
+The value you return from the closure will only change when the state of the future changes. Unlike `use_memo`, the resource's output is not memoized with `PartialEq`.
+
+````rs@reactivity.rs
+fn Resource() -> Element {
+    let mut count = use_signal(|| 0);
+
+    // use_resource creates a tracked value that is derived from count
+    // Since we read count inside the closure, it becomes a dependency of the resource
+    // Whenever count changes, the resource will rerun
+    let half_count = use_resource(move || async move {
+        // You can do async work inside resources
+        gloo_timers::future::TimeoutFuture::new(100).await;
+        count() / 2
+    });
+
+    use_effect(move || {
+        // half_count is itself a tracked value
+        // When we read half_count, it becomes a dependency of the effect
+        // and the effect will rerun when half_count changes
+        log!("{:?}", half_count());
+    });
+
+    rsx! {
+        button { onclick: move |_| count += 1, "Change Signal" }
+
+        div { "Count is {count}" }
+        div { "Half count is {half_count():?}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    reactivity::ResourceDemo {}
+}
+````
+
+### Derived UI
+
+Components are functions that return some UI. They memorize the output of the function just like memos. Components keep track of any dependencies you read inside the component and rerun when those dependencies change.
+
+````rs@reactivity.rs
+fn Component() -> Element {
+    let mut count = use_signal(|| 0);
+
+    rsx! {
+        button { onclick: move |_| count += 1, "Change Signal" }
+
+        // Since we read count inside Component, it becomes a dependency of Component
+        // Whenever count changes, Component will rerun
+        Count { count: count() }
+    }
+}
+
+// Components automatically memorize their props. If the props change, Count will rerun
+#[component]
+fn Count(count: i32) -> Element {
+    rsx! {
+        div { "Count: {count}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    reactivity::ComponentDemo {}
+}
+````
+
+### Working with Untracked State
+
+Most of the state in your app will be tracked values. All built in hooks return tracked values, and we encourage custom hooks to do the same. However, there are times when you need to work with untracked state. For example, you may receive a raw untracked value in props. When you read an untracked value inside a reactive scope, it will not subscribe to the value:
+
+````rs@reactivity.rs
+fn Component() -> Element {
+    let mut count = use_signal(|| 0);
+
+    rsx! {
+        button { onclick: move |_| count += 1, "Change Signal" }
+
+        Count { count: count() }
+    }
+}
+
+// The count reruns the component when it changes, but it is not a tracked value
+#[component]
+fn Count(count: i32) -> Element {
+    // When you read count inside the memo, it does not subscribe to the count signal
+    // because the value is not reactive
+    let double_count = use_memo(move || count * 2);
+
+    rsx! {
+        div { "Double count: {double_count}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    reactivity::NonReactiveDemo {}
+}
+````
+
+You can start tracking raw state with the `use_reactive` hook. This hook takes a tuple of dependencies and returns a reactive closure. When the closure is called in a reactive scope, it will track subscribe to the dependencies and rerun the closure when the dependencies change.
+
+````rs@reactivity.rs
+#[component]
+fn Count(count: i32) -> Element {
+    // You can manually track a non-reactive value with the use_reactive hook
+    let double_count = use_memo(
+        // Use reactive takes a tuple of dependencies and returns a reactive closure
+        use_reactive!(|(count,)| count * 2),
+    );
+
+    rsx! {
+        div { "Double count: {double_count}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    reactivity::UseReactiveDemo {}
+}
+````
+
+### Opting Out of Subscriptions
+
+In some situations, you may need to read a reactive value without subscribing to it. You can use the `peek` method to get a reference to the inner value without registering the value as a dependency of the current reactive scope:
+
+````rs@reactivity.rs
+fn Peek() -> Element {
+    let mut count = use_signal(|| 0);
+
+    // The toggle signal is a tracked value
+    let mut toggle = use_signal(|| false);
+
+    use_effect(move || {
+        // When we read count, it becomes a dependency of the effect
+        let current_count = count();
+        log!("current_count is {current_count}");
+
+        if current_count % 4 == 0 {
+            // We peek at the value of toggle instead of reading it,
+            // so it does not become a dependency
+            let current_toggle = *toggle.peek();
+            // We didn't subscribe to toggle, so this will not cause
+            // the effect to rerun forever
+            toggle.set(!current_toggle);
+            log!("flipped toggle to {toggle}");
+        }
+    });
+
+    rsx! {
+        button { onclick: move |_| count += 1, "Change Signal" }
+
+        div { "Count is {count}" }
+        div { "Toggle is {toggle}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    reactivity::PeekDemo {}
+}
+````
+
+### Making Props Reactive
+
+To avoid losing reactivity with props, we recommend you wrap any props you want to track in a `ReadOnlySignal`. Dioxus will automatically convert `T` into `ReadOnlySignal<T>` when you pass props to the component. This will ensure your props are tracked and rerun any state you derive in the component:
+
+````rs@reactivity.rs
+// You can track props by wrapping the type in a ReadOnlySignal
+// Dioxus will automatically convert T into ReadOnlySignal<T> when you pass
+// props to the component
+#[component]
+fn Count(count: ReadOnlySignal<i32>) -> Element {
+    // Then when you read count inside the memo, it subscribes to the count signal
+    let double_count = use_memo(move || count() * 2);
+
+    rsx! {
+        div { "Double count: {double_count}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    reactivity::MakingPropsReactiveDemo {}
+}
+````
+
+## Moving Around State
+
+As you create signals and derived state in your app, you will need to move around that state between components. Dioxus provides three different ways to pass around state:
+
+### Passing props
+
+You can pass your values through component [props](../../reference/component_props.md). This should be your default when passing around state. It is the most explicit and local to your component. Use this until it gets annoying to pass around the value:
+
+````rs@moving_state_around.rs
+pub fn ParentComponent() -> Element {
+    let count = use_signal(|| 0);
+
+    rsx! {
+        "Count is {count}"
+        IncrementButton {
+            count
+        }
+    }
+}
+
+#[component]
+fn IncrementButton(mut count: Signal<i32>) -> Element {
+    rsx! {
+        button {
+            onclick: move |_| count += 1,
+            "Increment"
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    moving_state_around::PassingProps {}
+}
+````
+
+### Passing context
+
+If you need a slightly more powerful way to pass around state, you can use the context API.
+
+The context API lets you pass state from a parent component to all children. This is useful if you want to share state between many components. You can insert a unique type into the context with the [`use_context_provider`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context_provider.html) hook in the parent component. Then you can access the context in any child component with the [`use_context`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context.html) hook.
+
+````rs@moving_state_around.rs
+#[derive(Clone, Copy)]
+struct MyState {
+    count: Signal<i32>,
+}
+
+pub fn ParentComponent() -> Element {
+    // Use context provider provides an unique type to all children of this component
+    let state = use_context_provider(|| MyState {
+        count: Signal::new(0),
+    });
+
+    rsx! {
+        "Count is {state.count}"
+        // IncrementButton will have access to the count without explicitly passing it through props
+        IncrementButton {}
+    }
+}
+
+#[component]
+fn IncrementButton() -> Element {
+    // Use context gets the value from a parent component
+    let mut count = use_context::<MyState>().count;
+
+    rsx! {
+        button {
+            onclick: move |_| count += 1,
+            "Increment"
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    moving_state_around::PassingContext {}
+}
+````
+
+This is slightly less explicit than passing it as a prop, but it is still local to the component. This is really great if you want state that is global to part of your app. It lets you create multiple global-ish states while still making state different when you reuse components. If I create a new `ParentComponent`, it will have a new `MyState`.
+
+### Using globals
+
+Finally, if you have truly global state, you can put your state in a `Global<T>` static. This is useful if you want to share state with your whole app:
+
+````rs@moving_state_around.rs
+use dioxus::prelude::*;
+// Globals are created the first time you access them with the closure you pass to Global::new
+static COUNT: GlobalSignal<i32> = Global::new(|| 0);
+
+pub fn ParentComponent() -> Element {
+    rsx! {
+        "Count is {COUNT}"
+        IncrementButton {}
+    }
+}
+
+fn IncrementButton() -> Element {
+    rsx! {
+        button {
+            // You don't need to pass anything around or get anything out of the context because COUNT is global
+            onclick: move |_| *COUNT.write() += 1,
+            "Increment"
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    moving_state_around::UsingGlobals {}
+}
+````
+
+Global state can be very ergonomic if your state is truly global, but you shouldn't use it if you need state to be different for different instances of your component. If I create another `IncrementButton` it will use the same `COUNT`. Libraries should generally avoid this to make components more reusable.
+
+ > 
+ > Note: Even though it is in a static, `COUNT` will be different for each app instance so you don't need to worry about state mangling when multiple instances of your app are running on the server
+# Managing State
+
+In Dioxus, your app is defined as a function of the current state. As the state changes, the parts of your app that depend on that state will automatically re-run. Reactivity automatically tracks state and updates derived state in your application.
+
+## Creating State
+
+You can create mutable state in Dioxus with Signals. Signals are tracked values that automatically update your app when you change them. They form the skeleton of your app's state from which you can derive other state. Signals are often driven directly from user input through event handlers or async tasks.
+
+You can create a signal with the `use_signal` hook:
+
+````rs@reactivity.rs
+let mut signal = use_signal(|| 0);
+````
+
+Once you have your signal, you can clone it by calling the signal like a function or get a reference to the inner value with the `.read()` method:
+
+````rs@reactivity.rs
+// Call the signal like a function to clone the current value
+let value: i32 = signal();
+// get a reference to the inner value with the .read() method
+let value: &i32 = &signal.read();
+// or use one of the traits implemented for Signal like Display
+log!("{signal}");
+````
+
+Finally, you can set the value of the signal with the `.set()` method or get a mutable reference to the inner value with the `.write()` method:
+
+````rs@reactivity.rs
+// Set the value from the signal
+signal.set(1);
+
+// get a mutable reference to the inner value with the .write() method
+let mut value: &mut i32 = &mut signal.write();
+*value += 1;
+````
+
+### Reactive Scopes
+
+The simplest reactive primitive in Dioxus is the `use_effect` hook. It creates a closure that is run any time a tracked value that is run inside the closure changes.
+
+Any value you read inside the closure will become a dependency of the effect. If the value changes, the effect will rerun.
+
+````rs@reactivity.rs
+fn Effect() -> Element {
+    // use_signal creates a tracked value called count
+    let mut count = use_signal(|| 0);
+
+    use_effect(move || {
+        // When we read count, it becomes a dependency of the effect
+        let current_count = count();
+        // Whenever count changes, the effect will rerun
+        log!("{current_count}");
+    });
+
+    rsx! {
+        button { onclick: move |_| count += 1, "Increment" }
+
+        div { "Count is {count}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    reactivity::EffectDemo {}
+}
+````
+
+### Derived State
+
+`use_memo` is a reactive primitive that lets you derive state from any tracked value. It takes a closure that computes the new state and returns a tracked value with the current state of the memo. Any time a dependency of the memo changes, the memo will rerun.
+
+The value you return from the closure will only change when the output of the closure changes (`PartialEq` between the old and new value returns false).
+
+````rs@reactivity.rs
+fn Memo() -> Element {
+    let mut count = use_signal(|| 0);
+
+    // use_memo creates a tracked value that is derived from count
+    // Since we read count inside the closure, it becomes a dependency of the memo
+    // Whenever count changes, the memo will rerun
+    let half_count = use_memo(move || count() / 2);
+
+    use_effect(move || {
+        // half_count is itself a tracked value
+        // When we read half_count, it becomes a dependency of the effect
+        // and the effect will rerun when half_count changes
+        log!("{half_count}");
+    });
+
+    rsx! {
+        button { onclick: move |_| count += 1, "Increment" }
+
+        div { "Count is {count}" }
+        div { "Half count is {half_count}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    reactivity::MemoDemo {}
+}
+````
+
+### Derived Async State
+
+`use_resource` is a reactive primitive that lets you derive state from any async closure. It takes an async closure that computes the new state and returns a tracked value with the current state of the resource. Any time a dependency of the resource changes, the resource will rerun.
+
+The value you return from the closure will only change when the state of the future changes. Unlike `use_memo`, the resource's output is not memoized with `PartialEq`.
+
+````rs@reactivity.rs
+fn Resource() -> Element {
+    let mut count = use_signal(|| 0);
+
+    // use_resource creates a tracked value that is derived from count
+    // Since we read count inside the closure, it becomes a dependency of the resource
+    // Whenever count changes, the resource will rerun
+    let half_count = use_resource(move || async move {
+        // You can do async work inside resources
+        gloo_timers::future::TimeoutFuture::new(100).await;
+        count() / 2
+    });
+
+    use_effect(move || {
+        // half_count is itself a tracked value
+        // When we read half_count, it becomes a dependency of the effect
+        // and the effect will rerun when half_count changes
+        log!("{:?}", half_count());
+    });
+
+    rsx! {
+        button { onclick: move |_| count += 1, "Change Signal" }
+
+        div { "Count is {count}" }
+        div { "Half count is {half_count():?}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    reactivity::ResourceDemo {}
+}
+````
+
+### Derived UI
+
+Components are functions that return some UI. They memorize the output of the function just like memos. Components keep track of any dependencies you read inside the component and rerun when those dependencies change.
+
+````rs@reactivity.rs
+fn Component() -> Element {
+    let mut count = use_signal(|| 0);
+
+    rsx! {
+        button { onclick: move |_| count += 1, "Change Signal" }
+
+        // Since we read count inside Component, it becomes a dependency of Component
+        // Whenever count changes, Component will rerun
+        Count { count: count() }
+    }
+}
+
+// Components automatically memorize their props. If the props change, Count will rerun
+#[component]
+fn Count(count: i32) -> Element {
+    rsx! {
+        div { "Count: {count}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    reactivity::ComponentDemo {}
+}
+````
+
+### Working with Untracked State
+
+Most of the state in your app will be tracked values. All built in hooks return tracked values, and we encourage custom hooks to do the same. However, there are times when you need to work with untracked state. For example, you may receive a raw untracked value in props. When you read an untracked value inside a reactive scope, it will not subscribe to the value:
+
+````rs@reactivity.rs
+fn Component() -> Element {
+    let mut count = use_signal(|| 0);
+
+    rsx! {
+        button { onclick: move |_| count += 1, "Change Signal" }
+
+        Count { count: count() }
+    }
+}
+
+// The count reruns the component when it changes, but it is not a tracked value
+#[component]
+fn Count(count: i32) -> Element {
+    // When you read count inside the memo, it does not subscribe to the count signal
+    // because the value is not reactive
+    let double_count = use_memo(move || count * 2);
+
+    rsx! {
+        div { "Double count: {double_count}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    reactivity::NonReactiveDemo {}
+}
+````
+
+You can start tracking raw state with the `use_reactive` hook. This hook takes a tuple of dependencies and returns a reactive closure. When the closure is called in a reactive scope, it will track subscribe to the dependencies and rerun the closure when the dependencies change.
+
+````rs@reactivity.rs
+#[component]
+fn Count(count: i32) -> Element {
+    // You can manually track a non-reactive value with the use_reactive hook
+    let double_count = use_memo(
+        // Use reactive takes a tuple of dependencies and returns a reactive closure
+        use_reactive!(|(count,)| count * 2),
+    );
+
+    rsx! {
+        div { "Double count: {double_count}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    reactivity::UseReactiveDemo {}
+}
+````
+
+### Opting Out of Subscriptions
+
+In some situations, you may need to read a reactive value without subscribing to it. You can use the `peek` method to get a reference to the inner value without registering the value as a dependency of the current reactive scope:
+
+````rs@reactivity.rs
+fn Peek() -> Element {
+    let mut count = use_signal(|| 0);
+
+    // The toggle signal is a tracked value
+    let mut toggle = use_signal(|| false);
+
+    use_effect(move || {
+        // When we read count, it becomes a dependency of the effect
+        let current_count = count();
+        log!("current_count is {current_count}");
+
+        if current_count % 4 == 0 {
+            // We peek at the value of toggle instead of reading it,
+            // so it does not become a dependency
+            let current_toggle = *toggle.peek();
+            // We didn't subscribe to toggle, so this will not cause
+            // the effect to rerun forever
+            toggle.set(!current_toggle);
+            log!("flipped toggle to {toggle}");
+        }
+    });
+
+    rsx! {
+        button { onclick: move |_| count += 1, "Change Signal" }
+
+        div { "Count is {count}" }
+        div { "Toggle is {toggle}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    reactivity::PeekDemo {}
+}
+````
+
+### Making Props Reactive
+
+To avoid losing reactivity with props, we recommend you wrap any props you want to track in a `ReadOnlySignal`. Dioxus will automatically convert `T` into `ReadOnlySignal<T>` when you pass props to the component. This will ensure your props are tracked and rerun any state you derive in the component:
+
+````rs@reactivity.rs
+// You can track props by wrapping the type in a ReadOnlySignal
+// Dioxus will automatically convert T into ReadOnlySignal<T> when you pass
+// props to the component
+#[component]
+fn Count(count: ReadOnlySignal<i32>) -> Element {
+    // Then when you read count inside the memo, it subscribes to the count signal
+    let double_count = use_memo(move || count() * 2);
+
+    rsx! {
+        div { "Double count: {double_count}" }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    reactivity::MakingPropsReactiveDemo {}
+}
+````
+
+## Moving Around State
+
+As you create signals and derived state in your app, you will need to move around that state between components. Dioxus provides three different ways to pass around state:
+
+### Passing props
+
+You can pass your values through component [props](../../reference/component_props.md). This should be your default when passing around state. It is the most explicit and local to your component. Use this until it gets annoying to pass around the value:
+
+````rs@moving_state_around.rs
+pub fn ParentComponent() -> Element {
+    let count = use_signal(|| 0);
+
+    rsx! {
+        "Count is {count}"
+        IncrementButton {
+            count
+        }
+    }
+}
+
+#[component]
+fn IncrementButton(mut count: Signal<i32>) -> Element {
+    rsx! {
+        button {
+            onclick: move |_| count += 1,
+            "Increment"
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    moving_state_around::PassingProps {}
+}
+````
+
+### Passing context
+
+If you need a slightly more powerful way to pass around state, you can use the context API.
+
+The context API lets you pass state from a parent component to all children. This is useful if you want to share state between many components. You can insert a unique type into the context with the [`use_context_provider`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context_provider.html) hook in the parent component. Then you can access the context in any child component with the [`use_context`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context.html) hook.
+
+````rs@moving_state_around.rs
+#[derive(Clone, Copy)]
+struct MyState {
+    count: Signal<i32>,
+}
+
+pub fn ParentComponent() -> Element {
+    // Use context provider provides an unique type to all children of this component
+    let state = use_context_provider(|| MyState {
+        count: Signal::new(0),
+    });
+
+    rsx! {
+        "Count is {state.count}"
+        // IncrementButton will have access to the count without explicitly passing it through props
+        IncrementButton {}
+    }
+}
+
+#[component]
+fn IncrementButton() -> Element {
+    // Use context gets the value from a parent component
+    let mut count = use_context::<MyState>().count;
+
+    rsx! {
+        button {
+            onclick: move |_| count += 1,
+            "Increment"
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    moving_state_around::PassingContext {}
+}
+````
+
+This is slightly less explicit than passing it as a prop, but it is still local to the component. This is really great if you want state that is global to part of your app. It lets you create multiple global-ish states while still making state different when you reuse components. If I create a new `ParentComponent`, it will have a new `MyState`.
+
+### Using globals
+
+Finally, if you have truly global state, you can put your state in a `Global<T>` static. This is useful if you want to share state with your whole app:
+
+````rs@moving_state_around.rs
+use dioxus::prelude::*;
+// Globals are created the first time you access them with the closure you pass to Global::new
+static COUNT: GlobalSignal<i32> = Global::new(|| 0);
+
+pub fn ParentComponent() -> Element {
+    rsx! {
+        "Count is {COUNT}"
+        IncrementButton {}
+    }
+}
+
+fn IncrementButton() -> Element {
+    rsx! {
+        button {
+            // You don't need to pass anything around or get anything out of the context because COUNT is global
+            onclick: move |_| *COUNT.write() += 1,
+            "Increment"
+        }
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    moving_state_around::UsingGlobals {}
+}
+````
+
+Global state can be very ergonomic if your state is truly global, but you shouldn't use it if you need state to be different for different instances of your component. If I create another `IncrementButton` it will use the same `COUNT`. Libraries should generally avoid this to make components more reusable.
+
+ > 
+ > Note: Even though it is in a static, `COUNT` will be different for each app instance so you don't need to worry about state mangling when multiple instances of your app are running on the server

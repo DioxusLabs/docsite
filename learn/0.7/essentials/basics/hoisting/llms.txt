@@ -1,0 +1,529 @@
+<SYSTEM>This is the developer documentation for Dioxus from /learn/0.7/essentials/basics/hoisting.</SYSTEM>
+# Hoisting State
+
+You now have enough Dioxus knowledge to build large and complex apps! As your apps scale in size, you might want to refactor large components into a collection of smaller components. Alternatively, you might add a new component that needs to access state from a sibling component.
+
+In these cases, we need to "lift" up shared state to the nearest common ancestor. This technique of lifting common state up the tree is called *hoisting*.
+
+![Hoisting State](/assets/07/hoisting-state.png)
+
+## Hoisting Signals
+
+The most common items to hoist are signals and local state. As your apps grow in size, we split larger components into smaller components. However, your smaller child components still need to access the same state. In these cases, we pass state down the tree.
+
+We might start with a larger component that combines multiple sources of state - in this case, a user's name, email, and some validation in a Memo:
+
+````rust
+#[component]
+fn EmailAndName() -> Element {
+    let mut name = use_signal(|| "name".to_string());
+    let mut email = use_signal(|| "email".to_string());
+    let is_valid = use_memo(move || validate_name_and_email(name, email))
+    rsx! {
+        if !is_valid() { "Invalid name or email" }
+        input { oninput: move |e| name.set(e.value()) }
+        input { oninput: move |e| email.set(e.value()) }
+    }
+}
+````
+
+We might want to split out the validation UI into its own component. In this case, we can move the `Validator` markup into its own child component:
+
+````rust
+#[component]
+fn EmailAndName() -> Element {
+    let mut name = use_signal(|| "name".to_string());
+    let mut email = use_signal(|| "email".to_string());
+    rsx! {
+        Validator { name, email }
+        input { oninput: move |e| name.set(e.value()) }
+        input { oninput: move |e| email.set(e.value()) }
+    }
+}
+
+#[component]
+fn Validator(name: Signal<String>, email: Signal<String>) -> Element {
+    let is_valid = use_memo(move || validate_name_and_email(name, email));
+
+    rsx! {
+        if !is_valid() { "Invalid name or email" }
+    }
+}
+````
+
+As our app continues to grow in complexity, we might want to use the `is_valid` memo in other components. For example, we might want to style the input box differently if the input is invalid. In this case, need to *hoist* the `is_valid` memo out of the `Validator` component back into the `EmailAndName` component:
+
+````rust
+#[component]
+fn EmailAndName() -> Element {
+    let mut name = use_signal(|| "name".to_string());
+    let mut email = use_signal(|| "email".to_string());
+    let is_valid = use_memo(move || validate_name_and_email(name, email));
+
+    rsx! {
+        Validator { is_valid }
+        div { class: if !is_valid() { "border-red" },
+            input { oninput: move |e| name.set(e.value()) }
+            input { oninput: move |e| email.set(e.value()) }
+        }
+    }
+}
+
+#[component]
+fn Validator(is_valid: Memo<bool>) -> Element {
+    rsx! {
+        if !is_valid() { "Invalid name or email" }
+    }
+}
+````
+
+Now, our Validator component only depends on the memo of `name` and `email`, and not their contents. Notice how we started by splitting our UI *first* and *then* state. It's generally better to centralize our state primitives and pass down derived values where possible.
+
+## Decaying Readable Types to ReadSignal
+
+If you look closely at the `Validator` component, you might notice it currently takes a `Memo` type for an argument. Of course, that's the type `use_memo` returns! However, requiring the `Memo` type limits how we can use this component. Practically speaking, we don't *need* a Memo. Our `Validator` just wants a `bool`. And indeed, we can simply accept a bool:
+
+````rust
+#[component]
+fn Validator(is_valid: bool) -> Element {
+    rsx! {
+        if !is_valid { "Invalid name or email" }
+    }
+}
+````
+
+Unfortunately, Rust primitives are *not* reactive types. When you read or write to a primitive - or any other types that aren't reactive - reactive contexts can't subscribe to their changes. Only reactive types like Signal, Memo, Resource, and ReadSignal will participate in the Dioxus reactivity system.
+
+For example, an effect that logs whenever the validation state changes *won't fire* with the plain `is_valid` boolean as an argument.
+
+````rust
+// ❌ is_valid is untracked, and our effect won't work properly
+#[component]
+fn Validator(is_valid: bool) -> Element {
+    use_effect(move || log!("validity change: {is_valid}"));
+    rsx! {
+        if !is_valid { "Invalid name or email" }
+    }
+}
+````
+
+How should you define your component's props such that it accepts *any* reactive value?
+
+To solve this, Dioxus implements `Into<ReadSignal>` for all Readable reactive types. If a type allows you to `.read()` it, it will also automatically convert to a read-only handle of the inner value.
+
+To fix our `Validator` component, we simply wrap `is_valid` in a `ReadSignal`:
+
+````rust
+// ✅ is_valid is reactive!
+#[component]
+fn Validator(is_valid: ReadSignal<bool>) -> Element {
+    use_effect(move || log!("validity change: {is_valid}"));
+    rsx! {
+        if !is_valid { "Invalid name or email" }
+    }
+}
+````
+
+Now, parent components that use this child component can use any Readable reactive primitive as the value, allowing our original example to work properly.
+
+````rust
+// ✅ is_valid can be passed from a memo or a signal
+#[component]
+fn EmailAndName() -> Element {
+    let mut name = use_signal(|| "name".to_string());
+    let mut email = use_signal(|| "email".to_string());
+    let is_valid = use_memo(move || validate_name_and_email(name, email));
+
+    rsx! {
+        Validator { is_valid }
+        div { class: if !is_valid() { "border-red" },
+            input { oninput: move |e| name.set(e.value()) }
+            input { oninput: move |e| email.set(e.value()) }
+        }
+    }
+}
+````
+
+We call this process of converting a read-write type into a read-only type "decaying". The read-only handle is arguably less useful than a full read-write handle, but has wider compatibility and is easier to reason about.
+
+## Automatic Conversion to ReadSignal
+
+For our `Validator` component above, we showed how any Readable reactive type like `Signal` and `Memo` automatically "decay" into `ReadSignal`. However, what if we wanted to pass just a plain boolean value?
+
+````rust
+#[component]
+fn EmailAndName() -> Element {
+    rsx! {
+        Validator { is_valid: true }
+    }
+}
+````
+
+Again, `ReadSignal` saves the day! When using components, any untracked values passed as properties automatically implement `Into<ReadSignal>`. This is extremely powerful. We can upgrade plain primitive values into reactive values without boilerplate.
+
+````rust
+// ✅ this component accepts memos, signals, and even primitive values!
+#[component]
+fn Validator(is_valid: ReadSignal<bool>) -> Element {
+    rsx! {
+        if !is_valid { "Invalid name or email" }
+    }
+}
+````
+
+This super-power comes in most useful when doing computations in expressions at the callsite. For example, we might choose not to memoize the validator logic, and instead simply run it inline:
+
+````rust
+#[component]
+fn EmailAndName() -> Element {
+    let mut name = use_signal(|| "name".to_string());
+    let mut email = use_signal(|| "email".to_string());
+
+    rsx! {
+        Validator { is_valid: validate_name_and_email(name, email) }
+        input { oninput: move |e| name.set(e.value()) }
+        input { oninput: move |e| email.set(e.value()) }
+    }
+}
+````
+
+As a general rule, it's best to wrap every readable component property in a `ReadSignal`. This ensures every prop is automatically reactive and is maximally compatible with the rest of the Dioxus ecosystem.
+
+## Hoisting Callbacks
+
+In Dioxus, the `Signal` object is both a reader *and* a writer. We designed signals to be ergonomic and conceptually straightforward: to read the value, you use `.read()`, and to write the value, you use `.write()`. This makes the basic `Signal` type extremely powerful.
+
+If you're not careful with hoisting state, you might eventually try to build a component that takes a mutable signal as an argument:
+
+````rust
+// ❌ Mutable props are bad!
+#[component]
+fn Incrementer(mut sig: Signal<i32>) -> Element {
+    rsx! {
+        button {
+            onclick: move |_| sig += 1,
+            "Increment"
+        }
+    }
+}
+````
+
+While this may compile (with warnings!), we actively discourage the usage of mutable data in component props since it breaks the foundation of one-way data-flow.
+
+Instead, Dioxus gives you the ability to use callbacks instead, allowing the *caller* to handle updates to state, not the *callee*. Instead of mutating the count in the `Incrementer` component, you should expose an `onclick` callback and let the parent component handle updating state.
+
+````rust
+// ✅ Use callbacks instead!
+#[component]
+fn Parent() -> Element {
+    let mut count = use_signal(|| 0);
+    rsx! {
+        Incrementer {
+            onclick: move |_| count += 1,
+        }
+    }
+}
+
+#[component]
+fn Incrementer(onclick: EventHandler<MouseEvent>) -> Element {
+    rsx! {
+        button {
+            onclick: move |e| onclick.call(e),
+            "Increment!"
+        }
+    }
+}
+````
+
+To make hoisting callbacks even more ergonomic, Dioxus allows shorthand property declaration of element attributes and event listeners:
+
+````rust
+#[component]
+fn Incrementer(onclick: EventHandler<MouseEvent>) -> Element {
+    rsx! {
+        button { onclick, "Increment!" }
+    }
+}
+````
+
+In the case where your hoisted callback needs to return a value, you can use the `Callback` type directly which accepts both arguments and return value as generics:
+
+````rust
+#[component]
+fn CallbackChild(onclick: Callback<MouseEvent, String>) -> Element {
+    let mut current = use_signal(|| "".to_string());
+    rsx! {
+        // onclick.call() accepts a MouseEvent and returns a String
+        button {
+            onclick: move |e| current.set(onclick.call(e)),
+            "Set Value"
+        }
+    }
+}
+````
+
+By hoisting mutation as callbacks, our child components are naturally more modular and simple to reason about.
+# Hoisting State
+
+You now have enough Dioxus knowledge to build large and complex apps! As your apps scale in size, you might want to refactor large components into a collection of smaller components. Alternatively, you might add a new component that needs to access state from a sibling component.
+
+In these cases, we need to "lift" up shared state to the nearest common ancestor. This technique of lifting common state up the tree is called *hoisting*.
+
+![Hoisting State](/assets/07/hoisting-state.png)
+
+## Hoisting Signals
+
+The most common items to hoist are signals and local state. As your apps grow in size, we split larger components into smaller components. However, your smaller child components still need to access the same state. In these cases, we pass state down the tree.
+
+We might start with a larger component that combines multiple sources of state - in this case, a user's name, email, and some validation in a Memo:
+
+````rust
+#[component]
+fn EmailAndName() -> Element {
+    let mut name = use_signal(|| "name".to_string());
+    let mut email = use_signal(|| "email".to_string());
+    let is_valid = use_memo(move || validate_name_and_email(name, email))
+    rsx! {
+        if !is_valid() { "Invalid name or email" }
+        input { oninput: move |e| name.set(e.value()) }
+        input { oninput: move |e| email.set(e.value()) }
+    }
+}
+````
+
+We might want to split out the validation UI into its own component. In this case, we can move the `Validator` markup into its own child component:
+
+````rust
+#[component]
+fn EmailAndName() -> Element {
+    let mut name = use_signal(|| "name".to_string());
+    let mut email = use_signal(|| "email".to_string());
+    rsx! {
+        Validator { name, email }
+        input { oninput: move |e| name.set(e.value()) }
+        input { oninput: move |e| email.set(e.value()) }
+    }
+}
+
+#[component]
+fn Validator(name: Signal<String>, email: Signal<String>) -> Element {
+    let is_valid = use_memo(move || validate_name_and_email(name, email));
+
+    rsx! {
+        if !is_valid() { "Invalid name or email" }
+    }
+}
+````
+
+As our app continues to grow in complexity, we might want to use the `is_valid` memo in other components. For example, we might want to style the input box differently if the input is invalid. In this case, need to *hoist* the `is_valid` memo out of the `Validator` component back into the `EmailAndName` component:
+
+````rust
+#[component]
+fn EmailAndName() -> Element {
+    let mut name = use_signal(|| "name".to_string());
+    let mut email = use_signal(|| "email".to_string());
+    let is_valid = use_memo(move || validate_name_and_email(name, email));
+
+    rsx! {
+        Validator { is_valid }
+        div { class: if !is_valid() { "border-red" },
+            input { oninput: move |e| name.set(e.value()) }
+            input { oninput: move |e| email.set(e.value()) }
+        }
+    }
+}
+
+#[component]
+fn Validator(is_valid: Memo<bool>) -> Element {
+    rsx! {
+        if !is_valid() { "Invalid name or email" }
+    }
+}
+````
+
+Now, our Validator component only depends on the memo of `name` and `email`, and not their contents. Notice how we started by splitting our UI *first* and *then* state. It's generally better to centralize our state primitives and pass down derived values where possible.
+
+## Decaying Readable Types to ReadSignal
+
+If you look closely at the `Validator` component, you might notice it currently takes a `Memo` type for an argument. Of course, that's the type `use_memo` returns! However, requiring the `Memo` type limits how we can use this component. Practically speaking, we don't *need* a Memo. Our `Validator` just wants a `bool`. And indeed, we can simply accept a bool:
+
+````rust
+#[component]
+fn Validator(is_valid: bool) -> Element {
+    rsx! {
+        if !is_valid { "Invalid name or email" }
+    }
+}
+````
+
+Unfortunately, Rust primitives are *not* reactive types. When you read or write to a primitive - or any other types that aren't reactive - reactive contexts can't subscribe to their changes. Only reactive types like Signal, Memo, Resource, and ReadSignal will participate in the Dioxus reactivity system.
+
+For example, an effect that logs whenever the validation state changes *won't fire* with the plain `is_valid` boolean as an argument.
+
+````rust
+// ❌ is_valid is untracked, and our effect won't work properly
+#[component]
+fn Validator(is_valid: bool) -> Element {
+    use_effect(move || log!("validity change: {is_valid}"));
+    rsx! {
+        if !is_valid { "Invalid name or email" }
+    }
+}
+````
+
+How should you define your component's props such that it accepts *any* reactive value?
+
+To solve this, Dioxus implements `Into<ReadSignal>` for all Readable reactive types. If a type allows you to `.read()` it, it will also automatically convert to a read-only handle of the inner value.
+
+To fix our `Validator` component, we simply wrap `is_valid` in a `ReadSignal`:
+
+````rust
+// ✅ is_valid is reactive!
+#[component]
+fn Validator(is_valid: ReadSignal<bool>) -> Element {
+    use_effect(move || log!("validity change: {is_valid}"));
+    rsx! {
+        if !is_valid { "Invalid name or email" }
+    }
+}
+````
+
+Now, parent components that use this child component can use any Readable reactive primitive as the value, allowing our original example to work properly.
+
+````rust
+// ✅ is_valid can be passed from a memo or a signal
+#[component]
+fn EmailAndName() -> Element {
+    let mut name = use_signal(|| "name".to_string());
+    let mut email = use_signal(|| "email".to_string());
+    let is_valid = use_memo(move || validate_name_and_email(name, email));
+
+    rsx! {
+        Validator { is_valid }
+        div { class: if !is_valid() { "border-red" },
+            input { oninput: move |e| name.set(e.value()) }
+            input { oninput: move |e| email.set(e.value()) }
+        }
+    }
+}
+````
+
+We call this process of converting a read-write type into a read-only type "decaying". The read-only handle is arguably less useful than a full read-write handle, but has wider compatibility and is easier to reason about.
+
+## Automatic Conversion to ReadSignal
+
+For our `Validator` component above, we showed how any Readable reactive type like `Signal` and `Memo` automatically "decay" into `ReadSignal`. However, what if we wanted to pass just a plain boolean value?
+
+````rust
+#[component]
+fn EmailAndName() -> Element {
+    rsx! {
+        Validator { is_valid: true }
+    }
+}
+````
+
+Again, `ReadSignal` saves the day! When using components, any untracked values passed as properties automatically implement `Into<ReadSignal>`. This is extremely powerful. We can upgrade plain primitive values into reactive values without boilerplate.
+
+````rust
+// ✅ this component accepts memos, signals, and even primitive values!
+#[component]
+fn Validator(is_valid: ReadSignal<bool>) -> Element {
+    rsx! {
+        if !is_valid { "Invalid name or email" }
+    }
+}
+````
+
+This super-power comes in most useful when doing computations in expressions at the callsite. For example, we might choose not to memoize the validator logic, and instead simply run it inline:
+
+````rust
+#[component]
+fn EmailAndName() -> Element {
+    let mut name = use_signal(|| "name".to_string());
+    let mut email = use_signal(|| "email".to_string());
+
+    rsx! {
+        Validator { is_valid: validate_name_and_email(name, email) }
+        input { oninput: move |e| name.set(e.value()) }
+        input { oninput: move |e| email.set(e.value()) }
+    }
+}
+````
+
+As a general rule, it's best to wrap every readable component property in a `ReadSignal`. This ensures every prop is automatically reactive and is maximally compatible with the rest of the Dioxus ecosystem.
+
+## Hoisting Callbacks
+
+In Dioxus, the `Signal` object is both a reader *and* a writer. We designed signals to be ergonomic and conceptually straightforward: to read the value, you use `.read()`, and to write the value, you use `.write()`. This makes the basic `Signal` type extremely powerful.
+
+If you're not careful with hoisting state, you might eventually try to build a component that takes a mutable signal as an argument:
+
+````rust
+// ❌ Mutable props are bad!
+#[component]
+fn Incrementer(mut sig: Signal<i32>) -> Element {
+    rsx! {
+        button {
+            onclick: move |_| sig += 1,
+            "Increment"
+        }
+    }
+}
+````
+
+While this may compile (with warnings!), we actively discourage the usage of mutable data in component props since it breaks the foundation of one-way data-flow.
+
+Instead, Dioxus gives you the ability to use callbacks instead, allowing the *caller* to handle updates to state, not the *callee*. Instead of mutating the count in the `Incrementer` component, you should expose an `onclick` callback and let the parent component handle updating state.
+
+````rust
+// ✅ Use callbacks instead!
+#[component]
+fn Parent() -> Element {
+    let mut count = use_signal(|| 0);
+    rsx! {
+        Incrementer {
+            onclick: move |_| count += 1,
+        }
+    }
+}
+
+#[component]
+fn Incrementer(onclick: EventHandler<MouseEvent>) -> Element {
+    rsx! {
+        button {
+            onclick: move |e| onclick.call(e),
+            "Increment!"
+        }
+    }
+}
+````
+
+To make hoisting callbacks even more ergonomic, Dioxus allows shorthand property declaration of element attributes and event listeners:
+
+````rust
+#[component]
+fn Incrementer(onclick: EventHandler<MouseEvent>) -> Element {
+    rsx! {
+        button { onclick, "Increment!" }
+    }
+}
+````
+
+In the case where your hoisted callback needs to return a value, you can use the `Callback` type directly which accepts both arguments and return value as generics:
+
+````rust
+#[component]
+fn CallbackChild(onclick: Callback<MouseEvent, String>) -> Element {
+    let mut current = use_signal(|| "".to_string());
+    rsx! {
+        // onclick.call() accepts a MouseEvent and returns a String
+        button {
+            onclick: move |e| current.set(onclick.call(e)),
+            "Set Value"
+        }
+    }
+}
+````
+
+By hoisting mutation as callbacks, our child components are naturally more modular and simple to reason about.

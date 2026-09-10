@@ -1,0 +1,164 @@
+<svg width="900" height="650" xmlns="http://www.w3.org/2000/svg">
+    <style type="text/css">
+		.background {
+			fill-opacity: 1;
+			rx: 0px;
+			ry: 0px;
+			fill: #FFF;
+		}
+
+		line {
+			stroke: #333333;
+			stroke-width: 5;
+			stroke-linecap: round;
+		}
+
+		.dashed {
+			stroke-dasharray: 10 10;
+		}
+
+		.implicit {
+			stroke: red;
+		}
+
+		text {
+			font-size: 20px;
+			font-family: monospace;
+			text-anchor: middle;
+		}
+
+		.sans-serif {
+			font-family: sans-serif;
+		}
+
+		rect {
+			fill-opacity: 0.8;
+			rx: 10px;
+			ry: 10px;
+			stroke-width: 5;
+		}
+
+		.highlight {
+			fill: none;
+			stroke: red;
+			stroke-width: 5;
+		}
+
+		.item-1 {
+			fill: #F22E8A;
+			stroke: #F22E8A;
+		}
+
+		.item-2 {
+			fill: #62CDD9;
+			stroke: #62CDD9;
+		}
+
+		.item-3 {
+			fill: #75BF06;
+			stroke: #75BF06;
+		}
+
+		.item-4 {
+			fill: #F2E205;
+			stroke: #F2E205;
+		}
+
+		.item-5 {
+			fill: #F2360C;
+			stroke: #F2360C;
+		}
+
+		.bold {
+			font-weight: bold;
+		}
+
+		.small {
+			font-size: 15px;
+		}
+
+		.big {
+			font-size: 30px;
+		}
+
+		.linename {
+			font-size: 19px;
+		}
+
+		.end {
+			text-anchor: end;
+		}
+
+		.start {
+			text-anchor: start;
+		}
+
+		.implicit-text {
+			fill: red;
+		}
+    </style>
+
+    <rect class="background" x="0" y="0" width="100%" height="100%" />
+
+    <g transform="translate(80, 60)">
+        <text x="0" y="0">1</text>
+        <text x="150" y="0">2</text>
+        <text x="300" y="0">3</text>
+        <text x="450" y="0">4</text>
+        <text x="600" y="0">5</text>
+        <text x="750" y="0">6</text>
+    </g>
+
+    <g transform="translate(40, 95)">
+        <text x="0" y="0">1</text>
+        <text x="0" y="100">2</text>
+        <text x="0" y="200">3</text>
+        <text x="0" y="300">4</text>
+        <text x="0" y="400">5</text>
+        <text x="0" y="500">6</text>
+    </g>
+
+    <g transform="translate(80, 90)">
+        <line class="dashed" x1="0" y1="0" x2="750" y2="0" />
+        <line class="dashed" x1="0" y1="100" x2="750" y2="100" />
+        <line class="dashed" x1="0" y1="200" x2="750" y2="200" />
+        <line class="dashed" x1="0" y1="300" x2="750" y2="300" />
+        <line class="dashed" x1="0" y1="400" x2="750" y2="400" />
+        <line class="dashed" x1="0" y1="500" x2="750" y2="500" />
+        <line class="dashed" x1="0" y1="0" x2="0" y2="500" />
+        <line class="dashed" x1="150" y1="0" x2="150" y2="500" />
+        <line class="dashed" x1="300" y1="0" x2="300" y2="500" />
+        <line class="dashed" x1="450" y1="0" x2="450" y2="500" />
+        <line class="dashed" x1="600" y1="0" x2="600" y2="500" />
+        <line class="dashed" x1="750" y1="0" x2="750" y2="500" />
+
+        <g transform="translate(0, 100)">
+            <rect class="item-1" x="5" y="5" width="740" height="90" />
+            <text class="bold sans-serif" x="500" y="55">Grid Track (Row)</text>
+        </g>
+
+        <g transform="translate(150, 0)">
+            <rect class="item-2" x="5" y="5" width="140" height="490" />
+            <text class="bold sans-serif" x="75" y="300">Grid</text>
+            <text class="bold sans-serif" x="75" y="330">Track</text>
+            <text class="bold sans-serif" x="75" y="360">(Column)</text>
+        </g>
+
+        <g transform="translate(600, 0)">
+            <rect class="item-3" x="5" y="5" width="140" height="90" />
+            <text class="bold sans-serif" x="75" y="55">Grid Cell</text>
+        </g>
+
+        <g transform="translate(450, 300)">
+            <rect class="item-4" x="5" y="5" width="290" height="190" />
+            <text class="bold sans-serif" x="150" y="105">Grid Area</text>
+        </g>
+
+
+        <g transform="translate(300, 0)">
+            <rect class="highlight" x="-15" y="-60" width="30" height="580" />
+            <text class="bold sans-serif start" x="25" y="-50">Grid Line</text>
+        </g>
+
+    </g>
+</svg>

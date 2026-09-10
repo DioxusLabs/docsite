@@ -1,0 +1,439 @@
+<SYSTEM>This is the developer documentation for Dioxus at /learn/0.3/describing_ui/special_attributes and all its subroutes.</SYSTEM>
+
+# Special Attributes
+
+While most attributes are simply passed on to the HTML, some have special behaviors.
+
+## The HTML Escape Hatch
+
+If you're working with pre-rendered assets, output from templates, or output from a JS library, then you might want to pass HTML directly instead of going through Dioxus. In these instances, reach for `dangerous_inner_html`.
+
+For example, shipping a markdown-to-Dioxus converter might significantly bloat your final application size. Instead, you'll want to pre-render your markdown to HTML and then include the HTML directly in your output. We use this approach for the [Dioxus homepage](https://dioxuslabs.com):
+
+````rs@dangerous_inner_html.rs
+// this should come from a trusted source
+let contents = "live <b>dangerously</b>";
+
+cx.render(rsx! {
+div {
+    dangerous_inner_html: "{contents}",
+}
+})
+````
+
+ > 
+ > Note! This attribute is called "dangerous_inner_html" because it is **dangerous** to pass it data you don't trust. If you're not careful, you can easily expose [cross-site scripting (XSS)](https://en.wikipedia.org/wiki/Cross-site_scripting) attacks to your users.
+ > 
+ > If you're handling untrusted input, make sure to sanitize your HTML before passing it into `dangerous_inner_html` – or just pass it to a Text Element to escape any HTML tags.
+
+## Boolean Attributes
+
+Most attributes, when rendered, will be rendered exactly as the input you provided. However, some attributes are considered "boolean" attributes and just their presence determines whether they affect the output. For these attributes, a provided value of `"false"` will cause them to be removed from the target element.
+
+So this RSX wouldn't actually render the `hidden` attribute:
+
+````rs@boolean_attribute.rs
+cx.render(rsx! {
+div {
+    hidden: "false",
+    "hello"
+}
+})
+````
+
+````html
+<div>hello</div>
+````
+
+Not all attributes work like this however. *Only the following attributes* have this behavior:
+
+* `allowfullscreen`
+* `allowpaymentrequest`
+* `async`
+* `autofocus`
+* `autoplay`
+* `checked`
+* `controls`
+* `default`
+* `defer`
+* `disabled`
+* `formnovalidate`
+* `hidden`
+* `ismap`
+* `itemscope`
+* `loop`
+* `multiple`
+* `muted`
+* `nomodule`
+* `novalidate`
+* `open`
+* `playsinline`
+* `readonly`
+* `required`
+* `reversed`
+* `selected`
+* `truespeed`
+
+For any other attributes, a value of `"false"` will be sent directly to the DOM.
+# Components
+
+Just like you wouldn't want to write a complex program in a single, long, `main` function, you shouldn't build a complex UI in a single `App` function. Instead, you should break down the functionality of an app in logical parts called components.
+
+A component is a Rust function, named in UpperCamelCase, that takes a `Scope` parameter and returns an `Element` describing the UI it wants to render. In fact, our `App` function is a component!
+
+````rs@hello_world_desktop.rs
+// define a component that renders a div with the text "Hello, world!"
+fn App(cx: Scope) -> Element {
+    cx.render(rsx! {
+        div {
+            "Hello, world!"
+        }
+    })
+}
+````
+
+ > 
+ > You'll probably want to add `#![allow(non_snake_case)]` to the top of your crate to avoid warnings about UpperCamelCase component names
+
+A Component is responsible for some rendering task – typically, rendering an isolated part of the user interface. For example, you could have an `About` component that renders a short description of Dioxus Labs:
+
+````rs@components.rs
+pub fn About(cx: Scope) -> Element {
+    cx.render(rsx!(p {
+        b {"Dioxus Labs"}
+        " An Open Source project dedicated to making Rust UI wonderful."
+    }))
+}
+````
+
+Then, you can render your component in another component, similarly to how elements are rendered:
+
+````rs@components.rs
+fn App(cx: Scope) -> Element {
+    cx.render(rsx! {
+        About {},
+        About {},
+    })
+}
+````
+
+![Screenshot containing the About component twice](/assets/blog/release-03/screenshot_about_component.png)
+
+ > 
+ > At this point, it might seem like components are nothing more than functions. However, as you learn more about the features of Dioxus, you'll see that they are actually more powerful!
+# Component Props
+
+Just like you can pass arguments to a function, you can pass props to a component that customize its behavior! The components we've seen so far didn't accept any props – so let's write some components that do.
+
+## derive(Props)
+
+Component props are a single struct annotated with `#[derive(Props)]`. For a component to accept props, the type of its argument must be `Scope<YourPropsStruct>`. Then, you can access the value of the props using `cx.props`.
+
+There are 2 flavors of Props structs:
+
+* Owned props:
+  * Don't have an associated lifetime
+  * Implement `PartialEq`, allow for memoization (if the props don't change, Dioxus won't re-render the component)
+* Borrowed props:
+  * [Borrow](https://doc.rust-lang.org/beta/rust-by-example/scope/borrow.html) from a parent component
+  * Cannot be memoized due to lifetime constraints
+
+### Owned Props
+
+Owned Props are very simple – they don't borrow anything. Example:
+
+````rs@component_owned_props.rs
+// Remember: Owned props must implement `PartialEq`!
+#[derive(PartialEq, Props)]
+struct LikesProps {
+    score: i32,
+}
+
+fn Likes(cx: Scope<LikesProps>) -> Element {
+    cx.render(rsx! {
+        div {
+            "This post has ",
+            b { "{cx.props.score}" },
+            " likes"
+        }
+    })
+}
+````
+
+You can then pass prop values to the component the same way you would pass attributes to an element:
+
+````rs@component_owned_props.rs
+fn App(cx: Scope) -> Element {
+    cx.render(rsx! {
+        Likes {
+            score: 42,
+        },
+    })
+}
+````
+
+![Screenshot: Likes component](/assets/blog/release-03/component_owned_props_screenshot.png)
+
+### Borrowed Props
+
+Owned props work well if your props are easy to copy around – like a single number. But what if we need to pass a larger data type, like a String from an `App` Component to a `TitleCard` subcomponent? A naive solution might be to [`.clone()`](https://doc.rust-lang.org/std/clone/trait.Clone.html) the String, creating a copy of it for the subcomponent – but this would be inefficient, especially for larger Strings.
+
+Rust allows for something more efficient – borrowing the String as a `&str` – this is what Borrowed Props are for!
+
+````rs@component_borrowed_props.rs
+#[derive(Props)]
+struct TitleCardProps<'a> {
+    title: &'a str,
+}
+
+fn TitleCard<'a>(cx: Scope<'a, TitleCardProps<'a>>) -> Element {
+    cx.render(rsx! {
+        h1 { "{cx.props.title}" }
+    })
+}
+````
+
+We can then use the component like this:
+
+````rs@component_borrowed_props.rs
+fn App(cx: Scope) -> Element {
+    let hello = "Hello Dioxus!";
+
+    cx.render(rsx!(TitleCard { title: hello }))
+}
+````
+
+![Screenshot: TitleCard component](/assets/blog/release-03/component_borrowed_props_screenshot.png)
+
+Borrowed props can be very useful, but they do not allow for memorization so they will *always* rerun when the parent scope is rerendered. Because of this Borrowed Props should be reserved for components that are cheap to rerun or places where cloning data is an issue. Using Borrowed Props everywhere will result in large parts of your app rerunning every interaction.
+
+## Prop Options
+
+The `#[derive(Props)]` macro has some features that let you customize the behavior of props.
+
+### Optional Props
+
+You can create optional fields by using the `Option<…>` type for a field:
+
+````rs@component_props_options.rs
+#[derive(Props)]
+struct OptionalProps<'a> {
+    title: &'a str,
+    subtitle: Option<&'a str>,
+}
+
+fn Title<'a>(cx: Scope<'a, OptionalProps>) -> Element<'a> {
+    cx.render(rsx!(h1{
+        "{cx.props.title}: ",
+        cx.props.subtitle.unwrap_or("No subtitle provided"),
+    }))
+}
+````
+
+Then, you can choose to either provide them or not:
+
+````rs@component_props_options.rs
+Title {
+title: "Some Title",
+},
+Title {
+title: "Some Title",
+subtitle: "Some Subtitle",
+},
+// Providing an Option explicitly won't compile though:
+// Title {
+//     title: "Some Title",
+//     subtitle: None,
+// },
+````
+
+### Explicitly Required `Option`s
+
+If you want to explicitly require an `Option`, and not an optional prop, you can annotate it with `#[props(!optional)]`:
+
+````rs@component_props_options.rs
+#[derive(Props)]
+struct ExplicitOptionProps<'a> {
+    title: &'a str,
+    #[props(!optional)]
+    subtitle: Option<&'a str>,
+}
+
+fn ExplicitOption<'a>(cx: Scope<'a, ExplicitOptionProps>) -> Element<'a> {
+    cx.render(rsx!(h1 {
+        "{cx.props.title}: ",
+        cx.props.subtitle.unwrap_or("No subtitle provided"),
+    }))
+}
+````
+
+Then, you have to explicitly pass either `Some("str")` or `None`:
+
+````rs@component_props_options.rs
+ExplicitOption {
+title: "Some Title",
+subtitle: None,
+},
+ExplicitOption {
+title: "Some Title",
+subtitle: Some("Some Title"),
+},
+// This won't compile:
+// ExplicitOption {
+//     title: "Some Title",
+// },
+````
+
+### Default Props
+
+You can use `#[props(default = 42)]` to make a field optional and specify its default value:
+
+````rs@component_props_options.rs
+#[derive(PartialEq, Props)]
+struct DefaultProps {
+    // default to 42 when not provided
+    #[props(default = 42)]
+    number: i64,
+}
+
+fn DefaultComponent(cx: Scope<DefaultProps>) -> Element {
+    cx.render(rsx!(h1 { "{cx.props.number}" }))
+}
+````
+
+Then, similarly to optional props, you don't have to provide it:
+
+````rs@component_props_options.rs
+DefaultComponent {
+number: 5,
+},
+DefaultComponent {},
+````
+
+### Automatic Conversion with `.into`
+
+It is common for Rust functions to accept `impl Into<SomeType>` rather than just `SomeType` to support a wider range of parameters. If you want similar functionality with props, you can use `#[props(into)]`. For example, you could add it on a `String` prop – and `&str` will also be automatically accepted, as it can be converted into `String`:
+
+````rs@component_props_options.rs
+#[derive(PartialEq, Props)]
+struct IntoProps {
+    #[props(into)]
+    string: String,
+}
+
+fn IntoComponent(cx: Scope<IntoProps>) -> Element {
+    cx.render(rsx!(h1 { "{cx.props.string}" }))
+}
+````
+
+Then, you can use it so:
+
+````rs@component_props_options.rs
+IntoComponent {
+string: "some &str",
+},
+````
+
+## The inline_props macro
+
+So far, every Component function we've seen had a corresponding ComponentProps struct to pass in props. This was quite verbose... Wouldn't it be nice to have props as simple function arguments? Then we wouldn't need to define a Props struct, and instead of typing `cx.props.whatever`, we could just use `whatever` directly!
+
+`inline_props` allows you to do just that. Instead of typing the "full" version:
+
+````rust
+#[derive(Props, PartialEq)]
+struct TitleCardProps {
+    title: String,
+}
+
+fn TitleCard(cx: Scope<TitleCardProps>) -> Element {
+    cx.render(rsx!{
+        h1 { "{cx.props.title}" }
+    })
+}
+````
+
+...you can define a function that accepts props as arguments. Then, just annotate it with `#[inline_props]`, and the macro will turn it into a regular Component for you:
+
+````rust
+#[inline_props]
+fn TitleCard(cx: Scope, title: String) -> Element {
+    cx.render(rsx!{
+        h1 { "{title}" }
+    })
+}
+````
+
+ > 
+ > While the new Component is shorter and easier to read, this macro should not be used by library authors since you have less control over Prop documentation.
+# Component Children
+
+In some cases, you may wish to create a component that acts as a container for some other content, without the component needing to know what that content is. To achieve this, create a prop of type `Element`:
+
+````rs@component_element_props.rs
+#[derive(Props)]
+struct ClickableProps<'a> {
+    href: &'a str,
+    body: Element<'a>,
+}
+
+fn Clickable<'a>(cx: Scope<'a, ClickableProps<'a>>) -> Element {
+    cx.render(rsx!(
+        a {
+            href: "{cx.props.href}",
+            class: "fancy-button",
+            &cx.props.body
+        }
+    ))
+}
+````
+
+Then, when rendering the component, you can pass in the output of `cx.render(rsx!(...))`:
+
+````rs@component_element_props.rs
+cx.render(rsx! {
+    Clickable {
+        href: "https://www.youtube.com/watch?v=C-M2hs3sXGo",
+        body: cx.render(rsx!("How to " i {"not"} " be seen")),
+    }
+})
+````
+
+ > 
+ > Note: Since `Element<'a>` is a borrowed prop, there will be no memoization.
+
+ > 
+ > Warning: While it may compile, do not include the same `Element` more than once in the RSX. The resulting behavior is unspecified.
+
+## The children field
+
+Rather than passing the RSX through a regular prop, you may wish to accept children similarly to how elements can have children. The "magic" `children` prop lets you achieve this:
+
+````rs@component_children.rs
+#[derive(Props)]
+struct ClickableProps<'a> {
+    href: &'a str,
+    children: Element<'a>,
+}
+
+fn Clickable<'a>(cx: Scope<'a, ClickableProps<'a>>) -> Element {
+    cx.render(rsx!(
+        a {
+            href: "{cx.props.href}",
+            class: "fancy-button",
+            &cx.props.children
+        }
+    ))
+}
+````
+
+This makes using the component much simpler: simply put the RSX inside the `{}` brackets – and there is no need for a `render` call or another macro!
+
+````rs@component_children.rs
+cx.render(rsx! {
+    Clickable {
+        href: "https://www.youtube.com/watch?v=C-M2hs3sXGo",
+        "How to " i {"not"} " be seen"
+    }
+})
+````

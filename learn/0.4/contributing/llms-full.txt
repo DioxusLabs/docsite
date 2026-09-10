@@ -1,0 +1,490 @@
+<SYSTEM>This is the developer documentation for Dioxus at /learn/0.4/contributing/project_structure and all its subroutes.</SYSTEM>
+
+# Project Structure
+
+There are many packages in the Dioxus organization. This document will help you understand the purpose of each package and how they fit together.
+
+## Renderers
+
+* [Desktop](https://github.com/DioxusLabs/dioxus/tree/master/packages/desktop): A Render that Runs Dioxus applications natively, but renders them with the system webview
+* [Mobile](https://github.com/DioxusLabs/dioxus/tree/master/packages/mobile): A Render that Runs Dioxus applications natively, but renders them with the system webview. This is currently a copy of the desktop render
+* [Web](https://github.com/DioxusLabs/dioxus/tree/master/packages/web): Renders Dioxus applications in the browser by compiling to WASM and manipulating the DOM
+* [Liveview](https://github.com/DioxusLabs/dioxus/tree/master/packages/liveview): A Render that Runs on the server, and renders using a websocket proxy in the browser
+* [Rink](https://github.com/DioxusLabs/dioxus/tree/master/packages/rink): A Renderer that renders a HTML-like tree into a terminal
+* [TUI](https://github.com/DioxusLabs/dioxus/tree/master/packages/dioxus-tui): A Renderer that uses Rink to render a Dioxus application in a terminal
+* [Blitz-Core](https://github.com/DioxusLabs/blitz/tree/master/blitz-core): An experimental native renderer that renders a HTML-like tree using WGPU.
+* [Blitz](https://github.com/DioxusLabs/blitz): An experimental native renderer that uses Blitz-Core to render a Dioxus application using WGPU.
+* [SSR](https://github.com/DioxusLabs/dioxus/tree/master/packages/ssr): A Render that Runs Dioxus applications on the server, and renders them to HTML
+
+## State Management/Hooks
+
+* [Hooks](https://github.com/DioxusLabs/dioxus/tree/master/packages/hooks): A collection of common hooks for Dioxus applications
+* [Signals](https://github.com/DioxusLabs/dioxus/tree/master/packages/signals): A experimental state management library for Dioxus applications. This currently contains a `Copy` version of UseRef
+* [Dioxus STD](https://github.com/DioxusLabs/dioxus-std): A collection of platform agnostic hooks to interact with system interfaces (The clipboard, camera, etc.).
+* [Fermi](https://github.com/DioxusLabs/dioxus/tree/master/packages/fermi): A global state management library for Dioxus applications.
+* [Router](https://github.com/DioxusLabs/dioxus/tree/master/packages/router): A client-side router for Dioxus applications
+
+## Core utilities
+
+* [core](https://github.com/DioxusLabs/dioxus/tree/master/packages/core): The core virtual dom implementation every Dioxus application uses
+  * You can read more about the architecture of the core [in this blog post](https://dioxuslabs.com/blog/templates-diffing/) and the [custom renderer section of the guide](../cookbook/custom_renderer.md)
+* [RSX](https://github.com/DioxusLabs/dioxus/tree/master/packages/rsx): The core parsing for RSX used for hot reloading, autoformatting, and the macro
+* [core-macro](https://github.com/DioxusLabs/dioxus/tree/master/packages/core-macro): The rsx! macro used to write Dioxus applications. (This is a wrapper over the RSX crate)
+* [HTML macro](https://github.com/DioxusLabs/dioxus-html-macro): A html-like alternative to the RSX macro
+
+## Native Renderer Utilities
+
+* [native-core](https://github.com/DioxusLabs/dioxus/tree/master/packages/native-core): Incrementally computed tree of states (mostly styles)
+  * You can read more about how native-core can help you build native renderers in the [custom renderer section of the guide](../cookbook/custom_renderer.md#native-core)
+* [native-core-macro](https://github.com/DioxusLabs/dioxus/tree/master/packages/native-core-macro): A helper macro for native core
+* [Taffy](https://github.com/DioxusLabs/taffy): Layout engine powering Blitz-Core, Rink, and Bevy UI
+
+## Web renderer tooling
+
+* [HTML](https://github.com/DioxusLabs/dioxus/tree/master/packages/html): defines html specific elements, events, and attributes
+* [Interpreter](https://github.com/DioxusLabs/dioxus/tree/master/packages/interpreter): defines browser bindings used by the web and desktop renderers
+
+## Developer tooling
+
+* [hot-reload](https://github.com/DioxusLabs/dioxus/tree/master/packages/hot-reload): Macro that uses the RSX crate to hot reload static parts of any rsx! macro. This macro works with any non-web renderer with an [integration](https://crates.io/crates/dioxus-hot-reload)
+* [autofmt](https://github.com/DioxusLabs/dioxus/tree/master/packages/autofmt): Formats RSX code
+* [rsx-rosetta](https://github.com/DioxusLabs/dioxus/tree/master/packages/rsx-rosetta): Handles conversion between HTML and RSX
+* [CLI](https://github.com/DioxusLabs/dioxus/tree/master/packages/cli): A Command Line Interface and VSCode extension to assist with Dioxus usage
+# Walkthrough of the Hello World Example Internals
+
+This walkthrough will take you through the internals of the Hello World example program. It will explain how major parts of Dioxus internals interact with each other to take the readme example from a source file to a running application. This guide should serve as a high-level overview of the internals of Dioxus. It is not meant to be a comprehensive guide.
+
+The core crate roughly works like this:
+
+![](https://mermaid.ink/img/pako:eNqNk01v2zAMhv8KocsuTQ876lCgWAb0sGDD0mMAg7PoWogsBvpwWhT976MlJ3OKbKtOEvmIfEWRr6plQ0qrmDDR2uJTwGE1ft55kBXIGwqNHQYyVvywWt3BA3rjKGj4gs5BX0-V_1n4QtUthW_Mh6WzWgryg537OpJPsQJ_zsX9PrmG0fBwWxM2NIH1nmdRFuxTn4C7K4mn9djTpYAjWsnTcQBaSJiWxIcULEVILCIiu5Egyf3RhpTRwfr75tOC73LKggGmQkUcBLcDVUJyFoF_qcEkoxEVzZHDvjIXpnOhtm1PJp8rvcGw37Z8oPu4FlkvhVvbrivGypyP_3dWXRo2WdrAsp-fN391Qd5n1BBnSU0-GDy9sHyGo678xcOyOU7fMHcMHINNtcgIPfP-Wr2WAu6NeeRzGTS0z7fxgEd_7T3_Zi8b5kp1T1IxvvgWfjlu9x-SexHqo1VTN2qgMKA1MoavU6CdkkaSBlJatoY6zC7t1M6_CYo58VZUKZ1CphtVo8yDq3SHLopVJiZx2NTRLhP-9htxEk8q?type=png)
+
+## The Source File
+
+We start will a hello world program. This program renders a desktop app with the text "Hello World" in a webview.
+
+````rs@readme.rs
+use dioxus::prelude::*;
+
+pub fn App(cx: Scope) -> Element {
+    let mut count = use_state(cx, || 0);
+
+    cx.render(rsx! {
+        h1 { "High-Five counter: {count}" }
+        button { onclick: move |_| count += 1, "Up high!" }
+        button { onclick: move |_| count -= 1, "Down low!" }
+    })
+}
+
+````
+
+[![](https://mermaid.ink/img/pako:eNqNkT1vwyAQhv8KvSlR48HphtQtqjK0S6tuSBGBS0CxwcJHk8rxfy_YVqxKVdR3ug_u4YXrQHmNwOFQ-bMyMhB7fReOJbVxfwyyMSy0l7GSpW1ARda727ksUy5MuSyKgvBC5ULA1h5N8WK_kCkfHWHgrBuiXsBynrvdsY9E3u1iM_eyvFOVVadMnELOap-o1911JLPHZ1b-YqLTc3LjTt7WifTZMJPsPdx1ov3Z_ellfcdL8R8vmTy5eUqsTUpZ-vzZzjAEK6gx1NLqtJwuNwSQwRoF8BRqGU4ChOvTORnJf3w7BZxCxBXERkvCjZXpQTXwg6zaVEVtyYe3cdvD0vsf4bucgw?type=png)](https://mermaid.live/edit#pako:eNqNkT1vwyAQhv8KvSlR48HphtQtqjK0S6tuSBGBS0CxwcJHk8rxfy_YVqxKVdR3ug_u4YXrQHmNwOFQ-bMyMhB7fReOJbVxfwyyMSy0l7GSpW1ARda727ksUy5MuSyKgvBC5ULA1h5N8WK_kCkfHWHgrBuiXsBynrvdsY9E3u1iM_eyvFOVVadMnELOap-o1911JLPHZ1b-YqLTc3LjTt7WifTZMJPsPdx1ov3Z_ellfcdL8R8vmTy5eUqsTUpZ-vzZzjAEK6gx1NLqtJwuNwSQwRoF8BRqGU4ChOvTORnJf3w7BZxCxBXERkvCjZXpQTXwg6zaVEVtyYe3cdvD0vsf4bucgw)
+
+## The rsx! Macro
+
+Before the Rust compiler runs the program, it will expand all [macros](https://doc.rust-lang.org/reference/procedural-macros.html). Here is what the hello world example looks like expanded:
+
+````rs@readme_expanded.rs
+use dioxus::prelude::*;
+
+fn main() {
+    dioxus_desktop::launch(app);
+}
+
+fn app(cx: Scope) -> Element {
+    let mut count = use_state(cx, || 0);
+
+    cx.render(
+        // rsx expands to LazyNodes::new
+        ::dioxus::core::LazyNodes::new(
+            move |__cx: &::dioxus::core::ScopeState| -> ::dioxus::core::VNode {
+                // The template is every static part of the rsx
+                static TEMPLATE: ::dioxus::core::Template = ::dioxus::core::Template {
+                    // This is the source location of the rsx that generated this template. This is used to make hot rsx reloading work. Hot rsx reloading just replaces the template with a new one generated from the rsx by the CLI.
+                    name: "examples\\readme.rs:14:15:250",
+                    // The root nodes are the top level nodes of the rsx
+                    roots: &[
+                        // The h1 node
+                        ::dioxus::core::TemplateNode::Element {
+                            // Find the built in h1 tag in the dioxus_elements crate exported by the dioxus html crate
+                            tag: dioxus_elements::h1::TAG_NAME,
+                            namespace: dioxus_elements::h1::NAME_SPACE,
+                            attrs: &[],
+                            // The children of the h1 node
+                            children: &[
+                                // The dynamic count text node
+                                // Any nodes that are dynamic have a dynamic placeholder with a unique index
+                                ::dioxus::core::TemplateNode::DynamicText {
+                                    // This index is used to find what element in `dynamic_nodes` to use instead of the placeholder
+                                    id: 0usize,
+                                },
+                            ],
+                        },
+                        // The up high button node
+                        ::dioxus::core::TemplateNode::Element {
+                            tag: dioxus_elements::button::TAG_NAME,
+                            namespace: dioxus_elements::button::NAME_SPACE,
+                            attrs: &[
+                                // The dynamic onclick listener attribute
+                                // Any attributes that are dynamic have a dynamic placeholder with a unique index.
+                                ::dioxus::core::TemplateAttribute::Dynamic {
+                                    // Similar to dynamic nodes, dynamic attributes have a unique index used to find the attribute in `dynamic_attrs` to use instead of the placeholder
+                                    id: 0usize,
+                                },
+                            ],
+                            children: &[::dioxus::core::TemplateNode::Text { text: "Up high!" }],
+                        },
+                        // The down low button node
+                        ::dioxus::core::TemplateNode::Element {
+                            tag: dioxus_elements::button::TAG_NAME,
+                            namespace: dioxus_elements::button::NAME_SPACE,
+                            attrs: &[
+                                // The dynamic onclick listener attribute
+                                ::dioxus::core::TemplateAttribute::Dynamic { id: 1usize },
+                            ],
+                            children: &[::dioxus::core::TemplateNode::Text { text: "Down low!" }],
+                        },
+                    ],
+                    // Node paths is a list of paths to every dynamic node in the rsx
+                    node_paths: &[
+                        // The first node path is the path to the dynamic node with an id of 0 (the count text node)
+                        &[
+                            // Go to the index 0 root node
+                            0u8, //
+                            // Go to the first child of the root node
+                            0u8,
+                        ],
+                    ],
+                    // Attr paths is a list of paths to every dynamic attribute in the rsx
+                    attr_paths: &[
+                        // The first attr path is the path to the dynamic attribute with an id of 0 (the up high button onclick listener)
+                        &[
+                            // Go to the index 1 root node
+                            1u8,
+                        ],
+                        // The second attr path is the path to the dynamic attribute with an id of 1 (the down low button onclick listener)
+                        &[
+                            // Go to the index 2 root node
+                            2u8,
+                        ],
+                    ],
+                };
+                // The VNode is a reference to the template with the dynamic parts of the rsx
+                ::dioxus::core::VNode {
+                    parent: None,
+                    key: None,
+                    // The static template this node will use. The template is stored in a Cell so it can be replaced with a new template when hot rsx reloading is enabled
+                    template: std::cell::Cell::new(TEMPLATE),
+                    root_ids: dioxus::core::exports::bumpalo::collections::Vec::with_capacity_in(
+                        3,
+                        __cx.bump(),
+                    )
+                    .into(),
+                    dynamic_nodes: __cx.bump().alloc([
+                        // The dynamic count text node (dynamic node id 0)
+                        __cx.text_node(format_args!("High-Five counter: {0}", count)),
+                    ]),
+                    dynamic_attrs: __cx.bump().alloc([
+                        // The dynamic up high button onclick listener (dynamic attribute id 0)
+                        dioxus_elements::events::onclick(__cx, move |_| count += 1),
+                        // The dynamic down low button onclick listener (dynamic attribute id 1)
+                        dioxus_elements::events::onclick(__cx, move |_| count -= 1),
+                    ]),
+                }
+            },
+        ),
+    )
+}
+
+````
+
+The rsx macro separates the static parts of the rsx (the template) and the dynamic parts (the [dynamic_nodes](https://docs.rs/dioxus-core/0.3.2/dioxus_core/prelude/struct.VNode.html#structfield.dynamic_nodes) and [dynamic_attributes](https://docs.rs/dioxus-core/0.3.2/dioxus_core/prelude/struct.VNode.html#structfield.dynamic_attrs)).
+
+The static template only contains the parts of the rsx that cannot change at runtime with holes for the dynamic parts:
+
+[![](https://mermaid.ink/img/pako:eNqdksFuwjAMhl8l8wkkKtFx65njdtm0E0GVSQKJoEmVOgKEeHecUrXStO0wn5Lf9u8vcm6ggjZQwf4UzspiJPH2Ib3g6NLuELG1oiMkp0TsLs9EDu2iUeSCH8tz2HJmy3lRFPrqsXGq9mxeLzcbCU6LZSUGXWRdwnY7tY7Tdoko-Dq1U64fODgiUfzJMeuOe7_ZGq-ny2jNhGQu9DqT8NUK6w72RcL8dxgdzv4PnHLAKf-Fk80HoBUDrfkqeBkTUd8EC2hMbNBpXtYtJySQNQ0PqPioMR4lSH_nOkwUPq9eQUUxmQWkViOZtUN-UwPVHk8dq0Y7CvH9uf3-E9wfrmuk1A?type=png)](https://mermaid.live/edit#pako:eNqdksFuwjAMhl8l8wkkKtFx65njdtm0E0GVSQKJoEmVOgKEeHecUrXStO0wn5Lf9u8vcm6ggjZQwf4UzspiJPH2Ib3g6NLuELG1oiMkp0TsLs9EDu2iUeSCH8tz2HJmy3lRFPrqsXGq9mxeLzcbCU6LZSUGXWRdwnY7tY7Tdoko-Dq1U64fODgiUfzJMeuOe7_ZGq-ny2jNhGQu9DqT8NUK6w72RcL8dxgdzv4PnHLAKf-Fk80HoBUDrfkqeBkTUd8EC2hMbNBpXtYtJySQNQ0PqPioMR4lSH_nOkwUPq9eQUUxmQWkViOZtUN-UwPVHk8dq0Y7CvH9uf3-E9wfrmuk1A)
+
+The dynamic_nodes and dynamic_attributes are the parts of the rsx that can change at runtime:
+
+[![](https://mermaid.ink/img/pako:eNp1UcFOwzAM_RXLVzZpvUbighDiABfgtkxTlnirtSaZUgc0df130hZEEcwny35-79nu0EZHqHDfxA9bmyTw9KIDlGjz7pDMqQZ3DsazhVCQ7dQbwnEiKxwDvN3NqhN4O4C3q_VaIztYKXjkQ7184HcCG3MQSgq6Mes1bjbTPAV3RdqIJN5l-V__2_Fcf5iY68dgG7ZHBT4WD5ftZfIBN7dQ_Tj4w1B9MVTXGZa_GMYdcIGekjfsymW7oaFRavKkUZXUmXTUqENfcCZLfD0Hi0pSpgXmkzNC92zKATyqvWnaUiXHEtPz9KrxY_0nzYOPmA?type=png)](https://mermaid.live/edit#pako:eNp1UcFOwzAM_RXLVzZpvUbighDiABfgtkxTlnirtSaZUgc0df130hZEEcwny35-79nu0EZHqHDfxA9bmyTw9KIDlGjz7pDMqQZ3DsazhVCQ7dQbwnEiKxwDvN3NqhN4O4C3q_VaIztYKXjkQ7184HcCG3MQSgq6Mes1bjbTPAV3RdqIJN5l-V__2_Fcf5iY68dgG7ZHBT4WD5ftZfIBN7dQ_Tj4w1B9MVTXGZa_GMYdcIGekjfsymW7oaFRavKkUZXUmXTUqENfcCZLfD0Hi0pSpgXmkzNC92zKATyqvWnaUiXHEtPz9KrxY_0nzYOPmA)
+
+## Launching the App
+
+The app is launched by calling the `launch` function with the root component. Internally, this function will create a new web view using [wry](https://docs.rs/wry/latest/wry/) and create a virtual dom with the root component (`fn app()` in the readme example). This guide will not explain the renderer in-depth, but you can read more about it in the [custom renderer](../cookbook/custom_renderer.md) section.
+
+## The Virtual DOM
+
+Before we dive into the initial render in the virtual DOM, we need to discuss what the virtual DOM is. The virtual DOM is a representation of the DOM that is used to diff the current DOM from the new DOM. This diff is then used to create a list of mutations that need to be applied to the DOM to bring it into sync with the virtual DOM.
+
+The Virtual DOM roughly looks like this:
+
+````rust, no_run
+pub struct VirtualDom {
+    // All the templates that have been created or set during hot reloading
+    pub(crate) templates: FxHashMap<TemplateId, FxHashMap<usize, Template<'static>>>,
+
+    // A slab of all the scopes that have been created
+    pub(crate) scopes: ScopeSlab,
+
+    // All scopes that have been marked as dirty
+    pub(crate) dirty_scopes: BTreeSet<DirtyScope>,
+
+    // Every element is actually a dual reference - one to the template and the other to the dynamic node in that template
+    pub(crate) elements: Slab<ElementRef>,
+
+    // This receiver is used to receive messages from hooks about what scopes need to be marked as dirty
+    pub(crate) rx: futures_channel::mpsc::UnboundedReceiver<SchedulerMsg>,
+
+    // The changes queued up to be sent to the renderer
+    pub(crate) mutations: Mutations<'static>,
+}
+````
+
+ > 
+ > What is a [slab](https://docs.rs/slab/latest/slab/)?
+ > 
+ > A slab acts like a hashmap with integer keys if you don't care about the value of the keys. It is internally backed by a dense vector which makes it more efficient than a hashmap. When you insert a value into a slab, it returns an integer key that you can use to retrieve the value later.
+
+ > 
+ > How does Dioxus use slabs?
+ > 
+ > Dioxus uses "synchronized slabs" to communicate between the renderer and the VDOM. When a node is created in the Virtual DOM, an (elementId, mutation) pair is passed to the renderer to identify that node, which the renderer will then render in actual DOM. These ids are also used by the Virtual Dom to reference that node in future mutations, like setting an attribute on a node or removing a node. When the renderer sends an event to the Virtual Dom, it sends the ElementId of the node that the event was triggered on. The Virtual DOM uses this id to find that node in the slab and then run the necessary event handlers.
+
+The virtual DOM is a tree of scopes. A new `Scope` is created for every component when it is first rendered and recycled when the component is unmounted.
+
+Scopes serve three main purposes:
+
+1. They store the state of hooks used by the component
+1. They store the state for the context API (for example: using
+   [use_shared_state_provider](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_shared_state_provider.html)).
+1. They store the current and previous versions of the `VNode` that was rendered, so they can be
+   diffed to generate the set of mutations needed to re-render it.
+
+### The Initial Render
+
+The root scope is created and rebuilt:
+
+1. The root component is run
+1. The root component returns a `VNode`
+1. Mutations for this `VNode` are created and added to the mutation list (this may involve creating new child components)
+1. The `VNode` is stored in the root's `Scope`.
+
+After the root's `Scope` is built, all generated mutations are sent to the renderer, which applies them to the DOM.
+
+After the initial render, the root `Scope` looks like this:
+
+[![](https://mermaid.ink/img/pako:eNqtVE1P4zAQ_SuzPrWikRpWXCLtBRDisItWsOxhCaqM7RKricdyJrQV8N93QtvQNCkfEnOynydv3nxkHoVCbUQipjnOVSYDwc_L1AFbWd3dB-kzuEQkuFLoDUwDFkCZAek9nGDh0RlHK__atA1GkUUHf45f0YbppAqB_aOzIAvz-t7-chN_Y-1bw1WSJKsglIu2w9tktWXxIIuHURT5XCqTYa5NmDguw2R8c5MKq2GcgF46WTB_jafi9rZL0yi5q4jQTSrf9altO4okCn1Ratwyz55Qxuku2ITlTMgs6HCQimsPmb3PvqVi-L5gjXP3QcnxWnL8JZLrwGvR31n0KV-Bx6-r-oVkT_-3G1S-NQLbk9i8rj7udP2cixed2QcDCitHJiQw7ub3EVlNecrPjudG2-6soFO5VbMECmR9T5OnlUY4-AFxfw9aTFst3McU9TK1Otm6NEn_DubBYlX2_dglLXOz48FgwJmJ5lZTlhz6xWgNaFnyDgpymcARHO0W2a9J_l5w2wYXvHuGPcqaQ-rESBQmFNJq3nCPNZoK3l4sUSR81DLMUpG6Z_aTFeHV0imRUKjMSFReSzKnVnKGhUimMi8ZNdoShl-rlfmyOUfCS_cPcePz_B_Wl4pc?type=png)](https://mermaid.live/edit#pako:eNqtVE1P4zAQ_SuzPrWikRpWXCLtBRDisItWsOxhCaqM7RKricdyJrQV8N93QtvQNCkfEnOynydv3nxkHoVCbUQipjnOVSYDwc_L1AFbWd3dB-kzuEQkuFLoDUwDFkCZAek9nGDh0RlHK__atA1GkUUHf45f0YbppAqB_aOzIAvz-t7-chN_Y-1bw1WSJKsglIu2w9tktWXxIIuHURT5XCqTYa5NmDguw2R8c5MKq2GcgF46WTB_jafi9rZL0yi5q4jQTSrf9altO4okCn1Ratwyz55Qxuku2ITlTMgs6HCQimsPmb3PvqVi-L5gjXP3QcnxWnL8JZLrwGvR31n0KV-Bx6-r-oVkT_-3G1S-NQLbk9i8rj7udP2cixed2QcDCitHJiQw7ub3EVlNecrPjudG2-6soFO5VbMECmR9T5OnlUY4-AFxfw9aTFst3McU9TK1Otm6NEn_DubBYlX2_dglLXOz48FgwJmJ5lZTlhz6xWgNaFnyDgpymcARHO0W2a9J_l5w2wYXvHuGPcqaQ-rESBQmFNJq3nCPNZoK3l4sUSR81DLMUpG6Z_aTFeHV0imRUKjMSFReSzKnVnKGhUimMi8ZNdoShl-rlfmyOUfCS_cPcePz_B_Wl4pc)
+
+### Waiting for Events
+
+The Virtual DOM will only ever re-render a `Scope` if it is marked as dirty. Each hook is responsible for marking the `Scope` as dirty if the state has changed. Hooks can mark a scope as dirty by sending a message to the Virtual Dom's channel. You can see the [implementations](https://github.com/DioxusLabs/dioxus/tree/master/packages/hooks) for the hooks dioxus includes by default on how this is done. Calling `needs_update()` on a hook will also cause it to mark its scope as dirty.
+
+There are generally two ways a scope is marked as dirty:
+
+1. The renderer triggers an event: An event listener on this event may be called, which may mark a
+   component as dirty, if processing the event resulted in any generated any mutations.
+1. The renderer calls
+   [`wait_for_work`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.VirtualDom.html#method.wait_for_work):
+   This polls dioxus internal future queue. One of these futures may mark a component as dirty.
+
+Once at least one `Scope` is marked as dirty, the renderer can call [`render_with_deadline`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.VirtualDom.html#method.render_with_deadline) to diff the dirty scopes.
+
+### Diffing Scopes
+
+When a user clicks the "up high" button, the root `Scope` will be marked as dirty by the `use_state` hook. The desktop renderer will then call `render_with_deadline`, which will diff the root `Scope`.
+
+To start the diffing process, the component function is run. After the root component is run it, the root `Scope` will look like this:
+
+[![](https://mermaid.ink/img/pako:eNrFVlFP2zAQ_iuen0BrpCaIl0i8AEJ72KQJtpcRFBnbJVYTn-U4tBXw33dpG5M2CetoBfdkny_ffb67fPIT5SAkjekkhxnPmHXk-3WiCVpZ3T9YZjJyDeDIDQcjycRCQVwmCTOGXEBhQEvtVvG1CWUldwo0-XX-6vVIF5W1GB9cWVbI1_PNL5v8jW3uPFbpmFOc2HK-GfA2WG1ZeJSFx0EQmJxxmUEupE01liEd394mVAkyjolYaFYgfu1P6N1dF8Yzua-cA51WphtTWzsLc872Zan9CnEGUkktuk6fFm_i5NxFRwn9bUimHrIvCT3-N2EBM70j5XBNOTwI5TrxmvQJkr7ELcHx67Jeggz0v92g8q0RaE-iP1193On6NyxecKUeJeFQaSdtTMLu_Xah5ctT_u94Nty2ZwU0zxWfxqQA5PecPq84kq9nfRw7SK0WDiEFZ4O37d34S_-08lFBVfb92KVb5HIrAp0WpjKYKeGyODLz0dohWIkaZNkiJqfkdLvIH6oRaTSoEmm0n06k0a5K0ZdpL61Io0Yt0nfpxc7UQ0_9cJrhyZ8syX-6brS706Mc489Vjja7fbWj3cxDqIdfJJqOaCFtwZTAV8hT7U0ovjBQRmiMS8HsNKGJfsE4Vjm4WWhOY2crOaKVEczJS8WwgAWNJywv0SuFcmB_rJ41y9fNiBqm_wA0MS9_AUuAiy0?type=png)](https://mermaid.live/edit#pako:eNrFVlFP2zAQ_iuen0BrpCaIl0i8AEJ72KQJtpcRFBnbJVYTn-U4tBXw33dpG5M2CetoBfdkny_ffb67fPIT5SAkjekkhxnPmHXk-3WiCVpZ3T9YZjJyDeDIDQcjycRCQVwmCTOGXEBhQEvtVvG1CWUldwo0-XX-6vVIF5W1GB9cWVbI1_PNL5v8jW3uPFbpmFOc2HK-GfA2WG1ZeJSFx0EQmJxxmUEupE01liEd394mVAkyjolYaFYgfu1P6N1dF8Yzua-cA51WphtTWzsLc872Zan9CnEGUkktuk6fFm_i5NxFRwn9bUimHrIvCT3-N2EBM70j5XBNOTwI5TrxmvQJkr7ELcHx67Jeggz0v92g8q0RaE-iP1193On6NyxecKUeJeFQaSdtTMLu_Xah5ctT_u94Nty2ZwU0zxWfxqQA5PecPq84kq9nfRw7SK0WDiEFZ4O37d34S_-08lFBVfb92KVb5HIrAp0WpjKYKeGyODLz0dohWIkaZNkiJqfkdLvIH6oRaTSoEmm0n06k0a5K0ZdpL61Io0Yt0nfpxc7UQ0_9cJrhyZ8syX-6brS706Mc489Vjja7fbWj3cxDqIdfJJqOaCFtwZTAV8hT7U0ovjBQRmiMS8HsNKGJfsE4Vjm4WWhOY2crOaKVEczJS8WwgAWNJywv0SuFcmB_rJ41y9fNiBqm_wA0MS9_AUuAiy0)
+
+Next, the Virtual DOM will compare the new VNode with the previous VNode and only update the parts of the tree that have changed. Because of this approach, when a component is re-rendered only the parts of the tree that have changed will be updated in the DOM by the renderer.
+
+The diffing algorithm goes through the list of dynamic attributes and nodes and compares them to the previous VNode. If the attribute or node has changed, a mutation that describes the change is added to the mutation list.
+
+Here is what the diffing algorithm looks like for the root `Scope` (red lines indicate that a mutation was generated, and green lines indicate that no mutation was generated)
+
+[![](https://mermaid.ink/img/pako:eNrFlFFPwjAQx7_KpT7Kko2Elya8qCE-aGLAJ5khpe1Yw9Zbug4k4He3OJjbGPig0T5t17tf_nf777aEo5CEkijBNY-ZsfAwDjW4kxfzhWFZDGNECxOOmYTIYAo2lsCyDG4xzVBLbcv8_RHKSG4V6orSIN0Wxrh8b2RYKr_uTyubd1W92GiWKg7aac6bOU3G803HbVk82xfP_Ok0JEqAT-FeLWJvpFYSOBbaSkMhCMnra5MgtfhWFrPWqHlhL2urT6atbU-oa0PNE8WXFFJ0-nazXakRroddGk9IwYEUnCd5w7Pddr5UTT8ZuVJY5F0fM7ebRLYyXNDgUnprJWxM-9lb7xAQLHe-M2xDYQCD9pD_2hez_kVn-P_rjLq6n3qjYv2iO5qz9DyvPdyv1ETp5eTTJ_7BGvQq8v1TVtl5jXUcRRcrqFh-dI4VtFlBN6t_ynLNkh5JpUmZEm5rbvfhkLiN6H4BQt2jYGYZklC_uzxWWJxsNCfUmkL2SJEJZuWdYs4cKaERS3IXlUJZNI_lGv7cxj2SMf2CeMx5_wBcbK19?type=png)](https://mermaid.live/edit#pako:eNrFlFFPwjAQx7_KpT7Kko2Elya8qCE-aGLAJ5khpe1Yw9Zbug4k4He3OJjbGPig0T5t17tf_nf777aEo5CEkijBNY-ZsfAwDjW4kxfzhWFZDGNECxOOmYTIYAo2lsCyDG4xzVBLbcv8_RHKSG4V6orSIN0Wxrh8b2RYKr_uTyubd1W92GiWKg7aac6bOU3G803HbVk82xfP_Ok0JEqAT-FeLWJvpFYSOBbaSkMhCMnra5MgtfhWFrPWqHlhL2urT6atbU-oa0PNE8WXFFJ0-nazXakRroddGk9IwYEUnCd5w7Pddr5UTT8ZuVJY5F0fM7ebRLYyXNDgUnprJWxM-9lb7xAQLHe-M2xDYQCD9pD_2hez_kVn-P_rjLq6n3qjYv2iO5qz9DyvPdyv1ETp5eTTJ_7BGvQq8v1TVtl5jXUcRRcrqFh-dI4VtFlBN6t_ynLNkh5JpUmZEm5rbvfhkLiN6H4BQt2jYGYZklC_uzxWWJxsNCfUmkL2SJEJZuWdYs4cKaERS3IXlUJZNI_lGv7cxj2SMf2CeMx5_wBcbK19)
+
+## Conclusion
+
+This is only a brief overview of how the Virtual Dom works. There are several aspects not yet covered in this guide including:
+
+* How the Virtual DOM handles async-components
+* Keyed diffing
+* Using [bump allocation](https://github.com/fitzgen/bumpalo) to efficiently allocate VNodes.
+
+If you need more information about the Virtual Dom, you can read the code of the [core](https://github.com/DioxusLabs/dioxus/tree/master/packages/core) crate or reach out to us on [Discord](https://discord.gg/XgGxMSkvUM).
+# Overall Goals
+
+This document outlines some of the overall goals for Dioxus. These goals are not set in stone, but they represent general guidelines for the project.
+
+The goal of Dioxus is to make it easy to build **cross-platform applications that scale**.
+
+## Cross-Platform
+
+Dioxus is designed to be cross-platform by default. This means that it should be easy to build applications that run on the web, desktop, and mobile. However, Dioxus should also be flexible enough to allow users to opt into platform-specific features when needed. The `use_eval` is one example of this. By default, Dioxus does not assume that the platform supports JavaScript, but it does provide a hook that allows users to opt into JavaScript when needed.
+
+## Performance
+
+As Dioxus applications grow, they should remain relatively performant without the need for manual optimizations. There will be cases where manual optimizations are needed, but Dioxus should try to make these cases as rare as possible.
+
+One of the benefits of the core architecture of Dioxus is that it delivers reasonable performance even when components are rerendered often. It is based on a Virtual Dom which performs diffing which should prevent unnecessary re-renders even when large parts of the component tree are rerun. On top of this, Dioxus groups static parts of the RSX tree together to skip diffing them entirely.
+
+## Type Safety
+
+As teams grow, the Type safety of Rust is a huge advantage. Dioxus should leverage this advantage to make it easy to build applications with large teams.
+
+To take full advantage of Rust's type system, Dioxus should try to avoid exposing public `Any` types and string-ly typed APIs where possible.
+
+## Developer Experience
+
+Dioxus should be easy to learn and ergonomic to use.
+
+* The API of Dioxus attempts to remain close to React's API where possible. This makes it easier for people to learn Dioxus if they already know React
+
+* We can avoid the tradeoff between simplicity and flexibility by providing multiple layers of API: One for the very common use case, one for low-level control
+  
+  * Hooks: the hooks crate has the most common use cases, but `cx.hook` provides a way to access the underlying persistent reference if needed.
+  * The builder pattern in platform Configs: The builder pattern is used to default to the most common use case, but users can change the defaults if needed.
+* Documentation:
+  
+  * All public APIs should have rust documentation
+  * Examples should be provided for all public features. These examples both serve as documentation and testing. They are checked by CI to ensure that they continue to compile
+  * The most common workflows should be documented in the guide
+# Roadmap & Feature-set
+
+This feature set and roadmap can help you decide if what Dioxus can do today works for you.
+
+If a feature that you need doesn't exist or you want to contribute to projects on the roadmap, feel free to get involved by [joining the discord](https://discord.gg/XgGxMSkvUM).
+
+Generally, here's the status of each platform:
+
+* **Web**: Dioxus is a great choice for pure web-apps – especially for CRUD/complex apps. However, it does lack the ecosystem of React, so you might be missing a component library or some useful hook.
+
+* **SSR**: Dioxus is a great choice for pre-rendering, hydration, and rendering HTML on a web endpoint. Be warned – the VirtualDom is not (currently) `Send + Sync`.
+
+* **Desktop**: You can build very competent single-window desktop apps right now. However, multi-window apps require support from Dioxus core and are not ready.
+
+* **Mobile**: Mobile support is very young. You'll be figuring things out as you go and there are not many support crates for peripherals.
+
+* **LiveView**: LiveView support is very young. You'll be figuring things out as you go. Thankfully, none of it is too hard and any work can be upstreamed into Dioxus.
+
+## Features
+
+---
+
+|Feature|Status|Description|
+|-------|------|-----------|
+|Conditional Rendering|x|if/then to hide/show component|
+|Map, Iterator|x|map/filter/reduce to produce rsx!|
+|Keyed Components|x|advanced diffing with keys|
+|Web|x|renderer for web browser|
+|Desktop (webview)|x|renderer for desktop|
+|Shared State (Context)|x|share state through the tree|
+|Hooks|x|memory cells in components|
+|SSR|x|render directly to string|
+|Component Children|x|cx.children() as a list of nodes|
+|Headless components|x|components that don't return real elements|
+|Fragments|x|multiple elements without a real root|
+|Manual Props|x|Manually pass in props with spread syntax|
+|Controlled Inputs|x|stateful wrappers around inputs|
+|CSS/Inline Styles|x|syntax for inline styles/attribute groups|
+|Custom elements|x|Define new element primitives|
+|Suspense|x|schedule future render from future/promise|
+|Integrated error handling|x|Gracefully handle errors with ? syntax|
+|NodeRef|x|gain direct access to nodes|
+|Re-hydration|x|Pre-render to HTML to speed up first contentful paint|
+|Jank-Free Rendering|x|Large diffs are segmented across frames for silky-smooth transitions|
+|Effects|x|Run effects after a component has been committed to render|
+|Portals|\*|Render nodes outside of the traditional tree structure|
+|Cooperative Scheduling|\*|Prioritize important events over non-important events|
+|Server Components|\*|Hybrid components for SPA and Server|
+|Bundle Splitting|i|Efficiently and asynchronously load the app|
+|Lazy Components|i|Dynamically load the new components as the page is loaded|
+|1st class global state|x|redux/recoil/mobx on top of context|
+|Runs natively|x|runs as a portable binary w/o a runtime (Node)|
+|Subtree Memoization|x|skip diffing static element subtrees|
+|High-efficiency templates|x|rsx! calls are translated to templates on the DOM's side|
+|Compile-time correct|x|Throw errors on invalid template layouts|
+|Heuristic Engine|x|track component memory usage to minimize future allocations|
+|Fine-grained reactivity|i|Skip diffing for fine-grain updates|
+
+* x = implemented and working
+* \* = actively being worked on
+* i = not yet implemented or being worked on
+
+## Roadmap
+
+These Features are planned for the future of Dioxus:
+
+### Core
+
+* [x] Release of Dioxus Core
+* [x] Upgrade documentation to include more theory and be more comprehensive
+* [x] Support for HTML-side templates for lightning-fast dom manipulation
+* [ ] Support for multiple renderers for same virtualdom (subtrees)
+* [ ] Support for ThreadSafe (Send + Sync)
+* [ ] Support for Portals
+
+### SSR
+
+* [x] SSR Support + Hydration
+* [ ] Integrated suspense support for SSR
+
+### Desktop
+
+* [ ] Declarative window management
+* [ ] Templates for building/bundling
+* [ ] Access to Canvas/WebGL context natively
+
+### Mobile
+
+* [ ] Mobile standard library
+  * [ ] GPS
+  * [ ] Camera
+  * [ ] filesystem
+  * [ ] Biometrics
+  * [ ] WiFi
+  * [ ] Bluetooth
+  * [ ] Notifications
+  * [ ] Clipboard
+* [ ] Animations
+
+### Bundling (CLI)
+
+* [x] Translation from HTML into RSX
+* [x] Dev server
+* [x] Live reload
+* [x] Translation from JSX into RSX
+* [ ] Hot module replacement
+* [ ] Code splitting
+* [ ] Asset macros
+* [ ] Css pipeline
+* [ ] Image pipeline
+
+### Essential hooks
+
+* [x] Router
+* [x] Global state management
+* [ ] Resize observer
+
+## Work in Progress
+
+### Build Tool
+
+We are currently working on our own build tool called [Dioxus CLI](https://github.com/DioxusLabs/dioxus/tree/master/packages/cli) which will support:
+
+* an interactive TUI
+* on-the-fly reconfiguration
+* hot CSS reloading
+* two-way data binding between browser and source code
+* an interpreter for `rsx!`
+* ability to publish to github/netlify/vercel
+* bundling for iOS/Desktop/etc
+
+### Server Component Support
+
+While not currently fully implemented, the expectation is that LiveView apps can be a hybrid between Wasm and server-rendered where only portions of a page are "live" and the rest of the page is either server-rendered, statically generated, or handled by the host SPA.
+
+### Native rendering
+
+We are currently working on a native renderer for Dioxus using WGPU called [Blitz](https://github.com/DioxusLabs/blitz/). This will allow you to build apps that are rendered natively for iOS, Android, and Desktop.

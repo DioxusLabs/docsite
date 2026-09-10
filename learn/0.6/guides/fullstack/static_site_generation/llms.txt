@@ -1,0 +1,133 @@
+<SYSTEM>This is the developer documentation for Dioxus from /learn/0.6/guides/fullstack/static_site_generation.</SYSTEM>
+# Static Site Generation
+
+Static site generation (SSG) lets you pre-generate all static pages of your application at build time. Once you have the static html pages, you can deploy them to any static hosting provider like GitHub Pages.
+
+## Setting up the ServeConfig
+
+SSG builds on top of the incremental rendering feature of Dioxus fullstack. We need to set up the `ServeConfig` to enable incremental rendering. The incremental config needs to render to the `public` directory where Dioxus places all other public files like the wasm binary and static assets. The `public` directory in the web folder will always be placed alongside the server binary.
+
+````rs@static_site_generation.rs
+fn main() {
+    dioxus::LaunchBuilder::new()
+        // Set the server config only if we are building the server target
+        .with_cfg(server_only! {
+            ServeConfig::builder()
+                // Enable incremental rendering
+                .incremental(
+                    IncrementalRendererConfig::new()
+                        // Store static files in the public directory where other static assets like wasm are stored
+                        .static_dir(
+                            std::env::current_exe()
+                                .unwrap()
+                                .parent()
+                                .unwrap()
+                                .join("public")
+                        )
+                        // Don't clear the public folder on every build. The public folder has other files including the wasm
+                        // binary and static assets required for the app to run
+                        .clear_cache(false)
+                )
+                .enable_out_of_order_streaming()
+        })
+        .launch(app);
+}
+````
+
+## Configuring static routes
+
+Once you have incremental rendering enabled, you need to tell the CLI about the static routes in your app. The CLI looks for a server function at the endpoint `"static_routes"` that returns a list of all static urls. It will call this server function at build time and pre-render all of the routes in the list.
+
+````rs@static_site_generation.rs
+#[derive(Routable, Clone, PartialEq)]
+pub enum Route {
+    // Any routes with no dynamic segments in your router will be included in the static routes list
+    #[route("/")]
+    Index {},
+    #[route("/other")]
+    Other {},
+}
+
+// The server function at the endpoint "static_routes" will be called by the CLI to generate the list of static
+// routes. You must explicitly set the endpoint to `"static_routes"` in the server function attribute instead of
+// the default randomly generated endpoint.
+#[server(endpoint = "static_routes", output = server_fn::codec::Json)]
+async fn static_routes() -> Result<Vec<String>, ServerFnError> {
+    // The `Routable` trait has a `static_routes` method that returns all static routes in the enum
+    Ok(Route::static_routes().iter().map(ToString::to_string).collect())
+}
+````
+
+## Publishing static sites
+
+Finally, you can bundle your site with `dx bundle --platform web --ssg`. Once the CLI finishes bundling, you should see a `public` folder in the dx folder of your project:
+
+![Dioxus SSG](/assets/06_docs/ssg_folder.png)
+
+The folder contains all of the static assets that you need to serve your site. You can copy the public folder into any static hosting provider like GitHub Pages.
+# Static Site Generation
+
+Static site generation (SSG) lets you pre-generate all static pages of your application at build time. Once you have the static html pages, you can deploy them to any static hosting provider like GitHub Pages.
+
+## Setting up the ServeConfig
+
+SSG builds on top of the incremental rendering feature of Dioxus fullstack. We need to set up the `ServeConfig` to enable incremental rendering. The incremental config needs to render to the `public` directory where Dioxus places all other public files like the wasm binary and static assets. The `public` directory in the web folder will always be placed alongside the server binary.
+
+````rs@static_site_generation.rs
+fn main() {
+    dioxus::LaunchBuilder::new()
+        // Set the server config only if we are building the server target
+        .with_cfg(server_only! {
+            ServeConfig::builder()
+                // Enable incremental rendering
+                .incremental(
+                    IncrementalRendererConfig::new()
+                        // Store static files in the public directory where other static assets like wasm are stored
+                        .static_dir(
+                            std::env::current_exe()
+                                .unwrap()
+                                .parent()
+                                .unwrap()
+                                .join("public")
+                        )
+                        // Don't clear the public folder on every build. The public folder has other files including the wasm
+                        // binary and static assets required for the app to run
+                        .clear_cache(false)
+                )
+                .enable_out_of_order_streaming()
+        })
+        .launch(app);
+}
+````
+
+## Configuring static routes
+
+Once you have incremental rendering enabled, you need to tell the CLI about the static routes in your app. The CLI looks for a server function at the endpoint `"static_routes"` that returns a list of all static urls. It will call this server function at build time and pre-render all of the routes in the list.
+
+````rs@static_site_generation.rs
+#[derive(Routable, Clone, PartialEq)]
+pub enum Route {
+    // Any routes with no dynamic segments in your router will be included in the static routes list
+    #[route("/")]
+    Index {},
+    #[route("/other")]
+    Other {},
+}
+
+// The server function at the endpoint "static_routes" will be called by the CLI to generate the list of static
+// routes. You must explicitly set the endpoint to `"static_routes"` in the server function attribute instead of
+// the default randomly generated endpoint.
+#[server(endpoint = "static_routes", output = server_fn::codec::Json)]
+async fn static_routes() -> Result<Vec<String>, ServerFnError> {
+    // The `Routable` trait has a `static_routes` method that returns all static routes in the enum
+    Ok(Route::static_routes().iter().map(ToString::to_string).collect())
+}
+````
+
+## Publishing static sites
+
+Finally, you can bundle your site with `dx bundle --platform web --ssg`. Once the CLI finishes bundling, you should see a `public` folder in the dx folder of your project:
+
+![Dioxus SSG](/assets/06_docs/ssg_folder.png)
+
+The folder contains all of the static assets that you need to serve your site. You can copy the public folder into any static hosting provider like GitHub Pages.

@@ -1,0 +1,135 @@
+<SYSTEM>This is the developer documentation for Dioxus from /learn/0.6/guides/rules_of_hooks.</SYSTEM>
+# The Rules of Hooks
+
+Hooks are a powerful way to manage state in Dioxus, but there are some rules you need to follow to ensure they work as expected. Dioxus uses the order you call hooks to differentiate between hooks. Because the order you call hooks matters, you must follow these rules:
+
+1. Hooks may be only used in components or other hooks (we'll get to that later)
+1. On every call to the component function
+   1. The same hooks must be called
+   1. In the same order
+1. Hooks name's should start with `use_` so you don't accidentally confuse them with regular functions
+
+These rules mean that there are certain things you can't do with hooks:
+
+#### No Hooks in Conditionals
+
+````rs@hooks_bad.rs
+// ❌ don't call hooks in conditionals!
+// We must ensure that the same hooks will be called every time
+// But `if` statements only run if the conditional is true!
+// So we might violate rule 2.
+if you_are_happy && you_know_it {
+    let something = use_signal(|| "hands");
+    println!("clap your {something}")
+}
+
+// ✅ instead, *always* call use_signal
+// You can put other stuff in the conditional though
+let something = use_signal(|| "hands");
+if you_are_happy && you_know_it {
+    println!("clap your {something}")
+}
+````
+
+#### No Hooks in Closures
+
+````rs@hooks_bad.rs
+// ❌ don't call hooks inside closures!
+// We can't guarantee that the closure, if used, will be called in the same order every time
+let _a = || {
+    let b = use_signal(|| 0);
+    b()
+};
+
+// ✅ instead, move hook `b` outside
+let b = use_signal(|| 0);
+let _a = || b();
+````
+
+#### No Hooks in Loops
+
+````rs@hooks_bad.rs
+// `names` is a Vec<&str>
+
+// ❌ Do not use hooks in loops!
+// In this case, if the length of the Vec changes, we break rule 2
+for _name in &names {
+    let is_selected = use_signal(|| false);
+    println!("selected: {is_selected}");
+}
+
+// ✅ Instead, use a hashmap with use_signal
+let selection_map = use_signal(HashMap::<&str, bool>::new);
+
+for name in &names {
+    let is_selected = selection_map.read()[name];
+    println!("selected: {is_selected}");
+}
+````
+# The Rules of Hooks
+
+Hooks are a powerful way to manage state in Dioxus, but there are some rules you need to follow to ensure they work as expected. Dioxus uses the order you call hooks to differentiate between hooks. Because the order you call hooks matters, you must follow these rules:
+
+1. Hooks may be only used in components or other hooks (we'll get to that later)
+1. On every call to the component function
+   1. The same hooks must be called
+   1. In the same order
+1. Hooks name's should start with `use_` so you don't accidentally confuse them with regular functions
+
+These rules mean that there are certain things you can't do with hooks:
+
+#### No Hooks in Conditionals
+
+````rs@hooks_bad.rs
+// ❌ don't call hooks in conditionals!
+// We must ensure that the same hooks will be called every time
+// But `if` statements only run if the conditional is true!
+// So we might violate rule 2.
+if you_are_happy && you_know_it {
+    let something = use_signal(|| "hands");
+    println!("clap your {something}")
+}
+
+// ✅ instead, *always* call use_signal
+// You can put other stuff in the conditional though
+let something = use_signal(|| "hands");
+if you_are_happy && you_know_it {
+    println!("clap your {something}")
+}
+````
+
+#### No Hooks in Closures
+
+````rs@hooks_bad.rs
+// ❌ don't call hooks inside closures!
+// We can't guarantee that the closure, if used, will be called in the same order every time
+let _a = || {
+    let b = use_signal(|| 0);
+    b()
+};
+
+// ✅ instead, move hook `b` outside
+let b = use_signal(|| 0);
+let _a = || b();
+````
+
+#### No Hooks in Loops
+
+````rs@hooks_bad.rs
+// `names` is a Vec<&str>
+
+// ❌ Do not use hooks in loops!
+// In this case, if the length of the Vec changes, we break rule 2
+for _name in &names {
+    let is_selected = use_signal(|| false);
+    println!("selected: {is_selected}");
+}
+
+// ✅ Instead, use a hashmap with use_signal
+let selection_map = use_signal(HashMap::<&str, bool>::new);
+
+for name in &names {
+    let is_selected = selection_map.read()[name];
+    println!("selected: {is_selected}");
+}
+````

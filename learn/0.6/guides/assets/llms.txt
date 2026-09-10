@@ -1,0 +1,161 @@
+<SYSTEM>This is the developer documentation for Dioxus from /learn/0.6/guides/assets.</SYSTEM>
+# Assets
+
+Assets are files that are included in the final build of the application. They can be images, fonts, stylesheets, or any other file that is not a source file. Dioxus includes first class support for assets, and provides a simple way to include them in your application and automatically optimize them for production.
+
+Assets in dioxus are also compatible with libraries! If you are building a library, you can include assets in your library and they will be automatically included in the final build of any application that uses your library.
+
+## Including images
+
+To include an asset in your application, you can simply wrap the path to the asset in the `asset!` macro. For example, to include an image in your application, you can use the following code:
+
+````rs@assets.rs
+use dioxus::prelude::*;
+
+fn App() -> Element {
+    // You can link to assets that are relative to the package root or even link to an asset from a url
+    // These assets will automatically be picked up by the dioxus cli, optimized, and bundled with your final applications
+    const ASSET: Asset = asset!("/assets/static/ferrous_wave.png");
+
+    rsx! {
+        img { src: "{ASSET}" }
+    }
+}
+````
+
+You can also optimize, resize, and preload images using the `asset!` macro. Choosing an optimized file type (like Avif) and a reasonable quality setting can significantly reduce the size of your images which helps your application load faster. For example, you can use the following code to include an optimized image in your application:
+
+````rs@assets.rs
+pub const ENUM_ROUTER_IMG: Asset = asset!(
+    "/assets/static/enum_router.png",
+    // You can pass a second argument to the asset macro to set up options for the asset
+    ImageAssetOptions::new()
+        // You can set the image size in pixels at compile time to send the smallest possible image to the client
+        .with_size(ImageSize::Manual {
+            width: 52,
+            height: 52
+        })
+        // You can also convert the image to a web friendly format at compile time. This can make your images significantly smaller
+        .with_format(ImageFormat::Avif)
+);
+
+fn EnumRouter() -> Element {
+    rsx! {
+        img { src: "{ENUM_ROUTER_IMG}" }
+    }
+}
+````
+
+## Including arbitrary files
+
+In dioxus desktop, you may want to include a file with data for your application. If you don't set any options for your asset and the file extension is not recognized, the asset will be copied without any changes. For example, you can use the following code to include a binary file in your application:
+
+````rs@assets.rs
+// You can also collect arbitrary files. Relative paths are resolved relative to the package root
+const PATH_TO_BUNDLED_CARGO_TOML: Asset = asset!("/Cargo.toml");
+````
+
+These files will be automatically included in the final build of your application, and you can use them in your application as you would any other file.
+
+## Including stylesheets
+
+You can include stylesheets in your application using the `asset!` macro. Stylesheets will automatically be minified as they are bundled to speed up load times. For example, you can use the following code to include a stylesheet in your application:
+
+````rs@assets.rs
+// You can also bundle stylesheets with your application
+// Any files that end with .css will be minified and bundled with your application even if you don't explicitly include them in your <head>
+const _: Asset = asset!("/assets/tailwind.css");
+````
+
+ > 
+ > The [tailwind guide](../cookbook/tailwind.md) has more information on how to use tailwind with dioxus.
+
+#### SCSS Support
+
+SCSS is also supported through the `asset!` macro. Include it the same way as a regular CSS file.
+
+## Conclusion
+
+Dioxus provides first class support for assets, and makes it easy to include them in your application. You can include images, arbitrary files, and stylesheets in your application, and dioxus will automatically optimize them for production. This makes it easy to include assets in your application and ensure that they are optimized for production.
+
+You can read more about assets and all the options available to optimize your assets in the [manganis documentation](https://docs.rs/manganis/0.6.0/manganis).
+# Assets
+
+Assets are files that are included in the final build of the application. They can be images, fonts, stylesheets, or any other file that is not a source file. Dioxus includes first class support for assets, and provides a simple way to include them in your application and automatically optimize them for production.
+
+Assets in dioxus are also compatible with libraries! If you are building a library, you can include assets in your library and they will be automatically included in the final build of any application that uses your library.
+
+## Including images
+
+To include an asset in your application, you can simply wrap the path to the asset in the `asset!` macro. For example, to include an image in your application, you can use the following code:
+
+````rs@assets.rs
+use dioxus::prelude::*;
+
+fn App() -> Element {
+    // You can link to assets that are relative to the package root or even link to an asset from a url
+    // These assets will automatically be picked up by the dioxus cli, optimized, and bundled with your final applications
+    const ASSET: Asset = asset!("/assets/static/ferrous_wave.png");
+
+    rsx! {
+        img { src: "{ASSET}" }
+    }
+}
+````
+
+You can also optimize, resize, and preload images using the `asset!` macro. Choosing an optimized file type (like Avif) and a reasonable quality setting can significantly reduce the size of your images which helps your application load faster. For example, you can use the following code to include an optimized image in your application:
+
+````rs@assets.rs
+pub const ENUM_ROUTER_IMG: Asset = asset!(
+    "/assets/static/enum_router.png",
+    // You can pass a second argument to the asset macro to set up options for the asset
+    ImageAssetOptions::new()
+        // You can set the image size in pixels at compile time to send the smallest possible image to the client
+        .with_size(ImageSize::Manual {
+            width: 52,
+            height: 52
+        })
+        // You can also convert the image to a web friendly format at compile time. This can make your images significantly smaller
+        .with_format(ImageFormat::Avif)
+);
+
+fn EnumRouter() -> Element {
+    rsx! {
+        img { src: "{ENUM_ROUTER_IMG}" }
+    }
+}
+````
+
+## Including arbitrary files
+
+In dioxus desktop, you may want to include a file with data for your application. If you don't set any options for your asset and the file extension is not recognized, the asset will be copied without any changes. For example, you can use the following code to include a binary file in your application:
+
+````rs@assets.rs
+// You can also collect arbitrary files. Relative paths are resolved relative to the package root
+const PATH_TO_BUNDLED_CARGO_TOML: Asset = asset!("/Cargo.toml");
+````
+
+These files will be automatically included in the final build of your application, and you can use them in your application as you would any other file.
+
+## Including stylesheets
+
+You can include stylesheets in your application using the `asset!` macro. Stylesheets will automatically be minified as they are bundled to speed up load times. For example, you can use the following code to include a stylesheet in your application:
+
+````rs@assets.rs
+// You can also bundle stylesheets with your application
+// Any files that end with .css will be minified and bundled with your application even if you don't explicitly include them in your <head>
+const _: Asset = asset!("/assets/tailwind.css");
+````
+
+ > 
+ > The [tailwind guide](../cookbook/tailwind.md) has more information on how to use tailwind with dioxus.
+
+#### SCSS Support
+
+SCSS is also supported through the `asset!` macro. Include it the same way as a regular CSS file.
+
+## Conclusion
+
+Dioxus provides first class support for assets, and makes it easy to include them in your application. You can include images, arbitrary files, and stylesheets in your application, and dioxus will automatically optimize them for production. This makes it easy to include assets in your application and ensure that they are optimized for production.
+
+You can read more about assets and all the options available to optimize your assets in the [manganis documentation](https://docs.rs/manganis/0.6.0/manganis).

@@ -1,0 +1,153 @@
+<SYSTEM>This is the developer documentation for Dioxus from /learn/0.5/reference/mobile/apis.</SYSTEM>
+# Mobile
+
+This guide will cover concepts specific to the Dioxus mobile renderer.
+
+## Running Javascript
+
+Dioxus provides some ergonomic wrappers over the browser API, but in some cases you may need to access parts of the browser API Dioxus does not expose.
+
+For these cases, Dioxus desktop exposes the use_eval hook that allows you to run raw Javascript in the webview:
+
+````rs@eval.rs
+use dioxus::prelude::*;
+
+fn main() {
+    launch(app);
+}
+
+fn app() -> Element {
+    // You can create as many eval instances as you want
+    let mut eval = eval(
+        r#"
+        // You can send messages from JavaScript to Rust with the dioxus.send function
+        dioxus.send("Hi from JS!");
+        // You can receive messages from Rust to JavaScript with the dioxus.recv function
+        let msg = await dioxus.recv();
+        console.log(msg);
+        "#,
+    );
+
+    // You can send messages to JavaScript with the send method
+    eval.send("Hi from Rust!".into()).unwrap();
+
+    let future = use_resource(move || {
+        to_owned![eval];
+        async move {
+            // You can receive any message from JavaScript with the recv method
+            eval.recv().await.unwrap()
+        }
+    });
+
+    match future.read_unchecked().as_ref() {
+        Some(v) => rsx! {
+            p { "{v}" }
+        },
+        _ => rsx! {
+            p { "hello" }
+        },
+    }
+}
+
+````
+
+## Custom Assets
+
+You can link to local assets in dioxus mobile instead of using a url:
+
+````rs@custom_assets.rs
+use dioxus::prelude::*;
+
+fn main() {
+    launch(app);
+}
+
+fn app() -> Element {
+    rsx! {
+        div {
+            img { src: "/public/static/scanner.png" }
+        }
+    }
+}
+
+````
+
+## Integrating with Wry
+
+In cases where you need more low level control over your window, you can use wry APIs exposed through the [Desktop Config](https://docs.rs/dioxus-desktop/0.5.0/dioxus_desktop/struct.Config.html) and the [use_window hook](https://docs.rs/dioxus-desktop/0.5.0/dioxus_desktop/struct.DesktopContext.html)
+# Mobile
+
+This guide will cover concepts specific to the Dioxus mobile renderer.
+
+## Running Javascript
+
+Dioxus provides some ergonomic wrappers over the browser API, but in some cases you may need to access parts of the browser API Dioxus does not expose.
+
+For these cases, Dioxus desktop exposes the use_eval hook that allows you to run raw Javascript in the webview:
+
+````rs@eval.rs
+use dioxus::prelude::*;
+
+fn main() {
+    launch(app);
+}
+
+fn app() -> Element {
+    // You can create as many eval instances as you want
+    let mut eval = eval(
+        r#"
+        // You can send messages from JavaScript to Rust with the dioxus.send function
+        dioxus.send("Hi from JS!");
+        // You can receive messages from Rust to JavaScript with the dioxus.recv function
+        let msg = await dioxus.recv();
+        console.log(msg);
+        "#,
+    );
+
+    // You can send messages to JavaScript with the send method
+    eval.send("Hi from Rust!".into()).unwrap();
+
+    let future = use_resource(move || {
+        to_owned![eval];
+        async move {
+            // You can receive any message from JavaScript with the recv method
+            eval.recv().await.unwrap()
+        }
+    });
+
+    match future.read_unchecked().as_ref() {
+        Some(v) => rsx! {
+            p { "{v}" }
+        },
+        _ => rsx! {
+            p { "hello" }
+        },
+    }
+}
+
+````
+
+## Custom Assets
+
+You can link to local assets in dioxus mobile instead of using a url:
+
+````rs@custom_assets.rs
+use dioxus::prelude::*;
+
+fn main() {
+    launch(app);
+}
+
+fn app() -> Element {
+    rsx! {
+        div {
+            img { src: "/public/static/scanner.png" }
+        }
+    }
+}
+
+````
+
+## Integrating with Wry
+
+In cases where you need more low level control over your window, you can use wry APIs exposed through the [Desktop Config](https://docs.rs/dioxus-desktop/0.5.0/dioxus_desktop/struct.Config.html) and the [use_window hook](https://docs.rs/dioxus-desktop/0.5.0/dioxus_desktop/struct.DesktopContext.html)

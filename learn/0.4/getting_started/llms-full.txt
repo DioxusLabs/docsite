@@ -1,0 +1,907 @@
+<SYSTEM>This is the developer documentation for Dioxus at /learn/0.4/getting_started/choosing_a_web_renderer and all its subroutes.</SYSTEM>
+
+# Choosing a web renderer
+
+Dioxus has three different renderers that target the web:
+
+* [dioxus-web](wasm.md) allows you to render your application to HTML with [WebAssembly](https://rustwasm.github.io/docs/book/) on the client
+* [dioxus-liveview](liveview.md) allows you to run your application on the server and render it to HTML on the client with a websocket
+* [dioxus-fullstack](fullstack.md) allows you to initially render static HTML on the server and then update that HTML from the client with [WebAssembly](https://rustwasm.github.io/docs/book/)
+
+Each approach has its tradeoffs:
+
+### Dioxus Liveview
+
+* Liveview rendering communicates with the server over a WebSocket connection. It essentially moves all of the work that Client-side rendering does to the server.
+
+* This makes it **easy to communicate with the server, but more difficult to communicate with the client/browser APIS**.
+
+* Each interaction also requires a message to be sent to the server and back which can cause **issues with latency**.
+
+* Because Liveview uses a websocket to render, the page will be blank until the WebSocket connection has been established and the first renderer has been sent from the websocket. Just like with client side rendering, this can make the page **less SEO-friendly**.
+
+* Because the page is rendered on the server and the page is sent to the client piece by piece, you never need to send the entire application to the client. The initial load time can be faster than client-side rendering with large applications because Liveview only needs to send a constant small websocket script regardless of the size of the application.
+
+ > 
+ > Liveview is a good fit for applications that already need to communicate with the server frequently (like real time collaborative apps), but don't need to communicate with as many client/browser APIs.
+
+[![](https://mermaid.ink/img/pako:eNplULFOw0AM_RXLc7Mw3sBQVUIMRYgKdcli5ZzkRHIuPl8QqvrvXJICRXiy3nt-9-6dsRHP6DAZGe8CdUpjNd3VEcpsVT4SK1TVPRxYJ1YHL_yeOdkqWMGF3w4U32Y6nSQmXvknMQYNXW8g7bfk2JPBg0g3MCTmdH1rJhenx2is1FiYri43wJ8or3O2H1Liv0w3hw724kMb2MMzdcUYNziyjhR8-f15Pq3Reh65RldWzy3lwWqs46VIKZscPmODzjTzBvPJ__aFrqUhFZR9MNH92uhS7OULYSF1lw?type=png)](https://mermaid.live/edit#pako:eNplULFOw0AM_RXLc7Mw3sBQVUIMRYgKdcli5ZzkRHIuPl8QqvrvXJICRXiy3nt-9-6dsRHP6DAZGe8CdUpjNd3VEcpsVT4SK1TVPRxYJ1YHL_yeOdkqWMGF3w4U32Y6nSQmXvknMQYNXW8g7bfk2JPBg0g3MCTmdH1rJhenx2is1FiYri43wJ8or3O2H1Liv0w3hw724kMb2MMzdcUYNziyjhR8-f15Pq3Reh65RldWzy3lwWqs46VIKZscPmODzjTzBvPJ__aFrqUhFZR9MNH92uhS7OULYSF1lw)
+
+### Dioxus Web
+
+* With Client side rendering, you send your application to the client, and then the client generates all of the HTML of the page dynamically.
+
+* This means that the page will be blank until the JavaScript bundle has loaded and the application has initialized. This can result in **slower first render times and poor SEO performance**.
+
+ > 
+ > SEO stands for Search Engine Optimization. It refers to the practice of making your website more likely to appear in search engine results. Search engines like Google and Bing use web crawlers to index the content of websites. Most of these crawlers are not able to run JavaScript, so they will not be able to index the content of your page if it is rendered client-side.
+
+* Client-side rendered applications need to use **weakly typed requests to communicate with the server**.
+
+ > 
+ > Client-side rendering is a good starting point for most applications. It is well supported and makes it easy to communicate with the client/browser APIs.
+
+[![](https://mermaid.ink/img/pako:eNpVkDFPwzAQhf-KdXOzMHpgqJAQAwytEIsXK35JLBJfez4Xoar_HSemQtzke9_z2e-u1HMAWcrqFU_Rj-KX7vLgkqm1F_7KENN1j-YIuUCsOeBckLUZmrjx_ezT54rziVNG42-sMBLHSQ0Pd8vH5NU8M48zTAby71sr3CYdkAIEoen37h-y5n3910tSiO81cqIdLZDFx1DDXNerjnTCAke2HgMGX2Z15NKtWn1RPn6nnqxKwY7KKfzFJzv4OVcVISrLa1vQtqfbDzd0ZKY?type=png)](https://mermaid.live/edit#pako:eNpVkDFPwzAQhf-KdXOzMHpgqJAQAwytEIsXK35JLBJfez4Xoar_HSemQtzke9_z2e-u1HMAWcrqFU_Rj-KX7vLgkqm1F_7KENN1j-YIuUCsOeBckLUZmrjx_ezT54rziVNG42-sMBLHSQ0Pd8vH5NU8M48zTAby71sr3CYdkAIEoen37h-y5n3910tSiO81cqIdLZDFx1DDXNerjnTCAke2HgMGX2Z15NKtWn1RPn6nnqxKwY7KKfzFJzv4OVcVISrLa1vQtqfbDzd0ZKY)
+
+### Dioxus Fullstack
+
+Fullstack rendering happens in two parts:
+
+1. The page is rendered on the server. This can include fetching any data you need to render the page.
+1. The page is hydrated on the client. (Hydration is taking the HTML page from the server and adding all of the event listeners Dioxus needs on the client). Any updates to the page happen on the client after this point.
+
+Because the page is initially rendered on the server, the page will be fully rendered when it is sent to the client. This results in a faster first render time and makes the page more SEO-friendly.
+
+* **Fast initial render**
+* **Works well with SEO**
+* **Type safe easy communication with the server**
+* **Access to the client/browser APIs**
+* **Fast interactivity**
+
+Finally, we can use [server functions](../reference/fullstack/server_functions.md) to communicate with the server in a type-safe way.
+
+This approach uses both the dioxus-web and dioxus-ssr crates. To integrate those two packages and `axum`, `warp`, or `salvo`, Dioxus provides the `dioxus-fullstack` crate.
+
+There can be more complexity with fullstack applications because your code runs in two different places. Dioxus tries to mitigate this with server functions and other helpers.
+
+[![](https://mermaid.ink/img/pako:eNpdkL1uwzAMhF9F4BwvHTV0KAIUHdohQdFFi2CdbQG2mFCUiyDIu9e2-hOUE3H34UDelVoOIEtZvWIffS9-auYHl8wyT8KfGWKa5tEcITPEmgPOBVkrUMXNPyAFCMJK5BOnjIq8scJI7Ac13N1RH4NX88zcjzAZyJX-8bfIl6QQ32qcv7PuhP-ANe_rpb8KJ9rRBJl8DMt71zXAkQ6Y4Mgua0Dny6iOXLotqC_Kx0tqyaoU7Kicwl8hZDs_5kVFiMryWivbmrt9AacxbGg?type=png)](https://mermaid.live/edit#pako:eNpdkL1uwzAMhF9F4BwvHTV0KAIUHdohQdFFi2CdbQG2mFCUiyDIu9e2-hOUE3H34UDelVoOIEtZvWIffS9-auYHl8wyT8KfGWKa5tEcITPEmgPOBVkrUMXNPyAFCMJK5BOnjIq8scJI7Ac13N1RH4NX88zcjzAZyJX-8bfIl6QQ32qcv7PuhP-ANe_rpb8KJ9rRBJl8DMt71zXAkQ6Y4Mgua0Dny6iOXLotqC_Kx0tqyaoU7Kicwl8hZDs_5kVFiMryWivbmrt9AacxbGg)
+# Web
+
+Build single-page applications that run in the browser with Dioxus. To run on the Web, your app must be compiled to WebAssembly and depend on the `dioxus` and `dioxus-web` crates.
+
+A build of Dioxus for the web will be roughly equivalent to the size of a React build (70kb vs 65kb) but it will load significantly faster because [WebAssembly can be compiled as it is streamed](https://hacks.mozilla.org/2018/01/making-webassembly-even-faster-firefoxs-new-streaming-and-tiering-compiler/).
+
+Examples:
+
+* [TodoMVC](https://github.com/DioxusLabs/example-projects/tree/master/todomvc)
+* [ECommerce](https://github.com/DioxusLabs/example-projects/tree/master/ecommerce-site)
+
+[![TodoMVC example](https://github.com/DioxusLabs/example-projects/raw/master/todomvc/example.png)](https://github.com/DioxusLabs/example-projects/blob/master/todomvc)
+
+ > 
+ > Note: Because of the limitations of Wasm, [not every crate will work](https://rustwasm.github.io/docs/book/reference/which-crates-work-with-wasm.html) with your web apps, so you'll need to make sure that your crates work without native system calls (timers, IO, etc).
+
+## Support
+
+The Web is the best-supported target platform for Dioxus.
+
+* Because your app will be compiled to WASM you have access to browser APIs through [wasm-bindgen](https://rustwasm.github.io/docs/wasm-bindgen/introduction.html).
+* Dioxus provides hydration to resume apps that are rendered on the server. See the [fullstack](fullstack.md) getting started guide for more information.
+
+## Tooling
+
+To develop your Dioxus app for the web, you'll need a tool to build and serve your assets. We recommend using [dioxus-cli](https://github.com/DioxusLabs/dioxus/tree/master/packages/cli) which includes a build system, Wasm optimization, a dev server, and support hot reloading:
+
+````shell
+cargo install dioxus-cli
+````
+
+Make sure the `wasm32-unknown-unknown` target for rust is installed:
+
+````shell
+rustup target add wasm32-unknown-unknown
+````
+
+## Creating a Project
+
+Create a new crate:
+
+````shell
+cargo new --bin demo
+cd demo
+````
+
+Add Dioxus and the web renderer as dependencies (this will edit your `Cargo.toml`):
+
+````bash
+cargo add dioxus
+cargo add dioxus-web
+````
+
+Edit your `main.rs`:
+
+````rs@hello_world_web.rs
+#![allow(non_snake_case)]
+// import the prelude to get access to the `rsx!` macro and the `Scope` and `Element` types
+use dioxus::prelude::*;
+
+fn main() {
+    // launch the web app
+    dioxus_web::launch(App);
+}
+
+// create a component that renders a div with the text "Hello, world!"
+fn App(cx: Scope) -> Element {
+    cx.render(rsx! {
+        div {
+            "Hello, world!"
+        }
+    })
+}
+
+````
+
+And to serve our app:
+
+````bash
+dx serve
+````
+
+If you open the browser and navigate to `127.0.0.1` you should see an app that looks like this:
+
+````inject-dioxus
+DemoFrame {
+    hello_world::HelloWorldCounter {}
+}
+````
+
+## Hot Reload
+
+1. Hot reloading allows much faster iteration times inside of rsx calls by interpreting them and streaming the edits.
+1. It is useful when changing the styling/layout of a program, but will not help with changing the logic of a program.
+
+For the web renderer, you can use the dioxus cli to serve your application with hot reloading enabled.
+
+### Setup
+
+Install [dioxus-cli](https://github.com/DioxusLabs/dioxus/tree/master/packages/cli).
+
+### Usage
+
+1. Run:
+
+````bash
+dx serve --hot-reload
+````
+
+2. Change some code within a rsx or render macro
+2. Open your localhost in a browser
+2. Save and watch the style change without recompiling
+
+### Limitations
+
+1. The interpreter can only use expressions that existed on the last full recompile. If you introduce a new variable or expression to the rsx call, it will require a full recompile to capture the expression.
+1. Components, Iterators, and some attributes can contain arbitrary rust code and will trigger a full recompile when changed.
+# Liveview
+
+Liveview allows apps to *run* on the server and *render* in the browser. It uses WebSockets to communicate between the server and the browser.
+
+Examples:
+
+* [Axum Example](https://github.com/DioxusLabs/dioxus/tree/master/packages/liveview/examples/axum.rs)
+* [Salvo Example](https://github.com/DioxusLabs/dioxus/tree/master/packages/liveview/examples/salvo.rs)
+* [Warp Example](https://github.com/DioxusLabs/dioxus/tree/master/packages/liveview/examples/warp.rs)
+
+## Support
+
+Liveview is currently limited in capability when compared to the Web platform. Liveview apps run on the server in a native thread. This means that browser APIs are not available, so rendering WebGL, Canvas, etc is not as easy as the Web. However, native system APIs are accessible, so streaming, WebSockets, filesystem, etc are all viable APIs.
+
+## Setup
+
+For this guide, we're going to show how to use Dioxus Liveview with [Axum](https://docs.rs/axum/latest/axum/).
+
+Make sure you have Rust and Cargo installed, and then create a new project:
+
+````shell
+cargo new --bin demo
+cd demo
+````
+
+Add Dioxus and the liveview renderer with the Axum feature as dependencies:
+
+````shell
+cargo add dioxus
+cargo add dioxus-liveview --features axum
+````
+
+Next, add all the Axum dependencies. This will be different if you're using a different Web Framework
+
+````
+cargo add tokio --features full
+cargo add axum
+````
+
+Your dependencies should look roughly like this:
+
+````toml
+[dependencies]
+axum = "0.4.5"
+dioxus = { version = "*" }
+dioxus-liveview = { version = "*", features = ["axum"] }
+tokio = { version = "1.15.0", features = ["full"] }
+````
+
+Now, set up your Axum app to respond on an endpoint.
+
+````rs@hello_world_liveview.rs
+use axum::{extract::ws::WebSocketUpgrade, response::Html, routing::get, Router};
+use dioxus::prelude::*;
+
+#[tokio::main]
+async fn main() {
+    let addr: std::net::SocketAddr = ([127, 0, 0, 1], 3030).into();
+
+    let view = dioxus_liveview::LiveViewPool::new();
+
+    let app = Router::new()
+        // The root route contains the glue code to connect to the WebSocket
+        .route(
+            "/",
+            get(move || async move {
+                Html(format!(
+                    r#"
+                <!DOCTYPE html>
+                <html>
+                <head> <title>Dioxus LiveView with Axum</title>  </head>
+                <body> <div id="main"></div> </body>
+                {glue}
+                </html>
+                "#,
+                    // Create the glue code to connect to the WebSocket on the "/ws" route
+                    glue = dioxus_liveview::interpreter_glue(&format!("ws://{addr}/ws"))
+                ))
+            }),
+        )
+        // The WebSocket route is what Dioxus uses to communicate with the browser
+        .route(
+            "/ws",
+            get(move |ws: WebSocketUpgrade| async move {
+                ws.on_upgrade(move |socket| async move {
+                    // When the WebSocket is upgraded, launch the LiveView with the app component
+                    _ = view.launch(dioxus_liveview::axum_socket(socket), app).await;
+                })
+            }),
+        );
+
+    println!("Listening on http://{addr}");
+
+    axum::Server::bind(&addr.to_string().parse().unwrap())
+        .serve(app.into_make_service())
+        .await
+        .unwrap();
+}
+````
+
+And then add our app component:
+
+````rs@hello_world_liveview.rs
+fn app(cx: Scope) -> Element {
+    cx.render(rsx! {
+        div {
+            "Hello, world!"
+        }
+    })
+}
+````
+
+And that's it!
+
+## Hot Reload
+
+1. Hot reloading allows much faster iteration times inside of rsx calls by interpreting them and streaming the edits.
+1. It is useful when changing the styling/layout of a program, but will not help with changing the logic of a program.
+
+### Hot Reload Setup
+
+Install [dioxus-cli](https://github.com/DioxusLabs/dioxus/tree/master/packages/cli).
+
+### Usage
+
+1. Run:
+
+````bash
+dx serve --hot-reload --platform desktop
+````
+
+2. Change some code within `rsx` or `render` macro
+2. Save and watch the style change without recompiling
+
+### Limitations
+
+1. The interpreter can only use expressions that existed on the last full recompile. If you introduce a new variable or expression to the rsx call, it will require a full recompile to capture the expression.
+1. Components, Iterators, and some attributes can contain arbitrary rust code and will trigger a full recompile when changed.
+# Fullstack
+
+ > 
+ > This guide assumes you read the [Web](wasm.md) getting started guide and installed the [Dioxus-cli](https://github.com/DioxusLabs/dioxus/tree/master/packages/cli)
+
+# Getting Started
+
+## Setup
+
+For this guide, we're going to show how to use Dioxus with [Axum](https://docs.rs/axum/latest/axum/), but `dioxus-fullstack` also integrates with the [Warp](https://docs.rs/warp/latest/warp/) and [Salvo](https://docs.rs/salvo/latest/salvo/) web frameworks.
+
+Make sure you have Rust and Cargo installed, and then create a new project:
+
+````shell
+cargo new --bin demo
+cd demo
+````
+
+Add `dioxus` and `dioxus-fullstack` as dependencies:
+
+````shell
+cargo add dioxus
+cargo add dioxus-fullstack
+````
+
+Next, set up features for the server (`ssr`) and the client (`web`):
+
+````toml
+[features]
+default = []
+ssr = ["dioxus-fullstack/axum"]
+web = ["dioxus-fullstack/web"]
+````
+
+Your dependencies should look roughly like this:
+
+````toml
+[dependencies]
+dioxus = { version = "*" }
+dioxus-fullstack = { version = "*" }
+
+[features]
+default = []
+ssr = ["dioxus-fullstack/axum"]
+web = ["dioxus-fullstack/web"]
+````
+
+Now, set up your Axum app to serve the Dioxus app.
+
+````rs@server_basic.rs
+#![allow(non_snake_case, unused)]
+use dioxus::prelude::*;
+use dioxus_fullstack::prelude::*;
+
+fn main() {
+    LaunchBuilder::new(app).launch();
+}
+
+fn app(cx: Scope) -> Element {
+    let mut count = use_state(cx, || 0);
+
+    cx.render(rsx! {
+        h1 { "High-Five counter: {count}" }
+        button { onclick: move |_| count += 1, "Up high!" }
+        button { onclick: move |_| count -= 1, "Down low!" }
+    })
+}
+
+````
+
+Now, run your app with:
+
+````
+dx build --features web --release
+cargo run --features ssr --release
+````
+
+Finally, open `http://localhost:8080` in your browser. You should see a server-side rendered page with a counter.
+
+````inject-dioxus
+SandBoxFrame {
+	url: "https://codesandbox.io/p/sandbox/dioxus-fullstack-2nwsrz?file=%2Fsrc%2Fmain.rs%3A5%2C1"
+}
+````
+
+## Hot Reload
+
+1. Hot reloading allows much faster iteration times inside of rsx calls by interpreting them and streaming the edits.
+1. It is useful when changing the styling/layout of a program, but will not help with changing the logic of a program.
+
+### Usage
+
+1. Run:
+
+````bash
+dx build --features web
+dx serve --features ssr --hot-reload --platform desktop
+````
+
+2. Change some code within a rsx or render macro
+2. Save and watch the style change without recompiling
+
+### Limitations
+
+1. The interpreter can only use expressions that existed on the last full recompile. If you introduce a new variable or expression to the rsx call, it will require a full recompile to capture the expression.
+1. Components, Iterators, and some attributes can contain arbitrary rust code and will trigger a full recompile when changed.
+# Desktop overview
+
+Build a standalone native desktop app that looks and feels the same across operating systems.
+
+Apps built with Dioxus desktop use the system WebView to render the page. This makes the final size of application much smaller than other WebView renderers (typically under 5MB).
+
+Although desktop apps are rendered in a WebView, your Rust code runs natively. This means that browser APIs are *not* available, so rendering WebGL, Canvas, etc is not as easy as the Web. However, native system APIs *are* accessible, so streaming, WebSockets, filesystem, etc are all easily accessible though system APIs.
+
+Dioxus desktop is built off [Tauri](https://tauri.app/). Right now there are limited Dioxus abstractions over the menubar, event handling, etc. In some places you may need to leverage Tauri directly – through [Wry](http://github.com/tauri-apps/wry/) and [Tao](http://github.com/tauri-apps/tao).
+
+ > 
+ > In the future, we plan to move to a custom web renderer-based DOM renderer with WGPU integrations ([Blitz](https://github.com/DioxusLabs/blitz)).
+
+## Examples
+
+* [File Explorer](https://github.com/DioxusLabs/example-projects/blob/master/file-explorer)
+* [WiFi Scanner](https://github.com/DioxusLabs/example-projects/blob/master/wifi-scanner)
+
+[![File Explorer screenshot](https://github.com/DioxusLabs/example-projects/raw/master/file-explorer/assets/image.png)](https://github.com/DioxusLabs/example-projects/tree/master/file-explorer)
+
+Here's a [query](https://github.com/search?q=repo%3ADioxusLabs%2Fdioxus+path%3A%2F%5Eexamples%5C%2F%2F+%22use+dioxus_desktop%22&type=code) for the main repo to find examples which use `dioxus_desktop` (might not be 100% acurrate).
+
+# Getting started
+
+## Platform-specific dependencies
+
+Dioxus desktop renders through a WebView. Depending on your platform, you might need to install some dependencies.
+
+### Windows
+
+Windows apps depend on WebView2 – a library that should be installed in all modern Windows distributions. If you have Edge installed, then Dioxus will work fine. If you *don't* have WebView2, [then you can install it through Microsoft](https://developer.microsoft.com/en-us/microsoft-edge/webview2/). MS provides 3 options:
+
+1. A tiny "evergreen" *bootstrapper* that fetches an installer from Microsoft's CDN.
+1. A tiny *installer* that fetches WebView2 from Microsoft's CDN.
+1. A statically linked version of WebView2 in your final binary for offline users.
+
+For development purposes, use Option 1.
+
+### Linux
+
+WebView Linux apps require WebkitGtk. When distributing, this can be part of your dependency tree in your `.rpm` or `.deb`. However, likely, your users will already have WebkitGtk.
+
+````bash
+sudo apt install libwebkit2gtk-4.1-dev libgtk-3-dev libayatana-appindicator3-dev
+````
+
+When using Debian/bullseye `libappindicator3-dev` is no longer available but replaced by `libayatana-appindicator3-dev`.
+
+````bash
+# on Debian/bullseye use:
+sudo apt install libwebkit2gtk-4.1-dev libgtk-3-dev libayatana-appindicator3-dev
+````
+
+If you run into issues, make sure you have all the basics installed, as outlined in the [Tauri docs](https://beta.tauri.app/guides/prerequisites/).
+
+### MacOS
+
+Currently – everything for macOS is built right in! However, you might run into an issue if you're using nightly Rust due to some permissions issues in our Tao dependency (which have been resolved but not published).
+
+## Creating a Project
+
+Create a new crate:
+
+````shell
+cargo new --bin demo
+cd demo
+````
+
+Add Dioxus and the desktop renderer as dependencies (this will edit your `Cargo.toml`):
+
+````shell
+cargo add dioxus
+cargo add dioxus-desktop
+````
+
+Edit your `main.rs`:
+
+````rs@hello_world_desktop.rs
+#![allow(non_snake_case)]
+// import the prelude to get access to the `rsx!` macro and the `Scope` and `Element` types
+use dioxus::prelude::*;
+
+fn main() {
+    // launch the dioxus app in a webview
+    dioxus_desktop::launch(App);
+}
+
+// define a component that renders a div with the text "Hello, world!"
+fn App(cx: Scope) -> Element {
+    cx.render(rsx! {
+        div {
+            "Hello, world!"
+        }
+    })
+}
+````
+
+## Hot Reload
+
+1. Hot reloading allows much faster iteration times inside of RSX calls by interpreting them and streaming the edits.
+1. It is useful when changing the styling/layout of a program, but will not help with changing the logic of a program.
+
+### Setup
+
+Install [dioxus-cli](https://github.com/DioxusLabs/dioxus/tree/master/packages/cli).
+
+### Usage
+
+1. Run:
+
+````bash
+dx serve --hot-reload --platform desktop
+````
+
+2. Change some code within a `rsx` or `render` macro.
+2. Save and watch the style change without recompiling.
+
+### Limitations
+
+1. The interpreter can only use expressions that existed on the last full recompile. If you introduce a new variable or expression to the RSX call, it will require a full recompile to capture the expression.
+1. Components, Iterators, and some attributes can contain arbitrary rust code and will trigger a full recompile when changed.
+# Mobile App
+
+Build a mobile app with Dioxus!
+
+Example: [Todo App](https://github.com/DioxusLabs/example-projects/blob/master/ios_demo)
+
+## Support
+
+Mobile is currently the least-supported renderer target for Dioxus. Mobile apps are rendered with either the platform's WebView or experimentally with [WGPU](https://github.com/DioxusLabs/blitz). WebView doesn't support animations, transparency, and native widgets.
+
+Mobile support is currently best suited for CRUD-style apps, ideally for internal teams who need to develop quickly but don't care much about animations or native widgets.
+
+## Getting Set up
+
+Getting set up with mobile can be quite challenging. The tooling here isn't great (yet) and might take some hacking around to get things working.
+
+### Setting up dependencies
+
+#### Android Dependencies
+
+First, install the rust Android targets:
+
+````sh
+rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
+````
+
+To develop on Android, you will need to [install Android Studio](https://developer.android.com/studio).
+
+Once you have installed Android Studio, you will need to install the Android SDK and NDK:
+
+1. Create a blank Android project
+1. Select `Tools > SDK manager`
+1. Navigate to the `SDK tools` window:
+
+![NDK install window](/assets/static/android_ndk_install.png)
+
+Then select:
+
+* The SDK
+* The SDK Command line tools
+* The NDK (side by side)
+* CMAKE
+
+4. Select `apply` and follow the prompts
+
+ > 
+ > More details that could be useful for debugging any errors you encounter are available [in the official android docs](https://developer.android.com/studio/intro/update#sdk-manager)
+
+Next set the Java, Android and NDK home variables:
+
+Mac:
+
+````sh
+export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+export ANDROID_HOME="$HOME/Library/Android/sdk"
+export NDK_HOME="$ANDROID_HOME/ndk/25.2.9519653"
+````
+
+Windows:
+
+````powershell
+[System.Environment]::SetEnvironmentVariable("JAVA_HOME", "C:\Program Files\Android\Android Studio\jbr", "User")
+[System.Environment]::SetEnvironmentVariable("ANDROID_HOME", "$env:LocalAppData\Android\Sdk", "User")
+[System.Environment]::SetEnvironmentVariable("NDK_HOME", "$env:LocalAppData\Android\Sdk\ndk\25.2.9519653", "User")
+````
+
+ > 
+ > The NDK version in the paths should match the version you installed in the last step
+
+#### IOS Dependencies
+
+First, install the rust IOS targets:
+
+````sh
+rustup target add aarch64-apple-ios x86_64-apple-ios aarch64-apple-ios-sim
+````
+
+To develop on IOS, you will need to [install XCode](https://apps.apple.com/us/app/xcode/id497799835).
+
+ > 
+ > Note: On Apple silicon you must run Xcode on rosetta. Goto Application > Right Click Xcode > Get Info > Open in Rosetta.
+ > If you are using M1, you will have to run `cargo build --target x86_64-apple-ios` instead of `cargo apple build` if you want to run in simulator.
+
+### Setting up your project
+
+First, we need to create a rust project:
+
+````sh
+cargo new dioxus-mobile-test
+cd dioxus-mobile-test
+````
+
+Next, we can use `cargo-mobile2` to create a project for mobile:
+
+````shell
+cargo install --git https://github.com/tauri-apps/cargo-mobile2
+cargo mobile init
+````
+
+When you run `cargo mobile init`, you will be asked a series of questions about your project. One of those questions is what template you should use. Dioxus currently doesn't have a template in Tauri mobile, instead you can use the `wry` template.
+
+ > 
+ > You may also be asked to input your team ID for IOS. You can find your team id [here](https://developer.apple.com/help/account/manage-your-team/locate-your-team-id/) or create a team id by creating a developer account [here](https://developer.apple.com/help/account/get-started/about-your-developer-account)
+
+Next, we need to modify our dependencies to include dioxus:
+
+````sh
+cargo add dioxus
+cargo add dioxus-desktop --no-default-features --features tokio_runtime
+````
+
+Finally, we need to add a component to renderer. Modify your main function:
+
+````rust
+use dioxus::prelude::*;
+
+pub fn main() -> Result<()> {
+    // Right now we're going through dioxus-desktop but we'd like to go through dioxus-mobile
+    // That will seed the index.html with some fixes that prevent the page from scrolling/zooming etc
+    dioxus_desktop::launch_cfg(
+        app,
+        // Note that we have to disable the viewport goofiness of the browser.
+        // Dioxus_mobile should do this for us
+        dioxus_desktop::Config::default().with_custom_index(r#"<!DOCTYPE html>
+        <html>
+          <head>
+            <title>Dioxus app</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <!-- CUSTOM HEAD -->
+          </head>
+          <body>
+            <div id="main"></div>
+            <!-- MODULE LOADER -->
+          </body>
+        </html>
+       "#.into()),
+    );
+
+    Ok(())
+}
+
+fn app(cx: Scope) -> Element {
+    let items = cx.use_hook(|| vec![1, 2, 3]);
+
+    log::debug!("Hello from the app");
+
+    render! {
+        div {
+            h1 { "Hello, Mobile"}
+            div { margin_left: "auto", margin_right: "auto", width: "200px", padding: "10px", border: "1px solid black",
+                button {
+                    onclick: move|_| {
+                        println!("Clicked!");
+                        items.push(items.len());
+                        cx.needs_update_any(ScopeId(0));
+                        println!("Requested update");
+                    },
+                    "Add item"
+                }
+                for item in items.iter() {
+                    div { "- {item}" }
+                }
+            }
+        }
+    }
+}
+````
+
+## Running
+
+From there, you'll want to get a build of the crate using whichever platform you're targeting (simulator or actual hardware). For now, we'll just stick with the simulator
+
+### IOS
+
+To build your project for IOS, you can run:
+
+````sh
+cargo build --target aarch64-apple-ios-sim
+````
+
+Next, open XCode (this might take awhile if you've never opened XCode before):
+
+````sh
+cargo apple open
+````
+
+This will open XCode with this particular project.
+
+From there, just click the "play" button with the right target and the app should be running!
+
+![ios_demo](/assets/static/IOS-dioxus-demo.png)
+
+Note that clicking play doesn't cause a new build, so you'll need to keep rebuilding the app between changes. The tooling here is very young, so please be patient. If you want to contribute to make things easier, please do! We'll be happy to help.
+
+### Android
+
+To build your project on Android you can run:
+`cargo android build`
+
+Next, open Android studio:
+
+````sh
+cargo android open
+````
+
+This will open an android studio project for this application.
+
+Next we need to create a simulator in Android studio to run our app in. To create a simulator click on the phone icon in the top right of Android studio:
+
+![android studio manage devices](/assets/static/android-studio-simulator.png)
+
+Then click the `create a virtual device` button and follow the prompts:
+
+![android studio devices](/assets/static/android-studio-devices.png)
+
+Finally, launch your device by clicking the play button on the device you created:
+
+![android studio device](/assets/static/android-studio-device.png)
+
+Now you can start your application from your terminal by running:
+
+````sh
+cargo android run
+````
+
+![android_demo](/assets/static/Android-Dioxus-demo.png)
+
+ > 
+ > More information is available in the Android docs:
+ > 
+ > * https://developer.android.com/ndk/guides
+ > * https://developer.android.com/studio/projects/install-ndk
+ > * https://source.android.com/docs/setup/build/rust/building-rust-modules/overview
+# Terminal UI
+
+You can build a text-based interface that will run in the terminal using Dioxus.
+
+![Hello World screenshot](https://github.com/DioxusLabs/rink/raw/master/examples/example.png)
+
+ > 
+ > Note: this book was written with HTML-based platforms in mind. You might be able to follow along with TUI, but you'll have to adapt a bit.
+
+## Support
+
+TUI support is currently quite experimental. But, if you're willing to venture into the realm of the unknown, this guide will get you started.
+
+* It uses flexbox for the layout
+* It only supports a subset of the attributes and elements
+* Regular widgets will not work in the tui render, but the tui renderer has its own widget components that start with a capital letter. See the [widgets example](https://github.com/DioxusLabs/dioxus/blob/master/packages/dioxus-tui/examples/widgets.rs)
+* 1px is one character line height. Your regular CSS px does not translate
+* If your app panics, your terminal is wrecked. This will be fixed eventually
+
+## Getting Set up
+
+Start by making a new package and adding Dioxus and the TUI renderer as dependencies.
+
+````shell
+cargo new --bin demo
+cd demo
+cargo add dioxus
+cargo add dioxus-tui
+````
+
+Then, edit your `main.rs` with the basic template.
+
+````rs@hello_world_tui.rs
+#![allow(non_snake_case)]
+// import the prelude to get access to the `rsx!` macro and the `Scope` and `Element` types
+use dioxus::prelude::*;
+
+fn main() {
+    // launch the app in the terminal
+    dioxus_tui::launch(App);
+}
+
+// create a component that renders a div with the text "Hello, world!"
+fn App(cx: Scope) -> Element {
+    cx.render(rsx! {
+        div {
+            "Hello, world!"
+        }
+    })
+}
+
+````
+
+To run our app:
+
+````shell
+cargo run
+````
+
+Press "ctrl-c" to close the app. To switch from "ctrl-c" to just "q" to quit you can launch the app with a configuration to disable the default quit and use the root TuiContext to quit on your own.
+
+````rs@hello_world_tui_no_ctrl_c.rs
+// todo remove deprecated
+#![allow(non_snake_case, deprecated)]
+
+use dioxus::events::{KeyCode, KeyboardEvent};
+use dioxus::prelude::*;
+use dioxus_tui::TuiContext;
+
+fn main() {
+    dioxus_tui::launch_cfg(
+        App,
+        dioxus_tui::Config::new()
+            .without_ctrl_c_quit()
+            // Some older terminals only support 16 colors or ANSI colors
+            // If your terminal is one of these, change this to BaseColors or ANSI
+            .with_rendering_mode(dioxus_tui::RenderingMode::Rgb),
+    );
+}
+
+fn App(cx: Scope) -> Element {
+    let tui_ctx: TuiContext = cx.consume_context().unwrap();
+
+    cx.render(rsx! {
+        div {
+            width: "100%",
+            height: "10px",
+            background_color: "red",
+            justify_content: "center",
+            align_items: "center",
+            onkeydown: move |k: KeyboardEvent| if let KeyCode::Q = k.key_code {
+                tui_ctx.quit();
+            },
+
+            "Hello world!"
+        }
+    })
+}
+
+````
+
+## Hot Reload
+
+1. Hot reloading allows much faster iteration times inside of rsx calls by interpreting them and streaming the edits.
+1. It is useful when changing the styling/layout of a program, but will not help with changing the logic of a program.
+
+### Setup
+
+Install [dioxus-cli](https://github.com/DioxusLabs/dioxus/tree/master/packages/cli).
+
+### Usage
+
+1. Run:
+
+````bash
+dx serve --hot-reload --platform desktop
+````
+
+2. Change some code within a rsx or render macro
+2. Save and watch the style change without recompiling
+
+### Limitations
+
+1. The interpreter can only use expressions that existed on the last full recompile. If you introduce a new variable or expression to the rsx call, it will require a full recompile to capture the expression.
+1. Components, Iterators, and some attributes can contain arbitrary rust code and will trigger a full recompile when changed.

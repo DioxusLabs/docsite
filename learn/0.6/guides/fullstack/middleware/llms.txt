@@ -1,0 +1,31 @@
+<SYSTEM>This is the developer documentation for Dioxus from /learn/0.6/guides/fullstack/middleware.</SYSTEM>
+# Middleware
+
+Extractors allow you to wrap your server function in some code that changes either the request or the response. Dioxus fullstack integrates with [Tower](https://docs.rs/tower/latest/tower/index.html) to allow you to wrap your server functions in middleware.
+
+You can use the `#[middleware]` attribute to add a layer of middleware to your server function. Let's add a timeout middleware to a server function. This middleware will stop running the server function if it reaches a certain timeout:
+
+````rs@server_function_middleware.rs
+#[server]
+// Add a timeout middleware to the server function that will return an error if the function takes longer than 1 second to execute
+#[middleware(tower_http::timeout::TimeoutLayer::new(std::time::Duration::from_secs(1)))]
+pub async fn timeout() -> Result<(), ServerFnError> {
+    tokio::time::sleep(std::time::Duration::from_secs(2)).await;
+    Ok(())
+}
+````
+# Middleware
+
+Extractors allow you to wrap your server function in some code that changes either the request or the response. Dioxus fullstack integrates with [Tower](https://docs.rs/tower/latest/tower/index.html) to allow you to wrap your server functions in middleware.
+
+You can use the `#[middleware]` attribute to add a layer of middleware to your server function. Let's add a timeout middleware to a server function. This middleware will stop running the server function if it reaches a certain timeout:
+
+````rs@server_function_middleware.rs
+#[server]
+// Add a timeout middleware to the server function that will return an error if the function takes longer than 1 second to execute
+#[middleware(tower_http::timeout::TimeoutLayer::new(std::time::Duration::from_secs(1)))]
+pub async fn timeout() -> Result<(), ServerFnError> {
+    tokio::time::sleep(std::time::Duration::from_secs(2)).await;
+    Ok(())
+}
+````

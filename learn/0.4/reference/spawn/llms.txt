@@ -1,0 +1,127 @@
+<SYSTEM>This is the developer documentation for Dioxus from /learn/0.4/reference/spawn.</SYSTEM>
+# Spawning Futures
+
+The `use_future` and `use_coroutine` hooks are useful if you want to unconditionally spawn the future. Sometimes, though, you'll want to only spawn a future in response to an event, such as a mouse click. For example, suppose you need to send a request when the user clicks a "log in" button. For this, you can use `cx.spawn`:
+
+````rs@spawn.rs
+let response = use_state(cx, || String::from("..."));
+
+let log_in = move |_| {
+    cx.spawn({
+        to_owned![response];
+
+        async move {
+            let resp = reqwest::Client::new()
+                .get("https://dioxuslabs.com")
+                .send()
+                .await;
+
+            match resp {
+                Ok(_data) => {
+                    log::info!("dioxuslabs.com responded!");
+                    response.set("dioxuslabs.com responded!".into());
+                }
+                Err(err) => {
+                    log::info!("Request failed with error: {err:?}")
+                }
+            }
+        }
+    });
+};
+
+render! {
+    button {
+        onclick: log_in,
+        "Response: {response}",
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    spawn::App {}
+}
+````
+
+ > 
+ > Note: `spawn` will always spawn a *new* future. You most likely don't want to call it on every render.
+
+Calling `spawn` will give you a `JoinHandle` which lets you cancel or pause the future.
+
+## Spawning Tokio Tasks
+
+Sometimes, you might want to spawn a background task that needs multiple threads or talk to hardware that might block your app code. In these cases, we can directly spawn a Tokio task from our future. For Dioxus-Desktop, your task will be spawned onto Tokio's Multithreaded runtime:
+
+````rs@spawn.rs
+cx.spawn(async {
+    let _ = tokio::spawn(async {}).await;
+
+    let _ = tokio::task::spawn_local(async {
+        // some !Send work
+    })
+    .await;
+});
+````
+# Spawning Futures
+
+The `use_future` and `use_coroutine` hooks are useful if you want to unconditionally spawn the future. Sometimes, though, you'll want to only spawn a future in response to an event, such as a mouse click. For example, suppose you need to send a request when the user clicks a "log in" button. For this, you can use `cx.spawn`:
+
+````rs@spawn.rs
+let response = use_state(cx, || String::from("..."));
+
+let log_in = move |_| {
+    cx.spawn({
+        to_owned![response];
+
+        async move {
+            let resp = reqwest::Client::new()
+                .get("https://dioxuslabs.com")
+                .send()
+                .await;
+
+            match resp {
+                Ok(_data) => {
+                    log::info!("dioxuslabs.com responded!");
+                    response.set("dioxuslabs.com responded!".into());
+                }
+                Err(err) => {
+                    log::info!("Request failed with error: {err:?}")
+                }
+            }
+        }
+    });
+};
+
+render! {
+    button {
+        onclick: log_in,
+        "Response: {response}",
+    }
+}
+````
+
+````inject-dioxus
+DemoFrame {
+    spawn::App {}
+}
+````
+
+ > 
+ > Note: `spawn` will always spawn a *new* future. You most likely don't want to call it on every render.
+
+Calling `spawn` will give you a `JoinHandle` which lets you cancel or pause the future.
+
+## Spawning Tokio Tasks
+
+Sometimes, you might want to spawn a background task that needs multiple threads or talk to hardware that might block your app code. In these cases, we can directly spawn a Tokio task from our future. For Dioxus-Desktop, your task will be spawned onto Tokio's Multithreaded runtime:
+
+````rs@spawn.rs
+cx.spawn(async {
+    let _ = tokio::spawn(async {}).await;
+
+    let _ = tokio::task::spawn_local(async {
+        // some !Send work
+    })
+    .await;
+});
+````

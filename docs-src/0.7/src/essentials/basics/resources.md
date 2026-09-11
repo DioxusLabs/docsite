@@ -158,7 +158,7 @@ Generally, we recommend using `use_resource` when doing client-side fetching and
 
 One common issue when fetching data is the "waterfall" effect, where requests run sequentially. This can lead to slow loading times and a poor user experience. To avoid waterfalls, you can hoist your data loading logic to a higher level in your component tree and avoid returning early before unrelated requests.
 
-Lets look at at an app that causes a waterfall effect:
+Lets look at an app that causes a waterfall effect:
 
 ```rust
 {{#include ../docs-router/src/doc_examples/data_fetching.rs:waterfall_effect}}

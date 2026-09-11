@@ -2,7 +2,7 @@
 
 This guide will outline the API changes between the `0.4` and `0.5` releases.
 
-`0.5` has includes significant changes to hooks, props, and global state.
+`0.5` includes significant changes to hooks, props, and global state.
 
 ## Cheat Sheet
 

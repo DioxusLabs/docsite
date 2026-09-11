@@ -237,7 +237,7 @@
 
 //     pub fn push_error(&mut self, error: (impl ToString, impl ToString)) {
 //         let error = (error.0.to_string(), error.1.to_string());
-//         error!(?error, "an error occured and was handled gracefully");
+//         error!(?error, "an error occurred and was handled gracefully");
 //         self.errors.push(error);
 //     }
 

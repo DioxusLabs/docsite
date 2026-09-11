@@ -68,7 +68,7 @@ fn Commandline(cx: Scope) -> Element {
 
     cx.render(match *error {
         Some(error) => rsx!(
-            h1 { "An error occured" }
+            h1 { "An error occurred" }
         )
         None => rsx!(
             input {
@@ -88,7 +88,7 @@ fn Commandline(cx: Scope) -> Element {
     let error = use_state(cx, || None);
 
     if let Some(error) = **error {
-        return cx.render(rsx!{ "An error occured" });
+        return cx.render(rsx!{ "An error occurred" });
     }
 
     cx.render(rsx!{

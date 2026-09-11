@@ -108,7 +108,7 @@ DX will use these profiles
 
 These profiles correspond 1:1 with the "platforms" DX supports. Note that a `platform` is just a way of DX to isolate two builds from each other. You can completely customize the build, including:
 
-- `--renderer`: swap between the various 1st-party renderers (ie `--renderer native`)
+- `--renderer`: swap between the various 1st-party renderers (i.e., `--renderer native`)
 - `--bundle`: the bundle format of the build (`.app`, `.apk`, `.ipa`, etc.)
 - all cargo options (`--features`, `--target`, `--profile`, `--bin`, etc.)
 

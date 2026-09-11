@@ -44,24 +44,67 @@ Then select:
 
 Next set the Java, Android, NDK, and PATH variables:
 
+> The NDK version (`<version>`) needs to be replaced with for instance 30.0.16138531
+
 Mac:
+
 ```sh
 export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
 export ANDROID_HOME="$HOME/Library/Android/sdk"
-export NDK_HOME="$ANDROID_HOME/ndk/25.2.9519653"
+export NDK_HOME="$ANDROID_HOME/ndk/<version>"
 export PATH="$PATH:$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools"
 ```
 
+Linux:
+
+> If using the AUR Android SDK packages, ensure the SDK/NDK installation is writable by your user; Android tooling needs to modify the SDK installation.
+
+```sh
+export ANDROID_HOME="$HOME/Android/Sdk"
+export ANDROID_SDK_ROOT="$HOME/Android/Sdk"
+export ANDROID_NDK_HOME="$HOME/Android/Sdk/ndk/<version>"
+export PATH="$PATH:$ANDROID_HOME/emulator"
+export PATH="$PATH:$ANDROID_HOME/platform-tools"
+export PATH="$PATH:$ANDROID_HOME/cmdline-tools/latest/bin"
+```
+
 Windows:
+
 ```powershell
 [System.Environment]::SetEnvironmentVariable("JAVA_HOME", "C:\Program Files\Android\Android Studio\jbr", "User")
 [System.Environment]::SetEnvironmentVariable("ANDROID_HOME", "$env:LocalAppData\Android\Sdk", "User")
-[System.Environment]::SetEnvironmentVariable("NDK_HOME", "$env:LocalAppData\Android\Sdk\ndk\25.2.9519653", "User")
+[System.Environment]::SetEnvironmentVariable("NDK_HOME", "$env:LocalAppData\Android\Sdk\ndk\<version>", "User")
 ```
 
-> The NDK version in the paths should match the version you installed in the last step
 
 We manually set the PATH variable to include the Android emulator since some distributions of Android Studio include the emulator in the wrong location.
+
+### Android emulator setup
+
+By default there are no sdk packages installed required to “create” an emulator, so we need to first install the SDK. Make sure to match the API level with the Android version you plan to emulate, for instance 35 is Android 15 while 36 corresponds to Android 16, see [SDK Platform release notes](https://developer.android.com/tools/releases/platforms).
+
+```sh
+# Android 17 emulator requires api version 37.0:
+android sdk install \
+    platform-tools \
+    emulator \
+    platforms/android-37.0 \
+    system-images/android-37.0/google_apis/x86_64
+```
+
+We then use the previously installed sdk packages to create a new emulator:
+
+```sh
+# omitting --profile results in it being named medium_phone
+android emulator create
+```
+
+To make sure we configured and set everything up correctly we can start the emulator:
+
+```sh
+android emulator start medium_phone
+```
+
 
 ## IOS
 
@@ -88,7 +131,7 @@ dx new my-app
 Make sure to launch the relevant mobile simulator. For Android, you can use the Android Studio emulator, or the Android Emulator in the terminal. Make sure to adjust the device name depending on which emulator you installed.
 
 ```sh
-emulator -avd Pixel_6_API_34  -netdelay none -netspeed full
+android emulator start medium_phone
 ```
 
 For iOS, you can use the iOS simulator. You can launch it with:

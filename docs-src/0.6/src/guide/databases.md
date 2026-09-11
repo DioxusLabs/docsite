@@ -43,10 +43,13 @@ For *HotDog*, we're going to use Sqlite. *HotDog* is a very simple app and will 
 
 To add sqlite functionality to *HotDog*, we'll pull in the `rusqlite` crate. Note that `rusqlite` is only meant to be compiled on the server, so we'll feature gate it behind the `"server"` feature in our Cargo.toml.
 
+If you are using a Windows system, you should use `features = ["bundled"]`, or you will get a link error.
+
 ```toml
 [dependencies]
 # ....
 rusqlite = { version = "0.32.1", optional = true } # <--- add rusqlite
+rusqlite = { version = "0.32.1", optional = true, features = ["bundled"] } # <--- if you are using a Windows system.
 
 [features]
 # ....

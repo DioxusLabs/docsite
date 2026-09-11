@@ -52,6 +52,13 @@ export NDK_HOME="$ANDROID_HOME/ndk/25.2.9519653"
 export PATH="$PATH:$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools"
 ```
 
+```sh
+export JAVA_HOME="/opt/android-studio/jbr/"
+export ANDROID_HOME="$HOME/Android/Sdk"
+export NDK_HOME="$ANDROID_HOME/ndk/29.0.14206865"
+export PATH="$PATH:$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools"
+```
+
 Windows:
 ```powershell
 [System.Environment]::SetEnvironmentVariable("JAVA_HOME", "C:\Program Files\Android\Android Studio\jbr", "User")
@@ -59,7 +66,9 @@ Windows:
 [System.Environment]::SetEnvironmentVariable("NDK_HOME", "$env:LocalAppData\Android\Sdk\ndk\25.2.9519653", "User")
 ```
 
-> The NDK version in the paths should match the version you installed in the last step
+> The NDK version in the paths should match the version you installed in the last step.
+
+> For Linux you probably need to adjust the start of the `JAVA_HOME` variable to point to wherever you installed Android Studio.
 
 We manually set the PATH variable to include the Android emulator since some distributions of Android Studio include the emulator in the wrong location.
 

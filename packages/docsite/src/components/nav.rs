@@ -115,6 +115,11 @@ pub(crate) fn Nav() -> Element {
 }
 
 fn CurrentStarCount() -> Element {
+    let mut is_client = use_signal(|| false);
+    use_effect(move || {
+        is_client.set(true);
+    });
+
     let num_stars = use_resource(move || async move {
         use crate::awesome::StarsResponse;
         let username = "DioxusLabs";
@@ -124,11 +129,20 @@ fn CurrentStarCount() -> Element {
         Some(res.stargazers_count as usize)
     });
 
-    let mut rendered_stars = 24.5;
-
-    if let Some(Some(loaded)) = num_stars.value()() {
-        let as_float = loaded as f64;
-        rendered_stars = as_float.round() / 1000.0;
+    let mut rendered_stars = 35.8;
+    match num_stars.value()() {
+        Some(Some(loaded)) => {
+            let as_float = loaded as f64;
+            rendered_stars = as_float.round() / 1000.0;
+        }
+        None if is_client() => {
+            return rsx! {
+                span {
+                    class: "inline-block h-4 w-6 rounded bg-gray-300 align-middle animate-pulse dark:bg-gray-600",
+                }
+            };
+        }
+        Some(None) | None => {}
     }
 
     rsx! { "{rendered_stars:.1}k" }

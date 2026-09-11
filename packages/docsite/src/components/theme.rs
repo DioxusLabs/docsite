@@ -58,15 +58,9 @@ pub(crate) fn DarkModeToggle(
             ..attributes,
 
             if dark_mode() {
-                div {
-                    class: "dark:hidden",
-                    DarkModeIcon {}
-                }
+                div { class: "hidden dark:block", LightModeIcon {} }
             } else {
-                div {
-                    class: "hidden dark:hidden",
-                    LightModeIcon {}
-                }
+                div { class: "dark:hidden", DarkModeIcon {} }
             }
         }
     }

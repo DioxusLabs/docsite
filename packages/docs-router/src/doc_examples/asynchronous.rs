@@ -4,6 +4,7 @@ use super::{ComponentWithLogs, log};
 use dioxus::prelude::*;
 use std::collections::HashSet;
 
+// ANCHOR: breed_response
 #[derive(serde::Deserialize, serde::Serialize)]
 struct BreedResponse {
     message: Vec<String>,
@@ -16,6 +17,7 @@ impl std::ops::Deref for BreedResponse {
         &self.message
     }
 }
+// ANCHOR_END: breed_response
 
 pub fn SpawnButton() -> Element {
     // ANCHOR: spawn

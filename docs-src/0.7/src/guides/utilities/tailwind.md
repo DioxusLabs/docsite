@@ -34,7 +34,7 @@ cargo install dioxus-cli
 2. Go to the settings for the extension and find the experimental regex support section. Edit the setting.json file to look like this:
 
 ```json
-"tailwindCSS.experimental.classRegex": ["class: \"(.*)\""],
+"tailwindCSS.experimental.classRegex": ["class:\\s*\"([\\s\\S]*?)\""],
 "tailwindCSS.includeLanguages": {
     "rust": "html"
 },

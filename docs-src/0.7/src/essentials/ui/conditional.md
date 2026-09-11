@@ -96,7 +96,7 @@ rsx! {
 
 ## The IntoDynNode Trait
 
-Dioxus uses the [`IntoDynNode`](https://docs.rs/dioxus-core/latest/dioxus_core/trait.IntoDynNode.html) trait to determine if an expression can be used within RSX. The conversion will take a Rust expression and turn it into one of four `DynamicNode` variants:
+Dioxus uses the [`IntoDynNode`](https://docs.rs/dioxus-core/~0.7/dioxus_core/trait.IntoDynNode.html) trait to determine if an expression can be used within RSX. The conversion will take a Rust expression and turn it into one of four `DynamicNode` variants:
 
 - Component: Functions that take Properties and render an Element
 - Text: The Rust `String` type

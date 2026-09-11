@@ -164,7 +164,7 @@ DemoFrame {
 
 If you need a slightly more powerful way to pass around state, you can use the context API.
 
-The context API lets you pass state from a parent component to all children. This is useful if you want to share state between many components. You can insert a unique type into the context with the [`use_context_provider`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context_provider.html) hook in the parent component. Then you can access the context in any child component with the [`use_context`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context.html) hook.
+The context API lets you pass state from a parent component to all children. This is useful if you want to share state between many components. You can insert a unique type into the context with the [`use_context_provider`](https://docs.rs/dioxus-hooks/~0.6/dioxus_hooks/fn.use_context_provider.html) hook in the parent component. Then you can access the context in any child component with the [`use_context`](https://docs.rs/dioxus-hooks/~0.6/dioxus_hooks/fn.use_context.html) hook.
 
 ```rust
 {{#include ../docs-router/src/doc_examples/untested_06/moving_state_around.rs:PassingContext}}

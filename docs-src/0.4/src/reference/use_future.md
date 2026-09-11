@@ -1,6 +1,6 @@
 # UseFuture
 
-[`use_future`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_future.html) lets you run an async closure, and provides you with its result.
+[`use_future`](https://docs.rs/dioxus-hooks/~0.4/dioxus_hooks/fn.use_future.html) lets you run an async closure, and provides you with its result.
 
 For example, we can make an API request (using [reqwest](https://docs.rs/reqwest/latest/reqwest/index.html)) inside `use_future`:
 

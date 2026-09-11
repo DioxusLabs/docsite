@@ -24,7 +24,7 @@
 {{#include ../docs-router/src/doc_examples/readme_expanded.rs}}
 ```
 
-rsx宏将rsx的静态部分（模板）和动态部分（[dynamic_nodes](https://docs.rs/dioxus-core/0.5.0/dioxus_core/prelude/struct.VNode.html#structfield.dynamic_nodes)和[dynamic_attributes](https://docs.rs/dioxus-core/0.5.0/dioxus_core/prelude/struct.VNode.html#structfield.dynamic_attrs)）分开。
+rsx宏将rsx的静态部分（模板）和动态部分（[dynamic_nodes](https://docs.rs/dioxus-core/~0.5/dioxus_core/prelude/struct.VNode.html#structfield.dynamic_nodes)和[dynamic_attributes](https://docs.rs/dioxus-core/~0.5/dioxus_core/prelude/struct.VNode.html#structfield.dynamic_attrs)）分开。
 
 静态模板只包含rsx的在运行时不会改变的部分，其中包含动态部分的占位符：
 
@@ -79,7 +79,7 @@ pub struct VirtualDom {
 作用域有三个主要用途：
 
 1. 它们存储组件使用的 hook 的状态。
-2. 它们为上下文 API 存储状态（例如：使用 [use_context_provider](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_context_provider.html)）。
+2. 它们为上下文 API 存储状态（例如：使用 [use_context_provider](https://docs.rs/dioxus/~0.5/dioxus/prelude/fn.use_context_provider.html)）。
 3. 它们存储渲染的当前版本和先前版本的 `VNode`，以便对其进行差异比较以生成重新渲染所需的变化集。
 
 ### 初始渲染
@@ -104,9 +104,9 @@ pub struct VirtualDom {
 一般有两种方式标记作用域为脏：
 
 1. 渲染器触发事件：此事件上的事件监听器可能会被调用，如果处理事件导致任何生成的突变，则可能会将组件标记为脏。
-2. 渲染器调用 [`wait_for_work`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.VirtualDom.html#method.wait_for_work)：这会轮询 dioxus 内部的未来队列。其中一个未来可能会将组件标记为脏。
+2. 渲染器调用 [`wait_for_work`](https://docs.rs/dioxus/~0.5/dioxus/prelude/struct.VirtualDom.html#method.wait_for_work)：这会轮询 dioxus 内部的未来队列。其中一个未来可能会将组件标记为脏。
 
-一旦至少有一个作用域被标记为脏，渲染器就可以调用 [`render_immediate`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.VirtualDom.html#method.render_immediate) 来对脏作用域进行差异化处理。
+一旦至少有一个作用域被标记为脏，渲染器就可以调用 [`render_immediate`](https://docs.rs/dioxus/~0.5/dioxus/prelude/struct.VirtualDom.html#method.render_immediate) 来对脏作用域进行差异化处理。
 
 ### 差异化处理作用域
 

@@ -12,7 +12,7 @@ First we need to create some utilities to fetch data from the hackernews API usi
 
 ## Working with Async
 
-[`use_future`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_future.html) is a [hook](./state.md) that lets you run an async closure, and provides you with its result.
+[`use_future`](https://docs.rs/dioxus-hooks/~0.4/dioxus_hooks/fn.use_future.html) is a [hook](./state.md) that lets you run an async closure, and provides you with its result.
 
 For example, we can make an API request (using [reqwest](https://docs.rs/reqwest/latest/reqwest/index.html)) inside `use_future`:
 
@@ -42,7 +42,7 @@ Finally, we will lazily fetch the comments on each post as the user hovers over 
 We need to revisit the code that handles hovering over an item. Instead of passing an empty list of comments, we can fetch all the related comments when the user hovers over the item.
 
 
-We will cache the list of comments with a [use_ref](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_ref.html) hook. This hook allows you to store some state in a single component. When the user triggers fetching the comments we will check if the response has already been cached before fetching the data from the hackernews API.
+We will cache the list of comments with a [use_ref](https://docs.rs/dioxus-hooks/~0.4/dioxus_hooks/fn.use_ref.html) hook. This hook allows you to store some state in a single component. When the user triggers fetching the comments we will check if the response has already been cached before fetching the data from the hackernews API.
 
 ```rust
 {{#include ../docs-router/src/doc_examples/untested_04/hackernews_async.rs:resolve_story}}

@@ -8,8 +8,8 @@ apps wanting users to have access to them, need to implement them. For this
 reason, the router comes with two components, which emulate a browser's back and
 forward buttons:
 
-- [`GoBackButton`](https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.GoBackButton.html)
-- [`GoForwardButton`](https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.GoForwardButton.html)
+- [`GoBackButton`](https://docs.rs/dioxus-router/~0.5/dioxus_router/components/fn.GoBackButton.html)
+- [`GoForwardButton`](https://docs.rs/dioxus-router/~0.5/dioxus_router/components/fn.GoForwardButton.html)
 
 > If you want to navigate through the history programmatically, take a look at
 > [`programmatic navigation`](./navigation/programmatic.md).

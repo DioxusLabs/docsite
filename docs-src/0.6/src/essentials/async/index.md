@@ -7,7 +7,7 @@ Asynchronous tasks are a core part of any modern application. Dioxus provides a 
 
 ## Running Futures with `spawn`
 
-The [`spawn`](https://docs.rs/dioxus/0.6.2/dioxus/prelude/fn.spawn.html) method spawns a future in the background and returns a `Task` that you can use to cancel the future. Spawn is great for futures you want to start and then forget about like sending analytics data to a server:
+The [`spawn`](https://docs.rs/dioxus/~0.6/dioxus/prelude/fn.spawn.html) method spawns a future in the background and returns a `Task` that you can use to cancel the future. Spawn is great for futures you want to start and then forget about like sending analytics data to a server:
 
 ```rust
 {{#include ../docs-router/src/doc_examples/untested_06/asynchronous.rs:spawn}}
@@ -27,13 +27,13 @@ Since spawning in event handlers is very common, Dioxus provides a more concise 
 
 <div class="warning">
 
-The future you pass to the `spawn` will automatically be cancelled when the component is unmounted. If you need to keep the future running until it is finished, you can use [`spawn_forever`](https://docs.rs/dioxus/0.6.2/dioxus/prelude/fn.spawn_forever.html) instead.
+The future you pass to the `spawn` will automatically be cancelled when the component is unmounted. If you need to keep the future running until it is finished, you can use [`spawn_forever`](https://docs.rs/dioxus/~0.6/dioxus/prelude/fn.spawn_forever.html) instead.
 
 </div>
 
 ## Asynchronous State with `use_resource`
 
-The [`use_resource`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_resource.html) can be used to derive asynchronous state. It takes an async closure to calculate the state and returns a tracked value with the current state of the future. Any time a dependency of the resource changes, the resource will rerun:
+The [`use_resource`](https://docs.rs/dioxus-hooks/~0.6/dioxus_hooks/fn.use_resource.html) can be used to derive asynchronous state. It takes an async closure to calculate the state and returns a tracked value with the current state of the future. Any time a dependency of the resource changes, the resource will rerun:
 
 ```rust
 {{#include ../docs-router/src/doc_examples/untested_06/asynchronous.rs:use_resource}}
@@ -132,7 +132,7 @@ Unlike `use_resource`, `use_server_future` is only reactive in the closure, not 
 {{#include ../docs-router/src/doc_examples/untested_06/asynchronous.rs:use_server_future_reactive}}
 ```
 
-When you use suspense with fullstack without streaming enabled, dioxus will wait until all suspended futures are resolved before sending the resolved html to the client. If you [enable](https://docs.rs/dioxus/0.6.2/dioxus/prelude/struct.ServeConfigBuilder.html#method.enable_out_of_order_streaming) out of order streaming, dioxus will send the finished HTML chunks to the client one at a time as they are resolved:
+When you use suspense with fullstack without streaming enabled, dioxus will wait until all suspended futures are resolved before sending the resolved html to the client. If you [enable](https://docs.rs/dioxus/~0.6/dioxus/prelude/struct.ServeConfigBuilder.html#method.enable_out_of_order_streaming) out of order streaming, dioxus will send the finished HTML chunks to the client one at a time as they are resolved:
 
 ```rust
 {{#include ../docs-router/src/doc_examples/untested_06/asynchronous.rs:use_server_future_streaming}}
@@ -143,10 +143,10 @@ When you use suspense with fullstack without streaming enabled, dioxus will wait
 ## Conclusion
 
 This guide has covered the basics of asynchronous tasks in Dioxus. More detailed documentation about specific hooks are available in docs.rs:
-- [use_resource](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_resource.html)
-- [use_server_future](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_server_future.html)
-- [SuspenseBoundary](https://docs.rs/dioxus/latest/dioxus/prelude/fn.SuspenseBoundary.html)
-- [spawn](https://docs.rs/dioxus/latest/dioxus/prelude/fn.spawn.html)
-- [spawn_forever](https://docs.rs/dioxus/latest/dioxus/prelude/fn.spawn_forever.html)
+- [use_resource](https://docs.rs/dioxus/~0.6/dioxus/prelude/fn.use_resource.html)
+- [use_server_future](https://docs.rs/dioxus/~0.6/dioxus/prelude/fn.use_server_future.html)
+- [SuspenseBoundary](https://docs.rs/dioxus/~0.6/dioxus/prelude/fn.SuspenseBoundary.html)
+- [spawn](https://docs.rs/dioxus/~0.6/dioxus/prelude/fn.spawn.html)
+- [spawn_forever](https://docs.rs/dioxus/~0.6/dioxus/prelude/fn.spawn_forever.html)
 
 More examples of futures and asynchronous tasks are available in the [example folder](https://github.com/DioxusLabs/dioxus/tree/v0.6/examples) in the dioxus repo.

@@ -75,4 +75,4 @@ For more information, visit [oslog](https://crates.io/crates/oslog).
 #### Final Notes
 Dioxus Logger is the preferred logger to use with Dioxus if it suites your needs. There are more features to come. If there are any feature suggestions or issues with Dioxus Logger, feel free to reach out on the [Dioxus Discord Server](https://discord.gg/XgGxMSkvUM)!
 
-For more information, visit Dioxus Logger's [docs](https://docs.rs/dioxus-logger/latest/dioxus_logger/).
+For more information, visit Dioxus Logger's [docs](https://docs.rs/dioxus-logger/~0.6/dioxus_logger/).

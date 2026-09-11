@@ -8,7 +8,7 @@ include links, nested routes, and route parameters.
 Our site visitors won't know all the available pages and blogs on our site so we
 should provide a navigation bar for them. Our navbar will be a list of links going between our pages.
 
-We want our navbar component to be rendered on several different pages on our site. Instead of duplicating the code, we can create a component that wraps all children routes. This is called a layout component. To tell the router where to render the child routes, we use the [`Outlet`](https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Outlet.html) component.
+We want our navbar component to be rendered on several different pages on our site. Instead of duplicating the code, we can create a component that wraps all children routes. This is called a layout component. To tell the router where to render the child routes, we use the [`Outlet`](https://docs.rs/dioxus-router/~0.5/dioxus_router/components/fn.Outlet.html) component.
 
 Let's create a new `NavBar` component:
 

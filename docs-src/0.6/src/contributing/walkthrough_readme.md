@@ -81,7 +81,7 @@ Scopes serve three main purposes:
 
 1. They store the state of hooks used by the component
 2. They store the state for the context API (for example: using
-   [use_context_provider](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_context_provider.html)).
+   [use_context_provider](https://docs.rs/dioxus/~0.6/dioxus/prelude/fn.use_context_provider.html)).
 3. They store the current and previous versions of the `VNode` that was rendered, so they can be
    diffed to generate the set of mutations needed to re-render it.
 
@@ -109,10 +109,10 @@ There are generally two ways a scope is marked as dirty:
 1. The renderer triggers an event: An event listener on this event may be called, which may mark a
    component as dirty, if processing the event resulted in any generated any mutations.
 2. The renderer calls
-   [`wait_for_work`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.VirtualDom.html#method.wait_for_work):
+   [`wait_for_work`](https://docs.rs/dioxus/~0.6/dioxus/prelude/struct.VirtualDom.html#method.wait_for_work):
    This polls dioxus internal future queue. One of these futures may mark a component as dirty.
 
-Once at least one `Scope` is marked as dirty, the renderer can call [`render_immediate`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.VirtualDom.html#method.render_immediate) to diff the dirty scopes.
+Once at least one `Scope` is marked as dirty, the renderer can call [`render_immediate`](https://docs.rs/dioxus/~0.6/dioxus/prelude/struct.VirtualDom.html#method.render_immediate) to diff the dirty scopes.
 
 ### Diffing Scopes
 

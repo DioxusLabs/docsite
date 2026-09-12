@@ -79,6 +79,7 @@ pub trait AnyBookRoute: Routable + PartialEq + Hash + Eq + Clone + Copy {
     fn short_version() -> &'static str;
     fn full_version() -> &'static str;
     fn index() -> Self;
+    fn page_markdown(id: use_mdbook::mdbook_shared::PageId) -> &'static str;
 }
 
 impl AnyBookRoute for router_blog::BookRoute {
@@ -116,6 +117,9 @@ impl AnyBookRoute for router_blog::BookRoute {
     }
     fn index() -> Self {
         todo!()
+    }
+    fn page_markdown(id: use_mdbook::mdbook_shared::PageId) -> &'static str {
+        router_blog::BookRoute::page_markdown(id)
     }
 }
 
@@ -159,6 +163,9 @@ impl AnyBookRoute for router_03::BookRoute {
             section: Default::default(),
         }
     }
+    fn page_markdown(id: use_mdbook::mdbook_shared::PageId) -> &'static str {
+        router_03::BookRoute::page_markdown(id)
+    }
 }
 impl AnyBookRoute for router_04::BookRoute {
     fn sections(&self) -> &[use_mdbook::mdbook_shared::Section] {
@@ -199,6 +206,9 @@ impl AnyBookRoute for router_04::BookRoute {
         Self::Index {
             section: Default::default(),
         }
+    }
+    fn page_markdown(id: use_mdbook::mdbook_shared::PageId) -> &'static str {
+        router_04::BookRoute::page_markdown(id)
     }
 }
 impl AnyBookRoute for router_05::BookRoute {
@@ -241,6 +251,9 @@ impl AnyBookRoute for router_05::BookRoute {
             section: Default::default(),
         }
     }
+    fn page_markdown(id: use_mdbook::mdbook_shared::PageId) -> &'static str {
+        router_05::BookRoute::page_markdown(id)
+    }
 }
 
 impl AnyBookRoute for router_06::BookRoute {
@@ -281,6 +294,9 @@ impl AnyBookRoute for router_06::BookRoute {
             section: Default::default(),
         }
     }
+    fn page_markdown(id: use_mdbook::mdbook_shared::PageId) -> &'static str {
+        router_06::BookRoute::page_markdown(id)
+    }
 }
 
 impl AnyBookRoute for router_07::BookRoute {
@@ -320,5 +336,8 @@ impl AnyBookRoute for router_07::BookRoute {
         Self::Index {
             section: Default::default(),
         }
+    }
+    fn page_markdown(id: use_mdbook::mdbook_shared::PageId) -> &'static str {
+        router_07::BookRoute::page_markdown(id)
     }
 }

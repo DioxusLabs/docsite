@@ -1,4 +1,3 @@
-use crate::icons;
 use crate::Link;
 use crate::{docs::router_blog::BookRoute as BlogRoute, Route};
 use dioxus::prelude::*;
@@ -124,20 +123,23 @@ fn use_current_blog() -> Option<BlogMeta> {
     Some(page_to_meta(page))
 }
 
-struct BlogMeta {
-    title: &'static str,
-    category: &'static str,
-    description: &'static str,
-    date: &'static str,
-    author: &'static str,
+pub(crate) struct BlogMeta {
+    pub(crate) title: &'static str,
+    pub(crate) category: &'static str,
+    pub(crate) description: &'static str,
+    pub(crate) date: &'static str,
+    pub(crate) author: &'static str,
 }
 
-fn page_to_meta(page: &'static use_mdbook::mdbook_shared::Page<BlogRoute>) -> BlogMeta {
-    let raw_title = &page.title;
+pub(crate) fn page_to_meta(page: &'static use_mdbook::mdbook_shared::Page<BlogRoute>) -> BlogMeta {
+    let raw_title = page.title.as_str();
 
+    // Posts are titled "Title $ Category $ Date $ Description", but fall back
+    // gracefully if a post doesn't match (e.g. fields swapped or missing)
     let items = raw_title.splitn(4, " $ ").collect::<Vec<_>>();
-    let [title, category, date, description, ..] = items.as_slice() else {
-        panic!("Invalid post structure:");
+    let (title, category, date, description) = match items.as_slice() {
+        [title, category, date, description, ..] => (*title, *category, *date, *description),
+        _ => (raw_title, "", "", ""),
     };
 
     BlogMeta {

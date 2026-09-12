@@ -7,6 +7,9 @@ use serde::{Deserialize, Serialize};
 pub mod components;
 pub mod docs;
 pub mod icons;
+#[cfg(feature = "server")]
+pub mod og_image;
+pub mod seo;
 pub mod shortcut;
 pub mod snippets;
 pub use components::*;
@@ -21,6 +24,7 @@ fn main() {
     if std::env::args().any(|arg| arg == "--generate-search-index") {
         llms::generate_llms_txt();
         search::generate_search_index();
+        og_image::generate_og_images();
         return;
     }
 
@@ -97,14 +101,30 @@ fn Head() -> Element {
 
     // Tell google to not index old documentation
     let current_doc_route = use_route::<Route>();
-    let don_t_index = current_doc_route.is_docs() && !current_doc_route.is_latest_docs();
+    let meta = seo::PageMeta::for_route(&current_doc_route);
+    // Generated per-page images live at a stable unhashed path; the default
+    // image goes through asset!() which serves it at a hashed path
+    let og_image = if seo::has_generated_og_image(&current_doc_route) {
+        meta.image.clone()
+    } else {
+        format!(
+            "{}{}",
+            seo::SITE_URL,
+            asset!("/assets/static/opengraph.png")
+        )
+    };
+    let og_type = match meta.kind {
+        seo::PageKind::Article { .. } => "article",
+        seo::PageKind::Website => "website",
+    };
 
     rsx! {
-        Title { "Dioxus | Fullstack crossplatform app framework for Rust" }
+        Title { "{meta.title}" }
         Meta {
             name: "description",
-            content: "Dioxus | A fullstack crossplatform app framework for Rust. Supports Web, Desktop, SSR, Liveview, and Mobile.",
+            content: "{meta.description}",
         }
+        Link { rel: "canonical", href: "{meta.url}" }
         Link {
             rel: "icon shortcut",
             r#type: "image/png",
@@ -133,31 +153,45 @@ fn Head() -> Element {
         }
         Meta {
             property: "og:title",
-            content: "Dioxus | Fullstack crossplatform app framework for Rust",
+            content: "{meta.title}",
         }
-        Meta { property: "og:type", content: "website" }
+        Meta { property: "og:type", content: og_type }
         Meta {
             property: "og:description",
-            content: "A fullstack crossplatform app framework for Rust. Supports Web, Desktop, SSR, Liveview, and Mobile.",
+            content: "{meta.description}",
         }
-        Meta { property: "og:url", content: "https://dioxuslabs.com" }
-        Meta {
-            property: "og:image",
-            content: "https://dioxuslabs.com/assets/static/opengraph.png",
-        }
+        Meta { property: "og:url", content: "{meta.url}" }
+        Meta { property: "og:image", content: "{og_image}" }
+        Meta { property: "og:image:width", content: "1200" }
+        Meta { property: "og:image:height", content: "630" }
+        Meta { property: "og:image:alt", content: "{meta.title}" }
+        Meta { property: "og:site_name", content: "Dioxus" }
         Meta {
             name: "twitter:title",
-            content: "Dioxus - Fullstack crossplatform app framework for Rust",
+            content: "{meta.title}",
         }
         Meta {
             name: "twitter:description",
-            content: "Dioxus | A fullstack crossplatform app framework for Rust. Supports Web, Desktop, SSR, Liveview, and Mobile.",
+            content: "{meta.description}",
         }
         Meta {
             name: "twitter:image",
-            content: "https://dioxuslabs.com/assets/static/opengraph.png",
+            content: "{og_image}",
         }
         Meta { name: "twitter:card", content: "summary_large_image" }
+        Meta { name: "twitter:site", content: "@dioxuslabs" }
+        if let seo::PageKind::Article { published, author } = meta.kind {
+            if let Some(published) = published {
+                Meta {
+                    property: "article:published_time",
+                    content: "{published}",
+                }
+            }
+            Meta {
+                property: "article:author",
+                content: author,
+            }
+        }
         Script {
             r#async: true,
             src: "https://www.googletagmanager.com/gtag/js?id=G-EBE72MVZ1B",
@@ -167,7 +201,7 @@ fn Head() -> Element {
             src: asset!("/assets/gtag.js"),
             r#type: "text/javascript",
         }
-        if don_t_index {
+        if meta.noindex {
             Meta { name: "robots", content: "noindex" }
         }
     }

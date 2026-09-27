@@ -4,7 +4,7 @@ Just like you can pass arguments to a function or attributes to an element, you 
 
 ## derive(Props)
 
-Component props are a single struct annotated with `#[derive(PartialEq, Clone, Props)]`. For a component to accept props, the type of its argument must be `YourPropsStruct`.
+Component props are a single struct annotated with `#[derive(PartialEq, Clone, Props)]`. For a component to accept props, the type of its argument must be `YourPropsStruct`. Avoid naming that argument `props` — the name is reserved by the component macro.
 
 Example:
 
@@ -96,12 +96,14 @@ struct TitleCardProps {
     title: String,
 }
 
-fn TitleCard(props: TitleCardProps) -> Element {
+fn TitleCard(title_card: TitleCardProps) -> Element {
     rsx!{
-        h1 { "{props.title}" }
+        h1 { "{title_card.title}" }
     }
 }
 ```
+
+> Note: do not name the props parameter `props` — `props` is reserved by the component macro (see [dioxus#3543](https://github.com/DioxusLabs/dioxus/issues/3543)).
 
 ...you can define a function that accepts props as arguments. Then, just annotate it with `#[component]`, and the macro will turn it into a regular Component for you:
 

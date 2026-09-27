@@ -13,11 +13,11 @@ struct LikesProps {
     score: i32,
 }
 
-fn Likes(props: LikesProps) -> Element {
+fn Likes(likes_props: LikesProps) -> Element {
     rsx! {
         div {
             "This post has "
-            b { "{props.score}" }
+            b { "{likes_props.score}" }
             " likes"
         }
     }

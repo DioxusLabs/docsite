@@ -332,7 +332,7 @@ If we *do* want to read and write in the same scope, we need to stage our operat
 
 ```rust
 let cur = state.read().clone(); // calling `.clone()` releases the `.read()` guard immediately.
-*state.write() = *cur + 1;
+*state.write() = cur + 1;
 ```
 
 Note that Rust automatically drops items *at the end* of a scope, unless they are manually dropped sooner. We can use the `.read()` guard provided it's dropped before `.write()` is called.
@@ -353,7 +353,7 @@ let next = {
 or, simply by calling `drop()` on the guard
 ```rust
 let cur1 = state.read();
-let cur2 = *cur1 + 1;
+let cur2 = *cur1;
 drop(cur1); // dropping early asserts we can `.write()` the signal safely
 *state.write() = cur2 + 1;
 ```

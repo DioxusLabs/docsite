@@ -31,7 +31,7 @@ curl -sSL https://dioxus.dev/install.sh | bash
 You can also download with `cargo-binstall`:
 
 ```sh
-cargo binstall dioxus-cli --force
+cargo install dioxus-cli --force
 ```
 
 If you want to build the CLI from source, you can install it with the following command:

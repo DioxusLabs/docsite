@@ -74,18 +74,27 @@ COPY . .
 RUN cargo chef prepare --recipe-path recipe.json
 ```
 
-In the second phase, we use cargo chef to load cached dependencies and perform the build:
+In the second phase, we use cargo chef to load cached dependencies and perform the build.
+
+`dx bundle` passes its own profile, features, and environment variables to cargo. A plain `cargo chef cook --release` builds dependencies that `dx bundle` can't reuse, so we cook them with `dx` itself. `cargo chef cook --no-build` creates the dependency skeleton without building it. `dx print client-args` and `dx print server-args` then output the exact cargo commands that `dx bundle` runs for the client and the server. We give `dx print` the same flags as `dx bundle`. `dx bundle` installs the `wasm32-unknown-unknown` target when it is missing, but these cargo commands don't, so we install it first:
 
 ```dockerfile
 FROM chef AS builder
-COPY --from=planner /app/recipe.json recipe.json
-RUN cargo chef cook --release --recipe-path recipe.json
-COPY . .
 
 # Install `dx`
 RUN curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
 RUN cargo binstall dioxus-cli --root /.cargo -y --force
 ENV PATH="/.cargo/bin:$PATH"
+RUN rustup target add wasm32-unknown-unknown
+
+COPY --from=planner /app/recipe.json recipe.json
+COPY Dioxus.toml .
+RUN cargo chef cook --no-build --recipe-path recipe.json \
+    && client="$(dx print client-args --web --release)" \
+    && eval "$client" \
+    && server="$(dx print server-args --web --release)" \
+    && eval "$server"
+COPY . .
 
 # Create the final bundle folder. Bundle with release build profile to enable optimizations.
 RUN dx bundle --web --release
